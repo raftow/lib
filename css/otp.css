@@ -1,0 +1,57 @@
+.digit-group>input {
+    width: 40px;
+    height: 54px;
+    background-color: #e5f7f9;
+    border: 1px solid #a8dfe7;
+    line-height: 54px;
+    text-align: center;
+    font-size: 34px !important;
+    font-family: 'digi';
+    font-weight: bold;
+    color: #136e60;
+    margin: 0 2px;
+}
+
+input#digit-1 {
+    margin-left: 22%;
+}
+
+.prompt {
+	margin-bottom: 20px;
+	font-size: 20px;
+	color: white;
+}
+
+label.light_label {
+    font-weight: normal !important;
+    padding-right: 0 !important;
+    margin-bottom: 10px;
+    font-size: 20px;
+    text-align: center;
+    color: #239985;
+}
+
+.modal-header {
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 5px;
+    background-color: #f6feff;
+    margin: 2px;
+}
+
+form.digit-group {
+    direction: ltr;
+}
+
+input.btnbtsp.btn-primary.btncheck {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+    height: 64px;
+    font-size: 24px !important;
+    margin-top: 25px;
+    font-family: title !important;
+    color: white !important;
+    padding: 0px;
+    font-weight: normal;
+}

@@ -1,0 +1,1 @@
+<input placeholder="<?php echo $placeholder ?>" type="text" tabindex="<?php echo $qedit_orderindex ?>" class="form-control" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" size=32 maxlength=255 onchange="<?php echo $onchange ?>" <?php echo $input_style ?> <?php echo $input_required ?>>

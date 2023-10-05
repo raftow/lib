@@ -1,0 +1,186 @@
+.table_obj {
+	font-size:18px;
+        color: #333333 !important;
+	border-collapse: collapse !important;
+	/*width: 100% !important;*/
+}
+
+.table_obj td {
+    padding: 6px;
+    font-size: 16px;
+    line-height: 22px;
+    vertical-align: middle;
+    color: #333;
+    border-collapse: collapse !important;
+    font-family: rgt, Arial, tahoma, sans-serif !important;
+}
+
+.table_obj td a {
+	white-space: nowrap !important;
+	display: inline-block !important;
+	margin: 0 5px !important;
+	text-decoration: none !important;
+	/*color: #1845C9 !important; rafik : do not activate please it is not good for the other links drop down menu in display mode*/
+}
+
+.table_obj td a:hover {
+	/*text-decoration: underline !important; rafik : do not activate please it is not good for the other links drop down menu in display mode*/
+}
+
+.table_obj td a:visited {
+	/*color: #1845C9 !important;rafik : do not activate please it is not good for the other links drop down menu in display mode*/
+}
+
+.table_obj td a a img {
+	border: 0px !important;
+}
+
+.table_obj td table td {
+	border: 0px;
+}
+
+.table_obj td img {
+	width: 24px !important;
+	height: 24px !important;
+}
+
+.table_obj th {
+    font-size: 16px;
+    color: #111;
+    padding: 10px 8px;
+    font-family: maghreb, rgt, Arial, tahoma, sans-serif;
+    font-weight: bold;
+    white-space: nowrap;
+}
+.table_obj th a {
+	color: #fff !important;
+}
+
+.table_obj th a:hover {
+	color: #a9a9a9 !important;
+}
+
+.table_obj th a:active {
+	color: #ffffff !important;
+}
+
+
+/*
+        
+.table_obj tr.item td {
+	background-color: #fff !important;
+}
+
+.table_obj tr.altitem td {
+	background-color: rgb(210, 220, 230) !important;
+}
+
+.table_obj tr:hover td {
+	background-color: rgb(204,232,255);
+	border-bottom-color: #fff;
+} 
+
+.table_obj tr:hover th {
+    background-color: rgb(204,232,255);
+    border-bottom-color: #fff;
+}
+*/        
+.table_comp {
+	font-size:18px;
+        color: #333333 !important;
+	width: 100% !important;
+        border-style: none !important;
+}
+
+.table_comp td {
+    border-style: none !important;
+    padding: 8px 8px 8px 8px;
+}
+
+
+
+	.tr_obj{}
+	.tr_obj2{background-color:rgb(188,174,165)}
+	.td_obj_label{  
+          background: #1845C9 !important;
+          font: 15px verdana !important;
+          color: #fff !important;
+          border: 1px #fff solid !important;
+          padding: 10px 5px !important;
+          text-align: center !important;
+          font-family: rgt, Arial, tahoma, sans-serif !important;
+        }
+	.td_obj_value{}
+
+	/* MODE EDIT
+	   MODE SEARCH */
+	.col_inputInt{width:120px}
+	.col_inputText{width:267px}
+	.col_inputTextFK{width:160px}
+	.col_inputTextDate{width:77px}
+	.col_inputSelect{margin:0px; padding: 0px; height:18px; font-size:9.5px; width:267px}
+	.col_inputSelect_multi{margin:0px; padding:0px; font-size:9.5px; width:267px}
+	.col_img_haujordhui{margin-bottom:-5px}
+	.col_inputRadio{}
+	.col_inputCheckbox{}
+	.col_inputButton{}
+	/* MODE SEARCH */
+	.td_obj_oper{}
+	.col_inputSelect_oper{margin:0px; padding:0px; height:18px; font-size:9.5px; width:120px}
+	/* MODE RETRIEVE */
+	.tr_obj_color_blue{background-color:#ADD8E6}
+	.tr_obj_color_grey{background-color:#D3D3D3}
+	
+.align_div{
+width: 700px;
+}
+
+/****bouton modifier critères page recherche*/
+
+#hide-show-button{
+    font-family: Arial,sans-serif;
+    font-size: 14px;
+    width: 150px;
+    height: 25px;
+    padding-top: 3px; /*permet le centrage vertical*/
+    text-align: center;
+    color: #000;
+    background: #444;
+    background: -webkit-linear-gradient( #555, #2C2C2C);
+    background:    -moz-linear-gradient( #555, #2C2C2C);
+    background:     -ms-linear-gradient( #555, #2C2C2C);
+    background:      -o-linear-gradient( #555, #2C2C2C);
+    background:         linear-gradient( #555, #2C2C2C);
+    border-radius: 10px;
+    color: white;
+    float: right;
+    cursor: pointer;
+    text-shadow:0 1px 0 rgba(255,255,255,0.2);
+    box-shadow: 0 0 5px rgba( 0, 0, 0, 0.5),
+                0 -1px 0 rgba( 255, 255, 255, 0.4);
+}
+#hide-show-button:hover{
+    color: #222;
+    background: #555;
+    background: -webkit-linear-gradient( #777, #aaa);
+    background:    -moz-linear-gradient( #777, #aaa);
+    background:     -ms-linear-gradient( #777, #aaa);
+    background:      -o-linear-gradient( #777, #aaa);
+    background:         linear-gradient( #777, #aaa);
+}
+#hide-show-button:active{
+    color: #000;
+    background: #444;
+    background: -webkit-linear-gradient( #555, #2C2C2C);
+    background:    -moz-linear-gradient( #555, #2C2C2C);
+    background:     -ms-linear-gradient( #555, #2C2C2C);
+    background:      -o-linear-gradient( #555, #2C2C2C);
+    background:         linear-gradient( #555, #2C2C2C);
+    box-shadow: 1px 1px 10px black inset,
+                0 1px 0 rgba( 255, 255, 255, 0.4);
+}
+
+
+
+
+/*Fin css bonton modifier critères */

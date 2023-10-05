@@ -1,0 +1,154 @@
+#primary_nav_wrap {
+    margin-top: 1px;
+    margin-bottom: 1px;
+    height: 41px;
+    background-color: #eceaea99 !important;
+}
+
+#primary_nav_wrap ul
+{
+  list-style:none;
+  position:relative;
+  float:right;
+  margin:0;
+  padding:0;
+  z-index: 99999;
+}
+
+#primary_nav_wrap ul a
+{
+  display:block;
+  color:#fff;
+  text-decoration:none;
+  font-weight:500;
+  font-size:13px;
+  line-height:40px;
+  padding: 0px 8px 0px 9px;
+  font-family: maghreb, rgt, tahoma, sans-serif !important;
+}
+
+#primary_nav_wrap ul li
+{
+  position:relative;
+  float:right;
+  margin:0;
+  padding:0;
+}
+
+#primary_nav_wrap ul li.current-menu-item
+{
+  background:#293b20;      
+}
+
+#primary_nav_wrap ul li:hover
+{
+  background:rgb(16,58,109);
+}
+
+#primary_nav_wrap ul ul
+{
+  display:none;
+  position:absolute;
+  top:100%;
+  right:0;
+
+  background:rgb(25, 92, 170);
+  padding:0;
+  /*margin-top: 0px;*/
+}
+
+#primary_nav_wrap ul ul li
+{
+  float:none;
+  width:250px;
+}
+
+/*#primary_nav_wrap ul ul a
+{
+  line-height:120%;
+  padding:10px 15px;
+}*/
+
+#primary_nav_wrap ul ul ul
+{
+  top:0;
+  right:100%;
+}
+
+#primary_nav_wrap ul li:hover > ul
+{
+  display:block;
+}
+
+.fa.fa-cog {
+  padding: 0px 10px 0px 10px;
+}
+
+.fa.fa-cogs {
+  padding: 0px 10px 0px 5px;
+}
+
+.fa.fa-globe {
+  padding: 0px 10px 0px 5px;
+}
+
+.fa.fa-sitemap {
+  padding: 0px 10px 0px 5px;
+}
+
+.fa.fa-building {
+  padding: 0px 10px 0px 5px;
+}
+
+.fa.fa-pie-chart {
+  padding: 0px 10px 0px 3px;
+}
+
+
+.fa.fa-home {
+  padding: 0px 10px 0px 10px;
+}
+
+.fa.fa-info {
+  padding: 0px 10px 0px 10px;
+}
+
+.fa.fa-tachometer {
+  padding: 0px 10px 0px 10px;
+}
+
+.fa.fa-user {
+  padding: 0px 10px 0px 10px;
+}
+
+.fa.fa-flag {
+  padding: 0px 10px 0px 10px;
+}
+
+.fa-arrow-left{
+  float:left;
+  margin-top:13px;
+}
+
+.arraow-active-tab{
+    float: right !important;
+    margin-top: 0px !important;
+    color: #1874c3 !important;
+}
+.fa.fa-bookmark {
+    padding: 0px 10px 0px 10px;
+}
+
+.fa.fa-bookmark-o {
+    padding: 0px 10px 0px 10px;
+}
+
+.fa.fa-database {
+    padding: 0px 10px 0px 10px;
+}
+
+.menu-small-item {
+    width: 100px !important;
+}
+
+

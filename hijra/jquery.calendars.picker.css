@@ -1,0 +1,278 @@
+/* Default styling for jQuery Calendars Picker v1.0.0. */
+.calendars {
+    color: #000;
+    border: 1px solid #4370E6;
+    background-color: #1849C9;
+    font-family: Droid,Arial,Helvetica,Sans-serif;
+    font-size: 10px;
+    width: 280px !important;
+}
+.calendars-rtl {
+	direction: rtl;
+}
+.calendars-popup {
+	z-index: 3000;
+}
+.calendars-disable {
+	position: absolute;
+	z-index: 100;
+	background-color: white;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+}
+.calendars a {
+	color: #fff;
+	text-decoration: none;
+}
+.calendars a.calendars-disabled {
+	color: #c7e1f3;
+	cursor: auto;
+}
+.calendars-nav, .calendars-ctrl {
+    float: left;
+    width: 280px;
+    background-color: #233469;
+    color: #FFF;
+    font-size: 90%;
+    font-weight: normal;
+}
+.calendars-ctrl {
+	background-color: rgb(194, 121, 10);
+}
+.calendars-cmd {
+    width: 30%;
+    font-size: 14px;
+    font-family: Droid, rgt !important;
+}
+.calendars-cmd-prevJump, .calendars-cmd-nextJump {
+	width: 8%;
+}
+a.calendars-cmd {
+        height: 1.2em;
+        color: #3857c0 !important;
+        padding-top: 0px !important;
+}
+button.calendars-cmd {
+	text-align: center;
+}
+.calendars-cmd-prev, .calendars-cmd-prevJump, .calendars-cmd-clear {
+	float: left;
+	text-align: left;
+}
+.calendars-cmd-current, .calendars-cmd-today {
+	float: left;
+	width: 35%;
+	text-align: center;
+}
+.calendars-cmd-next, .calendars-cmd-nextJump, .calendars-cmd-close {
+	float: right;
+	text-align: right;
+}
+.calendars-rtl .calendars-cmd-prev, .calendars-rtl .calendars-cmd-prevJump,
+.calendars-rtl .calendars-cmd-clear {
+	float: right;
+	padding-left: 0%;
+	padding-right: 2%;
+	text-align: right;
+        
+}
+.calendars-rtl .calendars-cmd-current, .calendars-rtl .calendars-cmd-today {
+	float: right;
+}
+.calendars-rtl .calendars-cmd-next, .calendars-rtl .calendars-cmd-nextJump,
+.calendars-rtl .calendars-cmd-close {
+	float: left;
+	padding-left: 2%;
+	padding-right: 0%;
+	text-align: left;
+        
+}
+.calendars-month-row {
+	clear: left;
+}
+.calendars-month {
+	float: left;
+	width: 326px;
+	border: 0px solid #007ed1;
+	text-align: center;
+
+}
+
+
+.calendars-month-header, .calendars-month-header select, .calendars-month-header input {
+	background-color: #3B5688;
+	color: #fff;
+	font-weight: normal;
+	font-family: Droid;
+	font-size: 10px;
+	border-radius: 0px;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	width: 100%;
+	max-width: 100%;
+	min-width: 100%;
+}
+.calendars-month-header select, .calendars-month-header input {
+	height: 2.6em;
+	border: none;
+}
+.calendars-month-header input {
+	position: absolute;
+	display: none;
+}
+.calendars-month table {
+	width: 100%;
+	border-collapse: collapse;
+}
+.calendars-month thead {
+	border-bottom: 1px solid #C7E1F3;
+}
+.calendars-month th, .calendars-month td {
+	margin: 0em;
+	padding: 0em;
+	font-weight: normal;
+	text-align: center;
+}
+.calendars-month th {
+	border: 1px solid #C7E1F3;
+}
+.calendars-month th, .calendars-month th a {
+	background-color: #C7E1F3;
+	color: #000;
+}
+.calendars-month td {
+	background-color: #f1f8fc;
+	border: 1px solid #C7E1F3;
+}
+.calendars-month td.calendars-week a,
+.calendars-month td.calendars-week span {
+	background-color: #C7E1F3;
+	color: #000;
+	border: none;
+}
+.calendars-month a {
+	display: block;
+	width: 100%;
+	padding: 0.125em 0em;
+	background-color: #f1f8fc;
+	color: #000;
+	text-decoration: none;
+}
+.calendars-month span {
+	display: block;
+	width: 100%;
+	padding: 0.125em 0em;
+}
+.calendars-month td span {
+	color: #c7e1f3;
+}
+.calendars-month td .calendars-other-month {
+	background-color: #fff;
+}
+.calendars-month td .calendars-weekend {
+	background-color: #C5D7F1;
+}
+.calendars-month td .calendars-today {
+	background-color: #94B965;
+}
+.calendars-month td .calendars-highlight {
+	background-color: #F0E1C0;
+}
+.calendars-month td .calendars-selected {
+	background-color: #2158B9;
+	color: #fff;
+	font-weight: normal;
+}
+.calendars-month th.calendars-week {
+	background-color: #C7E1F3;
+	color: #000;
+}
+.calendars-status {
+	background-color: #f1f8fc;
+	text-align: center;
+}
+.calendars-clear-fix {
+	clear: both;
+}
+.calendars-cover {
+    display: none;
+    display/**/: block;
+    position: absolute;
+    z-index: -1;
+    filter: mask();
+    top: -1px;
+    left: -1px;
+    width: 100px;
+    height: 100px;
+}
+
+.navbar {
+    position: relative;
+    max-height: 44px !important;
+    min-height: 39px !important;
+    margin-bottom: 10px !important;
+    border: 1px solid rgb(115, 144, 187) !important;
+    border-collapse: initial !important;
+    padding-top: 0px !important;
+}
+
+.calendars-popup   {
+    border: 2px solid rgba(48, 112, 194, 0.66) !important;
+    background-color: #fff !important;
+}
+
+.calendars-popup   {
+    border: 2px solid rgba(48, 112, 194, 0.66) !important;
+    background-color: #fff !important;
+}
+
+.calendar_head  {
+    margin-top: 8px !important;
+    position: relative;
+    max-height: 40px !important;
+    min-height: 39px !important;
+    margin-bottom: 10px !important;
+    border: 1px solid rgb(51, 114, 209) !important;
+    border-collapse: initial !important;
+    padding-top: 10px !important;
+}
+
+.calendars-cmd.calendars-cmd-next:hover {
+	    background-color: #2158B9 !important;
+}
+
+.calendars-cmd.calendars-cmd-today:hover {
+	    background-color: #2158B9 !important;
+}
+
+.calendars-cmd.calendars-cmd-prev:hover {
+	    background-color: #2158B9 !important;
+}
+
+
+.calendars-cmd.calendars-cmd-next {
+	    background-color: rgb(15,109,225);
+            padding-top: 3px !important;
+            color: #fff !important;
+            text-align: center;
+            height: 22px;
+}
+
+.calendars-cmd.calendars-cmd-today {
+	    background-color: rgb(15,109,225);
+            padding-top: 3px !important;
+            color: #fff !important;
+            text-align: center;
+            height: 22px;
+	    margin-left: 8px;
+	    
+}
+
+
+.calendars-cmd.calendars-cmd-prev {
+	    background-color: rgb(15,109,225);
+            padding-top: 3px !important;
+            color: #fff !important;
+            text-align: center;
+            height: 22px;
+}

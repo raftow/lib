@@ -1,0 +1,30 @@
+<?
+function variable_get($name, $default = NULL) {
+  global $variables;
+
+  return isset($variables[$name]) ? $variables[$name] : $default;
+}
+
+/**
+ * Sets a persistent variable.
+ *
+ * Case-sensitivity of the variable_* functions depends on the database
+ * collation used. To avoid problems, always use lower case for persistent
+ * variable names.
+ *
+ * @param $name
+ *   The name of the variable to set.
+ * @param $value
+ *   The value to set. This can be any PHP data type; these functions take care
+ *   of serialization as necessary.
+ *
+ * @see variable_del()
+ * @see variable_get()
+ */
+function variable_set($name, $value) {
+  global $variables;
+
+  $variables[$name] = $value;
+}
+
+?>

@@ -1,0 +1,168 @@
+@charset "utf-8";
+/* Simple fluid media
+   Note: Fluid media requires that you remove the media's height and width attributes from the HTML
+   http://www.alistapart.com/articles/fluid-images/ 
+*/
+img, object, embed, video {
+	max-width: 100%;
+}
+/* IE 6 does not support max-width so default to width 100% */
+.ie6 img {
+	width:100%;
+}
+
+/*
+	Dreamweaver Fluid Grid Properties
+	----------------------------------
+	dw-num-cols-mobile:		5;
+	dw-num-cols-tablet:		8;
+	dw-num-cols-desktop:	10;
+	dw-gutter-percentage:	25;
+	
+	Inspiration from "Responsive Web Design" by Ethan Marcotte 
+	http://www.alistapart.com/articles/responsive-web-design
+	
+	and Golden Grid System by Joni Korpi
+	http://goldengridsystem.com/
+*/
+
+/* Mobile Layout: 480px and below. */
+@media only screen and (max-width:1024px){
+   body{background: #fff}
+.container {width:  96%;margin:  0 auto;}
+.innercontainer {width:  100%;}
+.topnav .topmenu {display:  none;}
+
+	.slider-wrapper {height:  auto;}
+.theme-default .nivo-controlNav{top: -35px!important}
+.collegesearch,.flipcards{float: none!important;margin: auto;width: 70%}
+.flipcards{top:15px;margin-bottom: 50px;}
+.flipcards .card2 {left: 0;right: auto;}
+.flipcards .card,.flipcards .card2{width: 42%}
+.applydiv{width: 95%}
+.applydiv .applyinner{width: 95%}
+.collegesearch .colsearchinn .searchcontrols select, .collegesearch .colsearchinn .searchcontrols input[type='text']{width: 44%}
+.collegesearch .colsearchinn .searchcontrols .searchbtn{width: 8%} 
+    .hidden-in-mobile{display: none}
+    .visible-in-mobile{display: block}
+    .lang{padding: 2px 3px}
+    .lang select{border: 2px #12926e solid}
+    .breadcrumb{padding: 5px 0}
+.topbar{overflow: hidden;}
+.topnav .logo,.uniregisteration {float: none;text-align: center}
+    .collegelogo,.collegemap{margin: 10px 0}
+}
+
+@media only screen and (max-width:980px){
+.container {width: 95%;margin: 0 auto;}
+    .main-nav{float: none}
+    .topnav .logo {padding-top: 18px;padding-bottom: 18px;}
+    .prog-ul li{  width: 30%; margin: 1% 1.5%;}
+    .examlogotxt{position: static;padding: 10px 20px}
+}
+
+
+@media only screen and (max-width:768px){
+    .collegebox img { width: 60%!important;}
+    .Steps{display: none}
+    .applydiv{width: 85%;padding:2% 5%;min-height: 45px;}
+   .applydiv .applyinner,.applybtndiv{float: none;width: 95%;margin: 0}
+   .applybtndiv{text-align: center;margin: 41px 0px 0;}
+    .collegesearch, .flipcards{width: 85%}
+  .collegefilter select{min-width: inherit;width:25%;margin-bottom: 5px}
+  .collegefilter select:nth-child(5) {margin-right: 12.7%;}
+.collegefilter .filterlabel{width: 12%;display: inline-block}
+.collegesUl li{width: 29%;margin: 2%;}
+    
+.col-8,.col-4,.col-6{float: none;width: 98%;  margin: 10px 0;}
+
+
+.form .col-4, .form .col-8{padding: 0 1.5%;float: right;}
+.form .col-4{width: 30%} 
+.form .col-8{width: 64%;}
+    
+.loginform .quote, .loginform .darkbg {width: 92%;}
+.contactform{margin: 15px 0}
+    .sidenav{margin: 0 auto 20px;max-width: 300px;}
+    .responsivetable{width:100%;overflow-x: auto;padding-bottom:8px;}
+    #accordion .ui-accordion-header span{max-width: 85%;}
+    #accordion .ui-accordion-header{height: auto!important}
+}
+
+@media only screen and (max-width:640px) {
+
+    .collegesearch{margin-top: 20px;float: none}
+    .slider-wrapper{display: none}
+    .applydiv{display: none}
+    .topactions .search .searchtxt{width: 140px;padding: 0px 10px}
+    .map{width:96%;margin: 0 auto}
+    .gmnoprint,.gmnoprint div{left:0px!important}
+    #map-canvas{height: 90vw}
+    .collegefilter .filterlabel{width: 15%;}
+    .collegefilter select{min-width: inherit;width:25%;margin-bottom: 5px}
+  .collegefilter select:nth-child(5) {margin-right: 15.7%;}
+    
+    .form .col-12 .col-8{width:100%}
+    .quote .quoteinn{width: 100%;}
+    
+    .form .col-4, .form .col-8{padding: 0 1.5%;float: right}
+    .form .col-4{width:100%}
+    .form label {font-size: 14px;}
+.prog-ul li{  width: 45%; margin: 1% 2.5%;}
+    .prog-ul li .progcard div.front .more{opacity: 1}
+    .collegesearch .colsearchinn .searchcontrols .searchbtn{width: 40px;}
+    .collegesearch .colsearchinn .searchcontrols select, .collegesearch .colsearchinn .searchcontrols input[type='text']{margin-left: 0;width: 43%;}
+    .container {width: 95%;margin: 0 auto;}
+    .topcontrols a{margin: 0;padding: 0 7px;background: none!important;}
+    .topbar{height: auto}
+    .questions{width: 100%}
+}
+
+@media (min-width: 481px) and (max-width: 640px)  {
+.btn{width:100%!important;margin: 5px 0!important}
+}
+@media only screen and (max-width:480px) {
+.topactions{float: none;margin: 0 auto;}
+    .topactions:after{display: block;content: '';clear: both}
+.collegesearch .colsearchinn .searchcontrols select, .collegesearch .colsearchinn .searchcontrols input[type='text']{width: 100%;margin-bottom: 5px}
+    .collegesearch .colsearchinn .searchcontrols .searchbtn{width: 44px}
+    .flipcards{height: 300px}
+    .flipcards .card, .flipcards .card2{width: 100%;height: 48%;}
+    .flipcards .card2{top: 52%}
+    .footer .faqdiv .faqtitle{padding: 10px 10px 0 10px;width: 35%;}
+    .footer .faqdiv input[type='text']{width:35% }
+    .footer .faqdiv .searchbtn{width: 44px}
+    .collegesearch .colsearchinn .searchcontrols{margin-bottom: 10px}
+    .footer .faqdiv .faqtitle{font-size: 16px;}
+    .footer .copyright p{font-size: 12px;text-align: center;padding: 12px 15px 0;}
+    .copyright{padding-bottom: 30px}
+    .collegefilter{}
+    .collegefilter .filterlabel{display: block;width: 100%;}
+    .collegefilter select{display: inline-block;width:48%;margin: 0 1% 5px}
+    #accordion .ui-accordion-header{font-size: 13px!important}
+    #accordion .ui-accordion-header .ui-accordion-header-icon{margin: 0;}
+    #accordion .ui-accordion-header span.male, #accordion .ui-accordion-header span.female, #accordion .ui-accordion-header span.maincompany{padding-right: 8px;width: 85%;background: none}
+    .collegesUl li{width: 48%;margin: 1%}
+    .collegefilter select:nth-child(5) {margin-right:1%;}
+    
+    
+    .btndiv .btn{margin: 0 8px 0 0;}
+    .form .col-md-9, .form .col-9{width: 95%;}
+    .prog-ul li {width: 100%;margin: 1% 0;float: none;}
+    .topactions .phonenumber{  padding-left: 32px;background-position: 10px center;}
+    .topcontrols{text-align: center;float: none;margin: 0 auto!important}
+    .btn{width:100%!important;margin: 5px 0!important}
+        .useractions{float: none;text-align: center}
+    .ui-datepicker{width:85%!important;}
+    .grid td,.grid th{  min-width: 135px;}
+    #accordion .accordionBox .details,#accordion .accordionBox .collegebox{float: none;width: 85%!important;margin: 10px auto}
+}
+
+@media only screen and (max-width:360px) {
+.form .col-4{width: 98%}
+.collegesearch .colsearchinn {padding: 14px 20px 28px;}
+    .tickethistory .ticketmessages span.messagebody{  word-break: break-all;}
+}
+@media only screen and (max-width:320px) {
+.btndiv .btn{padding: 12px 50px;}
+}

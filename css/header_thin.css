@@ -1,0 +1,172 @@
+/***     login/home/header nice can be published for all   */
+/*
+@media screen and (max-width: 575px) {
+        .calendar_bloc_g{
+           display:none;
+           visibility:hidden;
+           width: 0px !important;
+           height: 0px !important;
+        }
+}
+
+@media screen and (max-width: 370px) {
+        .title_company_user{
+           display:none;
+           visibility:hidden;
+           width: 0px !important;
+           height: 0px !important;
+        }
+}
+
+
+@media screen and (max-width: 970px) {
+        .banner_application {
+        display: none;
+        visibility: hidden;
+        width: 0px !important;
+        height: 0px !important;
+        }
+}
+
+@media screen and (max-width: 84.5em)
+{
+    margin-right: 250px;
+}*/
+
+
+
+.calendar_bloc_g {
+    height: 96px;
+    background-image: url(../../external/calendar.png);
+    background-repeat: no-repeat;
+    /* background-size: 84px; */
+    background-position: 0px 0px;
+    padding-top: 23px;
+    font-family: saharat;
+    font-size: 14px;
+    font-weight: bold;
+    width: 135px;
+    float: left;
+    margin-top: -10px;
+}
+
+.calendar_year {
+    text-align: center;
+    color: #2b3825;
+    font-family: title,courrier,arial;
+    padding-top: 2px;
+    /* font-weight: bold; */
+    font-size: 100%;
+    margin-left: 0 !important;
+}
+
+.calendar_day {
+    height: 60px;
+    text-align: center;
+    color: #453a3a;
+    margin-left: 0 !important;
+    font-family: title,courrier,arial,rgt;
+    font-weight: bold;
+    font-size: 90%;
+    padding-top: 5px;
+    line-height: 18px;
+}     
+
+span.dday {
+    font-size: 100%;
+}
+
+.navbar-nav>li>a.alogout:hover {
+    font-weight: normal !important;
+}
+.home_banner{
+    background-image: url(../pic/home_banner_001.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    min-height:720px;
+    float: right;
+}
+
+.hzm_body {
+    padding-bottom: 0px;
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.hzm_body.no_spaces {
+    /*
+    padding-bottom: 0px !important;
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    */
+}
+
+li.hzm_login {
+    float: left !important;
+    background-color: #0778c8 !important;
+    border: 1px solid #067fd5;
+}
+
+.navbar-nav>li>a.alogin {
+    background-color: #fff !important;
+    color: #0383dd !important;
+}       
+
+.navbar-nav>li.hzm_login>a:hover {
+    color: #ffffff !important;
+    background-color: #0f82d2 !important;
+}
+
+.modal_login.modal-content {
+    max-width: 450px;
+    min-width: 250px;
+    width: 50%;
+    top: 45px;
+    left: 40px;
+    float: left;
+}
+
+.btnbtsp {
+    font-size: 18px;
+}
+
+input, select, textarea{
+    font-size: 100% !important;
+}
+
+button{
+    font-size: 90% !important;
+}
+
+.grid tr.alterr td {
+    background-color: rgba(255, 255, 255, 0.61) !important;
+    padding: 10px 6px !important;
+    color: #8d1616 !important;
+}
+
+
+.grid tr.err td {
+    background-color: #fff !important;
+    padding: 10px 6px !important;
+    color: #2f1409 !important;
+}
+
+div.modal-dialog {
+    margin-top: 0 !important;
+}
+
+.section nav.navbar {
+    margin: 0px !important;
+    border: 1px #c0c0c059 solid !important;
+    max-height: 42px !important;
+    padding-top: 3px !important;
+    background-color: #fff;
+}
+    
+/***     login/home/header nice can be published for all   */

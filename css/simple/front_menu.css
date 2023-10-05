@@ -1,0 +1,512 @@
+.front_0 {
+        background: linear-gradient(to top, rgba(38,108,198, 0.77) 0%, rgba(38,108,198, 0.83) 20%, rgba(38,108,198, 0.93) 40%, rgba(38,108,198, 0.77) 60%, rgba(38,108,198, 0.68) 80%, rgba(38,108,198, 0.60) 100%) !important;      
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(19,58,99);
+}
+
+.front_1 {
+        background: linear-gradient(to top, rgba(100, 84, 169, 0.77) 0%, rgba(100, 84, 169, 0.83) 20%, rgba(100, 84, 169, 0.93) 40%, rgba(100, 84, 169, 0.77) 60%, rgba(100, 84, 169, 0.68) 80%, rgba(100, 84, 169, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(50,42,85);
+}
+
+.front_2 {
+        background: linear-gradient(to top, rgba(70,106,155, 0.77) 0%, rgba(70,106,155, 0.83) 20%, rgba(70,106,155, 0.93) 40%, rgba(70,106,155, 0.77) 60%, rgba(70,106,155, 0.68) 80%, rgba(70,106,155, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(35,53,78);
+}
+
+.front_3 {
+        background: linear-gradient(to top, rgba(176,53,73, 0.77) 0%, rgba(176,53,73, 0.83) 20%, rgba(176,53,73, 0.93) 40%, rgba(176,53,73, 0.77) 60%, rgba(176,53,73, 0.68) 80%, rgba(176,53,73, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(88,27,37);
+}
+
+.front_4 {
+    background: linear-gradient(to top, rgba(236, 162, 70, 0.87) 0%, rgba(218, 146, 56, 0.87) 20%, rgba(228, 146, 43, 0.87) 40%, rgba(224, 146, 48, 0.87) 60%, rgba(236, 166, 81, 0.87) 80%, rgba(236, 162, 70, 0.87) 100%) !important;
+    color: #fff !important;
+    text-decoration: none;
+    border: solid 1px #c37c27;
+}
+
+.front_5 {
+        background: linear-gradient(to top, rgba(101, 149, 9, 0.77) 0%, rgba(101, 149, 9, 0.83) 20%, rgba(101, 149, 9, 0.93) 40%, rgba(101, 149, 9, 0.77) 60%, rgba(101, 149, 9, 0.68) 80%, rgba(101, 149, 9, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(51,75,5);
+}
+
+.front_6 {
+    background: linear-gradient(to top, rgba(158, 192, 234, 0.88) 0%, rgba(57, 134, 230, 0.88) 20%, rgba(57, 134, 230, 0.88) 40%, rgba(76, 148, 239, 0.88) 60%, rgba(85, 152, 236, 0.88) 80%, rgba(57, 134, 230, 0.88) 100%) !important;
+    color: #fff !important;
+    text-decoration: none;
+    border: solid 1px #2a74ab;
+}
+
+.front_7 {
+        background: linear-gradient(to top, rgba(101, 149, 9, 0.77) 0%, rgba(101, 149, 9, 0.83) 20%, rgba(101, 149, 9, 0.93) 40%, rgba(101, 149, 9, 0.77) 60%, rgba(101, 149, 9, 0.68) 80%, rgba(101, 149, 9, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(51,75,5);
+}
+
+.front_8 {
+        background: linear-gradient(to top, rgba(63,63,63, 0.77) 0%, rgba(63,63,63, 0.83) 20%, rgba(63,63,63, 0.93) 40%, rgba(63,63,63, 0.77) 60%, rgba(63,63,63, 0.68) 80%, rgba(63,63,63, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(32,32,32);
+}
+
+.front_9 {
+        background: linear-gradient(to top, rgba(174, 111, 11, 0.77) 0%, rgba(174, 111, 11, 0.83) 20%, rgba(174, 111, 11, 0.93) 40%, rgba(174, 111, 11, 0.77) 60%, rgba(174, 111, 11, 0.68) 80%, rgba(174, 111, 11, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(146, 103, 34);
+}
+
+.front_10 {
+        background: linear-gradient(to top, rgba(63,63,63, 0.77) 0%, rgba(63,63,63, 0.83) 20%, rgba(63,63,63, 0.93) 40%, rgba(63,63,63, 0.77) 60%, rgba(63,63,63, 0.68) 80%, rgba(63,63,63, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(32,32,32);
+}
+
+.front_11 {
+        background: linear-gradient(to top, rgba(70,90,10, 0.77) 0%, rgba(70,90,10, 0.83) 20%, rgba(70,90,10, 0.93) 40%, rgba(70,90,10, 0.77) 60%, rgba(70,90,10, 0.68) 80%, rgba(70,90,10, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(35,45,5);
+}
+
+.front_12 {
+        background: linear-gradient(to top, rgba(27,53,82, 0.77) 0%, rgba(27,53,82, 0.83) 20%, rgba(27,53,82, 0.93) 40%, rgba(27,53,82, 0.77) 60%, rgba(27,53,82, 0.68) 80%, rgba(27,53,82, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(14,27,42);
+}
+
+.front_13 {
+        background: linear-gradient(to top, rgba(83,79,0, 0.77) 0%, rgba(83,79,0, 0.83) 20%, rgba(83,79,0, 0.93) 40%, rgba(83,79,0, 0.77) 60%, rgba(83,79,0, 0.68) 80%, rgba(83,79,0, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(42,40,0);
+}
+
+.front_14 {
+	background: linear-gradient(to top, rgba(221,88,0, 0.77) 0%, rgba(221,88,0, 0.83) 20%, rgba(221,88,0, 0.93) 40%, rgba(221,88,0, 0.77) 60%, rgba(221,88,0, 0.68) 80%, rgba(221,88,0, 0.60) 100%) !important;
+        color: #fff !important;
+        text-decoration: none;
+        border: solid 1px rgb(111,44,0);
+}
+
+
+
+.front_0:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_0 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_0 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_0 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_0 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_1:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_1 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_1 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_1 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_1 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_2:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_2 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_2 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_2 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_2 .txticon:hover {
+	margin-top: 15px;
+}    
+
+.front_3:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_3 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_3 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_3 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_3 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_4:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_4 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_4 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_4 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_4 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_5:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_5 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_5 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_5 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_5 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_6:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_6 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_6 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_6 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_6 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_7:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_7 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_7 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_7 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_7 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_8:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_8 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_8 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_8 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_8 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_9:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_9 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_9 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_9 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_9 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_10:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_10 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_10 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_10 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_10 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_11:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_11 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_11 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_11 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_11 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_12:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_12 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_12 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_12 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_12 .txticon:hover {
+	margin-top: 15px;
+}
+
+.front_13:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_13 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_13 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_13 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_13 .txticon:hover {
+	margin-top: 15px;
+}
+
+
+.front_14:hover {
+        cursor: pointer;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_14 .prog-name {
+	margin-top: 15px;
+        text-align: center;
+        color: #fff !important;
+        text-decoration: none;
+}
+
+div.front_14 .prog-name:hover {
+        text-decoration: none;
+}
+
+div.front_14 .txticon {
+	margin-top: 20px;
+        text-align: center;
+        text-decoration: none;
+}
+
+div.front_14 .txticon:hover {
+	margin-top: 15px;
+}

@@ -1,0 +1,1 @@
+<img src="tmkn_draw_model.php" />
