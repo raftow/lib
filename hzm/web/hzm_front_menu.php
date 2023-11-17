@@ -118,7 +118,7 @@
                 include "$file_hzm_dir_name/../$MODULE/special_module_options.php";
         }
    
-        if($active_lang_count>0)
+        if(($active_lang_count>0) and (count($uri_arr)>1))
         {
                 foreach($uri_arr as $lang_code => $uri_item)
                 {
