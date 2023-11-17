@@ -66,8 +66,14 @@ class AfwMysql
             {
                 throw new RuntimeException("queryToCapture : $sql");
             }
-            $return = mysqli_query($link, $sql);
-            $aff_rows = mysqli_affected_rows($link);
+            try{
+                $return = mysqli_query($link, $sql);
+                $aff_rows = mysqli_affected_rows($link);
+            }
+            catch(Exception $e)
+            {
+                throw new RuntimeException("Error happened when query : $sql : ".$e->getMessage());
+            }
             AfwBatch::print_sql(date("H:i:s")." > ".$sql." > $aff_rows affected rows");
             return $return;
         } 
