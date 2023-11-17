@@ -117,8 +117,8 @@
                 include "$file_hzm_dir_name/../pag/module_options.php";
                 include "$file_hzm_dir_name/../$MODULE/special_module_options.php";
         }
-   
-        if(($active_lang_count>0) and (count($uri_arr)>1))
+        $enable_language_switch = AfwSession::config("enable_language_switch",false);
+        if(($active_lang_count>0) and $enable_language_switch)
         {
                 foreach($uri_arr as $lang_code => $uri_item)
                 {
