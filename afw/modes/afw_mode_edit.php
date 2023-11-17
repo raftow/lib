@@ -97,7 +97,7 @@ else
 }
 // very bad it erase all log find better solution (named log) 
 $log = AfwSession::getLog();
-$can = $objme->iCanDoOperationOnObjClass($myObj,"edit");
+$can = ($objme and $objme->iCanDoOperationOnObjClass($myObj,"edit"));
 $report_can_edit = AfwSession::getLog("iCanDo");
 if(!$can)
 {
