@@ -52,9 +52,8 @@ elseif($objToShow)
 {
         $direct_dir_name = dirname(__FILE__); 
         $Direct_Page = "show_object.php";
-
-        die("$Direct_Page to run under$file_dir_name/../$MODULE/afw_direct_page.php");
-        include("$file_dir_name/../$MODULE/afw_direct_page.php");
+        //die("$Direct_Page to run under$file_dir_name/../$MODULE/afw_direct_page.php");
+        include("afw_direct_page.php");
         
 }
 else
