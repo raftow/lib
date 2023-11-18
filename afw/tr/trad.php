@@ -16,7 +16,7 @@ $trad["*"]["update_user_id"] = $trad["*"]["updated_by"] = $trad["*"]["id_mod"] =
 $trad["*"]["update_date"] = $trad["*"]["updated_at"] = $trad["*"]["date_mod"] = "آخر تعديل بتاريخ";
 $trad["*"]["validation_user_id"] = $trad["*"]["validated_by"] = $trad["*"]["id_valid"] = "تم إعتماده من طرف";
 $trad["*"]["validation_date"] = $trad["*"]["validated_at"] = $trad["*"]["date_valid"] = "تم إعتماده بتاريخ";
-$trad["*"]["active"] = $trad["*"]["avail"] = "مفعل";
+$trad["*"]["active"] = $trad["*"]["avail"] = "نشط";
 
 
 $trad["*"]["draft"] = "مسودة ؟";
@@ -59,7 +59,7 @@ $trad["*"]["id_mod"] = "آخر تغيير ل";
 $trad["*"]["date_mod"] = "تاريخ آخر تغيير";
 $trad["*"]["id_valid"] = "مصادقة";
 $trad["*"]["date_valid"] = "تاريخ المصادقة";
-$trad["*"]["avail"] = "مفعل";  */
+$trad["*"]["avail"] = "نشط";  */
 
 $trad["*"]["heure_mod"] = "آخر تغيير";
 

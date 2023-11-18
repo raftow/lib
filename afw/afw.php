@@ -9123,13 +9123,13 @@ class AFWObject extends AFWRoot
         if ($dropdown or $this->hideDisactiveRowsFor($objme = AfwSession::getUserConnected())) {
             $selects[$this->fld_ACTIVE()] = 'Y';
         }
-        /*
-        if(static::$TABLE == "orgunit")
+        
+        if(static::$TABLE == "school_employee")
         { 
             echo "selects : <br>";
             echo var_export($selects,true);
             die();
-        }*/
+        }
         foreach ($selects as $colselect => $valselect) {
             if ($this->fieldExists($colselect)) {
                 //if($colselect == "employee_id") die("$this this->select($colselect,$valselect);");
