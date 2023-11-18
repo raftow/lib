@@ -12600,6 +12600,11 @@ $dependencies_values
                 !$display_in_display_mode[$className];
     }
 
+    protected function getReadOnlyFormFinishButtonLabel()
+    {
+        return '';
+    }
+
     final public function getFinishButtonLabelDefault(
         $lang,
         $nextStep,
@@ -12611,7 +12616,9 @@ $dependencies_values
             if ($form_readonly != 'RO') {
                 return $this->translate('SAVE', $lang, true);
             } else {
-                return '';
+                $ret = $this->getReadOnlyFormFinishButtonLabel();
+                if($ret) return $this->translate($ret, $lang, true);
+                return '';                
             }
         }
 
