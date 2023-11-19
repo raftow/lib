@@ -98,6 +98,7 @@ else
 // very bad it erase all log find better solution (named log) 
 $log = AfwSession::getLog();
 $can = ($objme and $objme->iCanDoOperationOnObjClass($myObj,"edit"));
+$myObjClass = get_class($myObj); 
 $report_can_edit = AfwSession::getLog("iCanDo");
 if(!$can)
 {
@@ -110,7 +111,7 @@ if(!$can)
         else
         {
             // @todo : to be changed every where we bad use the session vars
-            AfwSession::setSessionVar("operation", "edit on $my_class class");
+            AfwSession::setSessionVar("operation", "edit on $myObjClass class");
             AfwSession::setSessionVar("result", "failed");
             AfwSession::setSessionVar("report", $report_can_edit);
             AfwSession::setSessionVar("other_log", $log);

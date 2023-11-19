@@ -122,7 +122,8 @@ else
 
 if(!$can)
 {
-        AfwSession::setSessionVar("operation", "quick search on $myClassInstance class");
+        $myClassInstanceClass = get_class($myClassInstance);
+        AfwSession::setSessionVar("operation", "quick search on $myClassInstanceClass class");
         AfwSession::setSessionVar("result", "failed");
         AfwSession::setSessionVar("report", $report_can_qsearch);
         AfwSession::setSessionVar("other_log", $log);

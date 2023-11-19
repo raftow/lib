@@ -43,11 +43,12 @@ if(!$currmod)
 // because it clear important sql log
 $log = AfwSession::getLog();
 $can = $objme->iCanDoOperationOnObjClass($myMainObject,"qedit");
+$myMainObjectClass = get_class($myMainObject); 
 $report_can_qedit = AfwSession::getLog("iCanDo");
 if(!$can)
 {
         // die("quick edit on $myMainObject class report $report_can_edit $log ");
-        AfwSession::setSessionVar("operation", "quick edit on $myMainObject class");
+        AfwSession::setSessionVar("operation", "quick edit on $myMainObjectClass class");
         AfwSession::setSessionVar("result", "failed");
         AfwSession::setSessionVar("report", $report_can_qedit);
         AfwSession::setSessionVar("other_log", $log);
