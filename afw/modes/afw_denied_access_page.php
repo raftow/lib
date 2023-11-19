@@ -63,6 +63,8 @@ if($MODE_DEVELOPMENT)
 
 <br>
 <?
+        echo "<br>session context Ican do LOG : <br>";
+        echo AfwSession::getLog("iCanDo");
         echo "<br>userCan table <br>";
         echo var_export($objme->userCanTable,true);
         
