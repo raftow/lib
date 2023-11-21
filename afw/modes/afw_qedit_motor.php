@@ -725,73 +725,123 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             break;
 
         case 'TIME':
-            if ($desc["FORMAT"] == "CLASS") 
-            {
-                $helpClass = $desc["ANSWER_CLASS"];
-                $helpMethod = $desc["ANSWER_METHOD"];
+            if ($obj->fixm_disable) {
 
-                $answer_list = $helpClass::$helpMethod();
-            }
-            elseif ($desc["FORMAT"] == 'OBJECT') {
-                $helpMethod = $desc["ANSWER_METHOD"];
-                $answer_list = $obj->$helpMethod();
-            }
-            else
+                $type_input_ret = "hidden";
+                ?>
+                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
+                <span class='fw-momken-date'><? if (!$obj->hideQeditCommonFields) echo $val ?></span>
+                <?php
+            } 
+            else 
             {
-                if ($desc["ANSWER_LIST"]) 
+                if ($desc["FORMAT"] == "CLASS") 
                 {
-                    list($start, $increment, $end) = explode("/", $desc["ANSWER_LIST"]);
-                }
-                else 
-                {
-                    $start = 6;
-                    $increment = 30;
-                    $end = 22;
-                }
+                    $helpClass = $desc["ANSWER_CLASS"];
+                    $helpMethod = $desc["ANSWER_METHOD"];
 
-                $answer_list = AfwDateHelper::getTimeArray($start, $increment, $end);
-                
+                    $answer_list = $helpClass::$helpMethod();
+                }
+                elseif ($desc["FORMAT"] == 'OBJECT') {
+                    $helpMethod = $desc["ANSWER_METHOD"];
+                    $answer_list = $obj->$helpMethod();
+                }
+                else
+                {
+                    if ($desc["ANSWER_LIST"]) 
+                    {
+                        list($start, $increment, $end) = explode("/", $desc["ANSWER_LIST"]);
+                    }
+                    else 
+                    {
+                        $start = 6;
+                        $increment = 30;
+                        $end = 22;
+                    }
+
+                    $answer_list = AfwDateHelper::getTimeArray($start, $increment, $end);
+                    
+                }
+                if (!$answer_list[$val]) $answer_list[$val] = $val;
+                // die(var_export($answer_list,true));
+                select(
+                    $answer_list,
+                    array($val),
+                    array(
+                        "class" => "form-control",
+                        "name"  => $col_name,
+                        "id"  => $col_name,
+                        "tabindex" => $qedit_orderindex,
+                        "onchange" => $onchange,
+                        "style" => $input_style,
+                    ),
+                    "asc"
+                );
             }
-            if (!$answer_list[$val]) $answer_list[$val] = $val;
-            // die(var_export($answer_list,true));
-            select(
-                $answer_list,
-                array($val),
-                array(
-                    "class" => "form-control",
-                    "name"  => $col_name,
-                    "id"  => $col_name,
-                    "tabindex" => $qedit_orderindex,
-                    "onchange" => $onchange,
-                    "style" => $input_style,
-                ),
-                "asc"
-            );
+            break;
+        case 'GDAT':
+            if ($obj->fixm_disable) {
+
+                $type_input_ret = "hidden";
+                ?>
+                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
+                <span class='fw-momken-date'><? if (!$obj->hideQeditCommonFields) echo $val ?></span>
+                <?php
+            } 
+            else 
+            {
+                // remove time if exists
+                list($val,) = explode(" ", $val);
+
+                // default defined or today
+                $today = date("Y-m-d");
+                if (strtolower($desc["DEFAULT"]) == "today") $desc["DEFAULT"] = $today;
+                if (!$val) $val = $desc["DEFAULT"] ? $desc["DEFAULT"] : $today;
+
+                $val_GDAT = AfwDateHelper::inputFormatDate($val);;
+
+                $input_name = $col_name;
+
+                $min_date = $desc["MIN_DATE"] ? $desc["MIN_DATE"] : -99999;
+                $max_date = $desc["MAX_DATE"] ? $desc["MAX_DATE"] : 99999;
+                include("tpl/helper_edit_gdat.php");
+            }
             break;
         case 'DATE':
-        case 'GDAT':
-            $mode_hijri_edit = true;
-            $type_input_ret = "text";
-            $input_name = $col_name;
-            $valaff = AfwDateHelper::displayDate($val);
-            if ($valaff)
-                $valaff_n = "الموافق لـ " . AfwDateHelper::hijriToGreg($valaff) . " نـ";
-            else
-                $valaff_n = "";
-            ?>
-            <table class="table_no_border">
-                <tr class="table_no_border_tr">
-                    <td><input placeholder="<?= $placeholder ?>" type="text" id="<?= $input_name ?>" name="<?= $col_name ?>" value="<?= $valaff ?>" class="<?= $class_inputDate . $data_loaded_class . " inputcourt" ?>" onchange="<?php echo $onchange ?>"> </td>
-                    <td><span>هـ</span></td>
-                    <!-- <td><input type="text" id="<?= $input_name . "_n" ?>" name="<?= $col_name . "_n" ?>" value="<?= $valaff_n ?>" class="inputtext_disabled inputcourt" disabled></input></td>-->
-                    <script type="text/javascript">
-                        $('#<?= $input_name ?>').calendarsPicker({
-                            calendar: $.calendars.instance('UmmAlQura')
-                        });
-                    </script>
-                </tr>
-            </table>
-        <?php break;
+            if ($obj->fixm_disable) {
+
+                $type_input_ret = "hidden";
+                ?>
+                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
+                <span class='fw-momken-date'><? if (!$obj->hideQeditCommonFields) echo $val ?></span>
+                <?php
+            } 
+            else 
+            {
+                $mode_hijri_edit = true;
+                $type_input_ret = "text";
+                $input_name = $col_name;
+                $valaff = AfwDateHelper::displayDate($val);
+                if ($valaff)
+                    $valaff_n = "الموافق لـ " . AfwDateHelper::hijriToGreg($valaff) . " نـ";
+                else
+                    $valaff_n = "";
+                ?>
+                <table class="table_no_border">
+                    <tr class="table_no_border_tr">
+                        <td><input placeholder="<?= $placeholder ?>" type="text" id="<?= $input_name ?>" name="<?= $col_name ?>" value="<?= $valaff ?>" class="<?= $class_inputDate . $data_loaded_class . " inputcourt" ?>" onchange="<?php echo $onchange ?>"> </td>
+                        <td><span>هـ</span></td>
+                        <!-- <td><input type="text" id="<?= $input_name . "_n" ?>" name="<?= $col_name . "_n" ?>" value="<?= $valaff_n ?>" class="inputtext_disabled inputcourt" disabled></input></td>-->
+                        <script type="text/javascript">
+                            $('#<?= $input_name ?>').calendarsPicker({
+                                calendar: $.calendars.instance('UmmAlQura')
+                            });
+                        </script>
+                    </tr>
+                </table>
+        <?php 
+            }
+            break;
         default:
             $type_input_ret = "text";
             if ($obj->qedit_minibox)

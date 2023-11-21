@@ -214,6 +214,7 @@ else
 if((count($fixm_trad)) and (!$obj->hideQeditCommonFields)) 
 {
 ?>
+<!-- ************* fixmgrid as hideQeditCommonFields option disabled *********** -->
 <table class="fixmgrid" style="width: 100%;">
 <?php	foreach($fixm_trad as $col => $info)
         {
@@ -226,6 +227,7 @@ if((count($fixm_trad)) and (!$obj->hideQeditCommonFields))
 }
 else
 {
+        echo "<!-- ************* list of inputs as hideQeditCommonFields option is enabled *********** -->";
         //$obj->simpleError(var_export($fixm_input,true));
         //echo("obj->fixmtit=$obj->fixmtit");
         foreach($fixm_input as $col => $input)
