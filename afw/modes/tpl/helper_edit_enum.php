@@ -43,10 +43,10 @@
                         }
                     }
 
-                    for ($oo = 0; $oo <= $max_rep_id; $oo++) 
+                    for ($rep_i = 0; $rep_i <= $max_rep_id; $rep_i++) 
                     {
-                        if (!isset($liste_codeOrdres[$oo])) $listeOrdres[$oo] = -1;
-                        else $listeOrdres[$oo] = $liste_codeOrdres[$oo];
+                        if (!isset($liste_codeOrdres[$rep_i])) $listeOrdres[$rep_i] = -1;
+                        else $listeOrdres[$rep_i] = $liste_codeOrdres[$rep_i];
                     }
 
                     //if($col_name=="coming_status_id_0") $obj->_error($log_echo);

@@ -90,16 +90,16 @@ if($obj->QEDIT_FOOTER_SUM)
              
            if($class_xqe_col) {
                $class_xqe = "xqe_sum_footer_${class_xqe_col}";
-               $class_xqe_prop = "class='$class_xqe'";
+               $class_xqe_prop = "class='$class_xqe col-qe-$col'";
            }
            else
            {
-               $class_xqe_prop = "";
+               $class_xqe_prop = "class='col-qe-$col'";
            }
            
            $th_props = "style='text-align:$aligntd !important' $class_xqe_prop";
 ?>
-             <th <?=$th_props?>><?=$text_input?></th>
+             <th hint='for-sum' <?=$th_props?>><?=$text_input?></th>
 		
 <?php	}
 ?>
@@ -130,11 +130,11 @@ if($obj->QEDIT_FOOTER_SUM)
           
           if($class_xqe_col) {
             $class_xqe = "xqe_hf_${class_xqe_col}";
-            $class_xqe_prop = "class='$class_xqe'";
+            $class_xqe_prop = "class='$class_xqe col-qe-$col'";
           }
           else
           {
-            $class_xqe_prop = "";
+            $class_xqe_prop = "class='col-qe-$col'";
           }
           
           if($class_db_structure[$col]["QEDIT_HIDE"])

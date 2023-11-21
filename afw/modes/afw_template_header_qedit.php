@@ -31,9 +31,10 @@ foreach($class_db_structure as $nom_col => $desc)
 {
     if($desc["IN-FORMULA"]) $cols_for_compute[] = $nom_col;
 }
-
+$column_order=0;
 foreach($class_db_structure as $nom_col => $desc)
 {
+        $column_order++;
         if(($submode=="FGROUP") and $fgroup)
         {
                /*
@@ -67,6 +68,11 @@ foreach($class_db_structure as $nom_col => $desc)
 	// if(!$desc["CATEGORY"])
         $nom_col_short = "$nom_col.short";
         $trad_col_short  = $obj->translate($nom_col_short,$lang);
+
+        if(($column_order==1) and $obj->PK_MULTIPLE)
+        {
+                $qedit_trad["id"] = $obj->translate("id",$lang);                
+        }
                         
         if($desc['TYPE'] == 'PK')
         {
@@ -249,11 +255,11 @@ else
              
              if($class_xqe_col) {
                $class_xqe = "xqe_hf_${class_xqe_col}";
-               $class_xqe_prop = "class='$class_xqe'";
+               $class_xqe_prop = "class='$class_xqe col-qe-$col'";
              }
              else
              {
-               $class_xqe_prop = "";
+               $class_xqe_prop = "class='col-qe-$col'";
              }
 
              if($class_db_structure[$col]["QEDIT_HIDE"])

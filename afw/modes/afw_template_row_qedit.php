@@ -35,8 +35,11 @@ if($obj->qedit_minibox)
 if(!$class_db_structure) $class_db_structure = $obj->getMyDbStructure();
 $nb_cols_qedit = count($class_db_structure);
 
+$column_order = 0;
+
 foreach($class_db_structure as $nom_col => $desc)
 {
+        $column_order++;
         $desc = AfwStructureHelper::repareQEditAttributeStructure($nom_col, $desc, $obj);
         $isQuickEditableAttribute = $obj->isQuickEditableAttribute($nom_col, $desc, $submode);
         $isFixmCol = $fixm_array[$nom_col];
@@ -78,6 +81,16 @@ foreach($class_db_structure as $nom_col => $desc)
         $obj->qeditNomCol = $nom_col;
         $attr_IsApplicable = $obj->attributeIsApplicable($nom_col);
         
+        if(($column_order==1) and $obj->PK_MULTIPLE)
+        {
+                $qedit_orig_nom_col["id_" . $obj_qeditNum] = "id";
+                ob_start();
+                $type_input_ret = hidden_input("id_" . $obj_qeditNum, [], $obj->id, $obj);
+                $qedit_hidden_pk_input = ob_get_clean();
+                $obj_id_display = "☆";
+                $qedit_input["id_" . $obj_qeditNum] = $qedit_hidden_pk_input.$obj_id_display;
+        }
+
         if($desc['TYPE'] == 'PK')
         {
             
@@ -299,7 +312,7 @@ if(!$obj->qedit_minibox)
              $odd_even = trim($obj->odd_even);
              
              $orig_nom_col = $qedit_orig_nom_col[$col];
-             
+             // die("qedit_orig_nom_col = ".var_export($qedit_orig_nom_col,true));
              if($obj->showQeditErrors)
              {
                    $myCategory = $obj->myCategory();
@@ -337,11 +350,11 @@ if(!$obj->qedit_minibox)
              
              if($class_xqe_col) {
                $class_xqe = "xqe_${odd_even}_${class_xqe_col}";
-               $class_xqe_prop = "class='$class_xqe'";
+               $class_xqe_prop = "class='$class_xqe col-qe-$orig_nom_col'";
              }
              else
              {
-               $class_xqe_prop = "";
+               $class_xqe_prop = "class='col-qe-$orig_nom_col'";
              }
              
              

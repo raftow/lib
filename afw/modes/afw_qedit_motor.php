@@ -485,9 +485,10 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         }
                     }
 
-                    for ($oo = 0; $oo <= $max_rep_id; $oo++) {
-                        if (isset($liste_codeOrdres[$oo])) $listeOrdres[$oo] = $liste_codeOrdres[$oo];
-                        //else $listeOrdres[$oo] = -1;
+                    for ($rep_i = 0; $rep_i <= $max_rep_id; $rep_i++) 
+                    {
+                        if (!isset($liste_codeOrdres[$rep_i])) $listeOrdres[$rep_i] = -1;
+                        else $listeOrdres[$rep_i] = $liste_codeOrdres[$rep_i];
                     }
 
                     //if($col_name=="coming_status_id_0") $obj->throwError($log_echo);

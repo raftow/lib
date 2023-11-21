@@ -69,48 +69,30 @@
     // $("input#"+inputname).val(55);
     var ival = $("input#"+inputname).val();
     console.log("input value : ival(input#"+inputname+")="+ival);
+    console.log("listVal :: ");
+    console.log(listVal);
+    console.log("listCod :: ");
+    console.log(listCod);
+    console.log("listCodOrder :: ");
     console.log(listCodOrder);
-    console.log("listCodOrder["+ival+"]="+listCodOrder[ival]);    
+    console.log("listCodOrder[ival="+ival+"]="+listCodOrder[ival]);    
         var ord = listCodOrder[ival];
-        // alert("ord="+ord);
+        console.log("ord="+ord);
         var neword = parseInt(ord) + 1;
-        // alert("neword="+neword);
         if(neword >= nbVals) neword = 0;
+        console.log("neword="+neword);
         var css_class = "btn btn-secondary";
         var display = 'ord'+neword;
-        
         display = listVal[neword];
+        console.log("display=listVal["+neword+"]="+display);
         css_class = 'toggle-hzm-btn '+listClass[neword];
-        
-        /* 
-        if(listname=='list1')
-        {
-            if(newval==1) css_class = "btn-danger";
-            if(newval==2) css_class = "btn-warning";
-            if(newval==3) css_class = "btn-info";
-            if(newval==4) css_class = "btn-success";
-            if(newval==5) css_class = "btn-primary";
-            if(newval==6) css_class = "btn-secondary";
-        
-            if(newval==1) display = 'ضعيف';
-            if(newval==2) display = 'مقبول';
-            if(newval==3) display = 'جيد';
-            if(newval==4) display = 'جيد جدا';
-            if(newval==5) display = 'ممتاز';
-        }
-        */
-        
+        console.log("css_class="+css_class);        
         $("#btn_"+inputname).text(display);
-        /*
-        $("#btn_"+inputname).removeClass("btn-danger");
-        $("#btn_"+inputname).removeClass("btn-warning");
-        $("#btn_"+inputname).removeClass("btn-info");
-        $("#btn_"+inputname).removeClass("btn-success");
-        $("#btn_"+inputname).removeClass("btn-primary");
-        $("#btn_"+inputname).removeClass("btn-secondary");
-        $("#btn_"+inputname).addClass(css_class);*/
+        console.log("btn_"+inputname+" text =>"+display);        
         $("#btn_"+inputname).attr('class', css_class);
+        console.log("btn_"+inputname+" css =>"+css_class);
         $("#"+inputname).val(listCod[neword]);
+        console.log("btn_"+inputname+" new val => listCod[neword] =>"+listCod[neword]);        
   }
 
   function open_loading()
