@@ -955,6 +955,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
     ?>
 <?php
 }
+
 function subval_sort($table_a_trie, $table_ref, $ord = "desc")
 {
     $res = array();
@@ -965,5 +966,21 @@ function subval_sort($table_a_trie, $table_ref, $ord = "desc")
     foreach ($table_ref as $key => $val)
         $res[$key] = $table_a_trie[$key];
     return $res;
+}
+
+function calendar_translations($lang)
+{
+
+    if ($lang == "ar") return 'monthNames: ["يناير","فبراير","مارس","أبريل","ماي","يونيو", "يوليو","أغسطس","سبتمير","أكتوبر","نوفمبر","ديسمبر"],
+monthNamesShort: ["يناير","فبراير","مارس","أبريل","ماي","يونيو", "يوليو","أغسطس","سبتمير","أكتوبر","نوفمبر","ديسمبر"],
+dayNames: ["الأحد", "الأثنين", "الثلاثاء", "الاربعاء", "الخميس", "الجمعة", "السبت" ],
+dayNamesShort: ["أحد", "أثنين", "ثلاثاء", "اربعاء", "خميس", "جمعة", "سبت" ],
+dayNamesMin: [ "أحد","اثن","ثلث","ربع","خمس","جمع","سبت" ],';
+
+    return 'monthNames: ["January","February","March","April","May","June", "July","August","September","October","November","December"],
+monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" ],
+dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
+dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ],';
 }
 ?>

@@ -350,11 +350,11 @@ if(!$obj->qedit_minibox)
              
              if($class_xqe_col) {
                $class_xqe = "xqe_${odd_even}_${class_xqe_col}";
-               $class_xqe_prop = "class='$class_xqe col-qe-$orig_nom_col'";
+               $class_xqe_prop = "class='$class_xqe col-qe col-qe-$orig_nom_col'";
              }
              else
              {
-               $class_xqe_prop = "class='col-qe-$orig_nom_col'";
+               $class_xqe_prop = "class='col-qe col-qe-$orig_nom_col'";
              }
              
              

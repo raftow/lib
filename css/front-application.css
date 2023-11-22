@@ -4521,3 +4521,7 @@ a.afw:hover {
 th.col-qe-id, td.col-qe-id {
     display: none !important;
 }
+
+th.col-qe {
+    text-align: center !important;
+}

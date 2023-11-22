@@ -1809,12 +1809,31 @@ class AFWObject extends AFWRoot
         return $this->getVal($this->OBJECT_CODE);
     }
 
+    public function syncSameFieldsWith($obj, $commit_obj=true, $commit_this=false)
+    {
+        $fields1 = $this->copyDataFrom($obj);
+        $fields0 = $obj->copyDataFrom($this);
+        
+        if($commit_obj) $obj->commit();
+        if($commit_this) $this->commit();
+
+        if(in_array("xxxxxx",$fields1) or (trim($this->getVal("lastname"))=="-----xxxx"))
+        {
+            die("syncSameFieldsWith :::: obj=".var_export($obj,true).
+                "<br>\n<br>\n<br>\n<br>\n<br>\n this=".var_export($this,true).
+                "<br>\n<br>\n<br>\n<br>\n<br>\n fields0=".var_export($fields0,true).
+                "<br>\n<br>\n<br>\n<br>\n<br>\n fields1=".var_export($fields1,true));
+        } 
+    }
+
     public function copyDataFrom(
         $obj,
         $except_fields = null,
         $except_if_filled_fields = null,
         $except_unique_index = true
     ) {
+        $field_name_to_debugg = "idn-zzzz";
+        $fields_updated = [];
         $all_real_fields = $this->getAllRealFields();
         foreach ($all_real_fields as $field_name) {
             list($is_category_field, $is_settable) = $this->isSettable(
@@ -1828,7 +1847,7 @@ class AFWObject extends AFWRoot
                 $ex_u_i = false;
                 if($except_unique_index)
                 {
-                    if(in_array($field_name,$obj->UNIQUE_KEY))
+                    if(in_array($field_name,$this->UNIQUE_KEY))
                     {
                         $ex_u_i = true; 
                     }
@@ -1836,17 +1855,31 @@ class AFWObject extends AFWRoot
                 if(!$ex_u_i)
                 {
                     $old_val = $this->getVal($field_name);
-                    if (!$old_val or !$except_if_filled_fields[$field_name]) {
+                    if (!$old_val or ($except_if_filled_fields and !$except_if_filled_fields[$field_name])) {
                         $val = $obj->getVal($field_name);
-                        $this->set($field_name, null);
-                        $this->set($field_name, $val);
+                        if($val and ($val !== $old_val))
+                        {
+                            $this->set($field_name, null);
+                            $this->set($field_name, $val);
+                            $fields_updated[] = $field_name;
+                        }
+                        else if($field_name==$field_name_to_debugg) die("val=$val empty or same as old_val=$old_val ");
                     }
+                    else if($field_name==$field_name_to_debugg) die("old_val=$old_val is filled or $field_name is in except_if_filled_fields=".var_export($except_if_filled_fields,true)." ??");
                 }
+                else if($field_name==$field_name_to_debugg) die("$field_name_to_debugg is in UNIQUE_KEY");
+            }
+            else
+            {
+                if($field_name==$field_name_to_debugg) die("is_settable=$is_settable except_fields[$field_name]=".$except_fields[$field_name]);
             }
         }
 
         //$this->set($this->fld_VERSION(), -1);
-        $this->set($this->fld_VERSION(), 1);
+        // rafik : not clear why this below
+        //$this->set($this->fld_VERSION(), 1);
+
+        return $fields_updated;
     }
 
     public function resetAsCopy($field_vals = [])
@@ -3951,19 +3984,19 @@ class AFWObject extends AFWRoot
                     {
                         $get_stats_analysis[$this_TABLE][$attribute][$this_id][$what] = 0;
                     }
-                    $get_stats_analysis[$this_TABLE][$attribute][$this_id][$what]++;
+                    
 
                     $called_times = $get_stats_analysis[$this_TABLE][$attribute][$this_id][$what];
                     if ($called_times > 1 and $structure['OPTIM']) 
                     {
-                        $this->simpleError(
+                        throw new RuntimeException(
                             "same $this_TABLE (record id = $this_id) ->get($attribute,$what) called more than once when optim mode is enabled"
                         );
                     }
 
                     if ((($called_times > 50) and (!$MODE_BATCH_LOURD)) or ($called_times > 500))
                     {
-                        $this->simpleError(
+                        throw new RuntimeException(
                             "same $this_TABLE (record id = $this_id) ->get($attribute,$what) called " .
                                 $called_times .
                                 ' time should be optimized'
@@ -4589,7 +4622,7 @@ class AFWObject extends AFWRoot
                         
                         if (!isset($return)) {
                             //if(($attribute=="homework")) die("what=$what, rafik entered in non implemented zone of decode of attribute $attribute formula log = $this_debugg_formula_log  returned : [return=$return, formatted=$formatted, return_formatted=$return_formatted] ");
-                            throw new RuntimeException("attribute-action to be not implemented this_debugg_formula_log=$this_debugg_formula_log attr_categ=$attr_categ attribut=$attribute, attribute_value=$attribute_value, format=$format, what=$what, gettype=" .$this->getTypeOf($attribute));
+                            if(($attribute=="xxxx")) throw new RuntimeException("attribute-action to be not implemented this_debugg_formula_log=$this_debugg_formula_log attr_categ=$attr_categ attribut=$attribute, attribute_value=$attribute_value, format=$format, what=$what, gettype=" .$this->getTypeOf($attribute));
                         }
                     }
 
@@ -4637,6 +4670,7 @@ class AFWObject extends AFWRoot
             }
         }
         // if("arole_mfk" == $attribute) throw new RuntimeException("strange get($attribute) = $return details ".implode("\n<br>",$afw_getter_log));
+        if($return) $get_stats_analysis[$this_TABLE][$attribute][$this_id][$what]++;
         return $return;
     }
 
