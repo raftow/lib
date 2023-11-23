@@ -724,8 +724,10 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
 //  3. option show errors in retrieve mode disabled for this class ===> mode mode_show_all_records
 // or :
 //  4. the record contain errors
+        $liste_obj_count = count($liste_obj);
+        $small_liste = ($liste_obj_count<30);
         $mode_show_all_records =
-            (count($liste_obj) < 30 or // عدد قليل من الكينات للعرض
+            ($small_liste or // عدد قليل من الكينات للعرض
             !AfwSession::hasOption('BIG_DATA_SHOW_ONLY_ERRORS') or // خيار اظهار الأخطاء فقط في حال بيانات كثيرة غير مفعل
             !$obj->showRetrieveErrors);
         $j = 0;
@@ -736,11 +738,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             if (is_object($val) and AfwUmsPagHelper::userCanDoOperationOnObject($val,$objme, 'display')) 
             {
                 // we force errors test only if we are not in mode mode_show_all_records
-                $check_errors_needed_in_object =
-                    ($val->showRetrieveErrors and
-                    (AfwSession::hasOption('CHECK_ERRORS') or
-                    $val->forceCheckErrors or
-                    $val->forceShowRetrieveErrors));
+                $check_errors_needed_in_object = $val->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'));
                 $force_test_errors =
                     (!$mode_show_all_records or $check_errors_needed_in_object);
                 $val_isOk = $val->isOk($force_test_errors); //
@@ -829,14 +827,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             // if($obj instanceof Atable) die("tuple = ".var_export($tuple, true));
                                             break;
                                         case 'SHOW':
-                                            if (
-                                            $val->showRetrieveErrors and
-                                            (AfwSession::hasOption(
-                                            'CHECK_ERRORS'
-                                            ) or
-                                            $val->forceCheckErrors or
-                                            $val->forceShowRetrieveErrors)
-                                            ) {
+                                            if ($val->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'))) 
+                                            {
                                                 if (!$val->isActive()) {
                                                     $data_errors =
                                                         'تم حذفها الكترونيا';
@@ -874,20 +866,10 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             }
                                             else {
                                                 if (!$val->isActive()) {
-                                                    $data_errors =
-                                                        'تم حذفها الكترونيا';
+                                                    $data_errors = 'تم حذفها الكترونيا';
                                                 }
                                                 else {
-                                                    if (
-                                                    !$val->showRetrieveErrors
-                                                    ) {
-                                                        $data_errors =
-                                                            'لم يتم تفعيل التثبت من الأخطاء لهذا الكيان';
-                                                    }
-                                                    else {
-                                                        $data_errors =
-                                                            'لم يتم تفعيل التثبت من الأخطاء لا في الإعدادات ولا بشكل قطعي لهذا الكيان';
-                                                    }
+                                                        $data_errors = 'لم يتم تفعيل التثبت من الأخطاء لهذا الكيان';
                                                 }
                                             }
 

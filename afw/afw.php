@@ -11630,8 +11630,11 @@ $dependencies_values
                                     ' : ' .
                                     $this->translate($attribute, $lang); 
                                     
-                                    if(AfwSession::config('MODE_DEVELOPMENT', false)) $cm_errors[$error_attribute] .= "<div class='technical'> $tabName.$attribute </div>";    
-                            } else {
+                                    // below code we can not do because the tooltip can t support html
+                                    // if(AfwSession::config('MODE_DEVELOPMENT', false)) $cm_errors[$error_attribute] .= "<!-- $tabName.$attribute -->";    
+                            } 
+                            else 
+                            {
                                 $cm_errors[$error_attribute] .=
                                     $spec_field_manda_token_message . ", \n";
                             }
@@ -13026,5 +13029,26 @@ $dependencies_values
     public function maxRecordsUmsCheck()
     {
         return 50;
+    }
+
+    public function forceShowRetrieveErrorsIfSmallListe()
+    {
+        return true;
+    }
+
+
+    public final function canCheckErrors($small_liste, $option_CHECK_ERRORS)
+    {
+        return (
+                    ($small_liste and $this->forceShowRetrieveErrorsIfSmallListe()) or 
+                    (
+                        $this->showRetrieveErrors and
+                            (
+                                $option_CHECK_ERRORS or
+                                $this->forceCheckErrors or
+                                $this->forceShowRetrieveErrors
+                            )
+                    )
+                );
     }
 }
