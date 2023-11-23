@@ -1832,7 +1832,7 @@ class AFWObject extends AFWRoot
         $except_if_filled_fields = null,
         $except_unique_index = true
     ) {
-        $field_name_to_debugg = "idn-zzzz";
+        $field_name_to_debugg = "session_start_time---++";
         $fields_updated = [];
         $all_real_fields = $this->getAllRealFields();
         foreach ($all_real_fields as $field_name) {

@@ -20,7 +20,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
 
 
-    $mode_qedit = false;
+    $mode_qedit = true;
 
     if (!$Main_Page) $Main_Page = $_GET["Main_Page"];
     if (!$Main_Page) $Main_Page = $_POST["Main_Page"];
@@ -39,6 +39,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
     } else {
         $orig_col_name = $col_name;
     }
+    if($orig_col_name=="coming_status_id_0") die("Main_Page=$Main_Page mode_qedit=$mode_qedit qeditCount=$qeditCount qeditNomCol=$qeditNomCol col_name=$col_name orig_col_name=$orig_col_name");
     $col_title = $obj->translate($qeditNomCol, $lang);
     $placeholder = $desc["PLACE-HOLDER"];
     if (!$placeholder) $placeholder = $col_title;

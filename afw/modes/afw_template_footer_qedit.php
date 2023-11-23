@@ -127,14 +127,16 @@ if($obj->QEDIT_FOOTER_SUM)
                 else $class_xqe_col = "x";
           } 
           
+          $desc = $class_db_structure[$col];
+          $importance = $obj->importanceCss($col, $desc);
           
           if($class_xqe_col) {
             $class_xqe = "xqe_hf_${class_xqe_col}";
-            $class_xqe_prop = "class='$class_xqe col-qe col-qe-$col'";
+            $class_xqe_prop = "class='col-importance-$importance $class_xqe col-qe col-qe-$col'";
           }
           else
           {
-            $class_xqe_prop = "class='col-qe col-qe-$col'";
+            $class_xqe_prop = "class='col-importance-$importance col-qe col-qe-$col'";
           }
           
           if($class_db_structure[$col]["QEDIT_HIDE"])

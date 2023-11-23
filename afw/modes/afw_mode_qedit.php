@@ -103,7 +103,9 @@ if($ids)
                 }
             }
         }
+        // die("qedit::getSQLMany=".$myMainObject->getSQLMany());
         $qedit_objs = $myMainObject->loadMany($limit);
+        
 }
 
 foreach($qedit_objs as $qedit_obj_id => $qedit_obj) 

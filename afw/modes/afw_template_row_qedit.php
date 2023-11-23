@@ -347,14 +347,17 @@ if(!$obj->qedit_minibox)
                    else $class_xqe_col = "x";
                 } 
              }
+
+             $desc = $class_db_structure[$orig_nom_col];
+             $importance = $obj->importanceCss($orig_nom_col, $desc);
              
              if($class_xqe_col) {
                $class_xqe = "xqe_${odd_even}_${class_xqe_col}";
-               $class_xqe_prop = "class='$class_xqe col-qe col-qe-$orig_nom_col'";
+               $class_xqe_prop = "class='col-importance-$importance $class_xqe col-qe col-qe-$orig_nom_col'";
              }
              else
              {
-               $class_xqe_prop = "class='col-qe col-qe-$orig_nom_col'";
+               $class_xqe_prop = "class='col-importance-$importance col-qe col-qe-$orig_nom_col'";
              }
              
              
