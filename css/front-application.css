@@ -2050,14 +2050,17 @@ li.wizardv1_li.CurrentStep {
 }
 
 .form-control-div.errors {
-    border-color: #f15c41;
+    border-color: #df806f;
+    padding-top: 8px !important;
+    color: #690404;
+    background-color: #ffc2b6;
 }
 
 .hzm_tooltip {
     width: 15%;
     height: 100%;
     max-width: 42px;
-    border-left: 1px #b2aeae solid;
+    /* border-left: 1px #b2aeae solid;*/
     padding: 8px 0px;
     float: right;
     text-align: center;
@@ -4524,4 +4527,8 @@ th.col-qe-id, td.col-qe-id {
 
 th.col-qe {
     text-align: center !important;
+}
+
+.comm_select {
+    background-color: white;
 }

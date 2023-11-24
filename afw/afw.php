@@ -1824,15 +1824,17 @@ class AFWObject extends AFWRoot
                 "<br>\n<br>\n<br>\n<br>\n<br>\n fields0=".var_export($fields0,true).
                 "<br>\n<br>\n<br>\n<br>\n<br>\n fields1=".var_export($fields1,true));
         } 
+
+        return [$fields1, $fields0];
     }
 
     public function copyDataFrom(
         $obj,
-        $except_fields = null,
-        $except_if_filled_fields = null,
-        $except_unique_index = true
+        $exception_fields = null,
+        $avoid_if_filled_fields = null,
+        $avoid_unique_index = true
     ) {
-        $field_name_to_debugg = "session_start_time---++";
+        $field_name_to_debugg = "prof_id-xxx-rr";
         $fields_updated = [];
         $all_real_fields = $this->getAllRealFields();
         foreach ($all_real_fields as $field_name) {
@@ -1842,10 +1844,10 @@ class AFWObject extends AFWRoot
             if (
                 $this->getPKField() != $field_name and
                 $is_settable and
-                !$except_fields[$field_name]
+                !$exception_fields[$field_name]
             ) {
                 $ex_u_i = false;
-                if($except_unique_index)
+                if($avoid_unique_index)
                 {
                     if(in_array($field_name,$this->UNIQUE_KEY))
                     {
@@ -1855,7 +1857,8 @@ class AFWObject extends AFWRoot
                 if(!$ex_u_i)
                 {
                     $old_val = $this->getVal($field_name);
-                    if (!$old_val or ($except_if_filled_fields and !$except_if_filled_fields[$field_name])) {
+                    $erase_even_if_filled = (!$avoid_if_filled_fields[$field_name]);
+                    if (!$old_val or $erase_even_if_filled) {
                         $val = $obj->getVal($field_name);
                         if($val and ($val !== $old_val))
                         {
@@ -1865,13 +1868,13 @@ class AFWObject extends AFWRoot
                         }
                         else if($field_name==$field_name_to_debugg) die("val=$val empty or same as old_val=$old_val ");
                     }
-                    else if($field_name==$field_name_to_debugg) die("old_val=$old_val is filled or $field_name is in except_if_filled_fields=".var_export($except_if_filled_fields,true)." ??");
+                    else if($field_name==$field_name_to_debugg) die("old_val=$old_val is filled or $field_name is in avoid_if_filled_fields=".var_export($avoid_if_filled_fields,true)." ??");
                 }
                 else if($field_name==$field_name_to_debugg) die("$field_name_to_debugg is in UNIQUE_KEY");
             }
             else
             {
-                if($field_name==$field_name_to_debugg) die("is_settable=$is_settable except_fields[$field_name]=".$except_fields[$field_name]);
+                if($field_name==$field_name_to_debugg) die("is_settable=$is_settable except_fields[$field_name]=".$exception_fields[$field_name]);
             }
         }
 
