@@ -214,7 +214,8 @@ class AfwShowHelper
                             if (!$lvl) {
                                 $lvl = 2;
                             }
-                            if ($liste_obj[$id]->userCanDeleteMe($objme) > 0) {
+                            $userCanDel = $liste_obj[$id]->userCanDeleteMe($objme);
+                            if ($userCanDel > 0) {
                                 // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
                                 $tuple[
                                     $col
@@ -222,8 +223,16 @@ class AfwShowHelper
                                 $tuple['del_status'] = 'OK';
                             }
                             else {
+                                if($userCanDel==-1)
+                                {
+                                    $explanation = "لا يوجد صلاحية عامة لمسح هذا النوع من السجلات";
+                                }
+                                else
+                                {
+                                    $explanation = "لا يوجد صلاحية خاصة لمسح هذا السجل بعينه";
+                                }
                                 $tuple[$col] =
-                                    "<a href='#'><img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='لا يسمح في الوضع الحالي بمسح هذا السجل' width='24' heigth='24' ></a>";
+                                    "<a href='#'><img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$explanation' width='24' heigth='24' ></a>";
                                 $tuple['del_status'] = 'locked';
                             }
                         }
