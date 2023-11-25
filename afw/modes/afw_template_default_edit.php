@@ -537,9 +537,9 @@ else
                   
                   $step_show_error = ((!$obj->isDraft()) or ($kstep < $obj->currentStep) or $obj->show_draft_errors);
                   $step_show_error_why = "";
-                  if($step_erroned)
+                  if($step_show_error)
                   {
-                        if(!$obj->isDraft()) $step_show_error_why = "not draft"; 
+                        if(!$obj->isDraft()) $step_show_error_why = " not draft"; 
                         if($kstep < $obj->currentStep) $step_show_error_why = "this step $kstep is < current step $obj->currentStep"; 
                         if($obj->show_draft_errors) $step_show_error_why = "show_draft_errors is active for this class $cl";
                   }
@@ -858,7 +858,7 @@ else
                         {
                                 if($info["error"] and (!$class_db_structure[$col]["ERROR-HIDE"]))
                                 {
-                                        echo "<div id='attr_error_$col' class=\"hzm_tooltip hzm_tooltip_error\"><img data-toggle=\"tooltip-error\" data-placement=\"left\" class=\"hzm_tt\" style=\"width: 24px;height: 24px;\" title=\"".$info["error"]."\" src=\"../lib/images/error.png\" /></div>";
+                                        echo "<div id='attr_error_$col' class=\"hzm_tooltip hzm_tooltip_error\"><img data-toggle=\"tooltip-error\" data-placement=\"left\" class=\"hzm_tt\" style=\"width: 24px;height: 24px;margin-top: -8px;\" title=\"".$info["error"]."\" src=\"../lib/images/error.png\" /></div>".$info["error"];
                                 }  
                                 elseif($info["tooltip"]) echo "<div class=\"hzm_tooltip\"><img data-toggle=\"tooltip\" data-placement=\"left\" class=\"hzm_tt\" title=\"".$info["tooltip"]."\" src=\"../lib/images/information.png\" /></div>";
                         }
