@@ -820,18 +820,26 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             if (!$lvl) {
                                                 $lvl = 2;
                                             }
-                                            if (
-                                            $val->userCanDeleteMe($objme) >
-                                            0
-                                            ) {
+                                            $userCanDel = $val->userCanDeleteMe($objme);
+                                            if ($userCanDel > 0) 
+                                            {
                                                 // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
                                                 $tuple[
                                                     $col
                                                     ] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='../lib/images/delete-button.png' style='height: 22px !important;'></a>";
                                             }
-                                            else {
+                                            else 
+                                            {
+                                                if($userCanDel==-1)
+                                                {
+                                                    $explanation = "لا يوجد صلاحية عامة لمسح هذا النوع من السجلات";
+                                                }
+                                                else
+                                                {
+                                                    $explanation = "لا يوجد صلاحية خاصة لمسح هذا السجل بعينه";
+                                                }
                                                 $tuple[$col] =
-                                                    "<a href='#'><img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='لا يسمح في الوضع الحالي بمسح هذا السجل'  width='24' heigth='24'></a>";
+                                                    "<a href='#'><img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$explanation'  width='24' heigth='24'></a>";
                                             }
                                             // if($obj instanceof Atable) die("tuple = ".var_export($tuple, true));
                                             break;
