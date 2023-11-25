@@ -9228,15 +9228,21 @@ class AFWObject extends AFWRoot
 
     protected function userCanDeleteMeSpecial($auser)
     {
-        // business rules and conditions needed to be authorized to delete this record additional to UMS role/bf
+        // This is an example of business rules and conditions 
+        // needed to be authorized to delete this record additional to UMS role/bf
+        /*
         if ($auser->isAdmin()) {
             return true;
         }
         if ($auser->id == $this->getVal($this->fld_CREATION_USER_ID())) {
             return true;
         }
-
         return false;
+        */
+
+        // by default no specific rule for records
+        // if UMS role/bf authorize delete so he can delete
+        return true;
     }
 
     final public function userCanDeleteMe($auser, $log = true)
