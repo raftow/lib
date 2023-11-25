@@ -3897,7 +3897,7 @@ class AFWObject extends AFWRoot
         $max_items = false
     ) 
     {
-        global $lang, $get_stats_analysis, $MODE_BATCH_LOURD, $DISABLE_CACHE_MANAGEMENT;
+        global $lang, $get_stats_analysis, $MODE_BATCH_LOURD, $MODE_SQL_PROCESS_LOURD, $DISABLE_CACHE_MANAGEMENT;
         $lang = strtolower(trim($lang));
         if (!$lang) {
             $lang = self::getGlobalLanguage();
@@ -3997,7 +3997,7 @@ class AFWObject extends AFWRoot
                         );
                     }
 
-                    if ((($called_times > 50) and (!$MODE_BATCH_LOURD)) or ($called_times > 500))
+                    if ((($called_times > 50) and (!$MODE_BATCH_LOURD)  and (!$MODE_SQL_PROCESS_LOURD)) or ($called_times > 500))
                     {
                         throw new RuntimeException(
                             "same $this_TABLE (record id = $this_id) ->get($attribute,$what) called " .
