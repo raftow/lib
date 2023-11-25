@@ -103,24 +103,24 @@ if (!$my_font) $my_font = "front";
     if (!$Main_Page) $Main_Page = $_GET["Main_Page"];
 
     /*
-      if($Main_Page=="afw_mode_search.php") include("../rfw/datatable_search_css.php");
+      if($Main_Page=="afw_mode_search.php") include("../lib/datatable/datatable_search_css.php");
       // elseif($datatable_css_file) die($datatable_css_file);
       elseif($datatable_css_file) include($datatable_css_file);
-      //else die("../rfw/datatable_css.php"); 
-      else include("../rfw/datatable_css.php");*/
+      //else die("../lib/datatable/datatable_css.php"); 
+      else include("../lib/datatable/datatable_css.php");*/
   }
 
   if ($datatable_on) {
     if ($lang == "ar") {
   ?>
-      <script src="../rfw/js/jquery.dataTables.min.js"></script>
+      <script src="../lib/js/jquery.dataTables.min.js"></script>
     <?
 
     } 
     else  //if($lang=="en")
     {
     ?>
-      <script src="../rfw/js/jquery.dataTables_en.min.js"></script>
+      <script src="../lib/js/jquery.dataTables_en.min.js"></script>
   <?
 
     }

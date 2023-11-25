@@ -5,7 +5,7 @@ $file_dir_name = dirname(__FILE__);
 
 class Bdata extends AFWObject{
 
-	public static $DATABASE		= ""; public static $MODULE		    = "rfw"; public static $TABLE			= ""; public static $DB_STRUCTURE = array(
+	public static $DATABASE		= ""; public static $MODULE		    = "r fw"; public static $TABLE			= ""; public static $DB_STRUCTURE = array(
 		"id" => array("IMPORTANT" => "IN", "SHOW" => true, "RETRIEVE" => false, "EDIT" => true, "TYPE" => "PK"),
 		"btable_id" => array("IMPORTANT" => "IN", "SHOW" => true, "RETRIEVE" => false, "EDIT" => true, "TYPE" => "FK", "ANSWER" => "btable", "SIZE" => 40, "DEFAULT" => 0),
 		"row_id" => array("IMPORTANT" => "IN", "SHOW" => true, "RETRIEVE" => false, "EDIT" => true, "TYPE" => "INT", "SIZE" => 40, "NO-DELIMITER"=> true),
@@ -210,13 +210,13 @@ class Bdata extends AFWObject{
 		"sci_id" => array("IMPORTANT" => "IN", "SHOW-ADMIN" => true, "RETRIEVE" => false, "EDIT" => false, "ANSWER" => "scenario_item", "ANSMODULE" => "pag", "TYPE" => "FK", "SIZE" => 40, "DEFAULT" => 0),
 	);
 	
-	public function __construct($dbname="rfwdb", $module="rfw"){
+	public function __construct($dbname="r fwdb", $module="r fw"){
 		parent::__construct("bdata","id",$dbname,$module);
 	}
         
         public function init_bdata($btable_id) {
                 $this->setNotSecure("btable_id",$btable_id,true,true);
-                $this->setNotSecure("row_id","(select IF(ISNULL(max(row_id)), 0, max(row_id))+1 from rfwdb.bdata bdt2 where bdt2.btable_id=$btable_id)",true,true);
+                $this->setNotSecure("row_id","(select IF(ISNULL(max(row_id)), 0, max(row_id))+1 from r fwdb.bdata bdt2 where bdt2.btable_id=$btable_id)",true,true);
         }
         
         protected function beforeInsert($id, $fields_updated) {

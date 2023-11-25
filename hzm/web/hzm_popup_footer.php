@@ -3,7 +3,7 @@
 </div>
 
 <?
-  if($datatable_on) include("../rfw/datatable_js.php");
+  if($datatable_on) include("../lib/datatable/datatable_js.php");
   
   if($force_close_btn)
   {

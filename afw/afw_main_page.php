@@ -154,7 +154,7 @@ if(true)
         elseif((AfwStringHelper::stringStartsWith($Main_Page,"afw_template_"))) $My_Module = "lib/afw/modes";
 
         if((!$My_Module) and (AfwStringHelper::stringStartsWith($Main_Page,"afw_"))) $My_Module = "lib/afw";
-        if((!$My_Module) and (AfwStringHelper::stringStartsWith($Main_Page,"rfw_"))) $My_Module = "lib/rfw";
+        // if((!$My_Module) and (AfwStringHelper::stringStartsWith($Main_Page,"r fw_"))) $My_Module = "lib/r fw";
 
         if($My_Module=="afw") $My_Module = "lib/afw";
         

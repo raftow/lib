@@ -13,12 +13,12 @@
         {
                 $ums_dir_name = "$file_dir_name/../ums/";
                 $pag_dir_name = "$file_dir_name/../pag/";
-                $rfw_dir_name = "$file_dir_name/../rfw/";
+                $r fw_dir_name = "$file_dir_name/../r fw/";
         }
         else
         {
                 $pag_dir_name = "";
-                $rfw_dir_name = "../rfw/";
+                $r fw_dir_name = "../r fw/";
         }
         
         
@@ -53,12 +53,12 @@
                 {
                         if((!$lv_obj) and ($id>0))
                         {
-                                if(!$rfwFactoryObj) 
+                                if(!$r fwFactoryObj) 
                                 {
-                                        require_once("${rfw_dir_name}rfw_factory.php");
-                                        $rfwFactoryObj = new RFWFactory();
+                                        require_once("${r fw_dir_name}r fw_factory.php");
+                                        $r fwFactoryObj = new RFWFactory();
                                 }
-                                $lv_obj =& $rfwFactoryObj->getObject($tblid);
+                                $lv_obj =& $r fwFactoryObj->getObject($tblid);
                                 $lv_obj->load($id);                                 
                         }
                 }

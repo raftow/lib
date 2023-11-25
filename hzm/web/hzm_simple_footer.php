@@ -13,7 +13,7 @@
          $safely_cancelled = $objme->translateMessage("DELETE_HAVE_BEEN_SAFELY_CANCELLED",$lang);
  }
 
-  if($datatable_on) include("../rfw/datatable_js.php");
+  if($datatable_on) include("../lib/datatable/datatable_js.php");
 
   include_once("hzm_footer_features_js.php");
 ?>

@@ -81,7 +81,7 @@ include_once("hzm_footer_features_js.php");
 <div id="headerId:growl_container" class="ui-growl ui-widget" style="z-index: 1001;"></div>
 <div class="ui-dialog-docking-zone"></div>-->
 <?
-  if($datatable_on) include("../rfw/datatable_js.php");
+  if($datatable_on) include("../lib/datatable/datatable_js.php");
   
   
   
