@@ -612,7 +612,7 @@ class AfwStringHelper extends AFWRoot
             elseif(self::isNameOfAllah($name_arr[1]))
             {
                 $first_name = trim($first_name);
-                $first_name = rtrim($first_name,$name_arr[1]);
+                $first_name = ltrim($first_name,$name_arr[1]);
                 $first_name .= " ".$name_arr[1];
                 $father_name = "";
                 unset($name_arr[1]);
