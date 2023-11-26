@@ -594,7 +594,7 @@ class AfwStringHelper extends AFWRoot
 
         public static function intelligentDecodeName($string) 
         {
-            $string = trim($string);
+            $string = trim($string, " ");
             $string = str_replace("  ", " ", $string);
             $string = str_replace("  ", " ", $string);
             $string = str_replace("  ", " ", $string);
@@ -611,7 +611,7 @@ class AfwStringHelper extends AFWRoot
             }
             elseif(self::isNameOfAllah($name_arr[1]))
             {
-                $first_name = trim($first_name);
+                $first_name = trim($first_name, " ");
                 $first_name = ltrim($first_name,$name_arr[1]);
                 $first_name .= " ".$name_arr[1];
                 $father_name = "";
