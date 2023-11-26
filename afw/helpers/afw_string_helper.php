@@ -586,6 +586,11 @@ class AfwStringHelper extends AFWRoot
             return $nb." ".trim($plural_word);
         }
 
+        public static function isNameOfAllah($first_name)
+        {
+                return (($first_name=="الله") or ($first_name=="الرحمن") or ($first_name=="الكريم") or ($first_name=="الرحيم") or ($first_name=="العزيز"));            
+        }
+
 
         public static function intelligentDecodeName($string) 
         {
@@ -604,9 +609,13 @@ class AfwStringHelper extends AFWRoot
                 unset($name_arr[1]);
                 unset($name_arr[2]);
             }
-            elseif(($name_arr[1]=="الله") or ($name_arr[1]=="الرحمن") or ($name_arr[1]=="العزيز"))
+            elseif(self::isNameOfAllah($name_arr[1]))
             {
+                $first_name = trim($first_name);
+                $first_name = rtrim($first_name,$name_arr[1]);
                 $first_name .= " ".$name_arr[1];
+                $father_name = "";
+                unset($name_arr[1]);
             }
             else
             {
