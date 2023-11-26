@@ -604,6 +604,10 @@ class AfwStringHelper extends AFWRoot
                 unset($name_arr[1]);
                 unset($name_arr[2]);
             }
+            elseif(($name_arr[1]=="الله") or ($name_arr[1]=="الرحمن") or ($name_arr[1]=="العزيز"))
+            {
+                $first_name .= " ".$name_arr[1];
+            }
             else
             {
                 $father_name = $name_arr[1];
