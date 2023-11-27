@@ -1809,10 +1809,22 @@ class AFWObject extends AFWRoot
         return $this->getVal($this->OBJECT_CODE);
     }
 
+    /*
+        syncSameFieldsWith :
+        I (this) take from him (obj) only what I need
+        but after
+        He (obj) take from me (this) all my fields except primary key and unique index columns
+        so (this) is the master
+
+    */
+
     public function syncSameFieldsWith($obj, $commit_obj=true, $commit_this=false)
     {
-        $fields1 = $this->copyDataFrom($obj);
-        $fields0 = $obj->copyDataFrom($this);
+        $exception_fields = null;
+        // I take from him only what I need (all fields not filled except primary key and unique index columns);
+        $fields1 = $this->copyDataFrom($obj,$exception_fields, $avoid_if_filled_fields = "all");
+        // and after he take from me all my fields (except primary key and unique index columns)
+        $fields0 = $obj->copyDataFrom($this,$exception_fields, $avoid_if_filled_fields = []);
         
         if($commit_obj) $obj->commit();
         if($commit_this) $this->commit();
@@ -1831,7 +1843,7 @@ class AFWObject extends AFWRoot
     public function copyDataFrom(
         $obj,
         $exception_fields = null,
-        $avoid_if_filled_fields = null,
+        $avoid_if_filled_fields = [],
         $avoid_unique_index = true
     ) {
         $field_name_to_debugg = "prof_id-xxx-rr";
@@ -1857,7 +1869,7 @@ class AFWObject extends AFWRoot
                 if(!$ex_u_i)
                 {
                     $old_val = $this->getVal($field_name);
-                    $erase_even_if_filled = (!$avoid_if_filled_fields[$field_name]);
+                    $erase_even_if_filled = (($avoid_if_filled_fields!="all") and (!$avoid_if_filled_fields[$field_name]));
                     if (!$old_val or $erase_even_if_filled) {
                         $val = $obj->getVal($field_name);
                         if($val and ($val !== $old_val))
@@ -4092,7 +4104,7 @@ class AFWObject extends AFWRoot
                             $return = $this->calculateFormula($attribute, $what);
                             $return_isset = isset($return);
                             $this_debugg_formula_log = "$this -->calculateFormula($attribute, $what) = [return=$return/isset=$return_isset]";
-                            //if($attribute=="homework") die("$this --> calculate Formula($attribute, $what) = ".var_export($return,true));
+                            //if($attribute=="school_class_id") die("rafik $this --> calculate Formula($attribute, $what) = ".var_export($return,true));
                             /*
                             rafik 8/8/2023 FORMULA-RETURN-VALUE is obsolete after I added param $what in calcFormula and calcXyyyy() methods
                             if (
@@ -4635,9 +4647,12 @@ class AFWObject extends AFWRoot
                         $return .= ' ' . $unit;
                     }
                 } else {
-                    if ($integrity and !isset($return)) {
+                    if ($integrity and !isset($return)) 
+                    {
+                        $suggest = "";
+                        if($attr_categ=="FORMULA") $suggest = "often this happen when you dont call to return \$this->calcFormuleResult(\$attribute, \$what) on your getFormuleResult method";
                         $this->simpleError(
-                            "Erreur : return not defined for get : what=$what,attribut=$attribute, format=$format, attr_categ=$attr_categ, gettype=" .
+                            "Erreur : return not defined for get : what=$what,attribut=$attribute, format=$format, attr_categ=$attr_categ ($suggest), gettype=" .
                                 $this->getTypeOf($attribute) .
                                 ' STRUCTURE = ' .
                                 var_export($structure, true)
@@ -5230,7 +5245,7 @@ class AFWObject extends AFWRoot
         
         $return = $this->$methodFormule($what);
 
-        //if($attribute=="real_book_id") die("$this => $methodFormule($what) = [$return] ");
+        // if($attribute=="school_class_id") die("rafik $this => $methodFormule($what) = [$return] ");
 
         return $return;
     }

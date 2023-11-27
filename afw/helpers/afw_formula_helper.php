@@ -331,10 +331,10 @@ class AfwFormulaHelper extends AFWRoot
             if ($access_formula) {
                 $object_formula_log[$attribute] = "authorized getFormuleResult($attribute, $what)";
                 $return = $object->getFormuleResult($attribute, $what);
-                if($attribute=="homework") 
+                if($attribute=="school_class_id") 
                 {
                     $objectdis = $object->getDisplay($lang);
-                    // die("shoof $objectdis => getFormuleResult($attribute, $what='value') => [$return]");
+                    //die("rafik shoof $objectdis => getFormuleResult($attribute, $what) => [$return]");
                 }
             } else {
                 $option = $object->translateMessage($option_key, $lang);
