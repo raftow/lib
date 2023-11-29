@@ -16,6 +16,12 @@ if(!$currmod)
 if(!$currmod) $currmod = "pag";
 
 $objme = AfwSession::getUserConnected();
+if(!$objme) 
+{
+    AfwSession::pushError("الرجاء تسجيل الدخول أولا");
+    header("Location: login.php");
+    exit();
+}
 
 $myObj = new $cl();
 $default_display_settings = $myObj->getDefautDisplaySettings();
