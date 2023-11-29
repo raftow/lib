@@ -33,7 +33,7 @@ $message = "Acess denied.    /    عملية غير مسموح بها";
 
 include("$module_dir_name/../../hzm/web/hzm_basic_header.php");
 ?>
-<br>
+<div class='logincontainer'>
 <br>
 <div class="alert alert-danger alert-dismissable" role="alert" ><?php echo $message;?><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></div>
 <div>
@@ -64,7 +64,7 @@ if($MODE_DEVELOPMENT)
 
 <br>
 
-<br>
+</div>
 <?
         echo "<br>session context Ican do LOG : <br>";
         echo AfwSession::getLog("iCanDo");

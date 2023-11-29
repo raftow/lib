@@ -27,6 +27,12 @@
 
 <link href="../../css/simple/style_common.css" rel="stylesheet" type="text/css">
 <link href="../../css/simple/style_<?=$lang?>.css" rel="stylesheet" type="text/css">
+
+<link href="../../css/def_ar_front.css" rel="stylesheet" type="text/css">
+<link href="../../css/simple/style_common.css" rel="stylesheet" type="text/css">
+<link href="../../css/simple/style_ar.css" rel="stylesheet" type="text/css">
+<link href="../../css/simple/front_menu.css" rel="stylesheet" type="text/css">
+<link href="../../css/header_thin.css" rel="stylesheet">
 </head>
 
 <body dir="<?=$dir?>" >
