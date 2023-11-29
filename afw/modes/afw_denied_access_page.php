@@ -13,7 +13,7 @@ $module_dir_name = $file_dir_name;
         
 AfwSession::startSession();
 $objme = AfwSession::getUserConnected();
-if(!$objme) header("login.php");
+//if(!$objme) header("login.php");
 $uri_module = AfwUrlManager::currentURIModule();
 
 include_once("$file_dir_name/../../../$uri_module/application_config.php");
@@ -29,7 +29,7 @@ include("$file_dir_name/../../hzm/web/hzm_header.php");
 $message = "Acess denied.    /    عملية غير مسموح بها";
 
 
-include("$file_dir_name/../../hzm/web/hzm_min_header.php");
+include("$file_dir_name/../../hzm/web/hzm_basic_header.php");
 ?>
 <br>
 <br>
