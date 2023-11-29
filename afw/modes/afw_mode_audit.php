@@ -12,6 +12,15 @@ if(!$currmod) $currmod = "pag";
 
 
 $objme = AfwSession::getUserConnected();
+
+if(!$objme) 
+{
+    AfwSession::pushError("الرجاء تسجيل الدخول أولا");
+    header("Location: login.php");
+    exit();
+}
+
+
 //echo "factory_result";
 //print_r($myObj);
 //die($id);

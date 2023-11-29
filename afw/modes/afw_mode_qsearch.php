@@ -17,8 +17,13 @@ if(!$currmod)
 
 $out_scr = "";
 $objme = AfwSession::getUserConnected();
+if(!$objme) 
+{
+    AfwSession::pushError("الرجاء تسجيل الدخول أولا");
+    header("Location: login.php");
+    exit();
+}
 
-// die("DBG-User Connected got : ".$objme);
 
 if($xls_on) $datatable_on = true;
 if(!$action) $action = "retrieve";

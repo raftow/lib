@@ -1,6 +1,16 @@
 <?php
 
 require_once ("afw_autoloader.php");
+
+$objme = AfwSession::getUserConnected();
+if(!$objme) 
+{
+    AfwSession::pushError("الرجاء تسجيل الدخول أولا");
+    header("Location: login.php");
+    exit();
+}
+
+
 if(!isset($MODULE) or (!$MODULE)) 
 {
         $MODULE = "pag"; 

@@ -12,6 +12,13 @@ else
         require_once("afw_config.php");
 
         if(!$objme) $objme = AfwSession::getUserConnected();
+        if(!$objme) 
+        {
+        AfwSession::pushError("الرجاء تسجيل الدخول أولا");
+        header("Location: login.php");
+        exit();
+        }
+
 
         if(!$currmod)
         {
@@ -40,7 +47,7 @@ else
         $iCanDoBFLog = var_export($objme->iCanDoBFLog,true);
         if(!$can)
         {
-                die("rafik denied_access case to check");
+                //die("rafik denied_access case to check");
                 header("Location: lib/afw/modes/afw_denied_access_page.php?CL=$cl&MODE=display");      
                 exit();
         }

@@ -8,6 +8,13 @@ require_once("afw_rights.php");
 require_once("afw_search_motor.php");
 
 if(!$objme) $objme = AfwSession::getUserConnected();
+if(!$objme) 
+{
+    AfwSession::pushError("الرجاء تسجيل الدخول أولا");
+    header("Location: login.php");
+    exit();
+}
+
 if(!$currmod)
 {
         $currmod = AfwUrlManager::currentWebModule();

@@ -6,7 +6,13 @@ require_once("afw_edit_motor.php");
 require_once ('afw_rights.php');
 include("afw_config.php");
 $objme = AfwSession::getUserConnected();
-if(!$objme) die('access denied !!');
+if(!$objme) 
+{
+    AfwSession::pushError("الرجاء تسجيل الدخول أولا");
+    header("Location: login.php");
+    exit();
+}
+
 
 if(!$cl)
 	$objme->_userError("access denied","the class name parameter is mandatory");
