@@ -321,6 +321,7 @@ if($obj->QEDIT_FOOTER_SUM)
 
 
     $pbm_loc_arr = $obj->getPublicMethodsForUser($objme, "QEDIT");
+    echo "pbm_loc_arr = ".var_export($pbm_loc_arr,true);
     if(count($pbm_loc_arr) >0)
     {
         $html_buttons_spec_methods_for_key = "";
