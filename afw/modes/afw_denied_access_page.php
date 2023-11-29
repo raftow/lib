@@ -1,5 +1,6 @@
 <?php
 $file_dir_name = dirname(__FILE__);
+$module_dir_name = $file_dir_name;
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 
@@ -7,7 +8,7 @@ $lang = "ar";
 
 require_once("$file_dir_name/../afw_autoloader.php");
 
-$module_dir_name = $file_dir_name;
+
 
 
         
@@ -28,9 +29,9 @@ include("$file_dir_name/../../hzm/web/hzm_header.php");
 
 $message = "Acess denied.    /    عملية غير مسموح بها";
 
-echo "$file_dir_name/../../hzm/web/hzm_basic_header.php";
+// echo "$file_dir_name/../../hzm/web/hzm_basic_header.php";
 
-include("$file_dir_name/../../hzm/web/hzm_basic_header.php");
+include("$module_dir_name/../../hzm/web/hzm_basic_header.php");
 ?>
 <br>
 <br>
@@ -87,6 +88,6 @@ if($MODE_DEVELOPMENT)
         echo "<br>\n".AfwShowHelper::showObject($objme,"html");
 }
 
-include("$file_dir_name/../../hzm/web/hzm_basic_footer.php");
+include("$module_dir_name/../../hzm/web/hzm_basic_footer.php");
 
 ?>
