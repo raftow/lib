@@ -13,9 +13,16 @@ define("LIMIT_INPUT_SELECT", 30);
 global $TMP_DIR,$TMP_ROOT,$lang,$cl,$pack,$sub_pack,$id,$aligntd, $first_disp, $first_val, $diff_val, $not_filled, $filled, $nb_objs,
 // $class_tr1, $class_tr2, $class_titre, $class_table, $class_inputSubmit, $class_inputLien, $class_inputNew, 
 $pct_tab_edit_mode, $qedit_other_search, $Main_Page, 
-$objme, $qedit_trad, $popup;
+$qedit_trad, $popup;
 
+$objme = AfwSession::getUserConnected();
 
+$check_error_activated = "";
+if($obj->general_check_errors) $check_error_activated = "general_check_errors";
+elseif(AfwSession::hasOption("CHECK_ERRORS")) $check_error_activated = "has option CHECK_ERRORS";
+elseif(AfwSession::hasOption("GENERAL_CHECK_ERRORS")) $check_error_activated = "has option GENERAL_CHECK_ERRORS";
+
+if($check_error_activated) $obj_errors = $obj->getDataErrors($lang);
 
 $col_count = 1;
 
@@ -311,6 +318,27 @@ if($obj->QEDIT_FOOTER_SUM)
            
            echo $html_btns;   
    }
+
+
+    $pbm_loc_arr = $obj->getPublicMethodsForUser($objme, "QEDIT");
+    if(count($pbm_loc_arr) >0)
+    {
+        $html_buttons_spec_methods_for_key = "";
+        foreach($pbm_loc_arr as $pbm_code => $pbm_item)
+        {
+                // if we click on the button and have action_lourde css class 
+                // it will open the loader at the same time the form can not submit because of
+                // missed required data or the form errors
+                $action_lourde = (($check_error_activated) and (count($obj_errors)==0));
+                $html_buttons_spec_methods_for_key .= AfwHtmlHelper::showSimpleAttributeMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin());
+        }
+        $html_buttons_spec_methods_for_key = trim($html_buttons_spec_methods_for_key);
+        if($html_buttons_spec_methods_for_key)
+        {
+                echo "<div class=\"attribute_buttons\">$html_buttons_spec_methods_for_key</div>";
+        }
+        
+    }
 ?>        
 </div>
 
