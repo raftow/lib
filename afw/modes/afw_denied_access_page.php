@@ -28,6 +28,7 @@ include("$file_dir_name/../../hzm/web/hzm_header.php");
 
 $message = "Acess denied.    /    عملية غير مسموح بها";
 
+echo "$file_dir_name/../../hzm/web/hzm_basic_header.php";
 
 include("$file_dir_name/../../hzm/web/hzm_basic_header.php");
 ?>
