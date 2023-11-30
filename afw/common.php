@@ -1008,12 +1008,14 @@ function _back_trace($light=false)
                         {
 
                                 $html .= "<tr class='backtrace_tech_details $odd_even'>";
-                                $html .= "<td>" . $entry['object']->id."</td>"; 
+                                $html .= "<td>id=" . $entry['object']->id."</td>"; 
                                 if($entry['object']) 
                                 {
                                         if(class_exists("AFWObject") and ($entry['object'] instanceof AFWObject) and (!$light))
                                         {
-                                                $shdisp = $entry['object']->getShortDisplay($lang);
+                                                // Warning rafik : This do infinite loop seems do not call methods in error handlers
+                                                // $shdisp = $entry['object']->getShortDisplay($lang);
+                                                $shdisp = "class=".get_class($entry['object']);
                                         } 
                                         else $shdisp = get_class($entry['object'])."-> display object";
                                 }
