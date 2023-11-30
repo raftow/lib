@@ -818,11 +818,12 @@ class AFWRoot {
 
         public static function tt($text, $lang = "ar", $module="", $parent_module="") 
         {
+                global $messages;
                 $file_dir_name = dirname(__FILE__); 
                 
                 
                 $paths = self::getTranslationPaths($module, $parent_module);
-                foreach($paths as $path) include $path."/messages_$lang.php";
+                foreach($paths as $path) include_once $path."/messages_$lang.php";
                 
                 if($messages[$text]) return $messages[$text];
                 else return $text; 
@@ -857,7 +858,7 @@ class AFWRoot {
         $nom_table = '',
         $module = ''
     ) {
-        global $lang;
+        global $lang, $trad;
         $file_dir_name = dirname(__FILE__);
         if (!$langue) {
             $langue = $lang;
@@ -881,8 +882,8 @@ class AFWRoot {
 
                 if (file_exists($nom_file2)) {
                     //if($this->MY_DEBUG)
-                    //    AFWDebugg::log("traduire include $nom_file ");
-                    include $nom_file2;
+                    //    AFWDebugg::log("traduire include_once $nom_file ");
+                    include_once $nom_file2;
                     //if($this->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
@@ -894,8 +895,8 @@ class AFWRoot {
                 if (file_exists($nom_file)) {
                     // if(($module=="sis") and ($nom_table=="student")) die("nom_file2=$nom_file2 not found");
                     //if($this->MY_DEBUG)
-                    //    AFWDebugg::log("traduire include $nom_file ");
-                    include $nom_file;
+                    //    AFWDebugg::log("traduire include_once $nom_file ");
+                    include_once $nom_file;
                     //if($this->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
@@ -916,7 +917,7 @@ class AFWRoot {
                     '_all.php';
 
                 if (file_exists($general_nom_file)) {
-                    include $general_nom_file;
+                    include_once $general_nom_file;
                     //echo "<br>2)translate $nom_table.$nom_col in $langue from general file $general_nom_file"."=".$trad[$nom_table][$nom_col];
                     if (
                         isset($trad['*'][$nom_col]) &&
@@ -946,8 +947,8 @@ class AFWRoot {
                 //        AFWDebugg::log("traduire from file $nom_file ");
                 if (file_exists($nom_file0)) {
                     //if($this->MY_DEBUG)
-                    //    AFWDebugg::log("traduire include $nom_file ");
-                    include $nom_file0;
+                    //    AFWDebugg::log("traduire include_once $nom_file ");
+                    include_once $nom_file0;
                     //if($this->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
@@ -960,7 +961,7 @@ class AFWRoot {
             $file_name = "$file_dir_name/../../external/translate/$module/trad_" . $langue . '_afw.php';
             if (file_exists($file_name)) {
                 $ff = 'file found';
-                include $file_name;
+                include_once $file_name;
 
                 $trad_val = $trad['OPERATOR'][$nom_col];
                 if ($trad_val) {
@@ -997,10 +998,11 @@ class AFWRoot {
 
     public static function traduireMessage($message, $module, $lang = 'ar')
     {
+        global $messages;
         $file_dir_name = dirname(__FILE__);
 
-        include "$file_dir_name/../../pag/messages_$lang.php";
-        include "$file_dir_name/../../$module/messages_$lang.php";
+        include_once "$file_dir_name/../../pag/messages_$lang.php";
+        include_once "$file_dir_name/../../$module/messages_$lang.php";
 
         if ($messages[$message]) {
             return $messages[$message];
