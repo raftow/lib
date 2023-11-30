@@ -325,8 +325,8 @@ if($obj->QEDIT_FOOTER_SUM)
       }
       else
       {
-          $html_btns =  "<table class='table_comp'>";
-          $html_btns .= "<tr class='table_comp'>";
+          // $html_btns =  "<table class='table_comp'>";
+          // $html_btns .= "<tr class='table_comp'>";
               
               $col_num = 0;
               foreach($other_links as $k => $other_link)
@@ -341,15 +341,18 @@ if($obj->QEDIT_FOOTER_SUM)
                   if(!$o_color) $o_color = "gray";
                   if($col_num == 3)
                   {
-                      $html_btns .= "</tr>";
-                      $html_btns .= "<tr class='table_comp'>";
+                      // $html_btns .= "</tr>";
+                      // $html_btns .= "<tr class='table_comp'>";
                       $col_num = 0;
                   }
-                  $html_btns .= "<td><a href='$o_url' $o_target_html><span class='${o_color}btn submit-btn fright $o_class'>$o_tit</span></a></td>";
+                  // $html_btns .= "<td>";
+                  $html_btns .= "<a href='$o_url' $o_target_html><span class='".$o_color."btn submit-btn fright $o_class'>$o_tit</span></a>";
+                  // $html_btns .= "</td>";
                   
                   $col_num++;
             }
-            $html_btns .= "</tr></table>";
+            // $html_btns .= "</tr></table>";
+            echo $html_btns;
       }
             
    }
