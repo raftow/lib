@@ -237,12 +237,16 @@ if($obj->QEDIT_FOOTER_SUM)
     <input type="submit" name="<?=$submit_name?>"  id="submit-form" class="<?=$class_inputSubmit?>" value="&nbsp;<?=$obj->translate($submit_qedit_title_code,$lang,true)?>&nbsp;" width="200px" height="30px" />
         
 <?php
+  $parent = $obj->getParentObject();
   if(!$popup)
   {
           $col_num++;
           if($obj->id_origin and (!$obj->return_mode)) 
           {  
                if($obj->mode_origin) $mode_origin = $obj->mode_origin; else $mode_origin = "display";  
+               $back_to_last_form_old = $back_to_last_form;
+               $back_to_last_form = $parent->tf("back_to_last_form");
+               if($back_to_last_form=="back_to_last_form") $back_to_last_form=$back_to_last_form_old;
 ?>        
         <a href="main.php?Main_Page=afw_mode_<?=$mode_origin?>.php&cl=<?=$obj->class_origin?>&id=<?=$obj->id_origin?>&currmod=<?=$obj->module_origin?>&currstep=<?=$obj->step_origin?>"><span class="yellowbtn submit-btn fright"><?=$back_to_last_form?></span></a>
         
@@ -263,7 +267,7 @@ if($obj->QEDIT_FOOTER_SUM)
 <?
    $col_num++;
    $other_links = $obj->getOtherLinksForUser("qedit", $objme);
-   $parent = $obj->getParentObject();
+   
    if($parent)
    {
         $other_links_parent = $parent->getOtherLinksForUser("qedit", $objme);
