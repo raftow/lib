@@ -1,5 +1,12 @@
 <?php
 
+global $general_optimizer;
+if(!$general_optimizer) $general_optimizer=0;
+$general_optimizer++;
+if($general_optimizer>200)
+{
+    throw new RuntimeException("System has been entered in maintenance mode by auto-admin-module (contact rafiq)");
+}
 
 $trad["OPERATOR"]["ALL"]					= "الجميع";
 

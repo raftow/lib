@@ -803,6 +803,8 @@ class AFWRoot {
                 $file_dir_name = dirname(__FILE__); 
 
                 $paths = array();
+
+                // if((!$module) and isset(static::$MODULE)) $module = self::$MODULE;
                 
                 $paths[] = "$file_dir_name/../../pag";
                 $paths[] = "$file_dir_name/../../ums";
