@@ -974,7 +974,7 @@ class AFWRoot {
             $ff = 'file not found';
             if (file_exists($file_name)) {
                 $ff = 'file found';
-                include $file_name;
+                include_once $file_name;
 
                 $trad_val = $trad['OPERATOR'][$nom_col];
                 if ($trad_val) {
