@@ -12991,7 +12991,7 @@ $dependencies_values
         if (($importance == "in") and in_array($fieldname, $uk_arr)) $importance = "high";
         elseif (($importance == "in") and ($desc['TYPE'] == 'PK' or $desc['PILLAR'] or $desc['POLE'])) $importance = "normal";
         elseif ($importance == "in") $importance = "small";
-        if(($fieldname == "عرض") or ($fieldname == "view") or ($fieldname == "display")) $importance = "small";
+        if(($fieldname == "عرض") or ($fieldname == "view") or ($fieldname == "display")) $importance = "high";
         if(($fieldname == "تعديل") or ($fieldname == "edit") or ($fieldname == "update")) $importance = "high";
         
         return $importance;
