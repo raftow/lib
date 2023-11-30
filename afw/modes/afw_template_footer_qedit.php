@@ -268,13 +268,14 @@ if($obj->QEDIT_FOOTER_SUM)
    {
         $other_links_parent = $parent->getOtherLinksForUser("qedit", $objme);
         if(count($other_links_parent)>0) $other_links = array_merge($other_links,$other_links_parent);
+        /* to see later seems not convenient 
         $attribute_arr = $parent->getAttributesFriendOf($obj);
         foreach($attribute_arr as $attribute_parent)
         {
             $other_links_parent = $parent->getOtherLinksForUser("mode_".$attribute_parent, $objme);
             if(count($other_links_parent)>0) $other_links = array_merge($other_links,$other_links_parent);
         }
-        
+        */
    }
 
    if(false)

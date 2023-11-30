@@ -4532,3 +4532,13 @@ th.col-qe {
 .comm_select {
     background-color: white;
 }
+
+div.otherlinks.fleft {
+    width: 100%;
+}
+
+div.otherlinks.fleft>div {
+    width: 54px;
+    margin-left: 20%;
+    float: left;
+}
