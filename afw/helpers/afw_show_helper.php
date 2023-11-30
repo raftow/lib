@@ -665,7 +665,7 @@ AFWRoot::dd("getRetrieveCols($mode) with hide_retrieve_cols :".var_export($hide_
         $isAvail = [];
 
         if (count($arr_col) == 0) {
-            throw new RuntimeException("afw-shower error : no retrieve cols");
+            throw new RuntimeException("afw-shower error : no retrieve cols for ".get_class($obj)." instance=".$obj->id);
         }
 
         foreach ($arr_col as $cc => $nom_col) {
