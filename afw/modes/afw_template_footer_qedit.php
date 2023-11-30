@@ -302,24 +302,56 @@ if($obj->QEDIT_FOOTER_SUM)
    }
    elseif(count($other_links)>0)
    {
-           $key_mod_tr = $obj->translateOperator("other_functions",$lang);
+      if(count($other_links)>3)
+      {
+        $key_mod_tr = $obj->translateOperator("other_functions",$lang);
            
-           $html_btns =  "<div class='fleft'><div class='btn-group'>";
-           $html_btns .= "  <button type='button' class='btn btn-primary'>$key_mod_tr</button>";
-           $html_btns .= "  <button type='button' class='btn-primary dropdown-toggle' data-toggle='dropdown'>";
-           $html_btns .= "    <span class='caret'></span>";
-           $html_btns .= "  </button>";
-           $html_btns .= "  <ul class='dropdown-menu' role='menu'>";
-           foreach($other_links as $k => $other_link)
-           {
-                $o_url = $other_link["URL"];
-                $o_tit = $other_link["TITLE"];
-                $html_btns .= "    <li><a href='$o_url'>$o_tit</a></li>";
-           }   
-           $html_btns .= "  </ul>";
-           $html_btns .= "</div></div>";
-           
-           echo $html_btns;   
+        $html_btns =  "<div class='fleft'><div class='btn-group'>";
+        $html_btns .= "  <button type='button' class='btn btn-primary'>$key_mod_tr</button>";
+        $html_btns .= "  <button type='button' class='btn-primary dropdown-toggle' data-toggle='dropdown'>";
+        $html_btns .= "    <span class='caret'></span>";
+        $html_btns .= "  </button>";
+        $html_btns .= "  <ul class='dropdown-menu' role='menu'>";
+        foreach($other_links as $k => $other_link)
+        {
+             $o_url = $other_link["URL"];
+             $o_tit = $other_link["TITLE"];
+             $html_btns .= "    <li><a href='$o_url'>$o_tit</a></li>";
+        }   
+        $html_btns .= "  </ul>";
+        $html_btns .= "</div></div>";
+        
+        echo $html_btns;  
+      }
+      else
+      {
+          $html_btns =  "<table class='table_comp'>";
+          $html_btns .= "<tr class='table_comp'>";
+              
+              $col_num = 0;
+              foreach($other_links as $k => $other_link)
+              {
+                  $o_url = $other_link["URL"];
+                  $o_tit = $other_link["TITLE"];
+                  $o_target = $other_link["TARGET"];
+                  if($o_target) $o_target_html = "target='$o_target'";
+                  else $o_target_html = "";
+                  $o_class = $other_link["CSS-CLASS"];
+                  $o_color = $other_link["COLOR"];
+                  if(!$o_color) $o_color = "gray";
+                  if($col_num == 3)
+                  {
+                      $html_btns .= "</tr>";
+                      $html_btns .= "<tr class='table_comp'>";
+                      $col_num = 0;
+                  }
+                  $html_btns .= "<td><a href='$o_url' $o_target_html><span class='${o_color}btn submit-btn fright $o_class'>$o_tit</span></a></td>";
+                  
+                  $col_num++;
+            }
+            $html_btns .= "</tr></table>";
+      }
+            
    }
 
     /* to see later

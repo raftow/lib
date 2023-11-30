@@ -385,7 +385,7 @@ foreach($class_db_structure as $nom_col => $desc)
 
                            // ***************************
                            $other_links = $obj->getOtherLinksForUser($key_mod, $objme, $otherLink_genereLog);
-                           if(count($other_links)>1)
+                           if(count($other_links)>3)
                            {
                                    // use bootstrap design version if many links
                                    $data[$nom_col]["btns"] .=  "<div class='btn-group'>";
