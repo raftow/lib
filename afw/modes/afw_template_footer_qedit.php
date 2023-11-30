@@ -266,6 +266,8 @@ if($obj->QEDIT_FOOTER_SUM)
    $parent = $obj->getParentObject();
    if($parent)
    {
+        $other_links_parent = $parent->getOtherLinksForUser("qedit", $objme);
+        if(count($other_links_parent)>0) $other_links = array_merge($other_links,$other_links_parent);
         $attribute_arr = $parent->getAttributesFriendOf($obj);
         foreach($attribute_arr as $attribute_parent)
         {
@@ -319,7 +321,7 @@ if($obj->QEDIT_FOOTER_SUM)
            echo $html_btns;   
    }
 
-
+    /* to see later
     $pbm_loc_arr = $obj->getPublicMethodsForUser($objme, "QEDIT");
     echo "pbm_loc_arr = ".var_export($pbm_loc_arr,true);
     if(count($pbm_loc_arr) >0)
@@ -340,6 +342,7 @@ if($obj->QEDIT_FOOTER_SUM)
         }
         
     }
+    */
 ?>        
 </div>
 

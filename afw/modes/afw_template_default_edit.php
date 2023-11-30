@@ -326,7 +326,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                         $data[$nom_col]["trad"]  = $obj->getAttributeLabel($nom_col, $lang) ;  // . " :"
                                         if($desc["EDIT-HIDE-VALUE"] or (isset($desc["DISPLAY"]) and (!$desc["DISPLAY"])))
                                            if($desc["EDIT-HIDE-VALUE"]) $data[$nom_col]["input"] .=  $desc["EDIT-HIDE-VALUE"];
-                                           else $data[$nom_col]["input"] .=  "<!-- hidden because desc[DISPLAY] == false -->";
+                                           else $data[$nom_col]["input"] .= $obj->tm("hidden")."<!-- hidden because desc[DISPLAY] == false -->";
                                         else
                                            $data[$nom_col]["input"] .=  $obj->{"shw$nom_col"}();
                                         
