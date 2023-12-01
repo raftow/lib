@@ -4495,16 +4495,6 @@ button.toggle-hzm-btn {
     min-width: 80px;
 }
 
-button.toggle-hzm-btn.on_time, 
-button.toggle-hzm-btn.absent,
-button.toggle-hzm-btn.good_quitted,
-button.toggle-hzm-btn.early_quitted,
-button.toggle-hzm-btn.on_late
- {
-    font-size: 80% !important;
-    text-align: right;
-    padding-right: 5px;
-}
 
 .technical {
     display: none;
