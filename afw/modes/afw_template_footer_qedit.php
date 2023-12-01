@@ -324,7 +324,7 @@ if(!$obj->qedit_minibox)
         {
              $o_url = $other_link["URL"];
              $o_tit = $other_link["TITLE"];
-             $html_btns .= "    <li><a href='$o_url'>$o_tit</a></li>";
+             $html_btns .= "    <li class='olli li$k'><a href='$o_url'>$o_tit</a></li>";
         }   
         $html_btns .= "  </ul>";
         $html_btns .= "</div></div>";
@@ -354,7 +354,7 @@ if(!$obj->qedit_minibox)
                       $col_num = 0;
                   }
                   // $html_btns .= "<td>";
-                  $html_btns .= "<a href='$o_url' $o_target_html><span class='".$o_color."btn submit-btn fright $o_class'>$o_tit</span></a>";
+                  $html_btns .= "<a href='$o_url' $o_target_html><span class='".$o_color."btn submit-btn ol$k fright $o_class'>$o_tit</span></a>";
                   // $html_btns .= "</td>";
                   
                   $col_num++;
