@@ -188,7 +188,26 @@ if(($myMainObject) and (!$myMainObject->qeditHeaderFooterEmbedded()))
 {
     $out_scr .=  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_header_qedit.php");        
 }
-else $out_scr .= "<table class=\"display dataTable afwgrid\" style=\"width: 100%;\" cellspacing=\"3\" cellpadding=\"4\">";
+else 
+{/*
+    if($myMainObject->fixmtit)
+    {
+        $fixmtit = $myMainObject->fixmtit;
+    }
+    else
+    {
+        $fixmtit = AFWObject::traduireOperator("qedit_some_records", $lang).$myMainObject->getPluralTitle($lang,false);
+    }*/
+    if($fixmtit) 
+    {
+        $out_scr .= "<h3 class='bluetitle'><i></i>$fixmtit</h3>";
+    }
+    else
+    {
+        $out_scr .= "<h3 class='bluetitle'>وصف السجلات التي يتم العمل عليها</h3>";
+    }
+    $out_scr .= "<table class=\"display dataTable afwgrid\" style=\"width: 100%;\" cellspacing=\"3\" cellpadding=\"4\">";
+}
 
 if(!$nb_objs)
 {
