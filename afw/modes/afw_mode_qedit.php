@@ -259,7 +259,7 @@ else
         }
 
         //AfwSession::hzmLog("الله المستعان ".date("H:i:s")." before AfwShowHelper::showObject( ... afw_template_footer_qedit.php)","FOOTER");        
-        if(($myMainObject) and (!$myMainObject->qeditHeaderFooterEmbedded()))
+        if($myMainObject)
         {
             $out_scr .= AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_footer_qedit.php", $color = false, $childrens = false, $decode = true, $virtuals = "", $indent = "", $data_template);
         }

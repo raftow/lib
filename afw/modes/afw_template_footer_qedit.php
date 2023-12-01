@@ -53,9 +53,11 @@ foreach($class_db_structure as $nom_col => $desc)
 <?
 if(!$obj->qedit_minibox) 
 {
-
-if($obj->QEDIT_FOOTER_SUM)
-{
+  if(!$obj->qeditHeaderFooterEmbedded())
+  {
+    if($obj->QEDIT_FOOTER_SUM)
+    {
+  
 ?>
        <tr class='footer_sum' >
 <?php	foreach($qedit_trad as $col => $info)
@@ -110,9 +112,10 @@ if($obj->QEDIT_FOOTER_SUM)
 		
 <?php	}
 ?>
-       </tr>
+       </tr>       
 <?
-
+    }
+    
 }
 ?>
 
