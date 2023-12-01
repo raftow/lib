@@ -131,6 +131,14 @@ td.col-qe.col-qe-100 {
 td.col-qe>input {
     min-height: 37px !important;
     border: 1px solid #b3a1a1 !important;
+    margin-right: 15px;
+    width: 80% !important;
+    max-width: none !important;
+}
+
+td.col-qe>select {
+    width: 80% !important;
+    margin-right: 15px !important;
 }
 
 .inputcourt {

@@ -373,7 +373,19 @@ if(!$obj->qedit_minibox)
 
 
         list($is_ok, $arrErrors) = $obj->isOk($force=false, $returnErrors=true);
-
+        if(!$total_sahm)
+        {
+                foreach($qedit_input_arr[$qerow_num] as $col => $input_html_row)
+                {
+                        $orig_nom_col = $qedit_orig_nom_col[$col];
+                        if($orig_nom_col and ($orig_nom_col!="id"))
+                        {
+                                $total_sahm += $input_html_row["cols"];                                                
+                        }                                   
+                }
+        }
+        if(!$total_sahm) $total_sahm = count($qedit_input_arr[$qerow_num]);
+        if(!$total_sahm) $total_sahm = 5;
         //die(var_export($arrErrors,true));
         foreach($qedit_input_arr[$qerow_num] as $col => $input_html_row)
         {
@@ -433,7 +445,7 @@ if(!$obj->qedit_minibox)
              }
              
              
-             if($class_db_structure[$orig_nom_col]["QEDIT_HIDE"])
+             if(($class_db_structure[$orig_nom_col]["QEDIT_HIDE"]) or ($orig_nom_col=="id"))
              {
                     echo $input_html;
              }

@@ -87,8 +87,9 @@ if($ids)
         else if($ids) 
         {
             $ids_arr = explode(",",$ids);
+            $ids_select = implode("','",$ids_arr);
             $limit = count($ids_arr);    
-            $myMainObject->where(" id in ($ids) ");
+            $myMainObject->where($myMainObject->getPKField()." in ('$ids_select') ");
         }
         foreach($_REQUEST as $item => $item_value)
         {

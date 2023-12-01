@@ -248,7 +248,8 @@ if(!$obj->qedit_minibox)
           {  
                if($obj->mode_origin) $mode_origin = $obj->mode_origin; else $mode_origin = "display";  
                $back_to_last_form_old = $back_to_last_form;
-               $back_to_last_form = $parent->tf("back_to_last_form");
+               if($parent) $back_to_last_form = $parent->tf("back_to_last_form");
+               else $back_to_last_form = $obj->tf("back_to_last_form");
                if($back_to_last_form=="back_to_last_form") $back_to_last_form=$back_to_last_form_old;
 ?>        
         <a href="main.php?Main_Page=afw_mode_<?=$mode_origin?>.php&cl=<?=$obj->class_origin?>&id=<?=$obj->id_origin?>&currmod=<?=$obj->module_origin?>&currstep=<?=$obj->step_origin?>"><span class="yellowbtn submit-btn fright"><?=$back_to_last_form?></span></a>
