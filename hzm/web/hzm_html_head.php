@@ -17,6 +17,8 @@ if (!$my_font) $my_font = "front";
   if ($front_header) {
   ?>
     <link rel="stylesheet" href="../lib/css/front-application.css">
+    <link rel="stylesheet" href="../lib/css/hzm-v001.css">
+    
   <?php
   }
   if($otp)
@@ -130,7 +132,7 @@ if (!$my_font) $my_font = "front";
     // nothing todo for the moment
   }
 
-  
+  $crst = md5("crst".date("YmdHis"));
   ?>
 
   <!-- end datatable/css/js -->
@@ -158,44 +160,44 @@ if (!$my_font) $my_font = "front";
   <title><?= $NOM_SITE[$lang] ?></title>
 
   <link href="../lib/css/def_<?= $lang ?>_<?php echo $my_font ? $my_font : "front"; ?>.css" rel="stylesheet" type="text/css">
-  <link href="../lib/css/<?= $my_theme ?>/style_common.css" rel="stylesheet" type="text/css">
-  <link href="../lib/css/<?= $my_theme ?>/style_<?= $lang ?>.css" rel="stylesheet" type="text/css">
-  <link href="../lib/css/<?= $my_theme ?>/front_menu.css" rel="stylesheet" type="text/css">
+  <link href="../lib/css/<?= $my_theme ?>/style_common.css?crst=<?=$crst?>" rel="stylesheet" type="text/css">
+  <link href="../lib/css/<?= $my_theme ?>/style_<?= $lang ?>.css?crst=<?=$crst?>" rel="stylesheet" type="text/css">
+  <link href="../lib/css/<?= $my_theme ?>/front_menu.css?crst=<?=$crst?>" rel="stylesheet" type="text/css">
   <?php
   if ($header_style) {
   ?>
-    <link href="../lib/css/<?= $header_style ?>.css" rel="stylesheet">
+    <link href="../lib/css/<?= $header_style ?>.css?crst=<?=$crst?>" rel="stylesheet">
   <?php
   }
   if ($page_css_file) {
   ?>
-    <link href="./css/<? echo $page_css_file ?>.css" rel="stylesheet" type="text/css" type="text/css">
+    <link href="./css/<? echo $page_css_file ?>.css?crst=<?=$crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
   }
-
+  
   if ($main_module and ($xmodule != $main_module)) {
   ?>
-    <link href="../<?= $main_module ?>/css/module.css" rel="stylesheet" type="text/css" type="text/css">
+    <link href="../<?= $main_module ?>/css/module.css?crst=<?=$crst?>" rel="stylesheet" type="text/css" type="text/css">
 
   <?php
   }
 
   if (!$no_common_css) {
   ?>
-    <link href="../external/css/common.css" rel="stylesheet" type="text/css" type="text/css">
+    <link href="../external/css/common.css?crst=<?=$crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
   }
   ?>
-  <link href="./css/module.css" rel="stylesheet" type="text/css" type="text/css">
+  <link href="./css/module.css?crst=<?=$crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
   if ($cmodule and $xmodule and ($cmodule != $xmodule)) {
   ?>
-    <link href="./css/module_<?= $xmodule ?>.css" rel="stylesheet" type="text/css">
+    <link href="./css/module_<?= $xmodule ?>.css?crst=<?=$crst?>" rel="stylesheet" type="text/css">
   <?php
   }
   if ($main_module and $cmodule and ($cmodule != $main_module)) {
   ?>
-    <link href="../<?= $main_module ?>/css/module_<?= $cmodule ?>.css" rel="stylesheet" type="text/css" type="text/css">
+    <link href="../<?= $main_module ?>/css/module_<?= $cmodule ?>.css?crst=<?=$crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
   }
 

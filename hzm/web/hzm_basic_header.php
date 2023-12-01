@@ -19,6 +19,8 @@
 <link rel="stylesheet" href="../../css/font-awesome.min.css">
 <link rel="stylesheet" href="../../css/menu_<?=$lang?>.css">
 <link rel="stylesheet" href="../../css/front-application.css">
+<link rel="stylesheet" href="../../css/hzm-v001.css">
+
 <link rel="stylesheet" href="../../css/front_app.css">
 <link rel="stylesheet" href="../../bootstrap/bootstrap-v3.min.css">
 <link rel="stylesheet" href="../../bsel/css/bootstrap-select.css">

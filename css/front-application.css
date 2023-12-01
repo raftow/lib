@@ -662,7 +662,7 @@ ul.hzm_front_menu_bar.nav.navbar-nav {
     }
 }
 
-@media (max-width: 896px) {
+@media (max-width: 696px) {
     table.dataTable tbody td.col-importance-small, 
     table.dataTable thead th.col-importance-small,
     table.dataTable tfoot th.col-importance-small,
@@ -673,7 +673,7 @@ ul.hzm_front_menu_bar.nav.navbar-nav {
     }
 }
 
-@media (max-width: 696px) {
+@media (max-width: 496px) {
     table.dataTable tbody td.col-importance-medium, 
     table.dataTable thead th.col-importance-medium,
     table.dataTable tfoot th.col-importance-medium,
@@ -685,7 +685,7 @@ ul.hzm_front_menu_bar.nav.navbar-nav {
     }
 }
 
-@media (max-width: 496px) {
+@media (max-width: 396px) {
     table.dataTable tbody td.col-importance-normal, 
     table.dataTable thead th.col-importance-normal,
     table.dataTable tfoot th.col-importance-normal,
@@ -4492,6 +4492,7 @@ button.toggle-hzm-btn {
     height: 38px;
     margin-right: 10%;
     overflow: hidden;
+    min-width: 80px;
 }
 
 button.toggle-hzm-btn.on_time, 
@@ -4533,12 +4534,3 @@ th.col-qe {
     background-color: white;
 }
 
-div.otherlinks.fleft {
-    width: 100%;
-}
-
-div.otherlinks.fleft>div {
-    width: 54px;
-    margin-left: 20%;
-    float: left;
-}

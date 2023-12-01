@@ -98,6 +98,8 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tajawal%3A400%2C700&ver=5.5.1">
 
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front-application.css">
+<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/hzm-v001.css">
+
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_app.css">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/material-design-iconic-font.min.css">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/bootstrap/bootstrap-v3.min.css">

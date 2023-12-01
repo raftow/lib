@@ -13075,4 +13075,9 @@ $dependencies_values
                     )
                 );
     }
+
+    public function qeditHeaderFooterEmbedded()
+    {
+        return false;
+    }
 }

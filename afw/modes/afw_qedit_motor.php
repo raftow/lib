@@ -1,4 +1,4 @@
-<?php
+<?php 
 #####################################################################################
 ####################################  FONCTIONS  ####################################
 #####################################################################################
@@ -7,7 +7,7 @@ function hidden_input($col_name, $desc, $val, &$obj)
 {
     $type_input_ret = "hidden";
 ?>
-    <input type="hidden" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
+    <input type="hidden" id="<?php  echo $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
     <?
     return $type_input_ret;
 }
@@ -93,8 +93,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             if ($val <= 0) $val = "سجل جديد";
             $type_input_ret = "text";
     ?>
-            <input placeholder="<?= $placeholder ?>" type="text" class="<?= $class_inputPK ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>" size=32 maxlength=255 readonly>
-            <?php break;
+            <input placeholder="<?= $placeholder ?>" type="text" class="<?= $class_inputPK ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=32 maxlength=255 readonly>
+            <?php  break;
         case 'FK':
             $nom_table_fk   = $desc["ANSWER"];
             $nom_module_fk  = $desc["ANSMODULE"];
@@ -159,9 +159,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                     $type_input_ret = "hidden";
             ?>
-                    <input type="hidden" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-                    <span class='momken-fk'><? if (!$obj->hideQeditCommonFields) echo $l_rep[$val] ?></span>
-                <?php
+                    <input type="hidden" id="<?php  echo $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
+                    <span class='momken-fk'><?php if (!$obj->hideQeditCommonFields) echo $l_rep[$val] ?></span>
+                <?php 
                 } else {
                     select(
                         $l_rep,
@@ -203,9 +203,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                     $type_input_ret = "hidden";
                 ?>
-                    <input type="hidden" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-                    <span class='momken-fk-autoc'><? if (!$obj->hideQeditCommonFields) echo "[$val_display]" ?></span>
-                <?php
+                    <input type="hidden" id="<?php  echo $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
+                    <span class='momken-fk-autoc'><?php if (!$obj->hideQeditCommonFields) echo "[$val_display]" ?></span>
+                <?php 
                 } else {
                     $help_atc = $auto_c["HELP"];
                 ?>
@@ -260,7 +260,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         });
                     </script>
 
-                <?php                    }
+                <?php                     }
             }
             break;
         case 'MFK':
@@ -411,14 +411,14 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
 
                 $type_input_ret = "text";
-                ?> <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" size=33 maxlength=255>
-                <input type="button" class="<?= $class_inputButton ?>" name="" value="<?= $obj->translate('SEARCH', $lang, true) ?>" onclick="popup('<?php echo "main.php" ?>?Main_Page=afw_mode_search.php&cl=<?php echo $desc["ANSWER"] ?>')">
+                ?> <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=33 maxlength=255>
+                <input type="button" class="<?= $class_inputButton ?>" name="" value="<?= $obj->translate('SEARCH', $lang, true) ?>" onclick="popup('<?php  echo "main.php" ?>?Main_Page=afw_mode_search.php&cl=<?php  echo $desc["ANSWER"] ?>')">
                 <script language="javascript">
                     function popup(page) {
                         window.open(page, "<?= $obj->translate('SEARCH', $lang, true) ?>", "fullscreen='yes',menubar='no',toolbar='no',location='no',status='no'");
                     }
                 </script>
-            <?php            }
+            <?php             }
             break;
         case 'ENUM':
             if ($desc["STYLE"]) $style_input = " style='" . $desc["STYLE"] . "' ";
@@ -443,9 +443,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                 $type_input_ret = "hidden";
             ?>
-                <input type="hidden" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
+                <input type="hidden" id="<?php  echo $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
                 <span class='momken-enum'>
-                    <?php
+                    <?php 
                         $val_decoded = $liste_rep[$val];
                         if(!$val_decoded) $val_decoded = $val. "[enum-decode-failed] from LRP=".var_export($liste_rep,true) ;
                         if(!$obj->hideQeditCommonFields) echo $val_decoded;
@@ -453,7 +453,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                     ?>
             
                 </span>
-                <?php
+                <?php 
             } else {
 
                 if ($desc["FORMAT-INPUT"] == "hzmtoggle") {
@@ -502,9 +502,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                     $liste_css_text = "['" . implode("','", $liste_css) . "']";
                 ?>
-                    <input type='hidden' name='<?php echo $col_name ?>' id='<?php echo $col_name ?>' value='<?php echo $val ?>'>
-                    <button type="button" id="btn_<?php echo $col_name ?>" class="toggle-hzm-btn <?php echo $css_val ?>" onClick="toggleHzmBtn('<?php echo $col_name ?>', <?php echo $liste_choix_text ?>, <?php echo $liste_codes_text ?>, <?php echo $listeOrdres_text ?>, <?php echo $liste_css_text ?>,<?php echo count($liste_choix) ?>)"><?php echo $display_val ?></button>
-                <?php
+                    <input type='hidden' name='<?php  echo $col_name ?>' id='<?php  echo $col_name ?>' value='<?php  echo $val ?>'>
+                    <button type="button" id="btn_<?php  echo $col_name ?>" class="toggle-hzm-btn <?php  echo $css_val ?>" onClick="toggleHzmBtn('<?php  echo $col_name ?>', <?php  echo $liste_choix_text ?>, <?php  echo $liste_codes_text ?>, <?php  echo $listeOrdres_text ?>, <?php  echo $liste_css_text ?>,<?php  echo count($liste_choix) ?>)"><?php  echo $display_val ?></button>
+                <?php 
                 } else {
                     if ($desc["STYLE"]) $style_input = " style='" . $desc["STYLE"] . "' ";
                     else $style_input = "";
@@ -576,21 +576,21 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                 $type_input_ret = "hidden";
                 ?>
-                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-                <span class='fw-momken-numeric'><? if (!$obj->hideQeditCommonFields) echo $val ?></span>
-                <?php
+                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
+                <span class='fw-momken-numeric'><?php if (!$obj->hideQeditCommonFields) echo $val ?></span>
+                <?php 
             } else {
                 if ($obj->qedit_minibox)
                     $css_class = "form-control";
                 else $css_class = $class_of_input . $data_loaded_class . $data_length_class;
                 if ($input_type_html == "text") {
                 ?>
-                    <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" size=6 maxlength=6 <?php echo $readonly ?> onchange="<?php echo $onchange ?>" placeholder="<?= $placeholder ?>" <?php echo $input_options_html . " " . $style_input ?>>
-                <?php
+                    <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=6 maxlength=6 <?php  echo $readonly ?> onchange="<?php  echo $onchange ?>" placeholder="<?= $placeholder ?>" <?php  echo $input_options_html . " " . $style_input ?>>
+                <?php 
                 } else {
                 ?>
-                    <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" <?php echo $input_options_html ?>>
-                <?php
+                    <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" <?php  echo $input_options_html ?>>
+                <?php 
                 }
             }
             // echo (isset($desc["UNIT"]) && !empty($desc["UNIT"])  && (strlen($desc["UNIT"])<6)) ? $desc["UNIT"] : "";
@@ -607,9 +607,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                 $type_input_ret = "hidden";
                 ?>
-                <input type="hidden" fw="momken-text" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-                <span class='fw-momken-text'><? if (!$obj->hideQeditCommonFields) echo $val ?></span>
-                <?php
+                <input type="hidden" fw="momken-text" id="<?= $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
+                <span class='fw-momken-text'><?php if (!$obj->hideQeditCommonFields) echo $val ?></span>
+                <?php 
             } 
             elseif ((isset($desc["SIZE"])) && (($desc["SIZE"] == "AREA") or ($desc["SIZE"] == "AEREA"))) {
                 $rows = $desc["ROWS"];
@@ -624,8 +624,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
 
                 ?>
-                <textarea placeholder="<?= $placeholder ?>" class="<?= $css_class ?>" cols="<?= $cols ?>" rows="<?= $rows ?>" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" dir="<?php echo $dir ?>" onchange="<?php echo $onchange ?>"><?php echo $val ?></textarea>
-            <?            
+                <textarea placeholder="<?= $placeholder ?>" class="<?= $css_class ?>" cols="<?= $cols ?>" rows="<?= $rows ?>" id="<?php  echo $col_name ?>" name="<?php  echo $col_name ?>" dir="<?php  echo $dir ?>" onchange="<?php  echo $onchange ?>"><?php  echo $val ?></textarea>
+            <?php            
             }
             elseif($fromListMethod)
             {
@@ -664,7 +664,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                     $css_class = "form-control";
                 else $css_class = $class_inputText . $data_loaded_class . $data_length_class;
             ?>
-                <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" dir="<?php echo $dir ?>" value="<?php echo $val ?>" size=32 maxlength=255 onchange="<?php echo $onchange ?>" <?php echo $style_input ?>>
+                <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" dir="<?php  echo $dir ?>" value="<?php  echo $val ?>" size=32 maxlength=255 onchange="<?php  echo $onchange ?>" <?php  echo $style_input ?>>
             <?
             }
             break;
@@ -693,9 +693,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                 $type_input_ret = "hidden";
             ?>
-                <input type="hidden" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-                <span class='momken-yn'><? if (!$obj->hideQeditCommonFields) echo $answer_list[$val] ?></span>
-            <?php
+                <input type="hidden" id="<?= $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
+                <span class='momken-yn'><?php if (!$obj->hideQeditCommonFields) echo $answer_list[$val] ?></span>
+            <?php 
             } elseif ($desc["CHECKBOX"]) {
                 if ($val == "Y") $checkbox_checked = "checked";
                 else $checkbox_checked = "";
@@ -703,7 +703,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $checkbox_extra_class = $desc["CHECKBOX_CSS_CLASS"];
             ?>
                 <input type="checkbox" value="1" id="<?= $col_name ?>" name="<?= $col_name ?>" <?= $checkbox_checked ?> class="echeckbox <?= $checkbox_extra_class ?>">
-            <?php
+            <?php 
             } else {
                 if ($obj->qedit_minibox)
                     $css_class = "form-control";
@@ -730,9 +730,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                 $type_input_ret = "hidden";
                 ?>
-                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-                <span class='fw-momken-date'><? if (!$obj->hideQeditCommonFields) echo $val ?></span>
-                <?php
+                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
+                <span class='fw-momken-date'><?php if (!$obj->hideQeditCommonFields) echo $val ?></span>
+                <?php 
             } 
             else 
             {
@@ -785,9 +785,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                 $type_input_ret = "hidden";
                 ?>
-                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-                <span class='fw-momken-date'><? if (!$obj->hideQeditCommonFields) echo $val ?></span>
-                <?php
+                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
+                <span class='fw-momken-date'><?php if (!$obj->hideQeditCommonFields) echo $val ?></span>
+                <?php 
             } 
             else 
             {
@@ -813,9 +813,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                 $type_input_ret = "hidden";
                 ?>
-                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-                <span class='fw-momken-date'><? if (!$obj->hideQeditCommonFields) echo $val ?></span>
-                <?php
+                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
+                <span class='fw-momken-date'><?php if (!$obj->hideQeditCommonFields) echo $val ?></span>
+                <?php 
             } 
             else 
             {
@@ -830,7 +830,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 ?>
                 <table class="table_no_border">
                     <tr class="table_no_border_tr">
-                        <td><input placeholder="<?= $placeholder ?>" type="text" id="<?= $input_name ?>" name="<?= $col_name ?>" value="<?= $valaff ?>" class="<?= $class_inputDate . $data_loaded_class . " inputcourt" ?>" onchange="<?php echo $onchange ?>"> </td>
+                        <td><input placeholder="<?= $placeholder ?>" type="text" id="<?= $input_name ?>" name="<?= $col_name ?>" value="<?= $valaff ?>" class="<?= $class_inputDate . $data_loaded_class . " inputcourt" ?>" onchange="<?php  echo $onchange ?>"> </td>
                         <td><span>هـ</span></td>
                         <!-- <td><input type="text" id="<?= $input_name . "_n" ?>" name="<?= $col_name . "_n" ?>" value="<?= $valaff_n ?>" class="inputtext_disabled inputcourt" disabled></input></td>-->
                         <script type="text/javascript">
@@ -840,7 +840,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         </script>
                     </tr>
                 </table>
-        <?php 
+        <?php  
             }
             break;
         default:
@@ -849,8 +849,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $css_class = "form-control";
             else $css_class = $class_inputText . $data_loaded_class;
 
-        ?> <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" size=32 maxlength=255 onchange="<?php echo $onchange ?>">
-    <?php break;
+        ?> <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=32 maxlength=255 onchange="<?php  echo $onchange ?>">
+    <?php  break;
     }
 
     return $type_input_ret;
@@ -893,7 +893,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
     if (!$info["id"]) $info["id"] = trim(trim($info["name"], "]"), "[");
     ?>
     <script>
-        <?php
+        <?php 
 
         echo $info["reloadfn"] . "\n\n";
         // rafik @todo check why I put this below I now disabled it
@@ -904,14 +904,14 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
 
         ?>
     </script>
-    <?php
+    <?php 
         // $selected_ve = var_export($selected,true);
         // echo "<!-- selected = $selected_ve -->";
     ?>
-    <select class="<?php echo $info["class"] ?>" style="<?php echo $info["style"] ?>" name="<?php echo $info["name"] ?>" id="<?php echo $info["id"] ?>" tabindex="<?php echo $info["tabindex"] ?>" onchange="<?php echo $info["onchange"] ?>" <?php echo $multi ?> size=<?php echo $size ?> <?php if ($info["disable"]) echo "disabled" ?>>
-        <?php if ($null_val) {
-        ?> <option value="0" <?php echo (in_array(0, $selected)) ? " selected" : ""; ?>>&nbsp;</option>
-        <?php   }
+    <select class="<?php  echo $info["class"] ?>" style="<?php  echo $info["style"] ?>" name="<?php  echo $info["name"] ?>" id="<?php  echo $info["id"] ?>" tabindex="<?php  echo $info["tabindex"] ?>" onchange="<?php  echo $info["onchange"] ?>" <?php  echo $multi ?> size=<?php  echo $size ?> <?php  if ($info["disable"]) echo "disabled" ?>>
+        <?php  if ($null_val) {
+        ?> <option value="0" <?php  echo (in_array(0, $selected)) ? " selected" : ""; ?>>&nbsp;</option>
+        <?php    }
         $data_content = "";
         foreach ($list_id_val as $id => $val) {
             if ($info["bsel_css"]) {
@@ -919,8 +919,8 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
                 $data_content = "data-content=\"<span class='$opt_css'>$val</span>\"";
             }
             // <!-- '$id' not in selected -->
-        ?> <option value="<?php echo $id ?>" <?php echo (in_array($id, $selected)) ? " selected" : ""; ?> <?php echo $data_content ?>><?php echo $val ?></option> 
-        <?php   } ?>
+        ?> <option value="<?php  echo $id ?>" <?php  echo (in_array($id, $selected)) ? " selected" : ""; ?> <?php  echo $data_content ?>><?php  echo $val ?></option> 
+        <?php    } ?>
     </select>
     <?
     if ($multi) {
@@ -928,33 +928,33 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
         <!-- Initialize the plugin: -->
         <script type="text/javascript">
             $(document).ready(function() {
-                $('#<?php echo $info["id"] ?>').multiselect({
+                $('#<?php  echo $info["id"] ?>').multiselect({
                     inheritClass: true,
 
-                    <? if ($info["numberDisplayed"]) { ?> numberDisplayed: '<?= $info["numberDisplayed"] ?>',
-                    <? } ?>
-                    <? if ($info["buttonWidth"]) { ?> buttonWidth: '<?= $info["buttonWidth"] ?>',
-                    <? } ?>
-                    <? if ($info["dropRight"]) { ?> dropRight: true,
-                    <? } ?>
-                    <? if ($info["inheritClass"]) { ?> inheritClass: true,
-                    <? } ?>
-                    <? if ($info["enableFiltering"]) { ?> enableFiltering: true,
-                    <? } ?>
-                    <? if ($info["filterBehavior"]) { ?> filterBehavior: '<?= $info["filterBehavior"] ?>',
-                    <? } ?>
-                    <? if ($info["filterPlaceholder"]) { ?> filterPlaceholder: '<?= $info["filterPlaceholder"] ?>',
-                    <? } ?>
-                    <? if ($info["maxHeight"]) { ?> maxHeight: <?= $info["maxHeight"] ?>,
-                    <? } ?>
-                    <? if ($info["includeSelectAllOption"]) { ?> includeSelectAllOption: true<? } ?>
+                    <?php  if ($info["numberDisplayed"]) { ?> numberDisplayed: '<?= $info["numberDisplayed"] ?>',
+                    <?php  } ?>
+                    <?php  if ($info["buttonWidth"]) { ?> buttonWidth: '<?= $info["buttonWidth"] ?>',
+                    <?php } ?>
+                    <?php if ($info["dropRight"]) { ?> dropRight: true,
+                    <?php } ?>
+                    <?php if ($info["inheritClass"]) { ?> inheritClass: true,
+                    <?php } ?>
+                    <?php if ($info["enableFiltering"]) { ?> enableFiltering: true,
+                    <?php } ?>
+                    <?php if ($info["filterBehavior"]) { ?> filterBehavior: '<?= $info["filterBehavior"] ?>',
+                    <?php } ?>
+                    <?php if ($info["filterPlaceholder"]) { ?> filterPlaceholder: '<?= $info["filterPlaceholder"] ?>',
+                    <?php } ?>
+                    <?php if ($info["maxHeight"]) { ?> maxHeight: <?= $info["maxHeight"] ?>,
+                    <?php } ?>
+                    <?php if ($info["includeSelectAllOption"]) { ?> includeSelectAllOption: true<?php } ?>
                 });
             });
         </script>
     <?
     }
     ?>
-<?php
+<?php 
 }
 
 function subval_sort($table_a_trie, $table_ref, $ord = "desc")

@@ -10,12 +10,14 @@ global $TMP_DIR,$TMP_ROOT,$lang,$pack,$sub_pack,$id,$aligntd, $Main_Page,
   $pct_tab_edit_mode, $objme, $first_disp, $first_val, $diff_val, $not_filled, $filled, $nb_objs, $qedit_trad;
 
 if(!$lang) $lang = 'ar';
-
+if(!$obj) die("row-qedit-error : no object sent to the template");
+$header_imbedded = $obj->qeditHeaderFooterEmbedded();
 $obj_id = $obj->getId();
 $obj_class = $obj->getMyClass();
 $obj_mod = $obj->getMyModule();
-$qedit_input = array();
+$qedit_input_arr = array();
 $qedit_orig_nom_col = array();
+$qedit_trad_arr = array();
 
 $fixm_array       = $obj->fixm_array;
 $fgroup           = $obj->fgroup;
@@ -32,6 +34,8 @@ if($obj->qedit_minibox)
         else $miniBoxTemplateArr = $miniBoxTemplate;
 }
 
+$qerow_exists = [0=>false, 1=>true, 2=>false];
+
 if(!$class_db_structure) $class_db_structure = $obj->getMyDbStructure();
 $nb_cols_qedit = count($class_db_structure);
 
@@ -39,6 +43,10 @@ $column_order = 0;
 
 foreach($class_db_structure as $nom_col => $desc)
 {
+        $nom_col_short = "$nom_col.short";
+        $trad_col_short  = $obj->translate($nom_col_short,$lang);
+        if($trad_col_short == $nom_col_short) $qedit_trad_arr[$nom_col] = $obj->translate($nom_col,$lang);
+        else $qedit_trad_arr[$nom_col] = $trad_col_short;
         $column_order++;
         $desc = AfwStructureHelper::repareQEditAttributeStructure($nom_col, $desc, $obj);
         $isQuickEditableAttribute = $obj->isQuickEditableAttribute($nom_col, $desc, $submode);
@@ -88,7 +96,7 @@ foreach($class_db_structure as $nom_col => $desc)
                 $type_input_ret = hidden_input("id_" . $obj_qeditNum, [], $obj->id, $obj);
                 $qedit_hidden_pk_input = ob_get_clean();
                 $obj_id_display = "☆";
-                $qedit_input["id_" . $obj_qeditNum] = $qedit_hidden_pk_input.$obj_id_display;
+                $qedit_input_arr[1]["id_" . $obj_qeditNum] = ["input"=>$qedit_hidden_pk_input.$obj_id_display, "cols"=>0];
         }
 
         if($desc['TYPE'] == 'PK')
@@ -104,7 +112,7 @@ foreach($class_db_structure as $nom_col => $desc)
                         if($obj_id_display<=0) $obj_id_display = " + ";
                 }
                 else $obj_id_display = "";
-                $qedit_input[$qedit_nom_col] = $qedit_hidden_pk_input.$obj_id_display;
+                $qedit_input_arr[1][$qedit_nom_col] = ["input"=>$qedit_hidden_pk_input.$obj_id_display, "cols"=>0];
                
         }        
         elseif(((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) || $mode_show_field_read_only)
@@ -119,6 +127,20 @@ foreach($class_db_structure as $nom_col => $desc)
                         $obj_val = $obj->getVal($nom_col);
                         if($attr_IsApplicable)
                         {
+                                $qerow = 1;
+                                $qecols = 1;
+                                if($desc['QEDIT-BEFORE-COLS'])
+                                {
+                                        $qerow = 0;
+                                        $qecols = $desc['QEDIT-BEFORE-COLS'];
+                                }
+
+                                if($desc['QEDIT-AFTER-COLS'])
+                                {
+                                        $qerow = 2;
+                                        $qecols = $desc['QEDIT-AFTER-COLS'];
+                                }
+                                $qerow_exists[$qerow] = true;
                                 if(!$mode_show_field_read_only)
                 		{
                         		ob_start();
@@ -131,16 +153,18 @@ foreach($class_db_structure as $nom_col => $desc)
                                         {
                         			$type_input_ret = type_input($qedit_nom_col, $desc, $col_val, $obj, $separator, $data_loaded, $desc["FORCE_CSS"], $qedit_orderindex);
                                         }
-                        		$qedit_input[$qedit_nom_col] = ob_get_clean();
+                                        
+                                        
+                        		$qedit_input_arr[$qerow][$qedit_nom_col] = ["input"=>ob_get_clean(), "cols"=>$qecols];
                                         // 
-                                        if($log_input_qedit) $qedit_input[$qedit_nom_col] .= "<pre class='php'>error : ".$log_input_qedit."</pre>";
+                                        if($log_input_qedit) $qedit_input_arr[$qerow][$qedit_nom_col]["input"] .= "<pre class='php'>error : ".$log_input_qedit."</pre>";
                                         
                                         //if($qedit_nom_col=="sub_module_id_3")  die("log : $qedit_nom_col => ".$mode_field_qedit_reason);
                                         
-                                        if($obj->isActive() and $desc["DYNAMIC-HELP"]) $qedit_input[$qedit_nom_col] .= $obj::tooltipText($obj->getHelpFor($nom_col,$lang)); 
+                                        if($obj->isActive() and $desc["DYNAMIC-HELP"]) $qedit_input_arr[$qerow][$qedit_nom_col]["input"] .= $obj::tooltipText($obj->getHelpFor($nom_col,$lang)); 
                                         $start_row = $obj->qeditNum;
-                                        
-                                        $input_html = $qedit_input[$qedit_nom_col];
+                                        /*
+                                        $input_html = $qedit _input[$qedit_nom_col];
                                         if(false)   //  ($objme->isAdmin())  //    
                                         {
                                                 if($type_input_ret=="text")
@@ -155,8 +179,8 @@ foreach($class_db_structure as $nom_col => $desc)
                                         }
                                         else $icon_unifyall = "";
                                         
-                                        if($icon_unifyall) $qedit_input[$qedit_nom_col] = "<table><tr><td>$input_html</td><td>$icon_unifyall</td></tr></table>";
-                                        else  $qedit_input[$qedit_nom_col] = $input_html;
+                                        if($icon_unifyall) $qedit _input[$qedit_nom_col] = "<table><tr><td>$input_html</td><td>$icon_unifyall</td></tr></table>";
+                                        else  $qedit_ input[$qedit_nom_col] = $input_html;*/
                                 }
                                 else
                                 {      
@@ -194,7 +218,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                         }
                                         
                                         
-                                        $qedit_input[$qedit_nom_col] =  "<div class='$display_attribute_RO_class' style='$style_div_form_control'>$display_attribute_RO</div>";
+                                        $qedit_input_arr[$qerow][$qedit_nom_col] =  ["input"=>"<div class='$display_attribute_RO_class' style='$style_div_form_control'>$display_attribute_RO</div>", "cols"=>$qecols];
                                 }
                         }
                         else
@@ -203,7 +227,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                 if(!$wd) $wd = 20;
                                 if(!$hg) $hg = 20;
                                 //$obj->_error("$obj has Attribute $nom_col NotApplicable : ($icon,$textReason)");
-                                $qedit_input[$qedit_nom_col] = "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>";
+                                $qedit_input_arr[$qerow][$qedit_nom_col] = ["input"=>"<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>", "cols"=>$qecols];
                         }
                         
                         
@@ -274,20 +298,20 @@ if(!$obj->HIDE_DISPLAY_MODE)
 
                 if($obj->ENABLE_DISPLAY_MODE_IN_QEDIT)
                 { 
-                        $qedit_input["show"] = "<a href='main.php?Main_Page=afw_mode_display.php&cl=$obj_class&id=$obj_id&currmod=$obj_mod' ><img src='../lib/images/$viewIcon.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='$data_errors'></a>";
+                        $qedit_input_arr[1]["show"] = ["input"=>"<a href='main.php?Main_Page=afw_mode_display.php&cl=$obj_class&id=$obj_id&currmod=$obj_mod' ><img src='../lib/images/$viewIcon.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='$data_errors'></a>", "cols"=>1];
                 }
                 else
                 {
-                        if($viewIcon == "view_error") $qedit_input["show"] = "<img src='../lib/images/error-red.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='$data_errors'>";
-                        else $qedit_input["show"] = "";
+                        if($viewIcon == "view_error") $qedit_input_arr[1]["show"] = ["input"=>"<img src='../lib/images/error-red.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='$data_errors'>", "cols"=>1];
+                        else $qedit_input_arr[1]["show"] = ["input"=>"", "cols"=>1];
                 }
-                $qedit_input["show"] .= $qedit_hidden_pk_input;
+                $qedit_input_arr[1]["show"]["input"] .= $qedit_hidden_pk_input;
              
         }
         else
         {
-                // $qedit_input["show"] = "<img src='./pic/new_qedit_record.png' >";
-                $qedit_input["show"] .= $qedit_hidden_pk_input;
+                
+                $qedit_input_arr[1]["show"]["input"] .= $qedit_hidden_pk_input;
         }
 /*}*/
 
@@ -301,13 +325,58 @@ else $obj_odd_even = "";
 
 if(!$obj->qedit_minibox) 
 { 
-?>
-<tr class="<?=$obj_odd_even?> <?=$obj->getHLClass()?>">
-<?php	
-        list($is_ok, $arrErrors) = $obj->isOk($force=false, $returnErrors=true);
-        //die(var_export($arrErrors,true));
-        foreach($qedit_input as $col => $input_html)
+   for($qerow_num=0;$qerow_num<=2;$qerow_num++)     
+   {
+        if($qerow_exists[$qerow_num])
         {
+                if($header_imbedded)
+                {
+                        if(false)
+                        {
+                        ?>
+                        <tr class="qe-header qerow<?=$qerow_num?> <?=$obj_odd_even?> <?=$obj->getHLClass()?>">
+                        <?php	
+                        }
+                                $total_sahm = 0;
+                                foreach($qedit_input_arr[$qerow_num] as $col => $input_html_row)
+                                {
+                                        $input_html_colspan = $input_html_row["cols"];
+                                        $input_html_colspan_html = "";
+                                        if($input_html_colspan>1) $input_html_colspan_html = "colspan='$input_html_colspan'";
+                                        $orig_nom_col = $qedit_orig_nom_col[$col];
+                                        if($orig_nom_col and ($orig_nom_col!="id") and false)
+                                        {
+                                                $total_sahm += $input_html_row["cols"];
+                                                $desc = $class_db_structure[$orig_nom_col];
+                                                $importance = $obj->importanceCss($orig_nom_col, $desc);                                        
+                                                $class_xqe_prop = "class='col-importance-$importance col-qe header-qe-$orig_nom_col'";
+                                                $col_translated = $qedit_trad_arr[$orig_nom_col];
+                        ?>
+                                     <td <?=$input_html_colspan_html?> <?=$class_xqe_prop?> align="<?=$aligntd?>" ><?=$col_translated?></td>
+                        <?php  
+                                        }                                   
+                                }
+                                if(!$total_sahm) $total_sahm = 1;
+                        if(false)
+                        {
+                        ?>
+                        </tr>
+                        <?php	
+                        }
+                }
+?>
+<tr class="qerow<?=$qerow_num?> <?=$obj_odd_even?> <?=$obj->getHLClass()?> <?=get_class($obj)?>">
+<?php	
+
+
+        list($is_ok, $arrErrors) = $obj->isOk($force=false, $returnErrors=true);
+
+        //die(var_export($arrErrors,true));
+        foreach($qedit_input_arr[$qerow_num] as $col => $input_html_row)
+        {
+             $input_html = $input_html_row["input"];
+             $input_html_colspan = $input_html_row["cols"];
+             $col_sahm = 5*round($input_html_colspan * 20 / $total_sahm); 
              if($tr_obj==$class_tr2) $tr_obj=$class_tr1; else $tr_obj=$class_tr2;
              $odd_even = trim($obj->odd_even);
              
@@ -353,11 +422,11 @@ if(!$obj->qedit_minibox)
              
              if($class_xqe_col) {
                $class_xqe = "xqe_${odd_even}_${class_xqe_col}";
-               $class_xqe_prop = "class='col-importance-$importance $class_xqe col-qe col-qe-$orig_nom_col'";
+               $class_xqe_prop = "class='col-importance-$importance $class_xqe col-qe col-qe-$col_sahm col-qe-$orig_nom_col'";
              }
              else
              {
-               $class_xqe_prop = "class='col-importance-$importance col-qe col-qe-$orig_nom_col'";
+               $class_xqe_prop = "class='col-importance-$importance col-qe col-qe-$col_sahm col-qe-$orig_nom_col'";
              }
              
              
@@ -367,21 +436,47 @@ if(!$obj->qedit_minibox)
              }
              else
              {
+                $input_html_colspan_html = "";
+                if($input_html_colspan>1) $input_html_colspan_html = "colspan='$input_html_colspan'";
+                if($orig_nom_col and ($orig_nom_col!="id"))
+                {
+                        $col_translated = $qedit_trad_arr[$orig_nom_col];
+                        
 ?>
-			<td <?=$class_xqe_prop?> align="<?=$aligntd?>" <?=$css_style?> ><?=$input_html?></td>
+			<td <?=$input_html_colspan_html?> <?=$class_xqe_prop?> align="<?=$aligntd?>" <?=$css_style?> >
+                        <?php 
+                                
+                                if($header_imbedded)
+                                {
+?>
+                        <label class='imbedded-label'><?=$col_translated?></label>
+<?php 
+                                }
+                                echo $input_html;
+                        ?>
+                        </td>
 <?php	
+                }
              }
         }
          
 ?>
 </tr>
 <?php	
+        }
+   }
 }
 else
 {
+        $qedit_input_for_mb = [];
+        for($qerow_num=0;$qerow_num<=2;$qerow_num++)     
+        {
+                foreach($qedit_input_arr[$qerow_num] as $ncol => $qedit_input_row)
+                {
+                        $qedit_input_for_mb[$ncol] = $qedit_input_row["input"];
+                }
+        }
         
-        
-        // die("qedit_input = ".var_export($qedit_input,true)."\n<br> qedit_trad = ".var_export($qedit_trad,true));
         if($obj->getId()>0)
         {
              $minibox_title = $obj->getShortDisplay($lang);
@@ -394,7 +489,7 @@ else
              $minibox_title = $obj->translate('INSERT',$lang,true) ." ". $obj->translate(strtolower("$cl.new"),$lang);
              $templateNum = "2";
         }        
-        $html_minibox_template = AfwShowHelper::genereMiniBoxTemplate($minibox_title,$miniBoxTemplateArr, $qedit_input, $qedit_trad, $obj->qeditNum, $templateNum, $is_disabled);
+        $html_minibox_template = AfwShowHelper::genereMiniBoxTemplate($minibox_title,$miniBoxTemplateArr, $qedit_input_for_mb, $qedit_trad, $obj->qeditNum, $templateNum, $is_disabled);
         echo $html_minibox_template; 
 
 }

@@ -184,8 +184,12 @@ $myMainObject->mode_origin = $mode_origin;
 $myMainObject->return_mode = $return_mode;
 
 // die("qedit myMainObject->fixm_array : ".var_export($myMainObject->fixm_array,true));
+if(($myMainObject) and (!$myMainObject->qeditHeaderFooterEmbedded()))
+{
+    $out_scr .=  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_header_qedit.php");        
+}
+else $out_scr .= "<table class=\"display dataTable afwgrid\" style=\"width: 100%;\" cellspacing=\"3\" cellpadding=\"4\">";
 
-$out_scr .=  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_header_qedit.php");        
 if(!$nb_objs)
 {
     if($myMainObject->no_row_to_qedit_message)
@@ -194,16 +198,17 @@ if(!$nb_objs)
         $out_scr .= $not_found_mess;
     else
         $out_scr .= "لا يوجد سجلات";
-        
-    $out_scr .=  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_footer_qedit.php");
+    
+    if(($myMainObject) and (!$myMainObject->qeditHeaderFooterEmbedded()))
+    {
+        $out_scr .=  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_footer_qedit.php");
+    }
+    
     $datatable_on = true;
     $mode_hijri_edit = true;       	
 }
 else
 {
-        
-        
-        
         $num = 0;
         $tr_odd_even = "odd";
         $myMainObject->qeditSum = array();
@@ -234,9 +239,12 @@ else
             }
         }
 
-        //AfwSession::hzmLog("الله المستعان ".date("H:i:s")." before AfwShowHelper::showObject( ... afw_template_footer_qedit.php)","FOOTER");
-        $out_scr .= AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_footer_qedit.php", $color = false, $childrens = false, $decode = true, $virtuals = "", $indent = "", $data_template);
-        
+        //AfwSession::hzmLog("الله المستعان ".date("H:i:s")." before AfwShowHelper::showObject( ... afw_template_footer_qedit.php)","FOOTER");        
+        if(($myMainObject) and (!$myMainObject->qeditHeaderFooterEmbedded()))
+        {
+            $out_scr .= AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_footer_qedit.php", $color = false, $childrens = false, $decode = true, $virtuals = "", $indent = "", $data_template);
+        }
+        else $out_scr .= "</table>";
         
         
         

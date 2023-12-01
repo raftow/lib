@@ -691,24 +691,26 @@ class AFWRoot {
 
                 if(!$message)
                 {
+                        $crst = md5("crst".date("YmdHis"));
                         $message = "<html>
                                 <head>
                                 <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>
                                 <link rel='stylesheet' href='../lib/css/font-awesome.min-4.3.css'>
                                 <link rel='stylesheet' href='../lib/css/font-awesome.min.css'>
                                 <link rel='stylesheet' href='../lib/css/menu_ar.css'>
-                                <link rel='stylesheet' href='../lib/css/front-application.css'>
-                                <link rel='stylesheet' href='../lib/css/front_app.css'>
+                                <link rel='stylesheet' href='../lib/css/front-application.css?crst=$crst'>
+                                <link rel='stylesheet' href='../lib/css/hzm-v001.css?crst=$crst'>                                
+                                <link rel='stylesheet' href='../lib/css/front_app.css?crst=$crst'>
                                 <link rel='stylesheet' href='../lib/css/material-design-iconic-font.min.css'>
                                 <link rel='stylesheet' href='../lib/bootstrap/bootstrap-v3.min.css'>
                                 <link rel='stylesheet' href='../lib/bsel/css/bootstrap-select.css'>
                                 <link rel='stylesheet' href='../lib/css/dropdowntree.css' />
                                 <link href='../lib/css/def_ar_front.css' rel='stylesheet' type='text/css'>
-                                <link href='../lib/css/simple/style_common.css' rel='stylesheet' type='text/css'>
-                                <link href='../lib/css/simple/style_ar.css' rel='stylesheet' type='text/css'>
-                                <link href='../lib/css/simple/front_menu.css' rel='stylesheet' type='text/css'>
+                                <link href='../lib/css/simple/style_common.css?crst=$crst' rel='stylesheet' type='text/css'>
+                                <link href='../lib/css/simple/style_ar.css?crst=$crst' rel='stylesheet' type='text/css'>
+                                <link href='../lib/css/simple/front_menu.css?crst=$crst' rel='stylesheet' type='text/css'>
                                 <link href='../../external/css/common.css' rel='stylesheet' type='text/css' type='text/css'>
-                                <link href='./css/module.css' rel='stylesheet' type='text/css' type='text/css'>
+                                <link href='./css/module.css?crst=$crst' rel='stylesheet' type='text/css' type='text/css'>
                                 <link href='../lib/skins/square/green.css' rel='stylesheet' type='text/css'>
                                 <link href='../lib/skins/square/red.css' rel='stylesheet' type='text/css'>
 
