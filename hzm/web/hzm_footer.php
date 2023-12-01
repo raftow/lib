@@ -174,8 +174,8 @@ include_once("hzm_footer_features_js.php");
         }
         else
         {
-          $quick_links_arr = $objme->getMyQuickLinks($lang);
-          $tocheck = "from database objme->getMyQuickLinks( ... )";
+          $quick_links_arr = $objme->getMyQuickLinks($lang, $MODULE);
+          $tocheck = "from database objme->getMyQuickLinks($lang, $MODULE)";
         } 
     }
      
@@ -183,7 +183,7 @@ include_once("hzm_footer_features_js.php");
     {
       $quick_links_title = AfwSession::config("quick_links_title", "روابط سريعة");
 ?>
-					<div class="quick-links column column-block padding-left-1">
+					<div class="quick-links column column-block padding-left-1 module-<?=$MODULE?>">
 						<h3><?php echo $quick_links_title ?></h3>
 						<ul class="row small-up-1 medium-up-1 large-up-2 whiteFont footerlinks padding-right-2">
 <?php
@@ -192,9 +192,12 @@ include_once("hzm_footer_features_js.php");
       foreach($quick_links_arr as $quick_link)
       {
           if(!$quick_link["target"]) $quick_link["target"] = "new";
+          if($quick_link["target"] != $MODULE)
+          {
 ?>                                                
         <li class="column column-block"><a target="page_<?php echo $quick_link["target"]?>" href="<?php echo $quick_link["url"]?>" class="whiteFont"><?php echo $quick_link["name_$lang"]?></a></li>
 <?php
+          }
       }
 ?>   
 						</ul>					  

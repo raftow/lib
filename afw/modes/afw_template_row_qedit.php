@@ -344,16 +344,19 @@ if(!$obj->qedit_minibox)
                                         $input_html_colspan_html = "";
                                         if($input_html_colspan>1) $input_html_colspan_html = "colspan='$input_html_colspan'";
                                         $orig_nom_col = $qedit_orig_nom_col[$col];
-                                        if($orig_nom_col and ($orig_nom_col!="id") and false)
+                                        if($orig_nom_col and ($orig_nom_col!="id"))
                                         {
                                                 $total_sahm += $input_html_row["cols"];
                                                 $desc = $class_db_structure[$orig_nom_col];
                                                 $importance = $obj->importanceCss($orig_nom_col, $desc);                                        
                                                 $class_xqe_prop = "class='col-importance-$importance col-qe header-qe-$orig_nom_col'";
                                                 $col_translated = $qedit_trad_arr[$orig_nom_col];
+                                                if(false)
+                                                {
                         ?>
                                      <td <?=$input_html_colspan_html?> <?=$class_xqe_prop?> align="<?=$aligntd?>" ><?=$col_translated?></td>
                         <?php  
+                                                }
                                         }                                   
                                 }
                                 if(!$total_sahm) $total_sahm = 1;
