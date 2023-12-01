@@ -310,7 +310,7 @@ if(!$obj->qedit_minibox)
    }
    elseif(count($other_links)>0)
    {
-      if(count($other_links)>3)
+      if(count($other_links)>2)
       {
         $key_mod_tr = $obj->translateOperator("other_functions",$lang);
            
