@@ -112,7 +112,7 @@ foreach($class_db_structure as $key => $structure)
                    }
                    
                               
-                   if(count($auth_links)>3)
+                   if(count($auth_links)>2)
                    {
                            // use bootstrap design version if many links
                            $btns[$key] =  "<div class='btn-group'>";

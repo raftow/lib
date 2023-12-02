@@ -385,7 +385,7 @@ foreach($class_db_structure as $nom_col => $desc)
 
                            // ***************************
                            $other_links = $obj->getOtherLinksForUser($key_mod, $objme, $otherLink_genereLog);
-                           if(count($other_links)>3)
+                           if(count($other_links)>2)
                            {
                                    // use bootstrap design version if many links
                                    $data[$nom_col]["btns"] .=  "<div class='btn-group'>";
@@ -408,10 +408,7 @@ foreach($class_db_structure as $nom_col => $desc)
                            }
                            else
                            {
-                                   $data[$nom_col]["btns"] .=  "<table class='table_comp'>";
-                                   $data[$nom_col]["btns"] .= "<tr class='table_comp'>";
-                                   
-                                   $col_num = 0;
+                                   //$col_num = 0;
                                    foreach($other_links as $k => $other_link)
                                    {
                                         $o_url = $other_link["URL"];
@@ -422,17 +419,11 @@ foreach($class_db_structure as $nom_col => $desc)
                                         $o_class = $other_link["CSS-CLASS"];
                                         $o_color = $other_link["COLOR"];
                                         if(!$o_color) $o_color = "gray";
-                                        if($col_num == 3)
-                                        {
-                                                $data[$nom_col]["btns"] .= "</tr>";
-                                                $data[$nom_col]["btns"] .= "<tr class='table_comp'>";
-                                                $col_num = 0;
-                                        }
-                                        $data[$nom_col]["btns"] .= "<td><a href='$o_url' $o_target_html><span class='${o_color}btn submit-btn fright $o_class'>$o_tit</span></a></td>";
                                         
-                                        $col_num++;
-                                  }
-                                  $data[$nom_col]["btns"] .= "</tr></table>";
+                                        $data[$nom_col]["btns"] .= "<a href='$o_url' $o_target_html><span class='${o_color}btn submit-btn fright $o_class'>$o_tit</span></a>\n";
+                                        
+                                        //$col_num++;
+                                  }                                  
                            }
 
                            if($otherLink_genereLog)
