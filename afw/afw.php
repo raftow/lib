@@ -3022,6 +3022,11 @@ class AFWObject extends AFWRoot
         return $this->isEmpty() or $this->considerEmpty();
     }
 
+    public final function isFilled()
+    {
+        return !$this->isConsideredEmpty();
+    }
+
     public function isEmpty()
     {
         return !$this->getId();
@@ -9723,9 +9728,7 @@ class AFWObject extends AFWRoot
 
                                 $data_to_display = $html; //." data=".var_export($data,true)." header=".var_export($header_trad,true)
                             }
-                        } elseif (
-                            strtoupper($structure['FORMAT']) == 'RETRIEVE'
-                        ) {
+                        } elseif (strtoupper($structure['FORMAT']) == 'RETRIEVE') {
                             reset($items_objs);
                             $first_item = current($items_objs);
                             $data_to_display = '';
@@ -9817,6 +9820,7 @@ class AFWObject extends AFWRoot
                                         $objme = AfwSession::getUserConnected(),
                                         $options
                                     );
+                                    
                                     if ($html_display[$group_retieve] == '') {
                                         if ($structure['EMPTY-ITEMS-MESSAGE']) {
                                             $empty_code =
@@ -9824,7 +9828,7 @@ class AFWObject extends AFWRoot
                                                     'EMPTY-ITEMS-MESSAGE'
                                                 ];
                                         } else {
-                                            $empty_code = 'atr-empty';
+                                            $empty_code = $key.'-empty';
                                         }
 
                                         $html_display[$group_retieve] =
@@ -9887,6 +9891,23 @@ class AFWObject extends AFWRoot
                                     $data_to_display .= $div_tabs;
                                 }
                                 // if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("data_to_display : <br> ".var_export($data_to_display,true));
+                            }
+                            else
+                            {
+
+                                    if ($structure['EMPTY-ITEMS-MESSAGE']) {
+                                        $empty_code =$structure['EMPTY-ITEMS-MESSAGE'];
+                                    } else {
+                                        $empty_code = $key.'-empty';
+                                    }
+
+                                    $empty_mess = $this->translate($empty_code,$langue);
+                                    if($empty_mess == $empty_code)
+                                    {
+                                        $empty_mess = $this->translate("atr-empty",$langue);
+                                    }
+
+                                    $data_to_display ="<div class='empty_message'>" .$empty_mess.'</div>';
                             }
                         } elseif (
                             strtoupper($structure['FORMAT']) == 'MINIBOX'

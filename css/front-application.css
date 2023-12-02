@@ -4524,3 +4524,49 @@ th.col-qe {
     background-color: white;
 }
 
+.submit-btn {
+    width: 48% !important;
+    margin-right: 1% !important;
+    float: right;
+    margin-left: 1% !important;
+}
+
+@media (max-width:700px)
+{
+    .editcard {
+        width: 100%;
+    }    
+
+    table.dataTable thead th, table.dataTable thead td, 
+    table.dataTable tfoot th, table.dataTable tfoot td, 
+    table.dataTable tbody td {
+        font-size: 80% !important;
+    }
+
+    .submit-btn {
+        width: 80% !important;
+        margin-right: 10% !important;
+        float: right;
+        margin-left: 10% !important;
+    }
+}
+
+@media (max-width:420px)
+{
+    .editcard {
+        width: 100%;
+    }    
+
+    table.dataTable thead th, table.dataTable thead td, 
+    table.dataTable tfoot th, table.dataTable tfoot td, 
+    table.dataTable tbody td {
+        font-size: 80% !important;
+    }
+
+    .submit-btn {
+        width: 100% !important;
+        margin-right: 0 !important;
+        float: right;
+        margin-left: 0 !important;
+    }
+}

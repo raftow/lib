@@ -212,6 +212,19 @@ class AfwStructureHelper extends AFWRoot
             $struct['READONLY'] = true;
         }
 
+        foreach($struct as $col_struct => $value_struct)
+        {
+            if(is_string($value_struct))
+            {
+                if(AfwStringHelper::stringStartsWith($value_struct,'::'))
+                {
+                    $methodStructEval = substr($value_struct,2);
+                    $struct[$col_struct] = $object->$methodStructEval();
+                }
+            }
+            
+        }
+
         return AfwStructureHelper::repareStructure($struct);
     }
 

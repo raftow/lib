@@ -412,7 +412,7 @@ input,select,textarea,li {
 
 
 .collapsed{
-    color: #8e0928 !important
+    color: #8e0928 !important;
     text-decoration: none;
     font-weight: normal;
     font-size: 22px; 
@@ -420,7 +420,7 @@ input,select,textarea,li {
 }
 
 .expand{
-    color: #8e0928 !important
+    color: #8e0928 !important;
     text-decoration: none;
     font-weight: normal;
     font-size: 22px; 
@@ -822,7 +822,7 @@ input,select,textarea,li {
 
 .hzmSteps ul li {
     margin-top: 8px;
-    margin-top: 8px!ie;
+    margin-top: 8px;
     position: relative;
     float: right;
     list-style: none;
@@ -987,7 +987,6 @@ input[type="text"], textarea {
     float: right !important;
     margin-bottom: -1px;
     margin-top: 20px;
-    margin-top: 20px!ie;
     border-color: rgba(199, 198, 198, 0.52);
     background-color: rgba(221, 222, 223, 0.34);
     /* color: black; */
@@ -1021,9 +1020,6 @@ input[type="text"], textarea {
 .submit-btn {
     display: inline-block;
     padding: 7px 0px !important;
-    width: 100%;
-    min-width: 240px;
-    max-width: 380px;
     margin-bottom: 0;
     line-height: 1.42857143;
     text-align: center !important;
@@ -1039,7 +1035,6 @@ input[type="text"], textarea {
     background-image: none;
     border: 1px solid transparent;
     border-radius: 0px;
-    margin-right: 5px !important;
     margin-top: 3px;
 }
 
@@ -1615,7 +1610,6 @@ table.dataTable tfoot th, table.dataTable tfoot td {
 }
 table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
 	cursor: pointer;
-	*cursor: hand
 }
 table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc, table.dataTable thead .sorting_asc_disabled, table.dataTable thead .sorting_desc_disabled {
 	background-repeat: no-repeat;
@@ -1820,8 +1814,7 @@ table.dataTable, table.dataTable th, table.dataTable td {
 .dataTables_wrapper {
 	position: relative;
 	clear: both;
-	*zoom: 1;
-	zoom: 1
+	zoom: 1;
 }
 .dataTables_wrapper .dataTables_length {
 	float: left;
@@ -1855,7 +1848,7 @@ table.dataTable, table.dataTable th, table.dataTable td {
 	text-align: center;
 	text-decoration: none !important;
 	cursor: pointer;
-	*cursor: hand;
+	cursor: hand;
 	color: #333 !important;
 	border: 1px solid transparent;
 	border-radius: 2px;
@@ -1931,7 +1924,7 @@ table.dataTable, table.dataTable th, table.dataTable td {
 	clear: both
 }
 .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
-	*margin-top: -1px;
+	margin-top: -1px;
 	-webkit-overflow-scrolling: touch
 }
 .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td {
@@ -2070,7 +2063,7 @@ table.dataTable, table.dataTable th, table.dataTable td {
 }
 
 .simple_grid tr:hover td {
-	border-color: #00;
+	border-color: #000;
 }
 
 .grid tr.item td {            
@@ -3262,7 +3255,7 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
 	-moz-transition: background-color .2s ease-in-out, -moz-transform .1s ease-in-out;
 	-o-transition: background-color .2s ease-in-out, -o-transform .1s ease-in-out;
 	transition: background-color .2s ease-in-out, transform .1s ease-in-out;
-	text-decoration: none!important
+	text-decoration: none!important;
         min-width:100% !important;
         width:100%;
         height: 128px;
@@ -3296,7 +3289,8 @@ input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer
     -moz-transition: background-color .2s ease-in-out, -moz-transform .1s ease-in-out;
     -o-transition: background-color .2s ease-in-out, -o-transform .1s ease-in-out;
     transition: background-color .2s ease-in-out, transform .1s ease-in-out;
-    text-decoration: none!important min-width:100% !important;
+    text-decoration: none!important;
+    min-width:100% !important;
     width: 100%;
 }
 
@@ -4944,9 +4938,12 @@ nav.navbar.navbar-inverse {
 }
 
 @media (max-width:767px)
-ul.nav.navbar-nav {
-    width: 95% !important; 
+{
+    ul.nav.navbar-nav {
+        width: 95% !important; 
+    }
 }
+
 
 .btns-qsearch {
     width: 90%;

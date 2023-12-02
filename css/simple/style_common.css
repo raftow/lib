@@ -1342,9 +1342,6 @@ input[type="text"], textarea {
 .submit-btn {
     display: inline-block;
     padding: 7px 0px !important;
-    width: 100%;
-    min-width: 240px;
-    max-width: 680px;
     margin-bottom: 0;
     line-height: 1.42857143;
     text-align: center !important;
@@ -1360,7 +1357,6 @@ input[type="text"], textarea {
     background-image: none;
     border: 1px solid transparent;
     border-radius: 0px;
-    margin-right: 5px !important;
     margin-top: 3px;
     font-family: menu;
 }
@@ -6397,3 +6393,4 @@ label.error>span {
 .afw_tech {
     font-family: arial;
 }
+
