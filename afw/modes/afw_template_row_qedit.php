@@ -95,7 +95,8 @@ foreach($class_db_structure as $nom_col => $desc)
                 ob_start();
                 $type_input_ret = hidden_input("id_" . $obj_qeditNum, [], $obj->id, $obj);
                 $qedit_hidden_pk_input = ob_get_clean();
-                $obj_id_display = "☆";
+                if($obj->isConsideredEmpty()) $obj_id_display = "☆";
+                else $obj_id_display = "★";
                 $qedit_input_arr[1]["id_" . $obj_qeditNum] = ["input"=>$qedit_hidden_pk_input.$obj_id_display, "cols"=>0];
         }
 
