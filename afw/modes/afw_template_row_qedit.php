@@ -295,7 +295,7 @@ if(!$obj->HIDE_DISPLAY_MODE)
                 else
                 {
                         $viewIcon = "view_me";
-                        $data_errors = "لم يتم تفعيل التثبت من الأخطاء في التعديل السريع"; 
+                        if(!$header_imbedded) $data_errors = "لم يتم تفعيل التثبت من الأخطاء في التعديل السريع"; 
                 }
 
                 if($obj->ENABLE_DISPLAY_MODE_IN_QEDIT)
