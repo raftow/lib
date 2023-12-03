@@ -265,7 +265,7 @@ foreach($class_db_structure as $nom_col => $desc)
 because we need the hidden id  ($qedit_hidden_pk_input)
 if(!$obj->HIDE_DISPLAY_MODE) 
 { */
-        if($obj_id>0) 
+        if(($obj->PK_MULTIPLE and $obj_id) or ($obj_id>0)) 
         {
                 if(!$obj->isActive())
                 {
@@ -281,7 +281,8 @@ if(!$obj->HIDE_DISPLAY_MODE)
                                 $data_errors = implode(' / ', $data_errors_arr);
                                 if((strlen($data_errors)>596) or (count($data_errors_arr)>18)) 
                                 {
-                                        $data_errors = "أخطاء كثيرة";
+                                        $data_errors_sub = array_values($data_errors_arr);
+                                        $data_errors = "أخطاء كثيرة ومنها : " . implode(' / ', array_slice($data_errors_sub, 0, 3));
                                         $viewIcon = "view_error";
                                 }
                         } 
@@ -480,6 +481,18 @@ if(!$obj->qedit_minibox)
 </tr>
 <?php	
         }
+   }
+
+   if($data_errors)
+   {
+        $total_cols = count($qedit_input_arr[1]);
+?>
+        <tr>
+                <td class='error' colspan='<?php echo $total_cols ?>'>
+                        <?php echo $data_errors ?>
+                </td>
+        </tr>
+<?php        
    }
 }
 else
