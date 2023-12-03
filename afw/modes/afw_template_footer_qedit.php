@@ -333,7 +333,7 @@ if(!$obj->qedit_minibox)
       }
       else
       {
-        die(var_export($other_links,true));
+        //die(var_export($other_links,true));
           // $html_btns =  "<table class='table_comp'>";
           // $html_btns .= "<tr class='table_comp'>";
               
