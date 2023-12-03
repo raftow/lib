@@ -10109,7 +10109,7 @@ class AFWObject extends AFWRoot
                                 !isset($structure['VIEW-ICON']) or
                                 $structure['VIEW-ICON']
                             ) {
-                                $first_item->viewIcon = true;
+                                $first_item->viewIcon = ($structure['VIEW-ICON'] ? $structure['VIEW-ICON'] : 1);
                             }
                             if ($structure['SHOW-ID']) {
                                 $first_item->showId = true;

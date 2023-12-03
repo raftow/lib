@@ -74,7 +74,7 @@ class AfwWizardHelper extends AFWRoot
                         null,
                         $structure
                     );
-                    return $writeable;
+                    return $writeable ? 1 : 0;
                 }
             }
 
@@ -86,14 +86,14 @@ class AfwWizardHelper extends AFWRoot
             }
 
             if (!isset($structure["$icon-ICON"])) {
-                return $icon == 'EDIT' or $icon == 'VIEW' or $icon == 'DELETE';
+                return (($icon == 'EDIT' or $icon == 'VIEW' or $icon == 'DELETE') ? 1 : 0);
             }
             if ($structure["$icon-ICON"]) {
-                return $structure["$icon-ICON"];
+                return ($structure["$icon-ICON"]>1) ? $structure["$icon-ICON"] : 1; // "icon=$icon struct[$attribute]=".var_export($structure,true);
             }
             //@@@todo if($structure["SHOW-ID"]) $first_item->showId = true;
         }
 
-        return false;
+        return 0;
     }
 }

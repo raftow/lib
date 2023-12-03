@@ -186,18 +186,21 @@ class AfwShowHelper
                 if (count($header) != 0) {
                     $tuple['description'] = $liste_obj[$id]->__toString();
                     foreach ($header as $col => $desc) {
+                        $currstep = $desc["GO-TO-STEP"];
+                        if(!$currstep) $currstep = $val->getDefaultStep();
+                        if(!$currstep) $currstep = 1;
                         if ($desc == 'AAA') {
                         // $tuple["description"] = $liste_obj[$id]->__toString();
                         }
                         elseif ($col == 'عرض') {
                             $tuple[
                                 'عرض'
-                                ] = "<a $target href='main.php?Main_Page=afw_mode_display.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id' ><img src='../lib/images/view_ok.png' width='24' heigth='24'></a>";
+                                ] = "<a $target href='main.php?Main_Page=afw_mode_display.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='../lib/images/view_ok.png' width='24' heigth='24'></a>";
                         }
                         elseif ($col == 'تعديل') {
                             $tuple[
                                 'تعديل'
-                                ] = "<a target=\"_new\" href='main.php?Main_Page=afw_mode_edit.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id' ><img src='../lib/images/square.png' width='24' heigth='24'></a>";
+                                ] = "<a target=\"_new\" href='main.php?Main_Page=afw_mode_edit.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='../lib/images/square.png' width='24' heigth='24'></a>";
                         }
                         elseif ($col == 'مرفقات') {
                             $attach_url = $liste_obj[$id]->getAttachUrl();
@@ -712,13 +715,13 @@ AFWRoot::dd("getRetrieveCols($mode) with hide_retrieve_cols :".var_export($hide_
         if (!$mode_force_cols) {
             $del_level = $obj->del_level;
             if ($obj->viewIcon) {
-                $header['عرض'] = ['TYPE' => 'SHOW'];
+                $header['عرض'] = ['TYPE' => 'SHOW', 'GO-TO-STEP'=>$obj->viewIcon];
+            }
+            if ($obj->editIcon) {
+                $header['تعديل'] = ['TYPE' => 'EDIT', 'GO-TO-STEP'=>$obj->editIcon];
             }
             if ($obj->deleteIcon) {
                 $header['حذف'] = ['TYPE' => 'DEL', 'DEL_LEVEL' => $del_level];
-            }
-            if ($obj->editIcon) {
-                $header['تعديل'] = ['TYPE' => 'EDIT'];
             }
         }
         //else $obj::lightSafeDie("mode_force_cols");
@@ -889,17 +892,20 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                         $data_errors = 'لم يتم تفعيل التثبت من الأخطاء لهذا الكيان';
                                                 }
                                             }
-
+                                            $currstep = $desc["GO-TO-STEP"];
+                                            if(!$currstep) $currstep = $val->getDefaultStep();
+                                            if(!$currstep) $currstep = 1;
                                             $val_id = $val->getId();
                                             $val_class = $val->getMyClass();
                                             $val_currmod = $val->getMyModule();
                                             $tuple[$col] =
-                                                "<a href='main.php?Main_Page=afw_mode_display.php&cl=$val_class&currmod=$val_currmod&id=$val_id' ><img src='../lib/images/$viewIcon.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='" .
-                                                htmlentities($data_errors) .
+                                                "<a href='main.php?Main_Page=afw_mode_display.php&cl=$val_class&currmod=$val_currmod&id=$val_id&currstep=$currstep' ><img src='../lib/images/$viewIcon.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='" .
+                                                htmlentities($data_errors) . // var_export($desc,true).
                                                 "'></a>";
                                             break;
                                         case 'EDIT':
-                                            $currstep = $val->getDefaultStep();
+                                            $currstep = $desc["GO-TO-STEP"];
+                                            if(!$currstep) $currstep = $val->getDefaultStep();
                                             if(!$currstep) $currstep = 1;
                                             $val_id = $val->getId();
                                             // if(!is_numeric($val_id)) die("val object export = ".var_export($val,true).", val->getId() => $val_id");
