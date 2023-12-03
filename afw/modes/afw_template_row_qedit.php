@@ -289,7 +289,7 @@ if(!$obj->HIDE_DISPLAY_MODE)
                         else
                         {
                                 $viewIcon = "view_ok";
-                                $data_errors = "لا يوجد أخطاء"; 
+                                if(!$header_imbedded) $data_errors = "لا يوجد أخطاء"; 
                         } 
                 }
                 else
