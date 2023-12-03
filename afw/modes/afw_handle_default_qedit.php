@@ -33,7 +33,8 @@ for($i=0;$i<$nb_objs;$i++)
 {
         $pki = "id_$i";
         $id    = $_POST[$pki];
-        $obj = new $class();        
+        $obj = new $class(); 
+        $header_imbedded = $obj->qeditHeaderFooterEmbedded();       
         $is_load = false;
         $unique_pk_id = (is_numeric($id) && ($id>0));
         // if($id == 6082) die("obj $i of $class class, id ='$id' will be loaded unique_pk_id = $unique_pk_id");
@@ -70,7 +71,8 @@ for($i=0;$i<$nb_objs;$i++)
                 
                 //if($nom_col=="owner_id" and $i==1) die("owner_id $i = ".$_POST[$qedit_nom_col]);
                 $yn_checkbox = (($desc["TYPE"]=="YN") and ($desc["CHECKBOX"]));
-                if((isset($_POST[$qedit_nom_col]) or $yn_checkbox) and ($_POST[$nom_col."_on"] or $is_fixm_col)) 
+                $nom_col_on = $_POST[$nom_col."_on"];
+                if((isset($_POST[$qedit_nom_col]) or $yn_checkbox) and ($nom_col_on or $is_fixm_col or $header_imbedded)) 
                 {
         		
                         if(is_array($_POST[$qedit_nom_col]))
@@ -162,7 +164,7 @@ for($i=0;$i<$nb_objs;$i++)
                                 // if($nom_col=="owner_id" and $i==1) echo "owner_id $i => before set $obj val of $nom_col = ".$obj->getVal($nom_col);
                                 if(($nom_col!="id") and ($nom_col!=$obj->getPKField())) $obj->set($nom_col, $val);
                                 // if($nom_col=="owner_id" and $i==1) echo "owner_id $i =>  after set $obj val of $nom_col = ".$obj->getVal($nom_col);
-                                //if($nom_col=="owner_id" and $i==1) die("owner_id $i => $obj -> setted ($nom_col, $val) ");
+                                // if($nom_col=="main_chapter_id" and $i==0) die("$nom_col $i => obj => setted ($nom_col, $val) ");
                         }
                         else
                         {
@@ -181,6 +183,10 @@ for($i=0;$i<$nb_objs;$i++)
                         
         
         	}
+                else
+                {
+                        // if($nom_col=="main_chapter_id" and $i==0) die("(nom_col_on=$nom_col_on or is_fixm_col=$is_fixm_col) and (yn_checkbox=$yn_checkbox or _POST[$qedit_nom_col]=".$_POST[$qedit_nom_col].")");
+                }
         	
         }
         // recalculer $fixm en fonction de $fixm_array
@@ -232,15 +238,19 @@ for($i=0;$i<$nb_objs;$i++)
                         }         
                         //AFWDebugg::log("insert row id $id updated_nb_objs become $updated_nb_objs");
                 }
+                elseif($i==0)
+                {
+                        // die(var_export($obj, true));
+                }
         }
         else
         {
                 // if($nom_col=="owner_id") echo("owner_id $i => before update updated_nb_objs = $updated_nb_objs ");
                 $obj->sql_action = "update";
                 $obj->sql_info = "qedit handle row num $i ";
-                $updated_nb_objs += $obj->update();
-                // if($nom_col=="owner_id") echo("owner_id $i => after update updated_nb_objs = $updated_nb_objs ");
-                // if($nom_col=="owner_id" and $i==4) die(" -- stopped by rafik --");
+                $nb_rec_updated = $obj->update();
+                $updated_nb_objs += $nb_rec_updated;
+                // if(!$nb_rec_updated and $i==0) die(" -- stopped by rafik -- obj = ".var_export($obj,true));
                 //AFWDebugg::log("update row id $id updated_nb_objs become $updated_nb_objs");
         }
         	

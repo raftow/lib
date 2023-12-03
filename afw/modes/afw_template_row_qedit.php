@@ -355,7 +355,10 @@ if(!$obj->qedit_minibox)
                                                 if(false)
                                                 {
                         ?>
-                                     <td <?=$input_html_colspan_html?> <?=$class_xqe_prop?> align="<?=$aligntd?>" ><?=$col_translated?></td>
+                                     <td <?=$input_html_colspan_html?> <?=$class_xqe_prop?> align="<?=$aligntd?>" >
+                                        <?=$col_translated?>
+                                        <!-- input type="hidden" name="<?=$orig_nom_col?>_on" value="1" -->
+                                     </td>
                         <?php  
                                                 }
                                         }                                   
