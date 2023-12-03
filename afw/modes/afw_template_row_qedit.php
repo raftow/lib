@@ -327,6 +327,18 @@ else $obj_odd_even = "";
 
 if(!$obj->qedit_minibox) 
 { 
+        if($data_errors)
+        {
+             $total_cols = count($qedit_input_arr[1]);
+?>
+             <tr>
+                     <td class='error' colspan='<?php echo $total_cols ?>'>
+                             <?php echo $data_errors ?>
+                     </td>
+             </tr>
+<?php        
+        }    
+            
    for($qerow_num=0;$qerow_num<=2;$qerow_num++)     
    {
         if($qerow_exists[$qerow_num])
@@ -486,17 +498,7 @@ if(!$obj->qedit_minibox)
         }
    }
 
-   if($data_errors)
-   {
-        $total_cols = count($qedit_input_arr[1]);
-?>
-        <tr>
-                <td class='error' colspan='<?php echo $total_cols ?>'>
-                        <?php echo $data_errors ?>
-                </td>
-        </tr>
-<?php        
-   }
+   
 }
 else
 {
