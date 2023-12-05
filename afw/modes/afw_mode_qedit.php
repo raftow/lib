@@ -47,7 +47,7 @@ if(!$currmod)
 
 // this method is bad we should find a way to make a 'special log' inside another var other than log var
 // because it clear important sql log
-$log = AfwSession::getLog();
+$log = AfwSession::getLog("iCanDo");
 $can = $objme->iCanDoOperationOnObjClass($myMainObject,"qedit");
 $myMainObjectClass = get_class($myMainObject); 
 $report_can_qedit = AfwSession::getLog("iCanDo");

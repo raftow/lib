@@ -334,7 +334,7 @@ class AFWRoot {
                 $message .= "</pre>\n";
                 if(!$light)
                 {
-                        if(class_exists("AfwSession")) $message .= AfwSession::getLog();
+                        if(class_exists("AfwSession")) $message .= AfwSession::get Log();
                 }
                 
 
