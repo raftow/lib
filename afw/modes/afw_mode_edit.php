@@ -102,7 +102,7 @@ else
     $myObj_loaded = false;
 }
 // very bad it erase all log find better solution (named log) 
-$log = AfwSession::getLog();
+$log = AfwSession::getLog("iCanDo");
 $can = ($objme and $objme->iCanDoOperationOnObjClass($myObj,"edit"));
 $myObjClass = get_class($myObj); 
 $report_can_edit = AfwSession::getLog("iCanDo");
