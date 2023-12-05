@@ -1234,9 +1234,10 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
         //die("dataImportance=".var_export($dataImportance,true));
         global $datatable_on_components,
         $datatable_on,
-        $styled_data_arr,
-        $total_cols,
+        $styled_data_arr,        
         $datatables_arr;
+
+        $total_cols = [];
 
         $id_prop = '';
         $html = '';

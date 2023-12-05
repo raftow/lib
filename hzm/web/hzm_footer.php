@@ -328,6 +328,7 @@ if($_GET["tipofday"]==1)
           AfwSession::hzmLog("end of footer-include $duree_ms milli-sec", $MODULE);
 
           echo "<div id='analysis_log'><div id=\"analysis_log\"><div class=\"fleft\"><h1><b>System LOG activated :</b></h1></div><br><br>";
+          echo "_sql_picture=".var_export($_sql_picture, true)."<br>";
           echo AfwSession::getLog();
           
           if($objme)
