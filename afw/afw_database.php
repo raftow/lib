@@ -371,7 +371,7 @@ class AfwDatabase extends AFWRoot
                     AfwSession::sqlLog($information, $this_module);
                     //if(contient($sql_query, "INSERT INTO")) die("INSERT INTO logged"); // AfwSession::debuggLog();
 
-                    if($nb_queries_executed==3) die("nb_queries_executed = $nb_queries_executed information = $information log = ".AfwSession::getLog());
+                    //if($nb_queries_executed==3) die("nb_queries_executed = $nb_queries_executed information = $information log = ".AfwSession::getLog());
                 } else {
                     //AfwSession::sqlLog("LOG-QUERY : ".$sql_query, $this_module);
                     
