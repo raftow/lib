@@ -43,6 +43,7 @@ $column_order = 0;
 
 foreach($class_db_structure as $nom_col => $desc)
 {
+        if($desc['QEDIT-TYPE']) $desc['TYPE'] = $desc['QEDIT-TYPE'];
         $nom_col_short = "$nom_col.short";
         $trad_col_short  = $obj->translate($nom_col_short,$lang);
         if($trad_col_short == $nom_col_short) $qedit_trad_arr[$nom_col] = $obj->translate($nom_col,$lang);
@@ -52,7 +53,7 @@ foreach($class_db_structure as $nom_col => $desc)
         $isQuickEditableAttribute = $obj->isQuickEditableAttribute($nom_col, $desc, $submode);
         $isFixmCol = $fixm_array[$nom_col];
         
-        // $log_input_qedit = "$submode=[$fgroup] for field=[$nom_col] (isQuickEditableAttribute=$isQuickEditableAttribute) or isFixmCol=$isFixmCol";
+        // $log_input_qedit = "rafik 00125 $submode=[$fgroup] for field=[$nom_col] (isQuickEditableAttribute=$isQuickEditableAttribute) or isFixmCol=$isFixmCol";
         
         if(($submode=="FGROUP") and $fgroup)
         {
@@ -61,11 +62,13 @@ foreach($class_db_structure as $nom_col => $desc)
                $mode_field_qedit = (($isQuickEditableAttribute and $good_fgroup_for_field) or $isFixmCol);
                
                //$log_input_qedit = ""; 
-               
-               if(false and ($fgroup=="modes_list") and ($nom_col=="answer_module_id"))
+               /*
+               if((!$mode_field_qedit) and ($fgroup=="mainwork") and ($nom_col=="study_program_id"))
                {
-                    $log_input_qedit = "$submode=[$fgroup] for field=[$nom_col] (isQuickEditableAttribute=$isQuickEditableAttribute and good_fgroup_for_field=$good_fgroup_for_field) or isFixmCol=$isFixmCol";
-               } 
+                    $mode_field_qedit_reason = $obj->reasonWhyAttributeNotQuickEditable($nom_col, $desc, $submode);
+                    $log_input_qedit = "rafik 00126 $submode=[$fgroup] for field=[$nom_col] (isQuickEditableAttribute=$isQuickEditableAttribute and good_fgroup_for_field=$good_fgroup_for_field) or isFixmCol=$isFixmCol mode_field_qedit_reason=$mode_field_qedit_reason";
+                    die($log_input_qedit);
+               }*/ 
                
                 
         }
@@ -73,8 +76,8 @@ foreach($class_db_structure as $nom_col => $desc)
         {
                 $mode_field_qedit = ($isQuickEditableAttribute or $isFixmCol);  // or ($fixm_array[$nom_col]) => because if we fix an attribute we should consider it in Qedit commom columns
         }        
-        $mode_show_field_read_only = $obj->isReadOnlyAttribute($nom_col, $desc, $submode);
-        $mode_field_qedit_reason = $obj->reasonWhyAttributeNotQuickEditable($nom_col, $desc, $submode);
+        
+        
         
         $data_loaded=($obj->getId()>0);
         
@@ -116,148 +119,156 @@ foreach($class_db_structure as $nom_col => $desc)
                 $qedit_input_arr[1][$qedit_nom_col] = ["input"=>$qedit_hidden_pk_input.$obj_id_display, "cols"=>0];
                
         }        
-        elseif(((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) || $mode_show_field_read_only)
+        else
         {
-		if(($mode_field_qedit)  and (!isset($fixm_array[$nom_col])))
+                $mode_show_field_read_only = $obj->isReadOnlyAttribute($nom_col, $desc, $submode);
+                /*
+                if($nom_col=="student_id" and (!$mode_show_field_read_only))
                 {
-                        if($obj->qedit_minibox)
+                        check if there's $submode and if READONLY_$submode is true
+                }*/
+                if(((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) || $mode_show_field_read_only)
+                {
+                        if(($mode_field_qedit)  and (!isset($fixm_array[$nom_col])))
                         {
-                                if(!$miniBoxTemplate) $miniBoxTemplateArr[$nom_col] = $desc; 
-                        }
-                        
-                        $obj_val = $obj->getVal($nom_col);
-                        if($attr_IsApplicable)
-                        {
-                                $qerow = 1;
-                                $qecols = 1;
-                                if($desc['QEDIT-BEFORE-COLS'])
+                                if($obj->qedit_minibox)
                                 {
-                                        $qerow = 0;
-                                        $qecols = $desc['QEDIT-BEFORE-COLS'];
+                                        if(!$miniBoxTemplate) $miniBoxTemplateArr[$nom_col] = $desc; 
                                 }
-
-                                if($desc['QEDIT-AFTER-COLS'])
+                                
+                                $obj_val = $obj->getVal($nom_col);
+                                if($attr_IsApplicable)
                                 {
-                                        $qerow = 2;
-                                        $qecols = $desc['QEDIT-AFTER-COLS'];
-                                }
-                                $qerow_exists[$qerow] = true;
-                                if(!$mode_show_field_read_only)
-                		{
-                        		ob_start();
-                        		$col_val = $obj->getVal($nom_col);
-                        		if(($desc['TYPE'] == 'PK') && empty($col_val))
+                                        $qerow = 1;
+                                        $qecols = 1;
+                                        if($desc['QEDIT-BEFORE-COLS'])
                                         {
-                        			$type_input_ret = type_input($qedit_nom_col, $desc, $id, $obj, $separator, $data_loaded, "", $qedit_orderindex);
-                        		}
-                                        else
-                                        {
-                        			$type_input_ret = type_input($qedit_nom_col, $desc, $col_val, $obj, $separator, $data_loaded, $desc["FORCE_CSS"], $qedit_orderindex);
+                                                $qerow = 0;
+                                                $qecols = $desc['QEDIT-BEFORE-COLS'];
                                         }
-                                        
-                                        
-                        		$qedit_input_arr[$qerow][$qedit_nom_col] = ["input"=>ob_get_clean(), "cols"=>$qecols];
-                                        // 
-                                        if($log_input_qedit) $qedit_input_arr[$qerow][$qedit_nom_col]["input"] .= "<pre class='php'>error : ".$log_input_qedit."</pre>";
-                                        
-                                        //if($qedit_nom_col=="sub_module_id_3")  die("log : $qedit_nom_col => ".$mode_field_qedit_reason);
-                                        
-                                        if($obj->isActive() and $desc["DYNAMIC-HELP"]) $qedit_input_arr[$qerow][$qedit_nom_col]["input"] .= $obj::tooltipText($obj->getHelpFor($nom_col,$lang)); 
-                                        $start_row = $obj->qeditNum;
-                                        /*
-                                        $input_html = $qedit _input[$qedit_nom_col];
-                                        if(false)   //  ($objme->isAdmin())  //    
+        
+                                        if($desc['QEDIT-AFTER-COLS'])
                                         {
-                                                if($type_input_ret=="text")
-                                                {
-                                                        $icon_unifyall = "<a id=\"imgUnifyAll$qedit_nom_col\" href=\"#\" class=\"copy_down\" onclick=\"unify_all_text('$nom_col','$obj_val',$start_row,$nb_objs)\">&nbsp;&nbsp;&nbsp;</a>";
-                                                }
-                                                else
-                                                {
-                                                        $obj_val_lab = $obj->displayAttribute($nom_col,true,$lang, false);
-                                                        $icon_unifyall = "<a id=\"imgUnifyAll$qedit_nom_col\" href=\"#\" class=\"copy_down\" onclick=\"unify_all_select('$nom_col','$obj_val','$obj_val_lab',$start_row,$nb_objs)\">&nbsp;&nbsp;&nbsp;</a>";
-                                                }
+                                                $qerow = 2;
+                                                $qecols = $desc['QEDIT-AFTER-COLS'];
                                         }
-                                        else $icon_unifyall = "";
-                                        
-                                        if($icon_unifyall) $qedit _input[$qedit_nom_col] = "<table><tr><td>$input_html</td><td>$icon_unifyall</td></tr></table>";
-                                        else  $qedit_ input[$qedit_nom_col] = $input_html;*/
-                                }
-                                else
-                                {      
-                                        if(($desc["HIDDEN_INPUT"]) or ($obj->inMultiplePK($nom_col)))
+                                        $qerow_exists[$qerow] = true;
+                                        if(!$mode_show_field_read_only)
                                         {
                                                 ob_start();
                                                 $col_val = $obj->getVal($nom_col);
-                                                $type_input_ret = hidden_input($qedit_nom_col, $desc, $col_val, $obj);
-                                                $qedit_hidden_input = ob_get_clean();
-                                        }
-                                        else $qedit_hidden_input = "";
-                                        $display_attribute_RO = $obj->displayAttribute($nom_col,true).$qedit_hidden_input;
-                                        
-                                        if($desc['FORM_HEIGHT']) {
-                                                $style_div_form_control = "height:".$desc['FORM_HEIGHT']." !important";
-                                        }
-                                        
-                                        if($desc['STYLE_RO_DIV']) {
-                                                $style_div_form_control = $desc['STYLE_RO_DIV'];
-                                        }
-                                        
-                                        
-                                        if($desc['INPUT_WIDE']) 
-                                        {
-                                            $desc['RO_DIV_CLASS'] = "qedit_wide";
-                                        }
-                                        
-                                        
-                                        if($desc['RO_DIV_CLASS']) {
-                                                $display_attribute_RO_class = $desc['RO_DIV_CLASS'];
+                                                if(($desc['TYPE'] == 'PK') && empty($col_val))
+                                                {
+                                                        $type_input_ret = type_input($qedit_nom_col, $desc, $id, $obj, $separator, $data_loaded, "", $qedit_orderindex);
+                                                }
+                                                else
+                                                {
+                                                        $type_input_ret = type_input($qedit_nom_col, $desc, $col_val, $obj, $separator, $data_loaded, $desc["FORCE_CSS"], $qedit_orderindex);
+                                                }
+                                                
+                                                
+                                                $qedit_input_arr[$qerow][$qedit_nom_col] = ["input"=>ob_get_clean(), "cols"=>$qecols];
+                                                // 
+                                                if($log_input_qedit) $qedit_input_arr[$qerow][$qedit_nom_col]["input"] .= "<pre class='php'>error : ".$log_input_qedit."</pre>";
+                                                
+                                                if($obj->isActive() and $desc["DYNAMIC-HELP"]) $qedit_input_arr[$qerow][$qedit_nom_col]["input"] .= $obj::tooltipText($obj->getHelpFor($nom_col,$lang)); 
+                                                $start_row = $obj->qeditNum;
+                                                /*
+                                                $input_html = $qedit _input[$qedit_nom_col];
+                                                if(false)   //  ($objme->isAdmin())  //    
+                                                {
+                                                        if($type_input_ret=="text")
+                                                        {
+                                                                $icon_unifyall = "<a id=\"imgUnifyAll$qedit_nom_col\" href=\"#\" class=\"copy_down\" onclick=\"unify_all_text('$nom_col','$obj_val',$start_row,$nb_objs)\">&nbsp;&nbsp;&nbsp;</a>";
+                                                        }
+                                                        else
+                                                        {
+                                                                $obj_val_lab = $obj->displayAttribute($nom_col,true,$lang, false);
+                                                                $icon_unifyall = "<a id=\"imgUnifyAll$qedit_nom_col\" href=\"#\" class=\"copy_down\" onclick=\"unify_all_select('$nom_col','$obj_val','$obj_val_lab',$start_row,$nb_objs)\">&nbsp;&nbsp;&nbsp;</a>";
+                                                        }
+                                                }
+                                                else $icon_unifyall = "";
+                                                
+                                                if($icon_unifyall) $qedit _input[$qedit_nom_col] = "<table><tr><td>$input_html</td><td>$icon_unifyall</td></tr></table>";
+                                                else  $qedit_ input[$qedit_nom_col] = $input_html;*/
                                         }
                                         else
-                                        {
-                                                $display_attribute_RO_class = "form-control inputreadonly";
+                                        {      
+                                                if(($desc["HIDDEN_INPUT"]) or ($obj->inMultiplePK($nom_col)))
+                                                {
+                                                        ob_start();
+                                                        $col_val = $obj->getVal($nom_col);
+                                                        $type_input_ret = hidden_input($qedit_nom_col, $desc, $col_val, $obj);
+                                                        $qedit_hidden_input = ob_get_clean();
+                                                }
+                                                else $qedit_hidden_input = "";
+                                                $display_attribute_RO = $obj->displayAttribute($nom_col,true).$qedit_hidden_input;
+                                                
+                                                if($desc['FORM_HEIGHT']) {
+                                                        $style_div_form_control = "height:".$desc['FORM_HEIGHT']." !important";
+                                                }
+                                                
+                                                if($desc['STYLE_RO_DIV']) {
+                                                        $style_div_form_control = $desc['STYLE_RO_DIV'];
+                                                }
+                                                
+                                                
+                                                if($desc['INPUT_WIDE']) 
+                                                {
+                                                    $desc['RO_DIV_CLASS'] = "qedit_wide";
+                                                }
+                                                
+                                                
+                                                if($desc['RO_DIV_CLASS']) {
+                                                        $display_attribute_RO_class = $desc['RO_DIV_CLASS'];
+                                                }
+                                                else
+                                                {
+                                                        $display_attribute_RO_class = "form-control inputreadonly";
+                                                }
+                                                
+                                                
+                                                $qedit_input_arr[$qerow][$qedit_nom_col] =  ["input"=>"<div class='$display_attribute_RO_class' style='$style_div_form_control'>$display_attribute_RO</div>", "cols"=>$qecols];
                                         }
-                                        
-                                        
-                                        $qedit_input_arr[$qerow][$qedit_nom_col] =  ["input"=>"<div class='$display_attribute_RO_class' style='$style_div_form_control'>$display_attribute_RO</div>", "cols"=>$qecols];
                                 }
-                        }
-                        else
-                        {
-                                list($icon,$textReason, $wd, $hg) = $obj->whyAttributeIsNotApplicable($nom_col);
-                                if(!$wd) $wd = 20;
-                                if(!$hg) $hg = 20;
-                                //$obj->_error("$obj has Attribute $nom_col NotApplicable : ($icon,$textReason)");
-                                $qedit_input_arr[$qerow][$qedit_nom_col] = ["input"=>"<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>", "cols"=>$qecols];
-                        }
-                        
-                        
-                        if(!$obj_val)
-                        {
-                                if(!$not_filled[$nom_col]) $not_filled[$nom_col] = 0;
-                                $not_filled[$nom_col]++;
-                        }
-                        else
-                        {
-                                if(!$filled[$nom_col]) $filled[$nom_col] = 0;
-                                $filled[$nom_col]++;
-                        }
-                        
-                        
-                        if(!$first_val[$nom_col])
-                        {
-                                $first_disp[$nom_col] = $obj->displayAttribute($nom_col,true,"ar", false);
-                                $first_val[$nom_col] = $obj_val;
-                        }
-                        else
-                        {
-                                if($first_val[$nom_col] != $obj_val)
+                                else
                                 {
-                                      $diff_val[$nom_col] = true;
+                                        list($icon,$textReason, $wd, $hg) = $obj->whyAttributeIsNotApplicable($nom_col);
+                                        if(!$wd) $wd = 20;
+                                        if(!$hg) $hg = 20;
+                                        //$obj->_error("$obj has Attribute $nom_col NotApplicable : ($icon,$textReason)");
+                                        $qedit_input_arr[$qerow][$qedit_nom_col] = ["input"=>"<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>", "cols"=>$qecols];
+                                }
+                                
+                                
+                                if(!$obj_val)
+                                {
+                                        if(!$not_filled[$nom_col]) $not_filled[$nom_col] = 0;
+                                        $not_filled[$nom_col]++;
+                                }
+                                else
+                                {
+                                        if(!$filled[$nom_col]) $filled[$nom_col] = 0;
+                                        $filled[$nom_col]++;
+                                }
+                                
+                                
+                                if(!$first_val[$nom_col])
+                                {
+                                        $first_disp[$nom_col] = $obj->displayAttribute($nom_col,true,"ar", false);
+                                        $first_val[$nom_col] = $obj_val;
+                                }
+                                else
+                                {
+                                        if($first_val[$nom_col] != $obj_val)
+                                        {
+                                              $diff_val[$nom_col] = true;
+                                        }
                                 }
                         }
                 }
-	}
+        }
+        
         $col_num++;
 }
 
@@ -327,7 +338,7 @@ else $obj_odd_even = "";
 
 if(!$obj->qedit_minibox) 
 { 
-        if($data_errors)
+        if($data_errors and $header_imbedded)
         {
              $total_cols = count($qedit_input_arr[1]);
 ?>

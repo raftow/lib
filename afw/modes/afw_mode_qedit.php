@@ -65,7 +65,7 @@ if(!$can)
 // die("fgroup=$fgroup");
 $myMainObject->fgroup = $fgroup;
 $myMainObject->fixm_array = $fixm_array;
-$myMainObject->submode = $submode;
+$myMainObject->submode = strtoupper($submode);
 $myMainObject->fixm_disable = $fixmdisable;
 $myMainObject->fixmtit = $fixmtit;
 $myMainObject->commonFields = $comfld;
