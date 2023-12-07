@@ -44,6 +44,8 @@ $column_order = 0;
 foreach($class_db_structure as $nom_col => $desc)
 {
         if($desc['QEDIT-TYPE']) $desc['TYPE'] = $desc['QEDIT-TYPE'];
+        if($desc['QEDIT-FROM_LIST']) $desc['FROM_LIST'] = $desc['QEDIT-FROM_LIST'];
+        
         $nom_col_short = "$nom_col.short";
         $trad_col_short  = $obj->translate($nom_col_short,$lang);
         if($trad_col_short == $nom_col_short) $qedit_trad_arr[$nom_col] = $obj->translate($nom_col,$lang);
