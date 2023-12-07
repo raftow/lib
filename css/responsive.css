@@ -135,7 +135,7 @@ object, embed, video {
 
 @media (min-width: 481px) and (max-width: 640px)  {
 .btn{width:100%!important;margin: 5px 0!important}
-.btn-group-vertical>.btn, .btn-group>.btn{width:80%!important;margin: 5px 0!important;min-width: 300px!important;}
+.btn-group-vertical>.btn, .btn-group>.btn{margin: 5px 0!important;}
 }
 @media only screen and (max-width:480px) {
 .topactions{float: none;margin: 0 auto;}

@@ -4583,3 +4583,9 @@ th.col-qe {
 .btn-group-vertical>.btn, .btn-group>.btn {
     width: 93% !important;
 }
+
+.btn-group{
+    width: 80%;
+    margin-left: 10%;
+    max-width: 480px;
+}
