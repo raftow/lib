@@ -18,7 +18,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
         $header_bloc_edit, $footer_bloc_edit,
         $aligntd, $lang, $mode_hijri_edit, $yes_label, $no_label, $dkn_label, $objme;
 
-
+    $development_mode = AfwSession::config("MODE_DEVELOPMENT", false);
 
     $mode_qedit = true;
 
@@ -130,13 +130,19 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             if ((!$auto_c) and ($list_count <= LIMIT_INPUT_SELECT)) {
 
                 $obj_className = $obj->getMyClass();
-                if ($objme->isAdmin()) echo "<!-- for ($obj_className).$col_name : [$objRep] -> loadMany FollowingStructureAndValue($col_name, $desc,$val, $obj) -->";
+                if ($development_mode or $objme->isAdmin()) echo "<!-- for ($obj_className).$col_name : [$objRep] -> loadMany FollowingStructureAndValue($col_name, $desc,$val, $obj) -->";
                 list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowingStructureAndValue($objRep, $desc, $val, $obj);
-                if ($objme->isAdmin()) echo "<!-- for $col_name : $sql -->";
+                if ($development_mode or $objme->isAdmin()) echo "<!-- for $col_name sql=$sql -->";
                 $l_rep = array();
                 foreach ($liste_rep as $iditem => $item) {
                     if (AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme, 'display'))
+                    {
                         $l_rep[$iditem] = $item->getDropDownDisplay($lang);
+                    }
+                    elseif ($development_mode or $objme->isAdmin())
+                    {
+                        echo "<!-- drop down item-option hidden : $item -->";
+                    }
                 }
 
                 if ($obj->qedit_minibox)
