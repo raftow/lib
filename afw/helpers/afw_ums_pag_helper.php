@@ -683,7 +683,7 @@ class AfwUmsPagHelper extends AFWRoot
         
 
         if (!($operation == 'display' and $object->public_display)) {
-            $return_arr[] = "object and case is not public_display";
+            $return_arr[] = "object and case is not public_display object=".var_export($object,true);
         }
         else
         {
