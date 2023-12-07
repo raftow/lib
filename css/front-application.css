@@ -4570,3 +4570,16 @@ th.col-qe {
         margin-left: 0 !important;
     }
 }
+
+.btn-primary {
+    line-height: 28px !important;
+    padding: 0 5px !important;
+}
+
+.btn-group>.btn+.dropdown-toggle {
+    width: 7% !important;
+}
+
+.btn-group-vertical>.btn, .btn-group>.btn {
+    width: 93% !important;
+}
