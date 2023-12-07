@@ -134,14 +134,17 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowingStructureAndValue($objRep, $desc, $val, $obj);
                 if ($development_mode or $objme->isAdmin()) echo "<!-- for $col_name sql=$sql -->";
                 $l_rep = array();
-                foreach ($liste_rep as $iditem => $item) {
-                    if (AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme, 'display'))
+                foreach ($liste_rep as $iditem => $item) 
+                {
+                    $userCanDoOperation = AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme, 'display');
+                    if ($userCanDoOperation)
                     {
                         $l_rep[$iditem] = $item->getDropDownDisplay($lang);
                     }
                     elseif ($development_mode or $objme->isAdmin())
                     {
-                        echo "<!-- drop down item-option hidden : $item -->";
+                        $userCanNotDoOperationReason = AfwUmsPagHelper::userCanNotDoOperationOnObjectReason($item,$objme, 'display');
+                        echo "<!-- drop down item-option hidden : $item reason $userCanNotDoOperationReason -->";
                     }
                 }
 

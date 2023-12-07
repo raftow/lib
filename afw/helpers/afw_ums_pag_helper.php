@@ -587,6 +587,8 @@ class AfwUmsPagHelper extends AFWRoot
         $operation,
         $log = true
     ) {
+
+
         if ($auser and $auser->isSuperAdmin()) {
             return true;
         }
@@ -661,6 +663,116 @@ class AfwUmsPagHelper extends AFWRoot
         }
 
         return $return;
+    }
+
+    public static final function userCanNotDoOperationOnObjectReason(
+        $object,
+        $auser,
+        $operation,
+        $log = true
+    ) 
+    {
+        $return_arr = [];
+        if (!($auser and $auser->isSuperAdmin())) {
+            $return_arr[] = "$auser is not SuperAdmin";
+        }
+        else
+        {
+            $return_arr[] = "return = true";
+        }
+        
+
+        if (!($operation == 'display' and $object->public_display)) {
+            $return_arr[] = "object and case is not public_display";
+        }
+        else
+        {
+            $return_arr[] = "return = true";
+        }
+
+        if (!($operation == 'search' and $object->public_display)) {
+            $return_arr[] = "object and case is not public_display for search";
+        }
+        else
+        {
+            $return_arr[] = "return = true";
+        }
+
+        if (!($operation == 'qsearch' and $object->public_display)) {
+            $return_arr[] = "object and case is not public_display for qsearch";
+        }
+        else
+        {
+            $return_arr[] = "return = true";
+        }
+
+        if (!($operation == 'display' and $object->canBePublicDisplayed())) {
+            $return_arr[] = "object->canBePublicDisplayed return false";
+        }
+        else
+        {
+            $return_arr[] = "return = true";
+        }
+
+        if (!($operation == 'display' and $object->canBeSpeciallyDisplayedBy($auser))) {
+            $return_arr[] = "object->canBeSpeciallyDisplayedBy $auser return false";
+        }
+        else
+        {
+            $return_arr[] = "return = true";
+        }
+
+        if ($operation == 'edit') {
+            $operation_sql = 'update';
+        } else {
+            $operation_sql = $operation;
+        }
+
+        $table = $object->getMyTable();
+        $module_code = $object->getMyModule();
+        if ($auser and !$auser->iCanDoOperation($module_code, $table, $operation_sql)
+        ) {
+            $return_arr[] = "$auser => iCanDoOperation($module_code, $table, $operation_sql) return false";
+            if ($log) {
+                AfwSession::contextLog(
+                    "failed user_have_access_to_do_operation_on_me, user($auser)->iCanDoOperation($module_code,$table,$operation_sql) ==> false ",
+                    'iCanDo'
+                );
+            }
+        } else {
+            if ($log) {
+                AfwSession::contextLog(
+                    "succeeded user_have_access_to_do_operation_on_me, user($auser)->iCanDoOperation($module_code,$table,$operation_sql) ==> true ",
+                    'iCanDo'
+                );
+            }
+        }
+
+        $return = $object->userCanDoOperationOnMe(
+            $auser,
+            $operation,
+            $operation_sql
+        );
+        if (!$return) {
+            $return_arr[] = "$auser => iCanDoOperation($module_code, $table, $operation_sql) return false";
+            if ($log) {
+                AfwSession::contextLog(
+                    "failed user_have_access_to_do_operation_on_me, userCanDoOperationOnMe($auser, $operation, $operation_sql) ==> $return",
+                    'iCanDo'
+                );
+            }
+        } else {
+            if ($log) {
+                AfwSession::contextLog(
+                    "succeeded user_have_access_to_do_operation_on_me, userCanDoOperationOnMe($auser, $operation, $operation_sql) ==> $return",
+                    'iCanDo'
+                );
+            }
+        }
+
+        $return_arr[] = "return = $return";
+
+        return implode("<br>\n",$return_arr);
     }
 
     public static final function getAllActions($object, $step = 0)
