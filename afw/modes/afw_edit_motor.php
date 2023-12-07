@@ -465,38 +465,59 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
         case 'INT':
         case 'FLOAT':
         case 'AMNT':
-            $input_type_html = "text";
-            if ($desc["TYPE"] == 'INT') 
+            $fromListMethod = $desc["FROM_LIST"];
+            if($fromListMethod)
             {
-                $input_type_html = "number";
-                $input_options_html = "";
-                if ($desc["FORMAT"]) {
-                    list($format_type, $format_param1, $format_param2, $format_param3) = explode(":", $desc["FORMAT"]);      // ex FORMAT=>"STEP:0:3:1"  or DROPDOWN=>"STEP:0:3:1"
-                    if ($format_type == "STEP") {
-                        if (!$format_param3) $format_param3 = 1;
-                        $input_options_html = " step='$format_param3' min='$format_param1' max='$format_param2' ";
-                    } elseif ($format_type == "DROPDOWN") {
-                        if (!$format_param3) $format_param3 = 1;
-                        $dropdown_min = intval($format_param1);
-                        $dropdown_max = intval($format_param2);
-                        $dropdown_step = intval($format_param3);
+                $fromList = $obj->$fromListMethod();
+                //echo "val=$val<br>";
+                select(
+                    $fromList,
+                    array(trim($val)),
+                    array(
+                        "class" => $css_class,
+                        "name"  => $col_name,
+                        "id"  => $col_name,
+                        "tabindex" => $qedit_orderindex,
+                        "onchange" => $onchange,
+                    ),
+                    "asc"
+                );
+            }
+            else
+            {
+                $input_type_html = "text";
+                if ($desc["TYPE"] == 'INT') 
+                {
+                    $input_type_html = "number";
+                    $input_options_html = "";
+                    if ($desc["FORMAT"]) {
+                        list($format_type, $format_param1, $format_param2, $format_param3) = explode(":", $desc["FORMAT"]);      // ex FORMAT=>"STEP:0:3:1"  or DROPDOWN=>"STEP:0:3:1"
+                        if ($format_type == "STEP") {
+                            if (!$format_param3) $format_param3 = 1;
+                            $input_options_html = " step='$format_param3' min='$format_param1' max='$format_param2' ";
+                        } elseif ($format_type == "DROPDOWN") {
+                            if (!$format_param3) $format_param3 = 1;
+                            $dropdown_min = intval($format_param1);
+                            $dropdown_max = intval($format_param2);
+                            $dropdown_step = intval($format_param3);
+                        }
                     }
                 }
+
+                if ($force_css) $data_length_class = " " . $force_css;
+                else $data_length_class = " inputcourt";
+                $type_input_ret = "text";
+                $class_of_input = $class_inputInt;
+                if ($desc["JS-COMPUTED"]) {
+                    if ($obj->class_of_input_computed_readonly) $class_of_input = $obj->class_of_input_computed_readonly;
+
+                    if ($obj->class_js_computed) $class_js_computed = $obj->class_js_computed;
+                    else $class_js_computed = "js_computed";
+
+                    $data_loaded_class = $class_js_computed;
+                }
+                include("tpl/helper_edit_numeric.php"); 
             }
-
-            if ($force_css) $data_length_class = " " . $force_css;
-            else $data_length_class = " inputcourt";
-            $type_input_ret = "text";
-            $class_of_input = $class_inputInt;
-            if ($desc["JS-COMPUTED"]) {
-                if ($obj->class_of_input_computed_readonly) $class_of_input = $obj->class_of_input_computed_readonly;
-
-                if ($obj->class_js_computed) $class_js_computed = $obj->class_js_computed;
-                else $class_js_computed = "js_computed";
-
-                $data_loaded_class = $class_js_computed;
-            }
-            include("tpl/helper_edit_numeric.php"); 
             break;
 
         case 'TIME':

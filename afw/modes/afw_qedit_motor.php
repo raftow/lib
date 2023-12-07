@@ -553,53 +553,74 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
         case 'PCTG':
         case 'INT':
         case 'AMNT':
-            $input_type_html = "text";
-            if ($desc["TYPE"] == 'INT') {
-                $input_type_html = "number";
-                $input_options_html = "";
-                if ($desc["FORMAT"]) {
-                    list($format_type, $format_param1, $format_param2, $format_param3) = explode(":", $desc["FORMAT"]);
-                    if ($format_type == "STEP") {
-                        if (!$format_param3) $format_param3 = 1;
-                        $input_options_html = " step='$format_param3' min='$format_param1' max='$format_param2' ";
+            $fromListMethod = $desc["FROM_LIST"];
+            if($fromListMethod)
+            {
+                $fromList = $obj->$fromListMethod();
+                //echo "val=$val<br>";
+                select(
+                    $fromList,
+                    array(trim($val)),
+                    array(
+                        "class" => $css_class,
+                        "name"  => $col_name,
+                        "id"  => $col_name,
+                        "tabindex" => $qedit_orderindex,
+                        "onchange" => $onchange,
+                    ),
+                    "asc"
+                );
+            }
+            else
+            {
+                $input_type_html = "text";
+                if ($desc["TYPE"] == 'INT') {
+                    $input_type_html = "number";
+                    $input_options_html = "";
+                    if ($desc["FORMAT"]) {
+                        list($format_type, $format_param1, $format_param2, $format_param3) = explode(":", $desc["FORMAT"]);
+                        if ($format_type == "STEP") {
+                            if (!$format_param3) $format_param3 = 1;
+                            $input_options_html = " step='$format_param3' min='$format_param1' max='$format_param2' ";
+                        }
                     }
                 }
-            }
-            if ($desc["STYLE"]) $style_input = " style='" . $desc["STYLE"] . "' ";
-            else $style_input = "";
+                if ($desc["STYLE"]) $style_input = " style='" . $desc["STYLE"] . "' ";
+                else $style_input = "";
 
-            if ($force_css) $data_length_class = " " . $force_css;
-            else $data_length_class = " inputcourt";
-            $type_input_ret = "text";
-            $class_of_input = $class_inputInt;
-            if ($desc["JS-COMPUTED"]) {
-                if ($obj->class_of_input_computed_readonly) $class_of_input = $obj->class_of_input_computed_readonly;
+                if ($force_css) $data_length_class = " " . $force_css;
+                else $data_length_class = " inputcourt";
+                $type_input_ret = "text";
+                $class_of_input = $class_inputInt;
+                if ($desc["JS-COMPUTED"]) {
+                    if ($obj->class_of_input_computed_readonly) $class_of_input = $obj->class_of_input_computed_readonly;
 
-                if ($obj->class_js_computed) $class_js_computed = $obj->class_js_computed;
-                else $class_js_computed = "js_computed";
+                    if ($obj->class_js_computed) $class_js_computed = $obj->class_js_computed;
+                    else $class_js_computed = "js_computed";
 
-                $data_loaded_class = $class_js_computed;
-            }
+                    $data_loaded_class = $class_js_computed;
+                }
 
-            if ($obj->fixm_disable) {
+                if ($obj->fixm_disable) {
 
-                $type_input_ret = "hidden";
-                ?>
-                <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
-                <span class='fw-momken-numeric'><?php if (!$obj->hideQeditCommonFields) echo $val ?></span>
-                <?php 
-            } else {
-                if ($obj->qedit_minibox)
-                    $css_class = "form-control";
-                else $css_class = $class_of_input . $data_loaded_class . $data_length_class;
-                if ($input_type_html == "text") {
-                ?>
-                    <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=6 maxlength=6 <?php  echo $readonly ?> onchange="<?php  echo $onchange ?>" placeholder="<?= $placeholder ?>" <?php  echo $input_options_html . " " . $style_input ?>>
-                <?php 
+                    $type_input_ret = "hidden";
+                    ?>
+                    <input type="hidden" fw="momken-1" id="<?= $col_name ?>" name="<?php  echo $col_name ?>" value="<?php  echo $val ?>">
+                    <span class='fw-momken-numeric'><?php if (!$obj->hideQeditCommonFields) echo $val ?></span>
+                    <?php 
                 } else {
-                ?>
-                    <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" <?php  echo $input_options_html ?>>
-                <?php 
+                    if ($obj->qedit_minibox)
+                        $css_class = "form-control";
+                    else $css_class = $class_of_input . $data_loaded_class . $data_length_class;
+                    if ($input_type_html == "text") {
+                    ?>
+                        <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=6 maxlength=6 <?php  echo $readonly ?> onchange="<?php  echo $onchange ?>" placeholder="<?= $placeholder ?>" <?php  echo $input_options_html . " " . $style_input ?>>
+                    <?php 
+                    } else {
+                    ?>
+                        <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" <?php  echo $input_options_html ?>>
+                    <?php 
+                    }
                 }
             }
             // echo (isset($desc["UNIT"]) && !empty($desc["UNIT"])  && (strlen($desc["UNIT"])<6)) ? $desc["UNIT"] : "";
