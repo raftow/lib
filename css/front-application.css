@@ -4551,6 +4551,16 @@ th.col-qe {
     }
 }
 
+@media (max-width:560px)
+{
+    .submit-btn {
+        width: 90% !important;
+        margin-right: 5% !important;
+        float: right;
+        margin-left: 5% !important;
+    }
+}
+
 @media (max-width:420px)
 {
     .editcard {
@@ -4582,6 +4592,7 @@ th.col-qe {
 
 .btn-group-vertical>.btn, .btn-group>.btn {
     width: 93% !important;
+    min-width: 100px !important;
 }
 
 .btn-group{

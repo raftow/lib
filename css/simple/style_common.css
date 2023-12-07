@@ -1339,11 +1339,12 @@ input[type="text"], textarea {
     padding: 0px 0px 0px 0px !important;
 }
 
+
 .submit-btn {
     display: inline-block;
     padding: 7px 0px !important;
     margin-bottom: 0;
-    line-height: 1.42857143;
+    line-height: 26px;
     text-align: center !important;
     white-space: nowrap;
     vertical-align: middle;
@@ -1359,6 +1360,8 @@ input[type="text"], textarea {
     border-radius: 0px;
     margin-top: 3px;
     font-family: menu;
+    font-size: 16px !important;
+    font-weight: normal;
 }
 
 .btn-plus {
@@ -2896,35 +2899,59 @@ background-image: -webkit-linear-gradient(top,
 }
 }
 @media (max-width:992px) {
-.head {
-	position: relative
+        .head {
+            position: relative
+        }
+        .btn-primary.active {
+            width: 100%
+        }
+        .container-fluid {
+            margin: 0;
+            position: static;
+            padding: 0
+        }
+        #copyright_txt {
+            margin: 0;
+            text-align: center
+        }
+        .social_media {
+            float: none;
+            margin-right: auto;
+            margin-left: auto;
+            text-align: center;
+            padding: 0
+        }
+        .slider_bg {
+            margin-top: 0
+        }
+        .btn-group {
+            display: inline-block
+        }
 }
-.btn-primary.active {
-	width: 100%
+
+@media (max-width:700px) {
+    .btn-group {
+        width: 80% !important;
+        margin-left: 10% !important;
+    }
 }
-.container-fluid {
-	margin: 0;
-	position: static;
-	padding: 0
+
+@media (max-width:560px) {
+    .btn-group {
+        width: 90% !important;
+        margin-left: 5% !important;
+    }
 }
-#copyright_txt {
-	margin: 0;
-	text-align: center
+
+
+@media (max-width:420px) {
+    .btn-group {
+        width: 100% !important;
+        margin-left: 0 !important;
+    }
 }
-.social_media {
-	float: none;
-	margin-right: auto;
-	margin-left: auto;
-	text-align: center;
-	padding: 0
-}
-.slider_bg {
-	margin-top: 0
-}
-.btn-group {
-	display: inline-block
-}
-}
+
+
 .dropdown-menu {
 	background-color: #005192;
 	border-radius: 0;

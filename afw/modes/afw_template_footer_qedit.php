@@ -314,7 +314,7 @@ if(!$obj->qedit_minibox)
       {
         $key_mod_tr = $obj->translateOperator("other_functions",$lang);
            
-        $html_btns =  "<div class='fleft full-right-width'><div class='btn-group'>";
+        $html_btns =  "<div class='fleft submit-btn'><div class='btn-group'>";
         $html_btns .= "  <button type='button' class='btn btn-primary'>$key_mod_tr</button>";
         $html_btns .= "  <button type='button' class='btn-primary dropdown-toggle' data-toggle='dropdown'>";
         $html_btns .= "    <span class='caret'></span>";
