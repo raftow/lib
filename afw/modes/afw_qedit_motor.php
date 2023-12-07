@@ -568,7 +568,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         "tabindex" => $qedit_orderindex,
                         "onchange" => $onchange,
                     ),
-                    "asc"
+                    ""
                 );
             }
             else
