@@ -142,7 +142,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                 if($attr_IsApplicable)
                                 {
                                         $qerow = 1;
-                                        $qecols = 1;
+                                        $qecols = $desc['QEDIT-COLS'];
                                         if($desc['QEDIT-BEFORE-COLS'])
                                         {
                                                 $qerow = 0;

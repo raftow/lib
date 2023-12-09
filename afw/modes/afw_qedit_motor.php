@@ -562,7 +562,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                     $fromList,
                     array(trim($val)),
                     array(
-                        "class" => $css_class,
+                        "class" => "comm_select inputselect",
                         "name"  => $col_name,
                         "id"  => $col_name,
                         "tabindex" => $qedit_orderindex,
