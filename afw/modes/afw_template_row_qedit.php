@@ -380,8 +380,9 @@ if(!$obj->qedit_minibox)
                                         {
                                                 $total_sahm += $input_html_row["cols"];
                                                 $desc = $class_db_structure[$orig_nom_col];
+                                                $qe_css = $desc['QEDIT-CSS'];
                                                 $importance = $obj->importanceCss($orig_nom_col, $desc);                                        
-                                                $class_xqe_prop = "class='col-importance-$importance col-qe header-qe-$orig_nom_col'";
+                                                $class_xqe_prop = "class='col-importance-$importance $qe_css col-qe-$qerow_num col-qe header-qe-$orig_nom_col'";
                                                 $col_translated = $qedit_trad_arr[$orig_nom_col];
                                                 if(false)
                                                 {
