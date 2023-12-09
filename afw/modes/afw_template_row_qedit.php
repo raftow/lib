@@ -402,15 +402,18 @@ if(!$obj->qedit_minibox)
                         </tr>
                         <?php	
                         }
-                        $header_imbedded_title = is_string($header_imbedded) ? $header_imbedded : "&nbsp;";
+
+                        if($qerow_num==0)
+                        {
+                        $header_imbedded_title = is_string($header_imbedded) ? $header_imbedded : "&nbsp;";                        
                         ?>
-                        <tr class="qe-header-head">
+                        <tr class="qe-header-head <?=get_class($obj)?>">
                                 <td colspan='<?php echo $total_sahm ?>'>
                                         <?php echo $header_imbedded_title ?>
                                 </td>
                         </tr>
                         <?php
-                        
+                        }
 
                 }
 ?>
