@@ -8,6 +8,11 @@ if($general_optimizer>200)
     throw new RuntimeException("System has been entered in maintenance mode by auto-admin-module (contact rafiq)");
 }
 
+if(isset($trad) and (!is_array($trad)))
+{
+    die("trad is ".var_export($trad,true));
+}
+
 $trad["OPERATOR"]["ALL"]					= "الجميع";
 
 $trad["OPERATOR"]["INSTR-STD"]					= "أدخل";
