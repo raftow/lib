@@ -1668,9 +1668,9 @@ $('#$showAsDataTable').DataTable( {
             {
                 $colName = $colArr["col"];
                 $used = $colArr["used"];
-                $trad = $qeditTranslationArr[$colName];
+                $trad_col = $qeditTranslationArr[$colName];
                 $input = $qeditInputsArr[$colName."_".$qeditNum];
-                $miniBoxTemplate .= "<th colspan='$used'><b><span class='label_minibox'>$trad</span></b></th>\n";
+                $miniBoxTemplate .= "<th colspan='$used'><b><span class='label_minibox'>$trad_col</span></b></th>\n";
                 
                 $miniBoxTemplateSecondRow .= "<td colspan='$used'>$input</td>\n";
             

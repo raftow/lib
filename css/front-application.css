@@ -2209,6 +2209,7 @@ div.form-control-div>span.hide-native-select>div.btn-group{
    width:auto;
    min-width: 80%;
    max-width: 80%;
+   margin-left: 0;
 }
 div.all_mselect>span>div.btn-group>ul.dropdown-menu
 {
