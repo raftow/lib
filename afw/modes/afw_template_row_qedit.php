@@ -469,10 +469,11 @@ if(!$obj->qedit_minibox)
              }
 
              $desc = $class_db_structure[$orig_nom_col];
+             /*
              if($orig_nom_col=="mainwork_end_chapter_id")
              {
                 die("desc of $orig_nom_col = ".var_export($desc,true));
-             }
+             }*/
              $qe_css = $desc['QEDIT-CSS'];
              $importance = $obj->importanceCss($orig_nom_col, $desc);
              
