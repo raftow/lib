@@ -221,7 +221,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                     <table cellspacing='0' cellpadding='0'>
                         <tr style="background-color: rgba(255, 255, 255, 0);">
                             <td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?= $col_name ?>" name="<?= $col_name ?>" class="inputtrescourt cl_id" value="<?= $val ?>" readonly></td>
-                            <td style="padding:0px;margin:0px;"><input placeholder="<?= $placeholder ?>" type="text" id="<?= $col_name_atc ?>" name="<?= $col_name_atc ?>" class="<?= $atc_input_normal ?>" value="<?= $val_display ?>"></td>
+                            <td style="padding:0px;margin:0px;"><input placeholder="<?= $placeholder ?>" type="text" id="<?= $col_name_atc ?>" name="<?= $col_name_atc ?>" class="inputqe <?= $atc_input_normal ?>" value="<?= $val_display ?>"></td>
                             <?
                             if ($auto_c_create) {
                             ?>
@@ -420,7 +420,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
 
                 $type_input_ret = "text";
-                ?> <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=33 maxlength=255>
+                ?> <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="inputqe <?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=33 maxlength=255>
                 <input type="button" class="<?= $class_inputButton ?>" name="" value="<?= $obj->translate('SEARCH', $lang, true) ?>" onclick="popup('<?php  echo "main.php" ?>?Main_Page=afw_mode_search.php&cl=<?php  echo $desc["ANSWER"] ?>')">
                 <script language="javascript">
                     function popup(page) {
@@ -614,11 +614,11 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                     else $css_class = $class_of_input . $data_loaded_class . $data_length_class;
                     if ($input_type_html == "text") {
                     ?>
-                        <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=6 maxlength=6 <?php  echo $readonly ?> onchange="<?php  echo $onchange ?>" placeholder="<?= $placeholder ?>" <?php  echo $input_options_html . " " . $style_input ?>>
+                        <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="inputqe <?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=6 maxlength=6 <?php  echo $readonly ?> onchange="<?php  echo $onchange ?>" placeholder="<?= $placeholder ?>" <?php  echo $input_options_html . " " . $style_input ?>>
                     <?php 
                     } else {
                     ?>
-                        <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" <?php  echo $input_options_html ?>>
+                        <input type="<?= $input_type_html ?>" tabindex="<?= $qedit_orderindex ?>" class="inputqe <?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" <?php  echo $input_options_html ?>>
                     <?php 
                     }
                 }
@@ -694,7 +694,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                     $css_class = "form-control";
                 else $css_class = $class_inputText . $data_loaded_class . $data_length_class;
             ?>
-                <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" dir="<?php  echo $dir ?>" value="<?php  echo $val ?>" size=32 maxlength=255 onchange="<?php  echo $onchange ?>" <?php  echo $style_input ?>>
+                <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="inputqe <?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" dir="<?php  echo $dir ?>" value="<?php  echo $val ?>" size=32 maxlength=255 onchange="<?php  echo $onchange ?>" <?php  echo $style_input ?>>
             <?
             }
             break;
@@ -732,7 +732,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                 $checkbox_extra_class = $desc["CHECKBOX_CSS_CLASS"];
             ?>
-                <input type="checkbox" value="1" id="<?= $col_name ?>" name="<?= $col_name ?>" <?= $checkbox_checked ?> class="echeckbox <?= $checkbox_extra_class ?>">
+                <input type="checkbox" value="1" id="<?= $col_name ?>" name="<?= $col_name ?>" <?= $checkbox_checked ?> class="inputqe echeckbox <?= $checkbox_extra_class ?>">
             <?php 
             } else {
                 if ($obj->qedit_minibox)
@@ -860,7 +860,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 ?>
                 <table class="table_no_border">
                     <tr class="table_no_border_tr">
-                        <td><input placeholder="<?= $placeholder ?>" type="text" id="<?= $input_name ?>" name="<?= $col_name ?>" value="<?= $valaff ?>" class="<?= $class_inputDate . $data_loaded_class . " inputcourt" ?>" onchange="<?php  echo $onchange ?>"> </td>
+                        <td><input placeholder="<?= $placeholder ?>" type="text" id="<?= $input_name ?>" name="<?= $col_name ?>" value="<?= $valaff ?>" class="inputqe <?= $class_inputDate . $data_loaded_class . " inputcourt" ?>" onchange="<?php  echo $onchange ?>"> </td>
                         <td><span>هـ</span></td>
                         <!-- <td><input type="text" id="<?= $input_name . "_n" ?>" name="<?= $col_name . "_n" ?>" value="<?= $valaff_n ?>" class="inputtext_disabled inputcourt" disabled></input></td>-->
                         <script type="text/javascript">
@@ -879,7 +879,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $css_class = "form-control";
             else $css_class = $class_inputText . $data_loaded_class;
 
-        ?> <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="<?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=32 maxlength=255 onchange="<?php  echo $onchange ?>">
+        ?> <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="inputqe <?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=32 maxlength=255 onchange="<?php  echo $onchange ?>">
     <?php  break;
     }
 
@@ -938,7 +938,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
         // $selected_ve = var_export($selected,true);
         // echo "<!-- selected = $selected_ve -->";
     ?>
-    <select class="<?php  echo $info["class"] ?>" style="<?php  echo $info["style"] ?>" name="<?php  echo $info["name"] ?>" id="<?php  echo $info["id"] ?>" tabindex="<?php  echo $info["tabindex"] ?>" onchange="<?php  echo $info["onchange"] ?>" <?php  echo $multi ?> size=<?php  echo $size ?> <?php  if ($info["disable"]) echo "disabled" ?>>
+    <select class="inputqe <?php  echo $info["class"] ?>" style="<?php  echo $info["style"] ?>" name="<?php  echo $info["name"] ?>" id="<?php  echo $info["id"] ?>" tabindex="<?php  echo $info["tabindex"] ?>" onchange="<?php  echo $info["onchange"] ?>" <?php  echo $multi ?> size=<?php  echo $size ?> <?php  if ($info["disable"]) echo "disabled" ?>>
         <?php  if ($null_val) {
         ?> <option value="0" <?php  echo (in_array(0, $selected)) ? " selected" : ""; ?>>&nbsp;</option>
         <?php    }

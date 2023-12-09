@@ -204,7 +204,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                                         $qedit_hidden_input = ob_get_clean();
                                                 }
                                                 else $qedit_hidden_input = "";
-                                                $display_attribute_RO = $obj->displayAttribute($nom_col,true).$qedit_hidden_input;
+                                                $display_attribute_RO = $obj->displayAttribute($nom_col,$desc["QEDIT_SHOW_LINK"]).$qedit_hidden_input;
                                                 
                                                 if($desc['FORM_HEIGHT']) {
                                                         $style_div_form_control = "height:".$desc['FORM_HEIGHT']." !important";
