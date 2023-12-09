@@ -1,5 +1,7 @@
 <?php
 
+use PhpOffice\PhpSpreadsheet\RichText\Run;
+
 class AFWRoot {
 
         public function __toString()
@@ -869,6 +871,11 @@ class AFWRoot {
             $langue = 'ar';
         }
 
+        if(isset($trad) and $trad and (!is_array($trad)))
+        {
+                throw new RuntimeException("trad 0 is ".var_export($trad,true));
+        }
+
         if (empty($operator)) {
             if ($nom_table) {
                 $nom_file =
@@ -883,28 +890,38 @@ class AFWRoot {
                 //        AFWDebugg::log("traduire from file $nom_file ");
 
                 if (file_exists($nom_file2)) {
-                    //if($this->MY_DEBUG)
-                    //    AFWDebugg::log("traduire include_once $nom_file ");
-                    include_once $nom_file2;
-                    //if($this->MY_DEBUG)
-                    //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
+                        //if($this->MY_DEBUG)
+                        //    AFWDebugg::log("traduire include_once $nom_file ");
+                        include_once $nom_file2;
+                        //if($this->MY_DEBUG)
+                        //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
-                    if ($trad[$nom_table][$nom_col]) {
-                        return $trad[$nom_table][$nom_col];
-                    }
+                        if(isset($trad) and $trad and (!is_array($trad)))
+                        {
+                                throw new RuntimeException("after include_once $nom_file2 trad 2 is ".var_export($trad,true));
+                        }
+
+                        if ($trad[$nom_table][$nom_col]) {
+                                return $trad[$nom_table][$nom_col];
+                        }
                 }
 
                 if (file_exists($nom_file)) {
-                    // if(($module=="sis") and ($nom_table=="student")) die("nom_file2=$nom_file2 not found");
-                    //if($this->MY_DEBUG)
-                    //    AFWDebugg::log("traduire include_once $nom_file ");
-                    include_once $nom_file;
-                    //if($this->MY_DEBUG)
-                    //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
+                        // if(($module=="sis") and ($nom_table=="student")) die("nom_file2=$nom_file2 not found");
+                        //if($this->MY_DEBUG)
+                        //    AFWDebugg::log("traduire include_once $nom_file ");
+                        include_once $nom_file;
+                        //if($this->MY_DEBUG)
+                        //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
-                    if ($trad[$nom_table][$nom_col]) {
-                        return $trad[$nom_table][$nom_col];
-                    }
+                        if(isset($trad) and $trad and (!is_array($trad)))
+                        {
+                                throw new RuntimeException("after include_once $nom_file trad 1 is ".var_export($trad,true));
+                        }
+
+                        if ($trad[$nom_table][$nom_col]) {
+                                return $trad[$nom_table][$nom_col];
+                        }
                 }
             } else {
                 $nom_table = '*';
@@ -920,6 +937,12 @@ class AFWRoot {
 
                 if (file_exists($general_nom_file)) {
                     include_once $general_nom_file;
+
+                    if(isset($trad) and $trad and (!is_array($trad)))
+                    {
+                            throw new RuntimeException("after include_once $general_nom_file trad 3 is ".var_export($trad,true));
+                    }
+
                     //echo "<br>2)translate $nom_table.$nom_col in $langue from general file $general_nom_file"."=".$trad[$nom_table][$nom_col];
                     if (
                         isset($trad['*'][$nom_col]) &&
@@ -951,6 +974,10 @@ class AFWRoot {
                     //if($this->MY_DEBUG)
                     //    AFWDebugg::log("traduire include_once $nom_file ");
                     include_once $nom_file0;
+                    if(isset($trad) and $trad and (!is_array($trad)))
+                    {
+                            throw new RuntimeException("after include_once $nom_file0 trad 4 is ".var_export($trad,true));
+                    }
                     //if($this->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
@@ -964,6 +991,10 @@ class AFWRoot {
             if (file_exists($file_name)) {
                 $ff = 'file found';
                 include_once $file_name;
+                if(isset($trad) and $trad and (!is_array($trad)))
+                {
+                        throw new RuntimeException("after include_once $file_name trad 5 is ".var_export($trad,true));
+                }
 
                 $trad_val = $trad['OPERATOR'][$nom_col];
                 if ($trad_val) {
@@ -978,7 +1009,7 @@ class AFWRoot {
             if (file_exists($file_name)) {
                 $ff = 'file found';
                 include_once $file_name;
-
+                throw new RuntimeException("after include_once $file_name trad 6 is ".var_export($trad,true));
                 $trad_val = $trad['OPERATOR'][$nom_col];
                 if ($trad_val) {
                     return $trad_val;
