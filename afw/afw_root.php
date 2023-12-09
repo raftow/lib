@@ -870,12 +870,13 @@ class AFWRoot {
         if (!$langue) {
             $langue = 'ar';
         }
-        $trad = [];
-        /*
+        
+        
         if(isset($trad) and $trad and (!is_array($trad)))
         {
-                throw new RuntimeException("before any include trad 0 is ".var_export($trad,true));
-        }*/
+                $trad = [];
+                // throw new RuntimeException("before any include trad 0 is ".var_export($trad,true));
+        }
 
         if (empty($operator)) {
             if ($nom_table) {
