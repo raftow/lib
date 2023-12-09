@@ -469,16 +469,18 @@ if(!$obj->qedit_minibox)
              }
 
              $desc = $class_db_structure[$orig_nom_col];
+             $qe_css = $desc['QEDIT-CSS'];
              $importance = $obj->importanceCss($orig_nom_col, $desc);
              
              if($class_xqe_col) {
-               $class_xqe = "xqe_${odd_even}_${class_xqe_col}";
-               $class_xqe_prop = "class='col-importance-$importance $class_xqe col-qe col-qe-$col_sahm col-qe-$orig_nom_col'";
+               $class_xqe = "xqe_${odd_even}_${class_xqe_col}";               
              }
              else
              {
-               $class_xqe_prop = "class='col-importance-$importance col-qe col-qe-$col_sahm col-qe-$orig_nom_col'";
+                $class_xqe = "";     
              }
+
+             $class_xqe_prop = "class='col-importance-$importance $class_xqe $qe_css col-qe col-qe-$col_sahm col-qe-$orig_nom_col'";
              
              
              if(($class_db_structure[$orig_nom_col]["QEDIT_HIDE"]) or ($orig_nom_col=="id"))
