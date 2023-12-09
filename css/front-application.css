@@ -4601,3 +4601,8 @@ th.col-qe {
     margin-left: 10%;
     max-width: 480px;
 }
+
+.d-none {
+    display: none !important;
+    visibility: hidden !important;
+}

@@ -102,3 +102,12 @@
      
      return true;
   }
+
+  
+  $(document).ready(function(){
+
+    $('.inputqe').on('change', function() {
+              $('.calculated').addClass('d-none');
+    });
+
+  });

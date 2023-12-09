@@ -402,6 +402,16 @@ if(!$obj->qedit_minibox)
                         </tr>
                         <?php	
                         }
+                        $header_imbedded_title = is_string($header_imbedded) ? $header_imbedded : "&nbsp;";
+                        ?>
+                        <tr class="qe-header-head">
+                                <td colspan='<?php echo $total_sahm ?>'>
+                                        <?php echo $header_imbedded_title ?>
+                                </td>
+                        </tr>
+                        <?php
+                        
+
                 }
 ?>
 <tr class="qerow<?=$qerow_num?> <?=$obj_odd_even?> <?=$obj->getHLClass()?> <?=get_class($obj)?>">
