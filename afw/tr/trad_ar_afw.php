@@ -10,7 +10,8 @@ if($general_optimizer>200)
 
 if(isset($trad) and (!is_array($trad)))
 {
-    die("trad is ".var_export($trad,true));
+    // die("trad is ".var_export($trad,true));
+    unset($trad);
 }
 
 $trad["OPERATOR"]["ALL"]					= "الجميع";
