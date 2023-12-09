@@ -1010,7 +1010,10 @@ class AFWRoot {
             if (file_exists($file_name)) {
                 $ff = 'file found';
                 include_once $file_name;
-                throw new RuntimeException("after include_once $file_name trad 6 is ".var_export($trad,true));
+                if(isset($trad) and $trad and (!is_array($trad)))
+                {
+                        throw new RuntimeException("after include_once $file_name trad 6 is ".var_export($trad,true));
+                }
                 $trad_val = $trad['OPERATOR'][$nom_col];
                 if ($trad_val) {
                     return $trad_val;
