@@ -150,10 +150,39 @@ td.col-qe>select {
     font-size: 12px !important;
 }
 
+@media screen and (max-width: 570px) {
+    td.col-qe>input {
+        width: 100% !important;
+        margin: 0;
+    }
+    
+    td.col-qe>select {
+        width: 100% !important;
+        margin: 0;
+    }
+    
+    .inputcourt {
+        width: 100% !important;
+        margin: 0;
+    }
+}
+
 label.imbedded-label {
     text-wrap: nowrap;
     overflow: hidden;
     font-weight: bold !important;
     text-align: right;
     padding-right: 20px;
+}
+
+.qe-header-head > td {
+    background-color: #b3d9fb !important;
+}
+
+input.small {
+    font-size: 12px !important;
+    padding: 0px 2px !important;
+    height: 28px !important;
+    width: 30% !important;
+    margin-right: 35% !important;
 }
