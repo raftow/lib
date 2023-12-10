@@ -7,10 +7,10 @@ include("afw_config.php");
 define("LIMIT_INPUT_SELECT", 30);
 
 
-global $TMP_DIR,$TMP_ROOT,$cl,$pack,$sub_pack,$id,$aligntd, $Main_Page, $qedit_trad;
+global $TMP_DIR,$TMP_ROOT,$cl,$pack,$sub_pack,$id,$aligntd, $Main_Page, $qedit_trad_arr;
 $objme = AfwSession::getUserConnected();
 
-$qedit_trad = array();
+$qedit_trad_arr = array();
 $fixm_input = array();
 $fixm_array       = $obj->fixm_array;
 $fgroup           = $obj->fgroup;
@@ -71,13 +71,13 @@ foreach($class_db_structure as $nom_col => $desc)
 
         if(($column_order==1) and $obj->PK_MULTIPLE)
         {
-                $qedit_trad["id"] = $obj->translate("id",$lang);                
+                $qedit_trad_arr["id"] = $obj->translate("id",$lang);                
         }
                         
         if($desc['TYPE'] == 'PK')
         {
-                if($trad_col_short == $nom_col_short) $qedit_trad[$nom_col] = $obj->translate($nom_col,$lang);
-                else $qedit_trad[$nom_col] = $trad_col_short;
+                if($trad_col_short == $nom_col_short) $qedit_trad_arr[$nom_col] = $obj->translate($nom_col,$lang);
+                else $qedit_trad_arr[$nom_col] = $trad_col_short;
         }
         elseif(((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) || $mode_show_field_read_only)           
         {
@@ -87,12 +87,12 @@ foreach($class_db_structure as $nom_col => $desc)
                     //if($nom_col=="symbol") die(var_export($fixm_array,true));
                     if(!isset($fixm_array[$nom_col]))
                     {
-                        if($trad_col_short == $nom_col_short) $qedit_trad[$nom_col] = $obj->translate($nom_col,$lang);
-                        else $qedit_trad[$nom_col] = $trad_col_short;
+                        if($trad_col_short == $nom_col_short) $qedit_trad_arr[$nom_col] = $obj->translate($nom_col,$lang);
+                        else $qedit_trad_arr[$nom_col] = $trad_col_short;
                          
                         $unit  = $desc["UNIT"];
                         $hide_unit  = $desc["RETREIVE_HIDE_UNIT"];
-                        if($unit and (!$hide_unit)) $qedit_trad[$nom_col] .= " ($unit)";
+                        if($unit and (!$hide_unit)) $qedit_trad_arr[$nom_col] .= " ($unit)";
                         
                     }
                     else
@@ -140,14 +140,14 @@ foreach($class_db_structure as $nom_col => $desc)
 
 if($obj->ENABLE_DISPLAY_MODE_IN_QEDIT)
 {
-   $qedit_trad["show"] = AFWObject::traduireOperator("show", $lang);
+   $qedit_trad_arr["show"] = AFWObject::traduireOperator("show", $lang);
 }
 else
 {
-   $qedit_trad["show"] =  "";
+   $qedit_trad_arr["show"] =  "";
 }
 
-// @todo if($obj->QEDIT_SHOW_EDIT_MODE) $qedit_trad["edit"] = AFWObject::traduireOperator("edit", $lang);
+// @todo if($obj->QEDIT_SHOW_EDIT_MODE) $qedit_trad_arr["edit"] = AFWObject::traduireOperator("edit", $lang);
 
 /*
 $obj->simpleError("fixm_input = ".var_export($fixm_input,true)."    
@@ -243,7 +243,7 @@ else
 <table class="<?=$display_grid?>" style="width: 100%;" cellspacing="3" cellpadding="4">
 <thead>
 <tr>
-<?php	foreach($qedit_trad as $col => $info)
+<?php	foreach($qedit_trad_arr as $col => $info)
         {
              $old_class_xqe_col = $class_xqe_col;
              if($col=="show") $class_xqe_col = "z";

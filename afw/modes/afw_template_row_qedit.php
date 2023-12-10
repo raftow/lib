@@ -17,7 +17,7 @@ $obj_class = $obj->getMyClass();
 $obj_mod = $obj->getMyModule();
 $qedit_input_arr = array();
 $qedit_orig_nom_col = array();
-$qedit_trad_arr = array();
+//$qedit_trad_arr = array(); because keeped in global var
 
 $fixm_array       = $obj->fixm_array;
 $fgroup           = $obj->fgroup;
@@ -45,11 +45,14 @@ foreach($class_db_structure as $nom_col => $desc)
 {
         if($desc['QEDIT-TYPE']) $desc['TYPE'] = $desc['QEDIT-TYPE'];
         if($desc['QEDIT-FROM_LIST']) $desc['FROM_LIST'] = $desc['QEDIT-FROM_LIST'];
-        
-        $nom_col_short = "$nom_col.short";
-        $trad_col_short  = $obj->translate($nom_col_short,$lang);
-        if($trad_col_short == $nom_col_short) $qedit_trad_arr[$nom_col] = $obj->translate($nom_col,$lang);
-        else $qedit_trad_arr[$nom_col] = $trad_col_short;
+        $btn_each_record = $desc['QEDIT_SUBMIT_BTN_EACH_RECORD'];
+        if(!$qedit_trad_arr[$nom_col])
+        {
+                $nom_col_short = "$nom_col.short";
+                $trad_col_short  = $obj->translate($nom_col_short,$lang);
+                if($trad_col_short == $nom_col_short) $qedit_trad_arr[$nom_col] = $obj->translate($nom_col,$lang);
+                else $qedit_trad_arr[$nom_col] = $trad_col_short;
+        }
         $column_order++;
         $desc = AfwStructureHelper::repareQEditAttributeStructure($nom_col, $desc, $obj);
         $isQuickEditableAttribute = $obj->isQuickEditableAttribute($nom_col, $desc, $submode);
@@ -405,11 +408,27 @@ if(!$obj->qedit_minibox)
 
                         if($qerow_num==0)
                         {
-                        $header_imbedded_title = is_string($header_imbedded) ? $header_imbedded : "&nbsp;";                        
+                                $obj_qeditEachRec = $obj_qeditNum % $btn_each_record;
+                                if($obj_qeditEachRec==0)
+                                {
+                                        if(!$qedit_trad_arr["SAVE"])
+                                        {
+                                              $qedit_trad_arr["SAVE"] = $obj->translate("SAVE",$lang,true);
+                                        }
+                                        $sub_btn_tit = $qedit_trad_arr["SAVE"];
+                                        $btn_submit_imbedded = "<input type='submit' name='submit'  id='submit-form-$obj_qeditNum' class='bluebtn submit-btn small fright' value='&nbsp;$sub_btn_tit&nbsp;' width='140px' height='23px' />";
+                                }
+                                else
+                                {
+                                        $btn_submit_imbedded = "";
+                                }
+
+                                $header_imbedded_title = is_string($header_imbedded) ? $header_imbedded : "&nbsp;";                        
                         ?>
                         <tr class="qe-header-head <?=get_class($obj)?>">
                                 <td colspan='<?php echo $total_sahm ?>'>
                                         <?php echo $header_imbedded_title ?>
+                                        <?php echo $btn_submit_imbedded ?>
                                 </td>
                         </tr>
                         <?php

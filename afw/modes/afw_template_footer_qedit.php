@@ -13,7 +13,7 @@ define("LIMIT_INPUT_SELECT", 30);
 global $TMP_DIR,$TMP_ROOT,$lang,$cl,$pack,$sub_pack,$id,$aligntd, $first_disp, $first_val, $diff_val, $not_filled, $filled, $nb_objs,
 // $class_tr1, $class_tr2, $class_titre, $class_table, $class_inputSubmit, $class_inputLien, $class_inputNew, 
 $pct_tab_edit_mode, $qedit_other_search, $Main_Page, 
-$qedit_trad, $popup;
+$qedit_trad_arr, $popup;
 
 $objme = AfwSession::getUserConnected();
 
@@ -60,7 +60,7 @@ if(!$obj->qedit_minibox)
   
 ?>
        <tr class='footer_sum' >
-<?php	foreach($qedit_trad as $col => $info)
+<?php	foreach($qedit_trad_arr as $col => $info)
         {
            if($class_db_structure[$col]["FOOTER_SUM"])
            {
@@ -125,7 +125,7 @@ if(!$obj->qedit_minibox)
 <?php	
     if($data_template["nb_records"]>8)
     {
-      foreach($qedit_trad as $col => $info)
+      foreach($qedit_trad_arr as $col => $info)
       {
           $old_class_xqe_col = $class_xqe_col;
           if($col=="show") $class_xqe_col = "z";
@@ -171,7 +171,7 @@ if(!$obj->qedit_minibox)
   {
 ?>  
 <tr>  
-<?php	foreach($qedit_trad as $col => $info)
+<?php	foreach($qedit_trad_arr as $col => $info)
         {
 
 ?>
