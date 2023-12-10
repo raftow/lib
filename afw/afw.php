@@ -1442,6 +1442,11 @@ class AFWObject extends AFWRoot
         
     }
 
+    public function repareExistingObjectForEdit()
+    {
+        return true;
+    }
+
     public function prepareNewObjectForEdit()
     {
         return true;

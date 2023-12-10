@@ -132,6 +132,7 @@ if($id)
 {
 	    if($myObj_loaded)
         {
+                $myObj->repareExistingObjectForEdit();
                 list($edit_allowed, $edit_not_allowed_reason) = $myObj->userCanEditMe($objme);
                 if(!$edit_allowed)
                 {

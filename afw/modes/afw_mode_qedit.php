@@ -237,7 +237,7 @@ else
         $class_db_structure = null;
         foreach($qedit_objs as $qedit_obj_id => $qedit_obj)
         {
-            
+            $qedit_obj->repareExistingObjectForEdit();
             $qedit_obj->qeditNum = $num;
             $qedit_obj->qeditCount = count($qedit_objs);
             if($qedit_obj->getId()<=0) $qedit_obj->odd_even = "new"; 
