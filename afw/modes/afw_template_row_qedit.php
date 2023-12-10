@@ -409,25 +409,27 @@ if(!$obj->qedit_minibox)
 
                         if($qerow_num==0)
                         {
-                                if($btn_each_record>0)
+                                if(($obj_qeditNum>0) and ($btn_each_record>0))
                                         $obj_qeditEachRec = $obj_qeditNum % $btn_each_record;
                                 else $obj_qeditEachRec = -1;
 
                                 if($obj_qeditEachRec==0)
                                 {
-                                        if(!$qedit_trad_arr["SAVE"])
+                                        if(!$qedit_trad_arr["save"])
                                         {
-                                              $qedit_trad_arr["SAVE"] = $obj->translate("SAVE",$lang,true);
+                                              $qedit_trad_arr["save"] = $obj->translate("save",$lang,true);
                                         }
-                                        $sub_btn_tit = $qedit_trad_arr["SAVE"];
+                                        $sub_btn_tit = $qedit_trad_arr["save"];
                                         $btn_submit_imbedded = "<input type='submit' name='submit'  id='submit-form-$obj_qeditNum' class='bluebtn submit-btn small fright' value='&nbsp;$sub_btn_tit&nbsp;' width='140px' height='23px' />";
+                                        $header_imbedded_default_title = "";
                                 }
                                 else
                                 {
                                         $btn_submit_imbedded = "";
+                                        $header_imbedded_default_title = "&nbsp;";
                                 }
-
-                                $header_imbedded_title = is_string($header_imbedded) ? $header_imbedded : "&nbsp;";                        
+                                $header_imbedded_title = is_string($header_imbedded) ? $header_imbedded : $header_imbedded_default_title;
+                                                        
                         ?>
                         <tr class="qe-header-head <?=get_class($obj)?>">
                                 <td colspan='<?php echo $total_sahm ?>'>

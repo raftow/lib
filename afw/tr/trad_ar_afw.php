@@ -84,6 +84,7 @@ $trad["OPERATOR"]["NO"]	        	                	= "لا";
 $trad["OPERATOR"]["EUH"]	                        	= "غير محدد";
 $trad["OPERATOR"]["FOR"]	        	                = "لـ";
 
+$trad["OPERATOR"]["save"]	                        	= "حفظ";
 $trad["OPERATOR"]["SAVE"]	                        	= "حفظ فقط";
 $trad["OPERATOR"]["UPDATE"]	                        	= "حفظ التعديلات";
 $trad["OPERATOR"]["UPDATE_AND_RETURN"]                        	= "حفظ التعديلات ورجوع";
