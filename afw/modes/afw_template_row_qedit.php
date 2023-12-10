@@ -408,7 +408,10 @@ if(!$obj->qedit_minibox)
 
                         if($qerow_num==0)
                         {
-                                $obj_qeditEachRec = $obj_qeditNum % $btn_each_record;
+                                if($btn_each_record>0)
+                                        $obj_qeditEachRec = $obj_qeditNum % $btn_each_record;
+                                else $obj_qeditEachRec = -1;
+                                
                                 if($obj_qeditEachRec==0)
                                 {
                                         if(!$qedit_trad_arr["SAVE"])
