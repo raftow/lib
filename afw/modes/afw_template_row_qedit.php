@@ -17,6 +17,7 @@ $obj_class = $obj->getMyClass();
 $obj_mod = $obj->getMyModule();
 $qedit_input_arr = array();
 $qedit_orig_nom_col = array();
+$btn_each_record = $obj->QEDIT_SUBMIT_BTN_EACH_RECORD;
 //$qedit_trad_arr = array(); because keeped in global var
 
 $fixm_array       = $obj->fixm_array;
@@ -45,7 +46,7 @@ foreach($class_db_structure as $nom_col => $desc)
 {
         if($desc['QEDIT-TYPE']) $desc['TYPE'] = $desc['QEDIT-TYPE'];
         if($desc['QEDIT-FROM_LIST']) $desc['FROM_LIST'] = $desc['QEDIT-FROM_LIST'];
-        $btn_each_record = $desc['QEDIT_SUBMIT_BTN_EACH_RECORD'];
+        
         if(!$qedit_trad_arr[$nom_col])
         {
                 $nom_col_short = "$nom_col.short";
@@ -411,7 +412,7 @@ if(!$obj->qedit_minibox)
                                 if($btn_each_record>0)
                                         $obj_qeditEachRec = $obj_qeditNum % $btn_each_record;
                                 else $obj_qeditEachRec = -1;
-                                
+
                                 if($obj_qeditEachRec==0)
                                 {
                                         if(!$qedit_trad_arr["SAVE"])
