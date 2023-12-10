@@ -4606,3 +4606,7 @@ th.col-qe {
     display: none !important;
     visibility: hidden !important;
 }
+
+.qe-header-head > td {
+    background-color: #b3d9fb !important;
+}
