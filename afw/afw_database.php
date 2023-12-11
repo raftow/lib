@@ -236,19 +236,15 @@ class AfwDatabase extends AFWRoot
             if (!$result) {
                 $sql_error =
                     "sql error on [$project_link_name] query :[$sql_query] ==> " .
-                    AfwMysql::get_error(
-                        AfwDatabase::getLinkByName($project_link_name)
-                    );
+                    AfwMysql::get_error(AfwDatabase::getLinkByName($project_link_name));
                 if ($print_debugg and $print_sql) {
                     echo $sql_error;
                 }
-                AFWDebugg::log($sql_error);
+                else throw new RuntimeException($sql_error);
+                // AFWDebugg::log($sql_error);
+                /*
                 if ($throw_error) {
-                    self::lightSafeDie($sql_error);
-                    /*
-                                                if($MODE_DEVELOPMENT) self::simpleError("sql_error",$sql_error);
-                                        else self::simpleError("خطأ","حدث خطأ [$me] أثناء القيام باجراء على قاعدة البيانات  بتاريخ ".date("Y-m-d H:i:s"). " query : $sql_error");
-                                        */
+                    self::lightSafeDie();
                 } else {
                     self::lightSafeDie(
                         'see why this error is not thrown and manage this well : ' .
@@ -256,6 +252,7 @@ class AfwDatabase extends AFWRoot
                     );
                     AfwSession::sqlError($sql_error, 'hzm');
                 }
+                */
             } else {
                 /*   else
                                 {
@@ -384,7 +381,7 @@ class AfwDatabase extends AFWRoot
 
                 // $sql_capture_and_backtrace can be setted in application_config.php file
                 if ($sql_capture_and_backtrace) {
-                    if (contient($sql_query, $sql_capture_and_backtrace)) {
+                    if (AfwStringHelper::stringContain($sql_query, $sql_capture_and_backtrace)) {
                         throw new RuntimeException('sql '.$sql_capture_and_backtrace.' captured');
                     }
                 }
@@ -490,9 +487,9 @@ class AfwDatabase extends AFWRoot
             $array = [];
             while ($row = AfwMysql::fetch_array($result)) {
                 //echo "RAFIK row : <br>";
-                if (AfwSession::config('LOG_SQL', true)) {
-                    //AFWDebugg::log($row,true);
-                }
+                //if (AfwSession::config('LOG_SQL', true)) {
+                    //// AFWDebugg::log($row,true);
+                //}
                 $array[] = $row;
             }
         } else {

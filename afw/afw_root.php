@@ -779,7 +779,8 @@ class AFWRoot {
                 else
                 {
                         $message .= "<div style='font-family: monospace;float: right;width: 100%;text-align: left;padding-top: 30px;border-top: 2px solid #0d67d8;'>";
-                        $message .= "<div class='momken_error_title'>An error happened when executing this request, please contact the administrator <br> .حصل خطأ أثناء تنفيذ هذا الطلب الرجاء التواصل مع مشرف المنصة</div>";
+                        $message .= "<div class='momken_error_title'>An error happened when executing this request : $error_title .";
+                        $message .= "<br>Please contact the administrator <br> .حصل خطأ أثناء تنفيذ هذا الطلب الرجاء التواصل مع مشرف المنصة</div>";
                         $message .= "<br>open_mode:[$open_mode] = (force_mode_dev:[$force_mode_dev] or mode_dev:[$mode_dev] or mode_batch:[$mode_batch])<br>";
                         $message .= AfwSession::log_config();
                         $message .= "</div>";

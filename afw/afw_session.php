@@ -345,6 +345,13 @@ class AfwSession extends AFWRoot {
 
         public static function log($string, $css_class="paglog hzmlog", $separator="<br>\n", $show_time=true, $context="log")
         {
+                global $log_counter;
+                if(!$log_counter) $log_counter = 0;
+                $log_counter++;
+                if($log_counter>2000)
+                {
+                        throw new RuntimeException("too much log ".self::getLog($context));
+                }
                 AfwBatch::print_debugg($string);
                 if($context == "log")
                 {

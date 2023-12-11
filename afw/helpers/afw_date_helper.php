@@ -997,21 +997,29 @@ class AfwDateHelper
             return $hgreg_matrix[$hijri_year . $hijri_month];
         }
 
-        //if(count($hgreg_matrix)>0) die("gregdate_of_first_hijri_day($hijri_year, $hijri_month) : ".var_export($hgreg_matrix,true));
+        $hijri_month_full = ($hijri_month<10) ? "0".$hijri_month : $hijri_month;
 
-        $sql_greg = " select greg_date
-                        from c0pag.hijra_date_base 
-                        where hijri_year = $hijri_year
-                                and hijri_month = $hijri_month";
-        //echo "<br>sql_greg = $sql_greg";
+        $gdfirst = self::hijri_to_greg_from_files($hijri_year . $hijri_month_full . "01");
+        if($gdfirst) 
+        {
+            $hgreg_matrix[$hijri_year . $hijri_month] = $gdfirst;
+        }
+        else
+        {
+            //if(count($hgreg_matrix)>0) die("gregdate_of_first_hijri_day($hijri_year, $hijri_month) : ".var_export($hgreg_matrix,true));
 
-        //$file_dir_name = dirname(__FILE__);
-        //include_once "$file_dir_name/../pag/common.php";
+            $sql_greg = " select greg_date
+                            from c0pag.hijra_date_base 
+                            where hijri_year = $hijri_year
+                                    and hijri_month = $hijri_month";
+            //echo "<br>sql_greg = $sql_greg";
 
-        $greg_date = AfwDatabase::db_recup_value($sql_greg);
-        $hgreg_matrix[$hijri_year . $hijri_month] = self::add_dashes(
-            $greg_date
-        );
+            //$file_dir_name = dirname(__FILE__);
+            //include_once "$file_dir_name/../pag/common.php";
+
+            $greg_date = AfwDatabase::db_recup_value($sql_greg);
+            $hgreg_matrix[$hijri_year . $hijri_month] = self::add_dashes($greg_date);
+        }
 
         return $hgreg_matrix[$hijri_year . $hijri_month];
     }
@@ -1211,10 +1219,21 @@ class AfwDateHelper
         }
     }
 
+    private static function hijri_to_greg_from_files($original_hdate, $hijri_year="")
+    {
+        // try to use cache hijri_to_greg files
+        if(!$hijri_year) $hijri_year = substr($original_hdate,0,4);
+        $hijri_to_greg_file = dirname(__FILE__) . "/../../../external/chsys/dates/hijri_".$hijri_year."_to_greg.php";
+        $hijri_to_greg_arr = include($hijri_to_greg_file);
+        if(($original_hdate=="14350101") and (!$hijri_to_greg_arr[$original_hdate]))
+        {
+            die("$original_hdate not found in hijri_to_greg_file=$hijri_to_greg_file in hijri_to_greg_arr=".var_export($hijri_to_greg_arr,true));
+        }
+        return $hijri_to_greg_arr[$original_hdate];
+    }
+
     private static function hijri_to_greg($hdate)
     {
-        $result = AfwSession::getVar("greg-of-$hdate");
-        if ($result) return $result;
         $original_hdate = $hdate;
         if (strpos($hdate, '-') !== false) {
             $hdate = self::remove_dashes($hdate);
@@ -1225,19 +1244,22 @@ class AfwDateHelper
         }
 
         $hd_arr = explode('/', $hdate);
+
+        $hdate = $hd_arr[0].$hd_arr[1].$hd_arr[2];
+
+        $result = AfwSession::getVar("greg-of-$hdate");
+        if ($result) return $result;
+        
+
         $hijri_year = intval($hd_arr[0]);
         $hijri_month = intval($hd_arr[1]);
         $hijri_day = intval($hd_arr[2]);
 
-        // try to use cache hijri_to_greg files
-        $hijri_to_greg_arr = include(dirname(__FILE__) . "/../../../external/chsys/dates/hijri_${hijri_year}_to_greg.php");
+        $result = self::hijri_to_greg_from_files($original_hdate, $hijri_year);
 
-        if ($hijri_to_greg_arr) {
-            $result = $hijri_to_greg_arr[$original_hdate];
-            if ($result) {
-                AfwSession::setVar("greg-of-$hdate", $result);
-                return $result;
-            }
+        if ($result) {
+            AfwSession::setVar("greg-of-$hdate", $result);
+            return $result;
         }
 
         $first_gregdate = self::gregdate_of_first_hijri_day(

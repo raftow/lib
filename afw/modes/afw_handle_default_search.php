@@ -27,6 +27,41 @@ if (($objme) and ($objme->popup)) {
         $popup_t = "";
 }
 
+$cols_spec_retrieve = array();
+
+$mode_ret = "search";
+
+if ($qsearchview and ($qsearchview != "all") and ($action == "retrieve")) $mode_ret = $qsearchview;
+
+$obj  = new $cl();
+
+$tentative = "first";
+$header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang);
+if (count($header_retrieve) == 0) {
+        $tentative = "second";
+        // echo "header_retrieve is empty try all :<br>";   
+        $header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang, true);
+}
+
+// @doc : to make the id or any other attribute is shown for qsearch with view TECH_FIELDS, just put "TECH_FIELDS-RETRIEVE" => true in structure of attribute
+
+// if($mode_ret == "props") die("$tentative tentative for header in mode $mode_ret-retrieve = ".var_export($header_retrieve,true));
+
+if ($genere_xls) {
+        $header_excel = AfwUmsPagHelper::getExportExcelHeader($obj, $lang);
+}
+
+
+
+
+//AFWDebugg::print_str('fin for each '.__LINE__);
+if ((count($header_retrieve) > 0) and (count($cols_spec_retrieve) == 0))
+        $header = &$header_retrieve;
+elseif (count($cols_spec_retrieve) > 0)
+        $header = &$cols_spec_retrieve;
+else
+        $header = array("id" => "id");
+
 if (!$liste_obj) {
         // require_once $file_obj;
         //die("genere_xls=[$genere_xls]");
@@ -35,7 +70,7 @@ if (!$liste_obj) {
 
         AfwSession::pullSessionVar("search-$cl");
 
-        $obj  = new $cl();
+        
         $class_db_structure = $obj->getMyDbStructure($return_type = "structure", $attribute = "all");
         //$currmod = $obj->getMyModule();
         $newo_qedit = $obj->QEDIT_MODE_NEW_OBJECTS_DEFAULT_NUMBER;
@@ -202,38 +237,11 @@ if (!$liste_obj) {
         }
 }
 
-$cols_spec_retrieve = array();
-
-$mode_ret = "search";
-
-if ($qsearchview and ($qsearchview != "all") and ($action == "retrieve")) $mode_ret = $qsearchview;
-
-$tentative = "first";
-$header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang);
-if (count($header_retrieve) == 0) {
-        $tentative = "second";
-        // echo "header_retrieve is empty try all :<br>";   
-        $header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang, true);
-}
-
-// @doc : to make the id or any other attribute is shown for qsearch with view TECH_FIELDS, just put "TECH_FIELDS-RETRIEVE" => true in structure of attribute
-
-// if($mode_ret == "props") die("$tentative tentative for header in mode $mode_ret-retrieve = ".var_export($header_retrieve,true));
-
-if ($genere_xls) {
-        $header_excel = AfwUmsPagHelper::getExportExcelHeader($obj, $lang);
-}
+// espion-time-0002 : pour afficher le temps d'exec de cette requette non-voulu a l origine 
+// mais pour localiser (espioner) la lenteur est avant ou apres
+// City::loadById(116); => lenteur avant
 
 
-
-
-//AFWDebugg::print_str('fin for each '.__LINE__);
-if ((count($header_retrieve) > 0) and (count($cols_spec_retrieve) == 0))
-        $header = &$header_retrieve;
-elseif (count($cols_spec_retrieve) > 0)
-        $header = &$cols_spec_retrieve;
-else
-        $header = array("id" => "id");
 
 list($data, $isAvail) = AfwLoadHelper::getRetrieveDataFromObjectList($liste_obj, $header, $lang, $newline = "\n<br>");
 // die("data = ".var_export($data,true)." when liste_obj= ".var_export($liste_obj,true));

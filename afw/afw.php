@@ -2138,26 +2138,9 @@ class AFWObject extends AFWRoot
         return $loaded;
     }
 
-    /**
-     * load
-     * Load into object a specified row
-     * @param string $value : Optional, specify the value of primary key
-     */
-    public function load($value = '', $result_row = '', $order_by_sentence = '')
+    private function getTheLoadByIndex()
     {
-        global $load_count, $DISABLE_CACHE_MANAGEMENT;
-        if(!$DISABLE_CACHE_MANAGEMENT) $cache_management = AfwSession::config('cache_management', true);
-        else $cache_management = false;
-        $className = $this->getMyClass();
-        $module_server = $this->getModuleServer();
-        // if($value == 6082) die("load case cache_management=$cache_management loading $className[$value] result_row=".var_export($result_row));
-        $result_row_from =
-            'load call as result_row = ' . var_export($result_row, true);
-
-        $loadByIndex = '';
-        if (
-            !$result_row and
-            is_array($this->UNIQUE_KEY) and
+        if (is_array($this->UNIQUE_KEY) and
             count($this->UNIQUE_KEY) > 0
         ) {
             $uk_val_arr = [];
@@ -2175,6 +2158,30 @@ class AFWObject extends AFWRoot
             }
             // if(($className=="TravelHotel") and (!$value)) $this->throwError("loadByIndex=$loadByIndex this->SEARCH_TAB = ".var_export($this->SEARCH_TAB,true));
         }
+
+        return $loadByIndex;
+    }
+
+    /**
+     * load
+     * Load into object a specified row
+     * @param string $value : Optional, specify the value of primary key
+     */
+    public function load($value = '', $result_row = '', $order_by_sentence = '')
+    {
+        global $load_count, $DISABLE_CACHE_MANAGEMENT;
+        if(!$DISABLE_CACHE_MANAGEMENT) $cache_management = AfwSession::config('cache_management', true);
+        else $cache_management = false;
+        //chakek 10003
+        $cache_management = false;
+
+        // $className = $this->getMyClass();
+        $module_server = $this->getModuleServer();
+        // if($value == 6082) die("load case cache_management=$cache_management loading $className[$value] result_row=".var_export($result_row));
+        //$result_row_from = 'load call as result_row = ' . var_export($result_row, true);
+
+         
+        
 
         $all_real_fields = $this->getAllRealFields();
 
@@ -2197,10 +2204,10 @@ class AFWObject extends AFWRoot
             $this_id = $value;
         } elseif ($myId) {
             $this_id = $myId;
-        } else {
-            $this_id = $loadByIndex;
+        } elseif(!$result_row)  {
+            $this_id = $this->getTheLoadByIndex();
         }
-        $call_method = "load(value = $value or this_id =  $this_id)";
+        // $call_method = "load(value = $value or this_id =  $this_id)";
         
         // if($this_id == 6082) die("load case cache_management=$cache_management loading $className[$this_id] result_row=".var_export($result_row));
         if ($cache_management and $this_id and !$result_row) {
@@ -2220,14 +2227,14 @@ class AFWObject extends AFWRoot
                     $result_row[$attribute] = $attribute_value;
                 }
                 $result_row['debugg_source'] = 'system cache';
-                $result_row_from =
+                /*$result_row_from =
                     'getFromCache(' .
                     static::$MODULE .
                     ', ' .
                     static::$TABLE .
                     ', ' .
                     $this_id .
-                    ')';
+                    ')';*/
             }
             unset($object);
         }
@@ -2276,7 +2283,7 @@ class AFWObject extends AFWRoot
                         "\n ORDER BY " .
                         $order_by_sentence .
                         " -- oo \n LIMIT 1";
-                    if ($this->MY_DEBUG) {
+                    if ($this->MY_DEBUG and false) {
                         AFWDebugg::log(
                             "query to load afw object value = $value "
                         );
@@ -2318,6 +2325,10 @@ class AFWObject extends AFWRoot
                             $debugg_res_row .= ",$attribute";
                         }
                     }
+                    // espion-time-0001 : pour afficher le temps d'exec de cette requette non-voulu a l origine 
+                    // mais pour localiser (espioner) la lenteur est avant ou apres
+                    $result_rows2 = AfwDatabase::db_recup_rows("select * from c0pag.atable where 1=0", $module_server);
+                    
                     /*
                     if((static::$TABLE=="cher_file"))
                     {
@@ -2350,33 +2361,30 @@ class AFWObject extends AFWRoot
         if ($return) {
             $this->afterLoad();
             // -- $className = self::tableToClass(static::$TABLE);
-            if ($cache_management) {
-                if ($this->id > 0) {
-                    AfwCacheSystem::getSingleton()->putIntoCache(
-                        static::$MODULE,
-                        static::$TABLE,
-                        $this,
-                        $loadByIndex
-                    );
-                }
-            } else {
-                AfwCacheSystem::getSingleton()->skipPutIntoCache(
-                    static::$MODULE,
-                    static::$TABLE,
-                    $this->getId(),
-                    'cache management disabled'
-                );
-            }
+            
         } else {
-            // even if load is empty store the empty object into cache than the query is not repeated
-            if ($cache_management) {
+            // even if load is empty store the empty object into cache than the query is not repeated            
+        }
+
+        if ($cache_management) {
+            if ($this_id) {
                 AfwCacheSystem::getSingleton()->putIntoCache(
                     static::$MODULE,
                     static::$TABLE,
                     $this,
-                    $loadByIndex
+                    $this_id
                 );
             }
+        } 
+        else 
+        {
+            /*
+            AfwCacheSystem::getSingleton()->skipPutIntoCache(
+                static::$MODULE,
+                static::$TABLE,
+                $this->getId(),
+                'cache management disabled'
+            );*/
         }
 
         // die("rafik debugg 20210920 : this->getAllfieldValues() = ".var_export($this->getAllfieldValues(),true));
@@ -2616,12 +2624,12 @@ class AFWObject extends AFWRoot
                     $moduleCol = 'pag';
                 }
 
-                $join_sentence_arr[] = "left join ${server_db_prefix}$moduleCol.$tableCol join${col_ret}00 on me.$col_ret = join${col_ret}00.id";
+                $join_sentence_arr[] = "left join $server_db_prefix"."$moduleCol.$tableCol join".$col_ret."00 on me.$col_ret = join".$col_ret."00.id";
                 //$join_retrieve_fields[] = "join$col_ret.id as join${col_ret}00_id";
                 $col_ret_obj = $this->getEmptyObject($col_ret);
                 $col_fk_retrieve_cols = $col_ret_obj->getAllRealFields();
                 foreach ($col_fk_retrieve_cols as $col_fk_sub_ret) {
-                    $join_retrieve_fields[] = "join${col_ret}00.$col_fk_sub_ret as join${col_ret}00_$col_fk_sub_ret";
+                    $join_retrieve_fields[] = "join".$col_ret."00.$col_fk_sub_ret as join$col_ret"."00_$col_fk_sub_ret";
                 }
             }
         }
@@ -2739,7 +2747,8 @@ class AFWObject extends AFWRoot
 
         $this_cl = get_class($this);
         $call_method = "$this_cl::loadMany(limit = $limit, order_by = $order_by)";
-        if ($this->MY_DEBUG) {
+        /*
+        if ($this->MY_DEBUG and false) {
             AFWDebugg::log(
                 '----------------------------------------------------------------------------------------'
             );
@@ -2747,7 +2756,7 @@ class AFWObject extends AFWRoot
             AFWDebugg::log(
                 '----------------------------------------------------------------------------------------'
             );
-        }
+        }*/
 
         $module_server = $this->getModuleServer();
 
@@ -2794,6 +2803,7 @@ class AFWObject extends AFWRoot
                 $this->debugg_sql_for_loadmany = $query;
             }
             $result_rows = AfwDatabase::db_recup_rows($query, $module_server);
+            
             /*
             if(contient($query,".module_type"))
             {
@@ -2803,21 +2813,27 @@ class AFWObject extends AFWRoot
         }
         if (count($result_rows) > 0) {
             $array_many = [];
-
-            list($fileName, $className) = $this->getMyFactory();
+            $className = $this->getMyClass();
+            //list($fileName, $className) = $this->getMyFactory();
             // require_once $fileName;
             $object_ref = new $className();
+            // chakek sbab lenteur => is ok
             $colsFK = $object_ref->getRetrieveCols(
                 'display',
                 $lang,
                 false,
-                'FK'
+                'FK',
+                $debugg = false, 
+                $hide_retrieve_cols = null, 
+                $force_retrieve_cols = null, 
+                $category = 'empty'
             );
             foreach ($result_rows as $result_row) {
                 unset($object);
                 $object = null;
 
                 if ($cache_management and !$optim) {
+                    /*chakek sbab lenteur => is ok*/
                     $object = &AfwCacheSystem::getSingleton()->getFromCache(
                         static::$MODULE,
                         static::$TABLE,
@@ -2826,16 +2842,18 @@ class AFWObject extends AFWRoot
                 }
 
                 if (!$object) {
-                    $object = clone $object_ref;
+                    //$object = cl one $object_ref;
+                    $object = new $className();
                     if ($pk_field) {
                         $object->setPKField($pk_field);
                     } else {
                         $object->setPKField('NO_ID_AS_PK');
                     }
-                    $object->setMyDebugg($this->MY_DEBUG);
+                    // $object->setMyDebugg($this->MY_DEBUG);
 
                     if ($object->load('', $result_row) and $cache_management) {
                         if ($eager_joins) {
+                            // chakek sbab lenteur => is ok
                             $object->loadAllFkRetrieve($result_row, $colsFK);
                         }
                         /*
@@ -2844,6 +2862,7 @@ class AFWObject extends AFWRoot
                             self::lightSafeDie("example of data of this class", $object);
                         }*/
 
+                        /*chakek sbab lenteur => is ok */
                         AfwCacheSystem::getSingleton()->putIntoCache(
                             $object->MODULE,
                             $object->TABLE,
@@ -2851,7 +2870,7 @@ class AFWObject extends AFWRoot
                         );
                     }
                 } else {
-                    $object->setMyDebugg($this->MY_DEBUG);
+                    // $object->setMyDebugg($this->MY_DEBUG);
                 }
                 if ($pk_field != 'id') {
                     // die($object->TABLE." debugg rafik 20220912 result_row = ".var_export($result_row,true));
@@ -2868,11 +2887,13 @@ class AFWObject extends AFWRoot
                     $array_many[$obj_index] = $object;
                 }
             }
+            
             $return = $array_many;
         } else {
             $return = [];
         }
-        if ($this->MY_DEBUG) {
+        
+        if ($this->MY_DEBUG and false) {
             AFWDebugg::log(
                 '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
             );
@@ -2899,7 +2920,7 @@ class AFWObject extends AFWRoot
     public function loadListe($limit = '', $order_by = '')
     {
         $call_method = "loadListe(limit = $limit, order_by = $order_by)";
-        if ($this->MY_DEBUG) {
+        if ($this->MY_DEBUG and false) {
             AFWDebugg::log(
                 '----------------------------------------------------------------------------------------'
             );
@@ -2936,7 +2957,7 @@ class AFWObject extends AFWRoot
         } else {
             $return = [];
         }
-        if ($this->MY_DEBUG) {
+        if ($this->MY_DEBUG and false) {
             AFWDebugg::log(
                 '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
             );
@@ -2967,7 +2988,7 @@ class AFWObject extends AFWRoot
         $order_by = ''
     ) {
         $call_method = "loadCol(limit = $limit, order_by = $order_by)";
-        if ($this->MY_DEBUG) {
+        if ($this->MY_DEBUG and false) {
             AFWDebugg::log(
                 '----------------------------------------------------------------------------------------'
             );
@@ -3000,7 +3021,7 @@ class AFWObject extends AFWRoot
             $return[] = $value[$col_name];
         }
         $this->clearSelect();
-        if ($this->MY_DEBUG) {
+        if ($this->MY_DEBUG and false) {
             AFWDebugg::log(
                 '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
             );
@@ -3036,38 +3057,24 @@ class AFWObject extends AFWRoot
     {
         global $lang;
 
-        list(
-            $fileName,
-            $className,
-            $ansTab,
-            $ansModule,
-        ) = $this->getFactoryForFk($attribute);
+        list($fileName,$className,$ansTab,$ansModule,) = $this->getFactoryForFk($attribute);
         if (!$className) {
-            die(
-                "in getEmptyObject run of : this->getFactoryForFk($attribute) => list($fileName, $className, $ansTab, $ansModule) with this = " .
-                    $this->getDefaultDisplay($lang)
-            );
+            throw new RuntimeException("Failed to getEmptyObject from this->getFactoryForFk($attribute) => list($fileName, $className, $ansTab, $ansModule) with this = " . $this->getDefaultDisplay($lang));
         }
 
-        $objFromCache = AfwCacheSystem::getSingleton()->getFromCache(
-            $ansModule,
-            $ansTab,
-            'empty'
-        );
+        return new $className();
+
+        /*
+        $objFromCache = AfwCacheSystem::getSingleton()->getFromCache($ansModule,$ansTab,'empty');
         if (!$objFromCache) {
             // require_once $fileName;
             $objNew = new $className();
-            AfwCacheSystem::getSingleton()->putIntoCache(
-                $ansModule,
-                $ansTab,
-                $objNew,
-                'empty'
-            );
+            AfwCacheSystem::getSingleton()->putIntoCache($ansModule,$ansTab,$objNew,'empty');
         } else {
-            $objNew = clone $objFromCache;
+            $objNew = cl one $objFromCache;
         }
 
-        return $objNew;
+        return $objNew;*/
     }
 
     public function getFactoryForFk($attribute)
@@ -3103,14 +3110,20 @@ class AFWObject extends AFWRoot
                 $mode = 'display',
                 $lang,
                 $all = false,
-                $type = 'FK'
+                $type = 'FK',
+                $debugg = false, 
+                $hide_retrieve_cols = null, 
+                $force_retrieve_cols = null, 
+                $category = 'empty'
             );
         }
         foreach ($colsRet as $col_ret) {
+            /*
             $descCol = AfwStructureHelper::getStructureOf($this,$col_ret);
             if (!$descCol['CATEGORY']) {
-                $this->loadObjectFKFromRow($col_ret, $row);
-            }
+                
+            }*/
+            $this->loadObjectFKFromRow($col_ret, $row);
         }
     }
 
@@ -3130,29 +3143,24 @@ class AFWObject extends AFWRoot
 
         $from_join_row = [];
         foreach ($row as $col => $val) {
-            if (
-                AfwStringHelper::stringStartsWith($col, "join${attribute}00_")
-            ) {
-                $attrib_real = AfwStringHelper::removePrefix(
-                    $col,
-                    "join${attribute}00_"
-                );
+            if (AfwStringHelper::stringStartsWith($col, "join".$attribute."00_")) {
+                $attrib_real = AfwStringHelper::removePrefix($col,"join".$attribute."00_");
                 // die("AfwStringHelper::removePrefix($attribute, join${attribute}00_) = $attrib_real");
                 $from_join_row[$attrib_real] = $val;
             }
         }
         if (count($from_join_row) > 0) {
-            list($ansTab, $ansMod) = $this->getMyAnswerTableAndModuleFor(
-                $attribute
-            );
+            /* why we need to load it from cache when we will load it from the row itself
             if ($cache_management) {
+                list($ansTab, $ansMod) = $this->getMyAnswerTableAndModuleFor($attribute);
                 $objFromJoin = AfwCacheSystem::getSingleton()->getFromCache(
                     $ansMod,
                     $ansTab,
                     $from_join_row['id']
                 );
             }
-            else $objFromJoin = null;
+            else $objFromJoin = null;*/
+            $objFromJoin = null;
 
             if (!$objFromJoin) {
                 $objFromJoin = $this->getEmptyObject($attribute);
@@ -3160,19 +3168,15 @@ class AFWObject extends AFWRoot
             $objFromJoin->load($v = '', $from_join_row);
 
             if ($cache_management) {
-                if (is_object($objFromJoin) and $objFromJoin->getId() > 0) {
-                    $object_id = $objFromJoin->getId();
-
+                if (is_object($objFromJoin) and ($objFromJoin->id)) {
+                    //$object_id = $objFromJoin->getId();
+                    list($ansTab, $ansMod) = $this->getMyAnswerTableAndModuleFor($attribute);
                     AfwCacheSystem::getSingleton()->putIntoCache(
                         $ansMod,
                         $ansTab,
                         $objFromJoin,
                         '',
-                        static::$MODULE .
-                            '.' .
-                            static::$TABLE .
-                            '.' .
-                            $attribute
+                        static::$MODULE .'.'.static::$TABLE .'.'.$attribute
                     );
                 }
 
@@ -3183,10 +3187,7 @@ class AFWObject extends AFWRoot
 
             
         } else {
-            die(
-                "not convenient row for attribute $attribute = " .
-                    var_export($row, true)
-            );
+            throw new RuntimeException("not convenient FK row to load object from attribute $attribute => row = " .var_export($row, true));
         }
     }
 
@@ -3227,7 +3228,7 @@ class AFWObject extends AFWRoot
             }
         }
         $call_method = "loadObjectFK(attribute = $attribute, integrity = $integrity)";
-        if ($this->MY_DEBUG) {
+        if ($this->MY_DEBUG and false) {
             AFWDebugg::log(
                 '----------------------------------------------------------------------------------------'
             );
@@ -3291,7 +3292,7 @@ class AFWObject extends AFWRoot
             {
                 $loadObjectFK_step = 3;                
                 $object = new $className();
-                $object->setMyDebugg($this->MY_DEBUG);
+                // $object->setMyDebugg($this->MY_DEBUG);
 
                 if ($object->load($object_id)) {
                     $object_loaded = true;
@@ -3369,7 +3370,7 @@ class AFWObject extends AFWRoot
             }
         }
 
-        if ($this->MY_DEBUG) {
+        if ($this->MY_DEBUG and false) {
             AFWDebugg::log(
                 '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
             );
@@ -3779,7 +3780,7 @@ class AFWObject extends AFWRoot
             list($fileName, $className) = AfwStringHelper::getHisFactory($ansTab, $ansMod);
             
             $object = new $className();
-            $object->setMyDebugg($this->MY_DEBUG);
+            // $object->setMyDebugg($this->MY_DEBUG);
 
             if ($structure['ITEM']) {
                 $item_oper = $structure['ITEM_OPER'];
@@ -4041,7 +4042,7 @@ class AFWObject extends AFWRoot
                                 {
                                     $className = AFWObject::tableToClass($ansTab);
                                     $object = new $className();
-                                    $object->setMyDebugg($this->MY_DEBUG);
+                                    // $object->setMyDebugg($this->MY_DEBUG);
                                     if ($structure['ITEM']) {
                                         $item_oper = $structure['ITEM_OPER'];
                                         $item_name = $structure['ITEM'];
@@ -4211,20 +4212,20 @@ class AFWObject extends AFWRoot
                                                     break;
                                                 }
                                             } else {
-                                                if ($this->MY_DEBUG) {
+                                                if ($this->MY_DEBUG and false) {
                                                     AFWDebugg::log(
                                                         'object[' .
                                                             ($i - 1) .
                                                             ']'
                                                     );
                                                 }
-                                                if ($this->MY_DEBUG) {
+                                                if ($this->MY_DEBUG and false) {
                                                     AFWDebugg::log(
                                                         $object,
                                                         true
                                                     );
                                                 }
-                                                if ($this->MY_DEBUG) {
+                                                if ($this->MY_DEBUG and false) {
                                                     AFWDebugg::log(
                                                         "befor get fields[$i]=" .
                                                             $fields[$i]
@@ -4248,7 +4249,7 @@ class AFWObject extends AFWRoot
                                         }
                                         //die("short cut analyse for attribute $attribute = ".var_export($object,true));
                                         if ($object === null) {
-                                            if ($this->MY_DEBUG) {
+                                            if ($this->MY_DEBUG and false) {
                                                 AFWDebugg::log(
                                                     'Object is NULL'
                                                 );
@@ -4285,7 +4286,7 @@ class AFWObject extends AFWRoot
                                                 }
                                             }
                                         } else {
-                                            if ($this->MY_DEBUG) {
+                                            if ($this->MY_DEBUG and false) {
                                                 AFWDebugg::log('Object exist');
                                             }
 
@@ -4322,7 +4323,7 @@ class AFWObject extends AFWRoot
                                             // if(($fields[0]=="course_session") and ($fields[1]=="attendanceList"))
                                             // if(($fields[0]=="cher_id") and ($fields[1]!="emp_num") and ($fields[1]!="orgunit_name") and ($fields[1]!="orgunit_id") and ($fields[1]!="orgunit_id")) 
                                             // throw new RuntimeException("fields=".implode("|\n<br>|",$fields)."\n<br> report_arr=".implode("\n<br>",$report_arr)."\n<br> >>> rafik debugg :: get(".$fields[$count-1].", $what, $format) = $return");
-                                            if ($this->MY_DEBUG) {
+                                            if ($this->MY_DEBUG and false) {
                                                 AFWDebugg::log($return, true);
                                             }
                                         }
@@ -4437,7 +4438,7 @@ class AFWObject extends AFWRoot
                                             if ($id) 
                                             {
                                                 $object = new $className();
-                                                $object->setMyDebugg($this->MY_DEBUG);
+                                                // $object->setMyDebugg($this->MY_DEBUG);
                                                 if ($object->load($id)) 
                                                 {
                                                     $afw_getter_log[] = "success of laoding of instance id = $id";
@@ -4572,7 +4573,7 @@ class AFWObject extends AFWRoot
                             $return = "<a class='$link_css_class' $target href='$link_url&popup=$popup_t'>$return</a>";
                         }
 
-                        if ($this->MY_DEBUG) {
+                        if ($this->MY_DEBUG and false) {
                             AFWDebugg::log("debugg of return = $return");
                         }
                         break;
@@ -4583,7 +4584,7 @@ class AFWObject extends AFWRoot
                 $attr_sup_categ = $structure['SUPER_CATEGORY'];
                 $attr_categ = $structure['CATEGORY'];
                 $attr_scateg = $structure['SUB-CATEGORY'];
-                if ($this->MY_DEBUG) {
+                if ($this->MY_DEBUG and false) {
                     AFWDebugg::log(
                         "attribute_category === true (champ non standard) => format=$format, what=$what, attr_categ=$attr_categ, gettype=" .
                             $this->getTypeOf($attribute)
@@ -4615,7 +4616,7 @@ class AFWObject extends AFWRoot
                         $attr_sup_categ == 'ITEMS'
                     ) {
                         $format = strtolower($format);
-                        if ($this->MY_DEBUG) {
+                        if ($this->MY_DEBUG and false) {
                             AFWDebugg::log('items to return before decode : ');
                             //AFWDebugg::log($return, true);
                         }
@@ -4625,7 +4626,7 @@ class AFWObject extends AFWRoot
                                 $lang
                             );
                         }
-                        if ($this->MY_DEBUG) {
+                        if ($this->MY_DEBUG and false) {
                             AFWDebugg::log('items to return after decode : ');
                             //AFWDebugg::log($arr_items_decoded, true);
                         }
@@ -4846,14 +4847,14 @@ class AFWObject extends AFWRoot
         $structure = AfwStructureHelper::getStructureOf($this,$attribute);
         $answerTable = $structure['ANSWER'];
         $attrtype = $this->getTypeOf($attribute);
-        if ($this->MY_DEBUG) {
+        if ($this->MY_DEBUG and false) {
             AFWDebugg::log("[answerTable=$answerTable  , attrtype=$attrtype]");
         }
         $return = false;
         if ($answerTable) {
             if ($attrtype == 'ANSWER') {
                 $fc = substr($answerTable, 0, 1);
-                if ($this->MY_DEBUG) {
+                if ($this->MY_DEBUG and false) {
                     AFWDebugg::log(" $call_method , fc= $fc");
                 }
                 if ($fc == ':') {
@@ -6244,6 +6245,7 @@ class AFWObject extends AFWRoot
         }
 
         foreach ($this->OBJECTS_CACHE as $key => $object) {
+            unset($this->OBJECTS_CACHE[$key]);
             $this->OBJECTS_CACHE[$key] = null;
         }
     }
@@ -6440,8 +6442,10 @@ class AFWObject extends AFWRoot
 
             if ($this->UNIQUE_KEY and $check_if_exists_by_uk) {
                 $unique_key_vals = [];
-                $this_copy = clone $this;
-                $this_copy->clearSelect();
+                $myClass = $this->getMyClass();
+                // $this_copy = cl one $this;
+                // $this_copy->clearSelect();
+                $this_copy = new $myClass();
                 foreach ($this->UNIQUE_KEY as $key_col) {
                     $unique_key_vals[] = $this->getVal($key_col);
                     $this_copy->select($key_col, $this->getVal($key_col));
@@ -8675,7 +8679,8 @@ class AFWObject extends AFWRoot
         $type = 'all',
         $debugg = false,
         $hide_retrieve_cols = null,
-        $force_retrieve_cols = null
+        $force_retrieve_cols = null,
+        $category = 'all'
     ) {
         if (!$hide_retrieve_cols and !$force_retrieve_cols) {
             list(
@@ -8710,7 +8715,21 @@ class AFWObject extends AFWRoot
                             $take = true;
                         }
                     }
-                    if ($take) {
+
+                    $takeCateg = false;
+                    if ($category == 'all') {
+                        $takeCateg = true;
+                    } else {
+                        // if(!$descAttr) $descAttr = AfwStructureHelper::getStructureOf($this,$attribute);
+                        if ($descAttr['CATEGORY'] == $category) {
+                            $takeCateg = true;
+                        }
+                        elseif ((!$descAttr['CATEGORY']) and ($category=="empty")) {
+                            $takeCateg = true;
+                        }
+                    }
+
+                    if ($take and $takeCateg) {
                         $tableau[] = $attribute;
                     }
                 }
@@ -9030,13 +9049,13 @@ class AFWObject extends AFWRoot
                         $fileName = self::tableToFile(
                             $this->DB_LINK[$index]['TARGET_TABLE']
                         );
-                        if ($this->MY_DEBUG) {
+                        if ($this->MY_DEBUG and false) {
                             AFWDebugg::log("require_once $fileName");
                         }
                         require_once $fileName;
                         foreach ($result_rows as $result_row) {
                             $object = new $className();
-                            $object->setMyDebugg($this->MY_DEBUG);
+                            // $object->setMyDebugg($this->MY_DEBUG);
                             $object->load($result_row['PK']);
                             $array[$result_row['PK']] = $object;
                         }
