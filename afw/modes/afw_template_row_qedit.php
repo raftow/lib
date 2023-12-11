@@ -558,14 +558,14 @@ if(!$obj->qedit_minibox)
                 }
                 $sub_btn_tit = $qedit_trad_arr["save"];
                 $btn_submit_imbedded = "<input type='submit' name='submit'  id='submit-form-$obj_qeditNum' class='bluebtn submit-btn small fright' value='&nbsp;$sub_btn_tit&nbsp;' width='140px' height='23px' />";
-                $header_imbedded_default_title = "";
+                $footer_imbedded_default_title = "";
         }
         else
         {
-                $btn_submit_imbedded = "";
-                $header_imbedded_default_title = "&nbsp;";
+                $btn_submit_imbedded = "<!-- $obj_qeditNum % $btn_each_record = $obj_qeditEachRec -->";
+                $footer_imbedded_default_title = "&nbsp;";
         }
-        $footer_imbedded_title = is_array($header_imbedded) ? $header_imbedded[1] : $header_imbedded_default_title;
+        $footer_imbedded_title = is_array($header_imbedded) ? $header_imbedded[1] : $footer_imbedded_default_title;
                                 
 ?>
 <tr class="qe-footer-head <?=get_class($obj)?>">
