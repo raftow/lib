@@ -3146,12 +3146,16 @@ div.qfilter>form>div.btn-group {
     min-width: 680px;
 }
 
+.my_link>a {
+    color:#000;
+}
+
 .my_link {
-    background-color: white;
-    width: 45px;
-    padding: 0px 9px;
-    border: 2px solid #862509;
-    border-radius: 50%;
+    background-color: transparent;
+    width: 100%;
+    text-align: center;
+    border: 0;
+    border-radius: 0;
 }
 
 .no_resize {
