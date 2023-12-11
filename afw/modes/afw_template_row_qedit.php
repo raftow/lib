@@ -11,7 +11,7 @@ global $TMP_DIR,$TMP_ROOT,$lang,$pack,$sub_pack,$id,$aligntd, $Main_Page,
 
 if(!$lang) $lang = 'ar';
 if(!$obj) die("row-qedit-error : no object sent to the template");
-$header_imbedded = $obj->qeditHeaderFooterEmbedded();
+$header_imbedded = $obj->qeditHeaderFooterEmbedded($obj->submode, $obj->fgroup);
 $obj_id = $obj->getId();
 $obj_class = $obj->getMyClass();
 $obj_mod = $obj->getMyModule();
@@ -409,32 +409,12 @@ if(!$obj->qedit_minibox)
 
                         if($qerow_num==0)
                         {
-                                if(($obj_qeditNum>0) and ($btn_each_record>0))
-                                        $obj_qeditEachRec = $obj_qeditNum % $btn_each_record;
-                                else $obj_qeditEachRec = -1;
-
-                                if($obj_qeditEachRec==0)
-                                {
-                                        if(!$qedit_trad_arr["save"])
-                                        {
-                                              $qedit_trad_arr["save"] = $obj->translate("save",$lang,true);
-                                        }
-                                        $sub_btn_tit = $qedit_trad_arr["save"];
-                                        $btn_submit_imbedded = "<input type='submit' name='submit'  id='submit-form-$obj_qeditNum' class='bluebtn submit-btn small fright' value='&nbsp;$sub_btn_tit&nbsp;' width='140px' height='23px' />";
-                                        $header_imbedded_default_title = "";
-                                }
-                                else
-                                {
-                                        $btn_submit_imbedded = "";
-                                        $header_imbedded_default_title = "&nbsp;";
-                                }
-                                $header_imbedded_title = is_string($header_imbedded) ? $header_imbedded : $header_imbedded_default_title;
+                                $header_imbedded_title = is_array($header_imbedded) ? $header_imbedded[0] : $header_imbedded_default_title;
                                                         
                         ?>
                         <tr class="qe-header-head <?=get_class($obj)?>">
                                 <td colspan='<?php echo $total_sahm ?>'>
-                                        <?php echo $header_imbedded_title ?>
-                                        <?php echo $btn_submit_imbedded ?>
+                                        <?php echo $header_imbedded_title ?>                                        
                                 </td>
                         </tr>
                         <?php
@@ -560,9 +540,42 @@ if(!$obj->qedit_minibox)
 </tr>
 <?php	
         }
+
+        
    }
 
-   
+   if($header_imbedded)
+   {
+        if(($obj_qeditNum>0) and ($btn_each_record>0))
+                $obj_qeditEachRec = $obj_qeditNum % $btn_each_record;
+        else $obj_qeditEachRec = -1;
+
+        if($obj_qeditEachRec==0)
+        {
+                if(!$qedit_trad_arr["save"])
+                {
+                        $qedit_trad_arr["save"] = $obj->translate("save",$lang,true);
+                }
+                $sub_btn_tit = $qedit_trad_arr["save"];
+                $btn_submit_imbedded = "<input type='submit' name='submit'  id='submit-form-$obj_qeditNum' class='bluebtn submit-btn small fright' value='&nbsp;$sub_btn_tit&nbsp;' width='140px' height='23px' />";
+                $header_imbedded_default_title = "";
+        }
+        else
+        {
+                $btn_submit_imbedded = "";
+                $header_imbedded_default_title = "&nbsp;";
+        }
+        $footer_imbedded_title = is_array($header_imbedded) ? $header_imbedded[1] : $header_imbedded_default_title;
+                                
+?>
+<tr class="qe-footer-head <?=get_class($obj)?>">
+        <td colspan='<?php echo $total_sahm ?>'>
+                <?php echo $footer_imbedded_title ?>
+                <?php echo $btn_submit_imbedded ?>
+        </td>
+</tr>
+<?php
+   }
 }
 else
 {

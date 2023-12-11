@@ -7,6 +7,7 @@ $class = $_POST["class_obj"];
 $currmod = $_POST["currmod"];
 //$file  = $_POST["file_obj"];
 $nb_objs    = $_POST["nb_objs"];
+$header_imbedded = $_POST["header_imbedded"];
 $fixm_cols    = explode(",",$_POST["fixm_cols"]);
 $fixm_vals    = explode(",",$_POST["fixm_vals"]);
 $fixm_array = array();
@@ -34,7 +35,7 @@ for($i=0;$i<$nb_objs;$i++)
         $pki = "id_$i";
         $id    = $_POST[$pki];
         $obj = new $class(); 
-        $header_imbedded = $obj->qeditHeaderFooterEmbedded();       
+               
         $is_load = false;
         $unique_pk_id = (is_numeric($id) && ($id>0));
         // if($id == 6082) die("obj $i of $class class, id ='$id' will be loaded unique_pk_id = $unique_pk_id");

@@ -9411,9 +9411,9 @@ class AFWObject extends AFWRoot
 
     
 
-    public function showMyLink($step = 0, $target = '', $what="icon", $whatis="view_ok")
+    public function showMyLink($step = 0, $target = '', $what="icon", $whatis="view_ok", $mode="display")
     {
-        
+        global $lang;
         $val_id = $this->getId();
         $val_class = $this->getMyClass();
         $currmod = $this->getMyModule();
@@ -9429,8 +9429,10 @@ class AFWObject extends AFWRoot
         }
 
         if($what=="icon") $what="<img src='../lib/images/$whatis.png' width='24' heigth='24'>";
+        elseif($what=="short") $what=$this->getShortDisplay($lang);
+        elseif($what=="long") $what=$this->getDisplay($lang);
 
-        return "<div class='my_link'><a $target href='main.php?Main_Page=afw_mode_display.php$step_param&popup=&cl=$val_class&currmod=$currmod&id=$val_id' >$what</a></div>";
+        return "<div class='my_link'><a $target href='main.php?Main_Page=afw_mode_$mode.php$step_param&popup=&cl=$val_class&currmod=$currmod&id=$val_id' >$what</a></div>";
     }
 
     public function showAttribute(
@@ -13082,7 +13084,7 @@ $dependencies_values
     }
 
 
-    public function qeditHeaderFooterEmbedded()
+    public function qeditHeaderFooterEmbedded($submode="",$fgroup="")
     {
         return false;
     }

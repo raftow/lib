@@ -143,7 +143,7 @@ for($i=0; $i<$newo; $i++)
     $qedit_objs[-$i]->fixm_array = $fixm_array;
     // die("obj[-$i]=".$qedit_objs[-$i]." ->fixm_array = ".var_export($qedit_objs[-$i]->fixm_array,true));
     $qedit_objs[-$i]->submode = $submode;
-    $qedit_objs[-$i]->fgroup = $fgroup;
+    $qedit_objs[-$i]->fgroup = $fgroup; 
     foreach($_REQUEST as $item => $item_value)
     {
             if(AfwStringHelper::stringStartsWith($item,"sel_"))
@@ -184,8 +184,20 @@ $myMainObject->step_origin = $step_origin;
 $myMainObject->mode_origin = $mode_origin;
 $myMainObject->return_mode = $return_mode;
 
+
+$header_imbedded_arr = $myMainObject->qeditHeaderFooterEmbedded($submode, $fgroup);
+if($header_imbedded_arr)
+{
+    $header_imbedded = "1";
+}
+else
+{
+    $header_imbedded = "";
+}
+
+
 // die("qedit myMainObject->fixm_array : ".var_export($myMainObject->fixm_array,true));
-if(($myMainObject) and (!$myMainObject->qeditHeaderFooterEmbedded()))
+if(($myMainObject) and (!$header_imbedded))
 {
     $out_scr .=  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_header_qedit.php");        
 }
@@ -219,10 +231,15 @@ if(!$nb_objs)
     else
         $out_scr .= "لا يوجد سجلات";
     
-    if(($myMainObject) and (!$myMainObject->qeditHeaderFooterEmbedded()))
+
+
+
+    if(($myMainObject) and (!$header_imbedded))
     {
         $out_scr .=  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_footer_qedit.php");
     }
+
+    
     
     $datatable_on = true;
     $mode_hijri_edit = true;       	
@@ -295,6 +312,7 @@ else
         		<input type="hidden" name="updo"   value="'.$updo.'"/>
         		<input type="hidden" name="fixm"   value="'.$fixm.'"/>
         		<input type="hidden" name="fixmtit"   value="'.$fixmtit.'"/>
+                <input type="hidden" name="header_imbedded"   value="'.$header_imbedded.'"/>
         		<input type="hidden" name="'.$copypast_field.'"   value="'.$copypast.'"/>
         		<input type="hidden" name="fixmdisable"   value="'.$fixmdisable.'"/>
                         <input type="hidden" name="cl"   value="'.$cl.'"/>
