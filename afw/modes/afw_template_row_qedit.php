@@ -551,7 +551,7 @@ if(!$obj->qedit_minibox)
 
    if($header_imbedded)
    {
-        if(($obj_qeditNum>0) and ($btn_each_record>0))
+        if($btn_each_record>0)
                 $obj_qeditEachRec = $obj_qeditNum % $btn_each_record;
         else $obj_qeditEachRec = -1;
 
