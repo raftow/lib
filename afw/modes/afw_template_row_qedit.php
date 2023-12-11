@@ -12,12 +12,17 @@ global $TMP_DIR,$TMP_ROOT,$lang,$pack,$sub_pack,$id,$aligntd, $Main_Page,
 if(!$lang) $lang = 'ar';
 if(!$obj) die("row-qedit-error : no object sent to the template");
 $header_imbedded = $obj->qeditHeaderFooterEmbedded($obj->submode, $obj->fgroup);
+if($header_imbedded)
+{
+        if(is_array($header_imbedded)) $btn_each_record = $header_imbedded[2];
+        else $btn_each_record = 0;        
+}
 $obj_id = $obj->getId();
 $obj_class = $obj->getMyClass();
 $obj_mod = $obj->getMyModule();
 $qedit_input_arr = array();
 $qedit_orig_nom_col = array();
-$btn_each_record = $obj->QEDIT_SUBMIT_BTN_EACH_RECORD;
+//$btn_each_record = $obj->QEDIT_SUBMIT_BTN_EACH_RECORD;
 //$qedit_trad_arr = array(); because keeped in global var
 
 $fixm_array       = $obj->fixm_array;
