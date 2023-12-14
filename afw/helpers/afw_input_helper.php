@@ -121,10 +121,12 @@ class AfwInputHelper extends AFWRoot
                                         $auto_c = $desc["AUTOCOMPLETE"];
                                         if((!$auto_c) and ($list_count <= LIMIT_INPUT_SELECT))
                                         {
-                                                list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowingStructureAndValue($objRep, $desc,$val, $obj, true);
-                                                if(AfwSession::config("MODE_DEVELOPMENT", false)) echo "<!-- for $col_name : $sql -->";
-                                                list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
-                                                $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl");                                                
+                                                // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc,$val, $obj, true);
+                                                // if(AfwSession::config("MODE_DEVELOPMENT", false)) echo "<!-- for $col_name : $sql -->";
+                                                // list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
+                                                // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl");                                                
+                                                $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
+                                                $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                                                 
                                                 if($placeholder != $col_title)
                                                 {
@@ -247,10 +249,13 @@ class AfwInputHelper extends AFWRoot
                                         break;
                         case 'MFK'    : 
                                         $objRep  = $obj->getEmptyObject($col_name);
-                                        list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowingStructureAndValue($objRep,$desc,$val,$obj);
                                         
-                                        list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
-                                        $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl");
+                                        // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep,$desc,$val,$obj);
+                                        // list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
+                                        // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl");
+                                        $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
+                                        $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                                                
                                         
                                         $type_input_ret = "select";
                                         

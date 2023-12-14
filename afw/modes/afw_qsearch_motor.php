@@ -114,42 +114,39 @@ function type_input($col_name, $desc,$obj, $selected=false)
                 
                                 $list_distinct_txt = "";
                                 $list_distinct_sql_in = "";
+								$caluse_where = "";
                                 if(($desc["TYPE"]=="FK") && ($desc["DISTINCT-FOR-LIST"]))
                                 {
                                      
-                                     $list_distinct_txt = implode("','",$obj->loadCol($col_name,true));
-                                     if(!$list_distinct_txt) $list_distinct_txt = "0";  
-                                     $list_distinct_sql_in = " in ('$list_distinct_txt')";
-                                     
+                                    $list_distinct_txt = implode("','",$obj->loadCol($col_name,true));
+                                    if(!$list_distinct_txt) $list_distinct_txt = "0";  
+                                    $list_distinct_sql_in = " in ('$list_distinct_txt')";
+									$caluse_where = $liste_rep->getPKField() . $list_distinct_sql_in;     
                                 }
+
                                 if($ans_tab_where)
                                 {
                                         $ans_tab_where = $obj->decodeText($ans_tab_where);
                                 }
-                                
+
+								if($caluse_where)
+								{
+									if($ans_tab_where) $caluse_where .= " and " . $ans_tab_where;
+								} 
+                                else 
+								{									
+									$caluse_where = $ans_tab_where;
+								}
+
                                 if($nom_class_fk::$COMPTAGE_BEFORE_LOAD_MANY)
                                 {
-										$liste_rep->select_visibilite_horizontale();
-										if($list_distinct_txt) $liste_rep->where($liste_rep->getPKField() . $list_distinct_sql_in);
-                                        if($ans_tab_where) $liste_rep->where($ans_tab_where); 
-        								$list_count     = $liste_rep->func("count(*)");
+									$list_count = AfwLoadHelper::vhGetListe($liste_rep, $where, $objme, $action="count", $lang);
                                 }
                                 else $list_count = 0;
                                 
 								if(($list_count <= LIMIT_INPUT_SELECT) and (!$desc["AUTOCOMPLETE-SEARCH"]))
                                 {
-                                        $liste_rep->select_visibilite_horizontale();
-                                        if($list_distinct_txt) $liste_rep->where($liste_rep->getPKField() . $list_distinct_sql_in);
-                                        if($ans_tab_where) $liste_rep->where($ans_tab_where);
-										$liste_rep = $liste_rep->loadMany();
-										$l_rep=array();
-										foreach ($liste_rep as $iditem => $item) 
-                                        {
-                                                /* 
-                                                $objme = AfwSession::getUserConnected();
-                                                if(AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme,'display'))*/
-												$l_rep[$iditem]=$item->getDisplay($lang);
-										}
+										$l_rep = AfwLoadHelper::vhGetListe($liste_rep, $where, $objme, $action="default", $lang);
                                         
                                         if($desc["SEARCH-DEFAULT"])
                                         {
@@ -174,24 +171,24 @@ function type_input($col_name, $desc,$obj, $selected=false)
                                                         "asc", 
                                                         true, 
                                                         ""
-        					);
+        											);
                                         }
                                         else
                                         {
-        					select(
-        						$l_rep,
-        						( (isset($_POST[$col_name])) ? $_POST[$col_name]: $searchDefaultValue  ),
-        						array(
-        							"class" => "form-control $class_inputSearch $class_inputSelect_multi_big $inp_selected",
-        							"name"  => $col_name."[]",
-        							"size"  => 5,
-        							"multi" => true
-        						),
-        						"asc",
-        						true      
-        					);
+												select(
+													$l_rep,
+													( (isset($_POST[$col_name])) ? $_POST[$col_name]: $searchDefaultValue  ),
+													array(
+														"class" => "form-control $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+														"name"  => $col_name."[]",
+														"size"  => 5,
+														"multi" => true
+													),
+													"asc",
+													true      
+													);
                                         }
-				}
+								}
                                 else
                                 {
                                      if($desc["SEARCH-BY-ONE"] and ($desc["TYPE"]=="FK"))

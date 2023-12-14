@@ -131,23 +131,11 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                 $obj_className = $obj->getMyClass();
                 if ($development_mode or $objme->isAdmin()) echo "<!-- for ($obj_className).$col_name : [$objRep] -> loadMany FollowingStructureAndValue($col_name, $desc,$val, $obj) -->";
-                list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowingStructureAndValue($objRep, $desc, $val, $obj);
-                if ($development_mode or $objme->isAdmin()) echo "<!-- for $col_name sql=$sql -->";
-                $l_rep = array();
-                foreach ($liste_rep as $iditem => $item) 
-                {
-                    $userCanDoOperation = AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme, 'display');
-                    if ($userCanDoOperation)
-                    {
-                        $l_rep[$iditem] = $item->getDropDownDisplay($lang);
-                    }
-                    elseif ($development_mode or $objme->isAdmin())
-                    {
-                        $userCanNotDoOperationReason = AfwUmsPagHelper::userCanNotDoOperationOnObjectReason($item,$objme, 'display');
-                        echo "<!-- drop down item-option hidden : $item reason $userCanNotDoOperationReason -->";
-                    }
-                }
-
+                //list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj);
+                $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
+                $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                
+                
                 if ($obj->qedit_minibox)
                     $css_class = "form-control";
                 else $css_class = $class_select . $data_loaded_class . $data_length_class;
@@ -290,13 +278,16 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             */
 
             $objRep  = new $nom_class_fk;
-            list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowingStructureAndValue($objRep, $desc, $val, $obj);
-
-            $l_rep = array();
-            foreach ($liste_rep as $iditem => $item) {
+            // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj);
+            // $l_rep = array();
+            /* foreach ($liste_rep as $iditem => $item) {
                 if (AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme, 'display'))
                     $l_rep[$iditem] = $item->getDropDownDisplay($lang);
             }
+            */
+            $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
+            $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                                                
             $type_input_ret = "select";
 
             if ($desc["STYLE"]) $style_input = " style='" . $desc["STYLE"] . "' ";

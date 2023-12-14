@@ -863,6 +863,32 @@ class AfwFormatHelper
                 break;
         }
 
+        $unit = $structure['UNIT'];
+        $hide_unit = $structure['DISPLAY_HIDE_UNIT'];
+        if ($unit and $return and !$hide_unit) {
+            $return .= ' ' . $unit;
+        }
+
+        $link_url = $structure['LINK-URL'];
+        $link_css_class = $structure['LINK-CSS'];
+        if (!$link_css_class) {
+            $link_css_class = 'nice_link';
+        }
+
+        $link_url = $obj->decodeText($link_url, '', false);
+
+        $target = '';
+        $popup_t = '';
+
+        if (
+            $link_url and
+            $return != '' and
+            $decode_format != 'NO-URL'
+        ) 
+        {
+            $return = "<a class='$link_css_class' $target href='$link_url&popup=$popup_t'>$return</a>";
+        }
+
         return $return;
     }
 

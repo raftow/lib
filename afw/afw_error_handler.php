@@ -1,4 +1,5 @@
 <?php
+$SHOW_ARGS = false;
 if(!isset($relative_path)) $relative_path = "./";
 
 if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwExceptionHandler")))
@@ -174,19 +175,23 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                         <td><?= isset($trace[ 'class' ]) ? $trace[ 'class' ] : ''; ?></td>
                         <td><?= isset($trace[ 'function' ]) ? $trace[ 'function' ] : ''; ?></td>
                         <td>
-                            <? if( isset($trace['args']) and $trace['args'] ) : ?>
-                                <?= var_export($trace['args'] , true ); ?>
-                                <? foreach ( $trace[ 'args' ] as $i => $arg ) : ?>
-                                    
-                                    <span title="<?= var_export( $arg, true ); ?>"><?= gettype( $arg ); ?></span>
-                                    <?= $i < count( $trace['args'] ) -1 ? ',' : ''; ?> 
-                                <? endforeach; ?>
-                            <? else : ?>
-                            NULL
+                            <? if(isset($SHOW_ARGS) and $SHOW_ARGS) : ?>
+                                <? if(isset($trace['args']) and $trace['args'] ) : ?>
+                                    <?= var_export($trace['args'] , true ); ?>
+                                    <? foreach ( $trace[ 'args' ] as $i => $arg ) : ?>
+                                        
+                                        <span title="<?= var_export( $arg, true ); ?>"><?= gettype( $arg ); ?></span>
+                                        <?= $i < count( $trace['args'] ) -1 ? ',' : ''; ?> 
+                                    <? endforeach; ?>
+                                <? else : ?>
+                                    NULL
+                                <? endif; ?>
+                            <? else : ?>    
+                                DISABLED
                             <? endif; ?>
                         </td>
                     </tr>                    
-                    <? if($trace['args']) { ?>
+                    <? if(isset($SHOW_ARGS) and $SHOW_ARGS and $trace['args']) { ?>
                     <tr class="<?= $i % 2 == 0 ? 'even' : 'odd'; ?>">
                         <td class="args" colspan="5">
                             <?php echo var_export($trace['args'],true) ?>

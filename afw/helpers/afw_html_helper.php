@@ -40,6 +40,7 @@ class AfwHtmlHelper extends AFWRoot {
                 $odd                = "";
                 foreach($backtrace as $entry) 
                 {
+                        $args_desc = "";
                         if($advanced)
                         {
                                 if($entry['object']) $object_desc = get_class($entry['object'])."-".$entry['object']->id;
@@ -276,27 +277,7 @@ class AfwHtmlHelper extends AFWRoot {
 
         }
 
-        public static final function constructDropDownItems($liste_rep, $lang, $col_name = '', $table_name = '', $report='')
-        {
-            $objme = AfwSession::getUserConnected();
-            $MAX_DROPDOWN_ITEMS = AfwSession::config('max_dropdown_items', 300);
-            $count_liste_rep = count($liste_rep);
-            if ($count_liste_rep > $MAX_DROPDOWN_ITEMS) {
-                $first_item = current($liste_rep);
-    
-                self::safeDie("Too much items to put into dropdown for field : [$table_name.$col_name] (count = $count_liste_rep), 
-                       it is recommended to use AUTOCOMPLETE option, report : $report");
-            }
-    
-            $l_rep = [];
-            foreach ($liste_rep as $iditem => $item) {
-                if (AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme, 'display')) {
-                    $l_rep[$iditem] = $item->getDropDownDisplay($lang);
-                }
-            }
-    
-            return $l_rep;
-        }
+        
 
         public static final function objToLIForTree(
                 $object,

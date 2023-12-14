@@ -229,17 +229,19 @@ if (!$liste_obj) {
         }
         if (!isset($sql_order_by)) $sql_order_by = "";
         if (!$genere_xls) {
-                $liste_obj       = $obj->loadManyEager($limite . ", " . $MAX_ROW, $sql_order_by);
+                // $liste_obj       = $obj->loadManyEager($limite . ", " . $MAX_ROW, $sql_order_by);
+                $liste_obj       = $obj->loadMany($limite . ", " . $MAX_ROW, $sql_order_by);
                 //die("DBG-loadManyEager normal limited load : liste_obj = obj->loadManyEager($limite, $MAX_ROW, $sql_order_by) = ".var_export($liste_obj,true));
         } else {
-                $liste_obj       = $obj->loadManyEager("", $sql_order_by);
+                // $liste_obj       = $obj->loadManyEager("", $sql_order_by);
+                $liste_obj       = $obj->loadMany("", $sql_order_by);
                 // die("DBG-loadManyEager excel illimited load");    
         }
 }
 
 // espion-time-0002 : pour afficher le temps d'exec de cette requette non-voulu a l origine 
 // mais pour localiser (espioner) la lenteur est avant ou apres
-// City::loadById(116); => lenteur avant
+// AfwSession::sqlLog("espion-time-0002", "hzm");
 
 
 

@@ -184,14 +184,17 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             $auto_complete_default = ((!isset($desc["AUTOCOMPLETE"])) and ($list_count > $LIMIT_INPUT_SELECT));
             if ((!$auto_c)  and (!$auto_complete_default)) 
             {
-                list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowingStructureAndValue($objRep, $desc, $val, $obj, true);
-                list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
+                // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj, true);
+                // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl", var_export($desc,true));
+                $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
+                $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                
+                //list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
                 // if($col_name=="data_auser_mfk") die("<b> => desc = ".var_export($desc,true));
-                $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl", var_export($desc,true));
                 // die("<b> => l_rep = ".var_export($l_rep,true)."</b><BR> liste_rep = ".var_export($liste_rep,true));
-                $liste_rep_count = count($liste_rep);
+                // $liste_rep_count = count($liste_rep);
                 $l_rep_count = count($l_rep);
-                if ($objme and $objme->isAdmin()) echo "<!-- for $col_name : $sql liste_rep_count=$liste_rep_count / dropdowncount=$l_rep_count -->";
+                if ($objme and $objme->isAdmin()) echo "<!-- for $col_name : $sql dropdowncount=$l_rep_count -->";
 
                 if ($placeholder != $col_title) {
                     $empty_item = $placeholder;
@@ -342,9 +345,13 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
             
             $objRep  = new $nom_class_fk;
-            list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowingStructureAndValue($objRep, $desc, $val, $obj);
-            list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
-            $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl");            
+            
+            // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj);
+            // list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
+            // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl");            
+            $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
+            $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                
 
             $type_input_ret = "select";
 

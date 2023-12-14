@@ -1225,11 +1225,15 @@ class AfwDateHelper
         if(!$hijri_year) $hijri_year = substr($original_hdate,0,4);
         $hijri_to_greg_file = dirname(__FILE__) . "/../../../external/chsys/dates/hijri_".$hijri_year."_to_greg.php";
         $hijri_to_greg_arr = include($hijri_to_greg_file);
+        /*
         if(($original_hdate=="14350101") and (!$hijri_to_greg_arr[$original_hdate]))
         {
             die("$original_hdate not found in hijri_to_greg_file=$hijri_to_greg_file in hijri_to_greg_arr=".var_export($hijri_to_greg_arr,true));
-        }
-        return $hijri_to_greg_arr[$original_hdate];
+        }*/
+
+        $hdate = self::remove_dashes($original_hdate);
+        if(!$hijri_to_greg_arr[$hdate]) AfwSession::hzmLog("failed to find hijri_to_greg[$hdate] ($original_hdate) in file $hijri_to_greg_file ","fail"); // ."hijri_to_greg = ".var_export($hijri_to_greg_arr,true)
+        return $hijri_to_greg_arr[$hdate];
     }
 
     private static function hijri_to_greg($hdate)
@@ -1256,7 +1260,7 @@ class AfwDateHelper
         $hijri_day = intval($hd_arr[2]);
 
         $result = self::hijri_to_greg_from_files($original_hdate, $hijri_year);
-
+        
         if ($result) {
             AfwSession::setVar("greg-of-$hdate", $result);
             return $result;

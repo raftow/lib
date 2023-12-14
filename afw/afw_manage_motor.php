@@ -146,14 +146,18 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 
 				if((!$auto_c) and ($list_count <= LIMIT_INPUT_SELECT))
                                 {
-                                        list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowingStructureAndValue($objRep, $desc,$val, $obj);
-                                        
+                                        /*
+                                        list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc,$val, $obj);                                        
                                         $l_rep=array();
 					foreach ($liste_rep as $iditem => $item) 
                                         {
                                                 if(AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme,'display'))
 							$l_rep[$iditem]=$item->getDisplay($lang);
 					}
+                                        */
+                                        $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
+                                        $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                                                
                                         $prop_sel =
                                               array(  "class" => "form-control",
 						"name"  => $formInputName,
@@ -290,14 +294,18 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 
                                 
                                 $objRep  = new $nom_class_fk;
-                                list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowingStructureAndValue($objRep, $desc,$val,$obj);
-                                
+                                /*
+                                list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc,$val,$obj);                                
                                 $l_rep=array();
 				foreach ($liste_rep as $iditem => $item) 
                                 {
                                         if(AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme,'display'))
 						$l_rep[$iditem]=$item->getDisplay($lang);
 				}
+                                */
+                                $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
+                                $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                                                
                                 $type_input_ret = "select";
                                 
                                 $class_of_input_select_multi = $class_inputSelect_multi_big;

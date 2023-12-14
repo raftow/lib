@@ -1685,10 +1685,122 @@ $('#$showAsDataTable').DataTable( {
         
         
         return $miniBoxTemplate;
-        
-        
-        
-            
+    }
 
+    public static function quickShowOneOrListOfObjects($objs, $lang="ar", $newline = "\n<br>")
+    {
+        $return = '';
+        if ($objs and is_object($objs) and ($objs instanceof AFWObject)) 
+        {
+            $return = $objs->getRetrieveDisplay($lang);
+        } 
+        elseif ($objs and is_array($objs)) 
+        {
+            if (count($objs)>0) {
+                $return = '';
+                foreach ($objs as $instance) 
+                {
+                    if ($instance and is_object($instance)) 
+                    {
+                        $return .= $instance->getShortDisplay($lang) . $newline;
+                    }
+                }                        
+            }
+        } 
+        else 
+        {
+            if ($objs) 
+            {
+                $return = 'strange FK object(s) to show => ' . var_export($objs, true);
+                throw new RuntimeException($return);
+            }
+        }
+
+        return $return;
+    }
+
+    
+
+    public static function quickShowAttribute($objItem, $col, $lang="ar", $desc=null, $newline = "\n<br>")
+    {
+        if(!$desc) $desc = AfwStructureHelper::getStructureOf($objItem, $col);
+        $return = "???";
+        switch ($desc['TYPE']) {
+            case 'FK':
+                if ($desc['CATEGORY'] === 'ITEMS') {
+                    /*
+                    $objs = $objItem->get(
+                        $col,
+                        'object',
+                        '',
+                        false
+                    );*/
+                    $return = "no quick show for [items] attribute";
+                } 
+                elseif (($desc['CATEGORY'] == 'FORMULA') or ($desc['CATEGORY'] == 'SHORTCUT'))
+                {
+                    $objs = $objItem->calc($col, true, "object");
+                    // die("for categ = formula, obj = $objItem => calc($col,true, object) = ".var_export($objs));
+                    $return = self::quickShowOneOrListOfObjects($objs, $lang, $newline);
+                } else {
+                    
+                    // to optimize
+                    //@tooptimize $objs = $objItem->het($col);
+                    //@tooptimize $return = self::quickShowOneOrListOfObjects($objs, $lang, $newline);
+                    $nom_table_fk   = $desc["ANSWER"];
+                    $nom_module_fk  = $desc["ANSMODULE"];
+                    $val = $objItem->getVal($col);
+                    $emptyMessage = $objItem->translate('obj-empty', $lang);
+                    $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator=$newline, $emptyMessage);
+                    if($val and (!$return)) $return = "<!-- quickShowAttribute $nom_module_fk / $nom_table_fk -->$val";
+                }
+                
+                
+                break;
+
+            case 'MFK':
+                /*
+                $objs = $objItem->get($col, 'object', '', false);
+                if (count($objs)) 
+                {
+                    //echo "$col : <br>";
+                    //die("rafik 14380523 - ".var_export($objs,true));
+                    $str = '';
+                    foreach ($objs as $instance) 
+                    {
+                        if ($instance and is_object($instance)) 
+                        {
+                            $str .= $instance->getShortDisplay($lang) . $newline;
+                        }
+                    }
+                    $return = $str;
+                }
+                else $return = "<div class='empty_message'>" . $objItem->translate('obj-empty', $lang) .'</div>';
+                */
+                $nom_table_fk   = $desc["ANSWER"];
+                $nom_module_fk  = $desc["ANSMODULE"];
+                $val = $objItem->getVal($col);
+                $emptyMessage = $objItem->translate('obj-empty', $lang);
+                $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator=$newline, $emptyMessage);
+                break;
+
+            case 'ANSWER':
+                $return = $objItem->decode($col);
+                break;
+
+            case 'YN':
+                $return = $objItem->showYNValueForAttribute(strtoupper($objItem->decode($col)), $col, $lang);
+                break;
+
+            default:
+                if ($desc['RETRIEVE-VALUE']) {
+                    $return = $objItem->getVal($col);
+                } else {
+                    $return = $objItem->decode($col);
+                }
+                break;
+        }
+        
+        return $return;
     }
 }

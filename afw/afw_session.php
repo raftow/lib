@@ -348,7 +348,7 @@ class AfwSession extends AFWRoot {
                 global $log_counter;
                 if(!$log_counter) $log_counter = 0;
                 $log_counter++;
-                if($log_counter>2000)
+                if($log_counter>20000)
                 {
                         throw new RuntimeException("too much log ".self::getLog($context));
                 }
@@ -398,7 +398,7 @@ class AfwSession extends AFWRoot {
         public static function hzmLog($string, $module_info, $separator="<br>\n")
         {
                 // die("here hzmLog");
-                self::log($string, $css_class="hzmlog", $separator);  
+                self::log($string, $css_class="hzmlog $module_info", $separator);  
         }
 
 

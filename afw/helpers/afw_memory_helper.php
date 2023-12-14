@@ -42,7 +42,7 @@ class AfwMemoryHelper extends AFWRoot
 
     public static final function checkMemoryBeforeInstanciating($objInstanciating)
     {
-        global $nb_instances_total, $nb_instances,$tab_instances, $MODE_DEVELOPMENT, $MODE_BATCH_LOURD;
+        global $nb_instances_total, $nb_instances,$tab_instances, $MODE_DEVELOPMENT, $MODE_BATCH_LOURD, $MAX_MEMORY_BY_REQUEST;
         if (!$tab_instances) {
             $tab_instances = [];
         }
@@ -63,14 +63,16 @@ class AfwMemoryHelper extends AFWRoot
         } else {
             $nb_instances_total++;
         }
-
+        if(!$MAX_MEMORY_BY_REQUEST) $MAX_MEMORY_BY_REQUEST = 100000000;
         $mm = memory_get_usage(true);
-        if ($mm > 440000000 and $MODE_DEVELOPMENT) {
+        if (($mm > $MAX_MEMORY_BY_REQUEST) and $MODE_DEVELOPMENT) 
+        {
             // @rafik.framework.v2.0 obsolete until we found a more professional way to do it
             gc_collect_cycles();
             $mm = memory_get_usage(true);
-            if ($mm > 400000000) {
-                self::safeDie('MOMKEN OUT OF MEMORY');
+            
+            if ($mm > $MAX_MEMORY_BY_REQUEST) {
+                throw new RuntimeException('MOMKEN OUT OF MEMORY '.var_export($tab_instances,true));
                 //$this->throwError("MOMKEN OUT OF MEMORY", $throwed_arr=array("ALL"=>true, "FIELDS_UPDATED"=>true, "SQL"=>true, "DEBUGG"=>true, "CACHE"=>true));
             }
         }

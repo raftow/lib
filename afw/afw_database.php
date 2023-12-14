@@ -349,7 +349,10 @@ class AfwDatabase extends AFWRoot
                     }
 
                     $backtrace = debug_backtrace(1, 20);
-                    $backtrace_html = AfwHtmlHelper::htmlBackTrace($backtrace);
+                    
+                    
+                    $backtrace_html = AfwHtmlHelper::htmlBackTrace($backtrace, false); // $advanced = false because otherwise it genere too much html
+                    
 
                     $information = "<div class='$sql_info_class'>
                                                         <b>Module</b> : $this_module,\n
@@ -465,6 +468,28 @@ class AfwDatabase extends AFWRoot
         }
     }
 
+    public static function db_recup_index($query, $keyCol, $valueCol)
+    {
+            $data = self::db_recup_rows($query);
+            return self::data_to_index($data, $keyCol, $valueCol);
+    }
+
+    public static function data_to_index($data, $keyCol, $valueCol)
+    {
+        $new_data = [];
+
+        foreach($data as $ir => $row)
+        {
+                $key = $row[$keyCol];
+                $value = $row[$valueCol];
+                $new_data[$key] = $value;
+        }
+
+        return $new_data;
+    }
+
+    
+
     /**
      * db_recup_rows
      * Return an array containing fetched rows
@@ -511,3 +536,4 @@ class AfwDatabase extends AFWRoot
         return $count;
     }
 }
+
