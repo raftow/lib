@@ -3706,7 +3706,7 @@ class AFWObject extends AFWRoot
         $this->debugg_last_attribute = $attribute;
         $call_method = "get(attribute = $attribute, what = $what, format = $format, integrity = $integrity)";
         if (!$attribute) {
-            $message = "get can not be peerformed without attribute name in : $call_method <br>\n";
+            $message = "get can not be performed without attribute name in : $call_method <br>\n";
             throw new RuntimeException($message);
         }
 
@@ -9461,15 +9461,13 @@ class AFWObject extends AFWRoot
                     $token = $prefix . '.' . $token;
                 }
                 $token = $sepBefore . $token . $sepAfter;
-                if (strpos($text_to_decode, $token) !== false) {
-                    if (
-                        $add_cotes and
-                        !$struct_item['NO-COTE'] and
-                        $struct_item['TYPE'] != 'PK'
-                    ) {
-                        $val_token = "'" . $this->getVal($fieldname) . "'";
+                if (strpos($text_to_decode, $token) !== false) 
+                {
+                    $field_val = $this->calc($fieldname);
+                    if ($add_cotes and !$struct_item['NO-COTE'] and $struct_item['TYPE'] != 'PK') {
+                        $val_token = "'" . $field_val . "'";
                     } else {
-                        $val_token = $this->getVal($fieldname);
+                        $val_token = $field_val;
                     }
 
                     $arr_tokens[$token] = $val_token;

@@ -69,6 +69,11 @@ class AFWRelation extends AFWRoot {
                if($this->myParentObject) $tokenized_answer_where = $this->myParentObject->decodeText($this->answer_where);
                $this->myObject->where($tokenized_answer_where);
           }
+          /*
+          if(AfwStringHelper::stringContain($this->answer_where,"class_name = _utf8§class_name§")) 
+          {
+               die("ans-where = " . $this->answer_where . " tokenized-ans-where=$tokenized_answer_where this->myParentObject=".var_export($this->myParentObject,true));
+          }*/
      }
      
      
