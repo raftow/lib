@@ -4764,6 +4764,8 @@ class AFWObject extends AFWRoot
         }
         $result .= "   return \$attribute;\n";
         $result .= "}";
+
+        return $result;
     }
 
     public function shortNameToAttributeName($attribute)
