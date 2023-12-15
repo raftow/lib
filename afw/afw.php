@@ -4753,6 +4753,19 @@ class AFWObject extends AFWRoot
         return $attribute;
     }
 
+    public function suggestAllShortNames()
+    {
+        $short_names = self::getShortNames();
+        $result = "protected function myShortNameToAttributeName(\$attribute){\n";
+
+        foreach($short_names as $short_name => $attribute)
+        {
+            $result .= "   if(\$attribute==\"$short_name\") return \"$attribute\";\n";
+        }
+        $result .= "   return \$attribute;\n";
+        $result .= "}";
+    }
+
     public function shortNameToAttributeName($attribute)
     {
         $std_att = $this->stdShortNameToAttributeName($attribute);
@@ -4767,7 +4780,7 @@ class AFWObject extends AFWRoot
         if(($std_att != $attribute) and ($my_att == $attribute))
         {
             $cl = get_class($this);
-            throw new RuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$attribute, Shortname=$std_att] Use of short names in strcucture obsoleted except if you override myShortNameToAttributeName method to return it");
+            throw new RuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$std_att, Shortname=$attribute] Use of short names in strcucture obsoleted except if you override myShortNameToAttributeName method to return it example : ".$this->suggestAllShortNames());
         }
 
         return $my_att;
