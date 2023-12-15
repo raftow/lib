@@ -4782,7 +4782,7 @@ class AFWObject extends AFWRoot
         if(($std_att != $attribute) and ($my_att == $attribute))
         {
             $cl = get_class($this);
-            throw new RuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$std_att, Shortname=$attribute] Use of short names in strcucture obsoleted except if you override myShortNameToAttributeName method to return it example : ".$this->suggestAllShortNames());
+            throw new RuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$std_att, Shortname=$attribute] Use of short names in strcucture obsoleted except if you override myShortNameToAttributeName method to return it example : <pre><code>".$this->suggestAllShortNames()."</code></pre>");
         }
 
         return $my_att;
