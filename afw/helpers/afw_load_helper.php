@@ -31,7 +31,18 @@ class AfwLoadHelper extends AFWRoot
 
         if($action=="liste") 
         {
-            $return = self::getLookupData($obj->getMyModule(), $obj->getMyTable(), $where);
+            
+            if($val_to_keep)
+            {
+                $val_to_keep = trim($val_to_keep);
+                $val_to_keep = trim($val_to_keep, ',');
+                if($val_to_keep)
+                {
+                    $pk = $obj->getPKField();
+                    $where = "($where) or ($pk in ($val_to_keep))";
+                }                
+            }
+            $return = self::getLookupData($obj->getMyModule(), $obj->getMyTable(), $where, $val_to_keep);
         }
         else
         {
@@ -419,8 +430,10 @@ class AfwLoadHelper extends AFWRoot
         $table = $object::$TABLE;
         $server_db_prefix = AfwSession::config('db_prefix', 'c0');
 
+        $pk = $object->getPKField();
 
-        return AfwDatabase::db_recup_index("select id, $display_field as val from $server_db_prefix" . $module . ".$table where $where", "id", "val");
+
+        return AfwDatabase::db_recup_index("select $pk, $display_field as val from $server_db_prefix" . $module . ".$table where $where", $pk, "val");
 
     }
 

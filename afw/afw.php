@@ -4942,7 +4942,7 @@ class AFWObject extends AFWRoot
             $this->setOptionValue($attribute, $value);
         } elseif ($this->isDebugg($attribute)) {
             $debugg_attribute = $this->extractDebuggAttribute($attribute);
-            $this->setDebuggAttributeValue($attribute, $value);
+            $this->setDebuggAttributeValue($debugg_attribute, $value);
         } else {
             if (
                 $this->isEasyAttribute($attribute) or
