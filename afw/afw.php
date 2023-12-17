@@ -207,6 +207,11 @@ class AFWObject extends AFWRoot
         return self::getDbStructure($return_type = 'shortnames');
     }
 
+    public static function getShortcutFields()
+    {
+        return self::getDbStructure($return_type = 'shortcuts');
+    }
+
     public function getMyDbStructure(
         $return_type = 'structure',
         $attribute = 'all'
@@ -225,6 +230,11 @@ class AFWObject extends AFWRoot
             $this_short_names = [];
         }
 
+        if ($return_type == 'shortcuts') {
+            $attribute = 'all';
+            $this_shortcuts = [];
+        }
+
         $got_first_time = false;
         $class_name = static::class;
         $module_code = static::$MODULE;
@@ -241,6 +251,9 @@ class AFWObject extends AFWRoot
                     if (!$value['ANSMODULE']) {
                         $debugg_db_structure[$key]['ANSMODULE'] = $value['ANSMODULE'] = static::$MODULE;
                     }
+                }
+                if ($value['SHORTCUT'] and $return_type == 'shortcuts') {
+                    $this_shortcuts[$key] = true;
                 }
 
                 if ($value['SHORTNAME'] and $return_type == 'shortnames') {
@@ -284,7 +297,12 @@ class AFWObject extends AFWRoot
             }
         } elseif ($return_type == 'shortnames') {
             return $this_short_names;
+        } elseif ($return_type == 'shortcuts') {
+            return $this_shortcuts;
         }
+
+        return ["momken"=>"unknown-requested-return_type $return_type"];
+        
     }
 
     /**
@@ -402,13 +420,14 @@ class AFWObject extends AFWRoot
         $this->throwError("unknown mode : $mode may be not implemented !");
     }
 
-    final protected function getAllRealFields()
+    final protected function getAllRealFields($structure=false)
     {
         $class_db_structure = $this->getMyDbStructure();
         $result_arr = [];
         foreach ($class_db_structure as $attribute => $desc) {
             if ($this->attributeIsReel($attribute)) {
-                $result_arr[] = $attribute;
+                if(!$structure) $result_arr[] = $attribute;
+                else $result_arr[$attribute] = $desc;
             }
         }
         return $result_arr;
@@ -432,14 +451,16 @@ class AFWObject extends AFWRoot
     ) {
         $tableau = [];
 
-        $FIELDS_ALL = $this->getAllRealFields();
+        $FIELDS_ALL = $this->getAllRealFields(true);
 
         $nbCols = 0;
 
         $lenUsed = 0;
 
-        foreach ($FIELDS_ALL as $attribute) {
-            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        foreach ($FIELDS_ALL as $attribute => $struct) {
+            // no need it is already repared (Momken 3.0)
+            // $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+
             $isAdminField = $this->isAdminField($attribute);
             $isTechField = $this->isTechField($attribute);
             $hasGoodType = ($typeArr['ALL'] or $typeArr[$struct['TYPE']]);
@@ -1739,19 +1760,12 @@ class AFWObject extends AFWRoot
         $this->clearSelect();
         if (count($group_by_tab)) {
             $return = [];
-            $query_res = AfwDatabase::db_recup_rows(
-                $query,
-                $throw_error,
-                $throw_analysis_crash,
-                $module_server
-            );
+            $query_res = AfwDatabase::db_recup_rows($query, $throw_error, $throw_analysis_crash, $module_server);
             foreach ($query_res as $row) {
-                $eval = '$return';
                 foreach ($group_by_tab as $index) {
-                    $eval .= '[' . $row[trim($index)] . ']';
+                    $index = trim($index);
+                    $return[$row[$index]] = $row['res'];
                 }
-                $eval .= ' = ' . $row['res'] . ';';
-                eval($eval);
             }
         } else {
             $return = AfwDatabase::db_recup_value(
@@ -1761,12 +1775,7 @@ class AFWObject extends AFWRoot
                 $module_server
             );
         }
-        if (
-            AfwSession::config('LOG_SQL', true) ||
-            (isset($this) && $this->MY_DEBUG)
-        ) {
-            AFWDebugg::log("function $function return = " . $return);
-        }
+        
         return $return;
     }
 
@@ -3396,10 +3405,10 @@ class AFWObject extends AFWRoot
      * Return true if Y / false if N / W if W
      * @param string $attribute
      */
-    public function is($attribute, $w = true)
+    public function is($attribute, $w = true, $struct = null)
     {
         // work with shortcuts and shortnames
-        $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
         if (!$struct) {
             $def_val = null;
             $open_options = false;
@@ -3677,6 +3686,22 @@ class AFWObject extends AFWRoot
         return $lang;
     }
 
+    public function shouldBeCalculatedField($attribute)
+    {
+        return false;
+    }
+
+    public final function seemsCalculatedField($attribute)
+    {
+        if(!isset($this->AFIELD_VALUE[$attribute])) return true;
+        if(strpos($attribute, '.') !== false) return true;
+        if(strpos($attribute, '_') === 0) return true;
+        if($this->shouldBeCalculatedField($attribute)) return true;
+
+        return false;
+    }
+
+    
     /**
      * get
      * Return attribute's object or value
@@ -3713,7 +3738,7 @@ class AFWObject extends AFWRoot
         $old_attribute = $attribute;
         $attribute = $this->shortNameToAttributeName($attribute);
 
-        if (strpos($attribute, '.') === false) {
+        if (!$this->seemsCalculatedField($attribute)) {
             if ($what == 'value') {
                 return $this->getAfieldValue($attribute);
             }
@@ -4086,19 +4111,15 @@ class AFWObject extends AFWRoot
         }
     }
 
-    public function getDefaultValue($attribute)
+    public function getDefaultValue($attribute, $struct=null)
     {
-        $struct = AfwStructureHelper::getStructureOf($this, $attribute);
-
+        if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
         return $struct['DEFAULT'];
     }
 
-    public function findInMfk(
-        $attribute,
-        $id_to_find,
-        $mfk_empty_so_found = false
-    ) {
-        $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+    public function findInMfk($attribute,$id_to_find, $mfk_empty_so_found = false, $struct=null) 
+    {
+        if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
         if ($struct['TYPE'] != 'MFK' and $struct['TYPE'] != 'MENUM') {
             throw new RuntimeException(
                 "Only MFK Fields can use this method, $attribute is not MFK"
@@ -4129,18 +4150,15 @@ class AFWObject extends AFWRoot
         return $old_index[$id_to_find];
     }
 
-    public function addRemoveInMfk(
-        $attribute,
-        $ids_to_add_arr,
-        $ids_to_remove_arr
-    ) {
+    public function addRemoveInMfk($attribute,$ids_to_add_arr,$ids_to_remove_arr, $struct = null)
+    {
         $old_val = $this->getVal($attribute);
         if (!$old_val) {
             $old_val = $this->getDefaultValue($attribute);
         }
         //if(!$old_val) return $old_val;
 
-        $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
         if ($struct['TYPE'] != 'MFK') {
             throw new RuntimeException(
                 get_class($this) . " : Only MFK Fields can use this method, $attribute is not MFK but look strcuture " . var_export($struct, true)
@@ -4509,9 +4527,9 @@ class AFWObject extends AFWRoot
         return true;
     }
 
-    final public function afterSetOfAttribute($attribute, $newvalue)
+    final public function afterSetOfAttribute($attribute, $newvalue, $struct = null)
     {
-        $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
 
         // if($attribute=="nasrani_birth_date") die("afterSetOfAttribute($attribute) -> struct : ".var_export($struct,true));
         if ($struct['DATE_CONVERT'] == 'NASRANI') {
@@ -4753,6 +4771,21 @@ class AFWObject extends AFWRoot
         return $attribute;
     }
 
+    public function suggestAllCalcFields()
+    {
+        $shortcuts = self::getShortcutFields();
+        $result = "public function shouldBeCalculatedField(\$attribute){\n";
+
+        foreach($shortcuts as $attribute => $is_shortcut)
+        {
+            if($is_shortcut) $result .= "   if(\$attribute==\"$attribute\") return true;\n";
+        }
+        $result .= "   return false;\n";
+        $result .= "}";
+
+        return $result;
+    }
+
     public function suggestAllShortNames()
     {
         $short_names = self::getShortNames();
@@ -4887,9 +4920,9 @@ class AFWObject extends AFWRoot
         }
     }
 
-    final public function isEasyAttributeNotOptim($attribute)
+    final public function isEasyAttributeNotOptim($attribute, $struct = null)
     {
-        $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
         return $struct and
             !$struct['CATEGORY'] and
             $struct['TYPE'] != 'MFK' and
@@ -5034,13 +5067,13 @@ class AFWObject extends AFWRoot
             $this->isSetDebuggAttribute($attribute);
     }
 
-    public function getRelation($attribute)
+    public function getRelation($attribute, $struct = null)
     {
         $attribute_old = $attribute;
         $attribute = $this->shortNameToAttributeName($attribute_old);
         // die("attribute_old=$attribute_old, $attribute = $attribute_old");
 
-        $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
 
         return new AFWRelation(
             $struct['ANSMODULE'],
@@ -7130,15 +7163,7 @@ class AFWObject extends AFWRoot
         }
 
         if ($data_to_display == '') {
-            if ($structure['EMPTY-ITEMS-MESSAGE']) {
-                $empty_code = $structure['EMPTY-ITEMS-MESSAGE'];
-            } else {
-                $empty_code = 'obj-empty';
-            }
-            $data_to_display =
-                "<div class='empty_message'>" .
-                $this->translate($empty_code, $lang) .
-                '</div>';
+            $data_to_display = AfwFormatHelper::getItemsEmptyMessage($this, $structure, $lang);
         }
 
         return $data_to_display;
@@ -9793,30 +9818,31 @@ class AFWObject extends AFWRoot
         return $structParent;
     }
 
-    final protected function getOtherLinksArrayStandard(
-        $mode,
-        $genereLog = false,
-        $step = "all"
-    ) {
+    final protected function getOtherLinksArrayStandard($mode, $genereLog = false, $step = "all") 
+    {
         global $lang;
         $objme = AfwSession::getUserConnected();
-        $me = $objme ? $objme->id : 0;
+        // $me = $objme ? $objme->id : 0;
 
         $otherLinksArray = [];
         $my_id = $this->getId();
         $this_otherLinkLog = [];
         if ($mode == 'display' or $mode == 'edit') {
-            $FIELDS_ALL = $this->getAllAttributes();
+            $FIELDS_ALL = $this->getAllMyDbStructure();
             $log = "mode=$mode, FIELDS_ALL=" . var_export($FIELDS_ALL, true);
             if ($genereLog) {
                 $this_otherLinkLog[] = $log;
             }
 
-            foreach ($FIELDS_ALL as $attribute) {
+            foreach ($FIELDS_ALL as $attribute => $struct) {
                 $link_label = null;
-                $struct = AfwStructureHelper::getStructureOf($this, $attribute);
-                $isAdminField = $this->isAdminField($attribute);
-                $isTechField = $this->isTechField($attribute);
+                // rafik optimization : 23/12/2023
+                // Momken V3.0 the getAllMyDbStructure method now return the structure repared 
+                // no need below to re-call getStructureOf 
+                // $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+                
+                // $isAdminField = $this->isAdminField($attribute);
+                // $isTechField = $this->isTechField($attribute);
 
                 //if($attribute=="mainwork_start_paragraph_num") die("strange case, step = $step struct = ".var_export($struct,true));
                 if (

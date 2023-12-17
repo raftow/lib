@@ -384,6 +384,14 @@ if($save_update and $obj->after_save_edit)
         else $id = $obj->getVal($obj->after_save_edit["attribute"]);
         $currmod = $obj->after_save_edit["currmod"];
         $currstep = $obj->after_save_edit["currstep"];
+        if(is_string($currstep))
+        {
+            if(AfwStringHelper::stringStartsWith($currstep,'::'))
+            {
+                $methodCurrStep = substr($currstep,2);
+                $currstep = $obj->$methodCurrStep();
+            }
+        }
         
         include("afw_mode_display.php");
     }

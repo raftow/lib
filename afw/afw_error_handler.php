@@ -1,5 +1,7 @@
 <?php
-$SHOW_ARGS = false;
+$SHOW_ARGS = true;
+$SHOW_ALL_ARGS = false;
+
 if(!isset($relative_path)) $relative_path = "./";
 
 if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwExceptionHandler")))
@@ -71,7 +73,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 
         function dump_exception($ex)
         {
-            global $relative_path;
+            global $relative_path, $SHOW_ARGS, $SHOW_ALL_ARGS;
                 $file = $ex->getFile();
                 $line = $ex->getLine();
 
@@ -177,21 +179,23 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                         <td>
                             <? if(isset($SHOW_ARGS) and $SHOW_ARGS) : ?>
                                 <? if(isset($trace['args']) and $trace['args'] ) : ?>
-                                    <?= var_export($trace['args'] , true ); ?>
-                                    <? foreach ( $trace[ 'args' ] as $i => $arg ) : ?>
-                                        
-                                        <span title="<?= var_export( $arg, true ); ?>"><?= gettype( $arg ); ?></span>
-                                        <?= $i < count( $trace['args'] ) -1 ? ',' : ''; ?> 
+                                    <? foreach ( $trace['args'] as $i => $arg ) : ?>
+                                        <? if(!is_object($arg) and !is_array($arg)) : ?> 
+                                            <span title=""><?= gettype($arg); ?> : <?= var_export( $arg, true ); ?></span>
+                                            <?= $i < count( $trace['args'] ) -1 ? ',' : ''; ?> 
+                                        <? else : ?>
+                                            Array or Object
+                                        <? endif; ?>
                                     <? endforeach; ?>
                                 <? else : ?>
                                     NULL
                                 <? endif; ?>
                             <? else : ?>    
-                                DISABLED
+                                DISABLED-0
                             <? endif; ?>
                         </td>
                     </tr>                    
-                    <? if(isset($SHOW_ARGS) and $SHOW_ARGS and $trace['args']) { ?>
+                    <? if(isset($SHOW_ALL_ARGS) and $SHOW_ALL_ARGS and $trace['args']) { ?>
                     <tr class="<?= $i % 2 == 0 ? 'even' : 'odd'; ?>">
                         <td class="args" colspan="5">
                             <?php echo var_export($trace['args'],true) ?>

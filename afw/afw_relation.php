@@ -84,6 +84,8 @@ class AFWRelation extends AFWRoot {
           
           return $this->myObject->count();
      }
+
+     
      
      public function getList($sql_only=false)
      {

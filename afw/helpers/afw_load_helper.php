@@ -395,6 +395,19 @@ class AfwLoadHelper extends AFWRoot
         return [$data, $isAvail];
     }
 
+    public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage)
+    {
+
+        if(self::$lookupMatrix["$ans_module.$ans_table.--"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.--"][$value];
+        if(self::$lookupMatrix["$ans_module.$ans_table.++"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.++"][$value];
+        if(self::$lookupMatrix["$ans_module.$ans_table.1"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.1"][$value];
+        
+        self::$lookupMatrix["$ans_module.$ans_table.1"][$value] = self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage);
+        // $server_db_prefix = AfwSession::config('db_prefix', 'c0');
+        // AfwDatabase::db_recup_value("select $display_field from $server_db_prefix" . $ans_module . ".$ans_table where $pk = '$value'");
+
+        return self::$lookupMatrix["$ans_module.$ans_table.1"][$value];
+    }
 
     public static function loadAllLookupData($object, $where = "--")
     {

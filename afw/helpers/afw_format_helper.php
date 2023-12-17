@@ -604,6 +604,17 @@ class AfwFormatHelper
     }
 
 
+    public static final function getItemsEmptyMessage($object, $structure, $lang="ar")
+    {
+        if ($structure['EMPTY-ITEMS-MESSAGE']) {
+            $empty_code = $structure['EMPTY-ITEMS-MESSAGE'];
+        } else {
+            $empty_code = 'obj-empty';
+        }
+        return "<div class='empty_message'>" . $object->translate($empty_code, $lang) . '</div>';
+    }
+
+
     public static final function decode($attribute, $typattr, $decode_format, $attribute_value, $integrity=true, $lang="ar", $structure=null, $obj=null, $translate_if_needed=true)
     {
         switch ($typattr) {
@@ -719,7 +730,7 @@ class AfwFormatHelper
             case 'TIME':
                 if(!$structure)
                 {
-                    if(!$obj) AFWRoot::lightSafeDie("structure and obj should not be both null if we decode a TIME field");
+                    if(!$obj) throw new RuntimeException("structure and obj should not be both null if we decode a TIME field");
                     $structure = AfwStructureHelper::getStructureOf($obj,$attribute);
                 } 
                 $return = AfwDateHelper::displayTime($attribute_value, $structure, $decode_format, $obj);
@@ -737,7 +748,7 @@ class AfwFormatHelper
             case 'DATE':
                 if(!$structure)
                 {
-                    if(!$obj) AFWRoot::lightSafeDie("structure and obj should not be both null if we decode a DATE field");
+                    if(!$obj) throw new RuntimeException("structure and obj should not be both null if we decode a DATE field");
                     $structure = AfwStructureHelper::getStructureOf($obj,$attribute);
                 }
                 if ($decode_format) {
@@ -752,7 +763,32 @@ class AfwFormatHelper
                 // $return = $this->showAttribute($attribute);
                 break;
             case 'FK':
-                if(!$obj) AFWRoot::lightSafeDie("structure and obj should not be both null if we decode an FK field");
+                if((!$obj) or (!$structure)) throw new RuntimeException("both structure and obj should not be null if we decode an FK field");
+                // as we do only decode consider the answer class as lookup
+                if (!$attribute_value) {
+                    $return = '';
+                    if ($structure['EMPTY_IS_ALL']) {
+                        $all_code = "ALL-$attribute";
+                        $return = $obj->translate($all_code,$lang);
+                        if ($return == $all_code) {
+                            $return = AFWRoot::traduireOperator('ALL',$lang);
+                        }
+                    }
+                    //if($attribute=="status_id") $this->throwError("this->decode($attribute) : return=$return");
+                }
+                else
+                {
+                    $items_empty_message = AfwFormatHelper::getItemsEmptyMessage($obj, $structure, $lang);
+                    $items_separator=$structure['LIST_SEPARATOR'];
+                    if(!$items_separator) $items_separator=$structure['MFK-SHOW-SEPARATOR'];
+                    if(!$items_separator) $items_separator="<br>\n";
+                    
+
+                    $ans_table = $structure["ANSWER"];
+                    $ans_module = $structure["ANSWER-MODULE"];
+                    $return = AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message);
+                }
+                /* rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes
                 $structure = AfwStructureHelper::getStructureOf($obj,$attribute);
                 if($structure["CATEGORY"]=="FORMULA")
                 {
@@ -775,15 +811,31 @@ class AfwFormatHelper
                     //if($attribute=="status_id") $this->throwError("this->decode($attribute) : return=$return");
                 } else {
                     $return = $object->getDisplay($lang);
-                }
+                }*/
+
+
                 //if($attribute=="status_id") die("this->decode($attribute) : return=$return, object->id = ".$object->id);
                 break;
             case 'MFK':
-                if(!$obj) AFWRoot::lightSafeDie("structure and obj should not be both null if we decode an MFK field");
+                if((!$obj) or (!$structure)) throw new RuntimeException("both structure and obj should not be null if we decode an FK field");
+                $items_empty_message = AfwFormatHelper::getItemsEmptyMessage($obj, $structure, $lang);
+                $items_separator=$structure['LIST_SEPARATOR'];
+                if(!$items_separator) $items_separator=$structure['MFK-SHOW-SEPARATOR'];
+                if(!$items_separator) $items_separator="<br>\n";
+                
+                
+
+                $ans_table = $structure["ANSWER"];
+                $ans_module = $structure["ANSWER-MODULE"];
+                $return = AfwLoadHelper::lookupDecodeValues($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message);
+                
+                /* rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes                
+                /*
                 $objects = $obj->OBJECTS_CACHE[$attribute]
                     ? $obj->OBJECTS_CACHE[$attribute]
                     : $obj->get($attribute, 'object');
                 $array = [];
+                
                 foreach ($objects as $object) {
                     $array[] = $object->getDisplay($lang);
                 }
@@ -796,20 +848,22 @@ class AfwFormatHelper
                     $seplist = "<br>\n";
                 }
                 $return = implode($seplist, $array);
+                */
+                
                 break;
             case 'ANSWER':
-                if(!$obj) AFWRoot::lightSafeDie("structure and obj should not be both null if we decode an ANSWER field");
+                if(!$obj) throw new RuntimeException("structure and obj should not be both null if we decode an ANSWER field");
                 $valfld = $attribute_value;
                 $return = $obj->getAnswer($attribute,$valfld);
                 break;
             case 'ENUM':
-                if(!$obj) AFWRoot::lightSafeDie("structure and obj should not be both null if we decode an ENUM field");
+                if(!$obj) throw new RuntimeException("structure and obj should not be both null if we decode an ENUM field");
                 $valfld = $attribute_value;
                 // if($attribute == 'unit_type_id') die("decode of enum field " . get_class($this)  . "->getEnumVal(attribute=$attribute, valfld = $valfld)");
                 $return = $obj->getEnumVal($attribute,$valfld);
                 break;
             case 'MENUM':
-                if(!$obj) AFWRoot::lightSafeDie("structure and obj should not be both null if we decode an MENUM field");
+                if(!$obj) throw new RuntimeException("structure and obj should not be both null if we decode an MENUM field");
                 $sep = $obj->getSeparatorFor($attribute);
                 $valfld = $attribute_value;
                 $val_arr = explode($sep, $valfld);

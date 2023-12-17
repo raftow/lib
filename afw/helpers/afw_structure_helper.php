@@ -16,6 +16,16 @@ class AfwStructureHelper extends AFWRoot
         if ($struct) {
             $struct = AfwStructureHelper::repareMyStructure($object,$struct, $field_name);
         }
+
+        if($struct["CATEGORY"]=="SHORTCUT")
+        {
+            if(!$object->shouldBeCalculatedField($field_name))
+            {
+                $cl = get_class($object);
+                throw new RuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$field_name] is shortcut but not declared in overridden shouldBeCalculatedField method, do like this : <pre><code>".$object->suggestAllCalcFields()."</code></pre>");
+            }
+            
+        }
         
         return $struct;
     }
