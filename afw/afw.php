@@ -2175,7 +2175,7 @@ class AFWObject extends AFWRoot
      */
     public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup=true) 
     {
-        $time_start = microtime(true);
+        // $time_start = microtime(true);
 
 
         // if($value == 6082) die("load case cache_management=$cache_management loading $className[$value] result_row=".var_export($result_row));
@@ -2213,9 +2213,9 @@ class AFWObject extends AFWRoot
         }
 
 
-        $time_end1 = microtime(true);
+        // $time_end1 = microtime(true);
         $this->resetValues();
-        $time_end2 = microtime(true);
+        // $time_end2 = microtime(true);        
         $cache_management = $this->cacheManagement();
 
         // if($loaded_by == 6082) die("load case cache_management=$cache_management loading $className[$loaded_by] result_row=".var_export($result_row));
@@ -2247,7 +2247,7 @@ class AFWObject extends AFWRoot
             }
             unset($object);
         }
-
+        // $time_end3 = microtime(true);
         if ($value and !$result_row) {
             if ($this->PK_MULTIPLE) {
                 if ($this->PK_MULTIPLE === true) {
@@ -2265,7 +2265,7 @@ class AFWObject extends AFWRoot
                 $this->select($this->getPKField(), $value);
             }
         }
-        //
+        // $time_end4_1 = microtime(true);
         if ($this->SEARCH or $result_row) {
             if ($this->IS_VIRTUAL) {
                 $return = $this->loadVirtualRow($this->SEARCH_TAB);
@@ -2283,6 +2283,7 @@ class AFWObject extends AFWRoot
                         );
                     }
                     $all_real_fields = $this->getAllRealFields();
+                    // $time_end4_2 = microtime(true);
                     $query =
                         'SELECT ' .
                         implode(', ', $all_real_fields) .
@@ -2305,6 +2306,7 @@ class AFWObject extends AFWRoot
                         true,
                         $module_server
                     );
+                    // $time_end4_3 = microtime(true);
                     /*
                     $result_row_from = "from sql : $query";
                     if (
@@ -2323,6 +2325,7 @@ class AFWObject extends AFWRoot
                 } else {
                     //
                 }
+                // $time_end4_4 = microtime(true);
 
                 if (count($result_row) > 1) {
                     $debugg_res_row = '';
@@ -2366,7 +2369,7 @@ class AFWObject extends AFWRoot
             throw new RuntimeException(static::$TABLE . ' : Unable to use the method load() without any research criteria (' . $this->SEARCH . "), use select() or where() before.");
         }
 
-
+        // $time_end4 = microtime(true);
         if ($return) {
             $this->afterLoad();
             // -- $className = self::tableToClass(static::$TABLE);
@@ -2395,24 +2398,48 @@ class AFWObject extends AFWRoot
         }
 
         // die("rafik debugg 20210920 : this->getAllfieldValues() = ".var_export($this->getAllfieldValues(),true));
-        $css = "hzm";
+        /*
         
+        // above put $time_start = microtime(true);
         
         $time_end = microtime(true);
         $time_1 = 1000*($time_end1 - $time_start);
         $time_2 = 1000*($time_end2 - $time_end1);        
-        $time_3 = 1000*($time_end - $time_end2);        
+        $time_3 = 1000*($time_end3 - $time_end2);        
+        $time_4 = 1000*($time_end4 - $time_end3);        
+        $time_5 = 1000*($time_end  - $time_end4);        
         $time_t = 1000*($time_end - $time_start);
+
+        $time_4_1 = "N/A";
+        $time_4_2 = "N/A";
+        $time_4_3 = "N/A";
+        $time_4_4 = "N/A";
+        $time_4_5 = "N/A";
         
-        if($time_t>=5) $css = "error";
-        $time_log = " time-$css time_t=$time_t time_1=$time_1 time_2=$time_2 time_3=$time_3";
+
+        if($time_end4_1)                  $time_4_1 = 1000*($time_end4_1 - $time_end3  );        
+        if($time_end4_2 and $time_end4_1) $time_4_2 = 1000*($time_end4_2 - $time_end4_1);        
+        if($time_end4_3 and $time_end4_2) $time_4_3 = 1000*($time_end4_3 - $time_end4_2);        
+        if($time_end4_4 and $time_end4_3) $time_4_4 = 1000*($time_end4_4 - $time_end4_3);        
+        if($time_end4_4)                  $time_4_5 = 1000*($time_end4   - $time_end4_4);        
+
+        $time_end4_2 = microtime(true);
+
+        
+        $css = "hzm";
+        if($time_t>=1) $css = "error";
+        $time_log = " time-$css time_t=$time_t time_1=$time_1 time_2=$time_2 time_3=$time_3 time_4=$time_4 
+        
+        <br>time_4_1=$time_4_1 time_4_2=$time_4_2 time_4_3=$time_4_3 time_4_4=$time_4_4 time_4_5=$time_4_5
+        
+        <br>time_5=$time_5";
         
 
         //$time_log = "";
 
         // espion-time-0001 : pour afficher le temps d'exec de cette requette non-voulu a l origine 
         // mais pour localiser (espioner) la lenteur est avant ou apres
-        AfwSession::sqlLog("espion-time-0001 loaded class=" . get_class($this) . " id=" . $this->id . $time_log, $css);
+        AfwSession::sqlLog("espion-time-0001 loaded class=" . get_class($this) . " id=" . $this->id . $time_log, $css);*/
 
         return $return;
     }
@@ -2760,7 +2787,15 @@ class AFWObject extends AFWRoot
         $result_rows = null,
         $query_special = null,
         $eager_joins = false
-    ) {
+    ) 
+    {
+        // $method_time_start = microtime(true);
+
+
+        // DISABLED EAGER to check lenteur from there or no ?
+        // No it is ok not from eager find the reason elsewhere
+        // $eager_joins = false;
+
         global $lang, $_lmany_analysis, $loadMany_max, $MODE_DEVELOPMENT;
 
         $cache_management = $this->cacheManagement();
@@ -2847,7 +2882,8 @@ class AFWObject extends AFWRoot
                 $force_retrieve_cols = null,
                 $category = 'empty'
             );
-            foreach ($result_rows as $result_row) {
+            $loop_time_start = microtime(true);
+            foreach ($result_rows as $rr => $result_row) {
                 unset($object);
                 $object = null;
 
@@ -2869,11 +2905,16 @@ class AFWObject extends AFWRoot
                         $object->setPKField('NO_ID_AS_PK');
                     }
                     // $object->setMyDebugg($this->MY_DEBUG);
-
-                    if ($object->loadMeFromRow($result_row) and $cache_management) {
+                    // $time_start = microtime(true);
+                    // $log_actions = "for object $className $rr";
+                    if ($object->loadMeFromRow($result_row)) 
+                    {
+                        // $log_actions .= " loadMeFromRow success";
                         if ($eager_joins) {
                             // chakek sbab lenteur => is ok
                             $object->loadAllFkRetrieve($result_row, $colsFK);
+
+                            // $log_actions .= " loadAllFkRetrieve done";
                         }
                         /*
                         if($eager_joins and $object instanceof Module) 
@@ -2882,12 +2923,41 @@ class AFWObject extends AFWRoot
                         }*/
 
                         /*chakek sbab lenteur => is ok */
-                        AfwCacheSystem::getSingleton()->putIntoCache(
-                            $object->MODULE,
-                            $object->TABLE,
-                            $object
-                        );
+                        if($cache_management)
+                        {
+                            AfwCacheSystem::getSingleton()->putIntoCache(
+                                $object->MODULE,
+                                $object->TABLE,
+                                $object
+                            );
+
+                            // $log_actions .= " AfwCacheSystem->putIntoCache done";
+                        }
+                        else
+                        {
+                            // $log_actions .= " AfwCacheSystem::disabled";
+                        }
                     }
+                    else
+                    {
+                        // $log_actions .= " loadMeFromRow fail";
+                    }
+
+                    // $time_end = microtime(true);
+                    /*$time_1 = 1000*($time_end1 - $time_start);
+                    $time_2 = 1000*($time_end2 - $time_end1);        
+                    $time_3 = 1000*($time_end3 - $time_end2);        
+                    $time_4 = 1000*($time_end4 - $time_end3);        
+                    $time_5 = 1000*($time_end  - $time_end4);        */
+                    // $time_t = 1000*($time_end - $time_start);
+                    // $css = "hzm";
+                    // if($time_t>=2) $css = "error";
+                    // $time_log = " time-$css time_t=$time_t $log_actions";
+                    // $time_log = "";
+                    // espion-time-0003 : pour afficher le temps d'exec de ce traitement 
+                    // AfwSession::sqlLog("espion-time-0003 loaded class=" . get_class($this) . " id=" . $this->id . $time_log, $css);
+
+                    
                 } else {
                     // $object->setMyDebugg($this->MY_DEBUG);
                 }
@@ -2905,6 +2975,13 @@ class AFWObject extends AFWRoot
                 if ($object->dynamicVH()) {
                     $array_many[$obj_index] = $object;
                 }
+            }
+            $loop_time_end = microtime(true);
+            $loop_time_t = 1000*($loop_time_end - $loop_time_start);
+            if($loop_time_t>500)
+            {
+                $nb_rows = count($result_rows);
+                AfwSession::sqlLog("espion-time-0006 loadMany in class=" . get_class($this) . " id=" . $this->id . " => $loop_time_t times = 1000*($loop_time_end - $loop_time_start) => $nb_rows", "error");
             }
 
             $return = $array_many;
@@ -2927,6 +3004,13 @@ class AFWObject extends AFWRoot
             );
         }
         $this->clearSelect();
+        /*
+        $method_time_end = microtime(true);
+        $method_time_t = 1000*($method_time_end - $method_time_start);
+        if($method_time_t>500)
+        {
+            AfwSession::sqlLog("espion-time-0004 loaded class=" . get_class($this) . " id=" . $this->id . " => $method_time_t = 1000*($method_time_end - $method_time_start) => $query", "error");
+        }*/
         return $return;
     }
 

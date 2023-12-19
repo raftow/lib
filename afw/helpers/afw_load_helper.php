@@ -355,6 +355,7 @@ class AfwLoadHelper extends AFWRoot
 
         $data = [];
         $isAvail = [];
+        
 
         foreach ($liste_obj as $id => $objItem) 
         {
@@ -367,6 +368,7 @@ class AfwLoadHelper extends AFWRoot
                 {
                     foreach ($header as $col => $titre) 
                     {
+                        
                         if (!$col) throw new RuntimeException('header columns erroned, column empty : ' .var_export($header, true));
                         $desc = AfwStructureHelper::getStructureOf($objItem, $col);
                         if (!$objItem->attributeIsApplicable($col)) {

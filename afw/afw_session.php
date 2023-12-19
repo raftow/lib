@@ -345,6 +345,7 @@ class AfwSession extends AFWRoot {
 
         public static function log($string, $css_class="paglog hzmlog", $separator="<br>\n", $show_time=true, $context="log")
         {
+                
                 global $log_counter;
                 if(!$log_counter) $log_counter = 0;
                 $log_counter++;
@@ -377,7 +378,7 @@ class AfwSession extends AFWRoot {
                 // if($css_class == "hzm") 
                 $html .= "<pre class='$css_class $context $critical'>$string</pre>"; //  N$now_time O$oldLastLogTime D$durationSinceLastLog
                 //if($css_class != "hzm") die("[[[[[$string]]]]]");
-                self::setVar($context, $html);  
+                self::setVar($context, $html); 
         }
 
         public static function warning($string, $separator="<br>\n")
@@ -407,8 +408,6 @@ class AfwSession extends AFWRoot {
                 self::warning("_SESSION = ".var_export($_SESSION,true));
                 if($get_log) return self::getLog();
         }
-
-        
 
 
         public static function sqlError($string, $module_info, $separator="<br>\n")

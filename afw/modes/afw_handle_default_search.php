@@ -55,6 +55,9 @@ if ($genere_xls) {
 
 
 //AFWDebugg::print_str('fin for each '.__LINE__);
+
+
+
 if ((count($header_retrieve) > 0) and (count($cols_spec_retrieve) == 0))
         $header = &$header_retrieve;
 elseif (count($cols_spec_retrieve) > 0)
@@ -236,6 +239,22 @@ if (!$liste_obj) {
                 // $liste_obj       = $obj->loadManyEager("", $sql_order_by);
                 $liste_obj       = $obj->loadMany("", $sql_order_by);
                 // die("DBG-loadManyEager excel illimited load");    
+        }
+}
+
+
+// if search result is big data we should not keep heavy calculated fields like shortcuts
+// in retrieved columns
+$liste_count = count($liste_obj);
+if($liste_count>100)
+{
+        foreach ($header as $col => $titre) 
+        {
+                if($obj->seemsCalculatedField($col))
+                {
+                        unset($header[$col]);
+                        AfwSession::pushWarning("تم حجب العمود [$titre] لأجل تسريع الصفحة التي تحتوي على سجلات كثيرة جدا");
+                }
         }
 }
 
