@@ -110,7 +110,7 @@ $trad["OPERATOR"]["FIELD MANDATORY"]	        	        = "حقل إلزامي ي�
 $trad["OPERATOR"]["DELETED OR WRONG MANDATORY OBJECT"]	        = "كيان إلزامي غير صحيح أو تم حذفه";
 $trad["OPERATOR"]["WRONG FORMAT FOR FIELD"]        	        = "بيانات غير مناسبة للحقل";
 $trad["OPERATOR"]["WRONG DATA FOR FIELD"]                       = "بيانات غير صحيحة للحقل";
-$trad["OPERATOR"]["EMPTY LIST FOR REQUIRED FIELD"]              = "قائمة فارغة لهذا الحقل الاجباري";
+$trad["OPERATOR"]["EMPTY LIST FOR REQUIRED FIELD"]              = "هذا الحقل الزامي يجب اختيار بعض الخيارات";
 $trad["OPERATOR"]["PILLAR OBJECT"]	        	        = "البيانات : ";
 $trad["OPERATOR"]["ERRORS"]	        	                = "من الأخطاء";
                                        

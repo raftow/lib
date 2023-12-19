@@ -5,6 +5,7 @@ class AfwLoadHelper extends AFWRoot
 
     public static function getLookupData($nom_module_fk, $nom_table_fk, $where="--")
     {
+        if(!$nom_module_fk) throw new RuntimeException("nom_module_fk is mandatory attribute for AfwLoadHelper::getLookupData");
         if(!$where) $where="--";
         if(!self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"])
         {
@@ -12,6 +13,8 @@ class AfwLoadHelper extends AFWRoot
             $object = new $nom_class_fk();
             self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"] = self::loadAllLookupData($object,$where);
         }
+
+        //if($nom_table_fk=="module") die("getLookupData($nom_module_fk, $nom_table_fk, $where) using self::lookupMatrix=".var_export(self::$lookupMatrix,true));
 
         return self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"];
     } 
@@ -65,7 +68,7 @@ class AfwLoadHelper extends AFWRoot
                     $desc['NO_KEEP_VAL'] = $val_to_keep ? false : true;
                     $desc['WHERE'] = $where;
                     $desc['ORDERBY'] = $order_by;
-                    $listeRep = self::loadManyFollowingStructureAndValue($obj,$desc,$val_to_keep, null, $dropdown, $optim);
+                    list($sql,$listeRep) = self::loadManyFollowingStructureAndValue($obj,$desc,$val_to_keep, null, $dropdown, $optim);
                     
                 }
                 $return=array();
@@ -90,7 +93,8 @@ class AfwLoadHelper extends AFWRoot
         $l_rep = [];
         foreach ($liste_rep as $iditem => $item) {
             if (AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme, 'display')) {
-                $l_rep[$iditem] = $item->getDropDownDisplay($lang);
+                if(is_object($item)) $l_rep[$iditem] = $item->getDropDownDisplay($lang);
+                else $l_rep[$iditem] = $item;
             }
             /*
             idea of rafik to create another method returning refused items and show reason inside html @todo
