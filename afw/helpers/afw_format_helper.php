@@ -785,7 +785,8 @@ class AfwFormatHelper
                     
 
                     $ans_table = $structure["ANSWER"];
-                    $ans_module = $structure["ANSWER-MODULE"];
+                    $ans_module = $structure["ANSMODULE"];
+                    if(!$ans_module) throw new RuntimeException("strcuture of FK field '$attribute' does not contain ANSMODULE property, structure=".var_export($structure,true));
                     $return = AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message);
                 }
                 /* rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes
@@ -826,7 +827,7 @@ class AfwFormatHelper
                 
 
                 $ans_table = $structure["ANSWER"];
-                $ans_module = $structure["ANSWER-MODULE"];
+                $ans_module = $structure["ANSMODULE"];
                 $return = AfwLoadHelper::lookupDecodeValues($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message);
                 
                 /* rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes                
