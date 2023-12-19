@@ -1749,9 +1749,11 @@ $('#$showAsDataTable').DataTable( {
                     //@tooptimize $return = self::quickShowOneOrListOfObjects($objs, $lang, $newline);
                     $nom_table_fk   = $desc["ANSWER"];
                     $nom_module_fk  = $desc["ANSMODULE"];
+                    $pk = $desc["ANSWER-PK"];
+                    if(!$pk) $pk = "((id))";
                     $val = $objItem->getVal($col);
                     $emptyMessage = $objItem->translate('obj-empty', $lang);
-                    $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator=$newline, $emptyMessage);
+                    $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator=$newline, $emptyMessage, $pk);
                     if($val and (!$return)) $return = "<!-- quickShowAttribute $nom_module_fk / $nom_table_fk -->$val";
                 }
                 
@@ -1779,9 +1781,11 @@ $('#$showAsDataTable').DataTable( {
                 */
                 $nom_table_fk   = $desc["ANSWER"];
                 $nom_module_fk  = $desc["ANSMODULE"];
+                $pk = $desc["ANSWER-PK"];
+                if(!$pk) $pk = "((id))";
                 $val = $objItem->getVal($col);
                 $emptyMessage = $objItem->translate('obj-empty', $lang);
-                $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator=$newline, $emptyMessage);
+                $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator=$newline, $emptyMessage, $pk);
                 break;
 
             case 'ANSWER':

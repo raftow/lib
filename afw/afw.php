@@ -2175,6 +2175,7 @@ class AFWObject extends AFWRoot
      */
     public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup=true) 
     {
+        global $MODE_BATCH_LOURD;
         // $time_start = microtime(true);
 
 
@@ -2188,7 +2189,7 @@ class AFWObject extends AFWRoot
             $className = $this->getMyClass();
             if (!$load_count[$className]["any"]) $load_count[$className]["any"] = 0;
             $load_count[$className]["any"]++;
-            if ($load_count[$className]["any"] > 3) {
+            if ((!$MODE_BATCH_LOURD) and ($load_count[$className]["any"] > 3)) {
                 throw new RuntimeException("All the lookup table $className should be loaded once, not record by record");
             }
         }

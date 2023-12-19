@@ -7,11 +7,13 @@ class AfwLoadHelper extends AFWRoot
     {
         if(!$nom_module_fk) throw new RuntimeException("nom_module_fk is mandatory attribute for AfwLoadHelper::getLookupData");
         if(!$where) $where="--";
+        
         if(!self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"])
         {
             $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
             $object = new $nom_class_fk();
-            self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"] = self::loadAllLookupData($object,$where);
+            $where_cleaned = str_replace("((id))",$object->getPKField(),$where);
+            self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"] = self::loadAllLookupData($object,$where_cleaned);
         }
 
         //if($nom_table_fk=="module") die("getLookupData($nom_module_fk, $nom_table_fk, $where) using self::lookupMatrix=".var_export(self::$lookupMatrix,true));
@@ -21,6 +23,7 @@ class AfwLoadHelper extends AFWRoot
 
     public static function vhGetListe($obj, $where, $action="default", $lang="ar", $val_to_keep=null, $order_by="", $dropdown = false, $optim = true)
     {
+        if(!$where) $where = "1";
         if($action=="default") 
         {
             if($obj->IS_LOOKUP) $action="liste";
@@ -108,11 +111,10 @@ class AfwLoadHelper extends AFWRoot
         return $l_rep;
     }
 
-    public static function lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator, $emptyMessage)
+    public static function lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator, $emptyMessage, $pk)
     {
         if(!$val) return "";
-        $where="1";
-        self::getLookupData($nom_module_fk, $nom_table_fk, $where);
+        
         if(is_string($val) and AfwStringHelper::stringContain($val,",")) // it is mfk
         {
             $val_0 = trim($val,",");
@@ -130,6 +132,10 @@ class AfwLoadHelper extends AFWRoot
         {
             if(!$kval) unset($val_arr[$k]);
         }
+
+        if(count($val_arr)>0) $where="$pk in (".implode(",",$val_arr).")";
+        else $where="1";
+        self::getLookupData($nom_module_fk, $nom_table_fk, $where);
 
         if(count($val_arr)>0)
         {
@@ -401,14 +407,14 @@ class AfwLoadHelper extends AFWRoot
         return [$data, $isAvail];
     }
 
-    public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage)
+    public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk)
     {
 
         if(self::$lookupMatrix["$ans_module.$ans_table.--"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.--"][$value];
         if(self::$lookupMatrix["$ans_module.$ans_table.++"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.++"][$value];
         if(self::$lookupMatrix["$ans_module.$ans_table.1"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.1"][$value];
         
-        self::$lookupMatrix["$ans_module.$ans_table.1"][$value] = self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage);
+        self::$lookupMatrix["$ans_module.$ans_table.1"][$value] = self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk);
         // $server_db_prefix = AfwSession::config('db_prefix', 'c0');
         // AfwDatabase::db_recup_value("select $display_field from $server_db_prefix" . $ans_module . ".$ans_table where $pk = '$value'");
 

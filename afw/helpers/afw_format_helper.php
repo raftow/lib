@@ -392,7 +392,7 @@ class AfwFormatHelper
                 if ($data_to_display) 
                 {
                     $hijri_date = $data_to_display;
-                    $date_to_display = AfwDateHelper::hijriToGreg($old_data_to_display);
+                    $date_to_display = AfwDateHelper::hijriToGreg($old_data_to_display,false);
                     $data_to_display = "<div class='dates_ar_en'>" .
                         "<div class='hzmdate date_en'><div class='dval'>$date_to_display</div><div class='dunit'>م</div></div>" .
                         "<div class='hzmdate date_ar'><div class='dval'>$hijri_date</div><div class='dunit'>هـ</div></div>" .
@@ -783,11 +783,12 @@ class AfwFormatHelper
                     if(!$items_separator) $items_separator=$structure['MFK-SHOW-SEPARATOR'];
                     if(!$items_separator) $items_separator="<br>\n";
                     
-
+                    $pk = $structure["ANSWER-PK"];
+                    if(!$pk) $pk = "((id))";
                     $ans_table = $structure["ANSWER"];
                     $ans_module = $structure["ANSMODULE"];
                     if(!$ans_module) throw new RuntimeException("strcuture of FK field '$attribute' does not contain ANSMODULE property, structure=".var_export($structure,true));
-                    $return = AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message);
+                    $return = AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message, $pk);
                 }
                 /* rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes
                 $structure = AfwStructureHelper::getStructureOf($obj,$attribute);
@@ -825,10 +826,11 @@ class AfwFormatHelper
                 if(!$items_separator) $items_separator="<br>\n";
                 
                 
-
+                $pk = $structure["ANSWER-PK"];
+                if(!$pk) $pk = "((id))";
                 $ans_table = $structure["ANSWER"];
                 $ans_module = $structure["ANSMODULE"];
-                $return = AfwLoadHelper::lookupDecodeValues($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message);
+                $return = AfwLoadHelper::lookupDecodeValues($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message,$pk);
                 
                 /* rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes                
                 /*
