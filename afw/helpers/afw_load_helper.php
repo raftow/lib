@@ -435,15 +435,21 @@ class AfwLoadHelper extends AFWRoot
             $where =  $object->get_visibilite_horizontale();            
         }
         
-        $display_field = trim($object->AUTOCOMPLETE_FIELD);
-
-        if (!$display_field) {
-            $display_field = trim($object->DISPLAY_FIELD);
-        }
+        $display_field = trim($object->DISPLAY_FIELD);
 
         if (!$display_field) {
             $display_field = trim($object->FORMULA_DISPLAY_FIELD);
         }
+
+        if (!$display_field)  {
+            if(is_array($object->AUTOCOMPLETE_FIELD))
+            {
+                $display_field = "concat(".implode(",'-',",$object->AUTOCOMPLETE_FIELD).")";
+            }
+            else $display_field = trim($object->AUTOCOMPLETE_FIELD);
+        }
+
+        
 
         if (!$display_field) {
             throw new RuntimeException('afw class : ' . $object->getMyClass() . ' : method loadLookupData does not work without one of AUTOCOMPLETE_FIELD or DISPLAY_FIELD or FORMULA_DISPLAY_FIELD attributes specified for the object');
@@ -458,7 +464,7 @@ class AfwLoadHelper extends AFWRoot
         $pk = $object->getPKField();
 
 
-        return AfwDatabase::db_recup_index("select $pk, $display_field as val from $server_db_prefix" . $module . ".$table where $where", $pk, "val");
+        return AfwDatabase::db_recup_index("select $pk, $display_field as __val from $server_db_prefix" . $module . ".$table where $where", $pk, "__val");
 
     }
 

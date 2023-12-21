@@ -78,12 +78,7 @@ class AfwMemoryHelper extends AFWRoot
         }
         if ($nb_instances > 10000 and (!$MODE_BATCH_LOURD)) 
         {
-            self::safeDie(
-                'too much objects created',
-                "too much objects created : $nb_instances : " .
-                    var_export($tab_instances, true),
-                $analysis_log = false
-            );
+            throw new RuntimeException("too much objects created : $nb_instances : " .var_export($tab_instances, true));
         }
     }
 }

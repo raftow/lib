@@ -5866,7 +5866,9 @@ class AFWObject extends AFWRoot
 
     public function getVersion()
     {
-        return $this->getVal($this->fld_VERSION());
+        $return = $this->getVal($this->fld_VERSION());
+        if(!$return) $return = 0;
+        return $return;
     }
 
     public function getUpdateDate()
