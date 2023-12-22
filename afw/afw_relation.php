@@ -125,6 +125,18 @@ class AFWRelation extends AFWRoot {
           
           $array_result = array();
           $array_done = array();
+
+          $listCols = $this->myObject->loadCol($attribute, $distinct);
+          foreach($listCols as $colValue)
+          {
+               if((!$distinct) or (!$array_done[$colValue]))
+               {
+                    $array_result[] = $colValue;
+                    $array_done[$colValue] = true;   
+               }
+
+          }
+          /* This code is not optimized, optimization done above
           $listObjects = $this->myObject->loadMany($this->answer_limit, $this->answer_orderby);
           foreach($listObjects as $itemObject)
           {
@@ -135,7 +147,7 @@ class AFWRelation extends AFWRoot {
                     $array_done[$new_val] = true;   
                }
 
-          }
+          }*/
 
           return $array_result;
      }

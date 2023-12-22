@@ -5538,7 +5538,10 @@ class AFWObject extends AFWRoot
         $subAttr = $this->fixModeSubAttributes($attribute, $value);
         if (count($subAttr) > 0) {
             foreach ($subAttr as $attr0 => $val0) {
-                $this->setSlient($attr0, $val0);
+                if(!is_array($val0))
+                {
+                    $this->setSlient($attr0, $val0);
+                }
             }
             return;
         }
@@ -5552,7 +5555,14 @@ class AFWObject extends AFWRoot
         $subAttr = $this->fixModeSubAttributes($attribute, $value);
         if (count($subAttr) > 0) {
             foreach ($subAttr as $attr0 => $val0) {
-                $this->select($attr0, $val0);
+                if(!is_array($val0))
+                {
+                    $this->select($attr0, $val0);
+                }
+                else
+                {
+                    $this->selectIn($attr0, $val0);
+                }
             }
             return;
         }
@@ -12233,6 +12243,12 @@ $dependencies_values
         );
     }
 
+
+    public function optimizeQEditLookups($submode = "", $fgroup = "")
+    {
+        // return true; // suceeded to load and optimize
+        return false; // failed because not overrridden yet
+    }
 
     public function qeditHeaderFooterEmbedded($submode = "", $fgroup = "")
     {
