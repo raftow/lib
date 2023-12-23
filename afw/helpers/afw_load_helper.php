@@ -473,7 +473,35 @@ class AfwLoadHelper extends AFWRoot
     }
 
     
-
+    /**
+     * loadData
+     * Load into an array of values returned rows
+     * @param object $object : afw object instance
+     * @param array $attribute_arr : liste attributes to retrieve
+     * @param string $limit : Optional add limit to query
+     * @param string $order_by : Optional add order by to query
+     * @param bool $distinct : Make the select distinct to avoid duplicated records (same value for all columns)
+     */
+    public static function loadData($object, $attribute_arr, $limit = '', $order_by = '', $distinct=false)
+    {
+        if(!$order_by) $order_by = $object->ORDER_BY_FIELDS;
+        $query =
+            'SELECT ' . ($distinct ? 'DISTINCT ' : '') .
+            implode(",",$attribute_arr) .
+            " FROM " . $object->getMyTable() .
+            " me\n WHERE 1" . $object->getSQL() .
+            ($order_by ? "\n ORDER BY " . $order_by : '') .
+            ($limit ? ' LIMIT ' . $limit : '');
+        $module_server = $object->getModuleServer();
+        return AfwDatabase::db_recup_rows(
+            $query,
+            true,
+            true,
+            $module_server
+        );
+        
+        
+    }
 
     
 										

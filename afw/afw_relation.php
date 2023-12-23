@@ -119,6 +119,13 @@ class AFWRelation extends AFWRoot {
           return array($return, $sql);
      }
 
+
+     public function getData($attributes_arr, $distinct=false)
+     {
+          $this->prepare();
+          return AfwLoadHelper::loadData($this->myObject, $attributes_arr, $limit = '', $order_by = '', $distinct);
+     }
+
      public function getArray($attribute, $distinct=false)
      {
           $this->prepare();

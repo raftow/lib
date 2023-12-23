@@ -171,12 +171,9 @@ class AFWObject extends AFWRoot
 
     private $force_mode = false;
 
-    public function getMyAnswerTableAndModuleFor($attribute)
+    public function getMyAnswerTableAndModuleFor($attribute, $struct=null)
     {
-        $struct = $this->getMyDbStructure(
-            $return_type = 'structure',
-            $attribute
-        );
+        if(!$struct) $struct = $this->getMyDbStructure($return_type = 'structure',$attribute);
 
         if (!$struct['ANSWER']) {
             die(" in getMyAnswerTableAndModuleFor i run this($this)->getMyDbStructure($return_type, $attribute) = " .
@@ -2168,6 +2165,9 @@ class AFWObject extends AFWRoot
         return $cache_management;
     }
 
+
+
+
     /**
      * load
      * Load into object a specified row
@@ -3015,6 +3015,9 @@ class AFWObject extends AFWRoot
         return $return;
     }
 
+
+    
+
     /**
      * loadListe
      * Load into an array of values returned rows
@@ -3181,9 +3184,38 @@ class AFWObject extends AFWRoot
         return $objNew;*/
     }
 
-    public function getFactoryForFk($attribute)
+    public static function iamLookupTable()
     {
-        list($ansTab, $ansModule) = $this->getMyAnswerTableAndModuleFor($attribute);
+        $obj = new static();
+        $ret = $obj->IS_LOOKUP;
+        unset($obj);
+        return $ret;
+    }
+
+    /** 
+         * @param string $attribute
+         * @param array $desc
+         * @return bool
+    */
+
+    public function isLookupAttribute($attribute, $desc=null)
+    {
+        if(!$desc) $desc = AfwStructureHelper::getStructureOf($this,$attribute);
+        if($desc["ANSWER-IS-LOOKUP"]) return true;
+        list($fileName, $className) = $this->getFactoryForFk($attribute, $desc);
+        return $className::iamLookupTable();
+        
+    }
+
+/** 
+ * @param string $attribute
+ * @param array $desc
+ * @return array
+    */
+
+    public function getFactoryForFk($attribute, $desc=null)
+    {
+        list($ansTab, $ansModule) = $this->getMyAnswerTableAndModuleFor($attribute, $desc);
         // die("list($ansTab, $ansModule) = $this => getMyAnswerTableAndModuleFor($attribute)");
         list($fileName, $className) = AfwStringHelper::getHisFactory($ansTab, $ansModule);
         $return_arr = [];

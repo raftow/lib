@@ -299,8 +299,6 @@ class AfwDatabase extends AFWRoot
 
                     if($_sql_picture[$this_module][$this_table]>$_sql_analysis_seuil_calls_by_table)
                     {
-                        
-                        
                         if ($throw_error and $throw_analysis_crash and $MODE_DEVELOPMENT) 
                         {
                             throw new RuntimeException(

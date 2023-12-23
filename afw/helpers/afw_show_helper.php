@@ -22,6 +22,16 @@ class AfwShowHelper
         return self::showManyObj($liste_obj, $obj, $objme, $options);
     }
 
+    /**  
+     *   @param array
+     *   @param object
+     *   @param object
+     *   @param array
+     *   @param array
+     *   @param boolean
+     *   @return string
+    */
+
     public static function manyMiniBoxes(
         $liste_obj,
         $obj,
@@ -581,6 +591,14 @@ class AfwShowHelper
         return [$html, $js, $countNodes];
     }
 
+/**  
+     *   @param array of AFWObject $liste_obj
+     *   @param object
+     *   @param object
+     *   @param array 
+     *   @return array
+    */
+
     public static function showManyObj($liste_obj, $obj, $objme, $options = [])
     {
         $arr_col = 0;
@@ -747,7 +765,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
         foreach ($liste_obj as $id => $val) 
         {
             $j++;
-            if (is_object($val) and AfwUmsPagHelper::userCanDoOperationOnObject($val,$objme, 'display')) 
+            if (is_object($val) and ($val instanceof AFWObject) and AfwUmsPagHelper::userCanDoOperationOnObject($val,$objme, 'display')) 
             {
                 // we force errors test only if we are not in mode mode_show_all_records
                 $check_errors_needed_in_object = $val->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'));
@@ -928,114 +946,116 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
 
                                             break;
                                         case 'FK':
-                                            $obj_col = $val->het($col);
-                                            if (empty($desc['CATEGORY'])) {
-                                                if ($obj_col) {
-                                                    $tuple[
-                                                        $col
-                                                        ] = $obj_col->showMe(
-                                                        'retrieve',
-                                                        $lang
-                                                    );
-                                                }
-                                                else {
-                                                    if (
-                                                    $desc['EMPTY_IS_ALL'] or
-                                                    $desc['FORMAT'] ==
-                                                    'EMPTY_IS_ALL'
-                                                    ) {
-                                                        $all_code = "ALL-$col";
-                                                        $return = $val->translate(
-                                                            $all_code,
-                                                            $lang
-                                                        );
-                                                        if (
-                                                        $return == $all_code
-                                                        ) {
-                                                            $return = $val->translateOperator(
-                                                                'ALL',
-                                                                $lang
-                                                            );
-                                                        }
-                                                        $tuple[$col] = $return;
+                                            if($val->isLookupAttribute($col,$desc))
+                                            {
+                                                $tuple[$col] = $val->decode($col);
+                                            }
+                                            else
+                                            {
+                                                $obj_col = $val->het($col);
+                                                if (empty($desc['CATEGORY'])) {
+                                                    if ($obj_col) {
+                                                        $tuple[$col] = $obj_col->showMe('retrieve',$lang);
                                                     }
                                                     else {
-                                                        $tuple[$col] = '';
-                                                    }
-                                                }
-                                            }
-                                            else {
-                                                if (is_object($obj_col)) {
-                                                    $tuple[
-                                                        $col
-                                                        ] = $obj_col->showMe(
-                                                        'retrieve',
-                                                        $lang
-                                                    );
-                                                }
-                                                elseif (is_array($obj_col)) {
-                                                    $mfk_show_sep =
-                                                        $desc['LIST_SEPARATOR'];
-                                                    if (!$mfk_show_sep) {
-                                                        $mfk_show_sep =
-                                                            $desc[
-                                                            'MFK-SHOW-SEPARATOR'
-                                                            ];
-                                                    }
-                                                    if (!$mfk_show_sep) {
-                                                        $mfk_show_sep =
-                                                            "<br>\n";
-                                                    }
-                                                    //$str  = "Strange returned list of objects !! : ".'<br>';
-                                                    $str = '';
-                                                    foreach (
-                                                    $obj_col
-                                                     as $instance
-                                                    ) {
-                                                        if ($str) {
-                                                            $str .= $mfk_show_sep;
+                                                        if (
+                                                        $desc['EMPTY_IS_ALL'] or
+                                                        $desc['FORMAT'] ==
+                                                        'EMPTY_IS_ALL'
+                                                        ) {
+                                                            $all_code = "ALL-$col";
+                                                            $return = $val->translate(
+                                                                $all_code,
+                                                                $lang
+                                                            );
+                                                            if (
+                                                            $return == $all_code
+                                                            ) {
+                                                                $return = $val->translateOperator(
+                                                                    'ALL',
+                                                                    $lang
+                                                                );
+                                                            }
+                                                            $tuple[$col] = $return;
                                                         }
-                                                        $str .= $instance->showMe(
+                                                        else {
+                                                            $tuple[$col] = '';
+                                                        }
+                                                    }
+                                                }
+                                                else {
+                                                    if (is_object($obj_col)) {
+                                                        $tuple[
+                                                            $col
+                                                            ] = $obj_col->showMe(
                                                             'retrieve',
                                                             $lang
                                                         );
                                                     }
-                                                    //$str .= var_export($obj_col,true);
-                                                    $tuple[$col] = $str;
-                                                }
-                                                elseif (!$obj_col) {
-                                                    if (
-                                                    $desc['EMPTY_IS_ALL'] or
-                                                    $desc['FORMAT'] ==
-                                                    'EMPTY_IS_ALL'
-                                                    ) {
-                                                        $all_code = "ALL-$col";
-                                                        $return = $val->translate(
-                                                            $all_code,
-                                                            $lang
-                                                        );
-                                                        if (
-                                                        $return == $all_code
+                                                    elseif (is_array($obj_col)) {
+                                                        $mfk_show_sep =
+                                                            $desc['LIST_SEPARATOR'];
+                                                        if (!$mfk_show_sep) {
+                                                            $mfk_show_sep =
+                                                                $desc[
+                                                                'MFK-SHOW-SEPARATOR'
+                                                                ];
+                                                        }
+                                                        if (!$mfk_show_sep) {
+                                                            $mfk_show_sep =
+                                                                "<br>\n";
+                                                        }
+                                                        //$str  = "Strange returned list of objects !! : ".'<br>';
+                                                        $str = '';
+                                                        foreach (
+                                                        $obj_col
+                                                        as $instance
                                                         ) {
-                                                            $return = $val->translateOperator(
-                                                                'ALL',
+                                                            if ($str) {
+                                                                $str .= $mfk_show_sep;
+                                                            }
+                                                            $str .= $instance->showMe(
+                                                                'retrieve',
                                                                 $lang
                                                             );
                                                         }
-                                                        $tuple[$col] = $return;
+                                                        //$str .= var_export($obj_col,true);
+                                                        $tuple[$col] = $str;
+                                                    }
+                                                    elseif (!$obj_col) {
+                                                        if (
+                                                        $desc['EMPTY_IS_ALL'] or
+                                                        $desc['FORMAT'] ==
+                                                        'EMPTY_IS_ALL'
+                                                        ) {
+                                                            $all_code = "ALL-$col";
+                                                            $return = $val->translate(
+                                                                $all_code,
+                                                                $lang
+                                                            );
+                                                            if (
+                                                            $return == $all_code
+                                                            ) {
+                                                                $return = $val->translateOperator(
+                                                                    'ALL',
+                                                                    $lang
+                                                                );
+                                                            }
+                                                            $tuple[$col] = $return;
+                                                        }
+                                                        else {
+                                                            $tuple[$col] = '';
+                                                        }
                                                     }
                                                     else {
-                                                        $tuple[$col] = '';
+                                                        $obj->throwError(
+                                                            "strange value for FK field : $col => " .
+                                                            var_export(
+                                                            $obj_col,
+                                                            true
+                                                        )
+                                                        );
                                                     }
-                                                }
-                                                else {
-                                                    $obj->throwError(
-                                                        "strange value for FK field : $col => " .
-                                                        var_export(
-                                                        $obj_col,
-                                                        true
-                                                    )
-                                                    );
                                                 }
                                             }
                                             break;
