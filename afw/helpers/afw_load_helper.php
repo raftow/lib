@@ -13,7 +13,13 @@ class AfwLoadHelper extends AFWRoot
             $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
             $object = new $nom_class_fk();
             $where_cleaned = str_replace("((id))",$object->getPKField(),$where);
-            self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"] = self::loadAllLookupData($object,$where_cleaned);
+            $dataLookup = self::loadAllLookupData($object,$where_cleaned);
+            // merge into global lookup data
+            foreach($dataLookup as $lkp_id => $lkp_val)
+            {
+                self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$lkp_id] = $lkp_val;
+            }
+            self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"] = $dataLookup;
         }
 
         //if($nom_table_fk=="module") die("getLookupData($nom_module_fk, $nom_table_fk, $where) using self::lookupMatrix=".var_export(self::$lookupMatrix,true));
@@ -142,7 +148,7 @@ class AfwLoadHelper extends AFWRoot
             $decodedValues_arr = [];
             foreach($val_arr as $val_item)
             {
-                $decodedValues_arr[] = self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"][$val_item];
+                $decodedValues_arr[] = self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$val_item];
             }
 
             return implode($separator,$decodedValues_arr);
@@ -410,15 +416,13 @@ class AfwLoadHelper extends AFWRoot
     public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk)
     {
 
+        if(self::$lookupMatrix["$ans_module.$ans_table"][$value]) return self::$lookupMatrix["$ans_module.$ans_table"][$value];
         if(self::$lookupMatrix["$ans_module.$ans_table.--"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.--"][$value];
         if(self::$lookupMatrix["$ans_module.$ans_table.++"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.++"][$value];
         if(self::$lookupMatrix["$ans_module.$ans_table.1"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.1"][$value];
         
-        self::$lookupMatrix["$ans_module.$ans_table.1"][$value] = self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk);
-        // $server_db_prefix = AfwSession::config('db_prefix', 'c0');
-        // AfwDatabase::db_recup_value("select $display_field from $server_db_prefix" . $ans_module . ".$ans_table where $pk = '$value'");
-
-        return self::$lookupMatrix["$ans_module.$ans_table.1"][$value];
+        self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk);
+        return self::$lookupMatrix["$ans_module.$ans_table"][$value];
     }
 
     public static function loadAllLookupData($object, $where = "--")
@@ -469,7 +473,35 @@ class AfwLoadHelper extends AFWRoot
     }
 
     
-
+    /**
+     * loadData
+     * Load into an array of values returned rows
+     * @param object $object : afw object instance
+     * @param array $attribute_arr : liste attributes to retrieve
+     * @param string $limit : Optional add limit to query
+     * @param string $order_by : Optional add order by to query
+     * @param bool $distinct : Make the select distinct to avoid duplicated records (same value for all columns)
+     */
+    public static function loadData($object, $attribute_arr, $limit = '', $order_by = '', $distinct=false)
+    {
+        if(!$order_by) $order_by = $object->ORDER_BY_FIELDS;
+        $query =
+            'SELECT ' . ($distinct ? 'DISTINCT ' : '') .
+            implode(",",$attribute_arr) .
+            " FROM " . $object->getMyTable() .
+            " me\n WHERE 1" . $object->getSQL() .
+            ($order_by ? "\n ORDER BY " . $order_by : '') .
+            ($limit ? ' LIMIT ' . $limit : '');
+        $module_server = $object->getModuleServer();
+        return AfwDatabase::db_recup_rows(
+            $query,
+            true,
+            true,
+            $module_server
+        );
+        
+        
+    }
 
     
 										

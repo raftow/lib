@@ -33,7 +33,7 @@ foreach($fixm_array0 as $fm0)
     $fixm_array_sub_attributes = $myMainObject->fixModeSubAttributes($fm_col0, $fm_val0);
     foreach($fixm_array_sub_attributes as $attr0 => $attr0val)
     {
-        $fixm_array[$attr0] = $attr0val;
+        if(!is_array($attr0val)) $fixm_array[$attr0] = $attr0val;
     }    
 }
 
@@ -184,7 +184,7 @@ $myMainObject->step_origin = $step_origin;
 $myMainObject->mode_origin = $mode_origin;
 $myMainObject->return_mode = $return_mode;
 
-
+$myMainObject->optimizeQEditLookups($submode, $fgroup);
 $header_imbedded_arr = $myMainObject->qeditHeaderFooterEmbedded($submode, $fgroup);
 if($header_imbedded_arr)
 {

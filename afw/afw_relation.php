@@ -119,12 +119,31 @@ class AFWRelation extends AFWRoot {
           return array($return, $sql);
      }
 
+
+     public function getData($attributes_arr, $distinct=false)
+     {
+          $this->prepare();
+          return AfwLoadHelper::loadData($this->myObject, $attributes_arr, $limit = '', $order_by = '', $distinct);
+     }
+
      public function getArray($attribute, $distinct=false)
      {
           $this->prepare();
           
           $array_result = array();
           $array_done = array();
+
+          $listCols = $this->myObject->loadCol($attribute, $distinct);
+          foreach($listCols as $colValue)
+          {
+               if((!$distinct) or (!$array_done[$colValue]))
+               {
+                    $array_result[] = $colValue;
+                    $array_done[$colValue] = true;   
+               }
+
+          }
+          /* This code is not optimized, optimization done above
           $listObjects = $this->myObject->loadMany($this->answer_limit, $this->answer_orderby);
           foreach($listObjects as $itemObject)
           {
@@ -135,7 +154,7 @@ class AFWRelation extends AFWRoot {
                     $array_done[$new_val] = true;   
                }
 
-          }
+          }*/
 
           return $array_result;
      }

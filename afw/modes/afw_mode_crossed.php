@@ -34,7 +34,7 @@ foreach($fixm_array0 as $fm0)
     $fixm_array_sub_attributes = $myMainObject->fixModeSubAttributes($fm_col0, $fm_val0);
     foreach($fixm_array_sub_attributes as $attr0 => $attr0val)
     {
-        $fixm_array[$attr0] = $attr0val;
+        if(!is_array($attr0val)) $fixm_array[$attr0] = $attr0val;
     }
         
 }
