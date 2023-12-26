@@ -331,7 +331,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         });
                     </script>
 
-<?php                    
+            <?php                    
                 }
             }
             break;
@@ -573,7 +573,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             );
             break;
 
-            case 'TEXT':
+        case 'TEXT':
                 $utf8 = $desc["UTF8"];
                 $fromListMethod = $desc["FROM_LIST"];
                 $dir = $desc["DIR"];
@@ -683,6 +683,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $valaff_n = "الموافق لـ " . AfwDateHelper::hijriToGreg($valaff) . " نـ";
             else
                 $valaff_n = "";
+            // echo "date=$valaff / $val <br>";
             include("tpl/helper_edit_date.php");
             break;
 
@@ -691,9 +692,12 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             list($val,) = explode(" ", $val);
 
             // default defined or today
-            $today = date("Y-m-d");
-            if (strtolower($desc["DEFAULT"]) == "today") $desc["DEFAULT"] = $today;
-            if (!$val) $val = $desc["DEFAULT"] ? $desc["DEFAULT"] : $today;
+            
+            if (!$val) 
+            {
+                if(trim(strtolower($desc["DEFAULT"])) == "today") $val = date("Y-m-d");
+                if($desc["DEFAULT"]) $val = $desc["DEFAULT"];
+            }
 
             $val_GDAT = AfwDateHelper::inputFormatDate($val);;
 
@@ -701,6 +705,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
             $min_date = $desc["MIN_DATE"] ? $desc["MIN_DATE"] : -99999;
             $max_date = $desc["MAX_DATE"] ? $desc["MAX_DATE"] : 99999;
+
+            // echo "date=$val_GDAT / $val <br>";
             include("tpl/helper_edit_gdat.php");
             break;
 

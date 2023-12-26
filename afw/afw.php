@@ -5990,6 +5990,8 @@ class AFWObject extends AFWRoot
      */
     public function update($only_me = true)
     {
+        if($this->IS_COMMITING) throw new RuntimeException("To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods");
+        $this->IS_COMMITING = true;
         global $AUDIT_DISABLED, $the_last_update_sql;
 
         $user_id = AfwSession::getUserIdActing();
@@ -6146,7 +6148,7 @@ class AFWObject extends AFWRoot
                 }
 
                 $this->clearSelect();
-
+                $this->IS_COMMITING = false;
                 return $return;
             } else {
                 /*
@@ -6157,9 +6159,11 @@ class AFWObject extends AFWRoot
                 */
                 //throw new RuntimeException();
                 $the_last_update_sql .= " --> can not update : " . $this->debugg_reason_non_update;
+                $this->IS_COMMITING = false;
                 return 0;
             }
         }
+        $this->IS_COMMITING = false;
     }
 
     /**

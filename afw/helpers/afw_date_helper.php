@@ -524,7 +524,7 @@ class AfwDateHelper
 
     public static function inputFormatDate($gdate)
     {
-        if ($gdate == '0000-00-00') {
+        if ((!$gdate) or ($gdate == '0000-00-00')) {
             return '';
         }
         return implode('-', self::splitGregDate($gdate));
