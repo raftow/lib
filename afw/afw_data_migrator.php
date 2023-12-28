@@ -460,11 +460,27 @@ class AfwDataMigrator extends AFWRoot {
 
         $d = trim($d);
         $d = trim($d,".");
-        
+
 
         $y = intval($y);
         $m = intval($m);
         $d = intval($d);
+
+        if($m>12) 
+        {
+            $tmp = $m;
+            $m = $d;
+            $d = $tmp;
+        }
+
+        if(($y < 31) and ($d>1200)) 
+        {
+            $tmp = $y;
+            $y = $d;
+            $d = $tmp;
+        }
+
+
 
         if(($y<1200) or ($y>1500))
         {

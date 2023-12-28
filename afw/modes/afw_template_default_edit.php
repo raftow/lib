@@ -199,7 +199,7 @@ foreach($class_db_structure as $nom_col => $desc)
                 {
                         if(!$mode_field_read_only)
                         {
-                                $col_val = $obj->{"val$nom_col"}();
+                                $col_val = $obj->getVal($nom_col);
                                 // if($nom_col=="lastname_en") die("nom_col = $nom_col, value = $col_val ");
                                 $all_form_readonly = false;
                                 
@@ -227,7 +227,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                 {
                 		        type_input($nom_col, $desc, $col_val, $obj, $separator, $data_loaded,"inputlong",0,"inputlong");
                                 }
-                                $data[$nom_col]["input"] = "<!-- start of input for attrib $nom_col -->";
+                                $data[$nom_col]["input"] = "<!-- start of input for attrib $nom_col : $col_val = obj->val($nom_col) -->";
                 		$data[$nom_col]["input"] .= ob_get_clean();
                                 $data[$nom_col]["input"] .= "<!-- end of input for attrib $nom_col -->";
                                 $col_help = $nom_col."_help";
