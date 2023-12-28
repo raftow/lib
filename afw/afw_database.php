@@ -197,14 +197,12 @@ class AfwDatabase extends AFWRoot
                 $nb_queries_executed++;
             }
 
-            if (((!$MODE_BATCH_LOURD) and ($nb_queries_executed > $_sql_analysis_total_seuil_calls)) or
-                ((!($MODE_SQL_PROCESS_LOURD or $MODE_BATCH_LOURD)) and ($nb_queries_executed > $_sql_analysis_seuil_calls))
-            ) {
+            if ((!($MODE_SQL_PROCESS_LOURD or $MODE_BATCH_LOURD)) and ($nb_queries_executed > $_sql_analysis_seuil_calls))
+            {
                 if ($MODE_DEVELOPMENT) {
                     self::simpleError(
-                        "MODE_BATCH_LOURD=$MODE_BATCH_LOURD empty ? and $nb_queries_executed > $_sql_analysis_total_seuil_calls ?<br>
-                        MODE_SQL_PROCESS_LOURD=$MODE_SQL_PROCESS_LOURD empty ? and $nb_queries_executed > $_sql_analysis_seuil_calls ?<br>
-                        Too much queries executed ! ",
+                        "MODE_BATCH_LOURD=$MODE_BATCH_LOURD empty ? and MODE_SQL_PROCESS_LOURD=$MODE_SQL_PROCESS_LOURD empty ? and $nb_queries_executed > $_sql_analysis_seuil_calls ?<br>
+                        Too much queries executed when mode is not MODE_BATCH_LOURD or MODE_SQL_PROCESS_LOURD ! ",
                         'sql_picture => ' . var_export($_sql_picture, true)
                     );
                 }

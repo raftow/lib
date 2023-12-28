@@ -120,7 +120,7 @@ class AFWRelation extends AFWRoot {
      }
 
 
-     public function getData($attributes_arr, $distinct=false)
+     public function recupData($attributes_arr, $distinct=false)
      {
           $this->prepare();
           return AfwLoadHelper::loadData($this->myObject, $attributes_arr, $limit = '', $order_by = '', $distinct);

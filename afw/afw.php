@@ -1503,9 +1503,13 @@ class AFWObject extends AFWRoot
         if ($this->fieldExists($this->fld_ACTIVE())) {
             $this->set($this->fld_ACTIVE(), 'Y');
             if ($commit) {
-                $this->update($only_me);
+                return $this->update($only_me);
             }
+
+            return -1;
         }
+
+        return -2;
     }
 
     public static function logicDeleteWhere($where_clause, $sets_arr = [])
@@ -8424,6 +8428,11 @@ class AFWObject extends AFWRoot
     public function getStyle($table = '')
     {
         return 'afw_style.css';
+    }
+
+    public function getMyPrefixedTable()
+    {
+        return $this->getTableName(true);
     }
 
     public function getTableName($with_prefix = false)

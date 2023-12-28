@@ -488,19 +488,12 @@ class AfwLoadHelper extends AFWRoot
         $query =
             'SELECT ' . ($distinct ? 'DISTINCT ' : '') .
             implode(",",$attribute_arr) .
-            " FROM " . $object->getMyTable() .
+            " FROM " . $object->getMyPrefixedTable() .
             " me\n WHERE 1" . $object->getSQL() .
             ($order_by ? "\n ORDER BY " . $order_by : '') .
             ($limit ? ' LIMIT ' . $limit : '');
-        $module_server = $object->getModuleServer();
-        return AfwDatabase::db_recup_rows(
-            $query,
-            true,
-            true,
-            $module_server
-        );
-        
-        
+
+        return [$object->recupRows($query), $query];
     }
 
     
