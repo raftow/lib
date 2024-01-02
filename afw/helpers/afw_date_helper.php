@@ -540,6 +540,16 @@ class AfwDateHelper
         }
     }
 
+    public static function isCorrectGregDate($gdate)
+    {
+        try {
+            self::splitGregDate($gdate, $convertToInt = true);
+            return true;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
     public static function splitHijriDate($hdate, $convertToInt = false)
     {
         if (strlen($hdate) != 8 or !is_numeric($hdate)) {
@@ -566,7 +576,7 @@ class AfwDateHelper
         } else {
             $mm = -1;
         }
-        if ($mm < 1 and $mm > 12) {
+        if ($mm < 1 or $mm > 12) {
             throw new RuntimeException(
                 "hijri date '$hdate' is not formatted correctly use format YYYYMMDD, incorrect month $hdate_MM"
             );
@@ -577,7 +587,7 @@ class AfwDateHelper
         } else {
             $dd = -1;
         }
-        if ($dd < 1 and $dd > 30) {
+        if ($dd < 1 or $dd > 30) {
             throw new RuntimeException(
                 "hijri date '$hdate' is not formatted correctly use format YYYYMMDD, incorrect day $hdate_DD"
             );
@@ -609,14 +619,14 @@ class AfwDateHelper
             );
         }
         $mm = intval($return[1]);
-        if ($mm < 1 and $mm > 12) {
+        if ($mm < 1 or $mm > 12) {
             throw new RuntimeException(
                 "greg date '$gdate' is not formatted correctly use format YYYY-MM-DD, incorrect month"
             );
         }
 
         $dd = intval($return[2]);
-        if ($dd < 1 and $dd > 31) {
+        if ($dd < 1 or $dd > 31) {
             throw new RuntimeException(
                 "greg date '$gdate' is not formatted correctly use format YYYY-MM-DD, incorrect day"
             );

@@ -3555,7 +3555,7 @@ p.tech {
         width: 100%;
         border: 1px solid #dbd9d9e8;
         font-size: 16px !important;
-        background-image: url(../../lib/images/calendar.gif);
+        background-image: url(../../lib/images/calendar.gif) !important;
         background-repeat: no-repeat;
         background-position-x: 3px;
         background-position-y: center;
