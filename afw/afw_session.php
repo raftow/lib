@@ -351,7 +351,7 @@ class AfwSession extends AFWRoot {
                 $log_counter++;
                 if($log_counter>20000)
                 {
-                        throw new RuntimeException("too much log ".self::getLog($context));
+                        throw new AfwRuntimeException("too much log ".self::getLog($context));
                 }
                 AfwBatch::print_debugg($string);
                 if($context == "log")

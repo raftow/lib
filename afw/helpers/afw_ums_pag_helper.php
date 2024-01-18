@@ -905,6 +905,26 @@ class AfwUmsPagHelper extends AFWRoot
         return $cols_excel;
     }
 
+    public static function getPluralTitle($object, $lang = 'ar', $force_from_pag = true)
+    {
+        if ($force_from_pag) {
+            $at = AfwUmsPagHelper::getAtableObj($object::$MODULE, $object::$TABLE);
+            if ($at == null) {
+                return $object->transClassPlural($lang);
+            }
+
+            if ($lang == 'ar') {
+                $field_pluraltitle = 'pluraltitle';
+            } else {
+                $field_pluraltitle = "pluraltitle_$lang";
+            }
+
+            return $at->getVal($field_pluraltitle);
+        } else {
+            return $object->transClassPlural($lang);
+        }
+    }
+
     
 
     

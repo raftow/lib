@@ -168,7 +168,7 @@ else
         
         foreach($class_db_structure as $nom_col => $desc)
         {
-             $mode_field_edit = $mainObject->attributeIsEditable($nom_col);
+             $mode_field_edit = AfwStructureHelper::attributeIsEditable($mainObject,$nom_col);
              $mode_field_read_only = $mainObject->attributeIsReadOnly($nom_col);
              if(($mode_field_edit and (!$mode_field_read_only) and ($nom_col != "lookup_code") and (!$mainObject->isIndexAttribute($nom_col))) or ($mainObject->getPK()==$nom_col))
              {

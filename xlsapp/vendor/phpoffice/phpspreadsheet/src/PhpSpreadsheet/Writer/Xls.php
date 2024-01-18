@@ -454,7 +454,7 @@ class Xls extends BaseWriter
         foreach ($this->spreadsheet->getAllsheets() as $sheet) {
             foreach ($sheet->getDrawingCollection() as $drawing) {
                 if (!extension_loaded('gd')) {
-                    throw new RuntimeException('Saving images in xls requires gd extension');
+                    throw new AfwRuntimeException('Saving images in xls requires gd extension');
                 }
                 if ($drawing instanceof Drawing) {
                     $filename = $drawing->getPath();

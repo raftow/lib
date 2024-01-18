@@ -332,8 +332,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             else $style_input = "";
 
             if ($desc["ANSWER"] == "INSTANCE_FUNCTION") {
-                $liste_rep = $obj->getEnumAnswerList($orig_col_name);
-                $answer_case = "INSTANCE_FUNCTION so obj->getEnumAnswerList";
+                $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $orig_col_name);
+                $answer_case = "INSTANCE_FUNCTION so obj-> get EnumAnswerList";
             } else {
                 $liste_rep = AFWObject::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
                 $answer_case = "AFWObject::getEnumTable(" . $desc["ANSWER"] . ")";
@@ -430,14 +430,14 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             if ((!$desc["ENUM_ALPHA"]) and ((!$val) or (!intval($val)))) $val = 0;
 
             if ($desc["ANSWER"] == "INSTANCE_FUNCTION") {
-                $liste_rep = $obj->getEnumAnswerList($orig_col_name);
-                $answer_case = "INSTANCE_FUNCTION so obj->getEnumAnswerList";
+                $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $orig_col_name);
+                $answer_case = "INSTANCE_FUNCTION so obj -> get EnumAnswerList";
             } else {
                 $liste_rep = AFWObject::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
                 $answer_case = "AFWObject::getEnumTable(" . $desc["ANSWER"] . ")";
             }
 
-            //if($desc["FORMAT-INPUT"]=="hzmtoggle") $obj->throwError("enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
+            //if($desc["FORMAT-INPUT"]=="hzmtoggle") throw new AfwRuntimeException("enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
 
             if ($obj->fixm_disable) {
 
@@ -492,7 +492,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         else $listeOrdres[$rep_i] = $liste_codeOrdres[$rep_i];
                     }
 
-                    //if($col_name=="coming_status_id_0") $obj->throwError($log_echo);
+                    //if($col_name=="coming_status_id_0") throw new AfwRuntimeException($log_echo);
                     if (!$css_val) $css_val = $desc["DEFAULT-CSS"];
                     if (!$css_val) $css_val = $liste_css[0];
 

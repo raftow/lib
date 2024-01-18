@@ -35,7 +35,7 @@ if($employee_info)
             if($obj->isInternalSearchableCol($nom_col))
             {
                     $internal_where_arr = array();
-                    $objTempForInternalSearch = $obj->getEmptyObject($nom_col);
+                    $objTempForInternalSearch = AfwStructureHelper::getEmptyObject($obj, $nom_col);
                     $internal_employee_info_cols = $objTempForInternalSearch->getAllTextSearchableCols();
                     foreach($internal_employee_info_cols as $nom_col_internal)
                     {
@@ -46,7 +46,7 @@ if($employee_info)
                     $internal_where = "((".implode(") or (",$internal_where_arr)."))";
                     $objTempForInternalSearch->where($internal_where);
                     $objTempForInternalSearch->select_visibilite_horizontale();
-                    $objTempForInternal_ids_arr = $objTempForInternalSearch->loadManyIds();
+                    $objTempForInternal_ids_arr = AfwLoadHelper::loadManyIds($objTempForInternalSearch);
                     $objTempForInternal_ids_txt = implode(",", $objTempForInternal_ids_arr);
                     if(!$objTempForInternal_ids_txt) $objTempForInternal_ids_txt = "0";
                     $where_col = "$nom_col in (".$objTempForInternal_ids_txt.")";

@@ -137,7 +137,7 @@
                 $ncu = AfwSession::config("no-cache-use-for-ums",false);
                 if(!$application_id) 
                 {
-                        $objme->throwError("HZM Error : application_id should be defined in application_config.php file");
+                        throw new AfwRuntimeException("HZM Error : application_id should be defined in application_config.php file");
                 }
                 else
                 { 
@@ -161,7 +161,7 @@
                         //die(var_export($menu_folders_arr,true)); 
                         //die("objme->getMenuFor($application_id , $lang) = ".var_export($menu_folders_arr,true));
                         $i = 0;
-                        //$objme->throwError("objme->getMenuFor($application_id,$lang) = ".var_export($menu_arr,true));
+                        //throw new AfwRuntimeException("objme->getMenuFor($application_id,$lang) = ".var_export($menu_arr,true));
                         foreach($menu_folders_arr as $menu_folder_id => $menu_folder_i)
                         {
                                 if(($iamAdmin) or (!$menu_folder_i["need_admin"]))

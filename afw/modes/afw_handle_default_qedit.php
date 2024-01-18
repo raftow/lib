@@ -45,7 +45,7 @@ for($i=0;$i<$nb_objs;$i++)
                 // if($id == 6082) die("obj $i of $class class, id ='$id' will be loaded just now");
                 
                 if($obj->load($id) and ($obj->id == $id)) $is_load = true;
-                else $obj->throwError("can't load obj with id = $id, obj = ".var_export($obj,true));
+                else throw new AfwRuntimeException("can't load obj with id = $id, obj = ".var_export($obj,true));
                 // if($id == 6082) die("obj $i of $class class, id ='$id' has been loaded obj = ".var_export($obj,true));
         }
         else
@@ -97,10 +97,10 @@ for($i=0;$i<$nb_objs;$i++)
                         {
                             if($desc["TYPE"] != "FK") 
                             {
-                                $obj->throwError("auto create should be only on FK attributes $attribute is ".$desc["TYPE"]);
+                                throw new AfwRuntimeException("auto create should be only on FK attributes $attribute is ".$desc["TYPE"]);
                             }
                             
-                            $obj_at = $obj->getEmptyObject($nom_col);
+                            $obj_at = AfwStructureHelper::getEmptyObject($obj, $nom_col);
                             $obj_by_uk = null;
                             if($auto_c_uk)
                             {
@@ -135,7 +135,7 @@ for($i=0;$i<$nb_objs;$i++)
                             }
                             
                             /*
-                            $obj_at = $obj->getEmptyObject($nom_col);
+                            $obj_at = AfwStructureHelper::getEmptyObject($obj, $nom_col);
                             
                             foreach($auto_c_create as $attr => $auto_c_create_item)
                             {
@@ -209,7 +209,7 @@ for($i=0;$i<$nb_objs;$i++)
                         }*/
 
                         // if((!$is_load)) die("i=$i pki=$pki id=$id => is_load = $is_load, obj = ".var_export($obj,true));
-                        if(($obj->getMyClass()=="Afield") and (!$obj->getVal("field_name"))) $obj->throwError("afield insert with field_name empty : ".var_export($obj,true));
+                        if(($obj->getMyClass()=="Afield") and (!$obj->getVal("field_name"))) throw new AfwRuntimeException("afield insert with field_name empty : ".var_export($obj,true));
                         
                         
                         $obj->sql_action = "insert";
@@ -224,7 +224,7 @@ for($i=0;$i<$nb_objs;$i++)
                         $inserted = $obj->insert();
                         if(!$inserted)
                         {
-                            if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) $obj->throwError($obj->sql_info ." insert failed : ".$obj->tech_notes, array("FIELDS_UPDATED"=>true));
+                            if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) throw new AfwRuntimeException($obj->sql_info ." insert failed : ".$obj->tech_notes, array("FIELDS_UPDATED"=>true));
                         }
                          
                 	$id = $obj->getId();

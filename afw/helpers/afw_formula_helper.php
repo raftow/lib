@@ -138,7 +138,7 @@ class AfwFormulaHelper extends AFWRoot
                         </div>
         </div>";
 
-            // $obj->throwError($html);
+            // throw new AfwRuntimeException($html);
             return $html;
         } elseif ($formulaFunction == '3cols') {
             $tit1 = $obj->translate($formulaAttribute1, $lang);
@@ -169,7 +169,7 @@ class AfwFormulaHelper extends AFWRoot
     </div>
     </div>";
 
-            // $obj->throwError($html);
+            // throw new AfwRuntimeException($html);
             return $html;
         } 
         elseif ($formulaFunction == 'link_desc') 
@@ -184,7 +184,7 @@ class AfwFormulaHelper extends AFWRoot
     <span class='urgent_info'>$body</span>
     </div>";
 
-            // $obj->throwError($html);
+            // throw new AfwRuntimeException($html);
             return $html;
         } 
         elseif ($formulaFunction == 'paragraph') 

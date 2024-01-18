@@ -115,7 +115,7 @@ class AfwInputHelper extends AFWRoot
                                 }
                                 break;
                         case 'FK'     : 
-                                        $objRep  = $obj->getEmptyObject($col_name);
+                                        $objRep  = AfwStructureHelper::getEmptyObject($obj, $col_name);
                                                 
                                         $list_count = AfwSession::config($objRep->getMyClass()."::estimated_row_count", 0);
                                         $auto_c = $desc["AUTOCOMPLETE"];
@@ -248,7 +248,7 @@ class AfwInputHelper extends AFWRoot
                                         }
                                         break;
                         case 'MFK'    : 
-                                        $objRep  = $obj->getEmptyObject($col_name);
+                                        $objRep  = AfwStructureHelper::getEmptyObject($obj, $col_name);
                                         
                                         // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep,$desc,$val,$obj);
                                         // list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
@@ -285,7 +285,7 @@ class AfwInputHelper extends AFWRoot
                                         );
 
                                         break;
-                        case 'MENUM' :  $liste_rep = $obj->getEnumAnswerList($col_name, $desc["ANSWER"]);
+                        case 'MENUM' :  $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $col_name, $desc["ANSWER"]);
                                         
                                         //echo "menum val $val with sep $separator : <br>";
                                         $val_arr = explode($separator, trim($val, $separator));
@@ -344,8 +344,8 @@ class AfwInputHelper extends AFWRoot
                                         
                                         if($desc["ANSWER"]=="INSTANCE_FUNCTION")
                                         {
-                                                $liste_rep = $obj->getEnumAnswerList($orig_col_name);
-                                                $answer_case = "INSTANCE_FUNCTION so obj->getEnumAnswerList($orig_col_name) ";
+                                                $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $orig_col_name);
+                                                $answer_case = "INSTANCE_FUNCTION so obj->get Enum AnswerList($orig_col_name) ";
                                         }
                                         else
                                         {
@@ -389,7 +389,7 @@ class AfwInputHelper extends AFWRoot
                                                                 //else $listeOrdres[$oo] = -1;
                                                         }
                                                         
-                                                        //if($col_name=="coming_status_id_0") $obj->throwError($log_echo);
+                                                        //if($col_name=="coming_status_id_0") throw new AfwRuntimeException($log_echo);
                                                         if(!$css_val) $css_val = $desc["DEFAULT-CSS"];
                                                         if(!$css_val) $css_val = $liste_css[0];
                                                         

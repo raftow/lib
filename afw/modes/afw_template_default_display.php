@@ -26,7 +26,7 @@ if($obj->editByStep)
    
    if($obj->currentStep)
    {
-        $page_editable = ($obj->stepIsEditable($obj->currentStep) and (!$obj->stepIsReadOnly($obj->currentStep)));
+        $page_editable = (AfwFrameworkHelper::stepIsEditable($obj, $obj->currentStep) and (!AfwStructureHelper::stepIsReadOnly($obj,$obj->currentStep)));
    }
    else $page_editable = false;
 }
@@ -70,7 +70,7 @@ foreach($class_db_structure as $key => $structure)
                list($data_to_display, $link_to_display) = $obj->displayAttribute($key);
                if(is_array($data_to_display) and (!is_array($link_to_display)) and $objme->isSuperAdmin())
                {
-                     $obj->throwError("displayAttribute($key) should return both elements same type array or not array : data_to_display = ".var_export($data_to_display,true)." link_to_display=$link_to_display");
+                     throw new AfwRuntimeException("displayAttribute($key) should return both elements same type array or not array : data_to_display = ".var_export($data_to_display,true)." link_to_display=$link_to_display");
                }
                
 	       $data[$key] = $data_to_display;
@@ -294,7 +294,7 @@ if($styleStepWidth) $style = " style='width: ${styleStepWidth} !important;'";
                     if($help==$trans_code) $help  = trim($obj->translate($trans_code,$lang));
                     if($help==$trans_code)
                     {
-                        //if($key=="categ") $obj->throwError("can not translate $trans_code");
+                        //if($key=="categ") throw new AfwRuntimeException("can not translate $trans_code");
                         $help = "";
                     } 
             }
@@ -497,7 +497,7 @@ if($styleStepWidth) $style = " style='width: ${styleStepWidth} !important;'";
 	</div>
 <?php
         
-        $next_step = $obj->findNextApplicableStep($obj->currentStep);
+        $next_step = AfwFrameworkHelper::findNextApplicableStep($obj, $obj->currentStep);
         if($next_step>0)
         {
                 $can_go = $obj->canGoToNextStep($next_step);

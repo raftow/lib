@@ -224,7 +224,7 @@ class AfwDB extends AFWRoot
             if(AfwSession::hasOption("SQL_LOG"))
             {
                 $information = "<br>\n<pre class='sql hzmlib'><b>DB</b> : $database,\n<b>sql</b> :\n $sql\n <b>rows</b> : $rtab </pre>";
-                //$this->throwError($information);
+                //throw new AfwRuntimeException($information);
                 $_SESSION["analysis_log"].= $information;
             }
             
@@ -298,7 +298,7 @@ class AfwDB extends AFWRoot
         if(AfwSession::hasOption("SQL_LOG"))
         {
             $information = "<br>\n<pre class='sql hzmlib hzmexec'><b>DB</b> : $database,\n<b>sql</b> :\n $query_txt,\n <b>affected</b> : $affected_rows,\n <b>duree</b> : $duree_q</pre>";
-            //$this->throwError($information);
+            //throw new AfwRuntimeException($information);
             $_SESSION["analysis_log"].= $information;
         }
 

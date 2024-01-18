@@ -33,7 +33,7 @@ function type_input($col_name, $desc,$obj, $selected=false)
                 case 'MENUM'  : 
                                 if($desc["ANSWER"]=="INSTANCE_FUNCTION")
                                 {
-                                     $liste_rep = $obj->getEnumAnswerList($col_name);
+                                     $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $col_name);
                                      // $obj->_error("$col_name is INSTANCE_FUNCTION answer and it has this getEnumAnswerList ".var_export($liste_rep,true));
                                 }
                                 else

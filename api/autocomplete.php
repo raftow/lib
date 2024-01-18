@@ -78,12 +78,12 @@ if($debugg)
 {
     if($myObj->AUTOCOMPLETE_EXACT_SEARCH)
     {
-          $allSQL = $myObj->findExact($term, true);
+          $allSQL = AfwLoadHelper::findExact($myObj, $term, true);
     }
     else
     {
           $parts = explode(' ', $term);
-          $allSQL = $myObj->find($parts, $clause_where, $sql_operator = " AND ", true);
+          $allSQL = AfwFrameworkHelper::find($myObj, $parts, $clause_where, $sql_operator = " AND ", true);
     }
     
 } 
@@ -94,14 +94,14 @@ if($debugg and $objme and ($objme->isAdmin() or ($objme->id==4))) die("debugg mo
 
 if($myObj->AUTOCOMPLETE_EXACT_SEARCH)
 {
-        $listObj = $myObj->findExact($term);
-        if($debugg) echo "count(findExact result) = ".count($listObj);
+        $listObj = AfwLoadHelper::findExact($myObj, $term);
+        if($debugg) echo "count(find Exact result) = ".count($listObj);
 }
 else
 {
         $parts = explode(' ', $term);
         $p = count($parts);
-        $listObj = $myObj->find($parts,$clause_where);
+        $listObj = AfwFrameworkHelper::find($myObj, $parts,$clause_where);
         if($debugg) echo "count(find result) = ".count($listObj);
 }
  

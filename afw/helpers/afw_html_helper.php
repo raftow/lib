@@ -556,8 +556,8 @@ class AfwHtmlHelper extends AFWRoot {
                         // $can = true;
                         if($can and $canOnMe)
                         {
-                        $acceptHimSelf = $liste_obj[$id]->acceptHimSelf($frameworkAction);
-                        if($acceptHimSelf)
+                        $accept HimSelf = $liste_obj[$id]->accept HimSelf($frameworkAction);
+                        if($accept HimSelf)
                         {
 
                                 

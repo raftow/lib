@@ -358,7 +358,7 @@ class AfwFormatHelper
         elseif ($structure['TYPE'] == 'DATE') 
         {
             $data_to_display = AfwDateHelper::justDecodeValue($value, $structure);
-            //if(se_termine_par($data_to_display,"هـ")) $this->throwError("rafik formatValue twice : $data_to_display");
+            //if(se_termine_par($data_to_display,"هـ")) throw new AfwRuntimeException("rafik formatValue twice : $data_to_display");
             $old_data_to_display = $data_to_display;
             $link_to_display = '';
             if ($structure['FORMAT'] == 'HIJRI_UNIT') {
@@ -730,7 +730,7 @@ class AfwFormatHelper
             case 'TIME':
                 if(!$structure)
                 {
-                    if(!$obj) throw new RuntimeException("structure and obj should not be both null if we decode a TIME field");
+                    if(!$obj) throw new AfwRuntimeException("structure and obj should not be both null if we decode a TIME field");
                     $structure = AfwStructureHelper::getStructureOf($obj,$attribute);
                 } 
                 $return = AfwDateHelper::displayTime($attribute_value, $structure, $decode_format, $obj);
@@ -748,7 +748,7 @@ class AfwFormatHelper
             case 'DATE':
                 if(!$structure)
                 {
-                    if(!$obj) throw new RuntimeException("structure and obj should not be both null if we decode a DATE field");
+                    if(!$obj) throw new AfwRuntimeException("structure and obj should not be both null if we decode a DATE field");
                     $structure = AfwStructureHelper::getStructureOf($obj,$attribute);
                 }
                 if ($decode_format) {
@@ -763,7 +763,7 @@ class AfwFormatHelper
                 // $return = $this->showAttribute($attribute);
                 break;
             case 'FK':
-                if((!$obj) or (!$structure)) throw new RuntimeException("both structure and obj should not be null if we decode an FK field");
+                if((!$obj) or (!$structure)) throw new AfwRuntimeException("both structure and obj should not be null if we decode an FK field");
                 // as we do only decode consider the answer class as lookup
                 if (!$attribute_value) {
                     $return = '';
@@ -774,7 +774,7 @@ class AfwFormatHelper
                             $return = AFWRoot::traduireOperator('ALL',$lang);
                         }
                     }
-                    //if($attribute=="status_id") $this->throwError("this->decode($attribute) : return=$return");
+                    //if($attribute=="status_id") throw new AfwRuntimeException("this->decode($attribute) : return=$return");
                 }
                 else
                 {
@@ -787,7 +787,7 @@ class AfwFormatHelper
                     if(!$pk) $pk = "((id))";
                     $ans_table = $structure["ANSWER"];
                     $ans_module = $structure["ANSMODULE"];
-                    if(!$ans_module) throw new RuntimeException("strcuture of FK field '$attribute' does not contain ANSMODULE property, structure=".var_export($structure,true));
+                    if(!$ans_module) throw new AfwRuntimeException("strcuture of FK field '$attribute' does not contain ANSMODULE property, structure=".var_export($structure,true));
                     $return = AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message, $pk);
                 }
                 /* rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes
@@ -810,7 +810,7 @@ class AfwFormatHelper
                             $return = AFWRoot::traduireOperator('ALL',$lang);
                         }
                     }
-                    //if($attribute=="status_id") $this->throwError("this->decode($attribute) : return=$return");
+                    //if($attribute=="status_id") throw new AfwRuntimeException("this->decode($attribute) : return=$return");
                 } else {
                     $return = $object->getDisplay($lang);
                 }*/
@@ -819,7 +819,7 @@ class AfwFormatHelper
                 //if($attribute=="status_id") die("this->decode($attribute) : return=$return, object->id = ".$object->id);
                 break;
             case 'MFK':
-                if((!$obj) or (!$structure)) throw new RuntimeException("both structure and obj should not be null if we decode an FK field");
+                if((!$obj) or (!$structure)) throw new AfwRuntimeException("both structure and obj should not be null if we decode an FK field");
                 $items_empty_message = AfwFormatHelper::getItemsEmptyMessage($obj, $structure, $lang);
                 $items_separator=$structure['LIST_SEPARATOR'];
                 if(!$items_separator) $items_separator=$structure['MFK-SHOW-SEPARATOR'];
@@ -855,18 +855,18 @@ class AfwFormatHelper
                 
                 break;
             case 'ANSWER':
-                if(!$obj) throw new RuntimeException("structure and obj should not be both null if we decode an ANSWER field");
+                if(!$obj) throw new AfwRuntimeException("structure and obj should not be both null if we decode an ANSWER field");
                 $valfld = $attribute_value;
                 $return = $obj->getAnswer($attribute,$valfld);
                 break;
             case 'ENUM':
-                if(!$obj) throw new RuntimeException("structure and obj should not be both null if we decode an ENUM field");
+                if(!$obj) throw new AfwRuntimeException("structure and obj should not be both null if we decode an ENUM field");
                 $valfld = $attribute_value;
                 // if($attribute == 'unit_type_id') die("decode of enum field " . get_class($this)  . "->getEnumVal(attribute=$attribute, valfld = $valfld)");
                 $return = $obj->getEnumVal($attribute,$valfld);
                 break;
             case 'MENUM':
-                if(!$obj) throw new RuntimeException("structure and obj should not be both null if we decode an MENUM field");
+                if(!$obj) throw new AfwRuntimeException("structure and obj should not be both null if we decode an MENUM field");
                 $sep = $obj->getSeparatorFor($attribute);
                 $valfld = $attribute_value;
                 $val_arr = explode($sep, $valfld);

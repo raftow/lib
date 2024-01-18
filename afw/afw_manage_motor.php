@@ -409,8 +409,8 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 
                                 if($desc["ANSWER"]=="INSTANCE_FUNCTION")
                                 {
-                                     $liste_rep = $obj->getEnumAnswerList($formInputName);
-                                     $answer_case = "INSTANCE_FUNCTION so obj->getEnumAnswerList";
+                                     $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $formInputName);
+                                     $answer_case = "INSTANCE_FUNCTION so obj -> get EnumAnswerList";
                                 }
                                 else
                                 {

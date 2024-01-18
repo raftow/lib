@@ -140,7 +140,7 @@ if (!$liste_obj) {
                                 if ($obj->isInternalSearchableCol($nom_col)) {
 
                                         $internal_where_arr = array();
-                                        $objTempForInternalSearch = $obj->getEmptyObject($nom_col);
+                                        $objTempForInternalSearch = AfwStructureHelper::getEmptyObject($obj, $nom_col);
                                         $internal_qsearch_by_text_cols = $objTempForInternalSearch->getAllTextSearchableCols();
                                         foreach ($internal_qsearch_by_text_cols as $nom_col_internal) {
                                                 // die("DBG-qsearch_by_text::getClauseWhere for isInternalSearchableCol $nom_col_internal [$my_oper] (qsearch_by_text=$qsearch_by_text)");
@@ -151,7 +151,7 @@ if (!$liste_obj) {
                                         $internal_where = "((" . implode(") or (", $internal_where_arr) . "))";
                                         $objTempForInternalSearch->where($internal_where);
                                         $objTempForInternalSearch->select_visibilite_horizontale();
-                                        $objTempForInternal_ids_arr = $objTempForInternalSearch->loadManyIds();
+                                        $objTempForInternal_ids_arr = AfwLoadHelper::loadManyIds($objTempForInternalSearch);
                                         $objTempForInternal_ids_txt = implode(",", $objTempForInternal_ids_arr);
                                         if (!$objTempForInternal_ids_txt) $objTempForInternal_ids_txt = "0";
                                         $where_col = "$nom_col in (" . $objTempForInternal_ids_txt . ")";
@@ -162,7 +162,7 @@ if (!$liste_obj) {
                                 $qsearch_by_text_where_arr[] = $where_col;
                         }
 
-                        //$obj->throwError("qsearch_by_text_cols = ".var_export($qsearch_by_text_cols,true)." where_arr = ".var_export($qsearch_by_text_where_arr,true));
+                        //throw new AfwRuntimeException("qsearch_by_text_cols = ".var_export($qsearch_by_text_cols,true)." where_arr = ".var_export($qsearch_by_text_where_arr,true));
                         if (count($qsearch_by_text_where_arr) > 0) {
                                 $where_qsearch_by = "((" . implode(") or (", $qsearch_by_text_where_arr) . "))";
 
@@ -361,11 +361,11 @@ if (true) {
                                 if(($cl=="Module"))
                                 {
                                         $message .= "<br>header = ".var_export($header,true);
-                                        $obj->throwError($message);
+                                        throw new AfwRuntimeException($message);
                                 }*/
 
                                                                 foreach ($header as $nom_col => $tr_col) {
-                                                                        // if(!is_array($desc)) $obj->throwError("desc is not an array : ".var_export($desc,true));
+                                                                        // if(!is_array($desc)) throw new AfwRuntimeException("desc is not an array : ".var_export($desc,true));
                                                                         $nom_col_short = "$nom_col.short";
                                                                         $trad_col_short  = $obj->translate($nom_col_short, $lang);
                                                                         if ($trad_col_short == $nom_col_short) $col_trad = $obj->translate($nom_col, $lang);
@@ -415,7 +415,7 @@ if (true) {
                                            if($action_item=="delete")
                                            {
                                                 $objme->showICanDoLog();
-                                                $obj->throwError("debugg :: iCanDoOperationLog ::");
+                                                throw new AfwRuntimeException("debugg :: iCanDoOperationLog ::");
                                            }*/
                                                                         }
                                                                 }
@@ -569,8 +569,8 @@ if (true) {
                                                                                                         // $canOnMe = true;
                                                                                                         // $can = true;
                                                                                                         if ($can and $canOnMe) {
-                                                                                                                $acceptHimSelf = $liste_obj[$id]->acceptHimSelf($frameworkAction);
-                                                                                                                if ($acceptHimSelf) {
+                                                                                                                $accept_HimSelf = AfwFrameworkHelper::acceptHimSelf($liste_obj[$id], $frameworkAction);
+                                                                                                                if ($accept_HimSelf) {
                                                                                                                         /* @note rafik/17/6/2021 obsolete and fill the session of user better to remove
                                                         if($page)
                                                                $sess_link = savePageInSession($page,$page_params);
@@ -605,12 +605,12 @@ if (true) {
 
                                                                                                                                 // die("DBG-after ajax test\n"); 
                                                                                                                         } else echo "<td  class='col-importance-$importance $frameworkAction'>no_image_for_mode_$frameworkAction</td>";
-                                                                                                                        // die("DBG-acceptHimSelf true finished\n"); 
+                                                                                                                        // die("DBG-accept_HimSelf true finished\n"); 
                                                                                                                 } else {
-                                                                                                                        $rejectHimSelfReason = AfwStringHelper::stripCotes($liste_obj[$id]->rejectHimSelfReason($frameworkAction));
+                                                                                                                        $rejectHimSelfReason = AfwStringHelper::stripCotes(AfwFrameworkHelper::rejectHimSelfReason($liste_obj[$id],$frameworkAction));
                                                                                                                         $tooltip_text = "locked him self on $frameworkAction, the reason is : $rejectHimSelfReason";
                                                                                                                         if (($objme and $objme->isAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false)) {
-                                                                                                                                // die("DBG-acceptHimSelf false => $tooltip_text\n");  
+                                                                                                                                // die("DBG-accept_HimSelf false => $tooltip_text\n");  
                                                                                                                                 $tooltip = "data-toggle='tooltip' data-placement='bottom' title='$tooltip_text' data-original-title=' - Tooltip on bottom 1' class='red-tooltip'";
                                                                                                                         } else {
                                                                                                                                 $tooltip = "> <!-- $tooltip_text --";

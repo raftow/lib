@@ -60,7 +60,7 @@ class AfwCacheSystem
             /* for debugg    
             if(($this->context_to_audit) and ($this->context_to_audit==$context))
             {
-                throw new RuntimeException("for audit table $module_code -> $table_name [$id] get from cache audit triggered for context $context ");
+                throw new AfwRuntimeException("for audit table $module_code -> $table_name [$id] get from cache audit triggered for context $context ");
             }*/
             
             if(($id != "empty") and ($context != "structure_cache") and (!is_numeric($id)))  $id = $this->indexTable[$module_code][$table_name][$id];
@@ -98,7 +98,7 @@ class AfwCacheSystem
                         $this->repeat_of_load_of_audited_object++;
                         if($this->repeat_of_load_of_audited_object > 2)
                         {
-                             throw new RuntimeException("once = $this->repeat_of_load_of_audited_object that $table_name [$id] loaded and not found in _page_cache_objects = ".var_export($this->cacheObjects,true)."\n _cache_analysis=".var_export($this->analysisTable,true));
+                             throw new AfwRuntimeException("once = $this->repeat_of_load_of_audited_object that $table_name [$id] loaded and not found in _page_cache_objects = ".var_export($this->cacheObjects,true)."\n _cache_analysis=".var_export($this->analysisTable,true));
                         }
                     }
             }
@@ -123,7 +123,7 @@ class AfwCacheSystem
     {
             if(($this->module_to_audit==$module_code) and ($this->table_to_audit==$table_name))
             {
-                     throw new RuntimeException("cache is removed for table to audit : [$module_code - $table_name]");
+                     throw new AfwRuntimeException("cache is removed for table to audit : [$module_code - $table_name]");
             }
             unset($this->cacheObjects[$module_code][$table_name]);
     }
@@ -133,7 +133,7 @@ class AfwCacheSystem
     {
             if(($this->module_to_audit==$module_code) and ($this->table_to_audit==$table_name) and ($this->object_id_to_audit==$id))
             {
-                     throw new RuntimeException("object to audit is removed from cache [$module_code, $table_name, $id]");
+                     throw new AfwRuntimeException("object to audit is removed from cache [$module_code, $table_name, $id]");
             }
             unset($this->cacheObjects[$module_code][$table_name][$id]);
     } 
@@ -176,7 +176,7 @@ class AfwCacheSystem
                     /* for debugg
                     if(($this->module_to_audit==$module_code) and ($this->table_to_audit==$table_name) and ($this->object_id_to_audit==$id))
                     {
-                        throw new RuntimeException("$module_code -> $table_name [$id] putted into intelligent cache : ".var_export($_page_cache_objects,true)."\n _cache_analysis=".var_export($_cache_analysis,true));
+                        throw new AfwRuntimeException("$module_code -> $table_name [$id] putted into intelligent cache : ".var_export($_page_cache_objects,true)."\n _cache_analysis=".var_export($_cache_analysis,true));
                     }
                     */
 
@@ -189,7 +189,7 @@ class AfwCacheSystem
                     /* for debugg
                     if(($this->context_to_audit) and ($this->context_to_audit==$context))
                     {
-                        throw new RuntimeException("for audit table $module_code -> $table_name [$id] put into cache audit triggered for context $context ");
+                        throw new AfwRuntimeException("for audit table $module_code -> $table_name [$id] put into cache audit triggered for context $context ");
                     }*/
                     
                     return true;
@@ -200,7 +200,7 @@ class AfwCacheSystem
                     /* for debugg
                     if(($this->module_to_audit==$module_code) and ($this->table_to_audit==$table_name) and ($this->object_id_to_audit==$id)) 
                     {
-                        throw new RuntimeException("for audit table $module_code -> $table_name [$id] put into intelligent cache skipped because memory optimize ");
+                        throw new AfwRuntimeException("for audit table $module_code -> $table_name [$id] put into intelligent cache skipped because memory optimize ");
                     }    
                     */
             }
@@ -212,7 +212,7 @@ class AfwCacheSystem
     {
             if(($this->module_to_audit==$module_code) and ($this->table_to_audit==$table_name) and ($this->object_id_to_audit==$id)) 
             {
-                throw new RuntimeException("for audit table $module_code -> $table_name [$id] put into intelligent cache skipped because : $reason ");
+                throw new AfwRuntimeException("for audit table $module_code -> $table_name [$id] put into intelligent cache skipped because : $reason ");
             }
     }
 

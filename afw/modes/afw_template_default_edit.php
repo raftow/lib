@@ -30,7 +30,7 @@ if($obj->editByStep)
 {
    // if(!$obj->currentStep) $obj->currentStep = $objme->curStepFor[$obj->getTableName()][$obj->getId()];   
    if(!$obj->currentStep) $obj->currentStep = 1;
-   if(!$obj->stepIsEditable($obj->currentStep)) $obj->currentStep = 1;
+   if(!AfwFrameworkHelper::stepIsEditable($obj, $obj->currentStep)) $obj->currentStep = 1;
 }
 
 $step_show_error = ((!$obj->isDraft()) or 
@@ -96,11 +96,11 @@ foreach($class_db_structure as $nom_col => $desc)
             if($mode_field_read_only) 
             {
                     $mode_field_read_only_log .= "$nom_col attribute Is ReadOnly, reason=[$the_reason_readonly], ";
-                    if(!$the_reason_readonly) $mode_field_read_only_log .= "see you implemtation of surcharge of method attributeCanBeUpdatedBy it should return array with both boolean and string explaining reason of read-only behavior";
+                    if(!$the_reason_readonly) $mode_field_read_only_log .= "see you implemtation of surcharge of method attribute-Can-Be-Updated-By it should return array with both boolean and string explaining reason of read-only behavior";
             }        
             //(((isset($desc["EDIT"]) &&  $desc["EDIT"])) or ($objme->isSuperAdmin() && isset($desc["EDIT-ADMIN"]) &&  $desc["EDIT-ADMIN"]));
             // @help-attr : EDIT-HIDDEN : if true means that field appear in qedit mode and not in edit mode 
-            $mode_field_edit = ($obj->attributeIsEditable($nom_col) 
+            $mode_field_edit = (AfwStructureHelper::attributeIsEditable($obj,$nom_col) 
                                     and (!$desc["EDIT-HIDDEN"])
                                     and ((!$obj->isEmpty()) or (!$desc["HIDE_IF_NEW"]))); 
             $mode_field_edit_log = "";
@@ -495,7 +495,7 @@ else
         {
                 $stepcode = "step".$kstep;
                 $step_name[$kstep] = $obj->translate($stepcode,$lang);
-                if($obj->stepIsEditable($kstep)) $nbStepsEditable++;
+                if(AfwFrameworkHelper::stepIsEditable($obj, $kstep)) $nbStepsEditable++;
         }
         $curr_step_name = $step_name[$obj->currentStep];
         $curr_step_order = $obj->currentStep ." من ".$nbStepsEditable;
@@ -520,7 +520,7 @@ else
         $step_knum = 0;
         for($kstep=1;$kstep<=$obj->editNbSteps;$kstep++)
         {
-             if($obj->stepIsEditable($kstep))
+             if(AfwFrameworkHelper::stepIsEditable($obj, $kstep))
              {
                   $step_knum++;
                   // $stepErrorsList = $obj->getStepErrors($kstep);
@@ -915,7 +915,7 @@ if($obj->editByStep)
         $disabled_prev = "";
         $class_btn_prev = "blightbtn";
         
-        if($obj->findPreviousEditableStep($currStep, "enable/disable previous btn") <= 0)
+        if(AfwFrameworkHelper::findPreviousEditableStep($obj, $currStep, "enable/disable previous btn") <= 0)
         {
             $disabled_prev = "disabled";
             $class_btn_prev = "graybtn";
@@ -931,7 +931,7 @@ if($obj->editByStep)
 <?
   }
         // $nextStep will be = -1 if all next steps are R/O not editable, so no next editable step
-        $nextStep = $obj->findNextEditableStep($currStep,"show btn ?");
+        $nextStep = AfwFrameworkHelper::findNextEditableStep($obj, $currStep,"show btn ?");
         // no next editable step
         $no_next_editable_step = ($nextStep<0);
 

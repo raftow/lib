@@ -232,7 +232,7 @@ if($objme)
                     $menu_folders_arr = $objme->getMenuFor($THIS_MODULE_ID,$lang);  
                     //die("objme->getMenuFor($THIS_MODULE_ID , $lang) = ".var_export($menu_folders_arr,true));
                     $i = 0;
-                    //$objme->throwError("objme->getMenuFor($THIS_MODULE_ID,$lang) = ".var_export($menu_arr,true));
+                    //throw new AfwRuntimeException("objme->getMenuFor($THIS_MODULE_ID,$lang) = ".var_export($menu_arr,true));
                     foreach($menu_folders_arr as $menu_folder_i)
                     {
                         if(($iamAdmin) or (!$menu_folder_i["need_admin"]))
@@ -250,7 +250,7 @@ if($objme)
              
              if($objme->contextCurrModule != $MODULE)
              {
-                 // $objme->throwError("context reset because : contextModule(".$objme->contextCurrModule . ") != $MODULE");
+                 // throw new AfwRuntimeException("context reset because : contextModule(".$objme->contextCurrModule . ") != $MODULE");
                  unset($objme->contextObjId);
                  unset($objme->contextObjName);
                  unset($objme->contextModule);

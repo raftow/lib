@@ -209,7 +209,7 @@ else
     }
     else
     {
-        $fixmtit = AFWObject::traduireOperator("qedit_some_records", $lang).$myMainObject->getPluralTitle($lang,false);
+        $fixmtit = AFWObject::traduireOperator("qedit_some_records", $lang).AfwUmsPagHelper::getPluralTitle($myMainObject, $lang,false);
     }*/
     if($fixmtit) 
     {

@@ -95,7 +95,7 @@ class AfwShowHelper
         
 
         if (count($arr_col) == 0) {
-            $obj->throwError('afw-shower error : no mini-box cols');
+            throw new AfwRuntimeException('afw-shower error : no mini-box cols');
         }
 
         foreach ($arr_col as $cc => $nom_col) {
@@ -686,7 +686,7 @@ AFWRoot::dd("getRetrieveCols($mode) with hide_retrieve_cols :".var_export($hide_
         $isAvail = [];
 
         if (count($arr_col) == 0) {
-            throw new RuntimeException("afw-shower error : no retrieve cols for ".get_class($obj)." instance=".$obj->id);
+            throw new AfwRuntimeException("afw-shower error : no retrieve cols for ".get_class($obj)." instance=".$obj->id);
         }
 
         foreach ($arr_col as $cc => $nom_col) {
@@ -709,7 +709,7 @@ AFWRoot::dd("getRetrieveCols($mode) with hide_retrieve_cols :".var_export($hide_
                 }
             }
             else {
-                $obj->throwError(
+                throw new AfwRuntimeException(
                     "column $nom_col is not to display for me=" .
                     var_export($objme, true)
                 );
@@ -946,7 +946,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
 
                                             break;
                                         case 'FK':
-                                            if($val->isLookupAttribute($col,$desc))
+                                            if(AfwStructureHelper::isLookupAttribute($val, $col,$desc))
                                             {
                                                 $tuple[$col] = $val->decode($col);
                                             }
@@ -1048,7 +1048,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                         }
                                                     }
                                                     else {
-                                                        $obj->throwError(
+                                                        throw new AfwRuntimeException(
                                                             "strange value for FK field : $col => " .
                                                             var_export(
                                                             $obj_col,
@@ -1068,7 +1068,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             );
                                             if(!is_array($objs))
                                             {
-                                                throw new RuntimeException("How $val => get($col,'object','',false) return ".var_export($objs,true));
+                                                throw new AfwRuntimeException("How $val => get($col,'object','',false) return ".var_export($objs,true));
                                             }
                                             if (count($objs)) 
                                             {
@@ -1732,7 +1732,7 @@ $('#$showAsDataTable').DataTable( {
             if ($objs) 
             {
                 $return = 'strange FK object(s) to show => ' . var_export($objs, true);
-                throw new RuntimeException($return);
+                throw new AfwRuntimeException($return);
             }
         }
 

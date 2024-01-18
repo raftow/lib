@@ -61,7 +61,7 @@ foreach($class_db_structure as $nom_col => $desc)
         }
         $column_order++;
         $desc = AfwStructureHelper::repareQEditAttributeStructure($nom_col, $desc, $obj);
-        $isQuickEditableAttribute = $obj->isQuickEditableAttribute($nom_col, $desc, $submode);
+        $isQuickEditableAttribute = AfwStructureHelper::isQuickEditableAttribute($obj, $nom_col, $desc, $submode);
         $isFixmCol = $fixm_array[$nom_col];
         
         // $log_input_qedit = "rafik 00125 $submode=[$fgroup] for field=[$nom_col] (isQuickEditableAttribute=$isQuickEditableAttribute) or isFixmCol=$isFixmCol";
@@ -76,7 +76,7 @@ foreach($class_db_structure as $nom_col => $desc)
                /*
                if((!$mode_field_qedit) and ($fgroup=="mainwork") and ($nom_col=="study_program_id"))
                {
-                    $mode_field_qedit_reason = $obj->reasonWhyAttributeNotQuickEditable($nom_col, $desc, $submode);
+                    $mode_field_qedit_reason = AfwStructureHelper::reasonWhyAttributeNotQuickEditable($obj, $nom_col, $desc, $submode);
                     $log_input_qedit = "rafik 00126 $submode=[$fgroup] for field=[$nom_col] (isQuickEditableAttribute=$isQuickEditableAttribute and good_fgroup_for_field=$good_fgroup_for_field) or isFixmCol=$isFixmCol mode_field_qedit_reason=$mode_field_qedit_reason";
                     die($log_input_qedit);
                }*/ 
@@ -132,7 +132,7 @@ foreach($class_db_structure as $nom_col => $desc)
         }        
         else
         {
-                $mode_show_field_read_only = $obj->isReadOnlyAttribute($nom_col, $desc, $submode);
+                $mode_show_field_read_only = AfwStructureHelper::isReadOnlyAttribute($obj, $nom_col, $desc, $submode);
                 /*
                 if($nom_col=="student_id" and (!$mode_show_field_read_only))
                 {

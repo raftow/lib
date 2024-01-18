@@ -40,19 +40,19 @@ foreach($class_db_structure as $nom_col => $desc)
                /*
                if($nom_col=="jobrole_id")
                {
-                    $qeditable = $obj->isQuickEditableAttribute($nom_col, $desc, $submode);
+                    $qeditable = AfwStructureHelper::isQuickEditableAttribute($obj, $nom_col, $desc, $submode);
                     die("$nom_col : submode=$submode , fgroup=$fgroup , qeditable=$qeditable , desc[FGROUP]=".$desc["FGROUP"]);
                }*/
                
-               $mode_field_qedit = (($obj->isQuickEditableAttribute($nom_col, $desc, $submode) and (($desc["FGROUP"]==$fgroup) or ($desc["QEDIT_ALL_FGROUP"]))) or ($fixm_array[$nom_col]));
+               $mode_field_qedit = ((AfwStructureHelper::isQuickEditableAttribute($obj, $nom_col, $desc, $submode) and (($desc["FGROUP"]==$fgroup) or ($desc["QEDIT_ALL_FGROUP"]))) or ($fixm_array[$nom_col]));
         }
         else
         {
-                $mode_field_qedit = ($obj->isQuickEditableAttribute($nom_col, $desc, $submode) or ($fixm_array[$nom_col]));  // or ($fixm_array[$nom_col]) => because if we fix and attribute we should consider it in Qedit commom columns
+                $mode_field_qedit = (AfwStructureHelper::isQuickEditableAttribute($obj, $nom_col, $desc, $submode) or ($fixm_array[$nom_col]));  // or ($fixm_array[$nom_col]) => because if we fix and attribute we should consider it in Qedit commom columns
         }
         
-        $mode_show_field_read_only = $obj->isReadOnlyAttribute($nom_col, $desc, $submode);
-        $mode_field_qedit_reason = $obj->reasonWhyAttributeNotQuickEditable($nom_col, $desc, $submode);
+        $mode_show_field_read_only = AfwStructureHelper::isReadOnlyAttribute($obj, $nom_col, $desc, $submode);
+        $mode_field_qedit_reason = AfwStructureHelper::reasonWhyAttributeNotQuickEditable($obj, $nom_col, $desc, $submode);
         
         $mode_field_qedit_arr[$nom_col] = array("qed"=>$mode_field_qedit,"reason"=>$mode_field_qedit_reason);
         
@@ -181,7 +181,7 @@ if($obj->fixmtit)
 }
 else
 {
-    $fixmtit = AFWObject::traduireOperator("qedit_some_records", $lang).$obj->getPluralTitle($lang,false);
+    $fixmtit = AFWObject::traduireOperator("qedit_some_records", $lang).AfwUmsPagHelper::getPluralTitle($obj, $lang,false);
 }
 
 if($js_for_compute) echo "<script>\n $js_for_compute \n</script>\n";

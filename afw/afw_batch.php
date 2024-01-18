@@ -333,10 +333,10 @@
         {
             $tableau = [];
             $k = 0;
-            $all_real_fields = $object->getAllRealFields();
+            $all_real_fields = AfwStructureHelper::getAllRealFields($object);
             foreach ($array as $object) {
                 foreach ($all_real_fields as $attribute) {
-                    $structure = AfwStructureHelper::getStructureOf($object,$attribute);
+                    $structure = AfwStructureHelper::getStructureOf($object, $attribute);
                     if ($structure['RETRIEVE']) {
                         $tableau[$k][$attribute] = $object->decode($attribute);
                     }

@@ -2,7 +2,7 @@
 //die("afw_error_handler.php");
 include_once("afw_error_handler.php");
 
-if(!$MODULE) throw new RuntimeException("the index of the MVC system require that MODULE be defined");
+if(!$MODULE) throw new AfwRuntimeException("the index of the MVC system require that MODULE be defined");
 $file_dir_name = dirname(__FILE__);
 
 
@@ -42,7 +42,7 @@ foreach($_REQUEST as $key => $value)
                 elseif($value=="db") $Main_Page = "modes/afw_mode_ddb.php";  
                 elseif($value=="qs") $Main_Page = "modes/afw_mode_qsearch.php";  
                 elseif($value=="sr") $Main_Page = "modes/afw_mode_search.php";  
-                else $Main_Page = $value; //throw new RuntimeException("afw mode $value unknown");
+                else $Main_Page = $value; //throw new AfwRuntimeException("afw mode $value unknown");
         }
         
 }

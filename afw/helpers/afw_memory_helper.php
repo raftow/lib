@@ -72,13 +72,13 @@ class AfwMemoryHelper extends AFWRoot
             $mm = memory_get_usage(true);
             
             if ($mm > $MAX_MEMORY_BY_REQUEST) {
-                throw new RuntimeException('MOMKEN OUT OF MEMORY '.var_export($tab_instances,true));
-                //$this->throwError("MOMKEN OUT OF MEMORY", $throwed_arr=array("ALL"=>true, "FIELDS_UPDATED"=>true, "SQL"=>true, "DEBUGG"=>true, "CACHE"=>true));
+                throw new AfwRuntimeException('MOMKEN OUT OF MEMORY '.var_export($tab_instances,true));
+                //throw new AfwRuntimeException("MOMKEN OUT OF MEMORY", $throwed_arr=array("ALL"=>true, "FIELDS_UPDATED"=>true, "SQL"=>true, "DEBUGG"=>true, "CACHE"=>true));
             }
         }
         if ($nb_instances > 10000 and (!$MODE_BATCH_LOURD)) 
         {
-            throw new RuntimeException("too much objects created : $nb_instances : " .var_export($tab_instances, true));
+            throw new AfwRuntimeException("too much objects created : $nb_instances : " .var_export($tab_instances, true));
         }
     }
 }

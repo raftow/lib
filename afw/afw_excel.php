@@ -61,7 +61,7 @@ class AfwExcel
 		}
 		else
 		{
-			throw new RuntimeException('too much cols in header_excel='.var_export($header_excel));
+			throw new AfwRuntimeException('too much cols in header_excel='.var_export($header_excel));
 		}
 
 		$all_header_rows = 'A1:'.$last_letter.'3';

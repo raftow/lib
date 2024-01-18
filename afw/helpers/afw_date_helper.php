@@ -553,7 +553,7 @@ class AfwDateHelper
     public static function splitHijriDate($hdate, $convertToInt = false)
     {
         if (strlen($hdate) != 8 or !is_numeric($hdate)) {
-            throw new RuntimeException(
+            throw new AfwRuntimeException(
                 "hijri date '$hdate' is not formatted correctly use format YYYYMMDD without '-' neither '/' nor any separator"
             );
         }
@@ -567,7 +567,7 @@ class AfwDateHelper
             $yyyy = -1;
         }
         if ($yyyy < self::$MIN_HIJRI_YEAR or $yyyy > self::$MAX_HIJRI_YEAR) {
-            throw new RuntimeException(
+            throw new AfwRuntimeException(
                 "hijri date '$hdate' is not formatted correctly use format YYYYMMDD, incorrect year $hdate_YYYY"
             );
         }
@@ -577,7 +577,7 @@ class AfwDateHelper
             $mm = -1;
         }
         if ($mm < 1 or $mm > 12) {
-            throw new RuntimeException(
+            throw new AfwRuntimeException(
                 "hijri date '$hdate' is not formatted correctly use format YYYYMMDD, incorrect month $hdate_MM"
             );
         }
@@ -588,7 +588,7 @@ class AfwDateHelper
             $dd = -1;
         }
         if ($dd < 1 or $dd > 30) {
-            throw new RuntimeException(
+            throw new AfwRuntimeException(
                 "hijri date '$hdate' is not formatted correctly use format YYYYMMDD, incorrect day $hdate_DD"
             );
         }
@@ -607,27 +607,27 @@ class AfwDateHelper
         $return = explode('-', $gdate);
 
         if (count($return) != 3) {
-            throw new RuntimeException(
+            throw new AfwRuntimeException(
                 "gregorian date '$gdate' is not formatted correctly use format YYYY-MM-DD"
             );
         }
 
         $yyyy = intval($return[0]);
         if ($yyyy < self::$MIN_GREG_YEAR or $yyyy > self::$MAX_GREG_YEAR) {
-            throw new RuntimeException(
+            throw new AfwRuntimeException(
                 "greg date '$gdate' is not formatted correctly use format YYYY-MM-DD, incorrect year"
             );
         }
         $mm = intval($return[1]);
         if ($mm < 1 or $mm > 12) {
-            throw new RuntimeException(
+            throw new AfwRuntimeException(
                 "greg date '$gdate' is not formatted correctly use format YYYY-MM-DD, incorrect month"
             );
         }
 
         $dd = intval($return[2]);
         if ($dd < 1 or $dd > 31) {
-            throw new RuntimeException(
+            throw new AfwRuntimeException(
                 "greg date '$gdate' is not formatted correctly use format YYYY-MM-DD, incorrect day"
             );
         }
@@ -1060,7 +1060,7 @@ class AfwDateHelper
         $throwError=true
     ) {
         if (!$from_date or !$to_date) {
-            if($throwError) throw new RuntimeException("genereHijriPeriod(from_date=$from_date,to_date=$to_date,,system=$system,increment_days=$increment_days, increment_months=$increment_months, increment_years=$increment_years, calc_greg=$calc_greg, include_to_date=$include_to_date) can't be performed, from and to dates are mandatory!!");
+            if($throwError) throw new AfwRuntimeException("genereHijriPeriod(from_date=$from_date,to_date=$to_date,,system=$system,increment_days=$increment_days, increment_months=$increment_months, increment_years=$increment_years, calc_greg=$calc_greg, include_to_date=$include_to_date) can't be performed, from and to dates are mandatory!!");
             else return "error 1";
         }
 
@@ -1082,7 +1082,7 @@ class AfwDateHelper
         ) {
             $hdate = self::to_hijri($my_date);
             if (strlen($hdate) != 8) {
-                if($throwError) throw new RuntimeException("error : $hdate = to_hijri(my_date='$my_date')");
+                if($throwError) throw new AfwRuntimeException("error : $hdate = to_hijri(my_date='$my_date')");
                 else return "error 2";
             }
 
@@ -1288,7 +1288,7 @@ class AfwDateHelper
             $greg_date = AfwDatabase::db_recup_value($sql_greg);
             if(!$greg_date)
             {
-                if($throwError) throw new RuntimeException("Error : no greg date in pag.hijra_date_base for hijri_year = $hijri_year and hijri_month = $hijri_month : $sql_greg");
+                if($throwError) throw new AfwRuntimeException("Error : no greg date in pag.hijra_date_base for hijri_year = $hijri_year and hijri_month = $hijri_month : $sql_greg");
                 else return "";
             }
             $hgreg_matrix[$hijri_year . $hijri_month] = self::add_dashes($greg_date);
@@ -1361,7 +1361,7 @@ class AfwDateHelper
         // without dashes to gdate
         $wd_gdate = self::remove_dashes($gdate);
         if (strlen($wd_gdate) != 8) {
-            if($throwError) throw new RuntimeException(
+            if($throwError) throw new AfwRuntimeException(
                 "to_hijri : gdate($gdate) after self::remove_dashes = $wd_gdate, not ok"
             );
             else return "error 3";
@@ -1369,7 +1369,7 @@ class AfwDateHelper
 
         if(($wd_gdate <= '19700101') and (!$ifSeemsHijriKeepAsIs))
         {
-            if($throwError) throw new RuntimeException(
+            if($throwError) throw new AfwRuntimeException(
                 "to_hijri : gdate($gdate) after self::remove_dashes = $wd_gdate is not greg known greg date"
             );
             else return "error 4";
@@ -1378,7 +1378,7 @@ class AfwDateHelper
         // readd dashes to gdate
         $gdate = self::add_dashes($wd_gdate);
         if (strlen($gdate) != 10) {
-            if($throwError) throw new RuntimeException(
+            if($throwError) throw new AfwRuntimeException(
                 "to_hijri : gdate after re-add_dashes($wd_gdate) = $gdate, not ok"
             );
             else return "error 5";
@@ -1482,7 +1482,7 @@ class AfwDateHelper
 
         $return = AfwSession::getVar("hijri-of-$gdate");
         if (($mode == 'hdate') and (strlen($return) != 8)) {
-            if($throwError) throw new RuntimeException("Error converting $wd_gdate from DB => row_hijri=" .var_export($row_hijri, true) . " => hijri_day = $hijri_day = diff_date($gdate,$greg_date) + 1 => return=$return");
+            if($throwError) throw new AfwRuntimeException("Error converting $wd_gdate from DB => row_hijri=" .var_export($row_hijri, true) . " => hijri_day = $hijri_day = diff_date($gdate,$greg_date) + 1 => return=$return");
             else return "error 6";
         }
 
@@ -1670,7 +1670,7 @@ class AfwDateHelper
 
         $hdate = self::to_hijri($gdate);
         if (strlen($hdate) != 8) {
-            if($throwError) throw new RuntimeException(
+            if($throwError) throw new AfwRuntimeException(
                 "list($gdate, $gtime) = explode(' ',$gdatetime) => $hdate = to_hijri($gdate)"
             );
             else return "error 7";
@@ -1821,7 +1821,7 @@ class AfwDateHelper
             return [['today', 21, '-w'], ['today', 81 + $margin, '-w']];
         }
 
-        throw new RuntimeException(
+        throw new AfwRuntimeException(
             "AfwDateHelper::getPeriodDefinitionByName:  period name : '$period_name' unknown"
         );
     }
@@ -1836,7 +1836,7 @@ class AfwDateHelper
         if ($date_definition_start == 'today') {
             $gdate_start = date('Y-m-d');
         } else {
-            throw new RuntimeException(
+            throw new AfwRuntimeException(
                 "AfwDateHelper::dateDefinitionToGDate:  date_definition_start : '$date_definition_start' unknown"
             );
         }
@@ -1849,7 +1849,7 @@ class AfwDateHelper
         } elseif ($date_definition_weekday_offset === '-w') {
             $offset -= $w;
         } elseif ($date_definition_weekday_offset) {
-            throw new RuntimeException(
+            throw new AfwRuntimeException(
                 "AfwDateHelper::dateDefinitionToGDate:  date_definition_weekday_offset : '$date_definition_weekday_offset' unknown"
             );
         }

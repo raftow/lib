@@ -455,8 +455,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             if ((!$desc["ENUM_ALPHA"]) and ((!$val) or (!intval($val)))) $val = 0;
 
             if ($desc["ANSWER"] == "INSTANCE_FUNCTION") {
-                $liste_rep = $obj->getEnumAnswerList($orig_col_name);
-                $answer_case = "INSTANCE_FUNCTION so obj->getEnumAnswerList($orig_col_name) ";
+                $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $orig_col_name);
+                $answer_case = "INSTANCE_FUNCTION so obj->get Enum AnswerList($orig_col_name) ";
             } else {
                 $liste_rep = AFWObject::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
                 $answer_case = "AFWObject::getEnumTable(" . $desc["ANSWER"] . "," . $obj->getTableName() . "," . $orig_col_name . "," . $obj . ")";

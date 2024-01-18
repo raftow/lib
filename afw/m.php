@@ -14,7 +14,7 @@ if($Main_Page)
         $Main_Page_Path = "$m_file_dir_name/../../$Main_Page_Module/$Main_Page";
         if(!file_exists($Main_Page_Path))
         {
-                throw new RuntimeException("main page file not found : $Main_Page_Path Main_Page=[$Main_Page], Main_Page_Module=[$Main_Page_Module]");
+                throw new AfwRuntimeException("main page file not found : $Main_Page_Path Main_Page=[$Main_Page], Main_Page_Module=[$Main_Page_Module]");
         }
         else include ($Main_Page_Path);
 

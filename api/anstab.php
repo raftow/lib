@@ -97,7 +97,7 @@ else
 
 if(!file_exists($full_file_path))
 {
-     $obj->throwError("Impossible de charger $full_file_path in type_input($col_name) for $obj");
+     throw new AfwRuntimeException("Impossible de charger $full_file_path in type_input($col_name) for $obj");
 }
 
 require_once $full_file_path;*/

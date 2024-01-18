@@ -35,9 +35,9 @@
                 {
                     if($desc["TYPE"] != "FK") 
                     {
-                        $obj->throwError("auto create should be only on FK attributes $attribute is ".$desc["TYPE"]);
+                        throw new AfwRuntimeException("auto create should be only on FK attributes $attribute is ".$desc["TYPE"]);
                     }
-                    $obj_at = $obj->getEmptyObject($nom_col);
+                    $obj_at = AfwStructureHelper::getEmptyObject($obj, $nom_col);
                     
                     foreach($auto_c_create as $attr => $auto_c_create_item)
                     {

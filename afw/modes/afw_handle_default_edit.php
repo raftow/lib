@@ -101,7 +101,7 @@ foreach($class_db_structure as $nom_col => $desc){
                         $obj->simpleError("auto create should be only on FK attributes $nom_col is ".$desc["TYPE"]);
                     }
                     
-                    $obj_at = $obj->getEmptyObject($nom_col);
+                    $obj_at = AfwStructureHelper::getEmptyObject($obj, $nom_col);
                     $obj_by_uk = null;
                     if($auto_c_uk)
                     {
@@ -161,7 +161,7 @@ if($obj->editByStep)
         if($_POST["save_next"]) 
         {
              $old_currstep = $currstep;
-             $currstep = $obj->findNextEditableStep($currstep,"after save_next", true);
+             $currstep = AfwFrameworkHelper::findNextEditableStep($obj, $currstep, "after save_next", true);
              if($currstep < 0) 
              {
                 if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) die("$obj -> findNextEditableStep($old_currstep,after save_next) = $currstep");
@@ -171,7 +171,7 @@ if($obj->editByStep)
         if($_POST["save_previous"])
         {
              $old_currstep = $currstep;
-             $currstep = $obj->findPreviousEditableStep($currstep,"after save_previous", true);
+             $currstep = AfwFrameworkHelper::findPreviousEditableStep($obj, $currstep,"after save_previous", true);
              if($currstep < 0) $currstep = $old_currstep;
         } 
         

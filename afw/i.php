@@ -2,7 +2,7 @@
 
 include_once(dirname(__FILE__)."/request_entry.php");
 
-// throw new RuntimeException("test eh03");
+// throw new AfwRuntimeException("test eh03");
 
 if(!$controllerName) $controllerName = AfwSession::config("default_controller_name", "");
 if($controllerName)
@@ -27,7 +27,7 @@ if($controllerName)
         }
         catch(Exception $e) 
         {
-                // throw new RuntimeException("test eh04");
+                // throw new AfwRuntimeException("test eh04");
                 //$controllerObj = null;
                 $controllerObjError = $e->getMessage()." ".$e->getTraceAsString();
                 /*

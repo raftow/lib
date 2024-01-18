@@ -15,7 +15,7 @@ else
         $acceptedTypeArr=array("TEXT"=>true,"FK"=>true,"DATE"=>true,"MFK"=>true);
         for($kstep=1;$kstep<=$obj->editNbSteps;$kstep++)
         {
-            if($obj->stepIsApplicable($kstep))
+            if(AfwFrameworkHelper::stepIsApplicable($obj, $kstep))
             {
                 $stepcode = "step".$kstep;
                 $stepHelpcode = "step".$kstep."_help";
@@ -28,7 +28,7 @@ else
                 
                 if($step_help[$kstep] == $stepHelpcode)
                 {
-                    $step_help[$kstep] = $obj->getAllAttributesInMode($modeOfPage, $kstep,$acceptedTypeArr, $submode="",$for_this_instance=true, $translate=true, 
+                    $step_help[$kstep] = AfwFrameworkHelper::getAllAttributesInMode($obj, $modeOfPage, $kstep,$acceptedTypeArr, $submode="",$for_this_instance=true, $translate=true, 
                                                                       $lang, $implode_char,$max_elekh_nb_cols=3,
                                                                       $alsoAdminFields=false, $alsoTechFields=false, $alsoNAFields=false, $max_elekh_nb_chars=32);
                 }
@@ -50,7 +50,7 @@ else
 
         for($kstep=1;$kstep<=$obj->editNbSteps;$kstep++)
         {
-             if($obj->stepIsApplicable($kstep))
+             if(AfwFrameworkHelper::stepIsApplicable($obj, $kstep))
              {
                   if(($obj->general_check_errors or AfwSession::hasOption("GENERAL_CHECK_ERRORS"))  and ((!$obj->isDraft()) or ($kstep < $obj->currentStep) or $obj->show_draft_errors))
                   {
@@ -126,13 +126,13 @@ else
         
                 for($kstep=1;$kstep<=$obj->editNbSteps;$kstep++)
                 {
-                      if($obj->stepIsApplicable($kstep))
+                      if(AfwFrameworkHelper::stepIsApplicable($obj, $kstep))
                       {
                           $arrStepErrors = $obj->getStepErrors($kstep);
                           /*
                           if($kstep==3)
                           {
-                                $obj->throwError("arrStepErrors = ".var_export($arrStepErrors,true));
+                                throw new AfwRuntimeException("arrStepErrors = ".var_export($arrStepErrors,true));
                           }*/
                           if(($obj->general_check_errors or AfwSession::hasOption("GENERAL_CHECK_ERRORS")) and (!$obj->isDraft()) and (count($arrStepErrors)>0))
                           {

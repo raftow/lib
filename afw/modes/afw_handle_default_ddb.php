@@ -23,7 +23,7 @@ $class_db_structure = $class::getDbStructure($return_type="structure", $attribut
         
 foreach($class_db_structure as $nom_col => $desc)
 {
-     $mode_field_edit = $mainObject->attributeIsEditable($nom_col);
+     $mode_field_edit = AfwStructureHelper::attributeIsEditable($mainObject, $nom_col);
      if($mode_field_edit) $ddb_field_arr[$nom_col] = $desc;
 }
 
@@ -46,7 +46,7 @@ for($i=0;$i<$nb_objs;$i++)
         {
         	//AFWDebugg::log("try to load $class row $id");
                 if($obj->load($id)) $is_load = true;
-                else $obj->throwError("can't load obj with id = $id");
+                else throw new AfwRuntimeException("can't load obj with id = $id");
         
         }
         else

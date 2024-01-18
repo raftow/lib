@@ -103,11 +103,10 @@ class AfwSqlHelper extends AFWRoot
             $obj->fld_VERSION() .
             " = $ver, ";
         $fields_updated = [];
-        // if($table_prefixed=="c0license.license")  throw new RuntimeException("obj->fieldsHasChanged() = ".var_export($obj->fieldsHasChanged(),true));
+        // if($table_prefixed=="c0license.license")  throw new AfwRuntimeException("obj->fieldsHasChanged() = ".var_export($obj->fieldsHasChanged(),true));
         // rafik : since version 2.0.1 we put FIELDS_UPDATED the old value
         $old_val_query_part = "\n";
-        foreach ($obj->fieldsHasChanged() as $key => $old_value) 
-        {
+        foreach ($obj->fieldsHasChanged() as $key => $old_value) {
             $value = $obj->getAfieldValue($key);
             if (is_array($value)) {
                 die("how to update value of afield $key when it is an array : " .
@@ -115,37 +114,32 @@ class AfwSqlHelper extends AFWRoot
             }
             $isTechField = $obj->isTechField($key);
             if (!$isTechField) {
-                $structure = AfwStructureHelper::getStructureOf($obj,$key);
+                $structure = AfwStructureHelper::getStructureOf($obj, $key);
 
                 if (
                     isset($structure) and
                     !$structure['CATEGORY'] and
                     !$structure['NO-SAVE']
-                ) 
-                {
+                ) {
                     if (strcasecmp($value, 'now()') === 0) {
                         $query .= ' ' . $key . ' = now(),';
                     } else {
-                        if($structure['TYPE']=='GDAT') 
-                        {
-                            if(!$value) $value = "0000-00-00";
+                        if ($structure['TYPE'] == 'GDAT') {
+                            if (!$value) $value = "0000-00-00";
                         }
                         $value_up = strtoupper($value);
-                        if (AfwStringHelper::stringStartsWith($value_up,'REPLACE(')) 
-                        {
+                        if (AfwStringHelper::stringStartsWith($value_up, 'REPLACE(')) {
                             $query .= " $key = $value ,";
-                        }
-                        else 
-                        {
+                        } else {
                             if ($structure['UTF8']) {
                                 $_utf8 = '_utf8';
                             } else {
                                 $_utf8 = '';
                             }
-                            $query .= ' ' . $key ." = $_utf8'" . AfwStringHelper::_real_escape_string($value) ."',";
+                            $query .= ' ' . $key . " = $_utf8'" . AfwStringHelper::_real_escape_string($value) . "',";
                         }
                         $value_desc = implode('>>', explode("\n", $value));
-                        $old_value_desc = implode('>>',explode("\n", $old_value));
+                        $old_value_desc = implode('>>', explode("\n", $old_value));
                         $isNum = is_numeric($value);
                         $isSame = $value == $old_value;
                         $valueExists =
@@ -155,9 +149,7 @@ class AfwSqlHelper extends AFWRoot
                         $old_val_query_part .= " -- $key value = [$value_desc], old value = [$old_value_desc] isNum=$isNum isSame= $isSame valueExists=$valueExists\n";
                     }
                     $fields_updated[$key] = $value;
-                } 
-                else 
-                {
+                } else {
                     if (!isset($structure)) $report .=  "structure of attribute $key is not defined, ";
                     if ($structure['CATEGORY']) $report .=  "attribute $key is category field, ";
                     if ($structure['NO-SAVE']) $report .=  "attribute $key is no-save field, ";
@@ -192,9 +184,8 @@ class AfwSqlHelper extends AFWRoot
                 }
                 $query .= "\n WHERE 1 ";
                 $pk_val_arr = explode($sep, $id_updated);
-                foreach ($obj->PK_MULTIPLE_ARR as $pk_col_order => $pk_col) 
-                {
-                    $structurePKAttribute = AfwStructureHelper::getStructureOf($obj,$pk_col);
+                foreach ($obj->PK_MULTIPLE_ARR as $pk_col_order => $pk_col) {
+                    $structurePKAttribute = AfwStructureHelper::getStructureOf($obj, $pk_col);
                     if ($structurePKAttribute['UTF8']) {
                         $_utf8 = '_utf8';
                     } else {
@@ -236,7 +227,7 @@ class AfwSqlHelper extends AFWRoot
         AfwBatch::print_sql("<br>\nexecQuery will execute : <br>\n");
         AfwBatch::print_sql("<br>\n$sql_query <br>\n");
 
-        
+
 
         list($result, $project_link_name) = AfwDatabase::db_query(
             $sql_query,
@@ -268,7 +259,7 @@ class AfwSqlHelper extends AFWRoot
             /*
             if(AfwStringHelper::stringStartsWith($sql_query,"delete from"))
             {
-                throw new RuntimeException("$sql_query has been executed and $affected_row_count record(s) deleted");
+                throw new AfwRuntimeException("$sql_query has been executed and $affected_row_count record(s) deleted");
             }*/
 
             $row_count = AfwMysql::rows_count($result);
@@ -312,9 +303,9 @@ class AfwSqlHelper extends AFWRoot
         if (!$nom_col) {
             $nom_col = $prefix_col;
         }
-        $desc = AfwStructureHelper::getStructureOf($object,$nom_col);
+        $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
         if (!$desc) {
-            $object->throwError("can't find structure of field $nom_col");
+            throw new AfwRuntimeException("can't find structure of field $nom_col");
         }
         $original_nom_col = $nom_col;
 
@@ -436,17 +427,14 @@ class AfwSqlHelper extends AFWRoot
                     $phraseLangWhere,
                 ];
             case 'TEXT':
-                $val_col = trim($val_col); 
-                if ($oper == '=') 
-                {
+                $val_col = trim($val_col);
+                if ($oper == '=') {
                     $cond_col = "='$val_col'";
-                }
-                else
-                {
+                } else {
                     $cond_col = str_replace('X', $codage, $oper);
                     $cond_col = str_replace('.', $val_col, $cond_col);
                 }
-                
+
                 //$phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
                 $phraseLangWhere =
                     "<span class='crit_field_name'>" .
@@ -551,5 +539,131 @@ class AfwSqlHelper extends AFWRoot
                     $phraseLangWhere,
                 ];
         }
+    }
+
+
+    /**
+     * getSQLMany
+     * @param AFWObject $object
+     * @param string  $pk_field
+     * @param string  $limit : Optional add limit to query
+     * @param string  $order_by : Optional add order by to query
+     * @param boolean $optim
+     * @param boolean  $eager_joins 
+     */
+
+    public static function getSQLMany(
+        $object,
+        $pk_field = '',
+        $limit = '',
+        $order_by = '',
+        $optim = true,
+        $eager_joins = false
+    ) {
+        if (!$pk_field) {
+            $pk_field = $object->getPKField();
+        }
+        if (!$order_by) {
+            $order_by = $object->getOrderByFields();
+        }
+        if (!$order_by and $pk_field) {
+            $order_by = $pk_field;
+        }
+
+        if (!$optim and $pk_field) {
+            $query =
+                "SELECT DISTINCT $pk_field as PK \n FROM " .
+                $object::_prefix_table($object::$TABLE) .
+                " me\n WHERE 1" .
+                $object->SEARCH .
+                "\n " .
+                ($limit ? ' LIMIT ' . $limit : '');
+        } else {
+            $all_real_fields = AfwStructureHelper::getAllRealFields($object);
+            if ($eager_joins) {
+                list(
+                    $list_from_join_cols,
+                    $join_sentence,
+                ) = self::getOptimizedJoin($object);
+            } else {
+                $list_from_join_cols = '';
+                $join_sentence = '';
+            }
+
+            $query =
+                "SELECT $pk_field as PK, me." .
+                implode(', me.', $all_real_fields);
+            if ($list_from_join_cols) {
+                $query .= ",\n" . $list_from_join_cols;
+            }
+            $this_class = get_class($object);
+            $query .=
+                "\n FROM " .
+                $object::_prefix_table($object::$TABLE) .
+                ' me -- class : ' .
+                $this_class;
+            if ($join_sentence) {
+                $query .= "\n" . $join_sentence;
+            }
+            $query .= "\n WHERE 1" . $object->SEARCH;
+            $query .= "\n ORDER BY " . $order_by;
+            $query .= $limit ? "\n LIMIT " . $limit : '';
+        }
+
+        //die("getSQLMany : $query");
+        //AfwSession::sqlLog($query, "SQL-MANY");
+        return $query;
+    }
+
+    /**
+     * Rafik 10/6/2021 : to prepare joins on lookup tables and any answer table of FK retrieved field
+     * to avoid to LoadMany who for example load 1000 objects to load each 1000 FK object each one by separated SQl query
+     * which make heavy the script, to be used only when needed because it increase memory loaded by those many objects as it load
+     * FK objects as eager loaded objects as for LoadManyEager below method
+     */
+
+    public static function getOptimizedJoin($object)
+    {
+        global $lang;
+
+        $join_sentence_arr = [];
+        $join_retrieve_fields = [];
+
+        $server_db_prefix = AfwSession::config('db_prefix', 'c0');
+
+        // add left joins for all retrieved fields with type = FK and category empty (real fields)
+        $colsRet = $object->getRetrieveCols(
+            $mode = 'display',
+            $lang,
+            $all = false,
+            $type = 'FK'
+        );
+        $joint_count = 0;
+        foreach ($colsRet as $col_ret) {
+            $joint_count++;
+            $descCol = AfwStructureHelper::getStructureOf($object, $col_ret);
+            if (!$descCol['CATEGORY']) {
+                $tableCol = $descCol['ANSWER'];
+                $moduleCol = $descCol['ANSMODULE'];
+                if (!$moduleCol) {
+                    $moduleCol = $object::$MODULE;
+                }
+                if (!$moduleCol) {
+                    $moduleCol = 'pag';
+                }
+
+                $join_sentence_arr[] = "left join $server_db_prefix" . "$moduleCol.$tableCol join" . $col_ret . "00 on me.$col_ret = join" . $col_ret . "00.id";
+                //$join_retrieve_fields[] = "join$col_ret.id as join${col_ret}00_id";
+                $col_ret_obj = AfwStructureHelper::getEmptyObject($object, $col_ret);
+                $col_fk_retrieve_cols = AfwStructureHelper::getAllRealFields($col_ret_obj);
+                foreach ($col_fk_retrieve_cols as $col_fk_sub_ret) {
+                    $join_retrieve_fields[] = "join" . $col_ret . "00.$col_fk_sub_ret as join$col_ret" . "00_$col_fk_sub_ret";
+                }
+            }
+        }
+        return [
+            implode(',', $join_retrieve_fields),
+            implode("\n", $join_sentence_arr),
+        ];
     }
 }

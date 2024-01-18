@@ -185,7 +185,7 @@ if(true)
         {
             include($main_file_to_run);
         }
-        else throw new RuntimeException("failed to open : main_file_to_run = $main_file_to_run");
+        else throw new AfwRuntimeException("failed to open : main_file_to_run = $main_file_to_run");
         
         // die("DBG-je suis apres include $Main_Page_path/$Main_Page _POST = ".var_export($_POST,true));
         // if previous include fail you will not find this below and also :
@@ -201,7 +201,7 @@ if(true)
             $out_scr = "<div class='afw_tech'><center>";
             if(AfwSession::config("MODE_DEVELOPMENT", false)) 
             {
-                //$objme->throwError("<h1>no output from $Main_Page_path/$Main_Page</h1> ($module_dir_name == $file_dir_name)");
+                //throw new AfwRuntimeException("<h1>no output from $Main_Page_path/$Main_Page</h1> ($module_dir_name == $file_dir_name)");
                 $out_scr .= "<h1>no output from page $main_file_to_run : Main_Page=$Main_Page<br> path=$Main_Page_path</h1> <br>(curmodulepath=$module_dir_name)";
             }    
             $out_scr .= "<div style='padding:40px;text-align:center'><center><img src='../lib/images/page_not_found.png'><BR><BR><BR><BR><span class='error'>هذه الصفحة غير موجودة </span></center></div>";
@@ -233,7 +233,7 @@ if(true)
         elseif((!$nohf) and (!AfwSession::config("no_header_and_footer", false)))
         {
             // die("mode pag header");
-            // if(!$jstree_activate) $objme->throwError("jstree not activated");
+            // if(!$jstree_activate) throw new AfwRuntimeException("jstree not activated");
             // die("DBG-hzm_header=> $module_dir_name/../lib/hzm/web/hzm_header.php");
             include("$module_dir_name/../lib/hzm/web/hzm_header.php");
            

@@ -82,7 +82,7 @@ if($objme)
 
 $actions_tpl_arr = AfwUmsPagHelper::getAllActions($myClassInstance);
 
-// $myClassInstance->throwError("debugg :: actions_tpl_arr of $cl = ".var_export($actions_tpl_arr,true));
+// throw new AfwRuntimeException("debugg :: actions_tpl_arr of $cl = ".var_export($actions_tpl_arr,true));
 if($resetcrit) 
 {
     $_POST = array();

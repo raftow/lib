@@ -36,7 +36,7 @@ class AfwController extends AFWRoot {
                 $view_name_tpl = $view_name . "_tpl";
                 if(!file_exists("$file_dir_name/../../$view_module/tpl/$view_name_tpl.php"))
                 {
-                        throw new RuntimeException("view template not found : $file_dir_name/../../$view_module/tpl/$view_name_tpl.php");
+                        throw new AfwRuntimeException("view template not found : $file_dir_name/../../$view_module/tpl/$view_name_tpl.php");
                 }
                 else 
                 {

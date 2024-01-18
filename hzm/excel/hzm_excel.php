@@ -185,13 +185,13 @@
                  if(!$nb_get_xls_data) $nb_get_xls_data = 0;
                  $nb_get_xls_data++;
                  
-                 //if($nb_get_xls_data>1) $objme->throwError("HzmExcel::getData called twice".var_export($callers_arr,true));
+                 //if($nb_get_xls_data>1) throw new AfwRuntimeException("HzmExcel::getData called twice".var_export($callers_arr,true));
                  
                  
                  if($row_num_end<0) 
                  {
                     $error = "HzmExcel::getData row_num_end = $row_num_end not allowed for the moment";
-                    if($objme) $objme->throwError($error);
+                    if($objme) throw new AfwRuntimeException($error);
                     else throw_error($error);
                  }
                  
@@ -216,7 +216,7 @@
                             
                             /*if(strlen($value)>500) 
                             {
-                                if($objme) $objme->throwError("value too big in ($col_num[$col_name],row:$row_num) ");
+                                if($objme) throw new AfwRuntimeException("value too big in ($col_num[$col_name],row:$row_num) ");
                             }*/
                             $data[$id][$col_name] = $value;
                             
@@ -226,7 +226,7 @@
                        $nb_data++;
                        if($nb_data>30005)
                        {
-                           if($objme) $objme->throwError("big excel data size(tab) = ".count($this->tableau)." size(record) = ".count($record). " size(data) = ".count($data)." : data[$id][$col_name] = $value, show rows ($row_num_start, $row_num_end)");
+                           if($objme) throw new AfwRuntimeException("big excel data size(tab) = ".count($this->tableau)." size(record) = ".count($record). " size(data) = ".count($data)." : data[$id][$col_name] = $value, show rows ($row_num_start, $row_num_end)");
                        }
                        
                        

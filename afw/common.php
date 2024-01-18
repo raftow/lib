@@ -294,7 +294,7 @@ function recup_data($query,$titre="",$break_if_error=true,$delay_from_cache=-1, 
 function recup_table($table,$key,$collist,$cond,$orderby)
 {
         // @MIG-MYSQL : THIS IS OBSOLETE
-        throw new RuntimeException("case 001 : migrating to new mysql functions");
+        throw new AfwRuntimeException("case 001 : migrating to new mysql functions");
         /*
         global $db_1,$analyse_sql;
         

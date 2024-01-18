@@ -76,7 +76,7 @@ if(!class_exists('AfwAutoLoader'))
                                         $file_path_to_load = $autol_file_dir_name."/../../".$moduleCurr."/tr"."/trad_ar_".$cleaned_file_name.".php";
                                         if(!file_exists($file_path_to_load))
                                         {
-                                                throw new RuntimeException("when loading $class from $file_path_to_load it failed because file does not exists");
+                                                throw new AfwRuntimeException("when loading $class from $file_path_to_load it failed because file does not exists");
                                         }
                                         require_once($file_path_to_load);
                                         if(class_exists($class, FALSE)) return array(true, $file_path_to_load, $failed_loadings_arr);
@@ -93,7 +93,7 @@ if(!class_exists('AfwAutoLoader'))
                                         $file_path_to_load = $autol_file_dir_name."/../../".$moduleCurr."/struct"."/".$cleaned_file_name;
                                         if(!file_exists($file_path_to_load))
                                         {
-                                                throw new RuntimeException("when loading $class from $file_path_to_load it failed because file does not exists");
+                                                throw new AfwRuntimeException("when loading $class from $file_path_to_load it failed because file does not exists");
                                         }
                                         require_once($file_path_to_load);
                                         if(class_exists($class, FALSE)) return array(true, $file_path_to_load, $failed_loadings_arr);
@@ -170,7 +170,7 @@ if(!class_exists('AfwAutoLoader'))
 
                                 if (!$found)
                                 {
-                                        throw new RuntimeException('Unable to locate the class you have specified ['.$path.']: failed_loadings_arr = '.var_export($failed_loadings_log_arr,true));
+                                        throw new AfwRuntimeException('Unable to locate the class you have specified ['.$path.']: failed_loadings_arr = '.var_export($failed_loadings_log_arr,true));
                                         // rafik : I commented this below because not clear for me what other possible autoloaders ?
                                         // should not throw exception but give the hand to other possible autoloaders ...
                                         // return FALSE;
@@ -179,7 +179,7 @@ if(!class_exists('AfwAutoLoader'))
                         /*
                         elseif (!is_subclass_of($class, 'AFWRoot'))
                         {
-                                // throw new RuntimeException("Class ".$class." already exists and doesn't extend AFWRoot");
+                                // throw new AfwRuntimeException("Class ".$class." already exists and doesn't extend AFWRoot");
                                 // should not throw exception but give the hand to other possible autoloaders ...
                                 return FALSE;
                         }

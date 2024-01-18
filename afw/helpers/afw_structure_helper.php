@@ -22,7 +22,7 @@ class AfwStructureHelper extends AFWRoot
             if(!$object->shouldBeCalculatedField($field_name))
             {
                 $cl = get_class($object);
-                throw new RuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$field_name] is shortcut but not declared in overridden shouldBeCalculatedField method, do like this : <pre><code>".$object->suggestAllCalcFields()."</code></pre>");
+                throw new AfwRuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$field_name] is shortcut but not declared in overridden shouldBeCalculatedField method, do like this : <pre><code>".$object->suggestAllCalcFields()."</code></pre>");
             }
             
         }
@@ -263,5 +263,596 @@ class AfwStructureHelper extends AFWRoot
             return  $desc; 
 
     }
+
+    /**
+     * @param AFWObject $object 
+     * @param boolean $structure 
+     * @return array
+     */
+
+
+    public static final function getAllRealFields($object, $structure=false)
+    {
+        $class_db_structure = $object->getMyDbStructure();
+        $result_arr = [];
+        foreach ($class_db_structure as $attribute => $desc) {
+            if (AfwStructureHelper::attributeIsReel($object, $attribute)) {
+                if(!$structure) $result_arr[] = $attribute;
+                else $result_arr[$attribute] = $desc;
+            }
+        }
+        return $result_arr;
+    }
+
+
+    public static final function fixStructureOf($object, $attribute, $desc=null)
+    {
+        if (!$desc) {
+            return AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            return AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+    }
+
+
+    public static final function editIfEmpty($object, $attribute, $desc = null)
+    {
+        $desc = AfwStructureHelper::fixStructureOf($object, $attribute, $desc);
+        
+        return $desc['READONLY'] and $desc['EDIT_IF_EMPTY'];
+    }
+
+
+    // attribute can be modified by user in standard HZM-UMS model
+    public static function itemsEditableBy($object, $attribute, $user = null, $desc = null)
+    {
+        $desc = AfwStructureHelper::fixStructureOf($object, $attribute, $desc);
+
+        if (!isset($desc['ITEMS-EDITABLE']) or $desc['ITEMS-EDITABLE']) {
+            return [true, ''];
+        } else {
+            return [false, "$attribute items not editable"];
+        }
+    }
+
+
+    // attribute can be modified by user in standard HZM-UMS model
+    public static final function attributeCanBeModifiedBy($object, $attribute, $user, $desc)
+    {
+        self::lookIfInfiniteLoop(30000, "attribute-CanBeModifiedBy-$attribute");
+        global $display_in_edit_mode;
+        // $objme = AfwSession::getUserConnected();
+        $desc = AfwStructureHelper::fixStructureOf($object, $attribute, $desc);
+
+        //if($attribute == "orgunit_id") die("desc of $attribute ". var_export($desc,true));
+
+        if (AfwStructureHelper::editIfEmpty($object, $attribute, $desc) and $object->isEmpty()) {
+            // die("desc of $attribute ". var_export($desc,true));
+            $desc['EDIT'] = true;
+            $desc['READONLY'] = false;
+        } elseif ($display_in_edit_mode['*'] and $desc['SHOW']) {
+            if (!$desc['EDIT']) {
+                $desc['EDIT'] = true;
+                $desc['READONLY'] = true;
+                $desc['READONLY_REASON'] = 'SHOW and not EDIT';
+            }
+        }
+
+        if ($desc['CATEGORY'] == 'ITEMS') {
+            list($desc['EDIT'], $reason) = AfwStructureHelper::itemsEditableBy($object, $attribute, $user, $desc);
+            $desc['READONLY'] = true;
+            if ($desc['EDIT']) {
+                // this is bug ITEMS attribute should remain readonly
+                // $desc["DISABLE-READONLY-ITEMS"] = true;
+            } else {
+                $desc['READONLY_REASON'] = $reason;
+            }
+        }
+
+        if ($desc['CATEGORY']) {
+            if ($desc['EDIT-OTHERWAY']) {
+                return [true, ''];
+            }
+        }
+
+        if ($desc['READONLY'] and $desc['READONLY-MODULE']) {
+            if ($user->canDisableRO($desc, $desc['READONLY-MODULE'])) {
+                $desc['READONLY'] = false;
+            }
+        }
+
+        if ($desc['READONLY']) {
+            if ($desc['DISABLE-READONLY-ITEMS']) {
+                return [true, ''];
+            } elseif ($desc['DISABLE-READONLY-ADMIN']) {
+                if (!$user) {
+                    return [
+                        false,
+                        'the attribute is set readonly for all except admin and you are not logged',
+                    ];
+                }
+                if (!$user->isSuperAdmin()) {
+                    return [
+                        false,
+                        'the attribute is set readonly for all except super-admin and you are not super-admin',
+                    ];
+                }
+                return [true, ''];
+            } else {
+                return [
+                    false,
+                    "the attribute $attribute is set readonly absolutely or for this user roles in the system, desc =" .
+                        var_export($desc, true),
+                ];
+            }
+        } else {
+            return [true, ''];
+        }
+    }
+
+
+    public static final function attributeIsWriteableBy(
+        $object,
+        $attribute,
+        $user = null,
+        $desc = null
+    ) {
+        if (!$user) {
+            $user = AfwSession::getUserConnected();
+        }
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+        if ($desc['CATEGORY'] == 'ITEMS') {
+            return AfwStructureHelper::itemsEditableBy($object, $attribute, $user, $desc);
+        }
+
+        list($readonly, $reason) = $object->attributeIsReadOnly(
+            $attribute,
+            $desc
+        );
+
+        return [!$readonly, $reason];
+    }
+
+    public static final function attributeIsReadOnly(
+        $object,
+        $attribute,
+        $desc = '',
+        $submode = '',
+        $for_this_instance = true,
+        $reason_readonly = false
+    ) {
+        // self::safeDie("attributeIsReadOnly($attribute)");
+        /*
+        This is not logic attributes R/O or no it is not mandatory to have relation with user authenticated
+        $objme = AfwSession::getUserConnected();
+        if (!$objme) {
+            if (!$reason_readonly) {
+                return true;
+            } else {
+                return [true, 'no user connected'];
+            }
+        }*/
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+        if ($desc['TYPE'] == 'PK') {
+            if (!$reason_readonly) {
+                return true;
+            } else {
+                return [
+                    true,
+                    "this is PK : $attribute => " . var_export($desc, true),
+                ];
+            }
+        }
+
+        // attribute est editable or no by his definition by default
+        $attributeIsEditable = AfwStructureHelper::attributeIsEditable($object,$attribute);
+
+        $canBeUpdated = true;
+        if ($attributeIsEditable) {
+            // attribute est editable or no in some specific context or for specific user
+            $objme = AfwSession::getUserConnected();
+            list(
+                $canBeUpdated,
+                $the_reason_readonly,
+            ) = $object->attributeCanBeUpdatedBy($attribute, $objme, $desc);
+            if (!$the_reason_readonly) {
+                $the_reason_readonly =
+                    'Error : attribute Can Be Updated By returned empty reason and should not';
+            }
+            // if($attribute=="doc_type_id") die("list(canBeUpdated=$canBeUpdated, reason=$the_reason_readonly) = this->attributeCanBeUpdatedBy($attribute, $objme, $desc)");
+        } else {
+            // if attribute is not editable by his definition by default no need to check the context or rights of authenticated user
+            $the_reason_readonly =
+                'attribute is not editable by his definition by default';
+        }
+        $attrIsSetReadonly = !$canBeUpdated;
+
+        $is_attributeIsReadOnly = (!$attributeIsEditable or $attrIsSetReadonly);
+
+        //if($attribute=="trips_html") die("attributeIsReadOnly($attribute)=$is_attributeIsReadOnly : attributeIsEditable=$attributeIsEditable attrIsSetReadonly=$attrIsSetReadonly, the_reason_readonly=$the_reason_readonly");
+
+        if (!$reason_readonly) {
+            return $is_attributeIsReadOnly;
+        } else {
+            return [$is_attributeIsReadOnly, $the_reason_readonly];
+        }
+    }
+
+
+    public final static function attributeIsAuditable($object, $attribute, $desc = '')
+    {
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        }
+        $return = intval($desc['AUDIT']);
+        if (!$return and $desc['AUDIT']) {
+            $return = 1;
+        } // nb_months of audit
+
+        return $return;
+    }
+
+    public static final function stepIsReadOnly($object, $step, $reason_readonly = false)
+    {
+        $class_db_structure = $object->getMyDbStructure();
+        $isROReason_arr = [];
+        foreach ($class_db_structure as $nom_col => $desc) {
+            if ($desc['STEP'] == $step or $step == 'all') {
+                list($isRO, $isROReason) = $object->attributeIsReadOnly(
+                    $nom_col,
+                    '',
+                    '',
+                    true,
+                    true
+                );
+
+                if (!$reason_readonly) {
+                    if (!$isRO) {
+                        return false;
+                    }
+                } else {
+                    if (!$isRO) {
+                        return [false, ''];
+                    } else {
+                        $isROReason_arr[] =
+                            "stepIsReadOnly($step) for column name " .
+                            $nom_col .
+                            ' : ' .
+                            $isROReason;
+                    }
+                }
+            }
+        }
+
+        if (!$reason_readonly) {
+            return true;
+        } else {
+            return [true, ' + ' . implode("\n + ", $isROReason_arr)];
+        }
+    }
+
+    public static final function attributeIsEditable(
+        $object,
+        $attribute,
+        $desc = '',
+        $submode = '',
+        $for_this_instance = true
+    ) {
+        global $display_in_edit_mode;
+        /*
+        This is not logic attributes editable or no it is not mandatory to have relation with user authenticated
+        $objme = AfwSession::getUserConnected();
+
+        if (!$objme) {
+            return false;
+        }*/
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+
+        if ($display_in_edit_mode['*'] and $desc['SHOW']) {
+            // <-- be careful getStructureOf make SHOW=true if RETRIEVE=true
+            //if($attribute=="response_date") throw new AfwRuntimeException("rafik here 20200310 desc= ".var_export($desc,true));
+            if (
+                !$desc['EDIT'] and
+                $desc['CATEGORY'] != 'FORMULA' and
+                $desc['TYPE'] != 'PK'
+            ) {
+                $desc['EDIT'] = true;
+                $desc['READONLY'] = true;
+            }
+        }
+        // rafik 20/12/2019 not needed id_obj hidden always exists and for all steps not only step=1 so the line below is nomore usefull
+        // if($desc['TYPE'] == 'PK') return true;
+
+        if (!$submode) {
+            $mode_code = 'EDIT';
+        } else {
+            $mode_code = "EDIT_$submode";
+        }
+
+        $applicable =
+            (!$for_this_instance or $object->attributeIsApplicable($attribute));
+        $mode_activated = isset($desc[$mode_code]) && $desc[$mode_code];
+        $mode_activated_otherway =
+            isset($desc["$mode_code-OTHERWAY"]) && $desc["$mode_code-OTHERWAY"];
+
+
+        $is_attributeEditable =
+            ($applicable and
+                ($mode_activated or
+                    $mode_activated_otherway or
+                    (($objme = AfwSession::getUserConnected()) && $objme->isSuperAdmin() &&
+                        isset($desc["$mode_code-ADMIN"]) &&
+                        $desc["$mode_code-ADMIN"]) or
+                    ($applicable and
+                        $desc["$mode_code-ROLES"] and ($objme = AfwSession::getUserConnected()) and
+                        $objme->i_have_one_of_roles($desc["$mode_code-ROLES"]))));
+        //if($attribute=="trips_html") die("attributeIsEditable($attribute) : is_attributeEditable=$is_attributeEditable : applicable=$applicable and <br>(mode_activated=$mode_activated or mode_activated_for_me_as_admin=$mode_activated_for_me_as_admin or mode_activated_for_me_as_i_have_role=$mode_activated_for_me_as_i_have_role)");
+
+        return $is_attributeEditable;
+    }
+
+
+    public static final function isQuickEditableAttribute($object, 
+        $attribute,
+        $desc = '',
+        $submode = ''
+    ) {
+
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+
+        if ($desc['TYPE'] == 'PK') {
+            return true;
+        }
+
+        if (!$submode) {
+            $qedit_mode_code = 'QEDIT';
+        } else {
+            $qedit_mode_code = "QEDIT_$submode";
+        }
+
+        return AfwStructureHelper::attributeIsEditable(
+            $object,
+            $attribute,
+            $desc,
+            $submode,
+            false
+        ) and
+            (!isset($desc[$qedit_mode_code]) or
+                $desc[$qedit_mode_code] or
+                ($desc["$qedit_mode_code-ADMIN"] and ($objme = AfwSession::getUserConnected()) and $objme->isAdmin()));
+    }
+
+    public static final function reasonWhyAttributeNotQuickEditable($object, 
+        $attribute,
+        $desc = '',
+        $submode = ''
+    ) {
+        // @todo rafik according to the above method
+        // $objme = AfwSession::getUserConnected();
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+        if (!$submode) {
+            $qedit_mode_code = 'QEDIT';
+        } else {
+            $qedit_mode_code = "QEDIT_$submode";
+        }
+
+        $attributeIsEditable = AfwStructureHelper::attributeIsEditable($object,
+            $attribute,
+            $desc,
+            $submode
+        );
+        if (!isset($desc[$qedit_mode_code])) {
+            $val_of_qedit_mode_code = 'not set';
+        } else {
+            $val_of_qedit_mode_code = $desc[$qedit_mode_code];
+        }
+
+        if (!isset($desc["$qedit_mode_code-ADMIN"])) {
+            $val_of_admin_qedit_mode_code = 'not set';
+        } else {
+            $val_of_admin_qedit_mode_code = $desc["$qedit_mode_code-ADMIN"];
+        }
+
+        $mode_field_qedit_reason = "qedit_mode_code={desc[$qedit_mode_code]:$val_of_qedit_mode_code,desc[$qedit_mode_code-ADMIN]:$val_of_admin_qedit_mode_code}, attributeIsEditable=$attributeIsEditable, ";
+
+        return $mode_field_qedit_reason;
+    }
+
+    public static final function isShowableAttribute($object,
+        $attribute,
+        $desc = '',
+        $submode = ''
+    ) {
+
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+        if ($desc['TYPE'] == 'PK') {
+            return true;
+        }
+        if (!$submode) {
+            $mode_code = 'SHOW';
+        } else {
+            $mode_code = "SHOW_$submode";
+        }
+
+        return $desc[$mode_code] or ($desc["$mode_code-ADMIN"]  && ($objme = AfwSession::getUserConnected()) && $objme->isAdmin());
+    }
+
+    public static final function isReadOnlyAttribute($object, $attribute, $desc = '', $submode = '')
+    {
+
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+        if ($desc['TYPE'] == 'PK') {
+            return true;
+        }
+
+        if (!$submode) {
+            $mode_code = 'READONLY';
+        } else {
+            $mode_code = "READONLY_$submode";
+        }
+
+        return self::isShowableAttribute($object, $attribute, $desc, $submode) &&
+            ($desc[$mode_code] and
+                (!$desc["DISABLE-$mode_code-ADMIN"] or
+                    !($objme = AfwSession::getUserConnected()) or
+                    !$objme->isSuperAdmin()));
+    }
+
+    public static function getEmptyObject($object, $attribute)
+    {
+        global $lang;
+
+        list($fileName, $className, $ansTab, $ansModule,) = AfwStructureHelper::getFactoryForFk($object, $attribute);
+        if (!$className) {
+            throw new AfwRuntimeException("Failed to getEmptyObject from this -> getFactoryForFk($attribute) => list($fileName, $className, $ansTab, $ansModule) with this = " . $object->getDefaultDisplay($lang));
+        }
+
+        return new $className();
+    }
+
+
+    public static function classIsLookupTable($className)
+    {
+        $obj = new $className();
+        $ret = $obj->IS_LOOKUP;
+        unset($obj);
+        return $ret;
+    }
+
+    /** 
+        * @param AFWObject $object
+        * @param string $attribute
+        * @param array $desc
+        * @return bool
+    */
+
+    public static function isLookupAttribute($object, $attribute, $desc=null)
+    {
+        if(!$desc) $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        if($desc["ANSWER-IS-LOOKUP"]) return true;
+        list($fileName, $className) = AfwStructureHelper::getFactoryForFk($object, $attribute, $desc);
+        return self::classIsLookupTable($className);        
+    }
+
+
+    /** getFactoryForFk
+         * @param AFWObject $object
+         * @param string $attribute
+         * @param array $desc
+         * @return array
+    */
+
+    public static function getFactoryForFk($object, $attribute, $desc=null)
+    {
+        list($ansTab, $ansModule) = $object->getMyAnswerTableAndModuleFor($attribute, $desc);
+        // die("list($ansTab, $ansModule) = $this => getMyAnswerTableAndModuleFor($attribute)");
+        list($fileName, $className) = AfwStringHelper::getHisFactory($ansTab, $ansModule);
+        $return_arr = [];
+        $return_arr[] = $fileName;
+        $return_arr[] = $className;
+        $return_arr[] = $ansTab;
+        $return_arr[] = $ansModule;
+        return $return_arr;
+    }
+
+
+    /** getAnswerModule
+         * @param AFWObject $object
+         * @param string $attribute
+         * @param array $desc
+         * @return array
+    */
+    public static function getAnswerModule($object, $attribute)
+    {
+        list($ansTab, $ansModule) = $object::answerTableAndModuleFor($attribute);
+        return $ansModule;
+    }
+
+
+
+
+    /** getParentStruct
+         * @param AFWObject $object
+         * @param string $attribute
+         * @return array
+    */
+    public static function getParentStruct($object, $attribute, $struct)
+    {
+        if (!$struct) $struct = AfwStructureHelper::getStructureOf($object, $attribute);
+        $this_table = $object::$TABLE;
+        list($fileName, $className) = AfwStructureHelper::getFactoryForFk($object, $attribute, $struct);
+        list($attribParent, $structParent) = $className::getParentOf($this_table, $attribute);
+        return $structParent;
+    }
+
+    /*
+        really exists even if it is not real but virtual (category not empty)
+    */
+    public static function fieldReallyExists($object, $attribute, $structure=null)
+    {
+        if(!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        return ($structure["TYPE"] or $object->isTechField($attribute)); //  or $this->getAfieldValue($attribute)
+    }
+
+
+    public static function attributeIsReel($object, $attribute, $structure = null)
+    {
+        if (is_numeric($attribute)) {
+            return false;
+        }
+        if (!$structure) {
+            $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $structure = AfwStructureHelper::repareMyStructure($object, $structure, $attribute);
+        }
+        // if($attribute=="nomcomplet") die("structure of $attribute =".var_export($structure,true));
+        return $structure and !$structure['CATEGORY'];
+    }
+
+    public static final function getEnumAnswerList($object, $attribute, $enum_answer_list = '')
+    {
+        $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        if ($structure['ANSWER'] == 'INSTANCE_FUNCTION') {
+            $method = "at_of_$attribute";
+
+            $liste_rep = $object->$method();
+        } else {
+            $liste_rep = $object->getEnumTotalAnswerList(
+                $attribute,
+                $enum_answer_list
+            );
+        }
+
+        return $liste_rep;
+    }
+
 
 }

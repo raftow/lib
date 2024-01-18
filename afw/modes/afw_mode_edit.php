@@ -86,7 +86,7 @@ else
                 {
                         if($myObj->fieldExists($item_trimmed))
                         {
-                            if($item_value or (!$myObj->editIfEmpty())) 
+                            if($item_value or (!AfwStructureHelper::editIfEmpty($myObj, $item_trimmed))) 
                             {
                                 $inited_cols[$item_trimmed] = true;
                                 $myObj->fixModeSet($item_trimmed, $item_value, true, true);
@@ -182,16 +182,17 @@ else
                 {
                     // @todo-$currstep = $objme->curStepFor[$myObj->getTableName()][$myObj->getId()];
                     // @todo-$currstep_orig = "curStepFor : cache for me for last-curr-step by object type and id";
-                    if(!$myObj->stepIsEditable($currstep))
+                    if(!AfwFrameworkHelper::stepIsEditable($myObj, $currstep))
                     {
                         $currstep = 0;
                         $currstep_orig = "";
                     }
+                    
                     if(!$currstep)
                     {
                             $currstep = $myObj->getLastEditedStep(); 
                             $currstep_orig = "get Last Edited Step";
-                            if(!$myObj->stepIsEditable($currstep))
+                            if(!AfwFrameworkHelper::stepIsEditable($myObj, $currstep))
                             {
                                 $currstep = 0;
                                 $currstep_orig = "";

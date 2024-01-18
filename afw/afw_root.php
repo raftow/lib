@@ -300,7 +300,7 @@ class AFWRoot {
 	 */
         public static function simpleError($msg, $call_method = "", $light=false) 
         {
-                throw new RuntimeException($msg." : call_method=$call_method"); 
+                throw new AfwRuntimeException($msg." : call_method=$call_method"); 
                 /*
                 $message = $msg;
                 $message .= _back_trace();
@@ -667,7 +667,7 @@ class AFWRoot {
         {
                 $message = $error_title;
                 if($objToExport) $message .= "<br><pre class='code php' style='direction:ltr;text-align:left'>".var_export($objToExport,true)."</pre>";
-                throw new RuntimeException($message);
+                throw new AfwRuntimeException($message);
                 //return self::safeDie($error_title, $error_description_details="", $analysis_log=false, $objToExport, $light = true);
         }
 
@@ -676,7 +676,7 @@ class AFWRoot {
                 $message = $error_title;
                 if($objToExport) $message .= "<br> >> <b>obj</b> = <pre class='code php' style='direction:ltr;text-align:left'>".var_export($objToExport,true)."</pre>";
                 if($error_description_details) $message .= "<br> >> <b>more details</b> : ".$error_description_details;
-                throw new RuntimeException($message);
+                throw new AfwRuntimeException($message);
                 
                 // return self::safeDie($error_title, $error_description_details, $analysis_log, $objToExport, $light, $force_mode_dev=true);
         }
@@ -876,7 +876,7 @@ class AFWRoot {
         if(isset($trad) and $trad and (!is_array($trad)))
         {
                 $trad = [];
-                // throw new RuntimeException("before any include trad 0 is ".var_export($trad,true));
+                // throw new AfwRuntimeException("before any include trad 0 is ".var_export($trad,true));
         }
 
         if (empty($operator)) {
@@ -901,7 +901,7 @@ class AFWRoot {
 
                         if(isset($trad) and $trad and (!is_array($trad)))
                         {
-                                throw new RuntimeException("after include_once $nom_file2 trad 2 is ".var_export($trad,true));
+                                throw new AfwRuntimeException("after include_once $nom_file2 trad 2 is ".var_export($trad,true));
                         }
 
                         if ($trad[$nom_table][$nom_col]) {
@@ -919,7 +919,7 @@ class AFWRoot {
 
                         if(isset($trad) and $trad and (!is_array($trad)))
                         {
-                                throw new RuntimeException("after include_once $nom_file trad 1 is ".var_export($trad,true));
+                                throw new AfwRuntimeException("after include_once $nom_file trad 1 is ".var_export($trad,true));
                         }
 
                         if ($trad[$nom_table][$nom_col]) {
@@ -943,7 +943,7 @@ class AFWRoot {
 
                     if(isset($trad) and $trad and (!is_array($trad)))
                     {
-                            throw new RuntimeException("after include_once $general_nom_file trad 3 is ".var_export($trad,true));
+                            throw new AfwRuntimeException("after include_once $general_nom_file trad 3 is ".var_export($trad,true));
                     }
 
                     //echo "<br>2)translate $nom_table.$nom_col in $langue from general file $general_nom_file"."=".$trad[$nom_table][$nom_col];
@@ -979,7 +979,7 @@ class AFWRoot {
                     include_once $nom_file0;
                     if(isset($trad) and $trad and (!is_array($trad)))
                     {
-                            throw new RuntimeException("after include_once $nom_file0 trad 4 is ".var_export($trad,true));
+                            throw new AfwRuntimeException("after include_once $nom_file0 trad 4 is ".var_export($trad,true));
                     }
                     //if($this->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
@@ -996,7 +996,7 @@ class AFWRoot {
                 include_once $file_name;
                 if(isset($trad) and $trad and (!is_array($trad)))
                 {
-                        throw new RuntimeException("after include_once $file_name trad 5 is ".var_export($trad,true));
+                        throw new AfwRuntimeException("after include_once $file_name trad 5 is ".var_export($trad,true));
                 }
 
                 $trad_val = $trad['OPERATOR'][$nom_col];
@@ -1014,7 +1014,7 @@ class AFWRoot {
                 include_once $file_name;
                 if(isset($trad) and $trad and (!is_array($trad)))
                 {
-                        throw new RuntimeException("after include_once $file_name trad 6 is ".var_export($trad,true));
+                        throw new AfwRuntimeException("after include_once $file_name trad 6 is ".var_export($trad,true));
                 }
                 $trad_val = $trad['OPERATOR'][$nom_col];
                 if ($trad_val) {

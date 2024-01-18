@@ -12,7 +12,7 @@ class AfwWizardHelper extends AFWRoot
     {
         if(!$this->afwObject)
         {
-            throw new RuntimeException('AfwWizardHelper methods need the afwObject to be setted');
+            throw new AfwRuntimeException('AfwWizardHelper methods need the afwObject to be setted');
         }
         if ($this->afwObject->getMyTheme() == 'default') {
             return 'wizardv1_li';
@@ -58,7 +58,7 @@ class AfwWizardHelper extends AFWRoot
     ) {
         if(!$this->afwObject)
         {
-            throw new RuntimeException('AfwWizardHelper methods need the afwObject to be setted');
+            throw new AfwRuntimeException('AfwWizardHelper methods need the afwObject to be setted');
         }
 
         if (!$structure) {
@@ -69,7 +69,7 @@ class AfwWizardHelper extends AFWRoot
         if (!isset($structure['ICONS']) or $structure['ICONS']) {
             if ($icon == 'EDIT' or $icon == 'DELETE') {
                 if ($structure['EDIT_DELETE_IF_WRITEABLE']) {
-                    list($writeable, $reason) = $this->afwObject->attributeIsWriteableBy(
+                    list($writeable, $reason) = AfwStructureHelper::attributeIsWriteableBy($this->afwObject,
                         $attribute,
                         null,
                         $structure
@@ -80,8 +80,8 @@ class AfwWizardHelper extends AFWRoot
 
             // rafik : if the minibox for example is called inside tpl
             if ($structure['IN_TEMPLATE']) {
-                if (isset($structure["${icon}_ICON_IN_TEMPLATE"])) {
-                    return $structure["${icon}_ICON_IN_TEMPLATE"];
+                if (isset($structure[$icon."_ICON_IN_TEMPLATE"])) {
+                    return $structure[$icon."_ICON_IN_TEMPLATE"];
                 }
             }
 

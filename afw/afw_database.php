@@ -238,7 +238,7 @@ class AfwDatabase extends AFWRoot
                 if ($print_debugg and $print_sql) {
                     echo $sql_error;
                 }
-                else throw new RuntimeException($sql_error);
+                else throw new AfwRuntimeException($sql_error);
                 // AFWDebugg::log($sql_error);
                 /*
                 if ($throw_error) {
@@ -299,7 +299,7 @@ class AfwDatabase extends AFWRoot
                     {
                         if ($throw_error and $throw_analysis_crash and $MODE_DEVELOPMENT) 
                         {
-                            throw new RuntimeException(
+                            throw new AfwRuntimeException(
                                 "<p>static analysis crash : The table $this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times</p>
                                  <h5>$sql_query</h5><br> 
                                  <div class='technical'>
@@ -381,7 +381,7 @@ class AfwDatabase extends AFWRoot
                 // $sql_capture_and_backtrace can be setted in application_config.php file
                 if ($sql_capture_and_backtrace) {
                     if (AfwStringHelper::stringContain($sql_query, $sql_capture_and_backtrace)) {
-                        throw new RuntimeException('sql '.$sql_capture_and_backtrace.' captured');
+                        throw new AfwRuntimeException('sql '.$sql_capture_and_backtrace.' captured');
                     }
                 }
 
@@ -530,6 +530,24 @@ class AfwDatabase extends AFWRoot
     {
         $count = AfwMysql::rows_count($result);
         return $count;
+    }
+
+
+    /**
+     * max_update_date
+     * Return number of rows
+     * @param string $className model AFWObject subclass 
+     * @param string $where clause where
+     */
+    public static function max_update_date($className, $where = '')
+    {
+        $inst = new $className();
+        if ($where) {
+            $inst->where($where);
+        }
+        $fld_update_date = $inst->fld_UPDATE_DATE();
+        $func = "max($fld_update_date)";
+        return $inst->func($func);
     }
 }
 

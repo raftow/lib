@@ -18,7 +18,7 @@ if(!$footer_call) $footer_call = 1;
 else $footer_call++;
 if($footer_call>1)
 {
-    if($objme) $objme->throwError("footer called more than once : $footer_call");
+    if($objme) throw new AfwRuntimeException("footer called more than once : $footer_call");
 }
 
  if($lang=="ar")
