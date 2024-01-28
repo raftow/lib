@@ -102,8 +102,8 @@ if(!$lang) $lang = 'ar';
 ////AFWObject::setDebugg(true);
 //AFWDebugg::initialiser($START_TREE.$TMP_DIR,"afw-debugg".$g_array_user["PAGE_NUMBER"].".txt");
 
-// **@todo $hide_cr = AFWObject::traduire('HIDE CRITEREA',$lang,false);
-// **@todo $show_cr = AFWObject::traduire('SHOW CRITEREA',$lang,false);
+// **@todo $hide_cr = AfwLanguageHelper::tarjem('HIDE CRITEREA',$lang,false);
+// **@todo $show_cr = AfwLanguageHelper::tarjem('SHOW CRITEREA',$lang,false);
 
 $plural_obj_name =  $my_class->transClassPlural($lang);
 $single_obj_name =  $my_class->transClassSingle($lang);

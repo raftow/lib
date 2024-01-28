@@ -137,8 +137,8 @@ if($_POST["submit_ddb"])
 
 
 
-if($updated_nb_objs>0) AfwSession::pushSuccess(AFWObject::traduireOperator("save_with_sucess", $lang) . " $updated_nb_objs ".AFWObject::traduireOperator("record(s)", $lang));
-else AfwSession::pushInformation(AFWObject::traduireOperator("no_update_found", $lang));
+if($updated_nb_objs>0) AfwSession::pushSuccess(AfwLanguageHelper::tarjemOperator("save_with_sucess", $lang) . " $updated_nb_objs ".AfwLanguageHelper::tarjemOperator("record(s)", $lang));
+else AfwSession::pushInformation(AfwLanguageHelper::tarjemOperator("no_update_found", $lang));
 
 
 $ids = implode(",",$list_objs_ids);

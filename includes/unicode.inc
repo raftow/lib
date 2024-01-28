@@ -211,7 +211,7 @@ function hzm_xml_parser_create(&$data) {
       $data = preg_replace('/^(<\?xml[^>]+encoding)="(.+?)"/', '\\1="utf-8"', $out);
     }
     else {
-      watchdog('php', 'Could not convert XML encoding %s to UTF-8.', array('%s' => $encoding), WATCHDOG_WARNING);
+      AfwRunHelper::afw_guard('php', 'Could not convert XML encoding %s to UTF-8.', array('%s' => $encoding), WATCHDOG_WARNING);
       return FALSE;
     }
   }
@@ -245,7 +245,7 @@ function hzm_convert_to_utf8($data, $encoding) {
     $out = @recode_string($encoding . '..utf-8', $data);
   }
   else {
-    watchdog('php', 'Unsupported encoding %s. Please install iconv, GNU recode or mbstring for PHP.', array('%s' => $encoding), WATCHDOG_ERROR);
+    AfwRunHelper::afw_guard('php', 'Unsupported encoding %s. Please install iconv, GNU recode or mbstring for PHP.', array('%s' => $encoding), WATCHDOG_ERROR);
     return FALSE;
   }
 

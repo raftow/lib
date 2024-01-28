@@ -177,7 +177,7 @@ class AfwInputHelper extends AFWRoot
                                                 {
                                                         $nom_module_fk = AfwUrlManager::currentWebModule();
                                                 }
-                                                $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+                                                $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
                                                 // $nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
 
                                                 $auto_c_create = $auto_c["CREATE"];
@@ -314,7 +314,8 @@ class AfwInputHelper extends AFWRoot
                                         
                                         $html .= self::drop_down($liste_rep, $val_arr, $infos_arr,"",false);
                                         break;		
-                        case 'ANSWER' : $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"]);
+                        /* case 'ANSWER' : obsolete
+                                        $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"]);
                                         if($force_css) $data_length_class = " ".$force_css;
                                         else $data_length_class = " inputmoyen";
                                         if(true) // count($liste_rep) <= LIMIT_INPUT_SELECT
@@ -336,7 +337,7 @@ class AfwInputHelper extends AFWRoot
                                                         "asc"
                                                 );
                                         }
-                                        break;
+                                        break;*/
                         case 'ENUM'   : if($force_css) $data_length_class = " ".$force_css;
                                         else $data_length_class = " inputmoyen";
                                         
@@ -349,8 +350,8 @@ class AfwInputHelper extends AFWRoot
                                         }
                                         else
                                         {
-                                                $liste_rep = AFWObject::getEnumTable($desc["ANSWER"],$obj->getTableName(),$orig_col_name,$obj);
-                                                $answer_case = "AFWObject::getEnumTable(".$desc["ANSWER"].",".$obj->getTableName().",".$orig_col_name.",".$obj.")";
+                                                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"],$obj->getTableName(),$orig_col_name,$obj);
+                                                $answer_case = "AfwLoadHelper::getEnumTable(".$desc["ANSWER"].",".$obj->getTableName().",".$orig_col_name.",".$obj.")";
                                         }
 
                                         if($desc["FORMAT-INPUT"])                                        
@@ -360,7 +361,7 @@ class AfwInputHelper extends AFWRoot
                                                 {
                                                         $display_val = $liste_rep[$val];
                                                         if(!$display_val) $display_val = "...<!-- $val from ".var_export($liste_rep,true)." -->";
-                                                        $css_arr = $obj::afw_explode($desc["HZM-CSS"]);
+                                                        $css_arr = AfwStringHelper::afw_explode($desc["HZM-CSS"]);
                                                         $css_val = $css_arr[$val];
                                                         $liste_codeOrdres = array();
                                                         $listeOrdres = array();
@@ -412,7 +413,7 @@ class AfwInputHelper extends AFWRoot
                                                         
                                                         if($desc["FORMAT-INPUT"]=="hzmsel")
                                                         {
-                                                                $css_arr = $obj::afw_explode($desc["HZM-CSS"]);
+                                                                $css_arr = AfwStringHelper::afw_explode($desc["HZM-CSS"]);
                                                                 $css_class = "selectpicker";//." ".$data_loaded_class.$data_length_class
                                                         }
                                                         else
@@ -881,7 +882,7 @@ $(\"#$id_input\").data(\"dd\");
                 $props["id"] = $id;
                 $props["onchange"] = $onchange;
                 $props["required"] = ((!$null_val) or $required);
-                //if($data_images) self::safeDie("rafik here dd data_images = ".var_export($data_images,true));
+                //if($data_images) AfwRunHelper::safeDie("rafik here dd data_images = ".var_export($data_images,true));
 
                 return self::drop_down($list_id_val, $selected, $props, $sort_order, $null_val, $langue, $data_images);
         }

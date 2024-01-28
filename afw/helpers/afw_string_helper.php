@@ -1,6 +1,6 @@
 <?php
 
-class AfwStringHelper extends AFWRoot
+class AfwStringHelper 
 {
         public static function stringStartsWith($string, $start)
         {
@@ -524,7 +524,7 @@ class AfwStringHelper extends AFWRoot
 
         public static function getHisFactory($table_name, $module, $prefix = '')
         {
-                $className = self::tableToClass($table_name);
+                $className = AfwStringHelper::tableToClass($table_name);
                 $file_name = "$table_name.php";
                 $file_path = self::getFileNameFullPath($file_name, $module);
                 return [$file_path, $className];
@@ -627,6 +627,490 @@ class AfwStringHelper extends AFWRoot
 
             return [$first_name, $father_name, $last_name];
 
+        }
+
+        /**
+	 * tableToClass
+	 * Converts tableName to className
+	 * @param string $tableName
+	 */
+	public static final function tableToClass($tableName) {
+		$dot_position = strpos($tableName, ".");
+		if($dot_position !== false) {
+			$tableName = substr($tableName, $dot_position);
+		}
+		$str = str_replace('_', ' ', strtolower($tableName));
+		$str = ucwords(strtolower($str));
+		$str = str_replace(' ', '', $str);
+		return $str;
+	}
+
+
+        public static final function classToTable($className) 
+        {
+                 return self::fileTotable(AfwStringHelper::classToFile($className));
+        }
+
+
+        /**
+	 * classToFile
+	 * Convert tableName to PHP FileName
+	 * @param string $tableName
+	 */
+	public static final function classToFile($className) 
+        {
+                $critere = 'A-Z';
+                ini_set("pcre.jit", 0);
+                $cl_chaines = preg_split('/(?=['.$critere.'])/', $className, -1, PREG_SPLIT_NO_EMPTY);
+		$file       = strtolower(implode('_',$cl_chaines).'.php');
+                
+                return $file;
+	}
+
+        /**
+	 * fileToTable
+	 * Convert fileName to PHP tableName
+	 * @param string $fileName
+	 */
+	public static function fileTotable($fileName) {
+		return substr(strtolower($fileName), 0, strlen($fileName)-4);
+	}
+
+
+        /**
+	 * tableToFile
+	 * Convert tableName to PHP FileName
+	 * @param string $tableName
+	 */
+	public static function tableToFile($tableName) {
+                $dot_position = strpos($tableName, ".");
+                if($dot_position === false) {
+                        return strtolower($tableName) . '.php';
+                } else {
+                        return strtolower(substr($tableName, $dot_position)) . '.php';
+                }
+	}
+
+
+        public static function afw_explode($answer, $sep1 = '|', $sep2 = ',')
+        {
+                $return = [];
+                $rows = explode($sep1, $answer);
+                $mypk_counter = 1;
+                foreach ($rows as $row) {
+                list($mypk, $myval) = explode($sep2, $row);
+
+                if (!$myval) {
+                        $myval = $mypk;
+                        $mypk = $mypk_counter;
+                        $mypk_counter++;
+                }
+
+                $return[$mypk] = $myval;
+                }
+
+                return $return;
+        }
+
+
+        public static function afw_export($arr, $object_class_and_display_only=true)
+        {
+                $return = "(";
+                foreach($arr as $ind => $arr_item)
+                {
+                        $return .= " $ind => ";  
+                        if(is_array($arr_item))      
+                        {
+                                $arr_item_desc = AfwStringHelper::afw_export($arr_item, $object_class_and_display_only);
+                        }
+                        elseif(is_object($arr_item))
+                        {
+                                $arr_item_desc = get_class($arr_item)."->id = ".$arr_item->id;
+                        }
+                        else
+                        {
+                                $arr_item_desc = var_export($arr_item,true);
+                        }
+                        $return .= " $arr_item_desc ,";
+                }
+
+                $return .= ")";
+
+                return $return;
+        }
+
+        public static function firstCharLower($str)
+        {
+                $fc = substr($str,0,1);
+                $rest_str = substr($str,1);
+		return strtolower($fc).$rest_str;
+        }
+
+        public static function firstCharUpper($str)
+        {
+                $fc = substr($str,0,1);
+                $rest_str = substr($str,1);
+		return strtoupper($fc).$rest_str;
+        }
+
+        public static function javaNaming($text) 
+        {
+		$str = str_replace('_', ' ', strtolower($text));
+		$str = ucwords(strtolower($str));
+		$str = str_replace(' ', '', $str);
+                
+                return AfwStringHelper::firstCharLower($str);
+	}
+
+
+        public static function hzmArrayStringFormat($arr)
+        {
+              return str_replace(" ", '',str_replace("\n", ' ', var_export($arr,true)));
+        
+        }
+
+        public static function codeNaming($text,$length_max=24) 
+        {
+		$str = str_replace('_', ' ', strtolower($text));
+		$str = strtoupper($str);
+		$str = str_replace(' ', '-', $str);
+                $str = substr($str,0,$length_max);
+                return $str;
+	}
+
+        public static function to_valid_code($text) 
+        {
+		$str = str_replace(' ', '_', $text);
+		$str = str_replace('-', '_', $str);
+                return $str;
+	}
+
+        public static function is_valid_code($text)
+        {
+                return (($text!="FUNCTION") and ($text!="DEFAULT") and ($text==AfwStringHelper::to_valid_code($text)));
+        }
+
+        public static function toEnglishText($text) 
+        {
+		if((se_termine_par($text,"name")) and (!se_termine_par($text,"_name")))
+                {
+                    $text = substr($text, 0, strlen($text)-4)."_name";;
+                }
+                
+                $text = " " .str_replace('_', ' ', strtolower($text))." ";
+                $text = str_replace(' id ', ' ', $text);
+                return AfwStringHelper::firstCharUpper(trim($text));
+	}
+
+        public static function hzmNaming($text) 
+        {
+		$str = str_replace('_id', '', $text);
+                $str = str_replace('_', ' ', $str);
+                $str = str_replace('.', ' ', $str);
+		$str = ucwords(strtolower($str));
+		$str = str_replace(' ', '', $str);
+                
+                return AfwStringHelper::firstCharLower($str);
+	}
+
+        public static function constNaming($text) 
+        {
+                $str = str_replace(' ', '_', $text);
+                $str = str_replace('.', '_', $str);
+                
+                return strtoupper($str);
+	}
+
+        public static function hzm_array_merge($arr1,$arr2)
+        {
+               $result = array();
+               foreach($arr1 as $index1 => $val1)
+               {
+                    $result[$index1] = $val1;
+               }
+               
+               foreach($arr2 as $index2 => $val2)
+               {
+                    $result[$index2] = $val2;
+               }
+               
+               return $result;
+        }
+
+        public static function inverseRelation($relation)
+        {
+             if($relation=="parent") return "child";
+             if($relation=="father") return "child";
+             if($relation=="mother") return "child";
+             if($relation=="child") return "parent";
+             if($relation=="sub") return "parent";
+        
+        
+             return "inv".ucwords($relation);
+        }
+
+        public static final function hzmEncode($string,$key1="a",$key2="x")
+        {
+                $mdfive = md5($key1.$string.$key2);   
+                return substr($mdfive,11,2)."a".substr($mdfive,22,2)."b".substr($mdfive,1,3);
+        }
+
+        public static final function hzmArabicToLatinRepresentation($string)
+        {
+                $matrixEncrypt = array();
+                $matrixEncrypt["إ"] = "e";
+                $matrixEncrypt["أ"] = "a";    
+                $matrixEncrypt["ا"] = "i";
+                $matrixEncrypt["ب"] = "b";
+                $matrixEncrypt["ت"] = "t";
+                $matrixEncrypt["ة"] = "o";
+                $matrixEncrypt["ث"] = "p";
+                $matrixEncrypt["ج"] = "j";
+                $matrixEncrypt["ح"] = "hh";
+                $matrixEncrypt["خ"] = "kh";
+                $matrixEncrypt["د"] = "d";
+                $matrixEncrypt["ذ"] = "dh";
+                $matrixEncrypt["ر"] = "r";
+                $matrixEncrypt["ز"] = "z";
+                $matrixEncrypt["س"] = "s";
+                $matrixEncrypt["ش"] = "w";
+                $matrixEncrypt["ص"] = "c";
+                $matrixEncrypt["ض"] = "v";
+                $matrixEncrypt["ط"] = "q";
+                $matrixEncrypt["ظ"] = "p";
+                $matrixEncrypt["ع"] = "ae";
+                $matrixEncrypt["غ"] = "rr";
+                $matrixEncrypt["ف"] = "f";
+                $matrixEncrypt["ق"] = "g";
+                $matrixEncrypt["ك"] = "k";
+                $matrixEncrypt["ل"] = "l";
+                $matrixEncrypt["م"] = "m";
+                $matrixEncrypt["ن"] = "n";
+                $matrixEncrypt["ه"] = "h";
+                $matrixEncrypt["و"] = "w";
+                $matrixEncrypt["ؤ"] = "u";
+                $matrixEncrypt["ي"] = "y";
+                $matrixEncrypt["ئ"] = "x";
+                $matrixEncrypt[" "] = "";
+                $matrixEncrypt["_"] = "";
+                $matrixEncrypt["+"] = "";
+                $matrixEncrypt["-"] = "";
+                $matrixEncrypt["*"] = "";
+                $matrixEncrypt["/"] = "";
+
+                
+                $string_enc = $string;
+                
+                foreach($matrixEncrypt as $cc => $cce)
+                {
+                        $string_enc = str_replace($cc, $cce, $string_enc);
+                }
+                
+                return $string_enc;
+        }
+
+        public static final function hzmEncrypt($string)
+        {
+                $matrixEncrypt = array();
+                $matrixEncrypt["q"] = "a";
+                $matrixEncrypt["w"] = "s";
+                $matrixEncrypt["e"] = "d";
+                $matrixEncrypt["r"] = "f";
+                $matrixEncrypt["t"] = "g";
+                $matrixEncrypt["y"] = "h";
+                $matrixEncrypt["u"] = "j";
+                $matrixEncrypt["i"] = "k";
+                $matrixEncrypt["o"] = "l";
+                $matrixEncrypt["p"] = "z";
+                $matrixEncrypt["a"] = "x";
+                $matrixEncrypt["s"] = "c";
+                $matrixEncrypt["d"] = "v";
+                $matrixEncrypt["f"] = "b";
+                $matrixEncrypt["g"] = "n";
+                $matrixEncrypt["h"] = "m";
+                $matrixEncrypt["j"] = "q";
+                $matrixEncrypt["k"] = "w";
+                $matrixEncrypt["l"] = "e";
+                $matrixEncrypt["z"] = "r";
+                $matrixEncrypt["x"] = "t";
+                $matrixEncrypt["c"] = "y";
+                $matrixEncrypt["v"] = "u";
+                $matrixEncrypt["b"] = "i";
+                $matrixEncrypt["n"] = "o";
+                $matrixEncrypt["m"] = "p";
+                $matrixEncrypt[" "] = "_";
+                $matrixEncrypt["_"] = " ";
+                $matrixEncrypt["+"] = "-";
+                $matrixEncrypt["-"] = "+";
+                $matrixEncrypt["*"] = "/";
+                $matrixEncrypt["/"] = "*";
+
+                $matrixEncrypt["Q"] = "A";
+                $matrixEncrypt["W"] = "S";
+                $matrixEncrypt["E"] = "D";
+                $matrixEncrypt["R"] = "F";
+                $matrixEncrypt["T"] = "G";
+                $matrixEncrypt["Y"] = "H";
+                $matrixEncrypt["U"] = "J";
+                $matrixEncrypt["I"] = "K";
+                $matrixEncrypt["O"] = "L";
+                $matrixEncrypt["P"] = "Z";
+                $matrixEncrypt["A"] = "X";
+                $matrixEncrypt["S"] = "C";
+                $matrixEncrypt["D"] = "V";
+                $matrixEncrypt["F"] = "B";
+                $matrixEncrypt["G"] = "N";
+                $matrixEncrypt["H"] = "M";
+                $matrixEncrypt["J"] = "Q";
+                $matrixEncrypt["K"] = "W";
+                $matrixEncrypt["L"] = "E";
+                $matrixEncrypt["Z"] = "R";
+                $matrixEncrypt["X"] = "T";
+                $matrixEncrypt["C"] = "Y";
+                $matrixEncrypt["V"] = "U";
+                $matrixEncrypt["B"] = "I";
+                $matrixEncrypt["N"] = "O";
+                $matrixEncrypt["M"] = "P";
+                
+                $string_enc = "";
+                
+                for($i=0;$i<strlen($string);$i++)
+                {
+                        $cenc = $matrixEncrypt[$string[$i]];
+                        if(!$cenc) $cenc = $string[$i];
+                        $string_enc .= $cenc;
+                }
+                
+                return $string_enc;
+        }
+
+
+        public static final function hzmDecrypt($string)
+        {
+                $matrixDecrypt = array();
+                $matrixDecrypt["a"] = "q";
+                $matrixDecrypt["s"] = "w";
+                $matrixDecrypt["d"] = "e";
+                $matrixDecrypt["f"] = "r";
+                $matrixDecrypt["g"] = "t";
+                $matrixDecrypt["h"] = "y";
+                $matrixDecrypt["j"] = "u";
+                $matrixDecrypt["k"] = "i";
+                $matrixDecrypt["l"] = "o";
+                $matrixDecrypt["z"] = "p";
+                $matrixDecrypt["x"] = "a";
+                $matrixDecrypt["c"] = "s";
+                $matrixDecrypt["v"] = "d";
+                $matrixDecrypt["b"] = "f";
+                $matrixDecrypt["n"] = "g";
+                $matrixDecrypt["m"] = "h";
+                $matrixDecrypt["q"] = "j";
+                $matrixDecrypt["w"] = "k";
+                $matrixDecrypt["e"] = "l";
+                $matrixDecrypt["r"] = "z";
+                $matrixDecrypt["t"] = "x";
+                $matrixDecrypt["y"] = "c";
+                $matrixDecrypt["u"] = "v";
+                $matrixDecrypt["i"] = "b";
+                $matrixDecrypt["o"] = "n";
+                $matrixDecrypt["p"] = "m";
+                $matrixDecrypt["_"] = " ";
+                $matrixDecrypt[" "] = "_";
+                $matrixDecrypt["-"] = "+";
+                $matrixDecrypt["+"] = "-";
+                $matrixDecrypt["/"] = "*";
+                $matrixDecrypt["*"] = "/";
+                                        
+                $matrixDecrypt["A"] = "Q";
+                $matrixDecrypt["S"] = "W";
+                $matrixDecrypt["D"] = "E";
+                $matrixDecrypt["F"] = "R";
+                $matrixDecrypt["G"] = "T";
+                $matrixDecrypt["H"] = "Y";
+                $matrixDecrypt["J"] = "U";
+                $matrixDecrypt["K"] = "I";
+                $matrixDecrypt["L"] = "O";
+                $matrixDecrypt["Z"] = "P";
+                $matrixDecrypt["X"] = "A";
+                $matrixDecrypt["C"] = "S";
+                $matrixDecrypt["V"] = "D";
+                $matrixDecrypt["B"] = "F";
+                $matrixDecrypt["N"] = "G";
+                $matrixDecrypt["M"] = "H";
+                $matrixDecrypt["Q"] = "J";
+                $matrixDecrypt["W"] = "K";
+                $matrixDecrypt["E"] = "L";
+                $matrixDecrypt["R"] = "Z";
+                $matrixDecrypt["T"] = "X";
+                $matrixDecrypt["Y"] = "C";
+                $matrixDecrypt["U"] = "V";
+                $matrixDecrypt["I"] = "B";
+                $matrixDecrypt["O"] = "N";
+                $matrixDecrypt["P"] = "M";
+                
+                $string_dec = "";
+                
+                for($i=0;$i<strlen($string);$i++)
+                {
+                        $cenc = $matrixDecrypt[$string[$i]];
+                        if(!$cenc) $cenc = $string[$i];
+                        $string_dec .= $cenc;
+                }
+                
+                return $string_dec; 
+        }
+
+        public static function hardSecureCleanString($string, $urldecode=false)         
+        {
+             return AfwStringHelper::clean_input($string, $soft=false, $string_is_secure=false, $urldecode);
+        }
+
+
+        public static function clean_input($string, $soft=true, $string_is_secure=false, $urldecode=false) 
+        {
+                if(is_array($string)) return $string;
+                $string2 = stripslashes($string);                
+                if($urldecode) $string2 = urldecode($string2);
+                $string1 = $string3 = strtolower($string2);
+                if(!$string_is_secure) 
+                {
+                        $string1 = str_replace('<script>', '', $string1);  
+                        $string1 = str_replace('<script ', '', $string1);  
+                        $string1 = str_replace('</script>', '', $string1);  
+                        $string1 = str_replace('script', '', $string1); 
+                        $string1 = str_replace('onchange', '', $string1); 
+                        $string1 = str_replace('onclick', '', $string1); 
+                        $string1 = str_replace('onerror', '', $string1); 
+                        $string1 = str_replace('onmouseover', '', $string1); 
+                        $string1 = str_replace('onmouseout', '', $string1); 
+                        $string1 = str_replace('onkeydown', '', $string1); 
+                        $string1 = str_replace('onload', '', $string1); 
+                        $string1 = str_replace('onblur', '', $string1); 
+                        $string1 = str_replace('onfocus', '', $string1); 
+                }
+
+                if($string1 != $string3)
+                {
+                        $string2 = 'not-allowed-string';     
+                }
+                else
+                {
+                        if(!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
+                        if(!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
+                        if(!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
+                        if(!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
+                        if(!$string_is_secure) $string2 = str_replace('</script>', '', $string2);
+                        if(!$string_is_secure) $string2 = str_replace('<script', '', $string2);
+                        if(!$string_is_secure) $string2 = str_replace('/script>', '', $string2);
+                        if(!$string_is_secure) $string2 = str_replace('java', 'j a v a', $string2);
+                        if(!$string_is_secure) $string2 = str_replace('script', 's c r i p t', $string2);
+                        if(!$soft) $string2 = preg_replace("/[`~^²¨%\"]/", '', $string2);
+        
+                        if(!$soft) $string2 = str_replace('(', '', $string2);
+                        if(!$soft) $string2 = str_replace(')', '', $string2);
+                }
+                
+                return $string2;
         }
 
 

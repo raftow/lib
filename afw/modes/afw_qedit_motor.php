@@ -102,7 +102,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $nom_module_fk = AfwUrlManager::currentWebModule();
             }
 
-            $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+            $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
             // $nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
             if ($force_css) $data_length_class = " " . $force_css;
             else $data_length_class = " " . $data_length_class_default_for_fk;
@@ -266,7 +266,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             if (!$nom_module_fk) {
                 $nom_module_fk = AfwUrlManager::currentWebModule();
             }
-            $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+            $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
             /*
             $nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
 
@@ -335,8 +335,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $orig_col_name);
                 $answer_case = "INSTANCE_FUNCTION so obj-> get EnumAnswerList";
             } else {
-                $liste_rep = AFWObject::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
-                $answer_case = "AFWObject::getEnumTable(" . $desc["ANSWER"] . ")";
+                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
+                $answer_case = "AfwLoadHelper::getEnumTable(" . $desc["ANSWER"] . ")";
             }
 
 
@@ -377,7 +377,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 ""
             );
             break;
-        case 'ANSWER':
+        /* case 'ANSWER': obsolete
             if ($desc["STYLE"]) $style_input = " style='" . $desc["STYLE"] . "' ";
             else $style_input = "";
 
@@ -419,7 +419,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                     }
                 </script>
             <?php             }
-            break;
+            break;*/
         case 'ENUM':
             if ($desc["STYLE"]) $style_input = " style='" . $desc["STYLE"] . "' ";
             else $style_input = "";
@@ -433,8 +433,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $orig_col_name);
                 $answer_case = "INSTANCE_FUNCTION so obj -> get EnumAnswerList";
             } else {
-                $liste_rep = AFWObject::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
-                $answer_case = "AFWObject::getEnumTable(" . $desc["ANSWER"] . ")";
+                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
+                $answer_case = "AfwLoadHelper::getEnumTable(" . $desc["ANSWER"] . ")";
             }
 
             //if($desc["FORMAT-INPUT"]=="hzmtoggle") throw new AfwRuntimeException("enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
@@ -459,7 +459,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 if ($desc["FORMAT-INPUT"] == "hzmtoggle") {
                     $display_val = $liste_rep[$val];
                     if (!$display_val) $display_val = "...";
-                    $css_arr = $obj::afw_explode($desc["HZM-CSS"]);
+                    $css_arr = AfwStringHelper::afw_explode($desc["HZM-CSS"]);
                     $css_val = $css_arr[$val];
 
 
@@ -512,7 +512,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                     $type_input_ret = "select";
 
                     if ($desc["FORMAT-INPUT"] == "hzmsel") {
-                        $css_arr = $obj::afw_explode($desc["HZM-CSS"]);
+                        $css_arr = AfwStringHelper::afw_explode($desc["HZM-CSS"]);
                         $css_class = "selectpicker"; //." ".$data_loaded_class.$data_length_class
                     } else {
                         $css_arr = null;

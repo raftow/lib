@@ -47,7 +47,7 @@ class AfwHtmlHelper extends AFWRoot {
                                 else $object_desc = "N/A";
                                 if(count($entry['args']))
                                 {
-                                        $args_desc = self::afw_export($entry['args'],true);
+                                        $args_desc = AfwStringHelper::afw_export($entry['args'],true);
                                 }
                                 else
                                 {

@@ -178,7 +178,7 @@ if($obj->editByStep)
         if($obj->stepsAreOrdered() and ($currstep > $obj->getLastEditedStep(false))) $obj->setLastEditedStep($currstep);        
 }
 $new_label = $obj->insertNewLabel("ar");
-$successful_save = AFWObject::traduireOperator("save_with_sucess", $lang). " " . AFWObject::traduireOperator("changes", $lang);        
+$successful_save = AfwLanguageHelper::tarjemOperator("save_with_sucess", $lang). " " . AfwLanguageHelper::tarjemOperator("changes", $lang);        
 
 $case_of_handle = "unknown";
 
@@ -379,7 +379,7 @@ if($save_update and $obj->after_save_edit)
     
     if($cl) 
     {
-        if((!$obj->after_save_edit["attribute"]) and (!$obj->after_save_edit["formulaAttribute"])) $obj::simpleError("bad configration for after_save_edit option : ".var_export($obj->after_save_edit,true));
+        if((!$obj->after_save_edit["attribute"]) and (!$obj->after_save_edit["formulaAttribute"])) AfwRunHelper::simpleError("bad configration for after_save_edit option : ".var_export($obj->after_save_edit,true));
         if($obj->after_save_edit["formulaAttribute"]) $id = $obj->calc($obj->after_save_edit["formulaAttribute"]);
         else $id = $obj->getVal($obj->after_save_edit["attribute"]);
         $currmod = $obj->after_save_edit["currmod"];

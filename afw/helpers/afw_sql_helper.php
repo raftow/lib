@@ -211,7 +211,7 @@ class AfwSqlHelper extends AFWRoot
 
     /**
      * 
-     * @return array like this [$result, $row_count, $affected_row_count]
+     * @return array like object [$result, $row_count, $affected_row_count]
      * 
      */
 
@@ -282,21 +282,21 @@ class AfwSqlHelper extends AFWRoot
         $server_db_prefix = AfwSession::config('db_prefix', 'c0');
 
         $all_oper_arr = [
-            'in (.)' => self::traduireOperator('IN', $lang),
-            '=' => self::traduireOperator('EQUAL', $lang, true),
-            '<' => self::traduireOperator('LESS_THAN', $lang, true),
-            '>' => self::traduireOperator('GREATER_THAN', $lang, true),
-            '<=' => self::traduireOperator('LESS_OR_EQUAL_THAN', $lang, true),
-            '>=' => self::traduireOperator('GREATER_OR_EQUAL_THAN', $lang, true),
-            '!=' => self::traduireOperator('NOT_EQUAL', $lang, true),
-            'between' => self::traduireOperator('BETWEEN', $lang, true),
-            "like X'%.%'" => self::traduireOperator('CONTAIN', $lang, true),
-            "like X'.%'" => self::traduireOperator('BEGINS_WITH', $lang, true),
-            "like X'%.'" => self::traduireOperator('ENDS_WITH', $lang, true),
-            "like X'.'" => self::traduireOperator('EQUAL', $lang, true),
-            "not like X'%.%'" => self::traduireOperator('NOT_CONTAIN', $lang, true),
-            "=''" => self::traduireOperator('IS_EMPTY', $lang, true),
-            "!=''" => self::traduireOperator('IS_NOT_EMPTY', $lang, true),
+            'in (.)' => AfwLanguageHelper::tarjemOperator('IN', $lang),
+            '=' => AfwLanguageHelper::tarjemOperator('EQUAL', $lang, true),
+            '<' => AfwLanguageHelper::tarjemOperator('LESS_THAN', $lang, true),
+            '>' => AfwLanguageHelper::tarjemOperator('GREATER_THAN', $lang, true),
+            '<=' => AfwLanguageHelper::tarjemOperator('LESS_OR_EQUAL_THAN', $lang, true),
+            '>=' => AfwLanguageHelper::tarjemOperator('GREATER_OR_EQUAL_THAN', $lang, true),
+            '!=' => AfwLanguageHelper::tarjemOperator('NOT_EQUAL', $lang, true),
+            'between' => AfwLanguageHelper::tarjemOperator('BETWEEN', $lang, true),
+            "like X'%.%'" => AfwLanguageHelper::tarjemOperator('CONTAIN', $lang, true),
+            "like X'.%'" => AfwLanguageHelper::tarjemOperator('BEGINS_WITH', $lang, true),
+            "like X'%.'" => AfwLanguageHelper::tarjemOperator('ENDS_WITH', $lang, true),
+            "like X'.'" => AfwLanguageHelper::tarjemOperator('EQUAL', $lang, true),
+            "not like X'%.%'" => AfwLanguageHelper::tarjemOperator('NOT_CONTAIN', $lang, true),
+            "=''" => AfwLanguageHelper::tarjemOperator('IS_EMPTY', $lang, true),
+            "!=''" => AfwLanguageHelper::tarjemOperator('IS_NOT_EMPTY', $lang, true),
         ];
         $prefixed_nom_col = $nom_col;
         list($prefix_col, $nom_col) = explode('.', $nom_col);
@@ -380,14 +380,14 @@ class AfwSqlHelper extends AFWRoot
                 } else {
                     $fixm = '';
                 }
-                // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " : " . $object->getAnswer($nom_col,$val_col);
+                // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " : " . $object->get Answer($nom_col,$val_col);
                 $phraseLangWhere =
                     "<span class='crit_field_name'>" .
                     $object->translate($original_nom_col, $lang) .
                     "</span> <span class='crit_field_oper'>" .
                     $all_oper_arr[$oper] .
                     "</span> : <span class='crit_field_value'>" .
-                    $object->getAnswer($nom_col, $val_col) .
+                    AfwFormatHelper::decodeAnswerOfAttribute($object, $nom_col, $val_col) .
                     '</span>';
 
                 return [
@@ -666,4 +666,576 @@ class AfwSqlHelper extends AFWRoot
             implode("\n", $join_sentence_arr),
         ];
     }
+
+
+
+
+    /**
+     * insert
+     * Insert row
+     * @param int $pk : Optional, specify the primary key
+     */
+    public static function insertObject($object, $pk = '', $check_if_exists_by_uk = true)
+    {
+        global $lang, $print_debugg, $print_sql, $MODE_BATCH_LOURD;
+
+        // if($object::$TABLE == "afield") die("object->insert on : ".var_export($object,true));
+        if ($object->IS_VIRTUAL) {
+            throw new AfwRuntimeException(
+                'Impossible to do call to the method insert() with the virtual table ' .
+                    $object::$TABLE .
+                    '.'
+            );
+        } elseif ($object->isChanged()) {
+            //if($object::$TABLE == "practice_cher") die("will insert into ".$object::$TABLE);
+            $user_id = AfwSession::getUserIdActing();
+            if (!$user_id) {
+                $user_id = 0;
+            }
+            $object->set($object->fld_CREATION_USER_ID(), $user_id);
+            $object->set(
+                $object->fld_CREATION_DATE(),
+                $object->get_CREATION_DATE_value()
+            );
+            $object->set($object->fld_UPDATE_USER_ID(), $user_id);
+            $object->set(
+                $object->fld_UPDATE_DATE(),
+                $object->get_UPDATE_DATE_value()
+            );
+            $object->set($object->fld_VERSION(), 1); // was setAfieldValue ??!!
+
+            if ($pk) {
+                $object->set($object->getPKField(), $pk);
+            }
+
+            $fields_updated = [];
+            $fields_to_insert = $object->getAllfieldsToInsert();
+
+            $dbg_rafik = false;
+            if ($dbg_rafik and ($object::$TABLE == "period")) {
+                die("afw.insert($pk) before before insert die : object->FIELDS_INITED = " . var_export($object->getAllfieldDefaultValues(), true) . ", 
+                              object -> FIELDS_UPDATED = " . var_export($object->fieldsHasChanged(), true) . " 
+                              after merge => " . var_export($fields_to_insert, true) . " 
+                              object -> AFIELD _VALUE =>" . var_export($object->getAllfieldValues(), true));
+            }
+
+            $object->beforeModification(
+                $object->getAfieldValue($object->getPKField()),
+                $fields_to_insert
+            );
+            $can_insert = $object->beforeInsert(
+                $object->getAfieldValue($object->getPKField()),
+                $fields_to_insert
+            );
+            // throw new AfwRuntimeException(var_export($object,true));
+            if (!$can_insert) {
+                $debugg_tech_notes =
+                    'warning : beforeInsert refused insert operation. declined insert into ' .
+                    $object::$TABLE;
+                if ($MODE_BATCH_LOURD) {
+                    AfwBatch::print_warning($debugg_tech_notes);
+                }
+                $information = "<div class='sql warning'> $debugg_tech_notes </div>";
+                AfwSession::sqlLog($information, 'HZM');
+                $object->debugg_tech_notes = $debugg_tech_notes;
+                return false;
+            }
+            // die("rafik 135001 : ".var_export($object,true));
+            // may be has been changed in the previous before insert event
+            $fields_to_insert = $object->getAllfieldsToInsert();
+            /*
+            if($object::$TABLE == "cher_file") 
+            {
+                die("afw.insert($pk) after before insert die : object->FIELDS_ INITED = ".var_export($object->getAllfieldDefaultValues(),true).", 
+                            object -> FIELDS_UPDATED = ".var_export($object->fieldsHasChanged(),true)." 
+                            after merge => ".var_export($fields_to_insert,true)." 
+                            object->AFIELD _VALUE =>".var_export($object->getAllfieldValues(),true));
+            }
+            */
+
+            if (!count($fields_to_insert)) {
+                $debugg_tech_notes =
+                    'warning : insert operation aborted because no field filled to insert declined insert into ' .
+                    $object::$TABLE;
+                if ($MODE_BATCH_LOURD) {
+                    AfwBatch::print_warning($debugg_tech_notes);
+                }
+                $information = "<div class='sql warning'> $debugg_tech_notes </div>";
+                AfwSession::sqlLog($information, 'HZM');
+                $object->debugg_tech_notes = $debugg_tech_notes;
+                return false;
+            }
+
+            if ($object->UNIQUE_KEY and $check_if_exists_by_uk) {
+                $unique_key_vals = [];
+                $myClass = $object->getMyClass();
+                // $this_copy = cl one $object;
+                // $this_copy->clearSelect();
+                $this_copy = new $myClass();
+                foreach ($object->UNIQUE_KEY as $key_col) {
+                    $unique_key_vals[] = $object->getVal($key_col);
+                    $this_copy->select($key_col, $object->getVal($key_col));
+                }
+                if ($this_copy->load() and $this_copy->getId() > 0) {
+                    $object->debugg_tech_notes =
+                        'has existing doublon id = ' . $this_copy->getId();
+                    $dbl_message =
+                        $object::$TABLE .
+                        ' UNIQUE-KEY-CONSTRAINT : (' .
+                        implode(',', $object->UNIQUE_KEY) .
+                        ") broken id already exists = ('" .
+                        implode("','", $unique_key_vals) .
+                        "') " .
+                        var_export($this_copy, true);
+                    //die("rafik 135004 query($query) : ".var_export($object,true));
+                    if ($object->ignore_insert_doublon) {
+                        $debugg_tech_notes =
+                            'doublon ignored declined insert into ' .
+                            $object::$TABLE;
+                        $information = "<div class='sql warning'> $debugg_tech_notes </div>";
+                        AfwSession::sqlLog($information, 'HZM');
+                        $object->debugg_tech_notes = $debugg_tech_notes;
+                        return false;
+                    } elseif ($object->isFromUI and $user_id != 1) {
+                        //die("rafik 135006 query($query) : ".var_export($object,true));
+                        return AfwRunHelper::simpleError($dbl_message);
+                    } else {
+                        throw new AfwRuntimeException($dbl_message);
+                    }
+
+                    // $object->set($object->getPKField(), $this_copy->getId());
+                    // $object->update();
+                }
+                //die("rafik 135003 query($query) : ".var_export($object,true));
+            }
+
+            $query = 'INSERT INTO ' . $object::_prefix_table($object::$TABLE) . ' SET';
+            /*
+            if($object::$TABLE == "cher_file") 
+            {
+                die("before query=$query, fields_to_insert[] = ".var_export($fields_to_insert,true));
+            }*/
+            // rafik : since version 2.0.1 we put FIELDS_UPDATED the old value
+            foreach ($fields_to_insert as $key => $old_value) {
+                $value = $object->getAfieldValue($key);
+                $structure = AfwStructureHelper::getStructureOf($object, $key);
+                if (
+                    (isset($structure) && !$structure['CATEGORY']) ||
+                    $object->isTechField($key)
+                ) {
+                    if (strcasecmp($value, 'now()') === 0) {
+                        $query .= ' ' . $key . ' = now(),';
+                    } elseif ($structure['NO-DELIMITER']) {
+                        $query .= " $key = $value,";
+                    } elseif ($structure['TYPE'] == 'PK') {
+                        if ($value) {
+                            $query .= " $key = $value,";
+                        }
+                    } elseif (
+                        $structure['TYPE'] == 'FK' or
+                        $structure['TYPE'] == 'INT'
+                    ) {
+                        if (!$value) {
+                            $value = '0';
+                        }
+                        $query .= " $key = $value,";
+                    } else {
+                        if ($structure['TYPE'] == 'GDAT') {
+                            if (!$value) $value = "0000-00-00";
+                        }
+                        if ($structure['UTF8']) {
+                            $_utf8 = '_utf8';
+                        } else {
+                            $_utf8 = '';
+                        }
+                        $query .=
+                            ' ' .
+                            $key .
+                            " = $_utf8'" .
+                            AfwStringHelper::_real_escape_string($value) .
+                            "',";
+                    }
+                    $fields_updated[$key] = $value;
+                }
+            }
+            $query = trim($query, ',');
+            //die("rafik 135002 query($query) : ".var_export($object,true));
+            //die($query);
+            // throw new AfwRuntimeException("should not query : $query");
+            /*
+            if(($object::$TABLE == "cher_file") and 
+               (contient($query, "INSERT INTO"))) 
+            {
+                   die("INSERT INTO to be executed : $query, fields_to_insert[] = ".var_export($fields_to_insert,true));
+            }
+            */
+            //if(!contient($query, "SELECT")) die("query to be executed : $query");
+            $return = $object->execQuery($query);
+
+            $my_pk = $object->getPKField();
+            $curr_id = $object->getId();
+            //die("rafik 13/5 : $my_pk = $curr_id ");
+
+            if ($return) {
+                if ($my_pk) {
+                    if (!$curr_id) {
+                        $my_id = $object::_insert_id($object->getProjectLinkName());
+                        $object->setAfieldValue($my_pk, $my_id);
+                        $object->debugg_tech_notes = "set PK($my_pk) = $my_id ";
+                    } else {
+                        $object->debugg_tech_notes = "my PK($my_pk) already setted to $curr_id . ";
+                    }
+                } else {
+                    throw new AfwRuntimeException(
+                        'MOMKEN SQL Problem : PK is not defined for table :  ' .
+                            $object::$TABLE
+                    );
+                }
+                $my_setted_id = $object->getId();
+                if (!$my_setted_id) {
+                    throw new AfwRuntimeException(
+                        'MOMKEN SQL Problem : insert into ' .
+                            $object::$TABLE .
+                            " has not been done correctly as id recolted is null, query : $query"
+                    );
+                }
+
+                $object->debugg_tech_notes .= " value setted for PK($my_pk) = $my_setted_id ";
+                $object->afterInsert($my_setted_id, $fields_updated);
+
+                if ($print_debugg and $print_sql) {
+                    echo "<br>\n ############################################################################# <br>\n";
+                    echo "<br>\n record inserted by query : $query id = $my_setted_id <br>\n";
+                    echo "<br>\n ############################################################################# <br>\n";
+                }
+
+                return $my_setted_id;
+            } else {
+                $object->debugg_tech_notes = "Error occured when executing query : $query";
+                return false;
+            }
+        } else {
+            throw new AfwRuntimeException(
+                "Insert declined because no fields updated, 
+                       AFIELD_ VALUE=" .
+                    var_export($object->getAllfieldValues(), true) .
+                    ", 
+                       FIELDS_UPDATED=" .
+                    var_export($object->fieldsHasChanged(), true) .
+                    ", 
+                       FIELDS_ INITED=" .
+                    var_export($object->getAllfieldDefaultValues(), true) .
+                    ", 
+                       object = " .
+                    var_export($object, true)
+            );
+            return false;
+        }
+    }
+
+
+    /**
+     * update
+     * Update row
+     */
+    public static function updateObject($object, $only_me = true)
+    {
+        if($object->IS_COMMITING) throw new AfwRuntimeException("To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods");
+        $object->IS_COMMITING = true;
+        global $AUDIT_DISABLED, $the_last_update_sql;
+
+        $user_id = AfwSession::getUserIdActing();
+
+        if ($object->IS_VIRTUAL) {
+            throw new AfwRuntimeException(
+                'Impossible to do call to the method update() with the virtual table ' .
+                $object::$TABLE .
+                    '.'
+            );
+        } else {
+            //if((static::$TABLE=="student_session") and ($object->getVal("xxxxx")==102937)) throw new AfwRuntimeException("object->FIELDS_UPDATED = ".var_export($object->FIELDS_UPDATED,true));
+            //if((static::$TABLE=="student_session")) throw new AfwRuntimeException("object->FIELDS_UPDATED = ".var_export($object->FIELDS_UPDATED,true));
+
+
+
+            if ($only_me) {
+                $id_updated = $object->getId();
+                if (!$id_updated) {
+                    throw new AfwRuntimeException(
+                        "$object : if update only one record mode, the Id should be specified ! obj = " .
+                            var_export($object, true)
+                    );
+                }
+            } else {
+                $id_updated = '';
+            }
+
+            if ($only_me) {
+                if ($object->CORRECT_IF_ERRORS and !$object->isOk(true)) {
+                    $object->repareBeforeUpdate();
+                }
+
+                if ($object->isChanged()) {
+                    $object->beforeModification(
+                        $id_updated,
+                        $object->FIELDS_UPDATED
+                    );
+                    $can_update = $object->beforeUpdate(
+                        $id_updated,
+                        $object->FIELDS_UPDATED
+                    );
+                    /*
+                    if(static::$TABLE == "student_session") 
+                    {
+                        throw new AfwRuntimeException(static::$TABLE." updating ... fields updated count = ".count($object->FIELDS_UPDATED)." / beforeUpdate accepted update ? = $can_update / FIELDS_UPDATED = " . var_export($object->FIELDS_UPDATED,true));
+                    }*/
+                    if (!$can_update) {
+                        $object->debugg_reason_non_update =
+                            'beforeUpdate refused update';
+                    }
+                } else {
+                    $object->debugg_reason_non_update = ' no fields updated';
+                    $can_update = false;
+                }
+            } else {
+                $can_update = true;
+            }
+
+            if ($can_update) {
+                if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
+                    //die("call to $object ->audit_before_update(..) : ".var_export($object->FIELDS_UPDATED,true));
+                    $object->audit_before_update($object->FIELDS_UPDATED);
+                } else {
+                    // if(....) die("no call to $object ->audit_before_update(..) : ".var_export($object->FIELDS_UPDATED,true));
+                }
+
+                //if((!$arr_tables_without_technical_fields) or (array_search(static::$TABLE, $arr_tables_without_technical_fields) === false)) {
+
+                if (!$user_id) {
+                    $user_id = 0;
+                }
+                $object->setAfieldValue($object->fld_UPDATE_USER_ID(), $user_id);
+                $object->setAfieldValue(
+                    $object->fld_UPDATE_DATE(),
+                    $object->get_UPDATE_DATE_value()
+                );
+                if ($only_me and $object->getId()) {
+                    $ver = $object->getVersion() + 1;
+                    $object->setAfieldValue($object->fld_VERSION(), $ver);
+                } else {
+                    $ver = $object->fld_VERSION() . '+1';
+                }
+                //}
+
+                /*
+                if(static::$TABLE == "student_session") 
+                {
+                    die(static::$TABLE." updating ... before get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($object->FIELDS_UPDATED)." / can update = $can_update / FIELDS_UPDATED = " . var_export($object->FIELDS_UPDATED,true));
+                }
+                */
+
+                list($query, $fields_updated, $report) = AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated);
+
+                /*
+                if(static::$TABLE == "student_session") 
+                {
+                    die(static::$TABLE." updating ... after get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($fields_updated)." / query = $query / report=$report/ fields_updated = " . var_export($fields_updated,true));
+                }
+                */
+
+
+                $return = 0;
+                if ($can_update) {
+                    $the_last_update_sql .= " --> " . var_export($fields_updated, true) . " SQL = $query";
+                    if ($object->showQueryAndHalt) {
+                        throw new AfwRuntimeException(
+                            'showQueryAndHalt : updated fields = ' .
+                                $object->showArr($fields_updated) .
+                                '<br> report = ' .  $report .
+                                '<br> query = ' .  $query
+                        );
+                    }
+                    if (count($fields_updated) > 0) {
+
+                        $object->execQuery($query);
+                        $return = $object->_affected_rows(
+                            $object->getProjectLinkName()
+                        );
+                    } else {
+                        $object->debugg_reason_non_update = 'nothing updated';
+                        $return = 0;
+                    }
+
+                    if ($only_me and (count($fields_updated) > 0)) {
+                        $object->afterUpdate($id_updated, $fields_updated);
+                    }
+                    if ($only_me and $return > 1) {
+                        throw new AfwRuntimeException(
+                            "MOMKEN error affected rows = $return, strang for query : ",
+                            $query .
+                                '///' .
+                                AfwMysql::get_error(
+                                    AfwDatabase::getLinkByName(
+                                        $object->getProjectLinkName()
+                                    )
+                                )
+                        );
+                    } else {
+                        if ($only_me and $id_updated) {
+                            AfwCacheSystem::getSingleton()->removeObjectFromCache(
+                                $object::$MODULE,
+                                $object::$TABLE,
+                                $id_updated
+                            );
+                        } else {
+                            AfwCacheSystem::getSingleton()->removeTableFromCache(
+                                $object::$MODULE,
+                                $object::$TABLE
+                            );
+                        }
+                    }
+                } else {
+                }
+
+                $object->clearSelect();
+                $object->IS_COMMITING = false;
+                return $return;
+            } else {
+                /*
+                if(static::$TABLE=="student_session")
+                {
+                   die("can not update, reason : ".$object->debugg_reason_non_update." : ".static::$TABLE." FIELDS_UPDATED : <br> ".$object->showArr($object->FIELDS_UPDATED));
+                }
+                */
+                //throw new AfwRuntimeException();
+                $the_last_update_sql .= " --> can not update : " . $object->debugg_reason_non_update;
+                $object->IS_COMMITING = false;
+                return 0;
+            }
+        }
+        $object->IS_COMMITING = false;
+    }
+
+
+    /**
+     * hide  different then logicDelete by 2 things
+     *     1. hide operate on one record only  and logicDelete can operate many records
+     *     2. execute beforeHide and afterHide events
+     * Hide row by setting AVAILABLE_IND = 'N'
+     */
+    public static function hideObject($object)
+    {
+        $me = AfwSession::getUserIdActing();
+        if ($object->IS_VIRTUAL) {
+            throw new AfwRuntimeException(
+                'Impossible to do call to the method hide() with the virtual table ' .
+                $object::$TABLE .
+                    '.'
+            );
+        } else {
+            if ($object->AUDIT_DATA and !$object->AUDIT_DISABLED) {
+                $object->audit_before_update([$object->fld_ACTIVE() => 'N']);
+            }
+
+            $user_id = $me;
+            if (!$user_id) {
+                $user_id = 0;
+            }
+
+            $return = false;
+
+            if ($object->beforeHide($object->getAfieldValue($object->getPKField()))) {
+                $object->setAfieldValue($object->fld_UPDATE_USER_ID(), $user_id);
+                $object->setAfieldValue($object->fld_UPDATE_DATE(), 'now()');
+                $ver = $object->getVersion() + 1;
+                $object->setAfieldValue($object->fld_VERSION(), $ver);
+
+                $query =
+                    'UPDATE ' . $object::_prefix_table($object::$TABLE) . ' SET ';
+
+                $query .=
+                    $object->fld_UPDATE_USER_ID() .
+                    ' = ' .
+                    $user_id .
+                    ', ' .
+                    $object->fld_UPDATE_DATE() .
+                    ' = now(), ' .
+                    $object->fld_VERSION() .
+                    " = $ver, ";
+
+                $query .=
+                    $object->fld_ACTIVE() .
+                    " = 'N' WHERE " .
+                    $object->getPKField() .
+                    " = '" .
+                    $object->getAfieldValue($object->getPKField()) .
+                    "'";
+                $return = $object->execQuery($query);
+
+                $object->afterHide($object->getAfieldValue($object->getPKField()));
+            }
+
+            return $return;
+        }
+    }
+
+
+    public static function force_update_date($object, $update_datetime_greg)
+    {
+        $my_id = $object->getId();
+        if ($my_id and $object->CAN_FORCE_UPDATE_DATE) {
+            $table_prefixed = $object::_prefix_table($object::$TABLE);
+            $query = 'UPDATE ' . $table_prefixed . ' SET ';
+            $query .= $object->fld_UPDATE_DATE() . " = '$update_datetime_greg' ";
+            $query .= 'WHERE ' . $object->getPKField() . " = '$my_id'";
+
+            $object->execQuery($query);
+            $return = $object->_affected_rows($object->getProjectLinkName());
+        } else {
+            $return = -1;
+        }
+
+        return $return;
+    }
+
+    public static function force_creation_date($object, $update_datetime_greg)
+    {
+        $my_id = $object->getId();
+        if ($my_id and $object->CAN_FORCE_UPDATE_DATE) {
+            $table_prefixed = $object::_prefix_table($object::$TABLE);
+            $query = 'UPDATE ' . $table_prefixed . ' SET ';
+            $query .=
+                $object->fld_CREATION_DATE() . " = '$update_datetime_greg', ";
+            $query .= $object->fld_UPDATE_DATE() . " = '$update_datetime_greg' ";
+            $query .= 'WHERE ' . $object->getPKField() . " = '$my_id'";
+
+            $object->execQuery($query);
+            $return = $object->_affected_rows($object->getProjectLinkName());
+        } else {
+            $return = -1;
+        }
+
+        return $return;
+    }
+
+
+    public static function simulateUpdate($object, $only_me = true)
+    {
+        $user_id = AfwSession::getUserIdActing();
+        if ($only_me) {
+            $id_updated = $object->getId();
+        } else {
+            $id_updated = '';
+        }
+        $ver = $object->fld_VERSION() . '+1';
+
+        $can_update = $object->beforeUpdate($id_updated,$object->fieldsHasChanged());
+
+        if (!$can_update) throw new AfwRuntimeException("can't update beforeUpdate refused : object->FIELDS_UPDATED = " . var_export($object->fieldsHasChanged(), true));
+
+        return AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated);
+    }
+
+    
+
 }

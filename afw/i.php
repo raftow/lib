@@ -41,15 +41,15 @@ if($controllerName)
         include_once (dirname(__FILE__)."/../../$page_header_file");
         if(!$controllerObj)
         {
-                AFWRoot::safeDie("failed to instanciate controller $controllerName : $controllerObjError");
+                AfwRunHelper::safeDie("failed to instanciate controller $controllerName : $controllerObjError");
         }
         elseif($controllerObjError)
         {
-                AFWRoot::safeDie($controllerName."Controller => failed : $controllerObjError");
+                AfwRunHelper::safeDie($controllerName."Controller => failed : $controllerObjError");
         }
         elseif(!method_exists($controllerObj,$methodName))
         {
-                AFWRoot::safeDie(get_class($controllerObj)." does'nt contain method ".$methodName);
+                AfwRunHelper::safeDie(get_class($controllerObj)." does'nt contain method ".$methodName);
         }
         if($request !== null) $controllerObj->$methodName($request);
         else $controllerObj->$defaultMethod($old_request);  // if method can't be initialized we return back to default method

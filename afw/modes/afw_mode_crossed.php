@@ -282,7 +282,7 @@ if($nb_objs>0)
         }            
         
         $out_scr .= '   <input type="hidden" name="id_origin"   value="'.$id_origin.'"/>
-        		<input type="hidden" name="class_origin"   value="'.$myMainObject::hzmEncrypt($class_origin).'"/>
+        		<input type="hidden" name="class_origin"   value="'.AfwStringHelper::hzmEncrypt($class_origin).'"/>
                         <input type="hidden" name="module_origin"   value="'.$module_origin.'"/>
                         <input type="hidden" name="step_origin"   value="'.$step_origin.'"/>
         		<input type="hidden" name="ids"   value="'.$ids.'"/>
@@ -296,10 +296,10 @@ if($nb_objs>0)
         		<input type="hidden" name="fixm"   value="'.$fixm.'"/>
         		<input type="hidden" name="fixmtit"   value="'.$fixmtit.'"/>
         		<input type="hidden" name="fixmdisable"   value="'.$fixmdisable.'"/>
-                        <input type="hidden" name="cl"   value="'.$myMainObject::hzmEncrypt($cl).'"/>
+                        <input type="hidden" name="cl"   value="'.AfwStringHelper::hzmEncrypt($cl).'"/>
         		'.$hid_sel_.'
                         <input type="hidden" name="currmod"   value="'.$currmod.'"/>
-        		<input type="hidden" name="class_obj"  value="'.$myMainObject::hzmEncrypt($cl).'"/>
+        		<input type="hidden" name="class_obj"  value="'.AfwStringHelper::hzmEncrypt($cl).'"/>
         		<input type="hidden" name="nb_objs"     value="'.$nb_objs.'"/>
                         <input type="hidden" name="popup"   value="'.$popup_2.'"/>
                         <input type="hidden" name="pbmon"   value="'.$method_back.'"/>

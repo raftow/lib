@@ -200,7 +200,7 @@ class AfwDatabase extends AFWRoot
             if ((!($MODE_SQL_PROCESS_LOURD or $MODE_BATCH_LOURD)) and ($nb_queries_executed > $_sql_analysis_seuil_calls))
             {
                 if ($MODE_DEVELOPMENT) {
-                    self::simpleError(
+                    AfwRunHelper::simpleError(
                         "MODE_BATCH_LOURD=$MODE_BATCH_LOURD empty ? and MODE_SQL_PROCESS_LOURD=$MODE_SQL_PROCESS_LOURD empty ? and $nb_queries_executed > $_sql_analysis_seuil_calls ?<br>
                         Too much queries executed when mode is not MODE_BATCH_LOURD or MODE_SQL_PROCESS_LOURD ! ",
                         'sql_picture => ' . var_export($_sql_picture, true)
@@ -242,9 +242,9 @@ class AfwDatabase extends AFWRoot
                 // AFWDebugg::log($sql_error);
                 /*
                 if ($throw_error) {
-                    self::lightSafeDie();
+                    AfwRunHelper::lightSafeDie();
                 } else {
-                    self::lightSafeDie(
+                    AfwRunHelper::lightSafeDie(
                         'see why this error is not thrown and manage this well : ' .
                             $sql_error
                     );
@@ -272,7 +272,7 @@ class AfwDatabase extends AFWRoot
                         {
                             if ($throw_error and $throw_analysis_crash and $MODE_DEVELOPMENT) 
                             {
-                                self::simpleError(
+                                AfwRunHelper::simpleError(
                                     'static analysis crash',
                                     "query $sql_query : has been called more than 50 times, may be because the result is empty so no cache working",
                                     '_sql_analysis => ' . var_export($_sql_analysis, true)
@@ -403,7 +403,7 @@ class AfwDatabase extends AFWRoot
             } 
             else 
             {
-                self::lightSafeDie("For SQL $sql_query on Server/ProjectLink[$module_server/$project_link_name] : 
+                AfwRunHelper::lightSafeDie("For SQL $sql_query on Server/ProjectLink[$module_server/$project_link_name] : 
                     <div class='sql-error'>See why this error is not thrown and manage this well : " .$sql_error . "</div>");
                 AfwSession::sqlError($sql_error, 'hzm');
             }

@@ -182,7 +182,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                                 // 
                                                 if($log_input_qedit) $qedit_input_arr[$qerow][$qedit_nom_col]["input"] .= "<pre class='php'>error : ".$log_input_qedit."</pre>";
                                                 
-                                                if($obj->isActive() and $desc["DYNAMIC-HELP"]) $qedit_input_arr[$qerow][$qedit_nom_col]["input"] .= $obj::tooltipText($obj->getHelpFor($nom_col,$lang)); 
+                                                if($obj->isActive() and $desc["DYNAMIC-HELP"]) $qedit_input_arr[$qerow][$qedit_nom_col]["input"] .= AfwShowHelper::tooltipText(AfwStructureHelper::getHelpFor($obj, $nom_col, $lang)); 
                                                 $start_row = $obj->qeditNum;
                                                 /*
                                                 $input_html = $qedit _input[$qedit_nom_col];

@@ -179,7 +179,7 @@ class AfwFileUploader extends AFWRoot
                         $error .= "<br> حجم الملف : $afile_size ";                        
                         // $error .= "<br> الحد الأقصى للحجم المسموح به : ";
                         $error_decoded = self::decodeUploadError($file_arr['error']);
-                        $error .= "<br> نص الخطأ : " . self::tt($error_decoded);
+                        $error .= "<br> نص الخطأ : " . AfwLanguageHelper::tt($error_decoded);
                         if(($objme and $objme->isSuperAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false))
                         {
                                 $error .= "<br> for Admin => _FILES = ".var_export($_FILES,true); //"upload error occured (check file type and format and size)";//;

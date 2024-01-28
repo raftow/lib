@@ -283,7 +283,7 @@ class AfwFormulaHelper extends AFWRoot
         elseif ($struct['FOR_HELP']) {
             $object_formula_log[$attribute] = 'FOR_HELP';
             $attribute_original = str_replace('_help', '', $attribute);
-            $return = $object->getHelpFor($attribute_original, $lang);
+            $return = AfwStructureHelper::getHelpFor($object, $attribute_original, $lang);
             if (!$return) {
                 $return = "no help defined for $attribute_original lang=$lang";
             }
@@ -354,6 +354,14 @@ class AfwFormulaHelper extends AFWRoot
             $object->$formula_cache_attribute = $return;
         }
 
+        return $return;
+    }
+
+    public static final function calculateFormulaResult($object, $attribute, $what = "value")
+    {
+        $methodFormule = 'calc' . ucfirst($attribute);
+        $return = $object->$methodFormule($what);
+        // if($attribute=="school_class_id") die("rafik $this => $methodFormule($what) = [$return] ");
         return $return;
     }
 }

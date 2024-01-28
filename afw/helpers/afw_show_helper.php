@@ -621,14 +621,14 @@ class AfwShowHelper
         $force_retrieve_cols = null;
         $cl_tr = '';
 
-        // if($options and (count($options)>0)) AFWRoot::dd("rafik options not empty");
+        // if($options and (count($options)>0)) AfwStructureHelper::dd("rafik options not empty");
 
         foreach ($options as $option => $option_value) {
             ${ $option} = $option_value;
-        // if($option == "hide_retrieve_cols") AFWRoot::dd("رفيق قل اللهم لا سهل الا ما جعلته سهلا : option hide_retrieve_cols found in ".var_export($options,true));
+        // if($option == "hide_retrieve_cols") AfwStructureHelper::dd("رفيق قل اللهم لا سهل الا ما جعلته سهلا : option hide_retrieve_cols found in ".var_export($options,true));
         }
 
-        // if($options and (count($options)>0)) AFWRoot::dd("rafik look اللهم لا سهل الا ما جعلته سهلا : hide_retrieve_cols is ".var_export($hide_retrieve_cols,true)." where options is ".var_export($options,true));
+        // if($options and (count($options)>0)) AfwStructureHelper::dd("rafik look اللهم لا سهل الا ما جعلته سهلا : hide_retrieve_cols is ".var_export($hide_retrieve_cols,true)." where options is ".var_export($options,true));
 
         $ids = '';
 
@@ -674,7 +674,7 @@ class AfwShowHelper
 /*
 if($obj instanceof Request) 
 {
-AFWRoot::dd("getRetrieveCols($mode) with hide_retrieve_cols :".var_export($hide_retrieve_cols,true)." has returned arr_col = ".var_export($arr_col,true)." where options :".var_export($options,true));        
+AfwStructureHelper::dd("getRetrieveCols($mode) with hide_retrieve_cols :".var_export($hide_retrieve_cols,true)." has returned arr_col = ".var_export($arr_col,true)." where options :".var_export($options,true));        
 }
 */
 
@@ -742,7 +742,7 @@ AFWRoot::dd("getRetrieveCols($mode) with hide_retrieve_cols :".var_export($hide_
                 $header['حذف'] = ['TYPE' => 'DEL', 'DEL_LEVEL' => $del_level];
             }
         }
-        //else $obj::lightSafeDie("mode_force_cols");
+        //else AfwRunHelper::lightSafeDie("mode_force_cols");
 /*
 if(!$obj->deleteIcon) die("obj = ".var_export($obj, true));
 if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
@@ -1127,7 +1127,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             ) {
                                                 //if(!$display_val) $display_val = "...";
                                                 // die("key=$key, val=$val, display_val=$display_val, HZM-CSS=".$structure["HZM-CSS"]);
-                                                $css_arr = $val::afw_explode(
+                                                $css_arr = AfwStringHelper::afw_explode(
                                                     $desc['HZM-CSS']
                                                 );
                                                 $css_val =
@@ -1826,5 +1826,14 @@ $('#$showAsDataTable').DataTable( {
         }
         
         return $return;
+    }
+
+    public static function tooltipText($text)
+    {
+        if ($text) {
+            return "<img src='../lib/images/tooltip.png' data-toggle='tooltip' data-placement='top' title='$text'  width='20' heigth='20'>";
+        } else {
+            return '';
+        }
     }
 }

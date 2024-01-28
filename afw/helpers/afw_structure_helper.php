@@ -1,12 +1,22 @@
 <?php
 class AfwStructureHelper extends AFWRoot 
 {
-
+    public static function dd($message, $to_die=true, $to_debugg=false, $trace=true, $light=false)
+    {
+        if($trace) $message = $message."<br>"._back_trace($light);
+        if($to_debugg) AFWDebugg::log($message);
+        if($to_die) 
+        {
+            $html = ob_get_clean();
+            die($html.$message);
+        }
+            
+    }
 
     public static final function getStructureOf($object, $field_name)
     {
         $orig_field_name = $field_name;
-        $field_name = $object->shortNameToAttributeName($field_name);
+        $field_name = AfwStructureHelper::shortNameToAttributeName($object, $field_name);
         if(!$field_name) $field_name = $orig_field_name;
         $struct = $object->getMyDbStructure(
             $return_type = 'structure',
@@ -14,7 +24,7 @@ class AfwStructureHelper extends AFWRoot
         );
 
         if ($struct) {
-            $struct = AfwStructureHelper::repareMyStructure($object,$struct, $field_name);
+            $struct = AfwStructureHelper::repareMyStructure($object, $struct, $field_name);
         }
 
         if($struct["CATEGORY"]=="SHORTCUT")
@@ -22,7 +32,7 @@ class AfwStructureHelper extends AFWRoot
             if(!$object->shouldBeCalculatedField($field_name))
             {
                 $cl = get_class($object);
-                throw new AfwRuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$field_name] is shortcut but not declared in overridden shouldBeCalculatedField method, do like this : <pre><code>".$object->suggestAllCalcFields()."</code></pre>");
+                throw new AfwRuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$field_name] is shortcut but not declared in overridden shouldBeCalculatedField method, do like this : <pre><code>".self::suggestAllCalcFields($object)."</code></pre>");
             }
             
         }
@@ -121,7 +131,7 @@ class AfwStructureHelper extends AFWRoot
                 $tab_instances[$this_cl]++;
                 if ($tab_instances[$this_cl] == $max_calls_of_structure) {
                     //  and ($this_cl == "module_structure")
-                    self::lightSafeDie(
+                    AfwRunHelper::lightSafeDie(
                         "duree_ms=$duree_ms $this_cl reached " .
                             $tab_instances[$this_cl],
                         $tab_instances
@@ -425,7 +435,7 @@ class AfwStructureHelper extends AFWRoot
         $for_this_instance = true,
         $reason_readonly = false
     ) {
-        // self::safeDie("attributeIsReadOnly($attribute)");
+        // AfwRunHelper::safeDie("attributeIsReadOnly($attribute)");
         /*
         This is not logic attributes R/O or no it is not mandatory to have relation with user authenticated
         $objme = AfwSession::getUserConnected();
@@ -845,13 +855,227 @@ class AfwStructureHelper extends AFWRoot
 
             $liste_rep = $object->$method();
         } else {
-            $liste_rep = $object->getEnumTotalAnswerList(
-                $attribute,
-                $enum_answer_list
-            );
+            $liste_rep = AfwLoadHelper::getEnumTotalAnswerList($object, $attribute,$enum_answer_list);
         }
 
         return $liste_rep;
+    }
+
+
+    public static final function getDefaultValue($object, $attribute, $struct=null)
+    {
+        if(!$struct) $struct = AfwStructureHelper::getStructureOf($object, $attribute);
+        return $struct['DEFAULT'];
+    }
+
+    public static final function getHelpFor($object, $attribute_original, $lang = 'ar')
+    {
+        if (!$object->dynamicHelpCondition($attribute_original)) {
+            return '';
+        }
+        $struct = AfwStructureHelper::getStructureOf($object, $attribute_original);
+
+        $this_help_text = $attribute_original . '_help_text';
+        $this_help_text = $object->translate($this_help_text, $lang);
+        $this_help_text = $object->decodeTpl($this_help_text);
+
+        $instance_help_text = '';
+
+        if ($struct['TYPE'] == 'FK') {
+            $obj = $object->het($attribute_original);
+            if ($obj) {
+                $obj_id = $obj->getId();
+                $instance_help_text = $obj->translate("instance_".$obj_id."_help_text", $lang);
+                $instance_help_text = $object->decodeTpl($instance_help_text);
+                $instance_help_text = $obj->decodeTpl($instance_help_text);
+            }
+        }
+
+        return trim($this_help_text . $instance_help_text);
+    }
+
+    public static function fieldExists($object, $attribute)
+    {
+        $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        // if($attribute=="draft" and ($this instanceof CrmOrgunit)) die("structure for attribute $attribute = ".var_export($structure,true));
+        // if(!$structure) die(get_class($this)." structure for attribute $attribute dos not exists ");
+        if ($structure['TYPE']) {
+            return true;
+        }
+        if ($object->isTechField($attribute)) {
+            return true;
+        }
+        return false;
+    }
+
+    public static function isRealAttribute($object, $attribute, $desc = '')
+    {
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        }
+
+        return !$desc['CATEGORY'];
+    }
+
+    public static function isSettable($object, $attribute, $desc = '')
+    {
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        }
+
+        $is_category_field = $desc['CATEGORY'];
+        $can_be_setted_field = $desc['CAN-BE-SETTED'];
+        return [
+            $is_category_field,
+            $desc and (!$is_category_field or $can_be_setted_field),
+        ];
+    }
+
+    public static function suggestAllCalcFields($object)
+    {
+        $shortcuts = $object::getShortcutFields();
+        $result = "public function shouldBeCalculatedField(\$attribute){\n";
+
+        foreach($shortcuts as $attribute => $is_shortcut)
+        {
+            if($is_shortcut) $result .= "   if(\$attribute==\"$attribute\") return true;\n";
+        }
+        $result .= "   return false;\n";
+        $result .= "}";
+
+        return $result;
+    }
+
+    public static function suggestAllShortNames($object)
+    {
+        $short_names = $object::getShortNames();
+        $result = "protected function myShortNameToAttributeName(\$attribute){\n";
+
+        foreach($short_names as $short_name => $attribute)
+        {
+            $result .= "   if(\$attribute==\"$short_name\") return \"$attribute\";\n";
+        }
+        $result .= "   return \$attribute;\n";
+        $result .= "}";
+
+        return $result;
+    }
+
+    public static function shortNameToAttributeName($object, $attribute)
+    {
+        $std_att = $object->stdShortNameToAttributeName($attribute);
+        $my_att = $object->myShortNameToAttributeName($attribute);
+
+
+        if(!$my_att)
+        {
+            throw new AfwRuntimeException("Momken 3.0 Error : myShortNameToAttributeName failed to decode $attribute attribute");
+        }
+
+        if(($std_att != $attribute) and ($my_att == $attribute))
+        {
+            $cl = get_class($object);
+            throw new AfwRuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$std_att, Shortname=$attribute] Use of short names in strcucture obsoleted except if you override myShortNameToAttributeName method to return it example : <pre><code>".AfwStructureHelper::suggestAllShortNames($object)."</code></pre>");
+        }
+
+        return $my_att;
+    }
+
+    public static final function containItems($object, $attribute)
+    {
+        $attribute = AfwStructureHelper::shortNameToAttributeName($object, $attribute);
+        return $object->getCategoryOf($attribute) == 'ITEMS';
+    }
+
+    public static final function containObjects($object, $attribute)
+    {
+        $attribute = AfwStructureHelper::shortNameToAttributeName($object,$attribute);
+        $typeOfAtt = $object->getTypeOf($attribute);
+        return AfwUmsPagHelper::isObjectType($typeOfAtt);
+        //return (array_key_exists($attribute, $this->AFIELD _VALUE) and (( == "MFK") or ($this->getTypeOf($attribute) == "FK")));
+    }
+
+    public static final function containData($object, $attribute)
+    {
+        $attribute = AfwStructureHelper::shortNameToAttributeName($object, $attribute);
+        $typeOfAtt = $object->getTypeOf($attribute);
+        return AfwUmsPagHelper::isValueType($typeOfAtt);
+        //return ((array_key_exists($attribute, $this->AFIELD _VALUE) or $this->attributeIsFormula($attribute)) and (($this->getTypeOf($attribute) != "MFK") and ($this->getTypeOf($attribute) != "FK")));
+    }
+
+    public static function isEasyAttribute($object, $attribute)
+    {
+        if (!$object->easyModeNotOptim()) {
+            return false;
+        } else {
+            return AfwStructureHelper::isEasyAttributeNotOptim($object, $attribute);
+        }
+    }
+
+    public static final function isEasyAttributeNotOptim($object, $attribute, $struct = null)
+    {
+        if(!$struct) $struct = AfwStructureHelper::getStructureOf($object, $attribute);
+        return $struct and
+            !$struct['CATEGORY'] and
+            $struct['TYPE'] != 'MFK' and
+            $struct['TYPE'] != 'FK';
+    }
+
+
+    public static final function isFormulaEasyAttributeNotOptim($object, $attribute)
+    {
+        $struct = AfwStructureHelper::getStructureOf($object, $attribute);
+
+        return $struct and $struct['CATEGORY'] == 'FORMULA';
+    }
+
+    public static function isFormulaEasyAttribute($object, $attribute)
+    {
+        if (!$object->easyModeNotOptim()) {
+            return false;
+        } else {
+            return AfwStructureHelper::isFormulaEasyAttributeNotOptim($object, $attribute);
+        }
+    }
+    
+
+    public static function isObjectEasyAttribute($object, $attribute)
+    {
+        if (!$object->easyModeNotOptim()) {
+            return false;
+        } else {
+            return AfwStructureHelper::isObjectEasyAttributeNotOptim($object, $attribute);
+        }
+    }
+
+    public static final function isObjectEasyAttributeNotOptim($object, $attribute)
+    {
+        $struct = AfwStructureHelper::getStructureOf($object, $attribute);
+
+        $return =
+            ($struct and !$struct['CATEGORY'] and $struct['TYPE'] == 'FK');
+
+        //if($attribute=="bus") die("isObjectEasy=$return getStructureOf($attribute) = ".var_export($struct,true));
+
+        return $return;
+    }
+
+    public static final function isListObjectEasyAttributeNotOptim($object, $attribute)
+    {
+        $struct = AfwStructureHelper::getStructureOf($object, $attribute);
+
+        return $struct and
+            (!$struct['CATEGORY'] and $struct['TYPE'] == 'MFK' or
+                $struct['CATEGORY'] == 'ITEMS' and $struct['TYPE'] == 'FK');
+    }
+
+    public static function isListObjectEasyAttribute($object, $attribute)
+    {
+        if (!$object->easyModeNotOptim()) {
+            return false;
+        } else {
+            return AfwStructureHelper::isListObjectEasyAttributeNotOptim($object, $attribute);
+        }
     }
 
 

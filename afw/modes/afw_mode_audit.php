@@ -124,7 +124,7 @@ foreach($attribute_arr as $attribute)
                     }
                     else
                     {
-                       $audit_data[$attribute][$audit_key]["update_auser_id"] = $myObj->decodeSimulatedFieldValue($myObj::fld_UPDATE_USER_ID(), $audit_data[$attribute][$audit_key]["update_auser_id"]);
+                       $audit_data[$attribute][$audit_key]["update_auser_id"] = AfwFormatHelper::decodeSimulatedFieldValue($myObj, $myObj::fld_UPDATE_USER_ID(), $audit_data[$attribute][$audit_key]["update_auser_id"]);
                     }
             } 
         }
@@ -177,7 +177,7 @@ foreach($attribute_arr as $attribute)
             }
             else
             {
-               $audit_data["all"][$audit_key]["update_auser_id"] = $myObj->decodeSimulatedFieldValue($myObj::fld_UPDATE_USER_ID(), $audit_data["all"][$audit_key]["update_auser_id"]);
+               $audit_data["all"][$audit_key]["update_auser_id"] = AfwFormatHelper::decodeSimulatedFieldValue($myObj, $myObj::fld_UPDATE_USER_ID(), $audit_data["all"][$audit_key]["update_auser_id"]);
             }
     }
     */   

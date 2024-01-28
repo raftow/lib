@@ -2631,7 +2631,7 @@ function hzm_deliver_page($page_callback_result, $default_delivery_callback = NU
     // If a delivery callback is specified, but doesn't exist as a function,
     // something is wrong, but don't print anything, since it's not known
     // what format the response needs to be in.
-    watchdog('delivery callback not found', 'callback %callback not found: %q.', array('%callback' => $delivery_callback, '%q' => $_GET['q']), WATCHDOG_ERROR);
+    AfwRunHelper::afw_guard('delivery callback not found', 'callback %callback not found: %q.', array('%callback' => $delivery_callback, '%q' => $_GET['q']), WATCHDOG_ERROR);
   }
 }
 
@@ -2677,7 +2677,7 @@ function hzm_deliver_html_page($page_callback_result) {
         // Print a 404 page.
         hzm_add_http_header('Status', '404 Not Found');
 
-        watchdog('page not found', check_plain($_GET['q']), NULL, WATCHDOG_WARNING);
+        AfwRunHelper::afw_guard('page not found', check_plain($_GET['q']), NULL, WATCHDOG_WARNING);
 
         // Check for and return a fast 404 page if configured.
         hzm_fast_404();
@@ -2712,7 +2712,7 @@ function hzm_deliver_html_page($page_callback_result) {
       case MENU_ACCESS_DENIED:
         // Print a 403 page.
         hzm_add_http_header('Status', '403 Forbidden');
-        watchdog('access denied', check_plain($_GET['q']), NULL, WATCHDOG_WARNING);
+        AfwRunHelper::afw_guard('access denied', check_plain($_GET['q']), NULL, WATCHDOG_WARNING);
 
         // Keep old path for reference, and to allow forms to redirect to it.
         if (!isset($_GET['destination'])) {
@@ -4547,7 +4547,7 @@ function hzm_get_js($scope = 'header', $javascript = NULL, $skip_alter = FALSE) 
     foreach ($files as $key => $file_set) {
       $uri = hzm_build_js_cache($file_set);
       // Only include the file if was written successfully. Errors are logged
-      // using watchdog.
+      // using AfwRunHelper::afw_guard.
       if ($uri) {
         $preprocess_file = file_create_url($uri);
         $js_element = $element;
@@ -5407,7 +5407,7 @@ function hzm_cron_run() {
   // Try to acquire cron lock.
   if (!lock_acquire('cron', 240.0)) {
     // Cron is still running normally.
-    watchdog('cron', 'Attempting to re-run cron while it is already running.', array(), WATCHDOG_WARNING);
+    AfwRunHelper::afw_guard('cron', 'Attempting to re-run cron while it is already running.', array(), WATCHDOG_WARNING);
   }
   else {
     // Make sure every queue exists. There is no harm in trying to recreate an
@@ -5423,13 +5423,13 @@ function hzm_cron_run() {
         module_invoke($module, 'cron');
       }
       catch (Exception $e) {
-        watchdog_exception('cron', $e);
+        AfwRunHelper::afw_guard_exception('cron', $e);
       }
     }
 
     // Record cron time.
     variable_set('cron_last', REQUEST_TIME);
-    watchdog('cron', 'Cron run completed.', array(), WATCHDOG_NOTICE);
+    AfwRunHelper::afw_guard('cron', 'Cron run completed.', array(), WATCHDOG_NOTICE);
 
     // Release cron lock.
     lock_release('cron');
@@ -5454,7 +5454,7 @@ function hzm_cron_run() {
       catch (Exception $e) {
         // In case of exception log it and leave the item in the queue
         // to be processed again later.
-        watchdog_exception('cron', $e);
+        AfwRunHelper::afw_guard_exception('cron', $e);
       }
     }
   }
@@ -5477,7 +5477,7 @@ function hzm_cron_run() {
 function hzm_cron_cleanup() {
   // See if the semaphore is still locked.
   if (variable_get('cron_semaphore', FALSE)) {
-    watchdog('cron', 'Cron run exceeded the time limit and was aborted.', array(), WATCHDOG_WARNING);
+    AfwRunHelper::afw_guard('cron', 'Cron run exceeded the time limit and was aborted.', array(), WATCHDOG_WARNING);
 
     // Release cron semaphore.
     variable_del('cron_semaphore');
@@ -7587,10 +7587,10 @@ function hzm_parse_info_format($data) {
  *   Array of the possible severity levels for log messages.
  *
  * @see http://www.ietf.org/rfc/rfc3164.txt
- * @see watchdog()
+ * @see AfwRunHelper::afw_guard()
  * @ingroup logging_severity_levels
  */
-function watchdog_severity_levels() {
+function AfwRunHelper::afw_guard_severity_levels() {
   return array(
     WATCHDOG_EMERGENCY => t('emergency'),
     WATCHDOG_ALERT     => t('alert'),
@@ -8495,7 +8495,7 @@ function hzm_get_filetransfer_info() {
 /**
  * Logs an exception.
  *
- * This is a wrapper function for watchdog() which automatically decodes an
+ * This is a wrapper function for AfwRunHelper::afw_guard() which automatically decodes an
  * exception.
  *
  * @param $type
@@ -8513,12 +8513,12 @@ function hzm_get_filetransfer_info() {
  * @param $link
  *   A link to associate with the message.
  *
- * @see watchdog()
+ * @see AfwRunHelper::afw_guard()
  * @see _hzm_decode_exception()
  */
-function watchdog_exception($type, Exception $exception, $message = NULL, $variables = array(), $severity = WATCHDOG_ERROR, $link = NULL) {
+function AfwRunHelper::afw_guard_exception($type, Exception $exception, $message = NULL, $variables = array(), $severity = WATCHDOG_ERROR, $link = NULL) {
 
-   watchdog($type, $message, $variables, $severity, $link);
+   AfwRunHelper::afw_guard($type, $message, $variables, $severity, $link);
 }
 
 /**
@@ -8526,7 +8526,7 @@ function watchdog_exception($type, Exception $exception, $message = NULL, $varia
  *
  * @param $type
  *   The category to which this message belongs. Can be any string, but the
- *   general practice is to use the name of the module calling watchdog().
+ *   general practice is to use the name of the module calling AfwRunHelper::afw_guard().
  * @param $message
  *   The message to store in the log. Keep $message translatable
  *   by not concatenating dynamic values into it! Variables in the
@@ -8551,10 +8551,10 @@ function watchdog_exception($type, Exception $exception, $message = NULL, $varia
  * @param $link
  *   A link to associate with the message.
  *
- * @see watchdog_severity_levels()
- * @see hook_watchdog()
+ * @see AfwRunHelper::afw_guard_severity_levels()
+ * @see hook_AfwRunHelper::afw_guard()
  */
-function watchdog($type, $message, $variables = array(), $severity = WATCHDOG_NOTICE, $link = NULL) {
+function AfwRunHelper::afw_guard($type, $message, $variables = array(), $severity = WATCHDOG_NOTICE, $link = NULL) {
   global $user, $base_root;
 
   static $in_error_state = FALSE;
@@ -8584,12 +8584,12 @@ function watchdog($type, $message, $variables = array(), $severity = WATCHDOG_NO
     );
 
     // Call the logging hooks to log/process the message
-    foreach (module_implements('watchdog') as $module) {
-      module_invoke($module, 'watchdog', $log_entry);
+    foreach (module_implements('AfwRunHelper::afw_guard') as $module) {
+      module_invoke($module, 'AfwRunHelper::afw_guard', $log_entry);
     }
 
     // It is critical that the semaphore is only cleared here, in the parent
-    // watchdog() call (not outside the loop), to prevent recursive execution.
+    // AfwRunHelper::afw_guard() call (not outside the loop), to prevent recursive execution.
     $in_error_state = FALSE;
   }
 }

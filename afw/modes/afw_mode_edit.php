@@ -84,7 +84,7 @@ else
                 $item_trimmed = substr($item,4);
                 if($item_trimmed) 
                 {
-                        if($myObj->fieldExists($item_trimmed))
+                        if(AfwStructureHelper::fieldExists($myObj, $item_trimmed))
                         {
                             if($item_value or (!AfwStructureHelper::editIfEmpty($myObj, $item_trimmed))) 
                             {

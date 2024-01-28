@@ -55,7 +55,7 @@ class SmtpMailSystem implements MailSystemInterface {
       smtp_send_queue($message);
       if (AfwSession::config('smtp_debugging', SMTP_LOGGING_ERRORS) == SMTP_LOGGING_ALL) 
       {
-        // watchdog('smtp', 'Queue sending mail to: @to', array('@to' => $to));
+        // AfwRunHelper::afw_guard('smtp', 'Queue sending mail to: @to', array('@to' => $to));
       }
       return TRUE;
     }
@@ -120,7 +120,7 @@ class SmtpMailSystem implements MailSystemInterface {
         if (($from = AfwSession::config('site_mail', '')) == '') {
           AfwSession::pushWarning(t('There is no submitted from address.'), 'error');
           if ($logging) {
-            // watchdog('smtp', 'There is no submitted from address.', array(), // watchdog_ERROR);
+            // AfwRunHelper::afw_guard('smtp', 'There is no submitted from address.', array(), // AfwRunHelper::afw_guard_ERROR);
           }
           return FALSE;
         }
@@ -136,7 +136,7 @@ class SmtpMailSystem implements MailSystemInterface {
     elseif (!valid_email_address($from)) {
       AfwSession::pushWarning(t('The submitted from address (@from) is not valid.', array('@from' => $from)), 'error');
       if ($logging) {
-        // watchdog('smtp', 'The submitted from address (@from) is not valid.', array('@from' => $from), // watchdog_ERROR);
+        // AfwRunHelper::afw_guard('smtp', 'The submitted from address (@from) is not valid.', array('@from' => $from), // AfwRunHelper::afw_guard_ERROR);
       }
       return FALSE;
     }*/
@@ -166,7 +166,7 @@ class SmtpMailSystem implements MailSystemInterface {
     // Parse the headers of the message and set the PHPMailer object's settings
     // accordingly.
     foreach ($headers as $key => $value) {
-      //// watchdog('error', 'Key: ' . $key . ' Value: ' . $value);
+      //// AfwRunHelper::afw_guard('error', 'Key: ' . $key . ' Value: ' . $value);
       switch (hzm_strtolower($key)) {
         case 'from':
           if ($from == NULL or $from == '') {
@@ -233,7 +233,7 @@ class SmtpMailSystem implements MailSystemInterface {
               // Everything else is unsuppored by PHPMailer.
               AfwSession::pushWarning(t('The %header of your message is not supported by PHPMailer and will be sent as text/plain instead.', array('%header' => "Content-Type: $value")), 'error');
               if ($logging) {
-                // watchdog('smtp', 'The %header of your message is not supported by PHPMailer and will be sent as text/plain instead.', array('%header' => "Content-Type: $value"), // watchdog_ERROR);
+                // AfwRunHelper::afw_guard('smtp', 'The %header of your message is not supported by PHPMailer and will be sent as text/plain instead.', array('%header' => "Content-Type: $value"), // AfwRunHelper::afw_guard_ERROR);
               }
               // Force the Content-Type to be text/plain.
               $mailer->IsHTML(FALSE);
@@ -563,7 +563,7 @@ class SmtpMailSystem implements MailSystemInterface {
         // rafik : means if one fail, we fail all queue ?
         if ($logging) 
         {
-             // watchdog('smtp', 'Error sending e-mail from @from to @to, will retry on cron run : !error_message.', $params, // watchdog_ERROR);
+             // AfwRunHelper::afw_guard('smtp', 'Error sending e-mail from @from to @to, will retry on cron run : !error_message.', $params, // AfwRunHelper::afw_guard_ERROR);
         }
         $this->smtp_failed_messages($message);
       }
@@ -571,7 +571,7 @@ class SmtpMailSystem implements MailSystemInterface {
       {
         if ($logging) 
         {
-           // watchdog('smtp', 'Error sending e-mail from @from to @to : !error_message', $params, // watchdog_ERROR);
+           // AfwRunHelper::afw_guard('smtp', 'Error sending e-mail from @from to @to : !error_message', $params, // AfwRunHelper::afw_guard_ERROR);
         }
       }
       $error = TRUE;

@@ -390,13 +390,13 @@ class AfwDataMigrator extends AFWRoot {
         if($destinationObj->is_new)
         {
             $update_datetime_greg = $destinationObj->getTimeStampFromRow($row,"create", $timestamp_field);
-            if($update_datetime_greg) $destinationObj->force_creation_date($update_datetime_greg);
+            if($update_datetime_greg) $destinationObj-> force_creation_date($update_datetime_greg);
             else $log_arr[] = "Warning : creation datetime value not found in row : ".var_export($row,true);
         }
         else
         {
             $update_datetime_greg = $destinationObj->getTimeStampFromRow($row,"update", $timestamp_field);
-            if($update_datetime_greg) $destinationObj->force_update_date($update_datetime_greg);
+            if($update_datetime_greg) $destinationObj-> force_update_date($update_datetime_greg);
             else $log_arr[] = "Warning : creation datetime value not found in row : ".var_export($row,true);
         }
         */

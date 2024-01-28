@@ -10,7 +10,7 @@ class AfwLoadHelper extends AFWRoot
         
         if(!self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"])
         {
-            $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+            $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
             $object = new $nom_class_fk();
             $where_cleaned = str_replace("((id))",$object->getPKField(),$where);
             $dataLookup = self::loadAllLookupData($object,$where_cleaned);
@@ -256,7 +256,7 @@ class AfwLoadHelper extends AFWRoot
             }
             // 2. otherwise try from global cache management
             elseif ($cache_management) {
-                $className = self::tableToClass($ansTab);
+                $className = AfwStringHelper::tableToClass($ansTab);
                 if (!$className) throw new AfwRuntimeException("for attribute $attribute of $this_table we can not calc tableToClass(answer table = $ansTab)");
 
                 $loadObjectFK_step = 2;
@@ -732,7 +732,7 @@ class AfwLoadHelper extends AFWRoot
         // $time_end4 = microtime(true);
         if ($return) {
             $object->afterLoad();
-            // -- $className = self::tableToClass($object::$TABLE);
+            // -- $className = AfwStringHelper::tableToClass($object::$TABLE);
 
         } else {
             // even if load is empty store the empty object into cache than the query is not repeated            
@@ -895,7 +895,7 @@ class AfwLoadHelper extends AFWRoot
             /*
             if(contient($query,".module_type"))
             {
-                self::safeDie("result_rows ($query) optim=$optim ".var_export($result_rows,true));
+                AfwRunHelper::safeDie("result_rows ($query) optim=$optim ".var_export($result_rows,true));
             }*/
             //$object->debuggObj($result_rows);
         }
@@ -1389,7 +1389,7 @@ class AfwLoadHelper extends AFWRoot
                     $object->select($col, $val);
                 }
             } else {
-                self::simpleError(
+                AfwRunHelper::simpleError(
                     "The filter parameter should be an array for AFWObject::getIndex method.",
                     $call_method
                 );
@@ -1407,11 +1407,11 @@ class AfwLoadHelper extends AFWRoot
                     $return = $array;
                     break;
                 default:
-                    self::simpleError("The format [$format] is not supported by AFWObject::getIndex method.",$call_method);
+                    AfwRunHelper::simpleError("The format [$format] is not supported by AFWObject::getIndex method.",$call_method);
                     break;
             }
         } else {
-            self::simpleError('Check that the param $tableName is correctly filled in call to AfwLoadHelper::getIndex().',$call_method);
+            AfwRunHelper::simpleError('Check that the param $tableName is correctly filled in call to AfwLoadHelper::getIndex().',$call_method);
         }
 
         
@@ -1475,7 +1475,7 @@ class AfwLoadHelper extends AFWRoot
         }
 
         $old_attribute = $attribute;
-        $attribute = $object->shortNameToAttributeName($attribute);
+        $attribute = AfwStructureHelper::shortNameToAttributeName($object, $attribute);
 
         if (!$object->seemsCalculatedField($attribute)) {
             if ($what == 'value') {
@@ -1561,7 +1561,108 @@ class AfwLoadHelper extends AFWRoot
         return $return;
     }
 
+
+    public static final function getEnumTable(
+        $answer,
+        $table = '',
+        $attribut = '',
+        $obj = null
+    ) 
+    {
+            //echo "call to get EnumTable($answer,$table,$attribut)<br>";
+            if ($answer == 'FUNCTION') 
+            {
+                    if (!$attribut) {
+                        throw new AfwRuntimeException("get EnumTable need attribut name for FUNCTION dynamic answers (table = $table) obj = " .var_export($obj, true));
+                    }
+                    $method = "list_of_$attribut";
+                    $object_method = "my_list_of_$attribut";
+                    if (!$table) {
+                        throw new AfwRuntimeException('table param is mandatory in get EnumTable method');
+                    }
+                    $className = AfwStringHelper::tableToClass($table);
+                    if ($obj) {
+                            $return = $obj->$object_method();
+                    } else {
+                            $return = $className::$method();
+                    }
+                    // echo "call to $className::$method() return [";
+                    // print_r($return);
+                    // echo "]";
+                    // AfwRunHelper::simpleError("get EnumTable($answer,$table,$attribut,obj: ".var_export($obj,true).")");
+            } 
+            else 
+            {
+                    $return = AfwStringHelper::afw_explode($answer);
+            }
+
+            return $return;
+    }
+
     
+    public static final function getEnumTotalAnswerList($object, $attribute, $enum_answer_list = '')
+    {
+        $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        if (!$enum_answer_list) {
+            $enum_answer_list = $structure['ANSWER'];
+        }
+        if ($enum_answer_list == 'INSTANCE_FUNCTION') {
+            $enum_answer_list = 'FUNCTION';
+        }
+        $liste_rep = AfwLoadHelper::getEnumTable($enum_answer_list,$object->getTableName(),$attribute,$object);
+        return $liste_rep;
+    }
+
+    /*
+    it is the same as getEnumAnswerList
+
+    public function getMyEnumTableOf($attribute,$answer="")
+    {
+        if(!$answer)
+        {
+            $desc = AfwStructureHelper::getStructureOf($this,$attribute);
+            $answer = $desc["ANSWER"];
+        }
+        
+        return AfwLoadHelper::getEnumTable($answer, $this->getTableName(), $attribute, $this);
+
+    }
+    */
+
+    /**
+     * getAnswerTable obsolete
+     * Return Array of rows table
+     * @param string $tableName : Spefify name of answer table
+     * @param string $primaryKey : Optional, specify name of primary Key
+     * @param string $valueField : Optional, specify name of field containing value
+     * @param string $selected : Optional, specify selected row
+     */
+
+     /*
+    public static function getAnswerTable(
+        $tableName,
+        $primaryKey = 'ANSWER_ID',
+        $valueField = 'VALUE_FR',
+        $selected = '',
+        $where = '',
+        $module_server = ''
+    ) {
+        $return = [];
+        $sqlat =
+            "select $primaryKey, $valueField \n from $tableName" .
+            ($selected != ''
+                ? "\n where $primaryKey = '$selected'"
+                : "\n where 1");
+        if ($where) {
+            $sqlat .= "\n and $where";
+        }
+
+        $rows = AfwDatabase::db_recup_rows($sqlat, true, true, $module_server);
+        foreach ($rows as $row) {
+            $return[$row[$primaryKey]] = $row[$valueField];
+        }
+        return $return;
+    }*/
 
 
 

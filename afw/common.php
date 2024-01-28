@@ -43,7 +43,7 @@ function debugg_row($row)
 
 function t($string)
 {
-        return AFWRoot::tt($string);
+        return AfwLanguageHelper::tt($string);
 }
 
 function debugg_tab($tab,$nn)

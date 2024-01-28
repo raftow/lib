@@ -219,13 +219,13 @@ class Bdata extends AFWObject{
                 $this->setNotSecure("row_id","(select IF(ISNULL(max(row_id)), 0, max(row_id))+1 from r fwdb.bdata bdt2 where bdt2.btable_id=$btable_id)",true,true);
         }
         
-        protected function beforeInsert($id, $fields_updated) {
+        public function beforeInsert($id, $fields_updated) {
 		$this->silentField("row_id");
                 $this->silentField("btable_id");
                 return true;
 	}
         
-        protected function afterInsert($id, $fields_updated) {
+        public function afterInsert($id, $fields_updated) {
 	        //echo "<br>\n<br>\n bdata.afterInsert before load : ".var_export($this,true);
                 $this->load($id);
                 //die("<br>\n<br>\n bdata.afterInsert after  load($id) : ".var_export($this,true));

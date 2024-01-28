@@ -14,7 +14,7 @@ else $header_entry_counter++;
 
 if($header_entry_counter>1)
 {
-        AfwSession::simpleError("HzmHeader included twice, in general this happen when you include main.php or afw_main_page.php when you are inside body of MainPage");
+        AfwRunHelper::simpleError("HzmHeader included twice, in general this happen when you include main.php or afw_main_page.php when you are inside body of MainPage");
 }
 if(!$objme) $objme = AfwSession::getUserConnected();
 $lang = AfwSession::getSessionVar("lang");
@@ -40,7 +40,7 @@ else $dir = "ltr";
      $login_out_page = $pages_arr["login"][$MODULE];
      if(!$login_out_page) $login_out_page = "login.php";
      if(!$login_button_title)
-         $login_out_title = AFWObject::traduireOperator("LOGIN", $lang);
+         $login_out_title = AfwLanguageHelper::tarjemOperator("LOGIN", $lang);
      else
          $login_out_title = $login_button_title; 
  }
@@ -52,7 +52,7 @@ else $dir = "ltr";
      $login_out_page = $pages_arr["logout"][$MODULE];
      if(!$login_out_page) $login_out_page = "logout.php";
      
-     $login_out_title = AFWObject::traduireOperator("LOGOUT", $lang);    
+     $login_out_title = AfwLanguageHelper::tarjemOperator("LOGOUT", $lang);    
  }
   
   

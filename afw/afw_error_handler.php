@@ -248,7 +248,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 
         $message .= 'object error :';
         $message .=
-            '<br> <b>TableClass :</b> ' . self::tableToClass(static::$TABLE);
+            '<br> <b>TableClass :</b> ' . AfwStringHelper::tableToClass(static::$TABLE);
         $message .= '<br> <b>ID :</b> ' . $this->getId();
         $message .=
             '<br> <b>LAST_ATTRIBUTE :</b> ' . $this->debugg_last_attribute;
@@ -284,7 +284,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
         AFWDebugg::log($message);
         $message .= $out_scr;
 
-        self::safeDie($error_title, $message, true, null, false, true);
+        AfwRunHelper::safeDie($error_title, $message, true, null, false, true);
 
         return false;
     }

@@ -9,7 +9,7 @@ if(!$lang) $lang = 'ar';
 
 //echo "langue = $lang <br>";
 
-//$lab_id = AFWObject::traduire("id",$lang,true);
+//$lab_id = AfwLanguageHelper::tarjem("id",$lang,true);
 define("LIMIT_INPUT_SELECT", 30);
 $data = array();
 if(isset($class_obj))
@@ -22,7 +22,7 @@ $class_db_structure = $obj->getMyDbStructure();
 
 foreach($class_db_structure as $nom_col => $desc)
 {
-      list($is_category_field, $is_settable_attribute) = $obj->isSettable($nom_col);
+      list($is_category_field, $is_settable_attribute) = AfwStructureHelper::isSettable($obj, $nom_col);
       if(($_POST[$nom_col]) and ($_POST["oper_$nom_col"] == "=") and $is_settable_attribute)
       {
             $obj->set($nom_col, $_POST[$nom_col]); 

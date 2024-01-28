@@ -41,9 +41,9 @@ if(!class_exists('AfwAutoLoader'))
 
                                 if(AfwStringHelper::stringStartsWith ($class, "AFW"))
                                 {
-                                        $file_name = "afw_".self::classToFile(substr($class,3));  
+                                        $file_name = "afw_".AfwStringHelper::classToFile(substr($class,3));  
                                 }
-                                else $file_name = self::classToFile($class);
+                                else $file_name = AfwStringHelper::classToFile($class);
 
                                 if(AfwStringHelper::stringStartsWith ($file_name, "afw_"))
                                 {

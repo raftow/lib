@@ -148,7 +148,7 @@ class AfwFormatHelper
 
         if (strtoupper($desc['TYPE']) == 'ENUM') {
             if ($desc['ANSWER'] != 'FUNCTION') {
-                $answerTable = AFWRoot::getEnumTable($desc['ANSWER'], '', '');
+                $answerTable = AfwLoadHelper::getEnumTable($desc['ANSWER'], '', '');
                 if (!isset($answerTable[$val_attr])) {
                     return [false, 'TYPE-ENUM'];
                 }
@@ -295,7 +295,7 @@ class AfwFormatHelper
                         10
                     );
                     $date_en = explode('-', $date_en);
-                    $month_name = AFWRoot::traduireOperator('MONTH_' . $date_en[1],$lang);
+                    $month_name = AfwLanguageHelper::tarjemOperator('MONTH_' . $date_en[1],$lang);
                     $return = $date_en[2] .' ' . $month_name . ' ' . $date_en[0];
                 } elseif ($decode_format == 'FR') {
                     $date_en = substr(
@@ -615,6 +615,49 @@ class AfwFormatHelper
     }
 
 
+    public static function getEnumVal($object, $attribute, $field_value)
+    {
+        global $lang;
+
+        $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        if (!$field_value and $structure['EMPTY_IS_ALL']) {
+            $all_code = "ALL-$attribute";
+            $return = $object->translate($all_code, $lang);
+            if ($return == $all_code) {
+                $return = $object->translateOperator('ALL', $lang);
+            }
+
+            return $return;
+        }
+        // $call_method = "get EnumVal(attribute = $attribute, field_value = $field_value)";
+
+        $answerTable = AfwLoadHelper::getEnumTotalAnswerList($object, $attribute);
+        $return = $answerTable[$field_value];
+        /*
+        if($attribute=='unit_type_id')
+        {
+            die("attribute=$attribute, answerTable=".var_export($answerTable,true).", return=answerTable[$field_value]=$return");
+        }*/
+
+        if ($return == 'INSTANCE_FUNCTION') {
+            throw new AfwRuntimeException("INSTANCE_FUNCTION Error happened for attribute $attribute : answerTable = " . var_export($answerTable, true));
+        }
+        $return = !$return ? $field_value : $return;
+        
+        return $return;
+    }
+
+    public static final function decodeSimulatedFieldValue($object, $attribute, $field_value)
+    {
+        $oldval = $object->getVal($attribute);
+        $object->simulSet($attribute, $field_value);
+        $return = $object->decode($attribute);
+        //die("$return = $this -> decode SimulatedFieldValue($attribute, $field_value)");
+        $object->simulSet($attribute, $oldval);
+
+        return $return;
+    }
+
     public static final function decode($attribute, $typattr, $decode_format, $attribute_value, $integrity=true, $lang="ar", $structure=null, $obj=null, $translate_if_needed=true)
     {
         switch ($typattr) {
@@ -652,7 +695,7 @@ class AfwFormatHelper
                             else  $return = $all_code;                  
 
                             if ($return == $all_code) {
-                                $return = AFWRoot::traduireOperator(
+                                $return = AfwLanguageHelper::tarjemOperator(
                                     'ALL',
                                     $lang
                                 );
@@ -771,7 +814,7 @@ class AfwFormatHelper
                         $all_code = "ALL-$attribute";
                         $return = $obj->translate($all_code,$lang);
                         if ($return == $all_code) {
-                            $return = AFWRoot::traduireOperator('ALL',$lang);
+                            $return = AfwLanguageHelper::tarjemOperator('ALL',$lang);
                         }
                     }
                     //if($attribute=="status_id") throw new AfwRuntimeException("this->decode($attribute) : return=$return");
@@ -807,7 +850,7 @@ class AfwFormatHelper
                         $all_code = "ALL-$attribute";
                         $return = $obj->translate($all_code,$lang);
                         if ($return == $all_code) {
-                            $return = AFWRoot::traduireOperator('ALL',$lang);
+                            $return = AfwLanguageHelper::tarjemOperator('ALL',$lang);
                         }
                     }
                     //if($attribute=="status_id") throw new AfwRuntimeException("this->decode($attribute) : return=$return");
@@ -857,13 +900,13 @@ class AfwFormatHelper
             case 'ANSWER':
                 if(!$obj) throw new AfwRuntimeException("structure and obj should not be both null if we decode an ANSWER field");
                 $valfld = $attribute_value;
-                $return = $obj->getAnswer($attribute,$valfld);
+                $return = self::decodeAnswerOfAttribute($obj, $attribute, $valfld);
                 break;
             case 'ENUM':
                 if(!$obj) throw new AfwRuntimeException("structure and obj should not be both null if we decode an ENUM field");
                 $valfld = $attribute_value;
-                // if($attribute == 'unit_type_id') die("decode of enum field " . get_class($this)  . "->getEnumVal(attribute=$attribute, valfld = $valfld)");
-                $return = $obj->getEnumVal($attribute,$valfld);
+                // if($attribute == 'unit_type_id') die("decode of enum field " . get_class($this)  . "->get EnumVal(attribute=$attribute, valfld = $valfld)");
+                $return = self::getEnumVal($obj, $attribute,$valfld);
                 break;
             case 'MENUM':
                 if(!$obj) throw new AfwRuntimeException("structure and obj should not be both null if we decode an MENUM field");
@@ -873,7 +916,7 @@ class AfwFormatHelper
                 $return = '';
                 $array = [];
                 foreach ($val_arr as $vv => $valval) {
-                    $decvalval = $obj->getEnumVal($attribute,$valval);
+                    $decvalval = self::getEnumVal($obj, $attribute, $valval);
                     $array[] = $decvalval;
                     // $return .= " " . $decvalval;
                 }
@@ -1216,5 +1259,71 @@ class AfwFormatHelper
             {
                 return array(false, $e->__toString());
             }    
+        }
+
+
+        /**
+         * decodeAnswerOfAttribute
+         * Return Value of Answer Type Field
+         * @param string $attribute
+         * @param string $field_value
+         */
+        public static final function decodeAnswerOfAttribute($object, $attribute, $field_value)
+        {
+            if (!$field_value) return $field_value;
+            $object->debugg_last_attribute = $attribute;
+            // $call_method = "getAnswer(attribute = $attribute, field_value = $field_value)";
+            $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+            $answerTable = $structure['ANSWER'];
+            $attrtype = $object->getTypeOf($attribute);
+            if ($object->MY_DEBUG and false) {
+                AFWDebugg::log("[answerTable=$answerTable  , attrtype=$attrtype]");
+            }
+            $return = false;
+            if ($answerTable) {
+                if ($attrtype == 'ANSWER') {
+                    $fc = substr($answerTable, 0, 1);                
+                    if ($fc == ':') {
+                        $methodDecode = 'decode' . ucfirst($attribute);
+                        return $object->$methodDecode($field_value);
+                    }
+
+                    $answer_id = $structure['MY_PK'] ? $structure['MY_PK'] : 'ANSWER_ID';
+                    $value_fr = $structure['MY_VAL'] ? $structure['MY_VAL'] : 'VALUE_FR';
+                    $query = 'select ' . $value_fr ." from " . $object::_prefix_table($answerTable) ." where " . $answer_id ." = '" . $field_value . "'";
+                    $module_server = $object->getModuleServer();
+                    $return = AfwDatabase::db_recup_value($query,true,true,$module_server);
+                }
+
+                if ($attrtype == 'FK' or $attrtype == 'YN' or $attrtype == 'ENUM' or $attrtype == 'MFK') {
+                    $return = AfwFormatHelper::decodeSimulatedFieldValue($object, $attribute, $field_value);
+                }
+            }
+
+            $return = $return === false ? $field_value : $return;
+            return $return;
+        }
+
+
+        public static function decode_result($obj,$what,$lang="ar")
+        {
+                if($what=="value") $return = $obj ? $obj->id : 0;
+                elseif($what=="decodeme")  $return = $obj ? $obj->getDisplay($lang) : "";
+                else $return = $obj;
+
+                return $return;
+        }
+
+        public static function pbm_result($err,$info, $warn=null, $sep="<br>\n", $tech="")
+        {
+                // die(" 1 ==> pbm_result($err, $info, $warn) warn = ".var_export($warn,true));
+                if(is_array($err)) $err = implode($sep,$err);
+                if(is_array($info)) $info = implode($sep,$info);
+                if(is_array($warn)) $warn = implode($sep,$warn);
+                if(is_array($tech)) $tech = implode($sep,$tech);
+                
+                // die(" 2 ==> pbm_result($err, $info, $warn)");
+                
+                return array($err, $info, $warn, $tech);
         }
 }

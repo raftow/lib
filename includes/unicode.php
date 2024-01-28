@@ -106,24 +106,24 @@ function _unicode_check() {
 
   // Check for mbstring extension
   if (!function_exists('mb_strlen')) {
-    return array(UNICODE_SINGLEBYTE, AfwRoot::tt('Operations on Unicode strings are emulated on a best-effort basis. Install the <a href="@url">PHP mbstring extension</a> for improved Unicode support.', array('@url' => 'http://www.php.net/mbstring')));
+    return array(UNICODE_SINGLEBYTE, AfwLanguageHelper::tt('Operations on Unicode strings are emulated on a best-effort basis. Install the <a href="@url">PHP mbstring extension</a> for improved Unicode support.', array('@url' => 'http://www.php.net/mbstring')));
   }
 
   // Check mbstring configuration
   if (ini_get('mbstring.func_overload') != 0) {
-    return array(UNICODE_ERROR, AfwRoot::tt('Multibyte string function overloading in PHP is active and must be disabled. Check the php.ini <em>mbstring.func_overload</em> setting. Please refer to the <a href="@url">PHP mbstring documentation</a> for more information.', array('@url' => 'http://www.php.net/mbstring')));
+    return array(UNICODE_ERROR, AfwLanguageHelper::tt('Multibyte string function overloading in PHP is active and must be disabled. Check the php.ini <em>mbstring.func_overload</em> setting. Please refer to the <a href="@url">PHP mbstring documentation</a> for more information.', array('@url' => 'http://www.php.net/mbstring')));
   }
   if (ini_get('mbstring.encoding_translation') != 0) {
-    return array(UNICODE_ERROR, AfwRoot::tt('Multibyte string input conversion in PHP is active and must be disabled. Check the php.ini <em>mbstring.encoding_translation</em> setting. Please refer to the <a href="@url">PHP mbstring documentation</a> for more information.', array('@url' => 'http://www.php.net/mbstring')));
+    return array(UNICODE_ERROR, AfwLanguageHelper::tt('Multibyte string input conversion in PHP is active and must be disabled. Check the php.ini <em>mbstring.encoding_translation</em> setting. Please refer to the <a href="@url">PHP mbstring documentation</a> for more information.', array('@url' => 'http://www.php.net/mbstring')));
   }
   // mbstring.http_input and mbstring.http_output are deprecated and empty by
   // default in PHP 5.6.
   if (version_compare(PHP_VERSION, '5.6.0') == -1) {
     if (ini_get('mbstring.http_input') != 'pass') {
-      return array(UNICODE_ERROR, AfwRoot::tt('Multibyte string input conversion in PHP is active and must be disabled. Check the php.ini <em>mbstring.http_input</em> setting. Please refer to the <a href="@url">PHP mbstring documentation</a> for more information.', array('@url' => 'http://www.php.net/mbstring')));
+      return array(UNICODE_ERROR, AfwLanguageHelper::tt('Multibyte string input conversion in PHP is active and must be disabled. Check the php.ini <em>mbstring.http_input</em> setting. Please refer to the <a href="@url">PHP mbstring documentation</a> for more information.', array('@url' => 'http://www.php.net/mbstring')));
     }
     if (ini_get('mbstring.http_output') != 'pass') {
-      return array(UNICODE_ERROR, AfwRoot::tt('Multibyte string output conversion in PHP is active and must be disabled. Check the php.ini <em>mbstring.http_output</em> setting. Please refer to the <a href="@url">PHP mbstring documentation</a> for more information.', array('@url' => 'http://www.php.net/mbstring')));
+      return array(UNICODE_ERROR, AfwLanguageHelper::tt('Multibyte string output conversion in PHP is active and must be disabled. Check the php.ini <em>mbstring.http_output</em> setting. Please refer to the <a href="@url">PHP mbstring documentation</a> for more information.', array('@url' => 'http://www.php.net/mbstring')));
     }
   }
 
@@ -141,19 +141,19 @@ function unicode_requirements() {
 
 
   $libraries = array(
-    UNICODE_SINGLEBYTE => AfwRoot::tt('Standard PHP'),
-    UNICODE_MULTIBYTE => AfwRoot::tt('PHP Mbstring Extension'),
-    UNICODE_ERROR => AfwRoot::tt('Error'),
+    'UNICODE_SINGLEBYTE' => AfwLanguageHelper::tt('Standard PHP'),
+    'UNICODE_MULTIBYTE' => AfwLanguageHelper::tt('PHP Mbstring Extension'),
+    'UNICODE_ERROR' => AfwLanguageHelper::tt('Error'),
   );
   $severities = array(
-    UNICODE_SINGLEBYTE => REQUIREMENT_WARNING,
-    UNICODE_MULTIBYTE => REQUIREMENT_OK,
-    UNICODE_ERROR => REQUIREMENT_ERROR,
+    'UNICODE_SINGLEBYTE' => 'REQUIREMENT_WARNING',
+    'UNICODE_MULTIBYTE' => 'REQUIREMENT_OK',
+    'UNICODE_ERROR' => 'REQUIREMENT_ERROR',
   );
   list($library, $description) = _unicode_check();
 
   $requirements['unicode'] = array(
-    'title' => AfwRoot::tt('Unicode library'),
+    'title' => AfwLanguageHelper::tt('Unicode library'),
     'value' => $libraries[$library],
   );
   if ($description) {
@@ -211,7 +211,7 @@ function hzm_xml_parser_create(&$data) {
       $data = preg_replace('/^(<\?xml[^>]+encoding)="(.+?)"/', '\\1="utf-8"', $out);
     }
     else {
-      // watchdog('php', 'Could not convert XML encoding %s to UTF-8.', array('%s' => $encoding), WATCHDOG_WARNING);
+      // AfwRunHelper::afw_guard('php', 'Could not convert XML encoding %s to UTF-8.', array('%s' => $encoding), WATCHDOG_WARNING);
       return FALSE;
     }
   }
@@ -246,7 +246,7 @@ function hzm_convert_to_utf8($data, $encoding) {
     $out = @recode_string($encoding . '..utf-8', $data);
   }*/
   else {
-    // watchdog('php', 'Unsupported encoding %s. Please install iconv, GNU recode or mbstring for PHP.', array('%s' => $encoding), WATCHDOG_ERROR);
+    // AfwRunHelper::afw_guard('php', 'Unsupported encoding %s. Please install iconv, GNU recode or mbstring for PHP.', array('%s' => $encoding), WATCHDOG_ERROR);
     return FALSE;
   }
 

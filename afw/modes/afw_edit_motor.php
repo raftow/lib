@@ -165,7 +165,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $nom_module_fk = AfwUrlManager::currentWebModule();
             }
 
-            $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+            $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 
             // $nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
             if ($force_css) $data_length_class = " " . $force_css;
@@ -342,7 +342,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             {
                 $nom_module_fk = AfwUrlManager::currentWebModule();
             }
-            $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+            $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
             
             $objRep  = new $nom_class_fk;
             
@@ -382,7 +382,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
             break;
         case 'MENUM':
-            $liste_rep = AFWObject::getEnumTable($desc["ANSWER"], $obj->getTableName(), $col_name, $obj);
+            $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $col_name, $obj);
             //echo "menum val $val with sep $separator : <br>";
             $val_arr = explode($separator, trim($val, $separator));
             //print_r($val_arr);
@@ -416,7 +416,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 false
             );
             break;
-        case 'ANSWER':
+        /*case 'ANSWER': obsolete
             $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"]);
             if ($force_css) $data_length_class = " " . $force_css;
             else $data_length_class = " inputmoyen";
@@ -446,7 +446,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 include("tpl/helper_edit_answer_popup.php");
           
             }
-            break;
+            break;*/
 
         case 'ENUM':
             if ($force_css) $data_length_class = " " . $force_css;
@@ -458,8 +458,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $orig_col_name);
                 $answer_case = "INSTANCE_FUNCTION so obj->get Enum AnswerList($orig_col_name) ";
             } else {
-                $liste_rep = AFWObject::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
-                $answer_case = "AFWObject::getEnumTable(" . $desc["ANSWER"] . "," . $obj->getTableName() . "," . $orig_col_name . "," . $obj . ")";
+                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
+                $answer_case = "AfwLoadHelper::getEnumTable(" . $desc["ANSWER"] . "," . $obj->getTableName() . "," . $orig_col_name . "," . $obj . ")";
             }
 
             // die("for enum col : $col_name, $answer_case, liste_rep = ".var_export($liste_rep,true));

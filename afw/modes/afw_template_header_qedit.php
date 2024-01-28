@@ -140,14 +140,14 @@ foreach($class_db_structure as $nom_col => $desc)
 
 if($obj->ENABLE_DISPLAY_MODE_IN_QEDIT)
 {
-   $qedit_trad["show"] = AFWObject::traduireOperator("show", $lang);
+   $qedit_trad["show"] = AfwLanguageHelper::tarjemOperator("show", $lang);
 }
 else
 {
    $qedit_trad["show"] =  "";
 }
 
-// @todo if($obj->QEDIT_SHOW_EDIT_MODE) $qedit_trad["edit"] = AFWObject::traduireOperator("edit", $lang);
+// @todo if($obj->QEDIT_SHOW_EDIT_MODE) $qedit_trad["edit"] = AfwLanguageHelper::tarjemOperator("edit", $lang);
 
 /*
 $obj->simpleError("fixm_input = ".var_export($fixm_input,true)."    
@@ -166,7 +166,7 @@ $css       = $obj->getStyle();
 
 if($obj->updatedFromQEdit)
 {
-    $obj_updatedFromQEdit = AFWObject::traduireOperator("records_updated", $lang)." (".$obj->updatedFromQEdit.") ".AFWObject::traduireOperator("record(s)", $lang);
+    $obj_updatedFromQEdit = AfwLanguageHelper::tarjemOperator("records_updated", $lang)." (".$obj->updatedFromQEdit.") ".AfwLanguageHelper::tarjemOperator("record(s)", $lang);
 }
 else
 {
@@ -181,7 +181,7 @@ if($obj->fixmtit)
 }
 else
 {
-    $fixmtit = AFWObject::traduireOperator("qedit_some_records", $lang).AfwUmsPagHelper::getPluralTitle($obj, $lang,false);
+    $fixmtit = AfwLanguageHelper::tarjemOperator("qedit_some_records", $lang).AfwUmsPagHelper::getPluralTitle($obj, $lang,false);
 }
 
 if($js_for_compute) echo "<script>\n $js_for_compute \n</script>\n";

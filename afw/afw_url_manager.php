@@ -123,7 +123,7 @@ class AfwUrlManager extends AFWRoot
         }
 
         if ($object_class) {
-            $object_table = self::classToTable($object_class);
+            $object_table = AfwStringHelper::classToTable($object_class);
         }
 
         if (true) {
@@ -150,7 +150,7 @@ class AfwUrlManager extends AFWRoot
                 } 
                 else 
                 {
-                    self::safeDie(
+                    AfwRunHelper::safeDie(
                         'can find BF',
                         "can find BF because triplet(module_code=$module_code,object_table=$object_table, afw_action=$afw_action) is incomplete"
                     );

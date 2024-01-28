@@ -1,5 +1,5 @@
 <?php
-    function consume_bearer_api($url, $token, $proxy = null , $data = null)
+    function consume_bearer_api($url, $token, $proxy = null , $data = null, $verify_host=false, $verify_pear=false)
     {
         global $print_debugg, $print_full_debugg, $print_error;
         if($curl = curl_init())
@@ -28,6 +28,9 @@
                 // echo "option CURLOPT_HTTPHEADER setted\n";
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 // echo "option CURLOPT_RETURNTRANSFER setted\n";
+
+                // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $verify_host);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $verify_pear);
                 if($proxy)
                 {
                         $proxy_arr = explode(':', $proxy);
@@ -39,9 +42,7 @@
                 }
                 else
                 {
-                    curl_setopt($curl, CURLOPT_NOPROXY, "*");
-                    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-                    // die("rafik CURLOPT_SSL_VERIFYPEER = 0 ");
+                    curl_setopt($curl, CURLOPT_NOPROXY, "*");                    
                     $proxy_arr = array();
                 }
                 

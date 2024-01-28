@@ -27,10 +27,10 @@ class AfwNotificationManager extends AFWRoot {
                 $details = "notification_code=$notification_code, receiver= ".var_export($receiver,true)." notification_type_settings = ".var_export($notification_type_settings,true);
                 if(!$object_related)
                 {
-                        self::safeDie("can't sendNotification without related object", $details);
+                        AfwRunHelper::safeDie("can't sendNotification without related object", $details);
                 } 
 
-                //self::safeDie("debugg rafik-crm 001 : ", $details);
+                //AfwRunHelper::safeDie("debugg rafik-crm 001 : ", $details);
 
                 if($notification_type_settings["sms"])
                 {

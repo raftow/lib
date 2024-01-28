@@ -51,7 +51,7 @@ function decodeData($data,$decode_arr)
        {
           if($decode_arr[$nom_champ])
           {
-                 $data[$ir][$nom_champ] = AFWRoot::tt($decode_arr["table"].".".$nom_champ.".".$val);
+                 $data[$ir][$nom_champ] = AfwLanguageHelper::tt($decode_arr["table"].".".$nom_champ.".".$val);
           }
        }
     }

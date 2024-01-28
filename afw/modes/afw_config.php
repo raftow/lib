@@ -92,19 +92,19 @@ $pct_tab_search_result = "90%";
 $pct_tab_edit_mode = "100%";
 $table_search_result_class = "search_result_table";
 
-$page_label = AFWObject::traduireOperator("page", $lang);
-$record_label = AFWObject::traduireOperator("record", $lang);
-$page_of_label = AFWObject::traduireOperator("page_of", $lang); 
-$new_instance =  AFWObject::traduireOperator("new_instance", $lang);
-$qedit_new =     AFWObject::traduireOperator("qedit_new", $lang); 
-$qedit_update =  AFWObject::traduireOperator("qedit_update", $lang); 
-$other_search =  AFWObject::traduireOperator("other_search", $lang); 
-$back_to_last_form = AFWObject::traduireOperator("back_to_last_form", $lang);
-$new_search_operation = AFWObject::traduireOperator("new_search", $lang);
+$page_label = AfwLanguageHelper::tarjemOperator("page", $lang);
+$record_label = AfwLanguageHelper::tarjemOperator("record", $lang);
+$page_of_label = AfwLanguageHelper::tarjemOperator("page_of", $lang); 
+$new_instance =  AfwLanguageHelper::tarjemOperator("new_instance", $lang);
+$qedit_new =     AfwLanguageHelper::tarjemOperator("qedit_new", $lang); 
+$qedit_update =  AfwLanguageHelper::tarjemOperator("qedit_update", $lang); 
+$other_search =  AfwLanguageHelper::tarjemOperator("other_search", $lang); 
+$back_to_last_form = AfwLanguageHelper::tarjemOperator("back_to_last_form", $lang);
+$new_search_operation = AfwLanguageHelper::tarjemOperator("new_search", $lang);
 
-$yes_label = AFWObject::traduireOperator("Y", $lang);
-$no_label = AFWObject::traduireOperator("N", $lang);
-$dkn_label = AFWObject::traduireOperator("W", $lang);
+$yes_label = AfwLanguageHelper::tarjemOperator("Y", $lang);
+$no_label = AfwLanguageHelper::tarjemOperator("N", $lang);
+$dkn_label = AfwLanguageHelper::tarjemOperator("W", $lang);
  
 $qedit_other_search = $other_search;
 $qedit_mode_default_new_rows_nb = 5;

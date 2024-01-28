@@ -234,7 +234,7 @@ class AfwSession extends AFWRoot {
                    ($source != "header") and 
                    ($_SESSION[$var])) 
                 {
-                        self::lightSafeDie("$var is being emptied from its value ".$_SESSION[$var]);
+                        AfwRunHelper::lightSafeDie("$var is being emptied from its value ".$_SESSION[$var]);
                 }
         }
 
@@ -426,7 +426,7 @@ class AfwSession extends AFWRoot {
         {
               $return = self::getVar("log");  
               self::setVar("log","");
-              self::safeDie($title, $return);
+              AfwRunHelper::safeDie($title, $return);
         }
 
         

@@ -14,7 +14,7 @@
                 {
                     $display_val = $liste_rep[$val];
                     if (!$display_val) $display_val = "...<!-- $val from ".var_export($liste_rep,true)." -->";
-                    $css_arr = $obj::afw_explode($desc["HZM-CSS"]);
+                    $css_arr = AfwStringHelper::afw_explode($desc["HZM-CSS"]);
                     $css_val = $css_arr[$val];
 
 
@@ -68,7 +68,7 @@
                     $type_input_ret = "select";
 
                     if ($desc["FORMAT-INPUT"] == "hzmsel") {
-                        $css_arr = $obj::afw_explode($desc["HZM-CSS"]);
+                        $css_arr = AfwStringHelper::afw_explode($desc["HZM-CSS"]);
                         $css_class = "selectpicker"; //." ".$data_loaded_class.$data_length_class
                     } else {
                         $css_arr = null;

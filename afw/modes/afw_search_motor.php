@@ -31,7 +31,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
                 $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $col_name);
                 // $obj->_error("$col_name is INSTANCE_FUNCTION answer and it has this getEnumAnswerList ".var_export($liste_rep,true));
             } else {
-                $liste_rep = AFWObject::getEnumTable($desc["ANSWER"], $obj->getTableName(), $col_name, $obj);
+                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $col_name, $obj);
             }
 
             if ($desc["SEARCH-BY-ONE"] and ($desc["TYPE"] == "ENUM")) {
@@ -69,7 +69,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
             if (!$nom_module_fk) {
                 $nom_module_fk = AfwUrlManager::currentWebModule();
             }
-            $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+            $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
             // $nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
 
 
@@ -169,7 +169,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
                     if (!$nom_module_fk) {
                         $nom_module_fk = AfwUrlManager::currentWebModule();
                     }
-                    $nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+                    $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 
                     $col_name_atc = $col_name . "_atc";
                     $atc_input_normal = "inputmoyenmoyen";
@@ -237,7 +237,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
             }
             break;
 
-        case 'ANSWER':
+        /* case 'ANSWER': obsolete
             $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"], $ans_tab_where);
             select(
                 $liste_rep,
@@ -251,7 +251,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
                 "asc",
                 false
             );
-            break;
+            break;*/
         case 'PK':
         case 'TEXT':
         case 'PCTG':
@@ -500,7 +500,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
 {
     global $lang;
     $null_val_value = 0;
-    $null_val_display = AFWObject::traduireOperator('NULL', $lang);
+    $null_val_display = AfwLanguageHelper::tarjemOperator('NULL', $lang);
 
     switch (strtolower($ordre)) {
         case 'asc':

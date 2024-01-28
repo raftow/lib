@@ -150,7 +150,7 @@ for($i=0; $i<$newo; $i++)
             {
                 $item_trimmed = substr($item,4);
                 if($item_trimmed) {
-                        if($qedit_objs[-$i]->fieldExists($item_trimmed))
+                        if(AfwStructureHelper::fieldExists($qedit_objs[-$i], $item_trimmed))
                         {
                               $qedit_objs[-$i]->fixModeSet($item_trimmed, $item_value);
                         }
@@ -209,7 +209,7 @@ else
     }
     else
     {
-        $fixmtit = AFWObject::traduireOperator("qedit_some_records", $lang).AfwUmsPagHelper::getPluralTitle($myMainObject, $lang,false);
+        $fixmtit = AfwLanguageHelper::tarjemOperator("qedit_some_records", $lang).AfwUmsPagHelper::getPluralTitle($myMainObject, $lang,false);
     }*/
     if($fixmtit) 
     {

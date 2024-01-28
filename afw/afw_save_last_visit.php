@@ -42,7 +42,7 @@
                 {
                         if((!$lv_obj) and ($id>0)) 
                         {
-                                $lv_ob_file = Bfunction::classToFile($cl);
+                                $lv_ob_file = AfwStringHelper::classToFile($cl);
                                 require_once($lv_ob_file);
                                 $lv_obj = new $cl();
                                 

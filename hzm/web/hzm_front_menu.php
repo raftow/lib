@@ -9,13 +9,13 @@
 
         $right_menu = array();
         if($objme) $my_firstname = $objme->valFirstname();
-        $my_account_title = AFWObject::traduireOperator("MYACCOUNT", $lang);
+        $my_account_title = AfwLanguageHelper::tarjemOperator("MYACCOUNT", $lang);
         $my_home = $MY_HOME[$lang];
-        if(!$my_home) $my_home = AFWObject::traduireOperator("HOME", $lang);
+        if(!$my_home) $my_home = AfwLanguageHelper::tarjemOperator("HOME", $lang);
         if($objme) $right_menu[] = array('href' => "index.php",'css' => "home", 'title' => $my_home);
         
-        //if($objme and $objme->isAdmin()) $right_menu[] = array('href' => "data_admin.php",'css' => "data", 'title' => AFWObject::traduireOperator("DATA-ADMIN", $lang));
-        if($objme and $objme->isAdmin() and $PAG) $right_menu[] = array('href' => "panel_analyst.php",'css' => "analyst", 'title' => AFWObject::traduireOperator("ANALYST", $lang));
+        //if($objme and $objme->isAdmin()) $right_menu[] = array('href' => "data_admin.php",'css' => "data", 'title' => AfwLanguageHelper::tarjemOperator("DATA-ADMIN", $lang));
+        if($objme and $objme->isAdmin() and $PAG) $right_menu[] = array('href' => "panel_analyst.php",'css' => "analyst", 'title' => AfwLanguageHelper::tarjemOperator("ANALYST", $lang));
 
         
         if($my_account_page)
@@ -47,10 +47,10 @@
         }
         
         
-        $my_files = AFWObject::traduireOperator("MY-FILES", $lang);
+        $my_files = AfwLanguageHelper::tarjemOperator("MY-FILES", $lang);
         $right_menu[] = array('href' => "afw_my_files.php?x=1",'css' => "file", 'title' => "$my_files");
         
-        $my_files = AFWObject::traduireOperator("EDIT-MY-FILES", $lang);
+        $my_files = AfwLanguageHelper::tarjemOperator("EDIT-MY-FILES", $lang);
         
         $codeme = substr(md5("code".$me),0,8);
         $right_menu[] = array('href' => "afw_edit_my_files.php?x=$me&y=$codeme",'css' => "files-o", 'title' => "$my_files");
@@ -58,10 +58,10 @@
         if($my_account_page) 
                 $right_menu[] = array('href' => $my_account_page,'css' => "user", 'title' => "$my_account_title ($my_firstname)");
         else 
-                $right_menu[] = array('href' => "#",'css' => "myprofile", 'title' => AFWObject::traduireOperator("SIGN-UP", $lang));
+                $right_menu[] = array('href' => "#",'css' => "myprofile", 'title' => AfwLanguageHelper::tarjemOperator("SIGN-UP", $lang));
         
         
-        //$right_menu[] = array('href' => "#",'css' => "mobile", 'title' => AFWObject::traduireOperator("CONTACT_US", $lang));
+        //$right_menu[] = array('href' => "#",'css' => "mobile", 'title' => AfwLanguageHelper::tarjemOperator("CONTACT_US", $lang));
 
         //$right_menu[] = array('href' => $login_out_page, 'css' => $login_out_css, 'title' => $login_out_title);
 
@@ -89,7 +89,7 @@
         $uri_arr["fr"] = "";
         $uri_arr["en"] = "";
         
-        if(!$LANGS_MODULE["ar"]) Auser::simpleError("LANGS_MODULE not defined");
+        if(!$LANGS_MODULE["ar"]) AfwRunHelper::simpleError("LANGS_MODULE not defined");
         
         $active_lang_count = 0;
         
@@ -179,7 +179,7 @@
                 
                 if(false)
                 {
-                        $html_hzm_menu .= "<li class=\"front-small-item front-$menu_color-item\"><a href=\"main.php?Main_Page=fm.php&m=control\"><i class=\"fa fa-cogs\"></i>".AFWObject::traduireOperator("CONTROL", $lang)."</a></li>";
+                        $html_hzm_menu .= "<li class=\"front-small-item front-$menu_color-item\"><a href=\"main.php?Main_Page=fm.php&m=control\"><i class=\"fa fa-cogs\"></i>".AfwLanguageHelper::tarjemOperator("CONTROL", $lang)."</a></li>";
                 }
         
         }

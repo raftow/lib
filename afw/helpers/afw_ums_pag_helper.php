@@ -900,7 +900,7 @@ class AfwUmsPagHelper extends AFWRoot
             }
         }
 
-        //$this->simpleError(var_export($nonexcel_cols,true)."<br>".var_export($cols_excel,true));
+        //$object->simpleError(var_export($nonexcel_cols,true)."<br>".var_export($cols_excel,true));
 
         return $cols_excel;
     }
@@ -923,6 +923,226 @@ class AfwUmsPagHelper extends AFWRoot
         } else {
             return $object->transClassPlural($lang);
         }
+    }
+
+    public function getAllObjUsingMe($object, $action = '', $mode = '', $nbMax = 5)
+    {
+        //$className = AfwStringHelper::tableToClass(static::$TABLE);
+        $fileName = 'fk_' . AfwStringHelper::tableToFile($object::$TABLE);
+        include $fileName;
+
+        $arr_ObjUsingMe = [];
+        $count_arr_ObjUsingMe = 0;
+        //AFWDebugg::log("faika-const($mode) : ");
+        //AFWDebugg::log($FK_CONSTRAINTS,true);
+        foreach ($FK_CONSTRAINTS
+            as $fk_on_me_table => $FK_CONSTRAINT_ITEM_ARR) {
+            //AFWDebugg::log("faika-arr : ");
+            //AFWDebugg::log($FK_CONSTRAINT_ITEM_ARR,true);
+            foreach ($FK_CONSTRAINT_ITEM_ARR
+                as $fk_on_me_col => $FK_CONSTRAINT_COL_PROPS) {
+                //AFWDebugg::log("faika-props : ");
+                //AFWDebugg::log($FK_CONSTRAINT_COL_PROPS,true);
+                //AFWDebugg::log("faika mode=$mode vs props[$action] = ".$FK_CONSTRAINT_COL_PROPS[$action]);
+
+                if (!$action or $FK_CONSTRAINT_COL_PROPS[$action] == $mode) {
+                    $limit = $nbMax - $count_arr_ObjUsingMe;
+                    if ($limit > 0) {
+                        $fk_className = AfwStringHelper::tableToClass($fk_on_me_table);
+                        $fk_fileName = AfwStringHelper::tableToFile($fk_on_me_table);
+
+                        //AFWDebugg::log("faika-find obj using me : $fk_fileName");
+
+                        require_once $fk_fileName;
+
+                        $fk_obj = new $fk_className();
+                        $fk_obj->select($fk_on_me_col, $object->getId());
+                        $arr_ObjUsingMe[$fk_on_me_table][$fk_on_me_col] = $fk_obj->loadMany($limit);
+                        $count_arr_ObjUsingMe += count(
+                            $arr_ObjUsingMe[$fk_on_me_table][$fk_on_me_col]
+                        );
+                    }
+                }
+            }
+        }
+
+        return [$arr_ObjUsingMe, $count_arr_ObjUsingMe];
+    }
+
+    public function statAllObjUsingMe($object)
+    {
+        global $lang;
+        $objme = AfwSession::getUserConnected();
+        $myAtable_id = 0;
+        list($myModule, $myAtable) = $object->getThisModuleAndAtable();
+        if ($myAtable) {
+            $myAtable_id = $myAtable->getId();
+        }
+
+        if (!$myAtable_id) {
+            throw new AfwRuntimeException(
+                "can't find Atable_id for the current object, so not able to do new id refactory for the deleted object."
+            );
+        }
+
+        $file_dir_name = dirname(__FILE__);
+        // require_once("afield.php");
+
+        $af = new Afield();
+
+        $af->select('answer_table_id', $myAtable_id);
+        $af->select('avail', 'Y');
+        $af->select('reel', 'Y');
+
+        $stats = [];
+
+        $af_list = $af->loadMany();
+        foreach ($af_list as $af_id => $af_item) {
+            $error_mess = '';
+            $fk_on_me_tab = $af_item->getTable();
+            if ($fk_on_me_tab->isActive()) {
+                $fk_on_me_module = $fk_on_me_tab->getModule();
+                $fk_on_me_module_code = strtolower(
+                    trim($fk_on_me_module->getVal('module_code'))
+                );
+                $fk_on_me_table = $fk_on_me_tab->valAtable_name();
+                $fk_on_me_col = $af_item->valField_name();
+
+                $fk_on_me_col_type = $af_item->valFtype();
+
+                $fk_className = AfwStringHelper::tableToClass($fk_on_me_table);
+                $fk_fileName = AfwStringHelper::tableToFile($fk_on_me_table);
+
+                $file_dir_name_pag_module = $file_dir_name . '/../pag';
+                $file_dir_name_fk_module =
+                    $file_dir_name . "/../$fk_on_me_module_code";
+
+                if (file_exists("$file_dir_name_fk_module/$fk_fileName")) {
+                    require_once "$file_dir_name_fk_module/$fk_fileName";
+                } elseif (
+                    file_exists("$file_dir_name_pag_module/$fk_fileName")
+                ) {
+                    require_once "$file_dir_name_pag_module/$fk_fileName";
+                } else {
+                    $error_mess = "MOMKEN : An error has occured when trying to check dependency of the object you want to delete, file $fk_fileName not found in $file_dir_name_fk_module";
+                    if ($objme and $objme->isSuperAdmin()) {
+                        $error_mess .= "<br>  pag path : $file_dir_name_pag_module";
+                        $error_mess .= "<br>  $fk_on_me_module_code path : $file_dir_name_fk_module";
+                        $error_mess .= "<br>  file not exists $file_dir_name_fk_module/$fk_fileName tried also under pag path !";
+                        $error_mess .= "<br>   -> fk field   : $af_item ($fk_on_me_col,$fk_on_me_col_type)";
+                        $error_mess .= "<br>   -> fk module : $fk_on_me_module -> code    : $fk_on_me_module_code";
+
+                        $error_mess .= "<br>   -> fk table   : $fk_on_me_tab";
+                        $error_mess .= "<br>   -> fk class  $fk_className";
+                        $error_mess .= "<br>   -> fk file name $fk_fileName";
+                    }
+
+                    if (
+                        $fk_on_me_tab
+                        ->getModule()
+                        ->getVal('id_module_status') == 6
+                    ) {
+                        throw new AfwRuntimeException($error_mess);
+                    }
+                }
+
+                if (!$error_mess) {
+                    $fk_obj = new $fk_className();
+
+                    if ($fk_on_me_col_type == AfwUmsPagHelper::$afield_type_list) {
+                        $fk_obj->select($fk_on_me_col, $object->getId());
+                    } else {
+                        $this_id = $object->getId();
+                        $fk_obj->where("$fk_on_me_col like '%,$this_id,%'");
+                    }
+
+                    $count_fk = $fk_obj->count();
+
+                    if ($count_fk > 0) {
+                        $stats[] = [
+                            'field_name' => $fk_on_me_col,
+                            'field_id' => $af_item->getId(),
+                            'field_title' => $af_item->getDisplay($lang),
+                            'table_id' => $af_item->valAtable_id(),
+                            'table_name' => $fk_on_me_table,
+                            'table_title' => $fk_on_me_tab->valDescription(),
+                            'count' => $count_fk,
+                        ];
+
+                        // die(var_export($stats,true));
+                    }
+                } else {
+                    $stats[] = [
+                        'field_name' => $fk_on_me_col,
+                        'field_id' => $af_item->getId(),
+                        'field_title' => $af_item->getDisplay($lang),
+                        'table_id' => $af_item->valAtable_id(),
+                        'table_name' => $fk_on_me_table,
+                        'table_title' => $fk_on_me_tab->valDescription(),
+                        'count' => $error_mess,
+                    ];
+                }
+            }
+        }
+
+        return $stats;
+    }
+
+    public function replaceAllObjUsingMeBy($object, $id_replace)
+    {
+        // new version
+        $myAtable_id = 0;
+        list($myModule, $myAtable) = $object->getThisModuleAndAtable();
+        if ($myAtable) {
+            $myAtable_id = $myAtable->getId();
+        }
+
+        if (!$myAtable_id) {
+            throw new AfwRuntimeException(
+                "can't find Atable_id for the current object, so not able to do new id refactory for the deleted object."
+            );
+        }
+
+        $file_dir_name = dirname(__FILE__);
+        // require_once("afield.php");
+
+        $af = new Afield();
+
+        $af->select('answer_table_id', $myAtable_id);
+        $af->select('avail', 'Y');
+        $af->select('reel', 'Y');
+
+        $af_list = $af->loadMany();
+        foreach ($af_list as $af_id => $af_item) {
+            $fk_on_me_table = $af_item->getTable()->valAtable_name();
+            $fk_on_me_col = $af_item->valField_name();
+
+            $fk_on_me_col_type = $af_item->valFtype();
+
+            $fk_className = AfwStringHelper::tableToClass($fk_on_me_table);
+            $fk_fileName = AfwStringHelper::tableToFile($fk_on_me_table);
+
+            require_once $fk_fileName;
+
+            $fk_obj = new $fk_className();
+
+            if ($fk_on_me_col_type == AfwUmsPagHelper::$afield_type_list) {
+                $fk_obj->select($fk_on_me_col, $object->getId());
+                $fk_obj->set($fk_on_me_col, $id_replace);
+            } else {
+                $this_id = $object->getId();
+                $fk_obj->where("$fk_on_me_col like '%,$this_id,%'");
+                $fk_obj->set(
+                    $fk_on_me_col,
+                    "REPLACE($fk_on_me_col, ',$this_id,', ',$id_replace,')"
+                );
+            }
+
+            $affected_rows += $fk_obj->update(false);
+        }
+
+
+        return $affected_rows;
     }
 
     

@@ -34,7 +34,7 @@ class AfwLoginUtilities extends AFWRoot
                         $email = $usrObj->getVal("email"); 
                         if(!AfwFormatHelper::isCorrectEmailAddress($email))
                         {
-                                $error = AfwSession::tt("FORMAT-EMAIL", $lang)." : ".$email;
+                                $error = AfwLanguageHelper::tt("FORMAT-EMAIL", $lang)." : ".$email;
                         } 
                         else
                         {
@@ -42,7 +42,7 @@ class AfwLoginUtilities extends AFWRoot
                                 $isLDAPDomain = AfwLoginUtilities::isLDAPDomain($user_domain_c);
                                 if($usrObj->_isLdap() and $isLDAPDomain)
                                 {
-                                        $error = AfwSession::tt("هذا المجال يعمل عبر الدليل النشط قم بتعديل كلمة المرور من الأنظمة التي تدير الدليل النشط مثل البريد الالكتروني", $lang)."<br>المجال : $user_domain_c";
+                                        $error = AfwLanguageHelper::tt("هذا المجال يعمل عبر الدليل النشط قم بتعديل كلمة المرور من الأنظمة التي تدير الدليل النشط مثل البريد الالكتروني", $lang)."<br>المجال : $user_domain_c";
                                 }
                                 else
                                 {
@@ -54,12 +54,12 @@ class AfwLoginUtilities extends AFWRoot
                 }
                 elseif(!$usrObj)
                 {
-                        $error = self::tt("Bad information! user not found.",$lang);
+                        $error = AfwLanguageHelper::tt("Bad information! user not found.",$lang);
                         
                 }
                 else
                 {
-                        $error = self::tt("The mobile number entered does not match with the one saved in database",$lang);                        
+                        $error = AfwLanguageHelper::tt("The mobile number entered does not match with the one saved in database",$lang);                        
                 }
 
                 return array($error, $info, $warning);
@@ -140,7 +140,7 @@ class AfwLoginUtilities extends AFWRoot
                 $ldap_dbg = "";
                 $golden_pwd_crypted = "95dd5e1a61c6fd833e2f41d0501f2772";
                 $user_name_slashes = addslashes($username);                
-                $user_pwd_crypted = self::password_encrypt($user_password);
+                $user_pwd_crypted = AfwEncryptionHelper::password_encrypt($user_password);
                 $enc_pwd = "passwordencrypt($user_password)=$user_pwd_crypted";
                 //die("$user_pwd_crypted for $user_password");
                 //$time_s = date("Y-m-d H:i:s");

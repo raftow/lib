@@ -31,7 +31,7 @@ class AFWRelation extends AFWRoot {
      {
          if(!$this->myObject) 
          {
-                 $className = self::tableToClass($this->answer_table);
+                 $className = AfwStringHelper::tableToClass($this->answer_table);
                  $this->myObject = new $className();
          }
      

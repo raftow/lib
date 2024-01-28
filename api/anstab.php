@@ -82,8 +82,8 @@ if(!$nom_module_fk)
         
         $nom_module_fk = AfwUrlManager::currentWebModule();
 }
-$nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
-$nom_fichier_fk = AFWObject::tableToFile($nom_table_fk);
+$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
+$nom_fichier_fk = AfwStringHelper::tableToFile($nom_table_fk);
 /*
 if($nom_module_fk)
 {

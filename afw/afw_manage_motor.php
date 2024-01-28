@@ -132,7 +132,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                         $nom_module_fk = AfwUrlManager::currentWebModule();
                                 }
 
-				$nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+				$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 				//$nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
                                 
                                 $file_dir_name = dirname(__FILE__); 
@@ -289,7 +289,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 {
                                         $nom_module_fk = AfwUrlManager::currentWebModule();
                                 }
-				$nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+				$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 				//$nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
                                 
                                 
@@ -335,7 +335,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
 				);
 
 				break;
-		case 'MENUM' :  $liste_rep = AFWObject::getEnumTable($desc["ANSWER"],$obj->getTableName(),$col_name,$obj);
+		case 'MENUM' :  $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"],$obj->getTableName(),$col_name,$obj);
 				//echo "menum val $val with sep $separator : <br>";
 				$val_arr = explode($separator, trim($val, $separator));
 				//print_r($val_arr);
@@ -369,7 +369,9 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
 					""
 				);
                                 break;		
-		case 'ANSWER' : $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"]);
+		
+                /* case 'ANSWER' : obsolete
+                                $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"]);
                                 if($force_css) $data_length_class = " ".$force_css;
                                 else $data_length_class = " inputmoyen";
 				if(count($liste_rep) <= LIMIT_INPUT_SELECT)
@@ -401,7 +403,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
 						}
 					</script>
 	<?php			}
-				break;
+				break;*/
 		case 'ENUM'   : if($force_css) $data_length_class = " ".$force_css;
                                 else $data_length_class = " inputmoyen";
                                 
@@ -414,8 +416,8 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 }
                                 else
                                 {
-                                     $liste_rep = AFWObject::getEnumTable($desc["ANSWER"],$obj->getTableName(),$formInputName,$obj);
-                                     $answer_case = "AFWObject::getEnumTable(".$desc["ANSWER"].")";
+                                     $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"],$obj->getTableName(),$formInputName,$obj);
+                                     $answer_case = "AfwLoadHelper::getEnumTable(".$desc["ANSWER"].")";
                                 }
                                 
                                 //if($desc["FORMAT-INPUT"]=="hzmtoggle") $obj->_error("enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
@@ -436,7 +438,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                         {
                                              $display_val = $liste_rep[$val];
                                              if(!$display_val) $display_val = "...<!-- $val from ".var_export($liste_rep,true)." -->";
-                                             $css_arr = $obj::afw_explode($desc["HZM-CSS"]);
+                                             $css_arr = AfwStringHelper::afw_explode($desc["HZM-CSS"]);
                                              $css_val = $css_arr[$val];
                                              
                                              
@@ -491,7 +493,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                                 
                                                 if($desc["FORMAT-INPUT"]=="hzmsel")
                                                 {
-                                                    $css_arr = $obj::afw_explode($desc["HZM-CSS"]);
+                                                    $css_arr = AfwStringHelper::afw_explode($desc["HZM-CSS"]);
                                                     $css_class = "selectpicker";//." ".$data_loaded_class.$data_length_class
                                                 }
                                                 else

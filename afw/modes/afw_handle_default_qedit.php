@@ -267,8 +267,8 @@ for($i=0;$i<$nb_objs;$i++)
 }
 
 
-if($updated_nb_objs>0) AfwSession::pushSuccess(AFWObject::traduireOperator("save_with_sucess", $lang) . " $updated_nb_objs ".AFWObject::traduireOperator("record(s)", $lang));
-else AfwSession::pushInformation(AFWObject::traduireOperator("no_update_found", $lang));
+if($updated_nb_objs>0) AfwSession::pushSuccess(AfwLanguageHelper::tarjemOperator("save_with_sucess", $lang) . " $updated_nb_objs ".AfwLanguageHelper::tarjemOperator("record(s)", $lang));
+else AfwSession::pushInformation(AfwLanguageHelper::tarjemOperator("no_update_found", $lang));
 if($submit_return)
 {
     $id = $_POST["id_origin"];

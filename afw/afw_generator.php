@@ -30,7 +30,7 @@ class AfwGenerator extends AFWRoot {
                         self::$link = AfwMysql::connection($hostname, $username, $password, $database);
 			if(!self::$link) {
 				if(AfwSession::config("MODE_DEVELOPMENT", false)) $infos = "with following params :\n host = $hostname, user = $username";
-                                self::simpleError("Failed to connect to server $infos.");
+                                AfwRunHelper::simpleError("Failed to connect to server $infos.");
 			}
 			/*
                         $database = $this->getDatabase();
@@ -645,7 +645,7 @@ $php  \n"; //
                                 
                                 
 				$fileName = "trad_${lang}_".strtolower($tabName).".php";
-                        	$className = AFWObject::tableToClass($tabName);
+                        	$className = AfwStringHelper::tableToClass($tabName);
                                 $classNameLower = strtolower($className);
                                 
                                 unset($trad_arr);
@@ -717,7 +717,7 @@ $php  \n"; //
                                         
                                         if((!$try_trad) || ($try_trad==$nom_col))
                                         {
-                                            $try_trad = AFWObject::traduire($nom_col, $lang, null, $tabName);
+                                            $try_trad = AfwLanguageHelper::tarjem($nom_col, $lang, null, $tabName);
                                         } 
                                         
                                         if((!$try_trad) || ($try_trad==$nom_col))
@@ -824,7 +824,7 @@ $php_code\n";
                         {
                                 $tabDesc = $this->DB[$tabName];
                                 
-                        	$className = AFWObject::tableToClass($tabName);
+                        	$className = AfwStringHelper::tableToClass($tabName);
                                 $classNameLower = strtolower($className);
                                 
                                 $RDesc = "   update $tabName set avail = 'Y' where avail is null or avail = '';";
@@ -877,7 +877,7 @@ $php_code\n";
                 
                 foreach($tbl_list as $tabName => $tabOk)
                 {
-                        $className = AFWObject::tableToClass($tabName);
+                        $className = AfwStringHelper::tableToClass($tabName);
                         $fileName = AFWObject::table ToFile($tabName);
                         if(file_exists($fileName))
                         {
@@ -944,7 +944,7 @@ $php_code\n";
 		    foreach($FKC as $y_table => $FKC_ITEM)  	
                     {
                         $y_fileName = AFWObject::table ToFile($y_table);
-			$y_className = AFWObject::tableToClass($y_table);
+			$y_className = AfwStringHelper::tableToClass($y_table);
                         
                         $tempYdesc = array();
                                     

@@ -38,7 +38,7 @@ function type_input($col_name, $desc,$obj, $selected=false)
                                 }
                                 else
                                 {
-                                     $liste_rep = AFWObject::getEnumTable($desc["ANSWER"],$obj->getTableName(),$col_name,$obj);
+                                     $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"],$obj->getTableName(),$col_name,$obj);
                                 }
                                 
                                 if($desc["SEARCH-BY-ONE"] and ($desc["TYPE"]=="ENUM"))
@@ -79,7 +79,7 @@ function type_input($col_name, $desc,$obj, $selected=false)
                                 {
                                         $nom_module_fk = AfwUrlManager::currentWebModule();
                                 }
-								$nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+								$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 								// $nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
                                 
                                 
@@ -199,7 +199,7 @@ function type_input($col_name, $desc,$obj, $selected=false)
                                         {
                                                 $nom_module_fk = AfwUrlManager::currentWebModule();
                                         }
-				        				$nom_class_fk   = AFWObject::tableToClass($nom_table_fk);
+				        				$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
                                 
                                         $col_name_atc = $col_name."_atc";
                                         $atc_input_normal = "inputmoyenmoyen";
@@ -272,6 +272,7 @@ function type_input($col_name, $desc,$obj, $selected=false)
                         	}
 				break;
 		
+				/* obsolete
                 case 'ANSWER' : $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"],$ans_tab_where);
 				select(
 					$liste_rep,
@@ -284,7 +285,7 @@ function type_input($col_name, $desc,$obj, $selected=false)
 					),
 					"asc",
 					false
-				);
+				);*/
 				break;
 		case 'PK'     :
 		case 'TEXT'   :
@@ -537,7 +538,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
 {
 	global $lang;
         $null_val_value = 0;
-        $null_val_display = AFWObject::traduireOperator('NULL',$lang);
+        $null_val_display = AfwLanguageHelper::tarjemOperator('NULL',$lang);
 
 	switch (strtolower($ordre)) 
 	{

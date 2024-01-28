@@ -96,4 +96,66 @@ class AfwWizardHelper extends AFWRoot
 
         return 0;
     }
+
+
+    /*
+        afwListObjInstersection compare 2 hzm list (indexed with ID of object) of afw objects each list with same type of object
+        it will execute a compare method with each object of each list and take the couples of objects that return same result
+        this result is compared with == operator so it is recommended that th result is numeric or string or boolean
+     */
+
+    public static function afwListObjInstersection(
+        $listObj1,
+        $listObj2,
+        $compareMethod = 'getDisplay',
+        $keepEmpty = false
+    ) {
+        $arrResult = [];
+
+        $arr1Result = [];
+        foreach ($listObj1 as $id1 => $itemObj1) {
+            $arr1Result[$id1] = $itemObj1->$compareMethod();
+        }
+
+        $arr2Result = [];
+        foreach ($listObj2 as $id2 => $itemObj2) {
+            $arr2Result[$id2] = $itemObj2->$compareMethod();
+        }
+
+        // first($listObj2);
+
+        foreach ($arr1Result as $id1 => $res1) {
+            foreach ($arr2Result as $id2 => $res2) {
+                if ($res1 == $res2) {
+                    if ($keepEmpty or $res1) {
+                        $arrResult[] = [
+                            'item1' => $listObj1[$id1],
+                            'item2' => $listObj2[$id2],
+                        ];
+                    }
+                }
+            }
+        }
+        return $arrResult;
+    }
+
+
+    public static function listToArray(
+        $listObj,
+        $attribute,
+        $keepEmpty = false,
+        $cond = 'isActive'
+    ) {
+        $arrResult = [];
+        foreach ($listObj as $itemObj) {
+            if ($itemObj->$cond()) {
+                $val = $itemObj->getVal($attribute);
+                if ($keepEmpty or $val) {
+                    $arrResult[] = $val;
+                }
+            }
+        }
+
+        return $arrResult;
+    }
 }

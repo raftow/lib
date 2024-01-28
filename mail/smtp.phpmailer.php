@@ -260,6 +260,9 @@ class PHPMailer {
    */
   public $LE              = "\n";
 
+
+  
+
   /**
    * Used with DKIM DNS Resource Record
    * @var string
@@ -286,6 +289,9 @@ class PHPMailer {
    * @var string
    */
   public $DKIM_private    = '';
+
+
+  public $DKIM_passphrase              = "";
 
   /**
    * Callback Action function name
@@ -324,6 +330,7 @@ class PHPMailer {
   private   $sign_cert_file = "";
   private   $sign_key_file  = "";
   private   $sign_key_pass  = "";
+  private   $is_html  = "";
   private   $exceptions     = FALSE;
   private   $logging;
 
@@ -458,7 +465,7 @@ class PHPMailer {
   private function AddAnAddress($kind, $address, $name = '') {
     if (!preg_match('/^(to|cc|bcc|ReplyTo)$/', $kind)) {
       if ($this->logging) {
-        // AFWRoot::watchdog('smtp', 'Invalid recipient array: %kind', array('%kind' => $kind), AFWRoot::watchdog_ERROR);
+        // AfwRunHelper::afw_guard('smtp', 'Invalid recipient array: %kind', array('%kind' => $kind), AfwRunHelper::afw_guard_ERROR);
       }
       return FALSE;
     }
@@ -470,7 +477,7 @@ class PHPMailer {
         throw new phpmailerException(t('Invalid address') . ': ' . $address);
       }
       if ($this->logging) {
-        // AFWRoot::watchdog('smtp', 'Invalid address: %address', array('%address' => $address), AFWRoot::watchdog_ERROR);
+        // AfwRunHelper::afw_guard('smtp', 'Invalid address: %address', array('%address' => $address), AfwRunHelper::afw_guard_ERROR);
       }
       return FALSE;
     }
@@ -505,7 +512,7 @@ class PHPMailer {
         throw new phpmailerException(t('Invalid address') . ': ' . $address);
       }
       if ($this->logging) {
-        // AFWRoot::watchdog('smtp', 'Invalid address: %address', array('%address' => $address), AFWRoot::watchdog_ERROR);
+        // AfwRunHelper::afw_guard('smtp', 'Invalid address: %address', array('%address' => $address), AfwRunHelper::afw_guard_ERROR);
       }
       return FALSE;
     }
@@ -599,7 +606,7 @@ class PHPMailer {
         throw $e;
       }
       if ($this->logging) {
-        AFWRoot::watchdog_exception('smtp', $e);
+        AfwRunHelper::afw_guard_exception('smtp', $e);
       }
       return FALSE;
     }
@@ -1391,7 +1398,7 @@ class PHPMailer {
         throw $e;
       }
       if ($this->logging) {
-        AFWRoot::watchdog_exception('smtp', $e);
+        AfwRunHelper::afw_guard_exception('smtp', $e);
       }
       if ( $e->getCode() == self::STOP_CRITICAL ) {
         return FALSE;
