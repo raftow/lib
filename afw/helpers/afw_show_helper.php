@@ -1098,8 +1098,18 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             $tuple[$col] = $val->decode($col);
                                             break;
                                         case 'YN':
-                                            $col_decoded = $val->decode($col);
-                                            $tuple[$col] = $col_decoded;
+                                            // die("desc['FORMAT']=".$desc['FORMAT']);
+                                            if($desc['FORMAT']=='icon')
+                                            {
+                                                $onoff = $val->est($col) ? "on" : "off";
+                                                $tuple[$col] = "<img src='../lib/images/$onoff.png' width='24' heigth='24'>";
+                                            }
+                                            else
+                                            {
+                                                $col_decoded = $val->decode($col);
+                                                $tuple[$col] = $col_decoded;
+                                            }
+                                            
                                             /*
                                              $yn_decoded = $col.strtoupper($col_decoded);
                                              $yn_translated = $val->translate($yn_decoded,$lang);
@@ -1813,7 +1823,16 @@ $('#$showAsDataTable').DataTable( {
                 break;
 
             case 'YN':
-                $return = $objItem->showYNValueForAttribute(strtoupper($objItem->decode($col)), $col, $lang);
+                if($desc['FORMAT']=='icon')
+                {
+                    $onoff = $objItem->est($col) ? "on" : "off";
+                    $return = "<img src='../lib/images/$onoff.png' width='24' heigth='24'>";
+                }
+                else
+                {
+                    $return = $objItem->showYNValueForAttribute(strtoupper($objItem->decode($col)), $col, $lang);
+                }
+                
                 break;
 
             default:

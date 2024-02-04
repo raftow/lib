@@ -102,7 +102,7 @@ if (!$liste_obj) {
                                 /*
         			if((isset(${$nom_col.'_1'}) && ${$nom_col.'_1'} != "")||(isset(${$nom_col.'_2'}) && ${$nom_col.'_2'} != "") )
         			{
-        				list($where,$fixm)  = AfwSqlHelper::deduire_where($nom_col, $desc, ${"oper_".$nom_col}, ${$nom_col.'_1'},${$nom_col.'_2'});
+        				list($where,$fixm)  = AfwSqlHelper::deduire _where($nom_col, $desc, ${"oper_".$nom_col}, ${$nom_col.'_1'},${$nom_col.'_2'});
         				$arr_sql_conds[] = $where;
                                         if($fixm) $fixms[] = $fixm;
         			}*/
@@ -166,7 +166,7 @@ if (!$liste_obj) {
                         if (count($qsearch_by_text_where_arr) > 0) {
                                 $where_qsearch_by = "((" . implode(") or (", $qsearch_by_text_where_arr) . "))";
 
-                                // die("AfwSqlHelper::deduire_where($nom_col, $desc, $my_oper, $my_val, $my_val2) = list($where,$fixm,$cond_phrase)");
+                                // die("AfwSqlHelper::deduire _where($nom_col, $desc, $my_oper, $my_val, $my_val2) = list($where,$fixm,$cond_phrase)");
                                 $arr_sql_conds[] = $where_qsearch_by;
                                 // die("2.debugg the criteria = ".var_export($arr_sql_conds,true));
                                 $cond_phrase_arr[] = $trad_qsearch_by_text = $obj->translate("qsearch_by_text", $lang) . " : " . $qsearch_by_text;
@@ -276,7 +276,7 @@ if ($genere_xls) {
 
 if ($action and ($action != "retrieve") and ($qsearchview == "exec")) {
         $actions_tpl_arr = array();
-        $methodAction = "${action}RetrieveAction";
+        $methodAction = $action."RetrieveAction";
         if ($action_params) $actionParamsArr = explode(",", $action_params);
         else $actionParamsArr = array();
         $actionParamsTranslator = implode(".", $actionParamsArr);
@@ -388,7 +388,8 @@ if (true) {
                                                                         $datatable_header .= "<th class='col-importance-$importance srch-result-col-$nom_col'>" . $col_trad . "</th>";
                                                                 }
 
-                                                                foreach ($actions_tpl_arr as $action_item => $action_item_props) {
+                                                                foreach ($actions_tpl_arr as $action_item => $action_item_props) 
+                                                                {
                                                                         $frameworkAction = $action_item_props["framework_action"];
                                                                         $importance = $action_item_props["importance"];
                                                                         if (!$importance) {
@@ -403,20 +404,14 @@ if (true) {
                                                                         $datatable_header .= "<th width='1%' class='col-importance-$importance bfc$bf_code fwa$frameworkAction' id='fwa-$frameworkAction'>" . $obj->translate($action_item, $lang) . "</th>";
                                                                         if (!$frameworkAction) $frameworkAction = $action_item;
 
-                                                                        if ($bf_code) {
+                                                                        if ($bf_code) 
+                                                                        {
                                                                                 $can_action_arr[$action_item] = ($objme and $objme->iCanDoBFCode($bf_system, $bf_code));
-                                                                        } else {
+                                                                        } 
+                                                                        else 
+                                                                        {
                                                                                 $can_action_arr[$action_item] = ($objme and $objme->iCanDoOperationOnObjClass($obj, $frameworkAction));
-
                                                                                 if ($objme and (!$can_action_arr[$action_item])) $cant_do_action_log_arr[$action_item] = $objme->getICanDoLog();
-
-
-                                                                                /*
-                                           if($action_item=="delete")
-                                           {
-                                                $objme->showICanDoLog();
-                                                throw new AfwRuntimeException("debugg :: iCanDoOperationLog ::");
-                                           }*/
                                                                         }
                                                                 }
                                                         }

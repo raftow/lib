@@ -1,11 +1,11 @@
 <?php
 class AfwSqlHelper extends AFWRoot
 {
-
-    public static final function deduire_where($nom_col, $desc, $oper, $val_col, $val_col2 = null)
+    /*
+    public static final function deduire _where($nom_col, $desc, $oper, $val_col, $val_col2 = null)
     {
         $server_db_prefix = AfwSession::config("db_prefix", "c0");
-
+        
         if ($desc["UTF8"]) $codage = "_utf8";
         else $codage = "";
         if ($desc["FIELD-FORMULA"]) {
@@ -84,7 +84,7 @@ class AfwSqlHelper extends AFWRoot
             default:
                 return array($nom_col . ' ' . $oper . ' \'' . $val_col . '\'', "");
         }
-    }
+    }*/
 
     public static final function getSQLUpdate($obj, $user_id = 0, $ver = 0, $id_updated = '')
     {
@@ -278,7 +278,9 @@ class AfwSqlHelper extends AFWRoot
         $val_col,
         $val_col2 = null,
         $lang
-    ) {
+    ) 
+    {
+        
         $server_db_prefix = AfwSession::config('db_prefix', 'c0');
 
         $all_oper_arr = [
@@ -302,8 +304,10 @@ class AfwSqlHelper extends AFWRoot
         list($prefix_col, $nom_col) = explode('.', $nom_col);
         if (!$nom_col) {
             $nom_col = $prefix_col;
+            $prefix_col = "";
         }
         $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
+        $desc["FIELD-FORMULA"] = $object->decodeText($desc["FIELD-FORMULA"]);
         if (!$desc) {
             throw new AfwRuntimeException("can't find structure of field $nom_col");
         }
@@ -322,9 +326,17 @@ class AfwSqlHelper extends AFWRoot
                 $formula_module = '';
             }
             $nom_col = $formula_module . $desc['FIELD-FORMULA'];
+            $prefixed_nom_col = $nom_col;
         } elseif ($desc['TYPE'] == 'TEXT') {
             $nom_col = "IF(ISNULL(me.$nom_col), '', me.$nom_col)";
+            $prefixed_nom_col = $nom_col;
         }
+        else {
+            $nom_col = $prefixed_nom_col;
+        }
+
+        //if($original_nom_col=="cvalid") throw new AfwRuntimeException("nom_col = ".$nom_col." because structure=".var_export($desc,true));
+        
 
         switch ($desc['TYPE']) {
             case 'FK':
@@ -362,7 +374,7 @@ class AfwSqlHelper extends AFWRoot
                         implode(', ', $object->decodeList($nom_col, $val_col)) .
                         '</span>';
                     return [
-                        $prefixed_nom_col .
+                        $nom_col .
                             ' ' .
                             $oper .
                             " ($codage'" .
@@ -391,7 +403,7 @@ class AfwSqlHelper extends AFWRoot
                     '</span>';
 
                 return [
-                    $prefixed_nom_col .
+                    $nom_col .
                         ' ' .
                         $oper .
                         " $codage'" .
@@ -575,7 +587,7 @@ class AfwSqlHelper extends AFWRoot
                 "SELECT DISTINCT $pk_field as PK \n FROM " .
                 $object::_prefix_table($object::$TABLE) .
                 " me\n WHERE 1" .
-                $object->SEARCH .
+                $object->getSQL() .
                 "\n " .
                 ($limit ? ' LIMIT ' . $limit : '');
         } else {
@@ -605,7 +617,7 @@ class AfwSqlHelper extends AFWRoot
             if ($join_sentence) {
                 $query .= "\n" . $join_sentence;
             }
-            $query .= "\n WHERE 1" . $object->SEARCH;
+            $query .= "\n WHERE 1" . $object->getSQL();
             $query .= "\n ORDER BY " . $order_by;
             $query .= $limit ? "\n LIMIT " . $limit : '';
         }
@@ -669,6 +681,75 @@ class AfwSqlHelper extends AFWRoot
 
 
 
+    private static function beforeModification($object, $id, $fields_updated)
+    {
+        $this_db_structure = $object::getDbStructure(
+            $return_type = 'structure',
+            $attribute = 'all'
+        );
+        foreach ($this_db_structure as $attribute => $desc) {
+            if ($desc['AUTO-CREATE']) {
+                $val = $object->getVal($attribute);
+                if (!$val) {
+                    $auto_c = $desc['AUTOCOMPLETE'];
+                    $auto_c_create = $auto_c['CREATE'];
+                    $val_atc = ' .....';
+
+                    if ($auto_c_create) {
+                        if ($desc['TYPE'] != 'FK') {
+                            throw new AfwRuntimeException(
+                                "auto create should be only on FK attributes $attribute is " .
+                                    $desc['TYPE']
+                            );
+                        }
+                        $obj_at = AfwStructureHelper::getEmptyObject($object, $attribute);
+
+                        foreach ($auto_c_create
+                            as $attr => $auto_c_create_item) {
+                            $attr_val = '';
+                            if ($auto_c_create_item['CONST']) {
+                                $attr_val .= $auto_c_create_item['CONST'];
+                            }
+                            if ($auto_c_create_item['FIELD']) {
+                                $attr_val .=
+                                    ' ' .
+                                    $object->getVal($auto_c_create_item['FIELD']);
+                            }
+                            if ($auto_c_create_item['CONST2']) {
+                                $attr_val .=
+                                    ' ' . $auto_c_create_item['CONST2'];
+                            }
+                            if ($auto_c_create_item['INPUT']) {
+                                $attr_val .= ' ' . $val_atc;
+                            }
+
+                            $attr_val = trim($attr_val);
+
+                            $obj_at->set($attr, $attr_val);
+                        }
+
+                        $obj_at->insert();
+
+                        $val = $obj_at->getId();
+
+                        $object->set($attribute, $val);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+
+    /**
+     * _insert_id
+     * Return last insert id
+     */
+    private static function _insert_id($project_link_name)
+    {
+        return AfwMysql::insert_id(AfwDatabase::getLinkByName($project_link_name));
+    }
+
 
     /**
      * insert
@@ -719,7 +800,7 @@ class AfwSqlHelper extends AFWRoot
                               object -> AFIELD _VALUE =>" . var_export($object->getAllfieldValues(), true));
             }
 
-            $object->beforeModification(
+            self::beforeModification($object,
                 $object->getAfieldValue($object->getPKField()),
                 $fields_to_insert
             );
@@ -879,8 +960,8 @@ class AfwSqlHelper extends AFWRoot
             if ($return) {
                 if ($my_pk) {
                     if (!$curr_id) {
-                        $my_id = $object::_insert_id($object->getProjectLinkName());
-                        $object->setAfieldValue($my_pk, $my_id);
+                        $my_id = self::_insert_id($object->getProjectLinkName());
+                        $object->set($my_pk, $my_id);
                         $object->debugg_tech_notes = "set PK($my_pk) = $my_id ";
                     } else {
                         $object->debugg_tech_notes = "my PK($my_pk) already setted to $curr_id . ";
@@ -976,7 +1057,7 @@ class AfwSqlHelper extends AFWRoot
                 }
 
                 if ($object->isChanged()) {
-                    $object->beforeModification(
+                    self::beforeModification($object,
                         $id_updated,
                         $object->FIELDS_UPDATED
                     );
@@ -1014,14 +1095,14 @@ class AfwSqlHelper extends AFWRoot
                 if (!$user_id) {
                     $user_id = 0;
                 }
-                $object->setAfieldValue($object->fld_UPDATE_USER_ID(), $user_id);
-                $object->setAfieldValue(
+                $object->set($object->fld_UPDATE_USER_ID(), $user_id);
+                $object->set(
                     $object->fld_UPDATE_DATE(),
                     $object->get_UPDATE_DATE_value()
                 );
                 if ($only_me and $object->getId()) {
                     $ver = $object->getVersion() + 1;
-                    $object->setAfieldValue($object->fld_VERSION(), $ver);
+                    $object->set($object->fld_VERSION(), $ver);
                 } else {
                     $ver = $object->fld_VERSION() . '+1';
                 }
@@ -1145,10 +1226,10 @@ class AfwSqlHelper extends AFWRoot
             $return = false;
 
             if ($object->beforeHide($object->getAfieldValue($object->getPKField()))) {
-                $object->setAfieldValue($object->fld_UPDATE_USER_ID(), $user_id);
-                $object->setAfieldValue($object->fld_UPDATE_DATE(), 'now()');
+                $object->set($object->fld_UPDATE_USER_ID(), $user_id);
+                $object->set($object->fld_UPDATE_DATE(), 'now()');
                 $ver = $object->getVersion() + 1;
-                $object->setAfieldValue($object->fld_VERSION(), $ver);
+                $object->set($object->fld_VERSION(), $ver);
 
                 $query =
                     'UPDATE ' . $object::_prefix_table($object::$TABLE) . ' SET ';

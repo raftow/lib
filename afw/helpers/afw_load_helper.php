@@ -631,9 +631,9 @@ class AfwLoadHelper extends AFWRoot
             }
         }
         // $time_end4_1 = microtime(true);
-        if ($object->SEARCH or $result_row) {
+        if ($object->getSQL() or $result_row) {
             if ($object->IS_VIRTUAL) {
-                $return = $object->loadVirtualRow($object->SEARCH_TAB);
+                $return = $object->loadVirtualRow();
                 $object->ME_VIRTUAL = true;
             } else {
                 if (!$result_row) {
@@ -651,7 +651,7 @@ class AfwLoadHelper extends AFWRoot
                         "\n FROM " .
                         $className::_prefix_table($className::$TABLE) .
                         " me\n WHERE 1" .
-                        $object->SEARCH .
+                        $object->getSQL() .
                         "\n ORDER BY " .
                         $order_by_sentence .
                         " -- oo \n LIMIT 1";
@@ -692,8 +692,12 @@ class AfwLoadHelper extends AFWRoot
                     $debugg_res_row = '';
                     foreach ($result_row as $attribute => $attribute_value) {
                         if (!is_numeric($attribute)) {
-                            $object->setAfieldValue($attribute, $attribute_value);
-                            $object->unsetAfieldDefaultValue($attribute);
+                            // if($attribute=="PK") die("rafik-20240204-01 result_row=".var_export($result_row,true));
+                            if(($attribute!="PK") and ($attribute!="debugg_source"))
+                            {
+                                $object->set($attribute, $attribute_value);
+                                $object->unsetAfieldDefaultValue($attribute);
+                            }                            
                         } else {
                             $debugg_res_row .= ",$attribute";
                         }
@@ -726,7 +730,7 @@ class AfwLoadHelper extends AFWRoot
 
             // die("test_rafik 1002 this->IS_VIRTUAL = [$object->IS_VIRTUAL] this->getAllfieldValues()=".var_export($object->getAllfieldValues(),true));
         } else {
-            throw new AfwRuntimeException($className::$TABLE . ' : Unable to use the method load() without any research criteria (' . $object->SEARCH . "), use select() or where() before.");
+            throw new AfwRuntimeException($className::$TABLE . ' : Unable to use the method load() without any research criteria (' . $object->getSQL() . "), use select() or where() before.");
         }
 
         // $time_end4 = microtime(true);
@@ -1075,7 +1079,7 @@ class AfwLoadHelper extends AFWRoot
             " as PK \n FROM " .
             $object::_prefix_table($object::$TABLE) .
             " me\n WHERE 1" .
-            $object->SEARCH .
+            $object->getSQL() .
             ($order_by ? "\n ORDER BY " . $order_by : '') .
             ($limit ? ' LIMIT ' . $limit : '');
         $module_server = $object->getModuleServer();
@@ -1146,7 +1150,7 @@ class AfwLoadHelper extends AFWRoot
             "\n FROM " .
             $object::_prefix_table($object::$TABLE) .
             " me\n WHERE 1" .
-            $object->SEARCH .
+            $object->getSQL() .
             ($order_by ? "\n ORDER BY " . $order_by : '') .
             ($limit ? ' LIMIT ' . $limit : '');
         $module_server = $object->getModuleServer();

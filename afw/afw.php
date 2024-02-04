@@ -479,19 +479,19 @@ class AFWObject extends AFWRoot
         return AfwStructureHelper::attributeCanBeModifiedBy($this, $attribute, $user, $desc);
     }
 
-    private function getModuleServer()
+    public function getModuleServer()
     {
         $this_module = static::$MODULE;
         return AfwSession::config("$this_module-server", '');
     }
 
-    private static function myModuleServer()
+    public static function myModuleServer()
     {
         $this_module = static::$MODULE;
         return AfwSession::config("$this_module-server", '');
     }
 
-    private function getProjectLinkName()
+    public function getProjectLinkName()
     {
         $this_module_server = $this->getModuleServer();
         return 'server' . $this_module_server;
@@ -508,14 +508,7 @@ class AFWObject extends AFWRoot
         return AfwSqlHelper::executeQuery($module_server, static::$MODULE, static::$TABLE, $sql_query, $throw_error, $throw_analysis_crash);
     }
 
-    /**
-     * _insert_id
-     * Return last insert id
-     */
-    private static function _insert_id($project_link_name)
-    {
-        return AfwMysql::insert_id(AfwDatabase::getLinkByName($project_link_name));
-    }
+    
 
     protected function debuggTableQueries($sql)
     {
@@ -528,7 +521,7 @@ class AFWObject extends AFWRoot
         // or @toReImplement in subclasses
     }
 
-    protected final function execQuery($sql_query, $throw_error = true, $throw_analysis_crash = true) 
+    public final function execQuery($sql_query, $throw_error = true, $throw_analysis_crash = true) 
     {
         $module_server = $this->getModuleServer();
         list($result, $row_count, $affected_row_count) = AfwSqlHelper::executeQuery($module_server, static::$MODULE, static::$TABLE, $sql_query, $throw_error, $throw_analysis_crash);
@@ -910,7 +903,7 @@ class AFWObject extends AFWRoot
      * load virtual row
      * @param array $search_tab
      */
-    protected function loadVirtualRow($search_tab)
+    protected function loadVirtualRow()
     {
         return '';
     }
@@ -1061,13 +1054,13 @@ class AFWObject extends AFWRoot
         $this->AFIELD_VALUE = [];
     }
 
-    private function getAllfieldValues()
+    public function getAllfieldValues()
     {
         // if(!isset($this->AFIELD _VALUE)) $this->AFIELD _VALUE = array();
         return $this->AFIELD_VALUE;
     }
 
-    private function getAllfieldsToInsert()
+    public function getAllfieldsToInsert()
     {
         $return = array_merge($this->FIELDS_INITED, $this->FIELDS_UPDATED);
 
@@ -1092,12 +1085,12 @@ class AFWObject extends AFWRoot
         return $value;
     }
 
-    private function getAfieldDefaultValue($field_name)
+    public function getAfieldDefaultValue($field_name)
     {
         return $this->FIELDS_INITED[$field_name];
     }
 
-    private function unsetAfieldDefaultValue($field_name)
+    public function unsetAfieldDefaultValue($field_name)
     {
         unset($this->FIELDS_INITED[$field_name]);
     }
@@ -1173,7 +1166,7 @@ class AFWObject extends AFWRoot
         return $loaded;
     }
 
-    private function getTheLoadByIndex()
+    public function getTheLoadByIndex()
     {
         $loadByIndex = null;
 
@@ -2146,13 +2139,13 @@ class AFWObject extends AFWRoot
         return $this->FIELDS_UPDATED;
     }
 
-    protected function myShortNameToAttributeName($attribute)
+    public function myShortNameToAttributeName($attribute)
     {
         return $attribute;
     }
     
 
-    private final function stdShortNameToAttributeName($attribute)
+    public final function stdShortNameToAttributeName($attribute)
     {
         // use of short names in strcucture 
         // will be obsoleted except if we override 
@@ -2215,13 +2208,13 @@ class AFWObject extends AFWRoot
         return $this->debuggs[$attribute];
     }
 
-    final public function setDebuggAttributeValue($attribute, $value)
+    public final function setDebuggAttributeValue($attribute, $value)
     {
         $this->debuggs[$attribute] = $value;
         //if(AfwStringHelper::stringStartsWith($attribute,"mfk_val_city1_hotel_mfk")) die("setDebuggAttributeValue($attribute, $value) : this->debuggs => ".var_export($this->debuggs,true));
     }
 
-    protected function easyModeNotOptim()
+    public function easyModeNotOptim()
     {
         return false;
     }
@@ -2425,8 +2418,8 @@ class AFWObject extends AFWRoot
      */
     public function select($attribute, $value)
     {
-        if ((self::$TABLE == "student_file") and ($attribute == "school_class_id")) {
-            throw new AfwRuntimeException("select(school_class_id...) ya rafik !!!!");
+        if ((self::$TABLE == "acondition_origin") and ($attribute == "cvalid")) {
+            throw new AfwRuntimeException(self::$TABLE."->select($attribute, $value) ya rafik !!!!");
         }
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
@@ -2457,7 +2450,7 @@ class AFWObject extends AFWRoot
                 " = $_utf8'" .
                 AfwStringHelper::_real_escape_string($value) .
                 "'";
-            //if($attribute=="parent_module_id") throw new AfwRuntimeException("this->SEARCH = ".$this->SEARCH);
+            // if($attribute=="cvalid") throw new AfwRuntimeException("this->SEARCH = ".$this->SEARCH." because structure=".var_export($structure,true));
             return true;
         }
     }
@@ -2634,7 +2627,7 @@ class AFWObject extends AFWRoot
      * Empty Fields and Objects cache
      */
 
-    private function resetValues()
+    public function resetValues()
     {
         $all_real_fields = array_keys($this->getAllfieldValues());
 
@@ -2804,7 +2797,7 @@ class AFWObject extends AFWRoot
         $this->FIELDS_UPDATED = [];
     }
 
-    protected function repareBeforeUpdate()
+    public function repareBeforeUpdate()
     {
         // to be overridden if needed
         return false;
@@ -4518,64 +4511,7 @@ class AFWObject extends AFWRoot
         //to be implemented in sub-classes
     }
 
-    private function beforeModification($id, $fields_updated)
-    {
-        $this_db_structure = static::getDbStructure(
-            $return_type = 'structure',
-            $attribute = 'all'
-        );
-        foreach ($this_db_structure as $attribute => $desc) {
-            if ($desc['AUTO-CREATE']) {
-                $val = $this->getVal($attribute);
-                if (!$val) {
-                    $auto_c = $desc['AUTOCOMPLETE'];
-                    $auto_c_create = $auto_c['CREATE'];
-                    $val_atc = ' .....';
-
-                    if ($auto_c_create) {
-                        if ($desc['TYPE'] != 'FK') {
-                            throw new AfwRuntimeException(
-                                "auto create should be only on FK attributes $attribute is " .
-                                    $desc['TYPE']
-                            );
-                        }
-                        $obj_at = AfwStructureHelper::getEmptyObject($this, $attribute);
-
-                        foreach ($auto_c_create
-                            as $attr => $auto_c_create_item) {
-                            $attr_val = '';
-                            if ($auto_c_create_item['CONST']) {
-                                $attr_val .= $auto_c_create_item['CONST'];
-                            }
-                            if ($auto_c_create_item['FIELD']) {
-                                $attr_val .=
-                                    ' ' .
-                                    $this->getVal($auto_c_create_item['FIELD']);
-                            }
-                            if ($auto_c_create_item['CONST2']) {
-                                $attr_val .=
-                                    ' ' . $auto_c_create_item['CONST2'];
-                            }
-                            if ($auto_c_create_item['INPUT']) {
-                                $attr_val .= ' ' . $val_atc;
-                            }
-
-                            $attr_val = trim($attr_val);
-
-                            $obj_at->set($attr, $attr_val);
-                        }
-
-                        $obj_at->insert();
-
-                        $val = $obj_at->getId();
-
-                        $this->set($attribute, $val);
-                    }
-                }
-            }
-        }
-        return true;
-    }
+    
 
     /**
      * beforeInsert
@@ -4600,12 +4536,12 @@ class AFWObject extends AFWRoot
     }
 
     /**
-     * objectpdate
+     * beforeUpdate
      * method called before update
      * @param string $id
      * @param array $fields_updated
      */
-    protected function objectpdate($id, $fields_updated)
+    public function beforeUpdate($id, $fields_updated)
     {
         return $this->beforeMaj($id, $fields_updated);
     }
@@ -4800,7 +4736,7 @@ class AFWObject extends AFWRoot
         }
     }
 
-    protected function dynamicVH()
+    public function dynamicVH()
     {
         return true;
     }
@@ -6273,28 +6209,9 @@ class AFWObject extends AFWRoot
         return $this->getOtherLinksArrayStandard($mode, $genereLog, $step);
     }
 
-    protected static function getParentOf($this_table, $attribute)
-    {
-        $this_db_structure = static::getDbStructure(
-            $return_type = 'structure',
-            'all'
-        );
-        foreach ($this_db_structure as $attrib => $desc) {
-            if (
-                $desc['CATEGORY'] == 'ITEMS' and
-                $desc['ANSWER'] == $this_table and
-                $desc['ITEM'] == $attribute
-            ) {
-                return [$attrib, $desc];
-            }
-        }
-
-        return [null, null];
-    }
-
     
 
-    final protected function getOtherLinksArrayStandard($mode, $genereLog = false, $step = "all") 
+    protected final function getOtherLinksArrayStandard($mode, $genereLog = false, $step = "all") 
     {
         global $lang;
         $objme = AfwSession::getUserConnected();
@@ -6330,7 +6247,7 @@ class AFWObject extends AFWRoot
                     ($step == "all" or $struct['STEP']=="all" or $struct['STEP'] == $step or $struct['STEPS'][$step])
                 ) {
                     // if($attribute=="previous_paragraph_id") die("case of OneToXX or RELATION-SUPER is IMPORTANT, struct of $attribute = ".var_export($struct,true));
-+                   $log ="$attribute attribute is FK RELATION is OneToXX or RELATION-SUPER is IMPORTANT: " .$struct['RELATION'];
+                    $log ="$attribute attribute is FK RELATION is OneToXX or RELATION-SUPER is IMPORTANT: " .$struct['RELATION'];
                     if ($struct['RELATION'] == 'OneToMany') {
                         $parent_struct = AfwStructureHelper::getParentStruct($this, $attribute, $struct);
                         $parent_step = $parent_struct['STEP'];
@@ -7934,8 +7851,13 @@ $dependencies_values
     {
         return $this->SEARCH;
     }
+    /*
+    public function getSQLConditionsArray()
+    {
+        return $this->SEARCH_TAB;
+    }*/
 
-
+    
 
 
 
@@ -8634,18 +8556,18 @@ $dependencies_values
 
     
     /** APPROVE-DELAYED *** */
-    protected function iAcceptAction($action)
+    public function iAcceptAction($action)
     {
         //throw new AfwRuntimeException("i will AcceptAction");
         return true;
     }
 
-    protected function editToDisplay()
+    public function editToDisplay()
     {
         return false;
     }
 
-    protected function stepCanBeLeaved($current_step, $reason, $pushError)
+    public function stepCanBeLeaved($current_step, $reason, $pushError)
     {
         return true;
     }

@@ -775,7 +775,7 @@ class AfwUmsPagHelper extends AFWRoot
         return implode("<br>\n",$return_arr);
     }
 
-    public static final function getAllActions($object, $step = 0)
+    public static final function getAllActions($object, $step = 0, $takeViewIcon = true)
     {
         global $images, $lang;
         $objme = AfwSession::getUserConnected();
@@ -815,13 +815,16 @@ class AfwUmsPagHelper extends AFWRoot
                 $data_errors .= ' في العرض الاستردادي (retrieve mode)';
             }
         }
-
-        $actions_tpl_arr['view'] = [
-            'link' => "Main_Page=$displayFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
-            'img' => "../lib/images/$viewIcon.png",
-            'framework_action' => $displayAction,
-            'help' => htmlentities($data_errors),
-        ];
+        if($takeViewIcon)
+        {
+            $actions_tpl_arr['view'] = [
+                'link' => "Main_Page=$displayFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
+                'img' => "../lib/images/$viewIcon.png",
+                'framework_action' => $displayAction,
+                'help' => htmlentities($data_errors),
+            ];
+        }
+        
         $actions_tpl_arr['edit'] = [
             'link' => "Main_Page=$editFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
             'img' => $images['modifier'],

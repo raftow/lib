@@ -419,7 +419,7 @@ class AfwStructureHelper extends AFWRoot
             return AfwStructureHelper::itemsEditableBy($object, $attribute, $user, $desc);
         }
 
-        list($readonly, $reason) = $object->attributeIsReadOnly(
+        list($readonly, $reason) = AfwStructureHelper::attributeIsReadOnly($object,
             $attribute,
             $desc
         );
@@ -516,7 +516,7 @@ class AfwStructureHelper extends AFWRoot
         $isROReason_arr = [];
         foreach ($class_db_structure as $nom_col => $desc) {
             if ($desc['STEP'] == $step or $step == 'all') {
-                list($isRO, $isROReason) = $object->attributeIsReadOnly(
+                list($isRO, $isROReason) = AfwStructureHelper::attributeIsReadOnly($object,
                     $nom_col,
                     '',
                     '',
@@ -807,7 +807,21 @@ class AfwStructureHelper extends AFWRoot
     }
 
 
+    public static function getParentOf($className, $this_table, $attribute)
+    {
+        $this_db_structure = $className::getDbStructure($return_type = 'structure','all');
+        foreach ($this_db_structure as $attrib => $desc) {
+            if (
+                $desc['CATEGORY'] == 'ITEMS' and
+                $desc['ANSWER'] == $this_table and
+                $desc['ITEM'] == $attribute
+            ) {
+                return [$attrib, $desc];
+            }
+        }
 
+        return [null, null];
+    }
 
     /** getParentStruct
          * @param AFWObject $object
@@ -819,7 +833,7 @@ class AfwStructureHelper extends AFWRoot
         if (!$struct) $struct = AfwStructureHelper::getStructureOf($object, $attribute);
         $this_table = $object::$TABLE;
         list($fileName, $className) = AfwStructureHelper::getFactoryForFk($object, $attribute, $struct);
-        list($attribParent, $structParent) = $className::getParentOf($this_table, $attribute);
+        list($attribParent, $structParent) = AfwStructureHelper::getParentOf($className, $this_table, $attribute);
         return $structParent;
     }
 
@@ -949,7 +963,7 @@ class AfwStructureHelper extends AFWRoot
     public static function suggestAllShortNames($object)
     {
         $short_names = $object::getShortNames();
-        $result = "protected function myShortNameToAttributeName(\$attribute){\n";
+        $result = "public function myShortNameToAttributeName(\$attribute){\n";
 
         foreach($short_names as $short_name => $attribute)
         {

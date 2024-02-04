@@ -31,7 +31,7 @@ class AfwLanguageHelper
 
     public static function getTranslationPaths($module = "", $parent_module = "")
     {
-        $file_dir_name = dirname(__FILE__);
+        $file_dir_name = dirname(__FILE__)."/..";
 
         $paths = array();
 
@@ -50,7 +50,7 @@ class AfwLanguageHelper
     public static function tt($text, $lang = "ar", $module = "", $parent_module = "")
     {
         global $messages;
-        $file_dir_name = dirname(__FILE__);
+        $file_dir_name = dirname(__FILE__)."/..";
 
 
         $paths = self::getTranslationPaths($module, $parent_module);
@@ -77,7 +77,7 @@ class AfwLanguageHelper
     ) 
     {
         global $lang, $trad;
-        $file_dir_name = dirname(__FILE__);
+        $file_dir_name = dirname(__FILE__)."/..";
         if (!$langue) {
             $langue = $lang;
         }
@@ -249,7 +249,7 @@ class AfwLanguageHelper
     public static function tarjemMessage($message, $module, $lang = 'ar')
     {
             global $messages;
-            $file_dir_name = dirname(__FILE__);
+            $file_dir_name = dirname(__FILE__)."/..";
 
             include_once "$file_dir_name/../../pag/messages_$lang.php";
             include_once "$file_dir_name/../../$module/messages_$lang.php";

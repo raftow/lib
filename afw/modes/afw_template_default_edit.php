@@ -91,7 +91,7 @@ foreach($class_db_structure as $nom_col => $desc)
 
         if(($desc["STEP"] == $obj->currentStep) or (!$obj->editByStep))
         {
-            if(!$mode_field_read_only) list($mode_field_read_only, $the_reason_readonly) = $obj->attributeIsReadOnly($nom_col, $nom_col_desc="", $nom_col_submode="",$nom_col_for_this_instance=true, $returm_me_reason_readonly=true);
+            if(!$mode_field_read_only) list($mode_field_read_only, $the_reason_readonly) = AfwStructureHelper::attributeIsReadOnly($obj,$nom_col, $nom_col_desc="", $nom_col_submode="",$nom_col_for_this_instance=true, $returm_me_reason_readonly=true);
             // if($nom_col == "orgunit_id") die("$nom_col attribute Is ReadOnly = [$mode_field_read_only], reason=[$the_reason_readonly], ");
             if($mode_field_read_only) 
             {
@@ -149,12 +149,16 @@ foreach($class_db_structure as $nom_col => $desc)
                                 if($obj->currentStep > $desc["STEP"]) 
                                 {
                                         $mode_field_edit = false; //$mode_field_read_only = true;
-                                        $mode_field_edit_log .= ": $nom_col is not in step ".$obj->currentStep." but in step : ".$desc["STEP"];
+                                        $mode_field_edit_log .= ": $nom_col is editable but is not in step ".$obj->currentStep." but in step : ".$desc["STEP"];
                                 }
-                                if($obj->currentStep < $desc["STEP"]) 
+                                elseif($obj->currentStep < $desc["STEP"]) 
                                 {
                                         $mode_field_edit = false;
-                                        $mode_field_edit_log .= ": $nom_col is not in step ".$obj->currentStep." but in step : ".$desc["STEP"];
+                                        $mode_field_edit_log .= ": $nom_col is editable but is not in step ".$obj->currentStep." but in step : ".$desc["STEP"];
+                                }
+                                else
+                                {
+                                        $mode_field_edit_log .= ": $nom_col is editable and is in step ".$obj->currentStep;
                                 }
                         }  
                 }
@@ -185,13 +189,13 @@ foreach($class_db_structure as $nom_col => $desc)
         }
         if(!isset($desc["BUTTONS"])) $desc["BUTTONS"] = true;
         $buttons = $desc["BUTTONS"];
-        //if($nom_col=="php_ini") die("mode_field_edit=$mode_field_edit, mode_field_read_only=$mode_field_read_only, i_can_edit_attribute=$i_can_edit_attribute");
+        // if($nom_col=="aconditionList") die("mode_field_edit=$mode_field_edit, mode_field_read_only=$mode_field_read_only, i_can_edit_attribute=$i_can_edit_attribute log=$mode_field_edit_log");
         //echo "$nom_col <br>";
         
         
         $separator = $obj->getSeparatorFor($nom_col);
 
-	    if($nom_colIsApplicable)
+	if($nom_colIsApplicable)
         {
         	
                 //if($nom_col=="trips_html") die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) ".var_export($obj_errors,true));

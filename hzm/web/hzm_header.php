@@ -5,6 +5,7 @@
   require_once("$file_hzm_dir_name/../../afw/afw_utils.php");
   
   $f3c = substr($Main_Page,0,3);
+  // die("rafik-adm-001 : config=".var_export($config,true));
   
 ?>
 <!DOCTYPE html>
