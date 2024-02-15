@@ -1,5 +1,5 @@
 <?php
-// die("rafik before anything");
+//die("rafik before anything $currstep = $currstep");
 require_once(dirname(__FILE__)."/../../../external/db.php");
 // here was old const php
 

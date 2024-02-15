@@ -119,7 +119,8 @@ class AfwInputHelper extends AFWRoot
                                                 
                                         $list_count = AfwSession::config($objRep->getMyClass()."::estimated_row_count", 0);
                                         $auto_c = $desc["AUTOCOMPLETE"];
-                                        if((!$auto_c) and ($list_count <= LIMIT_INPUT_SELECT))
+                                        $LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
+                                        if((!$auto_c) and ($list_count <= $LIMIT_INPUT_SELECT))
                                         {
                                                 // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc,$val, $obj, true);
                                                 // if(AfwSession::config("MODE_DEVELOPMENT", false)) echo "<!-- for $col_name : $sql -->";
@@ -318,7 +319,8 @@ class AfwInputHelper extends AFWRoot
                                         $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"]);
                                         if($force_css) $data_length_class = " ".$force_css;
                                         else $data_length_class = " inputmoyen";
-                                        if(true) // count($liste_rep) <= LIMIT_INPUT_SELECT
+                                        $LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
+                                        if(true) // count($liste_rep) <= $LIMIT_INPUT_SELECT
                                         {
                                                 $type_input_ret = "select";
                                                 $html .= self::drop_down(

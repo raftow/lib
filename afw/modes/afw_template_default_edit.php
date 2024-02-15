@@ -424,7 +424,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                         $o_color = $other_link["COLOR"];
                                         if(!$o_color) $o_color = "gray";
                                         
-                                        $data[$nom_col]["btns"] .= "<a href='$o_url' $o_target_html><span class='${o_color}btn submit-btn fright $o_class'>$o_tit</span></a>\n";
+                                        $data[$nom_col]["btns"] .= "<a href='$o_url' $o_target_html><span class='${o_color}btn submit-btn fright otln $o_class'>$o_tit</span></a>\n";
                                         
                                         //$col_num++;
                                   }                                  

@@ -166,7 +166,7 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
-                $out_scr_btns .= '<input type="submit" class="redbtn submit-btn fright" name="submit"  id="submit-form-qedit-new" value="'.$qedit_new." ".$plural_obj_name_short.'" />';
+                $out_scr_btns .= '<input type="submit" class="longbtn redbtn submit-btn fright" name="submit"  id="submit-form-qedit-new" value="'.$qedit_new." ".$plural_obj_name_short.'" />';
                 $out_scr_btns .= '<input type="hidden" size="3" name="newo" value="'.$newo.'"/>';
                 $out_scr_btns .= '<input type="hidden" name="limit" value=""/>';
                 $out_scr_btns .= '</form>';
@@ -188,7 +188,7 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="limite"    value="0"/>' ;
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qsearch.php"/>';
                 $out_scr_btns .= AfwShowHelper::showObject($myClassInstance,"HTML", "afw_hidden_search_criteria.php");
-                $out_scr_btns .= '<input type="submit" class="greenbtn submit-btn fright" name="submit_xls"  id="submit_xls" value="'.$xls_export.'" />';
+                $out_scr_btns .= '<input type="submit" class="longbtn greenbtn submit-btn fright" name="submit_xls"  id="submit_xls" value="'.$xls_export.'" />';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
         }
@@ -202,7 +202,7 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
                 $ddb_btn = $myClassInstance->translate('DDB-BTN',$lang,true);
-                $out_scr_btns .= '<input type="submit" class="bluebtn submit-btn fright" name="submit"  id="submit-form-ddb" value="'.$ddb_btn.'" />';
+                $out_scr_btns .= '<input type="submit" class="longbtn bluebtn submit-btn fright" name="submit"  id="submit-form-ddb" value="'.$ddb_btn.'" />';
                 $out_scr_btns .= '<input type="hidden" name="ids" value="'.$ids.'"/>';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
@@ -214,7 +214,7 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_edit.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
-                $out_scr_btns .= '<input type="submit" class="bluebtn submit-btn fright" name="submit"  id="submit-form-new-instance" value="'.$new_instance." ".$single_obj_name.'" /><input type="hidden" size="3" name="newo" value="'.$newo.'"/>';
+                $out_scr_btns .= '<input type="submit" class="longbtn bluebtn submit-btn fright" name="submit"  id="submit-form-new-instance" value="'.$new_instance." ".$single_obj_name.'" /><input type="hidden" size="3" name="newo" value="'.$newo.'"/>';
                 $out_scr_btns .= '<input type="hidden" name="limit" value=""/>';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
@@ -228,7 +228,8 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
-                $out_scr_btns .= '<input type="submit" class="yellowbtn submit-btn fright" name="submit"  id="submit-form" value="'.$qedit_update.'" /><input type="hidden" size="3" name="newo" value="3"/>';
+                $out_scr_btns .= '<input type="submit" class="longbtn yellowbtn submit-btn fright" name="submit"  id="submit-form" value="'.$qedit_update.'" />
+                                        <input type="hidden" size="3" name="newo" value="-1"/>';
                 if($qsearchview and ($qsearchview != "all"))
                 {
                       $out_scr_btns .= '<input type="hidden" name="submode" value="FGROUP"/>';
@@ -414,6 +415,7 @@ $out_scr .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
 $out_scr .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
 $out_scr .= '<input type="hidden" name="action" value="'.$action.'"/>';
 $out_scr .= '<input type="hidden" name="action_params" value="'.$action_params.'"/>';
+$out_scr .= '<input type="hidden" name="r" value="'.$r.'"/>';
 $out_scr .= '<input type="hidden" name="limite"    value="0"/>' ;
 
 $out_scr .= '<input type="hidden" id="Main_Page" name="Main_Page" value="afw_mode_qsearch.php"/>';

@@ -82,7 +82,7 @@ class AfwGenerator extends AFWRoot {
                            $at->select("id",$atable_id);
                            $at2 = new Atable();
                            if($table_sub_model)
-                               $at2->where("(id = $atable_id or id in (select answer_table_id from afield fld where fld.atable_id = $atable_id and fld.avail='Y' and fld.answer_table_id > 0) or id in(select atable_id from afield fld2 where fld2.answer_table_id = $atable_id and fld2.avail='Y'))");
+                               $at2->where("(id = $atable_id or id in (select answer_table_id from c0pag.afield fld where fld.atable_id = $atable_id and fld.avail='Y' and fld.answer_table_id > 0) or id in(select atable_id from c0pag.afield fld2 where fld2.answer_table_id = $atable_id and fld2.avail='Y'))");
                            else
                                $at2->select("id",$atable_id);
                            $at2->load();

@@ -790,7 +790,7 @@ class AfwStringHelper
                 return (($text!="FUNCTION") and ($text!="DEFAULT") and ($text==AfwStringHelper::to_valid_code($text)));
         }
 
-        public static function toEnglishText($text) 
+        public static function toEnglishText($text, $upperCaseFirst=true) 
         {
 		if((se_termine_par($text,"name")) and (!se_termine_par($text,"_name")))
                 {
@@ -799,7 +799,9 @@ class AfwStringHelper
                 
                 $text = " " .str_replace('_', ' ', strtolower($text))." ";
                 $text = str_replace(' id ', ' ', $text);
-                return AfwStringHelper::firstCharUpper(trim($text));
+                if($upperCaseFirst) $text = AfwStringHelper::firstCharUpper(trim($text));
+
+                return trim($text);
 	}
 
         public static function hzmNaming($text) 

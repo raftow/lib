@@ -33,6 +33,11 @@ $mode_ret = "search";
 
 if ($qsearchview and ($qsearchview != "all") and ($action == "retrieve")) $mode_ret = $qsearchview;
 
+/**
+ * @var AFWObject $obj 
+ */
+
+
 $obj  = new $cl();
 
 $tentative = "first";
@@ -246,7 +251,8 @@ if (!$liste_obj) {
 // if search result is big data we should not keep heavy calculated fields like shortcuts
 // in retrieved columns
 $liste_count = count($liste_obj);
-if($liste_count>100)
+$too_much_records = AfwSession::config("too_much_records", 500);
+if($liste_count>$too_much_records)
 {
         foreach ($header as $col => $titre) 
         {

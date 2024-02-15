@@ -79,7 +79,7 @@ elseif(($_POST["mobile"]) and ($_POST["idn"]) and ($_POST["resetGo"]))
                         //die("list($error, $info, $warning) = AfwLoginUtilities::reset_pwd_for($idn_type, $idn, $mobile, $lang)");
                         //if($info) AfwSession::pushInformation($info);
                         // if($warning) AfwSession::pushWarning($warning);
-                        AfwSession::pushInformation(AfwLoginUtilities::tt("A new password has been sent to your mobile number")." : $mobile");
+                        AfwSession::pushInformation(AfwLanguageHelper::tt("A new password has been sent to your mobile number")." : $mobile");
                         //die("information = ".AfwSession::getSessionVar("information"));
                         // strange behavior header seems to reset
                         // header("Location: index.php");

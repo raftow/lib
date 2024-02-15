@@ -36,6 +36,8 @@ class AfwLoadHelper extends AFWRoot
             else $action="loadMany";
         }
 
+        // die("vhGetListe($obj, $where, $action) => action=$action");
+
         if($action=="loadManyFollowingStructure") 
         {
             if($obj->IS_LOOKUP) $action="liste";
@@ -67,7 +69,7 @@ class AfwLoadHelper extends AFWRoot
                 if($action=="loadMany") 
                 {
                     $listeRep = $obj->loadMany('',$order_by, $optim);
-                    $return=array();                    
+                    // die("$obj --> loadMany('',$order_by, $optim) => ".var_export($listeRep,true));
                 }
 
                 if($action=="loadManyFollowingStructure") 
@@ -80,8 +82,7 @@ class AfwLoadHelper extends AFWRoot
                     list($sql,$listeRep) = self::loadManyFollowingStructureAndValue($obj,$desc,$val_to_keep, null, $dropdown, $optim);
                     
                 }
-                $return=array();
-                return self::constructDropDownItems($listeRep, $lang);
+                $return = self::constructDropDownItems($listeRep, $lang, 'fk-somewhere-on:'. $obj->getTableName(),'table-somewhere');
             }
         }
 

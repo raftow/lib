@@ -19,7 +19,7 @@
                           </div>
                     </nav>
                     [no_menu_e]
-                    <div class="row expanded" style="padding: 4px;">
+                    <div class="row expanded">
 	  		<div class="business_hbloc text-center large-text-right">
                         [welcome_div]
                              <!--

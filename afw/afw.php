@@ -1588,7 +1588,7 @@ class AFWObject extends AFWRoot
 
     public final function seemsCalculatedField($attribute)
     {
-        if(!isset($this->AFIELD_VALUE[$attribute])) return true;
+        if((!$this->isEmpty()) and ($attribute!="id") and !isset($this->AFIELD_VALUE[$attribute])) return true;
         if(strpos($attribute, '.') !== false) return true;
         if(strpos($attribute, '_') === 0) return true;
         if($this->shouldBeCalculatedField($attribute)) return true;
@@ -3150,10 +3150,11 @@ class AFWObject extends AFWRoot
     final public function getDefaultDisplay($lang = 'ar')
     {
         if (!$this->id) {
-            $return =
-                $this->transClassSingle($lang) .
+            $return = $this->insertNewLabel($lang);
+            /*
+            $return = $this->transClassSingle($lang) .
                 ' ' .
-                $this->translate('NEW', $lang, true);
+                $this->translate('NEW', $lang, true);*/
         } else {
             if ($this->DISPLAY_FIELD) {
                 $return = $this->getVal($this->DISPLAY_FIELD);
@@ -3970,8 +3971,8 @@ class AFWObject extends AFWRoot
                     $desc['TYPE'] == 'FK' or
                     $desc['TYPE'] == 'ENUM' or
                     $desc['TYPE'] == 'YN' or
-                    $desc['TYPE'] == 'DATE' or
-                    $desc['TYPE'] == 'TEXT')
+                    $desc['TYPE'] == 'DATE' // or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
+                    )
                     or
                     $desc['TEXT-SEARCHABLE-SEPARATED']));
         // if($attribute=="book_id") die("attribute $attribute is_searchable=$is_searchable, can_qsearch=$can_qsearch, is_qsearchable=$is_qsearchable, desc=".var_export($desc,true));

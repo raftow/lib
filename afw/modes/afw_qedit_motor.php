@@ -126,8 +126,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             if ($desc["STYLE"]) $style_input = " style='" . $desc["STYLE"] . "' ";
             else $style_input = "";
 
-            //die("$col_name $nom_class_fk $list_count/".LIMIT_INPUT_SELECT);    
-            if ((!$auto_c) and ($list_count <= LIMIT_INPUT_SELECT)) {
+            $LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20); 
+            //die("$col_name $nom_class_fk $list_count/".$LIMIT_INPUT_SELECT);   
+            if ((!$auto_c) and ($list_count <= $LIMIT_INPUT_SELECT)) {
 
                 $obj_className = $obj->getMyClass();
                 if ($development_mode or $objme->isAdmin()) echo "<!-- for ($obj_className).$col_name : [$objRep] -> loadMany FollowingStructureAndValue($col_name, $desc,$val, $obj) -->";
@@ -384,7 +385,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"]);
             if ($force_css) $data_length_class = " " . $force_css;
             else $data_length_class = " inputmoyen";
-            if (count($liste_rep) <= LIMIT_INPUT_SELECT) {
+            $LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
+            if (count($liste_rep) <= $LIMIT_INPUT_SELECT) {
                 $type_input_ret = "select";
 
                 if ($obj->qedit_minibox)

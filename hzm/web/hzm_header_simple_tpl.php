@@ -1,6 +1,6 @@
 <div class="section" id="section1">
 	<div class="topContent">
-  		  <div class="row expanded" style="padding: 4px;">
+  		  <div class="row expanded">
 	  		<div class="medium-12 large-12 columns text-center large-text-right">
                         
                              <div class="logo_company">  

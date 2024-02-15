@@ -1616,7 +1616,8 @@ $('#$showAsDataTable').DataTable( {
             include dirname(__FILE__).'/../modes/'.$template;
             return ob_get_clean();
         } elseif ($mode == 'EDIT') {
-            $template = 'afw_template_default_edit.php';
+            //$template = 'afw_template_default_edit.php';
+            $template = 'afw_mode_edit.php';
             if (!empty($html_template)) {
                 $template = $html_template;
             }
@@ -1636,10 +1637,12 @@ $('#$showAsDataTable').DataTable( {
             if ($object->debugg_curr_step) {
                 $currstep = $object->debugg_curr_step;
             }
+            $currstep = 4;
             //if($object->test_rafik) die("test_rafik 400 before require $template (cl=$cl,id=$id) obj = ".var_export($obj,true));
-            require_once dirname(__FILE__).'/../modes/afw_edit_motor.php';
-            require dirname(__FILE__).'/../modes/'.$template;
-            return ob_get_clean();
+            //require_once dirname(__FILE__).'/../modes/afw_edit_motor.php';
+            include_once dirname(__FILE__).'/../modes/'.$template; //."?currstep=".$currstep;
+            //return ob_get_clean();
+            return $out_scr;
         } elseif ($mode == 'STR') {
             return $object->showMe('', $lang);
         }

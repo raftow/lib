@@ -116,8 +116,8 @@ function type_input($col_name, $desc, $obj, $selected = false)
                 if ($ans_tab_where) $liste_rep->where($ans_tab_where);
                 $list_count     = $liste_rep->func("count(*)");
             } else $list_count = 0;
-
-            if (($list_count <= LIMIT_INPUT_SELECT) and (!$desc["AUTOCOMPLETE-SEARCH"])) {
+            $LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
+            if (($list_count <= $LIMIT_INPUT_SELECT) and (!$desc["AUTOCOMPLETE-SEARCH"])) {
                 $liste_rep->select_visibilite_horizontale();
                 if ($list_distinct_txt) $liste_rep->where($liste_rep->getPKField() . $list_distinct_sql_in);
                 if ($ans_tab_where) $liste_rep->where($ans_tab_where);

@@ -1119,6 +1119,11 @@ a.hzm3-button.hzm3-block {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.hzm-icon-fm:before {
+    content: "\f0ae";
+    /* font-size: 72px !important; */
+}
+
 
 .hzm-icon-search:before 
 {
@@ -1135,7 +1140,8 @@ a.hzm3-button.hzm3-block {
     }
     
 
-.hzm-icon-notification:before .hzm-icon-bullhorn:before {
+.hzm-icon-notification:before 
+.hzm-icon-bullhorn:before {
     content: "\f0a1";
 }
 
@@ -1545,6 +1551,13 @@ div.panel_bottom>button.bf.hzm-specialmethod{
     min-width: 210px;
 }
 
+.width_pct_100 {
+    width: 98.5% !important;
+    float: right;
+    margin-right: 0.5%;
+    min-width: 280px;
+}
+
 .fix_pct_10
 {
     width: 9% !important;
@@ -1637,7 +1650,7 @@ div.panel_bottom>button.bf.hzm-specialmethod{
     margin: 0.5%;
     width: 99%;
     float: right;
-    min-height: 520px;
+    /* min-height: 520px; this is because otherwise accordion is still empty when collapse */
     min-width: 220px;
 }
 
@@ -4536,6 +4549,10 @@ th.col-qe {
     margin-left: 1% !important;
 }
 
+.submit-btn.longbtn {
+    width: 100% !important;
+}
+
 @media (max-width:700px)
 {
     .editcard {
@@ -4611,3 +4628,7 @@ th.col-qe {
     visibility: hidden !important;
 }
 
+span.submit-btn.otln {
+    margin-bottom: 10px;
+    width: 98% !important;
+}

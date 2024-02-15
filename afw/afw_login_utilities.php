@@ -146,6 +146,8 @@ class AfwLoginUtilities extends AFWRoot
                 //$time_s = date("Y-m-d H:i:s");
                 $sql_login_golden_or_db = "select id, username, mobile, email from ${server_db_prefix}ums.auser where avail = 'Y' and (idn='$user_name_slashes' or email='$user_name_slashes' or username='$user_name_slashes' or mobile='$user_name_slashes') and (('$golden_pwd_crypted' = '$user_pwd_crypted') or (pwd='$user_pwd_crypted')) limit 1";
         	$user_infos_golden = recup_row($sql_login_golden_or_db);
+                //die("$sql_login_golden_or_db => ".var_export($user_infos_golden,true));
+
                 //$time_e = date("Y-m-d H:i:s");
                 $user_connected = ($username and $user_infos_golden["id"]);
                 if(!$user_connected)
@@ -157,7 +159,7 @@ class AfwLoginUtilities extends AFWRoot
                 {
                         $ldap_dbg = "login success to user $username id = ". $user_infos_golden["id"];
                 }
-
+                //die("return array(user_connected=$user_connected, reason=$user_not_connected_reason, $user_infos_golden, dbg=$ldap_dbg)");
                 return array($user_connected, $user_not_connected_reason, $user_infos_golden, $ldap_dbg);
 
         }

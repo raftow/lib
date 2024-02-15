@@ -169,7 +169,7 @@ if(!$obj->qedit_minibox)
 <?
 } 
 
-  if($obj->copypast) 
+  if(isset($obj::$copypast)  and $obj::$copypast)
   {
 ?>  
 <tr>  
@@ -205,7 +205,7 @@ if(!$obj->qedit_minibox)
 ?>
 </table>
 <?
-  if($obj->copypast) 
+  if(isset($obj::$copypast)  and $obj::$copypast)
   {
 ?>        
 <table cellspacing="3" cellpadding="4" style="width: 100% !important;">
