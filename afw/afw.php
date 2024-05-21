@@ -46,7 +46,7 @@ class AFWObject extends AFWRoot
      * @var string
      */
 
-    public static $DATABASE = 'c0afw';
+    public static $DATABASE = '____afw';
     public static $MODULE = 'afw';
     public static $TABLE = 'afw_object';
 
@@ -319,7 +319,8 @@ class AFWObject extends AFWRoot
 
     public static function getDbStructure(
         $return_type = 'structure',
-        $attribute = 'all'
+        $attribute = 'all',
+        $step = 'all', $start_step=null, $end_step=null
     ) {
         if ($return_type == 'shortnames') {
             $attribute = 'all';
@@ -339,7 +340,7 @@ class AFWObject extends AFWRoot
         }
         $table_name = static::$TABLE;
 
-        $debugg_db_structure = AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute);
+        $debugg_db_structure = AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute, $step, $start_step, $end_step);
         //if(($table_name=="invester") and ($attribute=="city_id")) die($table_name." AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute) returned debugg_db_structure = ".var_export($debugg_db_structure,true));
         if (isset($debugg_db_structure)) {
             foreach ($debugg_db_structure as $key => $value) {
@@ -1666,7 +1667,7 @@ class AFWObject extends AFWRoot
         return "all";
     }
 
-    public final function isOk($force = false, $returnErrors = false, $langue = null, $ignore_fields_arr = null)
+    public final function isOk($force = false, $returnErrors = false, $langue = null, $ignore_fields_arr = null, $start_step=null, $end_step=null)
     {
         global $lang;
         if (!$langue) $langue = $lang;
@@ -1675,9 +1676,18 @@ class AFWObject extends AFWRoot
         {
             if (!$returnErrors) return true; else return [true, []];
         }
-
-        $dataErr = $this->getDataErrors($langue, true, $force, 'all', $ignore_fields_arr);
-
+        $stop_on_first_error = (!$returnErrors);
+        $returnErrorsStep = "all";
+        if($returnErrors!="all")
+        {            
+            $start_step = $returnErrors;
+            $end_step = $returnErrors;
+        }
+        
+        
+        
+        $dataErr = $this->getDataErrors($langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step);
+        // die("showErrorsAsSessionWarnings::getDataErrors($langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step) => ".var_export($dataErr,true));
         $is_ok = count($dataErr) == 0;
         if (!$returnErrors) return $is_ok; else return [$is_ok, $dataErr];
     }
@@ -3149,23 +3159,47 @@ class AFWObject extends AFWRoot
 
     final public function getDefaultDisplay($lang = 'ar')
     {
-        if (!$this->id) {
+        //if ($this instanceof Applicant) die("df is ".var_export($this->DISPLAY_FIELD,true));
+        if (!$this->id) 
+        {
             $return = $this->insertNewLabel($lang);
             /*
             $return = $this->transClassSingle($lang) .
                 ' ' .
                 $this->translate('NEW', $lang, true);*/
-        } else {
-            if ($this->DISPLAY_FIELD) {
-                $return = $this->getVal($this->DISPLAY_FIELD);
-            } else {
-                $return =
-                    $this->transClassSingle($lang) . ' &larr; ' . $this->id;
+        } 
+        elseif(is_array($this->DISPLAY_FIELD) and count($this->DISPLAY_FIELD)>0)
+        {
+            // if ($this instanceof Applicant) die("df is an array : ".var_export($this->DISPLAY_FIELD,true));
+            $disp_decoded = [];
+            foreach($this->DISPLAY_FIELD as $key)
+            {
+                $disp_decoded[] = $this->decode($key);
             }
+            $return = implode(" ", $disp_decoded);
+            //if ($this instanceof Applicant) die("for instanceof Applicant return = $return because $disp_decoded = ".var_export($disp_decoded,true));
+        } 
+        elseif ($this->DISPLAY_FIELD) 
+        {
+            $return = $this->getVal($this->DISPLAY_FIELD);
+        }
+        elseif(is_array($this->UNIQUE_KEY) and count($this->UNIQUE_KEY)>0)
+        {
+            $uk_decoded = [];
+            foreach($this->UNIQUE_KEY as $key)
+            {
+                $uk_decoded[] = $this->decode($key);
+            }
+            $return = implode("-", $uk_decoded);
+        } 
+        else
+        {
+            $return =
+                $this->transClassSingle($lang) . ' &larr; ' . $this->id;
         }
 
         if (!$return) {
-            $return = '--- object id ' . $this->id;
+            $return = $this->getMyClass()." id " . $this->id;
         }
         return $return;
     }
@@ -3302,6 +3336,7 @@ class AFWObject extends AFWRoot
             $token_fcl = '[fcl:' . $fieldname . ']';
 
             $token_is = '[is:' . $fieldname . ']';
+            $token_is_en = '[is-en:' . $fieldname . ']';
             $token_value = '[value:' . $fieldname . ']';
             $token_data = '[' . $fieldname . ']';
             $token_label = '[' . $fieldname . '_label]';
@@ -3361,6 +3396,33 @@ class AFWObject extends AFWRoot
                 }
 
                 $token_arr[$token_is] = $token_is_val;
+            }
+
+            if (strpos($text_to_decode, $token_is_en) !== false) {
+                $this_token_is_en_arr = $this->token_is_en_arr;
+                $this_token_not_is_en_arr = $this->token_not_is_en_arr;
+                $this_token_null_is_en_arr = $this->token_null_is_en_arr;
+
+                if (!$this_token_is_en_arr[$fieldname]) {
+                    $this_token_is_en_arr[$fieldname] = 'required'; // YES
+                }
+                if (!$this_token_not_is_en_arr[$fieldname]) {
+                    $this_token_not_is_en_arr[$fieldname] = ''; // NO
+                }
+                if (!$this_token_null_is_en_arr[$fieldname]) {
+                    $this_token_null_is_en_arr[$fieldname] = ''; // NOT-YET
+                }
+
+                $field_val = $this->getVal($fieldname);
+                if ($field_val == 'Y') {
+                    $token_is_en_val = $this_token_is_en_arr[$fieldname];
+                } elseif ($field_val == 'N') {
+                    $token_is_en_val = $this_token_not_is_en_arr[$fieldname];
+                } else {
+                    $token_is_en_val = $this_token_null_is_en_arr[$fieldname];
+                }
+
+                $token_arr[$token_is_en] = $token_is_en_val;
             }
 
             if (strpos($text_to_decode, $token_data) !== false) {
@@ -3676,6 +3738,10 @@ class AFWObject extends AFWRoot
      * @return string
      */
 
+    public function translate0($nom_col, $langue = 'ar', $operator = null)
+    {
+        return $nom_col;
+    } 
     public function translate($nom_col, $langue = 'ar', $operator = null)
     {
         $nom_table = static::$TABLE;
@@ -3975,7 +4041,7 @@ class AFWObject extends AFWRoot
                     )
                     or
                     $desc['TEXT-SEARCHABLE-SEPARATED']));
-        // if($attribute=="book_id") die("attribute $attribute is_searchable=$is_searchable, can_qsearch=$can_qsearch, is_qsearchable=$is_qsearchable, desc=".var_export($desc,true));
+        // if($attribute=="academic_program_id") die("attribute $attribute is_searchable=$is_searchable, can_qsearch=$can_qsearch, is_qsearchable=$is_qsearchable, desc=".var_export($desc,true));
         $return = ($is_searchable and $is_qsearchable);
 
         return $return;
@@ -5298,9 +5364,9 @@ class AFWObject extends AFWRoot
 
                                 $data_to_display = $html; //." data=".var_export($data,true)." header=".var_export($header_trad,true)
                             }
-                        } elseif (
-                            strtoupper($structure['FORMAT']) == 'RETRIEVE'
-                        ) {
+                        } 
+                        elseif (strtoupper($structure['FORMAT']) == 'RETRIEVE') 
+                        {
                             reset($items_objs);
                             $first_item = current($items_objs);
                             $data_to_display = '';
@@ -5362,14 +5428,10 @@ class AFWObject extends AFWRoot
                                 foreach ($group_retieve_arr as $group_retieve) {
                                     $first_item->mode_retieve = $group_retieve;
                                     $first_item->showAsDataTable =
-                                        count($items_objs) > 20
-                                        ? ($structure['DATA_TABLE']
-                                            ? $structure['DATA_TABLE']
-                                            : "dtb_$key")
-                                        : '';
-                                    if ($first_item->showAsDataTable) {
-                                        $first_item->showAsDataTable .=
-                                            '_' . $group_retieve;
+                                        count($items_objs) > 20 ? ($structure['DATA_TABLE'] ? $structure['DATA_TABLE'] : "dtb_$key") : '';
+                                    if ($first_item->showAsDataTable) 
+                                    {
+                                        $first_item->showAsDataTable .= '_' . $group_retieve;
                                     }
                                     $options = [];
                                     $options['hide_retrieve_cols'] = $hide_retrieve_cols;
@@ -6052,6 +6114,8 @@ class AFWObject extends AFWRoot
                 // to avoid to use too much for optimisation
                 // put provide your other_link with BF-ID
                 $create_not_found_bf = $other_link['CRE-NOT-FOUND-BF'];
+
+                if(!$other_link['MODULE']) $other_link['MODULE'] = static::$MODULE;
 
                 list($bf_id, $params) = AfwUrlManager::decomposeUrl(
                     $other_link['MODULE'],
@@ -6983,15 +7047,9 @@ $dependencies_values
         } else {
             $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
         }
-        if (
-            $step == 'all' or
-            $desc['STEP'] == 'all' or
-            $desc['STEP'] == $step
-        ) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return AfwStructureHelper::attributeBelongToStep($attribute, $desc, $step);
+        
     }
 
     final public function stepOfAttribute($attribute, $desc = null)
@@ -7034,15 +7092,35 @@ $dependencies_values
     private function getCommonDataErrors(
         $lang = 'ar',
         $show_val = true,
-        $step = 'all'
+        $step = 'all', 
+        $erroned_attribute = null,
+        $stop_on_first_error = false, $start_step=null, $end_step=null
     ) {
         global $errors_check_count, $errors_check_count_max;
 
         $cm_errors = [];
-        $this_db_structure = static::getDbStructure(
-            $return_type = 'structure',
-            $attribute = 'all'
-        );
+
+        if(!$erroned_attribute)
+        {
+            $this_db_structure = static::getDbStructure(
+                $return_type = 'structure',
+                $attrib = 'all',
+                $step, $start_step, $end_step
+            );
+            // die("showErrorsAsSessionWarnings::getDbStructure($return_type, $attrib, $step, $start_step, $end_step) = ".var_export($this_db_structure,true));
+            // if($step!="all") die("static::getDbStructure($return_type, $attrib, $step) = ".var_export($this_db_structure,true));
+        }
+        else
+        {
+            $this_db_structure = static::getDbStructure(
+                $return_type = 'structure',
+                $attrib = $erroned_attribute
+            );
+            //die("static::getDbStructure($return_type, $attrib) = ".var_export($this_db_structure,true));
+        }
+
+        
+        
 
         foreach ($this_db_structure as $attribute => $desc) {
             $error_attribute = $desc['ERROR_ATTRIBUTE'];
@@ -7071,7 +7149,7 @@ $dependencies_values
 
             if ($this->stepContainAttribute($step, $attribute, $desc)) {
                 /*
-                if(($step==3) and ($attribute=="indexFieldList"))
+                if(($step==1) and ($attribute=="first_name_ar"))
                 {
                     throw new AfwRuntimeException("step==$step : desc = ".var_export($desc,true));
                 }*/
@@ -7118,29 +7196,21 @@ $dependencies_values
                             (!$desc['CAN_ZERO'] or $val_attr === '')
                         ) {
                             $spec_field_manda_token = "$attribute.FIELD_MANDATORY";
-                            $spec_field_manda_token_message = $this->translate(
-                                $spec_field_manda_token,
-                                $lang
-                            );
-                            if (
-                                $spec_field_manda_token_message ==
-                                $spec_field_manda_token
-                            ) {
+                            $spec_field_manda_token_message = $this->translate($spec_field_manda_token,$lang);
+                            if ($spec_field_manda_token_message == $spec_field_manda_token) {
                                 $tabName = $this->getMyTable();
-                                $cm_errors[$error_attribute] .=
-                                    $this->translateOperator(
-                                        'FIELD MANDATORY',
-                                        $lang
-                                    ) .
-                                    ' : ' .
-                                    $this->translate($attribute, $lang);
-
+                                $cm_errors[$error_attribute] .= $this->translateOperator('FIELD MANDATORY',$lang) .
+                                                                    ' : ' .
+                                                                    $this->translate($attribute, $lang);
+                                
                                 // below code we can not do because the tooltip can t support html
                                 // if(AfwSession::config('MODE_DEVELOPMENT', false)) $cm_errors[$error_attribute] .= "<!-- $tabName.$attribute -->";    
                             } else {
                                 $cm_errors[$error_attribute] .=
                                     $spec_field_manda_token_message . ", \n";
                             }
+
+                            if($stop_on_first_error) break;
                         }
                         //if((static::$TABLE=="practice") and ($attribute=="explain")) throw new AfwRuntimeException("$attribute : kifech val_attr=[$val_attr] w step = $step w cm_errors = ".var_export($cm_errors,true));
                     }
@@ -7168,6 +7238,8 @@ $dependencies_values
                                     $correctFormatMess,
                                     $lang
                                 ) . ", \n";
+
+                            if($stop_on_first_error) break;
                         }
                     }
 
@@ -7187,8 +7259,9 @@ $dependencies_values
                                 ' : ' .
                                 $this->translate($attribute, $lang) .
                                 $showed_val .
-                                ", \n" .
-                                var_export($halted_constraint, true);
+                                ", \n <!--" .
+                                var_export($halted_constraint, true)." -->";
+                            if($stop_on_first_error) break;
                         }
                     }
 
@@ -7226,6 +7299,8 @@ $dependencies_values
                                         $this->translate($attribute, $lang) .
                                         $showed_val .
                                         ", \n";
+
+                                    if($stop_on_first_error) break;
                                 }
 
                                 if (is_object($objVal)) {
@@ -7263,6 +7338,8 @@ $dependencies_values
                                         }
                                         $cm_errors[$error_attribute] .=
                                             "______________________\n";
+
+                                        if($stop_on_first_error) break;
                                     }
                                 }
                             }
@@ -7339,6 +7416,8 @@ $dependencies_values
                                     "يوجد أخطاء في $fld_desc : \n" .
                                     $errors_html .
                                     ", \n";
+
+                                if($stop_on_first_error) break;
                             }
                         }
                     }
@@ -7360,6 +7439,8 @@ $dependencies_values
                                 ' : ' .
                                 $this->translate($attribute, $lang) .
                                 ", \n";
+
+                            if($stop_on_first_error) break;
                         }
                     }
 
@@ -7404,6 +7485,17 @@ $dependencies_values
                 }
             }
         }
+        /*
+        if($step==1)
+        {
+            throw new AfwRuntimeException("step==$step : cm_errors = ".var_export($cm_errors,true));
+        }
+
+
+        if(count($cm_errors)>0)
+        {
+            throw new AfwRuntimeException("There are errors : step==$step : cm_errors = ".var_export($cm_errors,true));
+        }*/
 
         return $cm_errors;
     }
@@ -7414,7 +7506,9 @@ $dependencies_values
     protected function getSpecificDataErrors(
         $lang = 'ar',
         $show_val = true,
-        $step = 'all'
+        $step = 'all', 
+        $erroned_attribute = null,
+        $stop_on_first_error = false, $start_step=null, $end_step=null
     ) {
         return [];
     }
@@ -7425,7 +7519,9 @@ $dependencies_values
         $show_val = true,
         $recheck = false,
         $step = 'all',
-        $ignore_fields_arr = null
+        $ignore_fields_arr = null, 
+        $attribute = null,
+        $stop_on_first_error = false, $start_step=null, $end_step=null
     ) {
         global $errors_check_count, $errors_check_count_max;
 
@@ -7438,12 +7534,9 @@ $dependencies_values
         //if($this->getId()<=0) return array();
 
         if (!isset($this->arr_erros[$step]) or $recheck) {
-            $common_e_arr = $this->getCommonDataErrors($lang, $show_val, $step);
-            $specific_e_arr = $this->getSpecificDataErrors(
-                $lang,
-                $show_val,
-                $step
-            );
+            $common_e_arr   =   $this->getCommonDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step);
+            // die("showErrorsAsSessionWarnings::getCommonDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step) => ".var_export($common_e_arr,true));
+            $specific_e_arr = $this->getSpecificDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step);
             $this->arr_erros[$step] = array_merge(
                 $common_e_arr,
                 $specific_e_arr
@@ -7471,8 +7564,19 @@ $dependencies_values
         $this->arr_erros['all'][$attribute] = $error;
     }
 
+    protected function paggableAttribute($attribute)
+    {
+        // can be overridden in subclasses
+        return [true, ""];
+    }
+
     public function attributeIsToPag($attribute)
     {
+        list($paggable, $reason) = $this->paggableAttribute($attribute);
+        if(!$paggable)
+        {
+            return [false, $reason];
+        }
         if ($this->isTechField($attribute)) {
             return [false, 'isTechField'];
         }
@@ -7747,20 +7851,22 @@ $dependencies_values
         $lang = 'ar',
         $show_val = true,
         $recheck = false,
-        $ignore_fields_arr = null
+        $ignore_fields_arr = null, 
+        $attribute = null
     ) {
-        return $this->getDataErrors($lang, $show_val, $recheck, $kstep, $ignore_fields_arr);
+        return $this->getDataErrors($lang, $show_val, $recheck, $kstep, $ignore_fields_arr, $attribute);
     }
 
     public function getAttributeError($attribute)
     {
+        global $lang;
         $struct = AfwStructureHelper::getStructureOf($this, $attribute);
         $step = $struct['STEP'];
         if (!$step) {
             $step = 1;
         }
 
-        $stepErrors_arr = $this->getStepErrors($step);
+        $stepErrors_arr = $this->getStepErrors($step,$lang, true, false, [], $attribute);
 
         return $stepErrors_arr[$attribute];
     }
@@ -8721,7 +8827,7 @@ $dependencies_values
                 // if($attribute=="updated_by") die("for : $attribute decode with format = $format, decode_format = $decode_format, gettype = $typattr, value=$valattr, str = ".var_export($structure,true));
                 if ($typattr) {
                     $return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, $structure, $this, $translate_if_needed = true);
-                    //if($attribute=="homework") die("$return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, ....)");
+                    //if($attribute=="application_end_date") die("$return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, ....)");
                 } else {
                     throw new AfwRuntimeException("The Attribute $attribute of table " . static::$TABLE . " has structure property TYPE not defined.", $call_method);
                 }
@@ -8808,10 +8914,7 @@ $dependencies_values
                                 $limit_loadMany = '';
                             }
 
-                            $return = $object->loadMany(
-                                $limit_loadMany,
-                                $structure['ORDER_BY']
-                            );
+                            $return = $object->loadMany($limit_loadMany,$structure['ORDER_BY']);
                             // if($attribute=="requestList") die("sql_for_loadmany of $attribute = ".$this->debugg_sql_for_loadmany." returned list => ".var_export($return,true));
 
                             // if(!$structure["NO-CACHE"]) $this->gotIte msCache[$attribute] = $return;
@@ -9154,13 +9257,26 @@ $dependencies_values
                 "attribute '" .
                     $attribute .
                     "' does not exist in structure of entity : " .
-                    static::$TABLE,
+                    static::$TABLE.
                 ' : DB_STRUCTURE = ' .
                     var_export(self::getDbStructure(), true)
             );
         }
 
         return $return;
+    }
+
+
+    public function getMfkArray($attribute)
+    {
+        $val = trim($this->getVal($attribute), ',');
+        if ($val) {
+            $val_arr = explode(',', $val);
+        } else {
+            $val_arr = [];
+        }
+
+        return $val_arr;
     }
 
 

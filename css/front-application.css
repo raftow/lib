@@ -2925,6 +2925,7 @@ div.column-block>h1 {
 .cssgroup_none {
     min-height: max-content;
     float: right;
+    width: 100%;
 }
 
 .body_form_hzm {
@@ -3569,9 +3570,9 @@ p.tech {
         border: 1px solid #dbd9d9e8;
         font-size: 16px !important;
         background-image: url(../../lib/images/calendar.gif) !important;
-        background-repeat: no-repeat;
-        background-position-x: 3px;
-        background-position-y: center;
+        background-repeat: no-repeat !important;
+        background-position-x: 3px !important;
+        background-position-y: center !important;
 }
 
 .sorry {
@@ -4623,6 +4624,10 @@ th.col-qe {
     max-width: 480px;
 }
 
+.clock-timepicker {
+    width: 100% !important;
+}
+
 .d-none {
     display: none !important;
     visibility: hidden !important;
@@ -4631,4 +4636,8 @@ th.col-qe {
 span.submit-btn.otln {
     margin-bottom: 10px;
     width: 98% !important;
+}
+
+input#save_only {
+    margin-right: 30px !important;
 }

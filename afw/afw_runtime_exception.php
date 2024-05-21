@@ -24,7 +24,7 @@ class AfwRuntimeException extends RuntimeException
 
         if ($throwed_arr['FIELDS_UPDATED'] and $object) {
             $msg .=
-                "<br>\n   throwed this->FIELDS_UPDATED = " .
+                "<br>\n   throwed this-> FIELDS_UPDATED = " .
                 $object->reallyUpdated() .
                 "<br>\n";
         }

@@ -24,6 +24,9 @@ if(!$objme)
 }
 
 $myObj = new $cl();
+
+
+
 $default_display_settings = $myObj->getDefautDisplaySettings();
 $page_css_file = $default_display_settings["default_css_page"];
 
@@ -55,13 +58,27 @@ if($id)
     {
         die("404 bad request");
     }
-
+    /**
+     * @var AFWObject $myObj
+     */
     if($myObj->showErrorsAsSessionWarnings("edit"))
     {
         $err = "";
         $war = "";
         $inf = "";
-        list($is_obj_ok,$dataErr) = $myObj->isOk(true,true);
+        $dataErrStep = "all";
+        if($myObj->editByStep) 
+        {
+            $dataErrStepStart = 1;
+            $dataErrStepEnd = $currstep;
+        }
+        else 
+        {
+            $dataErrStepStart = null;
+            $dataErrStepEnd = null;
+        }
+        list($is_obj_ok,$dataErr) = $myObj->isOk(true,$dataErrStep, $lang, [], $dataErrStepStart, $dataErrStepEnd);
+        // die("showErrorsAsSessionWarnings::myObj::isOk(true,$dataErrStep, $lang, [], $dataErrStepStart, $dataErrStepEnd) => ".var_export($dataErr,true));
         if(!$is_obj_ok)
         {
             $war = implode("<br>",$dataErr);
@@ -101,6 +118,11 @@ else
      
     $myObj_loaded = false;
 }
+
+/**
+ * @var AFWObject $myObj
+ */
+
 // very bad it erase all log find better solution (named log) 
 $log = AfwSession::getLog("iCanDo");
 $can = ($objme and $objme->iCanDoOperationOnObjClass($myObj,"edit"));

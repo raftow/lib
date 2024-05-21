@@ -964,18 +964,18 @@ function print_php_array($tab,$tabname,$indent=3,$putvar=true,$pv=";")
 }
 
 
-
-function dd($message, $var)
+/*
+function d d($message, $var)
 {
     die($message." => ".var_export($var,true));
 }          
 
-function common_die($message, $light=true)
+function common _die($message, $light=true)
 {
         $message = $message."<br>"._back_trace($light);
         
         die($message);
-}
+}*/
 
 function _back_trace($light=false)
 {

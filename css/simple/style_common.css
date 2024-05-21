@@ -83,6 +83,12 @@ div.form-control>div.icheckbox_square-green {
 
 .form-control.form-ckbox {
     border: none;
+    float: left;
+}
+
+label.label_for_mchk {
+    max-width: 60%;
+    margin-top: -13px;
 }
 
 body {

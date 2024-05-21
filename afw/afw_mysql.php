@@ -44,7 +44,7 @@ class AfwMysql
         /*
         $sql = trim($sql);
         $sql_lower = strtolower($sql);
-        if(!AfwStringHelper::stringStartsWith($sql_lower,"update c0crm.request")) return false;
+        if(!AfwStringHelper::stringStartsWith($sql_lower,"update c 0crm.request")) return false;
         if((!AfwStringHelper::stringContain($sql_lower,"employee_id = '0'")) and
            (!AfwStringHelper::stringContain($sql_lower,"employee_id = 0")) and
            (!AfwStringHelper::stringContain($sql_lower,"employee_id='0'")) and

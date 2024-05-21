@@ -668,7 +668,7 @@ class AfwShowHelper
         }
 
         // debugg some column hidden and should not
-//if($obj instanceof CrmEmployee) die("arr_col = ".var_export($arr_col,true)." force_retrieve_cols :".var_export($force_retrieve_cols,true));
+        // if($obj instanceof ApplicationModelBranch) die("arr_col = getRetrieveCols($mode) = ".var_export($arr_col,true)." force_retrieve_cols :".var_export($force_retrieve_cols,true));
 
         // debugg some column not hidden and should be
 /*
@@ -815,19 +815,13 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                     htmlentities($textReason) .
                                     "'  width='$wd' heigth='$hg'>";
                             }
-                            elseif (
-                            $val->dataAttributeCanBeDisplayedForUser(
-                            $col,
-                            $objme,
-                            'DISPLAY',
-                            $desc
-                            )
-                            ) {
+                            elseif ($val->dataAttributeCanBeDisplayedForUser($col,$objme,'DISPLAY',$desc)) 
+                            {
                                 if ($desc == 'AAA') {
                                     $tuple['description'] = $val->__toString();
                                 }
                                 else {
-                                    $lbl = $val->getShortDisplay($lang);
+                                   
                                     switch ($desc['TYPE']) {
                                         case 'PK':
                                             $val_id = $val->getId();
@@ -844,6 +838,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             $userCanDel = $val->userCanDeleteMe($objme);
                                             if ($userCanDel > 0) 
                                             {
+                                                $lbl = $val->getShortDisplay($lang);
                                                 // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
                                                 $tuple[
                                                     $col
@@ -936,7 +931,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             if ($canEdit) {
                                                 $tuple[
                                                     $col
-                                                    ] = "<a href='main.php?Main_Page=afw_mode_edit.php&cl=$val_class&currmod=$val_currmod&id=$val_id&currstep=$currstep' class='editme showmany'><img src='../lib/images/modifier.png' width='17' heigth='17'></a>";
+                                                    ] = "<a href='main.php?Main_Page=afw_mode_edit.php&cl=$val_class&currmod=$val_currmod&id=$val_id&currstep=$currstep' class='editme showmany'><img src='../lib/images/modifier.png' width='22' heigth='22'></a>";
                                             }
                                             else {
                                                 $tuple[

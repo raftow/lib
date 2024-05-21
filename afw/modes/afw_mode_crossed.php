@@ -267,7 +267,7 @@ if($nb_objs>0)
                  $submit_name = "submit";
         }
         $submit_title = $myMainObject->translate($submit_qedit_title_code,$lang,true);
-        $out_scr .=  "<input type=\"submit\" name=\"$submit_name\"  id=\"submit-form\" class=\"$class_inputSubmit\" value=\"&nbsp; $submit_title &nbsp;\" width=\"200px\" height=\"30px\" />";
+        $out_scr .=  "<input type=\"submit\" name=\"$submit_name\"  id=\"$submit_name\" class=\"$class_inputSubmit\" value=\"&nbsp; $submit_title &nbsp;\" width=\"200px\" height=\"30px\" />";
         $out_scr .= "</div>";
         
         

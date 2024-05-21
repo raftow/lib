@@ -393,28 +393,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
             $class_of_input_select_multi = $class_inputSelect_multi_big;
             if ($desc["MEDIUM_DROPDOWN_WIDTH"]) $class_of_input_select_multi = $class_inputSelect_multi;
-
-            $infos_arr = array(
-                "class" => "form-control form-menum",
-                "name"  => $col_name . "[]",
-                "id"  => $col_name,
-                "size"  => 5,
-                "multi" => true,
-                "tabindex" => $qedit_orderindex,
-                "onchange" => $onchange,
-                "style" => $input_style,
-
-            );
-            if ($desc["SEL_OPTIONS"]) $infos_arr = array_merge($infos_arr, $desc["SEL_OPTIONS"]);
-
-
-            select(
-                $liste_rep,
-                $val_arr,
-                $infos_arr,
-                "",
-                false
-            );
+            include("tpl/helper_edit_menum.php");
+            
             break;
         /*case 'ANSWER': obsolete
             $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"]);
@@ -526,51 +506,67 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 include("tpl/helper_edit_numeric.php"); 
             }
             break;
-
-        case 'TIME':
-            if ($desc["FORMAT"] == "CLASS") 
-            {
-                $helpClass = $desc["ANSWER_CLASS"];
-                $helpMethod = $desc["ANSWER_METHOD"];
-
-                $answer_list = $helpClass::$helpMethod();
-            }
-            elseif ($desc["FORMAT"] == 'OBJECT') {
-                $helpMethod = $desc["ANSWER_METHOD"];
-                $answer_list = $obj->$helpMethod();
-            } 
-            else
-            {
-                if ($desc["ANSWER_LIST"]) 
+            case 'TIME':
+                if ($desc["FORMAT"] == "CLOCK") 
                 {
-                    list($start, $increment, $end) = explode("/", $desc["ANSWER_LIST"]);
+                    $valaff = $val;
+                    list($startHH, $increment, $endHH, $startNN, $endNN) = explode("/", $desc["ANSWER_LIST"]);
+                    if(!$startNN) $startNN = 0;
+                    if(!$endNN) $endNN = 0;
+                    $input_name = $col_name;
+
+                    $minimum = AfwDateHelper::formatTimeHHNN($startHH, $startNN);
+                    $maximum = AfwDateHelper::formatTimeHHNN($endHH, $endNN);
+                    clock($col_name, $input_name, $valaff, $minimum, $maximum, $onchange, $input_style="", $increment, $is_required, $separator=':', $duration=false);
                 }
-                else 
+                else
                 {
-                    $start = 6;
-                    $increment = 30;
-                    $end = 22;
+                    if ($desc["FORMAT"] == "CLASS") 
+                    {
+                        $helpClass = $desc["ANSWER_CLASS"];
+                        $helpMethod = $desc["ANSWER_METHOD"];
+        
+                        $answer_list = $helpClass::$helpMethod();
+                    }
+                    elseif ($desc["FORMAT"] == 'OBJECT') {
+                        $helpMethod = $desc["ANSWER_METHOD"];
+                        $answer_list = $obj->$helpMethod();
+                    } 
+                    else
+                    {
+                        if ($desc["ANSWER_LIST"]) 
+                        {
+                            list($start, $increment, $end) = explode("/", $desc["ANSWER_LIST"]);
+                        }
+                        else 
+                        {
+                            $start = 6;
+                            $increment = 30;
+                            $end = 22;
+                        }
+        
+                        $answer_list = AfwDateHelper::getTimeArray($start, $increment, $end);
+                        
+                    }
+                    if (!$answer_list[$val]) $answer_list[$val] = $val;
+                    // die(var_export($answer_list,true));
+                    select(
+                        $answer_list,
+                        array($val),
+                        array(
+                            "class" => "form-control hzm_time",
+                            "name"  => $col_name,
+                            "id"  => $col_name,
+                            "tabindex" => $qedit_orderindex,
+                            "onchange" => $onchange,
+                            "style" => $input_style,
+                            "required" => $is_required,
+                        ),
+                        "asc"
+                    );
                 }
 
-                $answer_list = AfwDateHelper::getTimeArray($start, $increment, $end);
-                
-            }
-            if (!$answer_list[$val]) $answer_list[$val] = $val;
-            // die(var_export($answer_list,true));
-            select(
-                $answer_list,
-                array($val),
-                array(
-                    "class" => "form-control hzm_time",
-                    "name"  => $col_name,
-                    "id"  => $col_name,
-                    "tabindex" => $qedit_orderindex,
-                    "onchange" => $onchange,
-                    "style" => $input_style,
-                    "required" => $is_required,
-                ),
-                "asc"
-            );
+            
             break;
 
         case 'TEXT':
@@ -688,6 +684,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             break;
 
         case 'GDAT':
+        case 'GDATE':
             // remove time if exists
             list($val,) = explode(" ", $val);
 
@@ -719,7 +716,53 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
     return $type_input_ret;
 }
 
+function clock($col_name, $input_name, $valaff, $minimum, $maximum, $onchange, $input_style="", $precision=10, $required=false, $separator=':', $duration=false, $durationNegative=true)
+{
+    if($required)
+    {
+        $required = 'true';  
+        $input_required = "required";
+    } 
+    else
+    {
+        $required = 'false';  
+        $input_required = "";
+    }
 
+    if($duration)
+    {
+        $duration = 'true';  
+    } 
+    else
+    {
+        $duration = 'false';  
+    }
+
+    if($durationNegative)
+    {
+        $durationNegative = 'true';  
+    } 
+    else
+    {
+        $durationNegative = 'false';  
+    }
+    ?>
+        <input type="text" id="<?php echo $input_name ?>" name="<?php echo $col_name ?>" value="<?php echo $valaff ?>" class="form-control form-time <?php echo $input_name ?>" onchange="<?php echo $onchange ?>" <?php echo $input_style ?> <?php echo $input_required ?>>
+        <script>
+            $(document).ready(function(){
+                $("#<?php echo $input_name ?>").clockTimePicker({
+                    required:<?php echo $required?>,
+                    separator:'<?php echo $separator?>',
+                    precision:<?php echo $precision?>,
+                    duration:<?php echo $duration?>, 
+                    minimum:'<?php echo $minimum?>', 
+                    maximum:'<?php echo $maximum?>',
+                    durationNegative:<?php echo $durationNegative?>
+                });
+            });
+        </script>
+    <?
+}
 
 function select($list_id_val, $selected = array(), $info = array(), $sort_order = "", $null_val = true, $langue = "")
 {

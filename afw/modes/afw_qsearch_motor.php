@@ -127,13 +127,13 @@ function type_input($col_name, $desc, $obj, $selected = false)
 			}
 
 			if ($nom_class_fk::$COMPTAGE_BEFORE_LOAD_MANY) {
-				$list_count = AfwLoadHelper::vhGetListe($fkObj, $where, $action = "count", $lang);				
+				$list_count = AfwLoadHelper::vhGetListe($fkObj, $caluse_where, $action = "count", $lang);				
 			} else $list_count = 0;
 			$LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
 			if (($list_count <= $LIMIT_INPUT_SELECT) and (!$desc["AUTOCOMPLETE-SEARCH"])) {
-				$l_rep = AfwLoadHelper::vhGetListe($fkObj, $where, $action = "default", $lang);
+				$l_rep = AfwLoadHelper::vhGetListe($fkObj, $caluse_where, $action = "default", $lang);
 				$fkObj_disp = $fkObj->getDisplay($lang);
-				// if($col_name=="institution_id") die("AfwLoadHelper :: vhGet Liste($fkObj_disp, '$where', objme, $action, $lang) =>".var_export($l_rep,true));
+				// if($col_name=="institution_id") die("AfwLoadHelper :: vhGet Liste($fkObj_disp, '$caluse_where', objme, $action, $lang) =>".var_export($l_rep,true));
 				if ($desc["SEARCH-DEFAULT"]) {
 					$searchDefaultValue = explode(",", $obj->searchDefaultValue($col_name));
 				} else {

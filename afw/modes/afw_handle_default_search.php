@@ -239,7 +239,7 @@ if (!$liste_obj) {
         if (!$genere_xls) {
                 // $liste_obj       = $obj->loadManyEager($limite . ", " . $MAX_ROW, $sql_order_by);
                 $liste_obj       = $obj->loadMany($limite . ", " . $MAX_ROW, $sql_order_by);
-                //die("DBG-loadManyEager normal limited load : liste_obj = obj->loadManyEager($limite, $MAX_ROW, $sql_order_by) = ".var_export($liste_obj,true));
+                // die("DBG-loadManyEager normal limited load : liste_obj = obj->loadManyEager($limite, $MAX_ROW, $sql_order_by) = ".var_export($liste_obj,true));
         } else {
                 // $liste_obj       = $obj->loadManyEager("", $sql_order_by);
                 $liste_obj       = $obj->loadMany("", $sql_order_by);

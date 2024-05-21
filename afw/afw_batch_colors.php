@@ -75,7 +75,11 @@
 			}
 
 			// Add string and end coloring
-			$colored_string .=  " '> " . $string . "\033[0m"; /* "[**** $foreground_color] " .*/ 
+			
+			// prefix_color_string why ?
+			// $prefix_color_string = " '> ";
+			$prefix_color_string = "";
+			$colored_string .=  $prefix_color_string . $string . "\033[0m"; /* "[**** $foreground_color] " .*/ 
 
 			return $colored_string;
 		}

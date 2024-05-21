@@ -640,6 +640,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                         
         		<?php		break;
 		case 'GDAT'   :
+                case 'GDATE'  :
 				        $type_input_ret = "text";
                                         $input_name = $formInputName;
                                         $valaff = AfwDateHelper::displayGDate($val);

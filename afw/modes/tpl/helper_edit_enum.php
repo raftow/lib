@@ -1,4 +1,5 @@
 <?php
+
             if($obj->fixm_disable) 
             {
                 $type_input_ret = "hidden";

@@ -54,10 +54,11 @@ class AfwGenerator extends AFWRoot {
         // $table_sub_model = true means generate not only  
 	public function generateFromModule($sqldir,$atable_id = null, $module_id=null, $sub_module_id = null, $atable_name = null, $decoupage=true, $table_sub_model=false)
         {
-               global $nb, $show_sql, $server_db_prefix;
+               global $nb, $show_sql;
                
                $file_dir_name = dirname(__FILE__); 
-               
+               $server_db_prefix = AfwSession::config('db_prefix', 'c0');
+               // $server_db_prefix"."
                $log_errors = "";
                // die("here 8 : sqldir=$sqldir , show_sql=$show_sql");
                if(AfwFileSystem::isDir($sqldir) or ($show_sql))
@@ -82,7 +83,7 @@ class AfwGenerator extends AFWRoot {
                            $at->select("id",$atable_id);
                            $at2 = new Atable();
                            if($table_sub_model)
-                               $at2->where("(id = $atable_id or id in (select answer_table_id from c0pag.afield fld where fld.atable_id = $atable_id and fld.avail='Y' and fld.answer_table_id > 0) or id in(select atable_id from c0pag.afield fld2 where fld2.answer_table_id = $atable_id and fld2.avail='Y'))");
+                               $at2->where("(id = $atable_id or id in (select answer_table_id from $server_db_prefix"."pag.afield fld where fld.atable_id = $atable_id and fld.avail='Y' and fld.answer_table_id > 0) or id in(select atable_id from $server_db_prefix"."pag.afield fld2 where fld2.answer_table_id = $atable_id and fld2.avail='Y'))");
                            else
                                $at2->select("id",$atable_id);
                            $at2->load();
@@ -1194,7 +1195,7 @@ $YDesc
 	public function generateModuleSpecialLanguage($file_path, $module_id, $special_lang, $atable_id=0,$atable_name="")
         {
                global $nb, $show_res, $show_ignored;
-               
+               $server_db_prefix = AfwSession::config('db_prefix', 'c0');
                $log_errors = "";
 
                $file_dir_name = dirname(__FILE__); 
@@ -1221,7 +1222,7 @@ $YDesc
                
                // selction des tables
                $at = new Atable();
-               $at->where("((id_module = $module_id or id_sub_module = $module_id) or (is_entity='N' and is_lookup='Y' and id_module in (select id from module where id_module_parent=$id_module_parent)))");
+               $at->where("((id_module = $module_id or id_sub_module = $module_id) or (is_entity='N' and is_lookup='Y' and id_module in (select id from $server_db_prefix"."ums.module where id_module_parent=$id_module_parent)))");
                $at->select("avail",'Y');
                if($atable_id) 
                {
@@ -1245,7 +1246,7 @@ $YDesc
                /*
                foreach($at_list as $at_id => $at_item) echo "table ($at_id) : " . $at_item.($at_item->_isEnum() ? "Enum":"NotEnum")."  <br>\n";
                die();*/
-               require_once "slang_specification_$special_lang.php";
+               require_once $file_dir_name."/../slang/slang_specification_$special_lang.php";
                
                foreach($slang_syntax_files[$special_lang] as $special_lang_ext)
                {
@@ -1255,7 +1256,7 @@ $YDesc
                    {
                            foreach($at_list as $atb_id => $atb_obj)
                            {
-                                 $atb_obj->related_module =& $module_obj;
+                                 $atb_obj->related_module = $module_obj;
                                  $atb_obj_name = $atb_obj->getVal("atable_name");
                                  $whyTableShouldBeIgnored = tableShouldBeIgnored($special_lang,$special_lang_ext,$atb_obj,$slang_syntax_extentions);
                                  
@@ -1293,7 +1294,7 @@ $YDesc
                    {
                            foreach($at_list as $atb_id => $atb_obj)
                            {
-                              $atb_obj->related_module =& $module_obj;
+                              $atb_obj->related_module = $module_obj;
                               $rel_list = $atb_obj->getMyInternalRelations();
                               $rel_list_after_ignore = array(); 
                               foreach($rel_list as $rel_id => $rel_obj)

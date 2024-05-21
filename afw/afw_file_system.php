@@ -28,12 +28,12 @@ class AfwFileSystem {
         $folder = self::folderOf($file_target); 
         if((!self::exists($file)) and (!self::hasPermission($folder, $permission = array('read', 'write'))))
         {
-            common_die("the file $file doesn't exist and we haven't permission to create it in folder : $folder");
+            throw new AfwRuntimeException("the file $file doesn't exist and we haven't permission to create it in folder : $folder");
         }
 
         if(self::exists($file) and (!self::hasPermission($file, $permission = array('read', 'write'))))
         {
-            common_die("the file $file exists but no permission read/write on it : $file = self :: path($file_target)");
+            throw new AfwRuntimeException("the file $file exists but no permission read/write on it : $file = self :: path($file_target)");
         }
 
         switch ($append) {

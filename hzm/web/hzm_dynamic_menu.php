@@ -1,5 +1,5 @@
 <?php
-common_die("rafik I think it is obsolete now : 10 nov 2021");
+throw new AfwRuntimeException("rafik I think it is obsolete now : 10 nov 2021");
           if(!$objme) $objme = AfwSession::getUserConnected();
           $file_hzm_dir_name = dirname(__FILE__);
 

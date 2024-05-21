@@ -564,7 +564,7 @@ function long_hijri_date($hijri_year,$mm,$dd,$TheDay, $WeekDayOn=1, $YearOn=1, $
 
 
 
-
+/* 
 function gregdate_of_first_hijri_day($hijri_year, $hijri_month)
 {
 
@@ -576,7 +576,7 @@ function gregdate_of_first_hijri_day($hijri_year, $hijri_month)
 
 
      $sql_greg = " select greg_date
-         from c0pag.hijra_date_base 
+         from c-0pag.hijra_date_base 
                where hijri_year = $hijri_year
                  and hijri_month = $hijri_month";
      //echo "<br>sql_greg = $sql_greg";             
@@ -592,7 +592,7 @@ function gregdate_of_first_hijri_day($hijri_year, $hijri_month)
 }
 
 
-/* 
+
 function AfwDateHelper::hijriToGreg($hdate)
 {
      $dbgg = false;

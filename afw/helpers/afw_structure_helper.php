@@ -40,8 +40,21 @@ class AfwStructureHelper extends AFWRoot
         return $struct;
     }
 
+    public static final function attributeBelongToStep($attribute, $desc, $step)
+    {
+        if (
+            $step == 'all' or
+            $desc['STEP'] == 'all' or
+            $desc['STEP'] == $step
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-    public static final function constructDBStructure($module_code, $class_name, $attribute)
+
+    public static final function constructDBStructure($module_code, $class_name, $attribute, $step="all",$start_step=null, $end_step=null)
     {
         // $start_m_time = microtime();
         $start_m_time = 0;
@@ -102,12 +115,41 @@ class AfwStructureHelper extends AFWRoot
             echo("\nmy_db_structure[$attribute_2] => [$origin2] => ".var_export($my_db_structure2[$attribute_2],true));
             echo("\nmy_db_structure[$attribute] => [$origin2] => ".var_export($my_db_structure2["$attribute"],true));
         } */
-        if ($attribute == 'all') {
-            $debugg_db_structure = $my_db_structure;
-        } else {
-            $debugg_db_structure = [];
-            $debugg_db_structure[$attribute] = $my_db_structure[$attribute];
+        if($step=="all")
+        {
+            if ($attribute == 'all') 
+            {
+                if($start_step and $end_step)
+                {
+                    $debugg_db_structure = [];
+                    foreach($my_db_structure as $my_attrib => $my_struct)
+                    {
+                        if($my_struct["STEP"]>=$start_step and $my_struct["STEP"]<=$end_step)
+                        {
+                            $debugg_db_structure[$my_attrib] = $my_struct;
+                        }
+                    }
+                }
+                else $debugg_db_structure = $my_db_structure;
+            } 
+            else 
+            {
+                $debugg_db_structure = [];
+                $debugg_db_structure[$attribute] = $my_db_structure[$attribute];
+            }
         }
+        else
+        {
+            $debugg_db_structure = [];
+            foreach($my_db_structure as $my_attrib => $my_struct)
+            {
+                if(self::attributeBelongToStep($my_attrib, $my_struct, $step))
+                {
+                    $debugg_db_structure[$my_attrib] = $my_struct;
+                }
+            }
+        }
+        
         // if(($class_name=="Invester") and ($attribute=="city_id")) die("\n\n\ndebugg_db_structure => [$origin] => ".var_export($debugg_db_structure,true));
         if ($got_first_time and false) {
             $max_calls_of_structure = 500;
@@ -214,6 +256,19 @@ class AfwStructureHelper extends AFWRoot
             $struct['EMPTY_IS_ALL'] = true;
         }
 
+        foreach($struct as $col_struct => $value_struct)
+        {
+            if(is_string($value_struct))
+            {
+                if(AfwStringHelper::stringStartsWith($value_struct,'::config::'))
+                {
+                    $configStructEval = substr($value_struct,10);
+                    list($configVar, $defaultValue) = explode($configStructEval, ",");
+                    $struct[$col_struct] = AfwSession::config($configVar, $defaultValue);
+                }
+            }
+        }
+
         return $struct;
     }
 
@@ -236,10 +291,16 @@ class AfwStructureHelper extends AFWRoot
         {
             if(is_string($value_struct))
             {
-                if(AfwStringHelper::stringStartsWith($value_struct,'::'))
+                if(AfwStringHelper::stringStartsWith($value_struct,'::config::'))
+                {
+                    $configStructEval = substr($value_struct,10);
+                    list($configVar, $defaultValue) = explode($configStructEval, ",");
+                    $struct[$col_struct] = AfwSession::config($configVar, $defaultValue);
+                }
+                elseif(AfwStringHelper::stringStartsWith($value_struct,'::'))
                 {
                     $methodStructEval = substr($value_struct,2);
-                    $struct[$col_struct] = $object->$methodStructEval();
+                    $struct[$col_struct] = $object->$methodStructEval($field_name, $col_struct);
                 }
             }
             

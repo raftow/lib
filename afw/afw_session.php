@@ -133,7 +133,7 @@ class AfwSession extends AFWRoot {
                                         }
                                         catch(Exception $e)
                                         {
-                                                if($throwError) $this->_errorLight($e->getMessage());
+                                                if($throwError) throw $e;
                                                 $this->customerConnected = null;
                                         }
                                         
@@ -630,4 +630,6 @@ $this_dir_name = dirname(__FILE__);
 include("$this_dir_name/../../external/system_config.php");
 if(!isset($system_config_arr)) die("system_config_arr variable is not defined in file $this_dir_name/../../external/system_config.php");
 AfwSession::initConfig($system_config_arr);
+global $global_need_utf8;
+$global_need_utf8 = AfwSession::config('global_need_utf8',false);
 //die("first initConfig ".AfwSession::log_config());

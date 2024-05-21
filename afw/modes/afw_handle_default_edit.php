@@ -64,7 +64,7 @@ foreach($class_db_structure as $nom_col => $desc)
 
 /////////////////////////////
 foreach($class_db_structure as $nom_col => $desc){
-	//if($nom_col=="trip1_room_mfk") die("trip1_room_mfk -> ".var_export($_POST[$nom_col],true));
+	    // if($nom_col=="training_period_menum") die("training_period_menum -> ".var_export($_POST[$nom_col],true));
         if(!$desc["STEP"]) $desc["STEP"] = 1;
         
         // !$desc["READONLY"] car a ce moment la hidden mouch checkbox

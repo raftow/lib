@@ -1275,9 +1275,9 @@ class AfwDateHelper
         else
         {
             //if(count($hgreg_matrix)>0) die("gregdate_of_first_hijri_day($hijri_year, $hijri_month) : ".var_export($hgreg_matrix,true));
-
+            $server_db_prefix = AfwSession::config('db_prefix', 'c0');
             $sql_greg = " select greg_date
-                            from c0pag.hijra_date_base 
+                            from $server_db_prefix"."pag.hijra_date_base 
                             where hijri_year = $hijri_year
                                     and hijri_month = $hijri_month";
             //echo "<br>sql_greg = $sql_greg";
@@ -1452,12 +1452,12 @@ class AfwDateHelper
             }
         }
         //else die("please check $hg_cache_file");
-
+        $server_db_prefix = AfwSession::config('db_prefix', 'c0');
         $sql_hij = "select hijri_year as HY,
                         hijri_month as HM,
                         greg_date as GD
-                        from c0pag.hijra_date_base
-                where greg_date = (select max(greg_date) from c0pag.hijra_date_base where greg_date <= '$wd_gdate')";
+                        from $server_db_prefix"."pag.hijra_date_base
+                where greg_date = (select max(greg_date) from $server_db_prefix"."pag.hijra_date_base where greg_date <= '$wd_gdate')";
 
         $row_hijri = AfwDatabase::db_recup_row($sql_hij);
 
@@ -2011,6 +2011,17 @@ class AfwDateHelper
         return self::getTimeArray($start=$medium-$interval,$increment,$end=$medium+$interval);
     }
 
+    public static function formatTimeHHNN($hh, $mm)
+    {
+            $time = "";
+            if($hh<10) $time .= "0";
+            $time .= $hh.":";
+            if($mm<10) $time .= "0";
+            $time .= $mm;
+
+            return $time;
+    }
+
     public static function getTimeArray($start=7,$increment=15,$end=21)
     {
         $hh = $start;
@@ -2020,12 +2031,7 @@ class AfwDateHelper
         
         while($hh<$end)
         {
-            $time = "";
-            if($hh<10) $time .= "0";
-            $time .= $hh.":";
-            if($mm<10) $time .= "0";
-            $time .= $mm;
-            
+            $time = self::formatTimeHHNN($hh, $mm);
             $time_arr[$time] = $time;
             
             $mm += $increment;

@@ -72,6 +72,7 @@ if (!$my_font) $my_font = "front";
   <script src="../lib/bootstrap/bootstrap-v3.min.js"></script>
   <!-- plugins -->
   <script src="../lib/bmulti/js/bootstrap-multiselect.js"></script>
+  <script src="../lib/js/jquery-clock-timepicker.min.js"></script>
   <script src="../lib/bsel/js/bootstrap-select.js"></script>
   <script src="../lib/js/hzm.js"></script>
   <!-- script src="../lib/tree/tree.jquery.js"></script> -->

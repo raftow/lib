@@ -103,7 +103,7 @@ class AfwSqlHelper extends AFWRoot
             $obj->fld_VERSION() .
             " = $ver, ";
         $fields_updated = [];
-        // if($table_prefixed=="c0license.license")  throw new AfwRuntimeException("obj->fieldsHasChanged() = ".var_export($obj->fieldsHasChanged(),true));
+        // if($table_prefixed=="c 0license.license")  throw new AfwRuntimeException("obj->fieldsHasChanged() = ".var_export($obj->fieldsHasChanged(),true));
         // rafik : since version 2.0.1 we put FIELDS_UPDATED the old value
         $old_val_query_part = "\n";
         foreach ($obj->fieldsHasChanged() as $key => $old_value) {
@@ -168,7 +168,7 @@ class AfwSqlHelper extends AFWRoot
         // if($table_prefixed=="sdd.jobrole_application") die($query);
 
         /*
-        if($table_prefixed=="c0btb.travel_seat")
+        if($table_prefixed=="c 0btb.travel_seat")
         {
             die("fu = ".$obj->showArr($fields_updated)."<br>FU = ".$obj->showArr($obj->fieldsHasChanged()));
         }
@@ -1034,8 +1034,8 @@ class AfwSqlHelper extends AFWRoot
                     '.'
             );
         } else {
-            //if((static::$TABLE=="student_session") and ($object->getVal("xxxxx")==102937)) throw new AfwRuntimeException("object->FIELDS_UPDATED = ".var_export($object->FIELDS_UPDATED,true));
-            //if((static::$TABLE=="student_session")) throw new AfwRuntimeException("object->FIELDS_UPDATED = ".var_export($object->FIELDS_UPDATED,true));
+            //if((static::$TABLE=="student_session") and ($object->getVal("xxxxx")==102937)) throw new AfwRuntimeException("object-> FIELDS_UPDATED = ".var_export($object-> FIELDS_UPDATED,true));
+            //if((static::$TABLE=="student_session")) throw new AfwRuntimeException("object-> FIELDS_UPDATED = ".var_export($object-> FIELDS_UPDATED,true));
 
 
 
@@ -1059,16 +1059,16 @@ class AfwSqlHelper extends AFWRoot
                 if ($object->isChanged()) {
                     self::beforeModification($object,
                         $id_updated,
-                        $object->FIELDS_UPDATED
+                        $object->fieldsHasChanged()
                     );
                     $can_update = $object->beforeUpdate(
                         $id_updated,
-                        $object->FIELDS_UPDATED
+                        $object->fieldsHasChanged()
                     );
                     /*
                     if(static::$TABLE == "student_session") 
                     {
-                        throw new AfwRuntimeException(static::$TABLE." updating ... fields updated count = ".count($object->FIELDS_UPDATED)." / beforeUpdate accepted update ? = $can_update / FIELDS_UPDATED = " . var_export($object->FIELDS_UPDATED,true));
+                        throw new AfwRuntimeException(static::$TABLE." updating ... fields updated count = ".count($object-> FIELDS_UPDATED)." / beforeUpdate accepted update ? = $can_update / FIELDS_UPDATED = " . var_export($object-> FIELDS_UPDATED,true));
                     }*/
                     if (!$can_update) {
                         $object->debugg_reason_non_update =
@@ -1084,10 +1084,10 @@ class AfwSqlHelper extends AFWRoot
 
             if ($can_update) {
                 if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
-                    //die("call to $object ->audit_before_update(..) : ".var_export($object->FIELDS_UPDATED,true));
-                    $object->audit_before_update($object->FIELDS_UPDATED);
+                    //die("call to $object ->audit_before_update(..) : ".var_export($object-> FIELDS_UPDATED,true));
+                    $object->audit_before_update($object->fieldsHasChanged());
                 } else {
-                    // if(....) die("no call to $object ->audit_before_update(..) : ".var_export($object->FIELDS_UPDATED,true));
+                    // if(....) die("no call to $object ->audit_before_update(..) : ".var_export($object-> FIELDS_UPDATED,true));
                 }
 
                 //if((!$arr_tables_without_technical_fields) or (array_search(static::$TABLE, $arr_tables_without_technical_fields) === false)) {
@@ -1111,7 +1111,7 @@ class AfwSqlHelper extends AFWRoot
                 /*
                 if(static::$TABLE == "student_session") 
                 {
-                    die(static::$TABLE." updating ... before get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($object->FIELDS_UPDATED)." / can update = $can_update / FIELDS_UPDATED = " . var_export($object->FIELDS_UPDATED,true));
+                    die(static::$TABLE." updating ... before get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($object-> FIELDS_UPDATED)." / can update = $can_update / FIELDS_UPDATED = " . var_export($object-> FIELDS_UPDATED,true));
                 }
                 */
 
@@ -1148,6 +1148,7 @@ class AfwSqlHelper extends AFWRoot
                     }
 
                     if ($only_me and (count($fields_updated) > 0)) {
+                        $object->IS_COMMITING = false;
                         $object->afterUpdate($id_updated, $fields_updated);
                     }
                     if ($only_me and $return > 1) {
@@ -1178,14 +1179,14 @@ class AfwSqlHelper extends AFWRoot
                 } else {
                 }
 
-                $object->clearSelect();
                 $object->IS_COMMITING = false;
+                $object->resetUpdates();
                 return $return;
             } else {
                 /*
                 if(static::$TABLE=="student_session")
                 {
-                   die("can not update, reason : ".$object->debugg_reason_non_update." : ".static::$TABLE." FIELDS_UPDATED : <br> ".$object->showArr($object->FIELDS_UPDATED));
+                   die("can not update, reason : ".$object->debugg_reason_non_update." : ".static::$TABLE." FIELDS_UPDATED : <br> ".$object->showArr($object-> FIELDS_UPDATED));
                 }
                 */
                 //throw new AfwRuntimeException();
@@ -1312,7 +1313,7 @@ class AfwSqlHelper extends AFWRoot
 
         $can_update = $object->beforeUpdate($id_updated,$object->fieldsHasChanged());
 
-        if (!$can_update) throw new AfwRuntimeException("can't update beforeUpdate refused : object->FIELDS_UPDATED = " . var_export($object->fieldsHasChanged(), true));
+        if (!$can_update) throw new AfwRuntimeException("can't update beforeUpdate refused : object-> FIELDS_UPDATED = " . var_export($object->fieldsHasChanged(), true));
 
         return AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated);
     }

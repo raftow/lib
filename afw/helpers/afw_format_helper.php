@@ -227,8 +227,9 @@ class AfwFormatHelper
             list($date_to_display, $time_to_display) = explode(' ',$data_to_display);
             // die("value $value date $data_to_display explode = list($date_to_display, $time_to_display)");
 
-            if ($structure['FORMAT'] == 'DATE') 
+            if ((!$structure['FORMAT']) or ($structure['FORMAT'] == 'DATE')) 
             {
+                // throw new RuntimeException("formatValue for ($key - GDAT) called structure['FORMAT'] = ".$structure['FORMAT']);
                 $data_to_display = $date_to_display;
             }
 

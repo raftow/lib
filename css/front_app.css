@@ -1455,7 +1455,7 @@ div.modal-dialog {
         }
 
         .swal-title {
-            color: rgb(184 2 2);
+            color: rgb(100 69 10);
             font-weight: normal;
             font-size: 24px;
         }
@@ -1608,4 +1608,225 @@ div.modal-dialog {
                 background-color: white !important;
                 float: right;
             }
+        }
+
+        .btn-qsearch {
+            float: right;
+            margin-top: 10px;
+        }
+
+        .btn-centered-1-btn-1{
+                margin-right: 35% !important;
+                margin-left: 35% !important;
+                width: 30%;
+        }
+
+        .btn-centered-2-btn-1{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-2-btn-2{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-3-btn-1{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-3-btn-2{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-3-btn-3{
+            margin-right: 35% !important;
+            margin-left: 35% !important;
+            width: 30%;
+        }
+
+        .btn-centered-4-btn-1{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-4-btn-2{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-4-btn-3{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-4-btn-4{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-5-btn-1{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-5-btn-2{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-5-btn-3{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-5-btn-4{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-5-btn-5{
+            margin-right: 35% !important;
+            margin-left: 35% !important;
+            width: 30%;
+        }
+
+        .btn-centered-6-btn-1{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-6-btn-2{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-6-btn-3{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-6-btn-4{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-6-btn-5{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-6-btn-6{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-7-btn-1{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-7-btn-2{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-7-btn-3{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-7-btn-4{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-7-btn-5{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-7-btn-6{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-7-btn-7{
+            margin-right: 35% !important;
+            margin-left: 35% !important;
+            width: 30%;
+        }
+
+        .btn-centered-8-btn-1{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-8-btn-2{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-8-btn-3{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-8-btn-4{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-8-btn-5{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-8-btn-6{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
+        }
+
+        .btn-centered-8-btn-7{
+            margin-right: 19% !important;
+            margin-left: 1% !important;
+            width: 30%;
+        }
+
+        .btn-centered-8-btn-8{
+            margin-right: 1% !important;
+            margin-left: 19% !important;
+            width: 30%;
         }

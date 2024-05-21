@@ -33,9 +33,9 @@ class AfwDatabase extends AFWRoot
             $username = AfwSession::config("${module_server}user", '');
             $password = AfwSession::config("${module_server}password", '');
             $database = AfwSession::config("${module_server}database", '');
-            // if($module_server=="nartaqi") common_die("params of connection to server [$module_server] are [$hostname, $username, $password, $database] from : ".AfwSession::log_config());
+            // if($module_server=="nartaqi") throw new AfwRuntimeException("params of connection to server [$module_server] are [$hostname, $username, $password, $database] from : ".AfwSession::log_config());
             if (!$hostname or !$username) {
-                common_die(
+                throw new AfwRuntimeException(
                     "host or user name param not found in the external config file for server [$module_server]" .
                         AfwSession::log_config()
                 );
@@ -51,7 +51,7 @@ class AfwDatabase extends AFWRoot
                 if (AfwSession::config('MODE_DEVELOPMENT', false)) {
                     $infos = "with following params :\n host = $hostname, user = $username";
                 }
-                common_die("Failed to connect to server $infos.");
+                throw new AfwRuntimeException("Failed to connect to server $infos.");
             }
 
             self::$connect = true;
@@ -71,7 +71,7 @@ class AfwDatabase extends AFWRoot
         $module_server = '',
         $this_module = 'hzm',
         $this_table = 'hzm',
-        $need_utf8=true
+        $need_utf8=null
     ) {
         global $_sql_analysis,
             $_sql_picture,
@@ -83,11 +83,14 @@ class AfwDatabase extends AFWRoot
             $MODE_BATCH_LOURD,
             $MODE_SQL_PROCESS_LOURD,
             $MODE_DEVELOPMENT,
-            $duree_sql_total;
+            $duree_sql_total,
+            $global_need_utf8;
 
         // coming bad from outside so I will reparse
         $this_module = 'hzm';    
         $this_table = 'hzm';
+
+        if($need_utf8===null) $need_utf8=$global_need_utf8;
 
         if ($this_table == 'hzm') 
         {
@@ -175,11 +178,11 @@ class AfwDatabase extends AFWRoot
         );
         $_sql_analysis_seuil_calls = AfwSession::config(
             '_sql_analysis_seuil_calls',
-            400
+            1200
         );
         $_sql_analysis_seuil_calls_by_table = AfwSession::config(
             '_sql_analysis_seuil_calls_by_table',
-            160
+            600
         );
         $sql_time_max_in_milli_sec = AfwSession::config(
             'sql_time_max_in_milli_sec',

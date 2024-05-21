@@ -111,13 +111,20 @@ class AfwUrlManager extends AFWRoot
 
         if ($script_name == 'main.php') {
             // file_specification
-            $afw_action = rtrim($main_page, '.php');
-            $afw_action = substr($afw_action, 9);
-            if ($afw_action == 'crossed') {
-                $afw_action = 'qedit';
-            } // same BF but different interface
+            if(AfwStringHelper::stringStartsWith($main_page, "afw_mode_"))
+            {
+                $afw_action = rtrim($main_page, '.php');
+                $afw_action = substr($afw_action, 9);
+                if ($afw_action == 'crossed') {
+                    $afw_action = 'qedit';
+                } // same BF but different interface
 
-            $direct_access = 'N';
+                $direct_access = 'N';
+            }
+            else
+            {
+                $direct_access = 'Y';    
+            }
         } else {
             $direct_access = 'Y';
         }
@@ -150,12 +157,12 @@ class AfwUrlManager extends AFWRoot
                 } 
                 else 
                 {
-                    AfwRunHelper::safeDie(
-                        'can find BF',
-                        "can find BF because triplet(module_code=$module_code,object_table=$object_table, afw_action=$afw_action) is incomplete"
-                    );
+                    throw new AfwRuntimeException("can't find BF because triplet(module_code=$module_code,object_table=$object_table, afw_action=$afw_action) is incomplete from url $url ");
                 }
-            } else {
+
+            } 
+            else 
+            {
                 if ($params_is_spec) {
                     $bf_spec = $all_params;
                 } else {

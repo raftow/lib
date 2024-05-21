@@ -288,11 +288,17 @@ class AfwFrameworkHelper extends AFWRoot
         return $object->iAcceptAction($frameworkAction);
     }
 
+    /**
+     * 
+     * @param AFWObject $object 
+     */
 
     public static final function stepIsEditable($object, $step)
     {
         $class_db_structure = $object->getMyDbStructure();
-        foreach ($class_db_structure as $nom_col => $desc) {
+        foreach ($class_db_structure as $nom_col => $desc) 
+        {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $nom_col);
             if ($desc['STEP'] == $step or $step == 'all') {
                 if (AfwStructureHelper::attributeIsEditable($object, $nom_col)) {
                     return true;
@@ -302,10 +308,18 @@ class AfwFrameworkHelper extends AFWRoot
         return false;
     }
 
+
+    /**
+     * 
+     * @param AFWObject $object 
+     */
+
     public static final function stepIsApplicable($object, $step)
     {
         $class_db_structure = $object->getMyDbStructure();
-        foreach ($class_db_structure as $nom_col => $desc) {
+        foreach ($class_db_structure as $nom_col => $desc) 
+        {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $nom_col);
             if ($desc['STEP'] == $step) {
                 if ($object->attributeIsApplicable($nom_col)) {
                     return true;

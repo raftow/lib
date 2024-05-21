@@ -804,6 +804,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             }
             break;
         case 'GDAT':
+        case 'GDATE':
             if ($obj->fixm_disable) {
 
                 $type_input_ret = "hidden";

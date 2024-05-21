@@ -79,7 +79,7 @@ class AfwSmsSender extends AFWRoot {
                         
                         $soapClientOptions = array(
                                 'stream_context' => $context,
-                                'cache_wsdl' => WSDL_CACHE_NONE,
+                                'cache_wsdl' => 'WSDL_CACHE_NONE',
                                 'encoding' => $encoding
                         );
                         

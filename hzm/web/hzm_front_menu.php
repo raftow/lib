@@ -1,5 +1,5 @@
 <?php
-        // common_die("rafik-2 I think it is obsolete now : 10 nov 2021");
+        // throw new AfwRuntimeException("rafik-2 I think it is obsolete now : 10 nov 2021");
         $objme = AfwSession::getUserConnected();  
           
         $html_hzm_menu = "";

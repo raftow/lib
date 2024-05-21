@@ -38,7 +38,7 @@ $trad["OPERATOR"]["ENDS_WITH"]	                         	= "ينتهي ب";
 $trad["OPERATOR"]["IN"]	                         		= "ضمن هذه الخيارات";
 $trad["OPERATOR"]["NOT_IN"]	                         	= "ليس ضمن هذه الخيارات";
 $trad["OPERATOR"]["BETWEEN"]	                         	= "الفترة";
-$trad["OPERATOR"]["FILE"]	                         	= "استمارة";
+$trad["OPERATOR"]["FILE"]	                         	= " ";
 $trad["OPERATOR"]["THE-FILE"]	                         	= "شاشة الخصائص";
 
 $trad["OPERATOR"]["SEARCH"]	                         	= "بحث متقدم في";

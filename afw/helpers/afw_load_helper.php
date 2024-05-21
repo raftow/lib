@@ -743,6 +743,8 @@ class AfwLoadHelper extends AFWRoot
             // even if load is empty store the empty object into cache than the query is not repeated            
         }
 
+        $object->resetUpdates();
+
         if ($cache_management) {
             if ($loaded_by) {
                 AfwCacheSystem::getSingleton()->putIntoCache(

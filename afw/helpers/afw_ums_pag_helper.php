@@ -257,7 +257,9 @@ class AfwUmsPagHelper extends AFWRoot
         $fldObj->logicDelete(true, false);
 
         
-        foreach ($this_db_structure as $attribute => $structure) {
+        foreach ($this_db_structure as $attribute => $structr) 
+        {
+            $structure = AfwStructureHelper::repareMyStructure($obj, $structr, $attribute);
             list($toPag, $notToPagReason) = $obj->attributeIsToPag($attribute);
 
             if (!$toPag) {
@@ -314,14 +316,12 @@ class AfwUmsPagHelper extends AFWRoot
                         );
                     }
 
-                    $fld->set(
-                        'titre',
-                        trim(strip_tags($obj->translate($attribute)))
-                    );
-                    $fld->set(
-                        'titre_short',
-                        trim(strip_tags($obj->translate($attribute)))
-                    );
+                    $fld->set('titre',trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = false))));
+                    $fld->set('titre_short',trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = true))));
+
+                    $fld->set('titre_en',trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = false))));
+                    $fld->set('titre_short_en',trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = true))));
+
 
                     $this_help_text_ar = $obj->translate(
                         $attribute . '_help_text',
@@ -557,6 +557,8 @@ class AfwUmsPagHelper extends AFWRoot
         } elseif ($afwType == 'DATE') {
             return AfwUmsPagHelper::$afield_type_date;
         } elseif ($afwType == 'GDAT') {
+            return AfwUmsPagHelper::$afield_type_Gdat;
+        } elseif ($afwType == 'GDATE') {
             return AfwUmsPagHelper::$afield_type_Gdat;
         } elseif ($afwType == 'DATETIME') {
             return AfwUmsPagHelper::$afield_type_Gdat;

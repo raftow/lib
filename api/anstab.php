@@ -66,7 +66,7 @@ foreach($attr_arr as $nom_col => $val)
 
 $ans_tab_where = $obj->getSearchWhereOfAttribute($attribute);
 
-if($dbgggg)
+if($debugg or $debug)
 {
         echo var_export($obj,true);  
         die(" ::: ans_tab_where = ".var_export($ans_tab_where,true));

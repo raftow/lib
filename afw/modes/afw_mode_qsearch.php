@@ -156,12 +156,34 @@ $single_obj_name =  $myClassInstance->transClassSingle($lang);
 $out_scr_btns = "";
 if($datatable_on) 
 {
+        $btns_total = 0;
+        $btns_display=[];
+        //$btns_display["lookup"] = (($newo>0) and ($myClassInstance->IS_LOOKUP) and $objme and $objme->isAdmin()) ? 1 : 0;
+        $btns_display["lookup"] = (($newo>0) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin()) ? 1 : 0;
+        $btns_total += $btns_display["lookup"];
+
+        $btns_display["excel"] = (($ids_count>0) and $objme) ? 1 : 0;
+        $btns_total += $btns_display["excel"];
+
+        $btns_display["ddb"] = ($ids and ($ids_count>1) and ($ids_count<8) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin()) ? 1 : 0;
+        $btns_total += $btns_display["ddb"];
+
+        $btns_display["add"] = (($cl) and (!$myClassInstance->OwnedBy) and $canEdit) ? 1 : 0;
+        $btns_total += $btns_display["add"];
+
+        $btns_display["qedit-result"] = ($ids and ($ids_count<101) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin()) ? 1 : 0;
+        $btns_total += $btns_display["qedit-result"];
+
         
         
+
+
         $out_scr_btns .= "<div class='btns-qsearch'>";
-        if(($newo>0) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin())
+        
+        $btn_num = 1;
+        if($btns_display["lookup"])        
         {
-                $out_scr_btns .= '<div class="btn-qsearch col-xs-3" style="height: 34px;">';
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="height: 34px;">';
                 $out_scr_btns .= '<form name="qeditForm" id="qeditForm" method="post" action="'."main.php".'">';
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
@@ -171,14 +193,15 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="limit" value=""/>';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
+                $btn_num++;
         }
            
         
        
 
-        if(($ids_count>0) and $objme)
+        if($btns_display["excel"])
         {
-                $out_scr_btns .= '<div class="btn-qsearch col-xs-3" style="height: 34px;">';
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="height: 34px;">';
                 $xls_export = $myClassInstance->translate('EXCEL-EXPORT',$lang,true);
                 
                 $out_scr_btns .= '<form name="xlsForm" id="xlsForm" method="post" action="'."main.php".'">';
@@ -191,12 +214,13 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="submit" class="longbtn greenbtn submit-btn fright" name="submit_xls"  id="submit_xls" value="'.$xls_export.'" />';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
+                $btn_num++;
         }
         
 
-        if($ids and ($ids_count>1) and ($ids_count<8) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin())
+        if($btns_display["ddb"])
         {
-                $out_scr_btns .= '<div class="btn-qsearch col-xs-3" style="height: 34px;">';
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="height: 34px;">';
                 $out_scr_btns .= '<form name="ddbForm" id="ddbForm" method="post" action="'."main.php".'">';
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_ddb.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
@@ -206,10 +230,12 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="ids" value="'.$ids.'"/>';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
+                $btn_num++;
         }
-        elseif(($cl) and (!$myClassInstance->OwnedBy) and $canEdit)
+        
+        if($btns_display["add"])
         {
-                $out_scr_btns .= '<div class="btn-qsearch col-xs-3" style="height: 34px;">';
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="height: 34px;">';
                 $out_scr_btns .= '<form name="editForm" id="editForm" method="post" action="'."main.php".'">';
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_edit.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
@@ -218,12 +244,13 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="limit" value=""/>';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
+                $btn_num++;
         }
         
                  
-        if($ids and ($ids_count<101) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin())
+        if($btns_display["qedit-result"])
         {
-                $out_scr_btns .= '<div class="btn-qsearch col-xs-3" style="height: 34px;">';
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="height: 34px;">';
                 $out_scr_btns .= '<form name="qedit_updateForm" id="qedit_updateForm" method="post" action="'."main.php".'">';
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
@@ -239,6 +266,7 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="ids" value="'.$ids.'"/>';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
+                $btn_num++;
         }
         $out_scr_btns .= '</div>';
         $out_scr_btns .= '<br><br>';

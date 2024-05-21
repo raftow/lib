@@ -239,7 +239,7 @@ if(!$obj->qedit_minibox)
          $submit_name = "submit";
    }
 ?>    
-    <input type="submit" name="<?=$submit_name?>"  id="submit-form" class="<?=$class_inputSubmit?>" value="&nbsp;<?=$obj->translate($submit_qedit_title_code,$lang,true)?>&nbsp;" width="200px" height="30px" />
+    <input type="submit" name="<?=$submit_name?>"  id="<?=$submit_name?>" class="<?=$class_inputSubmit?>" value="&nbsp;<?=$obj->translate($submit_qedit_title_code,$lang,true)?>&nbsp;" width="200px" height="30px" />
         
 <?php
   $parent = $obj->getParentObject();

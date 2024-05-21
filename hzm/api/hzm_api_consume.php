@@ -29,11 +29,15 @@
                 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 // echo "option CURLOPT_RETURNTRANSFER setted\n";
 
-                // curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $verify_host);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $verify_host);
                 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $verify_pear);
-                if($proxy)
+                if($proxy=="default")
                 {
-                        $proxy_arr = explode(':', $proxy);
+                        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+                }
+                elseif($proxy)
+                {
+                        $proxy_arr = explode('|', $proxy);
                         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
                         curl_setopt($curl, CURLOPT_PROXY, $proxy_arr[0]);
                         curl_setopt($curl, CURLOPT_PROXYPORT, $proxy_arr[1]);
@@ -45,7 +49,8 @@
                     curl_setopt($curl, CURLOPT_NOPROXY, "*");                    
                     $proxy_arr = array();
                 }
-                
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');                    
+
 
                 // echo "executing\n";
                 $result = curl_exec($curl);

@@ -29,14 +29,14 @@
                                 if(!$save_previous_hidden)
                                 {
                         ?>                                
-                        <input type="submit" name="save_previous" id="submit-form" class="<?=$class_btn_prev?> wizardbtn fright" value="&nbsp;      < <?php echo $save_previous_title ?> &nbsp;" style="margin-right: 5px;" <?php echo $save_previous_disabled ?>>
+                        <input type="submit" name="save_previous" id="save_previous" class="<?=$class_btn_prev?> wizardbtn fright" value="&nbsp;      < <?php echo $save_previous_title ?> &nbsp;" style="margin-right: 5px;" <?php echo $save_previous_disabled ?>>
                         <?php
                                 }
 
                                 if(!$save_next_hidden)
                                 {
                         ?>
-                        <input type="submit" name="save_next"     id="submit-form" class="<?=$class_btn_next?> wizardbtn fleft" value="&nbsp;      <?php echo $save_next_title ?> >&nbsp;"       style="margin-right: 5px;"  <?php echo $save_next_disabled ?>
+                        <input type="submit" name="save_next"     id="save_next" class="<?=$class_btn_next?> wizardbtn fleft" value="&nbsp;      <?php echo $save_next_title ?> >&nbsp;"       style="margin-right: 5px;"  <?php echo $save_next_disabled ?>
                         <?php
                                 }
                         ?>

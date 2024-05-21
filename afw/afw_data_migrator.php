@@ -211,7 +211,7 @@ class AfwDataMigrator extends AFWRoot {
 
         // $all_log = implode("\n",$rowMigratedLog);
         // unset($rowMigratedLog);
-        return array('all_count' => count($data),'created_count' => $created_count, 'updated_count' => $updated_count, 'skipped_count' => $skipped_count, 'errors'=> $error_count, 'log' => $log_body);
+        return array('all_count' => count($data),'created_count' => $created_count, 'updated_count' => $updated_count, 'skipped_count' => $skipped_count, 'error_count'=> $error_count, 'log' => $log_body);
     }
 
 

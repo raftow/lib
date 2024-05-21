@@ -14,6 +14,11 @@ $otherLink_genereLog=false;
 if(!$lang) $lang = 'ar';
 
 $data = array();
+/**
+ * @var AFWObject $obj 
+ */
+
+
 $wizObj = new AfwWizardHelper($obj);
 
 $mode_edit_id = $obj->getId();
@@ -72,7 +77,9 @@ $inited_cols = $data_template["inited_cols"];
 
 foreach($class_db_structure as $nom_col => $desc)
 {
-        // if(!$desc) $obj::safeDie("obj::getDbStructure() = ".var_export($class_db_structure,true));
+        $descOld = $desc;
+        $desc = AfwStructureHelper::repareMyStructure($obj, $desc, $nom_col);
+        // if($nom_col=="attribute_11") throw new AfwRuntimeException(" Old Struct = ".var_export($descOld,true)." New Struct = ".var_export($desc,true));
         $mode_field_read_only = false;            
         $mode_field_read_only_log = "";
         if(!$desc["STEP"]) $desc["STEP"] = 1;
@@ -231,7 +238,8 @@ foreach($class_db_structure as $nom_col => $desc)
                                 {
                 		        type_input($nom_col, $desc, $col_val, $obj, $separator, $data_loaded,"inputlong",0,"inputlong");
                                 }
-                                $data[$nom_col]["input"] = "<!-- start of input for attrib $nom_col : $col_val = obj->val($nom_col) -->";
+                                $desc_export = var_export($desc,true);
+                                $data[$nom_col]["input"] = "<!-- start of input for attrib $nom_col : [$col_val] = obj->val($nom_col) desc=$desc_export-->";
                 		$data[$nom_col]["input"] .= ob_get_clean();
                                 $data[$nom_col]["input"] .= "<!-- end of input for attrib $nom_col -->";
                                 $col_help = $nom_col."_help";
@@ -332,7 +340,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                            if($desc["EDIT-HIDE-VALUE"]) $data[$nom_col]["input"] .=  $desc["EDIT-HIDE-VALUE"];
                                            else $data[$nom_col]["input"] .= $obj->tm("hidden")."<!-- hidden because desc[DISPLAY] == false -->";
                                         else
-                                           $data[$nom_col]["input"] .=  $obj->{"shw$nom_col"}();
+                                           $data[$nom_col]["input"] .=  $obj->showAttribute($nom_col);
                                         
                                         if($obj_errors[$nom_col]) $data[$nom_col]["error"] = $obj_errors[$nom_col]; 
                                 }
@@ -661,7 +669,7 @@ else
         // die("data[diploma_approved]=".var_export($data["diploma_approved"],true));
         foreach($data as $col => $info)
         {
-                    
+                $class_db_structure[$col] = AfwStructureHelper::repareMyStructure($obj, $class_db_structure[$col], $col);
                     if(($col=="id") and (!$idObj)) $class_empty_object = "empty-obj";
                     else $class_empty_object = "";
                     
@@ -925,13 +933,13 @@ if($obj->editByStep)
             $class_btn_prev = "graybtn";
         }
 ?>              
-                  <input type="submit" name="save_previous"  id="submit-form" class="<?=$class_btn_prev?> wizardbtn fright" value="&nbsp;<?=$obj->translate('PREVIOUS'.$form_readonly,$lang,true)?>&nbsp;" style="margin-right: 5px;" <?=$disabled_prev?>/>
+                  <input type="submit" name="save_previous"  id="save_previous" class="<?=$class_btn_prev?> wizardbtn fright" value="&nbsp;<?=$obj->translate('PREVIOUS'.$form_readonly,$lang,true)?>&nbsp;" style="margin-right: 5px;" <?=$disabled_prev?>/>
 <?
   // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
   if($obj->canSaveOnly($obj->currentStep))
   {            
 ?>              
-                  <input type="submit" name="save_only"  id="submit-form" class="bluebtn wizardbtn" value="&nbsp;<?=$obj->translate('UPDATE',$lang,true)?>&nbsp;" style="margin-right: 5px;"/>
+                  <input type="submit" name="save_only"  id="save_only" class="bluebtn wizardbtn" value="&nbsp;<?=$obj->translate('UPDATE',$lang,true)?>&nbsp;" style="margin-right: 5px;"/>
 <?
   }
         // $nextStep will be = -1 if all next steps are R/O not editable, so no next editable step
@@ -950,7 +958,7 @@ if($obj->editByStep)
         {
            // ." ($currStep -> $nextStep)"
         ?>              
-                  <input type="submit" name="save_next"  id="submit-form" class="greenbtn wizardbtn fleft" value="&nbsp;<?=$obj->translate('NEXT'.$form_readonly,$lang,true)?>&nbsp;" style="margin-right: 5px;"/>
+                  <input type="submit" name="save_next"  id="save_next" class="greenbtn wizardbtn fleft" value="&nbsp;<?=$obj->translate('NEXT'.$form_readonly,$lang,true)?>&nbsp;" style="margin-right: 5px;"/>
         <?              
         }
 
@@ -962,7 +970,7 @@ if($obj->editByStep)
           )
         {
         ?>              
-                  <input type="submit" name="save_update"  id="submit-form" hint="<?="NextStep:".$nextStep?>" class="save_update yellowbtn wizardbtn fleft" value="&nbsp;<?=$finish_label?>&nbsp;" style="margin-right: 5px;"/>
+                  <input type="submit" name="save_update"  id="save_update" hint="<?="NextStep:".$nextStep?>" class="save_update yellowbtn wizardbtn fleft" value="&nbsp;<?=$finish_label?>&nbsp;" style="margin-right: 5px;"/>
         <?
         }
         else
@@ -977,8 +985,8 @@ if($obj->editByStep)
 else  // not edit by step
 {
 ?>              
-                  <input type="submit" name="save_update"  id="submit-form" class="save_update yellowbtn wizardbtn fleft" value="&nbsp;<?=$obj->translate('FINISH',$lang,true)?>&nbsp;" style="margin-right: 5px;"/>
-                  <input type="submit" name="save_only"  id="submit-form" class="bluebtn wizardbtn fright" value="&nbsp;<?=$obj->translate('UPDATE',$lang,true)?>&nbsp;" style="margin-right: 5px;"/>
+                  <input type="submit" name="save_update"  id="save_update" class="save_update yellowbtn wizardbtn fleft" value="&nbsp;<?=$obj->translate('FINISH',$lang,true)?>&nbsp;" style="margin-right: 5px;"/>
+                  <input type="submit" name="save_only"  id="save_only" class="bluebtn wizardbtn fright" value="&nbsp;<?=$obj->translate('UPDATE',$lang,true)?>&nbsp;" style="margin-right: 5px;"/>
 <?
 } 
 ?>              
