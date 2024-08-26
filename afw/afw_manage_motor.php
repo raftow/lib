@@ -335,7 +335,9 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
 				);
 
 				break;
-		case 'MENUM' :  $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"],$obj->getTableName(),$col_name,$obj);
+		case 'MENUM' :  $fcol_name = $desc["FUNCTION_COL_NAME"];
+                                if(!$fcol_name) $fcol_name = $col_name;
+                                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"],$obj->getTableName(),$fcol_name,$obj);
 				//echo "menum val $val with sep $separator : <br>";
 				$val_arr = explode($separator, trim($val, $separator));
 				//print_r($val_arr);
@@ -417,8 +419,11 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 }
                                 else
                                 {
-                                     $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"],$obj->getTableName(),$formInputName,$obj);
-                                     $answer_case = "AfwLoadHelper::getEnumTable(".$desc["ANSWER"].")";
+                                     $fcol_name = $desc["FUNCTION_COL_NAME"];
+                                     if(!$fcol_name) $fcol_name = $formInputName;
+                                     $tabName = $obj->getTableName();
+                                     $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"],$tabName,$fcol_name,$obj);
+                                     $answer_case = "AfwLoadHelper::get EnumTable(".$desc["ANSWER"].",$tabName,$fcol_name)";
                                 }
                                 
                                 //if($desc["FORMAT-INPUT"]=="hzmtoggle") $obj->_error("enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));

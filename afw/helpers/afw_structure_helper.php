@@ -1,4 +1,9 @@
 <?php
+class AfwStructure
+{
+    public static $DB_STRUCTURE = null;
+}
+
 class AfwStructureHelper extends AFWRoot 
 {
     public static function dd($message, $to_die=true, $to_debugg=false, $trace=true, $light=false)
@@ -53,6 +58,18 @@ class AfwStructureHelper extends AFWRoot
         }
     }
 
+    /**
+     * @param string $moduleDomain 
+     * @param string $class_name 
+     * 
+     * @return AfwStructure
+     */
+
+    public static final function getStructureClassName($moduleDomain, $class_name)
+    {
+        return $moduleDomain . $class_name . 'AfwStructure';
+    }
+
 
     public static final function constructDBStructure($module_code, $class_name, $attribute, $step="all",$start_step=null, $end_step=null)
     {
@@ -72,8 +89,7 @@ class AfwStructureHelper extends AFWRoot
             // include_once("$file_dir_name/../$module_code/struct/struct_$table_name.php"); //
             // $my_db_structure = $GLOBAL_DB_STRUCTURE[$table_name];
             $moduleDomain = ucfirst($module_code);
-            $class_name_strcucture =
-                $moduleDomain . $class_name . 'AfwStructure';
+            $class_name_strcucture = self::getStructureClassName($moduleDomain, $class_name);
             if (PHP_VERSION_ID < 80000) {
                 if (!$my_db_structure) {
                     $my_db_structure = $class_name::$DB_STRUCTURE;
@@ -260,7 +276,7 @@ class AfwStructureHelper extends AFWRoot
         {
             if(is_string($value_struct))
             {
-                if(AfwStringHelper::stringStartsWith($value_struct,'::config::'))
+                if(AfwStringHelper::stringStartsWith($value_struct,'>>config::'))
                 {
                     $configStructEval = substr($value_struct,10);
                     list($configVar, $defaultValue) = explode($configStructEval, ",");
@@ -291,7 +307,7 @@ class AfwStructureHelper extends AFWRoot
         {
             if(is_string($value_struct))
             {
-                if(AfwStringHelper::stringStartsWith($value_struct,'::config::'))
+                if(AfwStringHelper::stringStartsWith($value_struct,'>>config::'))
                 {
                     $configStructEval = substr($value_struct,10);
                     list($configVar, $defaultValue) = explode($configStructEval, ",");
@@ -299,6 +315,7 @@ class AfwStructureHelper extends AFWRoot
                 }
                 elseif(AfwStringHelper::stringStartsWith($value_struct,'::'))
                 {
+                    if($field_name=="mobile") die("rafik-20240717-field_name=$field_name col_struct=$col_struct value_struct=$value_struct");
                     $methodStructEval = substr($value_struct,2);
                     $struct[$col_struct] = $object->$methodStructEval($field_name, $col_struct);
                 }

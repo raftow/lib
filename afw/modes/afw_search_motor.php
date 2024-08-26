@@ -30,8 +30,12 @@ function type_input($col_name, $desc, $obj, $selected = false)
             if ($desc["ANSWER"] == "INSTANCE_FUNCTION") {
                 $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $col_name);
                 // $obj->_error("$col_name is INSTANCE_FUNCTION answer and it has this getEnumAnswerList ".var_export($liste_rep,true));
-            } else {
-                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $col_name, $obj);
+            } 
+            else 
+            {
+                $fcol_name = $desc["FUNCTION_COL_NAME"];
+                if(!$fcol_name) $fcol_name = $col_name;
+                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj);
             }
 
             if ($desc["SEARCH-BY-ONE"] and ($desc["TYPE"] == "ENUM")) {
@@ -172,7 +176,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
                     $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 
                     $col_name_atc = $col_name . "_atc";
-                    $atc_input_normal = "inputmoyenmoyen";
+                    $atc_input_normal = "";
 
                     $val = $_POST[$col_name];
                     if ($val) {
@@ -258,7 +262,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
         case 'INT':
         case 'AMNT':
 
-            ?> <input type="text" class="form-control <?= trim(" inputmoyenmoyen $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
+            ?> <input type="text" class="form-control <?= trim(" $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
         <?php echo $desc["UNIT"];
             //echo $desc["TITLE_AFTER"];
             break;

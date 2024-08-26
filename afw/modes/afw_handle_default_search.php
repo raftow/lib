@@ -330,9 +330,11 @@ if ($action and ($action != "retrieve") and ($qsearchview == "exec")) {
 //AFWDebugg::print_str('foreach  '.__LINE__);
 ob_start();
 
-if (!$result_page_title) {
+if (!$result_page_title) 
+{
+        $tr_ = $obj->transClassPlural($lang, false, $maksour = true); 
         if ($action == "retrieve")
-                $result_page_title = $obj->translate('SEARCH_RESULT', $lang, true) . " " . $obj->translate($obj->getTableName(), $lang);
+                $result_page_title = $obj->translate('SEARCH_RESULT', $lang, true) . " " . $tr_;
         elseif ($qsearchview == "exec")
                 $result_page_title = $obj->translate($obj->getTableName(), $lang) . " " . $obj->translate('who.received.action.' . $action, $lang);
         else

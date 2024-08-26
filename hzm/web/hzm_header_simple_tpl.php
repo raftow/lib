@@ -1,3 +1,4 @@
+<header class="top-header">
 <div class="section" id="section1">
 	<div class="topContent">
   		  <div class="row expanded">
@@ -78,3 +79,4 @@
                   [no_scroll_banner_e]                  
 	</div>
 </div>
+</header>

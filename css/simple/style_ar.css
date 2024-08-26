@@ -2445,15 +2445,7 @@ a.ui-state-hijri-link {
 	font-weight: bold;
 }
 /****Datepickrt colors***/
-.ui-datepicker {
-        width: 22em !important;
-        border: 2px solid #266CC6 !important;
-        border-radius: 0px;
-        background: #FAFAFA !important;
-        color: #333 !important;
-        padding: 5px !important;
-        display: none;
-}
+
 
 .ui-widget-header {
 	border: 0px !important;

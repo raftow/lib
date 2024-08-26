@@ -85,7 +85,7 @@
                         "bsel_css" => [],
                         "style" => $input_style,
                         "required" => $is_required,
-
+                        "disabled" => $disabled,
                     );
 
                     //if(!in_array($val, $liste_rep)) $liste_rep[$val] = $val;

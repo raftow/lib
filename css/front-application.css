@@ -102,7 +102,7 @@ div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, p, blockquote, t
 }
 
 .row {
-    max-width: 90rem !important;
+    max-width: 100rem !important;
     margin-left: 0!important;
     margin-right: 0!important;
 }
@@ -4618,11 +4618,14 @@ th.col-qe {
     min-width: 100px !important;
 }
 
+/*
+RB 02 juin 2024 : This below is not logic why this margin and with and max with 
+too much ui components use btn-group class so can not be overridden like this
 .btn-group{
     width: 80%;
     margin-left: 10%;
     max-width: 480px;
-}
+}*/
 
 .clock-timepicker {
     width: 100% !important;

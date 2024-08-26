@@ -71,10 +71,18 @@
             return $echo_text; 
         }
 
+        public static function print_hard_sql($string)
+        {
+            // -- hzmc
+            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "light_green")."\n";
+            self::echo_batch($echo_text);
+            return $echo_text; 
+        }
+
         public static function print_sql($string)
         {
             // -- hzmc
-            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "light_purple")."\n";
+            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "yellow")."\n";
             self::echo_batch($echo_text);
             return $echo_text; 
         }
@@ -93,7 +101,7 @@
         {
             self::$warnings_arr[] = $string;
             // -- hzmc
-            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "yellow")."\n";
+            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "light_purple")."\n";
             self::echo_batch($echo_text);
             return $echo_text;
         }
@@ -177,6 +185,19 @@
             
             if($color_row) echo AfwBatchColors::singleton()->getColoredString($row_text, $color_row, $bg_color_row)."\n";
             else echo $row_text."\n";
+        }
+
+        public static function print_simpler_row($row)
+        {
+            // -- hzmc
+            $row_text = "";
+            
+            foreach($row as $col => $vv)
+            {
+                if(!is_numeric($col)) $row_text .= "$col = $vv \n";
+            }
+            
+            echo $row_text;
         }
         
         public static function get_row_color_from_color_rules($colors, $row)

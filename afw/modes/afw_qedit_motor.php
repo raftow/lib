@@ -336,8 +336,10 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $orig_col_name);
                 $answer_case = "INSTANCE_FUNCTION so obj-> get EnumAnswerList";
             } else {
-                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
-                $answer_case = "AfwLoadHelper::getEnumTable(" . $desc["ANSWER"] . ")";
+                $fcol_name = $desc["FUNCTION_COL_NAME"];
+                if(!$fcol_name) $fcol_name = $orig_col_name;
+                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj);
+                $answer_case = "AfwLoadHelper::get EnumTable(" . $desc["ANSWER"] . ")";
             }
 
 
@@ -433,13 +435,21 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
             if ($desc["ANSWER"] == "INSTANCE_FUNCTION") {
                 $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $orig_col_name);
-                $answer_case = "INSTANCE_FUNCTION so obj -> get EnumAnswerList";
+                $answer_case = "INSTANCE_FUNCTION so obj->get Enum AnswerList($orig_col_name) ";
             } else {
-                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
-                $answer_case = "AfwLoadHelper::getEnumTable(" . $desc["ANSWER"] . ")";
+                $objTableName = $obj->getTableName();
+                $objName = $obj->__toString();
+                $fieldAnsTab = $desc["ANSWER"];
+                $fcol_name = $desc["FUNCTION_COL_NAME"];
+                if(!$fcol_name) $fcol_name = $orig_col_name;
+                $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj);
+                $answer_case = "AfwLoadHelper::get EnumTable($fieldAnsTab, $objTableName, $fcol_name, obj:$objName)";
             }
+            if(!$liste_rep) throw new AfwRuntimeException("for col $orig_col_name enum liste_rep comes from $answer_case is null or empty  liste_rep = ".var_export($liste_rep,true));
+            
 
-            //if($desc["FORMAT-INPUT"]=="hzmtoggle") throw new AfwRuntimeException("enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
+            // if($orig_col_name=="level_enum") throw new AfwRuntimeException("for col $orig_col_name enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
+            // if($desc["FORMAT-INPUT"]=="hzmtoggle") throw new AfwRuntimeException("for enum col $orig_col_name liste_rep comes from $answer_case : ".var_export($liste_rep,true));
 
             if ($obj->fixm_disable) {
 
@@ -888,6 +898,8 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
 
     // @todo not all time should be well studied
     // if(count($list_id_val)==0) return;
+
+    if(!is_array($list_id_val)) throw new AfwRuntimeException("qedit motor select method should receive as first parameter an array of id => value but got `$list_id_val` value");
 
     switch (strtolower($ordre)) {
         case 'asc':

@@ -1,3 +1,4 @@
+<header class="top-header">
 <div class="section" id="section1" style="background-image: url([img-path]/header_bg.jpg);background-position: 50% 50%;background-size: cover;height: [bg_height]px;">
 	<div class="topContent">
   		    [no_menu_s]
@@ -48,3 +49,4 @@
                   
 	</div>
 </div>
+</header>

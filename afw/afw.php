@@ -225,6 +225,11 @@ class AFWObject extends AFWRoot
         $this->general_check_errors = true;
     }
 
+    function __destruct() {
+        $this->optimizeMemory();
+        $this->destroyData();
+    }
+
     /**
      * init_row
      * called by constructor to init state of object after creation
@@ -2886,7 +2891,7 @@ class AFWObject extends AFWRoot
         return $return;
     }
 
-    public function transClassPlural($lang = 'ar', $short = false)
+    public function transClassPlural($lang = 'ar', $short = false, $maksour = false)
     {
         $tableLowerOrigin = strtolower(static::$TABLE);
 
@@ -2896,7 +2901,17 @@ class AFWObject extends AFWRoot
             $tableLower = $tableLowerOrigin;
         }
 
+        if($maksour) {
+            $tableLowerNotMaksour = $tableLower;
+            $tableLower = $tableLower."_";
+        }
+        
         $return = $this->translate($tableLower, $lang);
+        if ($return == $tableLower and $maksour) 
+        {
+            $tableLower = $tableLowerNotMaksour;
+            $return = $this->translate($tableLower, $lang);
+        }
 
         if ($return == $tableLower and $short) {
             $tableLower = $tableLowerOrigin;
@@ -3163,6 +3178,8 @@ class AFWObject extends AFWRoot
         if (!$this->id) 
         {
             $return = $this->insertNewLabel($lang);
+            
+            // if ($this instanceof StudentFileStatus) $return .= "<!-- ".var_export($this,true)." -->";
             /*
             $return = $this->transClassSingle($lang) .
                 ' ' .
@@ -8000,7 +8017,7 @@ $dependencies_values
         unset($this->OPTIONS);
         unset($this->arr_erros);
 
-        $this->removeStructure();
+        // $this->removeStructure();
         $this->optimizeMyMemory();
     }
 

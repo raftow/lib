@@ -97,7 +97,7 @@ class AfwLoadHelper extends AFWRoot
         if ($count_liste_rep > $MAX_DROPDOWN_ITEMS) {
             // $first_item = current($liste_rep);
             throw new AfwRuntimeException("Too much items to put into dropdown for field : [$table_name.$col_name] (count = $count_liste_rep), 
-                    it is recommended to use AUTOCOMPLETE option, report : $report");
+                    it is recommended to use AUTOCOMPLETE and AUTOCOMPLETE-SEARCH options, report : $report");
         }
 
         $l_rep = [];
@@ -474,18 +474,29 @@ class AfwLoadHelper extends AFWRoot
             $where =  $object->get_visibilite_horizontale();            
         }
         
-        $display_field = trim($object->DISPLAY_FIELD);
+        if(isset($object->DISPLAY_FIELD)) 
+        {
+            if(is_array($object->DISPLAY_FIELD))
+            {
+                $display_field = "concat(".implode(",'-',",$object->DISPLAY_FIELD).")";
+            }
+            else $display_field = trim($object->DISPLAY_FIELD);
+        }
 
         if (!$display_field) {
-            $display_field = trim($object->FORMULA_DISPLAY_FIELD);
+            if(isset($object->FORMULA_DISPLAY_FIELD)) $display_field = trim($object->FORMULA_DISPLAY_FIELD);
         }
 
         if (!$display_field)  {
-            if(is_array($object->AUTOCOMPLETE_FIELD))
+            if(isset($object->AUTOCOMPLETE_FIELD)) 
             {
-                $display_field = "concat(".implode(",'-',",$object->AUTOCOMPLETE_FIELD).")";
+                if(is_array($object->AUTOCOMPLETE_FIELD))
+                {
+                    $display_field = "concat(".implode(",'-',",$object->AUTOCOMPLETE_FIELD).")";
+                }
+                else $display_field = trim($object->AUTOCOMPLETE_FIELD);
             }
-            else $display_field = trim($object->AUTOCOMPLETE_FIELD);
+            
         }
 
         
@@ -1568,40 +1579,55 @@ class AfwLoadHelper extends AFWRoot
         return $return;
     }
 
+    
 
+    public static final function explodeEnumAnswer($answer)
+    {
+        return AfwStringHelper::afw_explode($answer);
+    }
     public static final function getEnumTable(
         $answer,
         $table = '',
-        $attribut = '',
+        $fattribut = '',
         $obj = null
     ) 
     {
             //echo "call to get EnumTable($answer,$table,$attribut)<br>";
             if ($answer == 'FUNCTION') 
             {
-                    if (!$attribut) {
+                    if (!$fattribut) {
                         throw new AfwRuntimeException("get EnumTable need attribut name for FUNCTION dynamic answers (table = $table) obj = " .var_export($obj, true));
                     }
-                    $method = "list_of_$attribut";
-                    $object_method = "my_list_of_$attribut";
+                    $method = "list_of_$fattribut";
+                    $object_method = "my_list_of_$fattribut";
                     if (!$table) {
                         throw new AfwRuntimeException('table param is mandatory in get EnumTable method');
                     }
-                    $className = AfwStringHelper::tableToClass($table);
+                    $return = NULL;
                     if ($obj) {
                             $return = $obj->$object_method();
-                    } else {
+                            $case = "obj->$object_method()";
+                    } 
+                    
+                    if(!$return)
+                    {
+                            $className = AfwStringHelper::tableToClass($table);
                             $return = $className::$method();
+                            $case = "$className :: $method()";
                     }
                     // echo "call to $className::$method() return [";
                     // print_r($return);
                     // echo "]";
-                    // AfwRunHelper::simpleError("get EnumTable($answer,$table,$attribut,obj: ".var_export($obj,true).")");
+                    
             } 
             else 
             {
-                    $return = AfwStringHelper::afw_explode($answer);
+                    $return = self::explodeEnumAnswer($answer);
+                    $case = "self::explodeEnumAnswer($answer)";
             }
+
+
+            if(!is_array($return)) throw new AfwRuntimeException("get EnumTable($answer,$table,$fattribut,obj: ".var_export($obj,true).") used case $case and returned : $return");
 
             return $return;
     }
@@ -1616,7 +1642,9 @@ class AfwLoadHelper extends AFWRoot
         if ($enum_answer_list == 'INSTANCE_FUNCTION') {
             $enum_answer_list = 'FUNCTION';
         }
-        $liste_rep = AfwLoadHelper::getEnumTable($enum_answer_list,$object->getTableName(),$attribute,$object);
+        $fcol_name = $structure["FUNCTION_COL_NAME"];
+        if(!$fcol_name) $fcol_name = $attribute;
+        $liste_rep = AfwLoadHelper::getEnumTable($enum_answer_list,$object->getTableName(),$fcol_name,$object);
         return $liste_rep;
     }
 
@@ -1630,8 +1658,9 @@ class AfwLoadHelper extends AFWRoot
             $desc = AfwStructureHelper::getStructureOf($this,$attribute);
             $answer = $desc["ANSWER"];
         }
-        
-        return AfwLoadHelper::getEnumTable($answer, $this->getTableName(), $attribute, $this);
+        $fcol_name = $structure["FUNCTION_COL_NAME"];
+        if(!$fcol_name) $fcol_name = $attribute;
+        return AfwLoadHelper::getEnumTable($answer, $this->getTableName(), $fcol_name, $this);
 
     }
     */

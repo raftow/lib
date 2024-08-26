@@ -250,10 +250,11 @@ class AfwShowHelper
                             }
                         }
                         else {
+                            $get_val_col = $liste_obj[$id]->getVal($col);
                             $tuple[$col] = $liste_obj[$id]->showAttribute(
                                 $col,
                                 $desc
-                            );
+                            )."<!-- showAttribute of $col val [$get_val_col] -->";
                         // if($col=="المسح") die("tuple[$col] = ".$tuple[$col]);
                         }
                     }
@@ -943,7 +944,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                         case 'FK':
                                             if(AfwStructureHelper::isLookupAttribute($val, $col,$desc))
                                             {
-                                                $tuple[$col] = $val->decode($col);
+                                                $val_decoded = $val->getVal($col);
+                                                $tuple[$col] = $val->decode($col) . "<!-- val decoded is $val_decoded -->";
                                             }
                                             else
                                             {

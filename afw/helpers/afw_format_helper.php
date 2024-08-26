@@ -148,7 +148,7 @@ class AfwFormatHelper
 
         if (strtoupper($desc['TYPE']) == 'ENUM') {
             if ($desc['ANSWER'] != 'FUNCTION') {
-                $answerTable = AfwLoadHelper::getEnumTable($desc['ANSWER'], '', '');
+                $answerTable = AfwLoadHelper::explodeEnumAnswer($desc['ANSWER']);
                 if (!isset($answerTable[$val_attr])) {
                     return [false, 'TYPE-ENUM'];
                 }

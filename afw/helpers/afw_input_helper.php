@@ -352,8 +352,10 @@ class AfwInputHelper extends AFWRoot
                                         }
                                         else
                                         {
-                                                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"],$obj->getTableName(),$orig_col_name,$obj);
-                                                $answer_case = "AfwLoadHelper::getEnumTable(".$desc["ANSWER"].",".$obj->getTableName().",".$orig_col_name.",".$obj.")";
+                                                $fcol_name = $desc["FUNCTION_COL_NAME"];
+                                                if(!$fcol_name) $fcol_name = $orig_col_name;
+                                                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"],$obj->getTableName(),$fcol_name,$obj);
+                                                $answer_case = "AfwLoadHelper::get EnumTable(".$desc["ANSWER"].",".$obj->getTableName().",".$orig_col_name.",".$obj.")";
                                         }
 
                                         if($desc["FORMAT-INPUT"])                                        

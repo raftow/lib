@@ -32,7 +32,7 @@ else
             "onchange" => $onchange,
             "style" => $input_style,
             "required" => $is_required,
-
+            "disabled" => $disabled,
         ),
         "asc"
     );

@@ -69,8 +69,17 @@ if($id)
         $dataErrStep = "all";
         if($myObj->editByStep) 
         {
-            $dataErrStepStart = 1;
-            $dataErrStepEnd = $currstep;
+            if($currstep>1)
+            {
+                $dataErrStepStart = 1;
+                $dataErrStepEnd = $currstep-1;
+            }
+            else
+            {
+                $dataErrStepStart = 99;
+                $dataErrStepEnd = 88;
+            }
+            
         }
         else 
         {

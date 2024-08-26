@@ -29,10 +29,10 @@ class AfwDatabase extends AFWRoot
     {
         $project_link_name = 'server' . $module_server;
         if (!self::$link[$project_link_name] or !self::$connect) {
-            $hostname = AfwSession::config("${module_server}host", '');
-            $username = AfwSession::config("${module_server}user", '');
-            $password = AfwSession::config("${module_server}password", '');
-            $database = AfwSession::config("${module_server}database", '');
+            $hostname = AfwSession::config($module_server."host", '');
+            $username = AfwSession::config($module_server."user", '');
+            $password = AfwSession::config($module_server."password", '');
+            $database = AfwSession::config($module_server."database", '');
             // if($module_server=="nartaqi") throw new AfwRuntimeException("params of connection to server [$module_server] are [$hostname, $username, $password, $database] from : ".AfwSession::log_config());
             if (!$hostname or !$username) {
                 throw new AfwRuntimeException(
@@ -71,7 +71,8 @@ class AfwDatabase extends AFWRoot
         $module_server = '',
         $this_module = 'hzm',
         $this_table = 'hzm',
-        $need_utf8=null
+        $need_utf8=null,
+        $is_update =true
     ) {
         global $_sql_analysis,
             $_sql_picture,
@@ -79,6 +80,7 @@ class AfwDatabase extends AFWRoot
             $nb_queries_executed,
             $print_debugg,
             $print_sql,
+            $print_row,
             $sql_capture_and_backtrace,
             $MODE_BATCH_LOURD,
             $MODE_SQL_PROCESS_LOURD,
@@ -86,6 +88,7 @@ class AfwDatabase extends AFWRoot
             $duree_sql_total,
             $global_need_utf8;
 
+        if(!isset($global_need_utf8)) $global_need_utf8 = true;   
         // coming bad from outside so I will reparse
         $this_module = 'hzm';    
         $this_table = 'hzm';
@@ -212,16 +215,19 @@ class AfwDatabase extends AFWRoot
             }
 
             $project_link_name = AfwDatabase::_connect($module_server);
-            if($need_utf8)
+            if(true) // $need_utf8
             {
-                AfwMysql::query("set character_set_results='utf8'",AfwDatabase::getLinkByName($project_link_name));
+                AfwMysql::query("set character_set_results='utf8' ",AfwDatabase::getLinkByName($project_link_name));
+                // seems below is not ok because we need to do set character_set_results='utf8' for each mysqli session otherwise we will see 
+                // arabi text as ??????
+                //$global_need_utf8 = false;
             }
             
             //die("mysql_query($sql_query, AfwDatabase::getLinkByName($project_link_name))");
             $sql_info_class = 'sqlinfo';
             $start_q_time = date('Y-m-d H:i:s');
             $start_m_time = microtime();
-            $result = AfwMysql::query($sql_query,AfwDatabase::getLinkByName($project_link_name));
+            $result = AfwMysql::query($sql_query,AfwDatabase::getLinkByName($project_link_name), $is_update);
             // var_dump($result);
             // die("AfwMysql::query($sql_query) result above");
             $end_m_time = microtime();
@@ -452,16 +458,22 @@ class AfwDatabase extends AFWRoot
         $throw_analysis_crash = true,
         $module_server = ''
     ) {
+        global $print_row;
         list($result, $project_link_name) = self::db_query(
             $query,
             $throw_error,
             $throw_analysis_crash,
-            $module_server
+            $module_server,'hzm','hzm',null,false
         );
         $num_rows = self::_num_rows($result);
         // die("query : [$query] returned $num_rows row(s)");
         if ($num_rows) {
-            return AfwMysql::fetch_array($result);
+            $return = AfwMysql::fetch_array($result);
+            if ($print_row) {
+                AfwBatch::print_simpler_row($return);
+            }
+
+            return $return;
         } else {
             return [];
         }
@@ -499,15 +511,18 @@ class AfwDatabase extends AFWRoot
         $throw_error = true,
         $throw_analysis_crash = true,
         $module_server = ''
-    ) {
+    ) 
+    {
+        global $print_row;
         list($result, $project_link_name) = self::db_query(
             $query,
             $throw_error,
             $throw_analysis_crash,
-            $module_server
+            $module_server,'hzm','hzm',null,false
         );
         //echo "RAFIK self::_num_rows(result) = ".self::_num_rows($result)."<br>";
-        if (self::_num_rows($result)) {
+        $nbRows = self::_num_rows($result);
+        if ($nbRows>0) {
             $array = [];
             while ($row = AfwMysql::fetch_array($result)) {
                 //echo "RAFIK row : <br>";
@@ -515,6 +530,11 @@ class AfwDatabase extends AFWRoot
                     //// AFWDebugg::log($row,true);
                 //}
                 $array[] = $row;
+                $last_row = $row;
+            }
+            if(($nbRows==1) and $print_row and $last_row)
+            {
+                AfwBatch::print_simpler_row($last_row);
             }
         } else {
             $array = [];

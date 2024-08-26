@@ -4181,6 +4181,7 @@ button.multiselect.dropdown-toggle.btn.btn-default.form-control {
     border-style: solid;
     border-color: #c7c3c3 !important;
     border-width: 1px;
+    width: 100% !important;
 }
 
 .multiselect-selected-text {
@@ -5559,6 +5560,21 @@ nav.navbar.navbar-inverse {
 
 .ui-datepicker select.ui-datepicker-month, .ui-datepicker select.ui-datepicker-year {
         float: right;
+}
+
+.ui-datepicker {
+    width: 22em !important;
+    border: 2px solid #266CC6 !important;
+    border-radius: 0px;
+    background: #FAFAFA !important;
+    color: #333 !important;
+    padding: 5px !important;
+    display: none;
+    min-height: 220px;
+}
+
+table.ui-datepicker-calendar>thead>tr>th>span {
+    font-family: 'menu';
 }
 
 a.calendars-cmd.calendars-cmd-clear {

@@ -346,10 +346,10 @@ class AfwSession extends AFWRoot {
         public static function log($string, $css_class="paglog hzmlog", $separator="<br>\n", $show_time=true, $context="log")
         {
                 
-                global $log_counter;
+                global $log_counter, $MODE_BATCH_LOURD;
                 if(!$log_counter) $log_counter = 0;
                 $log_counter++;
-                if($log_counter>20000)
+                if($log_counter>50000 and (!$MODE_BATCH_LOURD))
                 {
                         throw new AfwRuntimeException("too much log ".self::getLog($context));
                 }
@@ -631,5 +631,5 @@ include("$this_dir_name/../../external/system_config.php");
 if(!isset($system_config_arr)) die("system_config_arr variable is not defined in file $this_dir_name/../../external/system_config.php");
 AfwSession::initConfig($system_config_arr);
 global $global_need_utf8;
-$global_need_utf8 = AfwSession::config('global_need_utf8',false);
+$global_need_utf8 = AfwSession::config('global_need_utf8',true);
 //die("first initConfig ".AfwSession::log_config());

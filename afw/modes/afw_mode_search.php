@@ -105,7 +105,7 @@ if(!$lang) $lang = 'ar';
 // **@todo $hide_cr = AfwLanguageHelper::tarjem('HIDE CRITEREA',$lang,false);
 // **@todo $show_cr = AfwLanguageHelper::tarjem('SHOW CRITEREA',$lang,false);
 
-$plural_obj_name =  $my_class->transClassPlural($lang);
+$plural_obj_name =  $my_class->transClassPlural($lang,false,true);
 $single_obj_name =  $my_class->transClassSingle($lang);
 
 $out_scr_btns = "";

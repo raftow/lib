@@ -10,6 +10,11 @@ function hidden_input($col_name, $desc, $val, &$obj)
     return $type_input_ret;
 }
 
+/**
+ * 
+ * @param AFWObject $obj
+ */
+
 function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = false, $force_css = "", $qedit_orderindex = 0, $data_length_class_default_for_fk = "inputmoyen")
 {
     global $TMP_DIR, $_SERVER, $Main_Page, $_GET, $_POST,
@@ -141,6 +146,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
     if ($desc["REQUIRED"] or $desc["MANDATORY"]) $is_required = true;
     else $is_required = false;
 
+
+    $disabled = $desc["DISABLED"];
+
     switch ($desc["TYPE"]) 
     {
         case 'PK':
@@ -186,6 +194,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             {
                 // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj, true);
                 // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl", var_export($desc,true));
+                
                 $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
                 $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                 //if(get_class($objRep)=="Module")    die("AfwLoadHelper::vhGetListe=>".var_export($l_rep,true));
@@ -214,6 +223,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         "onchange" => $onchange . $obj->getJsOfOnChangeOf($col_name),
                         "onchangefn" => $obj->getJsOfOnChangeOf($col_name, $descr = "", false),
                         "required" => $is_required,
+                        "disabled" => $disabled,
                     );
                     
                 if(!$desc["DEPENDENT_OFME"]) unset($prop_sel["onchangefn"]);
@@ -382,7 +392,10 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
             break;
         case 'MENUM':
-            $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $col_name, $obj);
+            $fcol_name = $desc["FUNCTION_COL_NAME"];
+            if(!$fcol_name) $fcol_name = $col_name;
+        
+            $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj);
             //echo "menum val $val with sep $separator : <br>";
             $val_arr = explode($separator, trim($val, $separator));
             //print_r($val_arr);
@@ -438,9 +451,17 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $liste_rep = AfwStructureHelper::getEnumAnswerList($obj, $orig_col_name);
                 $answer_case = "INSTANCE_FUNCTION so obj->get Enum AnswerList($orig_col_name) ";
             } else {
-                $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $orig_col_name, $obj);
-                $answer_case = "AfwLoadHelper::getEnumTable(" . $desc["ANSWER"] . "," . $obj->getTableName() . "," . $orig_col_name . "," . $obj . ")";
+                $objTableName = $obj->getTableName();
+                $objName = $obj->__toString();
+                $fieldAnsTab = $desc["ANSWER"];
+                $fcol_name = $desc["FUNCTION_COL_NAME"];
+                if(!$fcol_name) $fcol_name = $orig_col_name;
+                $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj);
+                $answer_case = "AfwLoadHelper::get EnumTable($fieldAnsTab, $objTableName, $fcol_name, obj:$objName)";
             }
+            //if(!$liste_rep) 
+            //throw new AfwRuntimeException("for col $orig_col_name enum liste_rep comes from $answer_case is null or empty  liste_rep = ".var_export($liste_rep,true));
+            
 
             // die("for enum col : $col_name, $answer_case, liste_rep = ".var_export($liste_rep,true));
 
@@ -819,7 +840,7 @@ function select($list_id_val, $selected = array(), $info = array(), $sort_order 
         ?>
     </script>
 
-    <select class="<?php echo $info["class"] ?>" name="<?php echo $info["name"] ?>" id="<?php echo $info["id"] ?>" tabindex="<?php echo $info["tabindex"] ?>" onchange="<?php echo $info["onchange"] ?>" <?php echo $multi ?> size=<?php echo $size ?> <?php echo $info["style"] ?> <?php if ($info["disable"]) echo "disabled" ?> <?php if ($info["required"]) echo "required" ?>>
+    <select class="<?php echo $info["class"] ?>" name="<?php echo $info["name"] ?>" id="<?php echo $info["id"] ?>" tabindex="<?php echo $info["tabindex"] ?>" onchange="<?php echo $info["onchange"] ?>" <?php echo $multi ?> size=<?php echo $size ?> <?php echo $info["style"] ?> <?php if ($info["disable"] or $info["disabled"]) echo "disabled" ?> <?php if ($info["required"]) echo "required" ?>>
         <?php 
         if ($null_val) 
         {

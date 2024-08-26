@@ -57,7 +57,7 @@ class AfwMysql
 
     }
 
-    public static function query($sql, $link)
+    public static function query($sql, $link, $is_update=false)
     {
         if(self::php_is_old()) return null; // mysql_query($sql, $link);    
         else
@@ -74,7 +74,9 @@ class AfwMysql
             {
                 throw new AfwRuntimeException("Error happened when query : $sql : ".$e->getMessage());
             }
-            AfwBatch::print_sql(date("H:i:s")." > ".$sql." > $aff_rows affected rows");
+            $log = date("H:i:s")." > ".$sql." > $aff_rows affected rows";
+            if($is_update) AfwBatch::print_hard_sql($log);
+            else AfwBatch::print_sql($log);
             return $return;
         } 
     }

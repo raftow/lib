@@ -120,35 +120,48 @@ class AfwSqlHelper extends AFWRoot
                     isset($structure) and
                     !$structure['CATEGORY'] and
                     !$structure['NO-SAVE']
-                ) {
-                    if (strcasecmp($value, 'now()') === 0) {
-                        $query .= ' ' . $key . ' = now(),';
-                    } else {
-                        if ($structure['TYPE'] == 'GDAT') {
-                            if (!$value) $value = "0000-00-00";
-                        }
-                        $value_up = strtoupper($value);
-                        if (AfwStringHelper::stringStartsWith($value_up, 'REPLACE(')) {
-                            $query .= " $key = $value ,";
-                        } else {
-                            if ($structure['UTF8']) {
-                                $_utf8 = '_utf8';
-                            } else {
-                                $_utf8 = '';
-                            }
-                            $query .= ' ' . $key . " = $_utf8'" . AfwStringHelper::_real_escape_string($value) . "',";
-                        }
-                        $value_desc = implode('>>', explode("\n", $value));
-                        $old_value_desc = implode('>>', explode("\n", $old_value));
-                        $isNum = is_numeric($value);
-                        $isSame = $value == $old_value;
-                        $valueExists =
-                            (!$obj->isEmpty() and
-                                $obj->isAfieldValueSetted($key));
-
-                        $old_val_query_part .= " -- $key value = [$value_desc], old value = [$old_value_desc] isNum=$isNum isSame= $isSame valueExists=$valueExists\n";
+                ) 
+                {
+                    $value_desc = implode('>>', explode("\n", $value));
+                    $old_value_desc = implode('>>', explode("\n", $old_value));
+                    $isNum = is_numeric($value);
+                    $isGDate = (($structure['TYPE']=='GDAT') or ($structure['TYPE']=='GDATE'));
+                    $isSameDate = false;
+                    $isSame = ($value == $old_value);
+                    if($isGDate)
+                    {
+                        $isSameDate = ($isSame or ("$value 00:00:00" == $old_value) or ("$old_value 00:00:00" == $value));
                     }
-                    $fields_updated[$key] = $value;
+                    
+                    $isCompletelySame = (($value === $old_value) or ($isNum and $isSame) or ($isGDate and $isSameDate));
+                    $valueExists =
+                        (!$obj->isEmpty() and
+                            $obj->isAfieldValueSetted($key));
+
+                    $old_val_query_part .= " -- $key value = [$value_desc], old value = [$old_value_desc] isNum=$isNum isGDate=$isGDate isSame= $isSame isCompletelySame=$isCompletelySame valueExists=$valueExists\n";
+
+                    if(!$isCompletelySame)        
+                    {
+                        if (strcasecmp($value, 'now()') === 0) {
+                            $query .= ' ' . $key . ' = now(),';
+                        } else {
+                            if ($structure['TYPE'] == 'GDAT') {
+                                if (!$value) $value = "0000-00-00";
+                            }
+                            $value_up = strtoupper($value);
+                            if (AfwStringHelper::stringStartsWith($value_up, 'REPLACE(')) {
+                                $query .= " $key = $value ,";
+                            } else {
+                                if ($structure['UTF8']) {
+                                    $_utf8 = '_utf8';
+                                } else {
+                                    $_utf8 = '';
+                                }
+                                $query .= ' ' . $key . " = $_utf8'" . AfwStringHelper::_real_escape_string($value) . "',";
+                            }
+                        }
+                        $fields_updated[$key] = $value;
+                    }
                 } else {
                     if (!isset($structure)) $report .=  "structure of attribute $key is not defined, ";
                     if ($structure['CATEGORY']) $report .=  "attribute $key is category field, ";
@@ -897,7 +910,11 @@ class AfwSqlHelper extends AFWRoot
                 die("before query=$query, fields_to_insert[] = ".var_export($fields_to_insert,true));
             }*/
             // rafik : since version 2.0.1 we put FIELDS_UPDATED the old value
+
+            $gdat_null_if_zeros = AfwSession::config("gdat_null_if_zeros",true);
+            
             foreach ($fields_to_insert as $key => $old_value) {
+                $cotes = true;
                 $value = $object->getAfieldValue($key);
                 $structure = AfwStructureHelper::getStructureOf($object, $key);
                 if (
@@ -921,20 +938,36 @@ class AfwSqlHelper extends AFWRoot
                         }
                         $query .= " $key = $value,";
                     } else {
-                        if ($structure['TYPE'] == 'GDAT') {
-                            if (!$value) $value = "0000-00-00";
+                        if (($structure['TYPE'] == 'GDAT') or ($structure['TYPE'] == 'GDATE')) 
+                        {
+                            if ((!$value) or ($value=="0000-00-00 00:00:00") or ($value=="0000-00-00"))
+                            {
+                                if($gdat_null_if_zeros)
+                                {
+                                        $value = "NULL";
+                                        $cotes = false;
+                                }
+                                else
+                                {
+                                        $value = "0000-00-00";
+                                }
+                            }
                         }
                         if ($structure['UTF8']) {
                             $_utf8 = '_utf8';
                         } else {
                             $_utf8 = '';
                         }
-                        $query .=
-                            ' ' .
-                            $key .
-                            " = $_utf8'" .
-                            AfwStringHelper::_real_escape_string($value) .
-                            "',";
+
+                        if($cotes)
+                        {
+                            $query .= ' ' . $key . " = $_utf8'" . AfwStringHelper::_real_escape_string($value) . "',";
+                        }
+                        else
+                        {
+                            $query .= ' ' . $key . " = " . AfwStringHelper::_real_escape_string($value) . ",";
+                        }
+                        
                     }
                     $fields_updated[$key] = $value;
                 }

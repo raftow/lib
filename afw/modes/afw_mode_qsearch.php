@@ -148,8 +148,8 @@ if(!$lang) $lang = 'ar';
 // **@todo $hide_cr = AfwLanguageHelper::tarjem('HIDE CRITEREA',$lang,false);
 // **@todo $show_cr = AfwLanguageHelper::tarjem('SHOW CRITEREA',$lang,false);
 
-$plural_obj_name =  $myClassInstance->transClassPlural($lang);
-$plural_obj_name_short =  $myClassInstance->transClassPlural($lang,true);
+$plural_obj_name =  $myClassInstance->transClassPlural($lang,false,true);
+$plural_obj_name_short =  $myClassInstance->transClassPlural($lang,true,true);
 $single_obj_name =  $myClassInstance->transClassSingle($lang);
 
 

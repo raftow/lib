@@ -3,7 +3,7 @@
 class AfwDataMigrator extends AFWRoot {
 
 
-    public static function migrateData($migration_config, $partition=0, $phase="", $lang="ar", $returnLog=false, $forced_print_full_debugg=true)
+    public static function migrateData($migration_config, $partition=0, $phase="", $case="", $lang="ar", $returnLog=false, $forced_print_full_debugg=true)
     {
         global $tab_instances;
         $source = $migration_config["source"];
@@ -11,7 +11,7 @@ class AfwDataMigrator extends AFWRoot {
         $updateProgressFrequency = $migration_config["updateProgressFrequency"];
         $updateProgressQuery = $migration_config["updateProgressQuery"];
         $updateProgressField = $migration_config["updateProgressField"];
-        
+        $advanced_log = ($case!="all");
         $destinationClass = $migration_config["destinationClass"];
         $destination_table  = $migration_config["destination_table"];
         $destination_db = $migration_config["destination_db"];
@@ -31,6 +31,7 @@ class AfwDataMigrator extends AFWRoot {
         $sql_data_from = str_replace("[timestamp]",date("Y-m-d H:i:s"),$sql_data_from);
         $sql_data_from = str_replace("[partition]",$partition,$sql_data_from);
         $sql_data_from = str_replace("[phase]",$phase,$sql_data_from);
+        $sql_data_from = str_replace("[case]",$case,$sql_data_from);
         $sql_data_from = str_replace("[last_update]",$last_update_value,$sql_data_from);
         
         $log_arr = array();
@@ -93,16 +94,20 @@ class AfwDataMigrator extends AFWRoot {
                 else $progress = 100;
                 if($destinationClass) 
                 {
-                    list($created, $updated, $skipped, $log) = self::migrateRow($row, $migration_config["mapping"], $destinationClass, $lang, $migration_config["timestamp_field"], $migration_config["startByReset"], $migration_config["destinationLoadMethod"], $forced_print_full_debugg, $skip_existing, $skip_existing_except_advanced_method);
+                    list($created, $updated, $skipped, $log) = self::migrateRow($row, $migration_config["mapping"], $destinationClass, $lang, $migration_config["timestamp_field"], $migration_config["startByReset"], $migration_config["destinationLoadMethod"], $forced_print_full_debugg, $skip_existing, $skip_existing_except_advanced_method, $advanced_log);
                     if(!$log) $log = "[$irow/$total_count $progress%] self::migrateRow(row, migration_config[mapping], destinationClass, ...) returned no log";
-                    else $log = "[$irow/$total_count $progress%] $log";
+                    else $log = "migrate-row-log [$irow/$total_count $progress%] $log";
                 }
                 elseif($destination_table)
                 {
                     // AfwBatch::print_warning("going to exec migrateRecord(\$row, \$mapping, destination=$destination, destination_db=$destination_db, destination_table=$destination_table,...)");
                     list($created, $updated, $skipped, $log) = self::migrateRecord($row, $migration_config["mapping"], $destination, $destination_db, $destination_table, $lang, $destination_pk_cols, $destination_cols,  $last_update_value, $forced_print_full_debugg);
                     if(!$log) $log = "[$irow/$total_count $progress%] self::migrateRecord(row, migration_config[mapping], $destination, $destination_db, $destination_table, $lang, ...) has returned no log";
-                    else $log = "[$irow/$total_count $progress%] $log";
+                    else $log = "migrate-record-log [$irow/$total_count $progress%] $log";
+                }
+                else
+                {
+                    $log = "BUG IN CONFIG : no mdestination_table no destinationClass";
                 } 
                 if($created) $created_count++;
                 if($updated) $updated_count++;
@@ -142,6 +147,7 @@ class AfwDataMigrator extends AFWRoot {
                 {
                     $updateProgressQuery_exec = str_replace("[partition]",$partition,$updateProgressQuery);
                     $updateProgressQuery_exec = str_replace("[phase]",$phase,$updateProgressQuery_exec);
+                    $updateProgressQuery_exec = str_replace("[case]",$case,$updateProgressQuery_exec);
                     $updateProgressQuery_exec = str_replace("[progress]",$progress,$updateProgressQuery_exec);
                     $updateProgressQuery_exec = str_replace("[$updateProgressField]",$updateProgressField_value,$updateProgressQuery_exec);
                     AfwDB::execQuery($destination,$updateProgressQuery_exec);
@@ -149,7 +155,7 @@ class AfwDataMigrator extends AFWRoot {
             }
             catch(Exception $e)
             {
-                $log .= " $destination_db/$destinationClass/$destination_table Exception happened on record : ".var_export($row,true)."\n The message is ".$e->getMessage();
+                $log .= " $destination_db/$destinationClass/$destination_table Exception happened on record : ".var_export($row,true)."\n The message is ".$e->getMessage()."\n The stack trace is : ".$e->getTraceAsString();
                 $res_log = " log >> ".$log;
                 if($returnLog) $log_arr[] = $res_log; 
                 else AfwBatch::print_debugg($res_log);
@@ -206,7 +212,7 @@ class AfwDataMigrator extends AFWRoot {
         else
         {
             AfwBatch::print_warning($result_log);
-            $log_body = "";
+            $log_body = "MODE-RETURN-NO-LOG";
         }
 
         // $all_log = implode("\n",$rowMigratedLog);
@@ -333,7 +339,7 @@ class AfwDataMigrator extends AFWRoot {
                                 }
                                 else
                                 {
-                                    if($advanced_log) $log = "method for [$colToMap/$colMapped] is nothing so skipped,";
+                                    if($advanced_log) $log = "method for the column [$colToMap/$colMapped] is nothing so skipped,";
                                 }
                                 
                             }
@@ -344,13 +350,13 @@ class AfwDataMigrator extends AFWRoot {
                             else
                             {                    
                                 $destinationObj->set($colMapped, $value);
-                                if($advanced_log) $log = "$colMapped setted to value $value";
+                                if($advanced_log) $log = "value for the column [$colToMap/$colMapped] $colMapped setted to $value hasChanged = ".$destinationObj->hasChanged();
                             }
                         }
                         else
                         {
                             $method_used = $method ? $method : "set";
-                            if($advanced_log) $log = "$method_used method skipped because skip_existing_except_advanced_method enabled and '$method_used' is not advanced method";
+                            if($advanced_log) $log = "method for the column [$colToMap/$colMapped] $method_used skipped because skip_existing_except_advanced_method enabled and '$method_used' is not advanced method";
                         }
                         $log_arr[] = $log;
                     }
@@ -370,15 +376,22 @@ class AfwDataMigrator extends AFWRoot {
             {
                 $creation_datetime_greg = $destinationObj->getTimeStampFromRow($row,"create", $timestamp_field);
                 if($creation_datetime_greg) $destinationObj->CREATION_DATE_val = $creation_datetime_greg;
-                else $log_arr[] = "Warning : creation datetime value not found in row : ".var_export($row,true);
+                else $log_arr[] = "Warning : [$timestamp_field] field as creation datetime value not found in row : ".var_export($row,true);
                 $update_datetime_greg = $destinationObj->getTimeStampFromRow($row,"update", $timestamp_field);
                 if($update_datetime_greg) $destinationObj->UPDATE_DATE_val = $update_datetime_greg;        
-                else $log_arr[] = "Warning : creation datetime value not found in row : ".var_export($row,true);
+                else $log_arr[] = "Warning : [$timestamp_field] field as update datetime value not found in row : ".var_export($row,true);
                 $reallyUpdated = $destinationObj->reallyUpdated($startByReset);
                 list($query, $fields_updated) = AfwSqlHelper::getSQLUpdate($destinationObj, 1, 2, $destinationObj->id);
                 if($advanced_log) $log_arr[] = "query=$query, fields_updated=".var_export($fields_updated,true);
                 $affected_row_count = $destinationObj->commit();
-                if((!$affected_row_count) and $advanced_log) $log_arr[] = "affected row count : 0 , ".$destinationObj->debugg_reason_non_update;
+                if(!$affected_row_count) 
+                {
+                    if($advanced_log) $log_arr[] = "destinationObj->commit done but affected row count : 0 , ".$destinationObj->debugg_reason_non_update;
+                }
+                else 
+                {
+                    if($advanced_log) $log_arr[] = "destinationObj->commit done and affected row count : $affected_row_count , ";
+                }
             }
             
             

@@ -1,5 +1,11 @@
 <?php
-    function consume_complex_api($bearer, $url, $token, $proxy = null , $data = null, $verify_host=false, $verify_pear=false, $return_transfer=true)
+
+// old require of afw_root
+// alter table hijra_date_base add unique key(HIJRI_YEAR,HIJRI_MONTH);
+class AfwApiConsumeHelper 
+{
+
+    private static function consume_complex_api($bearer, $url, $token, $proxy = null , $data = null, $verify_host=false, $verify_pear=false, $return_transfer=true)
     {
         global $print_full_debugg, $print_error;
         if($curl = curl_init())
@@ -55,14 +61,15 @@
 
 
                 // echo "executing\n";
+                $error_msg = "";
                 $result = curl_exec($curl);
                 if($print_full_debugg) AfwBatch::print_debugg("API RESULT :\n [$result]\n");
                 if(!trim($result))
                 {
-                    if($print_full_debugg) AfwBatch::print_debugg("result empty for call : $url / $authorization / proxy=".$proxy_arr[0]." port=".$proxy_arr[1]);
+                    $error_msg .= "API Error result is empty";
                 }
                 
-                $error_msg = curl_error($curl);
+                $error_msg .= curl_error($curl);
                 if($error_msg)
                 {
                     $error_msg = "Error while doing curl_exec on $url / $authorization / proxy=".$proxy_arr[0]." port=".$proxy_arr[1] . " => " . $error_msg;
@@ -87,14 +94,15 @@
     
     }
 
-    function consume_bearer_api($url, $token, $proxy = null , $data = null, $verify_host=false, $verify_pear=false, $return_transfer=true)
+    public static function consume_bearer_api($url, $token, $proxy = null , $data = null, $verify_host=false, $verify_pear=false, $return_transfer=true)
     {
-        return consume_complex_api(true, $url, $token, $proxy, $data, $verify_host, $verify_pear, $return_transfer);
+        return self::consume_complex_api(true, $url, $token, $proxy, $data, $verify_host, $verify_pear, $return_transfer);
     }
 
-    function consume_normal_api($url, $proxy = null, $data = null, $verify_host=false, $verify_pear=false, $return_transfer=true)
+    public static function consume_normal_api($url, $proxy = null, $data = null, $verify_host=false, $verify_pear=false, $return_transfer=true)
     {
-        return consume_complex_api(false, $url, "", $proxy, $data, $verify_host, $verify_pear, $return_transfer);
+        return self::consume_complex_api(false, $url, "", $proxy, $data, $verify_host, $verify_pear, $return_transfer);
     }
-    
+}
+
 ?>
