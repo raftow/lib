@@ -3845,10 +3845,11 @@ li.navbar-header {
     border-color: #047e79 !important;
 }
 
+/*
 ul.hzm_front_menu_bar.hzm_front_menu_bar.nav.navbar-nav>li>a {
-    background-color: white /*  !important : here no but in sub-modules */ ;
+    background-color: white ;
     text-align: center;
-}
+}*/
 
 ul.hzm_front_menu_bar.hzm_front_menu_bar.nav.navbar-nav>li.navbar-header.active>a {
     color: white !important;

@@ -157,15 +157,18 @@ $user_full
                 $data_tokens["logo_app_height"] = $logo_app_height[$MODULE];
                 $data_tokens["title_comp_height"] = $title_comp_height[$MODULE];
                 $data_tokens["logo_comp_height"] = $logo_comp_height[$MODULE];
-                if(!$data_tokens["logo_app_height"]) $data_tokens["logo_app_height"] = AfwSession::config("HEADER_LOGO_HEIGHT", $HEADER_PIC_HEIGHT);
+                if(!$data_tokens["logo_app_height"]) $data_tokens["logo_app_height"] = AfwSession::config("LOGO_APP_HEIGHT", $HEADER_PIC_HEIGHT);
+                if(!$data_tokens["logo_app_margin_top"]) $data_tokens["logo_app_margin_top"] = AfwSession::config("LOGO_APP_MARGIN_TOP", 5);
                 
-                if(!$data_tokens["title_app_height"]) $data_tokens["title_app_height"] = AfwSession::config("HEADER_TITLE_HEIGHT", $HEADER_PIC_HEIGHT);
+                if(!$data_tokens["title_app_height"]) $data_tokens["title_app_height"] = AfwSession::config("TITLE_APP_HEIGHT", $HEADER_PIC_HEIGHT);
+                if(!$data_tokens["title_app_margin_top"]) $data_tokens["title_app_margin_top"] = AfwSession::config("TITLE_APP_MARGIN_TOP", 5);
                 
-                if(!$data_tokens["title_comp_height"]) $data_tokens["title_comp_height"] = AfwSession::config("HEADER_TITLE_COMP_HEIGHT", $HEADER_PIC_HEIGHT);
+                if(!$data_tokens["title_comp_height"]) $data_tokens["title_comp_height"] = AfwSession::config("TITLE_COMP_HEIGHT", $HEADER_PIC_HEIGHT);                
+                if(!$data_tokens["title_comp_margin_top"]) $data_tokens["title_comp_margin_top"] = AfwSession::config("TITLE_COMP_MARGIN_TOP", 5);
+                if(!$data_tokens["logo_comp_height"]) $data_tokens["logo_comp_height"] = AfwSession::config("LOGO_COMP_HEIGHT", $HEADER_PIC_HEIGHT);
+                if(!$data_tokens["logo_comp_margin_top"]) $data_tokens["logo_comp_margin_top"] = AfwSession::config("LOGO_COMP_MARGIN_TOP", 5);
                 
-                if(!$data_tokens["logo_comp_height"]) $data_tokens["logo_comp_height"] = AfwSession::config("HEADER_LOGO_COMP_HEIGHT", $HEADER_PIC_HEIGHT);
                 
-
                 if(!$data_tokens["banner_height"]) $data_tokens["banner_height"] = 100;
                 if(!$data_tokens["logo_app_height"]) $data_tokens["logo_app_height"] = 90;
                 if(!$data_tokens["title_app_height"]) $data_tokens["title_app_height"] = 90;

@@ -5,20 +5,20 @@
 	  		<div class="medium-12 large-12 columns text-center large-text-right">
                         
                              <div class="logo_company">  
-                               <img src="[img-company-path]/logo-company[xmodule].png" alt="" style="margin-top:5px;height: [logo_comp_height]px;"/> 
+                               <img src="[img-company-path]/logo-company[xmodule].png" alt="" style="margin-top:[logo_comp_margin_top]px;height: [logo_comp_height]px;"/> 
                              </div>  
                              <div class="title_company">  
-                               <img src="[img-company-path]/title-company[xmodule].png" alt="" style="margin-top:-10px;height: [title_comp_height]px;"/> 
+                               <img src="[img-company-path]/title-company[xmodule].png" alt="" style="margin-top:[title_comp_margin_top]px;height: [title_comp_height]px;"/> 
                              </div>
                              [welcome_div]
                              <div class="logo_application">
-                                    <img src="[img-path]/logo-application.png" alt="" style="margin-top:5px;float: left;height: [logo_app_height]px"/>
+                                    <img src="[img-path]/logo-application.png" alt="" style="margin-top:[logo_app_margin_top]px;float: left;height: [logo_app_height]px"/>
                              </div>
                              <!--<div class="annonce_application">
                                     <img src="[img-path]/annonce.png" alt="" style="margin-top:5px;float: left;height: [logo_app_height]px"/>
                              </div>-->
                              <div class="title_application">
-                                    <img src="[img-path]/title-application[run_mode].png" alt="" style="margin-top:5px;float: left;height: [title_app_height]px"/>
+                                    <img src="[img-path]/title-application[run_mode].png" alt="" style="margin-top:[title_app_margin_top]px;float: left;height: [title_app_height]px"/>
                              </div>     
                              <div class="[calendar_class]">
                                    <div id="year" class="calendar_year">[display_date_year]</div>
