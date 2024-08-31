@@ -1779,11 +1779,17 @@ $('#$showAsDataTable').DataTable( {
                     //@tooptimize $return = self::quickShowOneOrListOfObjects($objs, $lang, $newline);
                     $nom_table_fk   = $desc["ANSWER"];
                     $nom_module_fk  = $desc["ANSMODULE"];
+                    if(!isset($structure["SMALL-LOOKUP"]))
+                    {
+                        list($lkp, $issmall) = AfwLoadHelper::getLookupProps($nom_module_fk, $nom_table_fk);
+                        $structure["SMALL-LOOKUP"] = ($lkp and $issmall);
+                    }
+                    $small_lookup  = $desc["SMALL-LOOKUP"];
                     $pk = $desc["ANSWER-PK"];
                     if(!$pk) $pk = "((id))";
                     $val = $objItem->getVal($col);
                     $emptyMessage = $objItem->translate('obj-empty', $lang);
-                    $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator=$newline, $emptyMessage, $pk);
+                    $return = AfwLoadHelper::decodeLookupValue($nom_module_fk, $nom_table_fk, $val, $separator=$newline, $emptyMessage, $pk, $small_lookup);
                     if($val and (!$return)) $return = "<!-- quickShowAttribute $nom_module_fk / $nom_table_fk -->$val";
                 }
                 
@@ -1811,11 +1817,17 @@ $('#$showAsDataTable').DataTable( {
                 */
                 $nom_table_fk   = $desc["ANSWER"];
                 $nom_module_fk  = $desc["ANSMODULE"];
+                if(!isset($structure["SMALL-LOOKUP"]))
+                {
+                    list($lkp, $issmall) = AfwLoadHelper::getLookupProps($nom_module_fk, $nom_table_fk);
+                    $structure["SMALL-LOOKUP"] = ($lkp and $issmall);
+                }
+                $small_lookup  = $desc["SMALL-LOOKUP"];
                 $pk = $desc["ANSWER-PK"];
                 if(!$pk) $pk = "((id))";
                 $val = $objItem->getVal($col);
                 $emptyMessage = $objItem->translate('obj-empty', $lang);
-                $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator=$newline, $emptyMessage, $pk);
+                $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator=$newline, $emptyMessage, $pk, $small_lookup);
                 break;
 
             case 'ANSWER':
@@ -1850,7 +1862,7 @@ $('#$showAsDataTable').DataTable( {
     public static function tooltipText($text)
     {
         if ($text) {
-            return "<img src='../lib/images/tooltip.png' data-toggle='tooltip' data-placement='top' title='$text'  width='20' heigth='20'>";
+            return "<img src='../lib/images/tooltip.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='$text'  width='20' heigth='20'>";
         } else {
             return '';
         }

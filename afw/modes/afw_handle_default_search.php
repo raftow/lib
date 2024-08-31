@@ -345,15 +345,11 @@ if (!$result_page_title)
 
 if (true) {
 ?>
-        <table width="<?= $pct_tab_search_result ?>" class="<?= $table_search_result_class ?>">
+        <div id="search_result_div">
+        <table id="search_result_table" width="<?= $pct_tab_search_result ?>" class="search_result_table">
                 <tr>
                         <td>
                                 <table width="100%">
-                                        <tr>
-                                                <td>
-                                                        <br>&nbsp;
-                                                </td>
-                                        </tr>
                                         <tr>
                                                 <td>
                                                         <h5 class='bluetitle search'><i></i><?= $result_page_title ?></h5>
@@ -654,9 +650,9 @@ if (true) {
                         </td>
                 </tr>
         </table>
+        </div>                                                                
 
-
-<?
+<?php
 }
 if ($genere_xls) {
 

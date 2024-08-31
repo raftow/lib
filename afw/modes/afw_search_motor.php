@@ -114,7 +114,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
                 $ans_tab_where = $obj->decodeText($ans_tab_where);
             }
 
-            if ($nom_class_fk::$COMPTAGE_BEFORE_LOAD_MANY) {
+            if ($liste_rep->comptageBeforeLoadMany()) {
                 $liste_rep->select_visibilite_horizontale();
                 if ($list_distinct_txt) $liste_rep->where($liste_rep->getPKField() . $list_distinct_sql_in);
                 if ($ans_tab_where) $liste_rep->where($ans_tab_where);

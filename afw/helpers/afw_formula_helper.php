@@ -42,7 +42,7 @@ class AfwFormulaHelper extends AFWRoot
                     $message =
                         $obj->translateMessage('SHOULD-ACTIVATE-THE-OPTION',$lang) .' : ' .$option;
 
-                    $return = "<img src='../lib/images/tooltip.png' data-toggle='tooltip' data-placement='top' title='$message'  width='20' heigth='20'>";
+                    $return = "<img src='../lib/images/tooltip.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='$message'  width='20' heigth='20'>";
                 }
                 break;
             case 'pctFinished':

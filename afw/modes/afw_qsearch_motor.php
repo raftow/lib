@@ -130,7 +130,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
 				$caluse_where = $ans_tab_where;
 			}
 
-			if ($nom_class_fk::$COMPTAGE_BEFORE_LOAD_MANY) {
+			if ($fkObj->comptageBeforeLoadMany()) {
 				$list_count = AfwLoadHelper::vhGetListe($fkObj, $caluse_where, $action = "count", $lang);				
 			} else $list_count = 0;
 			$LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
@@ -153,6 +153,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
 							"name"  => $col_name,
 							"reloadfn" => $obj->getJsOfReloadOf($col_name),
 							"onchange" => $obj->getJsOfOnChangeOf($col_name),
+							"onchangefn" => $obj->getJsOfOnChangeOf($col_name, $descr = "", false),
 						),
 						"asc",
 						true,
@@ -556,8 +557,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
 	<script>
 		<?php
 		echo $info["reloadfn"] . "\n\n";
-		// rafik 5/5/2021 : I don't understand why this ?
-		// echo $info["onchange"]."\n\n";                   
+		echo $info["onchangefn"]."\n\n";                   
 		?>
 	</script>
 

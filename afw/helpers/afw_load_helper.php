@@ -3,6 +3,15 @@ class AfwLoadHelper extends AFWRoot
 {
     private static $lookupMatrix;
 
+    public static function getLookupProps($nom_module_fk, $nom_table_fk)
+    {
+        $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
+        $object = new $nom_class_fk();
+
+
+        return [$object->IS_LOOKUP, $object->IS_SMALL];
+    }
+
     public static function getLookupData($nom_module_fk, $nom_table_fk, $where="--")
     {
         if(!$nom_module_fk) throw new AfwRuntimeException("nom_module_fk is mandatory attribute for AfwLoadHelper::getLookupData");
@@ -118,7 +127,7 @@ class AfwLoadHelper extends AFWRoot
         return $l_rep;
     }
 
-    public static function lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator, $emptyMessage, $pk)
+    public static function lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator, $emptyMessage, $pk, $small_lookup=false)
     {
         if(!$val) return "";
         
@@ -140,7 +149,7 @@ class AfwLoadHelper extends AFWRoot
             if(!$kval) unset($val_arr[$k]);
         }
 
-        if(count($val_arr)>0) $where="$pk in (".implode(",",$val_arr).")";
+        if((!$small_lookup) and (count($val_arr)>0)) $where="$pk in (".implode(",",$val_arr).")";
         else $where="1";
         self::getLookupData($nom_module_fk, $nom_table_fk, $where);
 
@@ -448,7 +457,7 @@ class AfwLoadHelper extends AFWRoot
         return [$data, $isAvail];
     }
 
-    public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk)
+    public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $small_lookup=false)
     {
 
         if(self::$lookupMatrix["$ans_module.$ans_table"][$value]) return self::$lookupMatrix["$ans_module.$ans_table"][$value];
@@ -456,7 +465,7 @@ class AfwLoadHelper extends AFWRoot
         if(self::$lookupMatrix["$ans_module.$ans_table.++"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.++"][$value];
         if(self::$lookupMatrix["$ans_module.$ans_table.1"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.1"][$value];
         
-        self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk);
+        self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $small_lookup);
         return self::$lookupMatrix["$ans_module.$ans_table"][$value];
     }
 
@@ -560,7 +569,10 @@ class AfwLoadHelper extends AFWRoot
         //$result_row_from = 'load call as result_row = ' . var_export($result_row, true);
 
         $className = $object->getMyClass();
-        if ($optim_lookup and $object->IS_LOOKUP) 
+        $classNameModule = $object->getMyModule();
+        $classNameTable = $object->getMyTable();
+        
+        if ((!$result_row) and $optim_lookup and $object->IS_LOOKUP)  // may be to add : and $object->IS_SMALL
         {
             global $load_count;
             
@@ -599,8 +611,8 @@ class AfwLoadHelper extends AFWRoot
         if ($cache_management and $loaded_by) {
             // if($loaded_by == 6082) die("trying to get object $className [$loaded_by] from cache");
             $objectCache = &AfwCacheSystem::getSingleton()->getFromCache(
-                $className::$MODULE,
-                $className::$TABLE,
+                $classNameModule,
+                $classNameTable,
                 $loaded_by
             );
             if ($objectCache and $objectCache->id) {
@@ -661,7 +673,7 @@ class AfwLoadHelper extends AFWRoot
                         'SELECT ' .
                         implode(', ', $all_real_fields) .
                         "\n FROM " .
-                        $className::_prefix_table($className::$TABLE) .
+                        $className::_prefix_table($classNameTable) .
                         " me\n WHERE 1" .
                         $object->getSQL() .
                         "\n ORDER BY " .
@@ -742,7 +754,7 @@ class AfwLoadHelper extends AFWRoot
 
             // die("test_rafik 1002 this->IS_VIRTUAL = [$object->IS_VIRTUAL] this->getAllfieldValues()=".var_export($object->getAllfieldValues(),true));
         } else {
-            throw new AfwRuntimeException($className::$TABLE . ' : Unable to use the method load() without any research criteria (' . $object->getSQL() . "), use select() or where() before.");
+            throw new AfwRuntimeException($classNameTable . ' : Unable to use the method load() without any research criteria (' . $object->getSQL() . "), use select() or where() before.");
         }
 
         // $time_end4 = microtime(true);
@@ -759,8 +771,8 @@ class AfwLoadHelper extends AFWRoot
         if ($cache_management) {
             if ($loaded_by) {
                 AfwCacheSystem::getSingleton()->putIntoCache(
-                    $className::$MODULE,
-                    $className::$TABLE,
+                    $classNameModule,
+                    $classNameTable,
                     $object,
                     $loaded_by
                 );
@@ -1264,12 +1276,12 @@ class AfwLoadHelper extends AFWRoot
     {
         list($ansTab, $ansMod) = $object::answerTableAndModuleFor($attribute);
         if ($ansTab and $ansMod) {
-            $structure = AfwStructureHelper::getStructureOf($this, $attribute);
+            $structure = AfwStructureHelper::getStructureOf($object, $attribute);
 
             list($fileName, $className) = AfwStringHelper::getHisFactory($ansTab, $ansMod);
 
             $object = new $className();
-            // $object->setMyDebugg($this->MY_DEBUG);
+            // $object->setMyDebugg($object->MY_DEBUG);
 
             if ($structure['ITEM']) {
                 $item_oper = $structure['ITEM_OPER'];
@@ -1340,7 +1352,7 @@ class AfwLoadHelper extends AFWRoot
         if (count($from_join_row) > 0) {
             /* why we need to load it from cache when we will load it from the row itself
             if ($cache_management) {
-                list($ansTab, $ansMod) = $this->getMyAnswerTableAndModuleFor($attribute);
+                list($ansTab, $ansMod) = $object->getMyAnswerTableAndModuleFor($attribute);
                 $objFromJoin = AfwCacheSystem::getSingleton()->getFromCache(
                     $ansMod,
                     $ansTab,
@@ -1477,7 +1489,7 @@ class AfwLoadHelper extends AFWRoot
     {
         global $lang, $get_stats_analysis, $MODE_BATCH_LOURD, $MODE_SQL_PROCESS_LOURD;
 
-        // $cache_management = AfwLoadHelper::cacheManagement($this);
+        // $cache_management = AfwLoadHelper::cacheManagement($object);
         // $target = '';
         // $popup_t = '';
 
@@ -1544,7 +1556,7 @@ class AfwLoadHelper extends AFWRoot
                 if($attribute_category=="SHORTCUT") $integrity = false;
                 $return = $object->getCategorizedAttribute($attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method);
             } else {
-                $return = $object->getReallyExistsNonCategorizedAttribute($attribute, $attribute_type, $optim_lookup, $structure, $what, $format, $integrity, $lang, $call_method);
+                $return = self::getReallyExistsNonCategorizedAttribute($object, $attribute, $attribute_type, $optim_lookup, $structure, $what, $format, $integrity, $lang, $call_method);
             }
         } 
         else {
@@ -1552,8 +1564,8 @@ class AfwLoadHelper extends AFWRoot
         }
         // if("arole_mfk" == $attribute) throw new AfwRuntimeException("strange get($attribute) = $return details ".implode("\n<br>",$afw_getter_log));
         /*
-        $this_TABLE = static::$TABLE;
-        $this_id = $this->id;
+        $this_TABLE = $object->getMyTable();
+        $this_id = $object->id;
         if (!$get_stats_analysis[$this_TABLE][$attribute][$this_id][$what]) {
             $get_stats_analysis[$this_TABLE][$attribute][$this_id][$what] = 0;
         }
@@ -1576,6 +1588,152 @@ class AfwLoadHelper extends AFWRoot
         }
         if ($return) $get_stats_analysis[$this_TABLE][$attribute][$this_id][$what]++;
         */
+        return $return;
+    }
+
+    public static function getAnObject($object, $attribute, $integrity, $optim_lookup, $structure = null, $attribute_type = null, $call_method = "", $b_abstract = false)
+    {
+        $cache_management = AfwLoadHelper::cacheManagement($object);
+
+        if (!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        if (!$attribute_type) $attribute_type = $structure['TYPE'];
+        if (isset($structure)) {
+            if ($attribute_type == 'ANSWER') {
+                throw new AfwRuntimeException(
+                    "the method get() ne retourne pas d'objet pour le type ANSWER, veuillez vérifier la définition of attribute " .
+                        $attribute .
+                        ' dans DB_STRUCTURE de la table ' .
+                        $object->getMyTable() .
+                        '.',
+                    $call_method
+                );
+            } else {
+                if ($attribute_type == 'MFK') {
+                    $ids_mfk = trim($object->getAfieldValue($attribute), ',');
+
+                    $ids = explode(',', $ids_mfk);
+
+                    $afw_getter_log[] = "here is MFK field and ids_mfk=$ids_mfk count = " . count($ids);
+
+                    list($ansTab, $ansMod,) = $object->getMyAnswerTableAndModuleFor($attribute, $structure);
+                    list($fileName, $className,) = AfwStringHelper::getHisFactory($ansTab, $ansMod);
+
+                    $afw_getter_log[] = "for MFK field factory is ($ansTab,$ansMod) and ($fileName,$className)";
+
+                    $reload_objects_cache = false;
+
+                    if ((!$object->OBJECTS_CACHE[$attribute]) or (!is_array($object->OBJECTS_CACHE[$attribute]))) {
+                        $reload_objects_cache = true;
+                    } elseif ($object->{"debugg_mfk_val_$attribute"} != $ids_mfk) {
+                        $reload_objects_cache = true;
+                    }
+
+                    if ($reload_objects_cache) {
+                        $afw_getter_log[] = "cache ignored and reloading objects";
+                        unset($object->OBJECTS_CACHE[$attribute]);
+                        $object->OBJECTS_CACHE[$attribute] = [];
+                        foreach ($ids as $id) {
+                            if ($id) {
+                                $object = new $className();
+                                // $object->setMyDebugg($object->MY_DEBUG);
+                                if ($object->load($id)) {
+                                    $afw_getter_log[] = "success of laoding of instance id = $id";
+                                    $object->OBJECTS_CACHE[$attribute][$id] = $object;
+                                } else {
+                                    $afw_getter_log[] = "fail of laoding of instance id = $id";
+                                    $object->OBJECTS_CACHE[$attribute][$id] = null;
+                                }
+                            }
+                        }
+                        $object->{"debugg_mfk_val_$attribute"} = $ids_mfk;
+                    }
+
+                    $return = $object->OBJECTS_CACHE[$attribute];
+                    if (!$cache_management) {
+                        unset($object->OBJECTS_CACHE[$attribute]);
+                    }
+                    $afw_getter_log[] = "laoded : " . var_export($return, true);
+                    if (!is_array($return)) {
+                        throw new AfwRuntimeException("MFK should never return-back non array result, rlch=$reload_objects_cache, className=$className, ids=" . var_export($ids, true));
+                    }
+                } elseif ($attribute_type == 'FK') {
+                    // if($old_attribute=="campaign") die("degugg 3 rafik2 old=$old_attribute new=$attribute attribute_value=$attribute_value getTypeOf($attribute) == FK, structure : ".var_export($structure, true));
+                    if ($b_abstract) {
+                        $return = null; // not implemented yet for virtual/abstract objects
+                    } else $return = AfwLoadHelper::loadObjectFKFor($object, $attribute, $integrity, $optim_lookup);
+
+                    // if(($old_attribute=="campaign") and ($return instanceof PracticeDomain)) die($object."<br>degugg 4 rafik2 attribute=$attribute,<br>b_abstract=$b_abstract,<br>integrity=$integrity,<br>return=$return<br>");
+                    // if(!$return) throw new AfwRuntimeException($object."<br>here:attribute=$attribute,<br>b_abstract=$b_abstract,<br>integrity=$integrity,<br>return=$return<br>");
+                } else {
+                    throw new AfwRuntimeException(
+                        "Try to get object value for strange non implemented object type=[$attribute_type] for attribute " .
+                            $attribute .
+                            ' of table ' .
+                            $object->getMyTable() .
+                            '.'
+                    );
+                }
+            }
+        } else {
+            throw new AfwRuntimeException(
+                'Unable to return-back an object for attribute ' .
+                    $attribute .
+                    ' not defined in DB_STRUCTURE of table ' .
+                    $object->getMyTable() .
+                    '.',
+                $call_method .
+                    ' structure => ' .
+                    var_export($structure, true)
+            );
+        }
+
+        return $return;
+    }
+
+    public static function getReallyExistsNonCategorizedAttribute($object, $attribute, $attribute_type, $optim_lookup, $structure, $what, $format, $integrity, $lang, $call_method="")
+    {
+        $b_abstract = false;
+        $return = $attribute_value = $object->getAfieldValue($attribute);
+        // if(($attribute=="aaa") and ($what != "value")) die("no categ and what=[$what]");
+        $afw_getter_log[] = "no categ and attribute_value=[$attribute_value], what=$what, this->getAfieldValue($attribute) = " . $attribute_value;
+        switch (strtolower($what)) {
+            case 'object':
+                $return = self::getAnObject($object, $attribute, $integrity, $optim_lookup, $structure, $attribute_type, $call_method, $b_abstract);
+                break;
+            case 'value':
+                if ($b_abstract) {
+                    // Not implemented see suggestion of implementation below to check
+                    $return = 0;
+                    /*  suggestion of implementation
+                    $object = &$object->OBJECTS_CACHE[$attribute];
+                    if ($object === null) {
+                            $return = 0;
+                    } else {
+                        $return = $object->getId();
+                    }
+                    */
+                } elseif (isset($structure)) {
+                    $return = stripslashes($attribute_value);
+                } elseif (isset($attribute_value)) {
+                    $return = $attribute_value;
+                } else {
+                    throw new AfwRuntimeException("Attribute $attribute not defined in DB_STRUCTURE of table " . $object->getMyTable() . '.', $call_method);
+                }
+                break;
+            case 'decodeme':
+                $decode_format = $format ? $format : $structure['FORMAT'];
+                //if($attribute=="school_class_id") die("for : $attribute decode with format = $format, decode_format = $decode_format, str = ".var_export($structure,true));
+                $typattr = $attribute_type;
+                // if($attribute=="updated_by") die("for : $attribute decode with format = $format, decode_format = $decode_format, gettype = $typattr, value=$valattr, str = ".var_export($structure,true));
+                if ($typattr) {
+                    $return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, $structure, $object, $translate_if_needed = true);
+                    //if($attribute=="application_end_date") die("$return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, ....)");
+                } else {
+                    throw new AfwRuntimeException("The Attribute $attribute of table " . $object->getMyTable() . " has structure property TYPE not defined.", $call_method);
+                }
+                break;
+        }
+
         return $return;
     }
 
@@ -1655,12 +1813,12 @@ class AfwLoadHelper extends AFWRoot
     {
         if(!$answer)
         {
-            $desc = AfwStructureHelper::getStructureOf($this,$attribute);
+            $desc = AfwStructureHelper::getStructureOf($object,$attribute);
             $answer = $desc["ANSWER"];
         }
         $fcol_name = $structure["FUNCTION_COL_NAME"];
         if(!$fcol_name) $fcol_name = $attribute;
-        return AfwLoadHelper::getEnumTable($answer, $this->getTableName(), $fcol_name, $this);
+        return AfwLoadHelper::getEnumTable($answer, $object->getTableName(), $fcol_name, $object);
 
     }
     */

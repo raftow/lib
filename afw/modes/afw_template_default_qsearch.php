@@ -157,7 +157,7 @@ foreach($class_db_structure as $nom_col => $desc)
         <div class="col-md-<?=$qs_by_txt_qsize?>">
                 <div class="form-group">
                         <label><?php echo $trad_qsearch_by_text; ?>
-                          <img src='../lib/images/tooltip.png' data-toggle='tooltip' data-placement='top' title='<?=$translated_text_searchable_cols_txt?>'  width='20' heigth='20'>
+                          <img src='../lib/images/tooltip.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='<?=$translated_text_searchable_cols_txt?>'  width='20' heigth='20'>
                         </label>
 
                         <?php echo $trad_qsearch_by_text_input;?>

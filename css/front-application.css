@@ -4645,3 +4645,7 @@ span.submit-btn.otln {
 input#save_only {
     margin-right: 30px !important;
 }
+
+.sqlinfo.sqlupdate {
+    background-color: #f49ec7;
+}

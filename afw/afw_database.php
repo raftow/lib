@@ -225,6 +225,7 @@ class AfwDatabase extends AFWRoot
             
             //die("mysql_query($sql_query, AfwDatabase::getLinkByName($project_link_name))");
             $sql_info_class = 'sqlinfo';
+            if($is_update) $sql_info_class .= ' sqlupdate';
             $start_q_time = date('Y-m-d H:i:s');
             $start_m_time = microtime();
             $result = AfwMysql::query($sql_query,AfwDatabase::getLinkByName($project_link_name), $is_update);

@@ -156,7 +156,7 @@ foreach($class_db_structure as $nom_col => $desc)
              <tr class="<?=$tr_obj?>" align="right">
         			<td width="15px" ></td>
         			<td><?php echo $trad_qsearch_by_text; ?></td>
-        			<td><img src='../lib/images/tooltip.png' data-toggle='tooltip' data-placement='top' title='<?=$translated_text_searchable_cols_txt?>'  width='20' heigth='20'></td>
+        			<td><img src='../lib/images/tooltip.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='<?=$translated_text_searchable_cols_txt?>'  width='20' heigth='20'></td>
         			<td><?php echo $trad_qsearch_by_text_input;?></td>
    	     </tr>
 <?

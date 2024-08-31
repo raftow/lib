@@ -471,14 +471,21 @@ $out_scr .= '<script type="text/javascript">
     }
 </script>';
 */
-
+$out_scr .= '<script type="text/javascript">
+        $(document).ready(function() {       
+                $("#qsearch-submit-form").click(function(){
+                        $("#search_result_div").html(\'<div class="footer1 hzm-loader-div" id="mySQLloader"><div class="hzm-loading-div" id="myloading">الرجاء الانتظار جارٍ معالجة الطلب                   </div></div>\');
+                });
+        });
+    
+</script>';
 
 $out_scr .= "<div class='btn-group' role='group' aria-label='...'>
                 <table>
                 <tr>
                         <td width='15px'>&nbsp;</td>
                         <td>
-                             <input id='submit-form' type='submit' name='submit' class='bluebtn smallbtn fright' value='".$myClassInstance->translate($execute_btn,$lang,true)."'>
+                             <input id='qsearch-submit-form' type='submit' name='submit' class='bluebtn smallbtn fright' value='".$myClassInstance->translate($execute_btn,$lang,true)."'>
                         </td>
                         <td width='15px'>&nbsp;</td>
                 </form>
