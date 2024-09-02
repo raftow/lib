@@ -319,12 +319,14 @@ $out_scr .= "</div>
 
 
 ";  
-
+$out_scr .= "<div id=\"search_result_div\">";
 if($datatable_on) {
+        
         $out_scr .= $search_result_html;
         $out_scr .= $out_scr_btns;
+        
 }
-
+$out_scr .= "</div>";
 // $out_scr .= '</div>'; 
 
 	

@@ -345,7 +345,7 @@ if (!$result_page_title)
 
 if (true) {
 ?>
-        <div id="search_result_div">
+        
         <table id="search_result_table" width="<?= $pct_tab_search_result ?>" class="search_result_table">
                 <tr>
                         <td>
@@ -554,7 +554,7 @@ if (true) {
                                                                                                                 } 
                                                                                                                 else 
                                                                                                                 {
-                                                                                                                        $canOnMe = false;
+                                                                                                                        $canOnMe = null;
                                                                                                                         $cant_do_action_log .= "Too much records. count=$ids_count > $maxRecordsUmsCheck ";
                                                                                                                 }
                                                                                                                 
@@ -620,12 +620,14 @@ if (true) {
                                                                                                                 <?
                                                                                                                 }
                                                                                                         } elseif ($can and (!$canOnMe)) {
-                                                                                                                if (($objme and $objme->isAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='You have not authorization to do $frameworkAction on this record : [$action_item -> $cant_do_action_log]' data-original-title=' - Tooltip on bottom 2' class='red-tooltip'";
+                                                                                                                if (($objme and $objme->isAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='عندما تكون نتائج البحث كثيرة يتم ايقاف التعديلات على جزء من السجلات. قم باختيار معايير اكثر دقة للبحث' data-original-title='$action_item -> $cant_do_action_log - Tooltip on bottom 2' class='red-tooltip'";
+                                                                                                                if($canOnMe===null) $canImage = $images['off'];
+                                                                                                                else $canImage = $images['locked_on_me'];
                                                                                                                 ?>
-                                                                                                                <td class='col-importance-<?= $importance ?>'><img src="<?= $images['locked_on_me'] ?>" width="24" heigth="24" <?= $tooltip ?>></td>
+                                                                                                                <td class='col-importance-<?= $importance ?>'><img src="<?= $canImage ?>" width="24" heigth="24" <?= $tooltip ?>></td>
                                                                                                         <?
                                                                                                         } else {
-                                                                                                                if (($objme and $objme->isAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='You have not authorization to do $frameworkAction on this entity : [$action_item -> $cant_do_action_log]' data-original-title=' - Tooltip on bottom 3' class='red-tooltip'";
+                                                                                                                if (($objme and $objme->isAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='لا يمكنك التعديل على هذا السجل راجع المشرف للتأكد من الصلاحيات وسياسة التعديل' data-original-title='You have not authorization to do $frameworkAction on this entity : [$action_item -> $cant_do_action_log] - Tooltip on bottom 3' class='red-tooltip'";
                                                                                                         ?>
                                                                                                                 <td class='col-importance-<?= $importance ?>'><img src="<?= $images['locked'] ?>" width="24" heigth="24" <?= $tooltip ?> alt="<?= "" ?>"></td>
                                                                                         <?
@@ -650,8 +652,7 @@ if (true) {
                         </td>
                 </tr>
         </table>
-        </div>                                                                
-
+        
 <?php
 }
 if ($genere_xls) {

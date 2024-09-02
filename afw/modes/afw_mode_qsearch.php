@@ -99,7 +99,7 @@ if($datatable_on)
         $collapse_show = "";
 }
 else $collapse_show = "show";
-     
+
 	
 
 
@@ -474,7 +474,8 @@ $out_scr .= '<script type="text/javascript">
 $out_scr .= '<script type="text/javascript">
         $(document).ready(function() {       
                 $("#qsearch-submit-form").click(function(){
-                        $("#search_result_div").html(\'<div class="footer1 hzm-loader-div" id="mySQLloader"><div class="hzm-loading-div" id="myloading">الرجاء الانتظار جارٍ معالجة الطلب                   </div></div>\');
+                        $(".alert-dismissable").fadeOut().remove();
+                        $("#search_result_div").html(\'<div class="footer1 hzm-relative-loader-div" id="mySQLloader"><div class="hzm-loading-div" id="myloading">الرجاء الانتظار جارٍ معالجة الطلب                   </div></div>\');
                 });
         });
     
@@ -532,12 +533,14 @@ $out_scr .= '';
 $out_scr .= "</div>
        </div>
 </div>";  
-
+$out_scr .= "<div id=\"search_result_div\">";
 if($datatable_on) {
+        
         $out_scr .= $search_result_html;
         $out_scr .= $out_scr_btns;
+        
 }
-
+$out_scr .= "</div>";
 // $out_scr .= '</div>'; 
 
 	

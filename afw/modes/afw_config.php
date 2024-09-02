@@ -9,6 +9,7 @@ $images =array(
     'editppp'		=> '../lib/images/editppp.png',
 	'background-submit'	=> '../lib/images/box-ombre.jpg',
     'locked'  		=> '../lib/images/locked.png',
+    'off'  		=> '../lib/images/off.png',
     'locked_on_me' 		=> '../lib/images/lock.png',
     'locked_him_self' 		=> '../lib/images/him-self-locked.png',
 );
