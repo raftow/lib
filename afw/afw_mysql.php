@@ -89,9 +89,20 @@ class AfwMysql
         }
         else
         {
-            
-            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-            return mysqli_connect($hostname, $username, $password, $database);
+            try{
+                mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+                return mysqli_connect($hostname, $username, $password, $database);
+            }
+            catch(Exception $e)
+            {
+                die("failed to do connection($hostname, $username, *****, $database)");
+                // if you do throw new AfwRuntimeException it will show stack trace containing password
+            }
+            catch(Error $e)
+            {
+                die("error when doing connection($hostname, $username, *****, $database)");
+                // if you do throw new AfwRuntimeException it will show stack trace containing password
+            } 
         }
     }
 

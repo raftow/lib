@@ -1351,6 +1351,137 @@ class AfwSqlHelper extends AFWRoot
         return AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated);
     }
 
+
+    /**
+     * old func on AFWObject become here and renamed as aggregFunction
+     * return execute of aggregFunction on table after filter where
+     * @param AFWObject $object
+     * @param string $function
+     */
+    public static function aggregFunction($object, 
+        $function,
+        $group_by = '',
+        $throw_error = true,
+        $throw_analysis_crash = true
+    ) {
+        $module_server = $object->getModuleServer();
+        if (!$function) {
+            $function = 'count(*)';
+        }
+        if ($group_by) {
+            $group_by_tab = explode(',', $group_by);
+            $query_select = ', ' . $group_by;
+            $query_group_by = ' group by ' . $group_by;
+        } else {
+            $group_by_tab = [];
+            $query_select = '';
+            $query_group_by = '';
+        }
+        $query =
+            'select ' .
+            $function .
+            ' as res' .
+            $query_select .
+            "\n from " .
+            $object->getMyTable(true).
+            " me\n where 1" .
+            $object->getSQL() .
+            $query_group_by;
+
+
+        $object->clearSelect();
+        if (count($group_by_tab)) {
+            $return = [];
+            $query_res = AfwDatabase::db_recup_rows($query, $throw_error, $throw_analysis_crash, $module_server);
+            foreach ($query_res as $row) {
+                foreach ($group_by_tab as $index) {
+                    $index = trim($index);
+                    $return[$row[$index]] = $row['res'];
+                }
+            }
+        } else {
+            $return = AfwDatabase::db_recup_value(
+                $query,
+                $throw_error,
+                $throw_analysis_crash,
+                $module_server
+            );
+        }
+        
+        return $return;
+    }
+
+    /**
+     * old func on AFWObject become here and renamed as aggregFunction
+     * return execute of aggregFunction on table after filter where
+     * @param AFWObject $object
+     * @param string $function
+     */
+    public static function multipleAggregFunction($object, 
+        $functions,
+        $group_by = '',
+        $throw_error = true,
+        $throw_analysis_crash = true
+    ) {
+        $module_server = $object->getModuleServer();
+        $query = 'select '.$group_by;
+
+        if ($group_by) {
+            $group_by_tab = explode(',', $group_by);
+            $query_group_by = ' group by ' . $group_by;
+        } else {
+            $group_by_tab = [];
+            $query_group_by = '';
+        }
+        
+        foreach ($functions as $functionCode => $function)
+        {
+            $query .= ", $function as $functionCode";
+        }
+            
+        $query .= "\n from " .
+            $object->getMyTable(true).
+            " me\n where 1" .
+            $object->getSQL() .
+            $query_group_by;
+
+
+        $object->clearSelect();
+        
+        return [$query, AfwDatabase::db_recup_rows($query, $throw_error, $throw_analysis_crash, $module_server)];
+
+    }
+
+
+    /**
+     * old count on AFWObject become here and renamed as aggregCount
+     * return execute of aggregFunction on table after filter where
+     * @param AFWObject $object
+     * @param string $function
+     */
+    public static function aggregCount($object, $throw_error = true, $throw_analysis_crash = true)
+    {
+        $query =
+            "select count(*) as cnt \n from " .
+            $object->getMyTable(true).
+            " me\n where 1" .
+            $object->getSQL();
+
+        $object->clearSelect();
+
+        $module_server = $object->getModuleServer();
+        $return = AfwDatabase::db_recup_value(
+            $query,
+            $throw_error,
+            $throw_analysis_crash,
+            $module_server
+        );
+
+        //if((!$return) or (static::$TABLE == "school_class"))
+        //die("query=$query return=$return");
+        return $return;
+    }
+
     
 
 }

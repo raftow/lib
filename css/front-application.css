@@ -3124,6 +3124,9 @@ div.column-block>h1 {
     margin-left: auto;
     margin-right: auto;
     margin-top: 35px;
+    height: min-content;
+    min-height: 420px;
+    background-color: #ffffffe6;
 }
 
 .swal-text {

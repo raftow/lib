@@ -61,25 +61,16 @@ if(!$stats_config["DISABLE-VH"]) $myObj->select_visibilite_horizontale();
 $group_sep = $stats_config["GROUP_SEP"];
 if(!$group_sep) $group_sep = "/";
 
-
+$config_sql_group_by = $stats_config["SQL_GROUP_BY"];
 $config_group_cols = $stats_config["GROUP_COLS"];
-
-$group_cols_arr = array();
-
-foreach($config_group_cols as $group_col_index => $group_col_item)
-{
-       $group_cols_arr[] = $group_col_item["COLUMN"];
-}
-
-$group_cols_list_sql = implode(",",$group_cols_arr);
-
-
-$myObj_list = $myObj->loadMany("",$group_cols_list_sql);
-
 $stats_data_arr = array();
-
 $stats_row_code_arr = array();
 $stats_row_code_arr_len = 0;
+$footer_total_arr = array();
+$footer_sum_title_arr = array();
+$sum_by_col_arr = array();
+$count_by_col_arr = array();
+$stat_trad = array();
 
 $config_stats_display_cols = $stats_config["DISPLAY_COLS"];
 $config_stats_formula_cols = $stats_config["FORMULA_COLS"];
@@ -91,132 +82,258 @@ $config_stats_options = $stats_config["OPTIONS"];
 
 $config_stats_super_header = $stats_config["SUPER_HEADER"];
 
-$footer_total_arr = array();
-$footer_sum_title_arr = array();
-$sum_by_col_arr = array();
-$count_by_col_arr = array();
-$stat_trad = array();
+$group_cols_arr = array();
 
-foreach($myObj_list as $myObj_id => $myObj_item)
+foreach($config_group_cols as $group_col_index => $group_col_item)
 {
-    $group_value = "";
-    unset($group_col_show_arr);
-    $group_col_show_arr = array();
-    foreach($config_group_cols as $group_col_index => $group_col_item)
-    {
-               $group_col = $group_col_item["COLUMN"];
-               $col_display_format = $group_col_item["DISPLAY-FORMAT"];
-               $group_col_val = $myObj_item->getVal($group_col);
-               $group_col_dec = $myObj_item->decode($group_col);
-               $group_col_shw = $myObj_item->showAttribute($group_col);
-               if($col_display_format=="val") $group_col_display = $group_col_val;
-               elseif($col_display_format=="decode") $group_col_display = $group_col_dec;
-               elseif($col_display_format=="show") $group_col_display = $group_col_shw;
-               
-               $group_col_show_arr[$group_col] = $group_col_display;
-               $group_value .= $group_sep . $group_col_val;
-    }
-    
-    if(!isset($stats_row_code_arr[$group_value]))
-    {
-         $stats_row_code_arr[$group_value] = $stats_row_code_arr_len;
-         $stats_row_code_arr_len++;
-    }
-    
-    $stats_curr_row = $stats_row_code_arr[$group_value];
-    
-    foreach($config_group_cols as $group_col_index => $group_col_item)
-    {
-               $group_col = $group_col_item["COLUMN"];
-               $footer_sum_title_arr[$group_col] = $group_col_item["FOOTER_SUM_TITLE"];
-               $stats_data_arr[$stats_curr_row][$group_col] = $group_col_show_arr[$group_col];
-               if(!$stat_trad[$group_col]) 
-               {
-                   $nom_col_short = "$group_col.stat";
-                   $trad_col_short  = $myObj_item->translate($nom_col_short,$lang);
-                   if($trad_col_short == $nom_col_short) {
-                       $nom_col_short = "$group_col.short";
-                       $trad_col_short  = $myObj_item->translate($nom_col_short,$lang);
-                   }
-                   if($trad_col_short == $nom_col_short) $stat_trad[$group_col] = $myObj_item->translate($group_col,$lang);
-                   else $stat_trad[$group_col] = $trad_col_short;
-                   
-               } 
-    }           
-    
-    $bloc_col_end = array();
-    
-    foreach($config_stats_display_cols as $config_stats_display_col_index => $config_stats_display_col_item)
-    {
-            $stats_display_col = $config_stats_display_col_item["COLUMN"];    
-            $myobj_item_struct = AfwStructureHelper::getStructureOf($myObj_item, $stats_display_col);
-            $unit = $myobj_item_struct["UNIT"];
-            $gf = $config_stats_display_col_item["GROUP-FUNCTION"];
-            $footer_sum = $config_stats_display_col_item["FOOTER_SUM"]; 
-            $show_unit_header = $config_stats_display_col_item["SHOW-UNIT-HEADER"];
-            if($show_unit) $show_unit_val = " ".$unit;
-            else $show_unit_val = ""; 
-            $show_unit = $config_stats_display_col_item["SHOW-UNIT"];
-            
-            
-            $show_name = $config_stats_display_col_item["SHOW-NAME"];
-            if(!$show_name) $show_name = $stats_display_col;
-
-            
-            if((!$curropt) or $config_stats_options[$curropt][$show_name])
-            {
-            
-                $bloc_col_end[$show_name] = $config_stats_display_col_item["BLOC-COL-END"];
-                $footer_sum_title_arr[$show_name] = $config_stats_display_col_item["FOOTER_SUM_TITLE"];
-
-
-                if($config_stats_display_col_item["COLUMN_IS_FORMULA"])
-                    $stats_display_col_val = $myObj_item->calc($stats_display_col);
-                else 
-                    $stats_display_col_val = $myObj_item->getVal($stats_display_col);
-                
-                if(!$stat_trad[$show_name]) 
-                {
-                        $nom_col_short = "$show_name.stat";
-                        $trad_col_short  = $myObj_item->translate($nom_col_short,$lang);
-                        if($trad_col_short == $nom_col_short) {
-                            $nom_col_short = "$show_name.short";
-                            $trad_col_short  = $myObj_item->translate($nom_col_short,$lang);
-                        }
-                        if($trad_col_short == $nom_col_short) $stat_trad[$show_name] = $myObj_item->translate($show_name,$lang);
-                        else $stat_trad[$show_name] = $trad_col_short;
-                }
-                $new_val = 0;
-                if($gf == "sum") 
-                {
-                    if(!$sum_by_col_arr[$group_value][$stats_display_col]) $sum_by_col_arr[$group_value][$stats_display_col] = 0;
-                    $new_val =  $stats_display_col_val;
-                    
-                    $sum_by_col_arr[$group_value][$stats_display_col] += $new_val;
-
-                    // if(!$new_val) die("for $myObj_item value of col $stats_display_col = $new_val, so stats sum_by_col_arr[$group_value][$stats_display_col] = ".$sum_by_col_arr[$group_value][$stats_display_col]);
-                    $stats_data_arr[$stats_curr_row][$show_name] = $sum_by_col_arr[$group_value][$stats_display_col].$show_unit_val; 
-                }
-                
-                if($gf == "count") 
-                {
-                    if(!$count_by_col_arr[$group_value][$stats_display_col]) $count_by_col_arr[$group_value][$stats_display_col] = 0;
-                    $new_val = 1;
-                    $count_by_col_arr[$group_value][$stats_display_col] ++;
-                    $stats_data_arr[$stats_curr_row][$show_name] = $count_by_col_arr[$group_value][$stats_display_col]; 
-                }
-                
-                if($footer_sum)
-                {
-                    if(!$footer_total_arr[$show_name]) $footer_total_arr[$show_name] = 0;
-                    $footer_total_arr[$show_name] += $new_val;
-                    // $footer_total_arr["log".$show_name] .= "+".$stats_data_arr[$stats_curr_row][$show_name]; 
-                }
-            }
-    }
-
-    
+    $group_cols_arr[] = $group_col_item["COLUMN"];
 }
+
+$group_cols_list_sql = implode(",",$group_cols_arr);
+
+if($config_sql_group_by)
+{
+    $arrAggregFunctions=[];
+    foreach($config_stats_display_cols as $display_col)
+    {
+        $aggCol = $display_col["COLUMN"];
+        $aggSqlFormula = $display_col["SQL_FORMULA"];
+        $arrAggregFunctions[$aggCol] = $aggSqlFormula;
+    }
+    list($sql, $statsData) = AfwSqlHelper::multipleAggregFunction($myObj, $arrAggregFunctions, $group_cols_list_sql); 
+    // die("sql=$sql => res=".var_export($statsData,true));
+
+    foreach($statsData as $stats_curr_row => $statsRow)
+    {
+        $group_value = "";
+        unset($group_col_show_arr);
+        $group_col_show_arr = array();
+        foreach($config_group_cols as $group_col_index => $group_col_item)
+        {
+                $group_col = $group_col_item["COLUMN"];
+                $col_display_format = $group_col_item["DISPLAY-FORMAT"];
+                if($col_display_format=="show") $col_display_format="decode";
+                $group_col_val = $statsRow[$group_col];
+                
+                
+                if($col_display_format=="val") $group_col_display = $group_col_val;
+                elseif($col_display_format=="decode") $group_col_display = AfwLoadHelper::decodeFkAttribute($myObj, $group_col, $group_col_val);
+                
+                
+                $group_col_show_arr[$group_col] = $group_col_display;
+                $group_value .= $group_sep . $group_col_val;
+        }
+
+        $stats_row_code_arr[$group_value] = $stats_curr_row;
+
+        foreach($config_group_cols as $group_col_index => $group_col_item)
+        {
+                $group_col = $group_col_item["COLUMN"];
+                $footer_sum_title_arr[$group_col] = $group_col_item["FOOTER_SUM_TITLE"];
+                $stats_data_arr[$stats_curr_row][$group_col] = $group_col_show_arr[$group_col];
+                if(!$stat_trad[$group_col]) 
+                {
+                    $nom_col_short = "$group_col.stat";
+                    $trad_col_short  = $myObj->translate($nom_col_short,$lang);
+                    if($trad_col_short == $nom_col_short) {
+                        $nom_col_short = "$group_col.short";
+                        $trad_col_short  = $myObj->translate($nom_col_short,$lang);
+                    }
+
+                    if($trad_col_short == $nom_col_short) $stat_trad[$group_col] = $myObj->translate($group_col,$lang);
+                    else $stat_trad[$group_col] = $trad_col_short;
+                    
+                } 
+        }
+
+        $bloc_col_end = array();
+        
+        foreach($config_stats_display_cols as $config_stats_display_col_index => $config_stats_display_col_item)
+        {
+                $stats_display_col = $config_stats_display_col_item["COLUMN"];    
+                $myobj_struct = AfwStructureHelper::getStructureOf($myObj, $stats_display_col);
+                $unit = $myobj_struct["UNIT"];
+                
+                $footer_sum = $config_stats_display_col_item["FOOTER_SUM"]; 
+                $show_unit_header = $config_stats_display_col_item["SHOW-UNIT-HEADER"];
+                if($show_unit) $show_unit_val = " ".$unit;
+                else $show_unit_val = ""; 
+                $show_unit = $config_stats_display_col_item["SHOW-UNIT"];
+                
+                
+                $show_name = $config_stats_display_col_item["SHOW-NAME"];
+                if(!$show_name) $show_name = $stats_display_col;
+
+                
+                if((!$curropt) or $config_stats_options[$curropt][$show_name])
+                {
+                
+                    $bloc_col_end[$show_name] = $config_stats_display_col_item["BLOC-COL-END"];
+                    $footer_sum_title_arr[$show_name] = $config_stats_display_col_item["FOOTER_SUM_TITLE"];
+
+
+                    $stats_display_col_val = $statsRow[$stats_display_col];;
+                    
+                    if(!$stat_trad[$show_name]) 
+                    {
+                            $nom_col_short = "$show_name.stat";
+                            $trad_col_short  = $myObj->translate($nom_col_short,$lang);
+                            if($trad_col_short == $nom_col_short) {
+                                $nom_col_short = "$show_name.short";
+                                $trad_col_short  = $myObj->translate($nom_col_short,$lang);
+                            }
+                            if($trad_col_short == $nom_col_short) $stat_trad[$show_name] = $myObj->translate($show_name,$lang);
+                            else $stat_trad[$show_name] = $trad_col_short;
+                    }
+                    
+                    $stats_data_arr[$stats_curr_row][$show_name] = $stats_display_col_val; 
+                    
+                    if($footer_sum)
+                    {
+                        if(!$footer_total_arr[$show_name]) $footer_total_arr[$show_name] = 0;
+                        $footer_total_arr[$show_name] += $stats_display_col_val;
+                        // $footer_total_arr["log".$show_name] .= "+".$stats_data_arr[$stats_curr_row][$show_name]; 
+                    }
+                }
+        }
+
+    }
+}
+else
+{
+    
+
+
+    $myObj_list = $myObj->loadMany("",$group_cols_list_sql);
+
+    
+
+    
+
+    foreach($myObj_list as $myObj_id => $myObj_item)
+    {
+        $group_value = "";
+        unset($group_col_show_arr);
+        $group_col_show_arr = array();
+        foreach($config_group_cols as $group_col_index => $group_col_item)
+        {
+                $group_col = $group_col_item["COLUMN"];
+                $col_display_format = $group_col_item["DISPLAY-FORMAT"];
+                $group_col_val = $myObj_item->getVal($group_col);
+                $group_col_dec = $myObj_item->decode($group_col);
+                $group_col_shw = $myObj_item->showAttribute($group_col);
+                if($col_display_format=="val") $group_col_display = $group_col_val;
+                elseif($col_display_format=="decode") $group_col_display = $group_col_dec;
+                elseif($col_display_format=="show") $group_col_display = $group_col_shw;
+                
+                $group_col_show_arr[$group_col] = $group_col_display;
+                $group_value .= $group_sep . $group_col_val;
+        }
+        
+        if(!isset($stats_row_code_arr[$group_value]))
+        {
+            $stats_row_code_arr[$group_value] = $stats_row_code_arr_len;
+            $stats_row_code_arr_len++;
+        }
+        
+        $stats_curr_row = $stats_row_code_arr[$group_value];
+        
+        foreach($config_group_cols as $group_col_index => $group_col_item)
+        {
+                $group_col = $group_col_item["COLUMN"];
+                $footer_sum_title_arr[$group_col] = $group_col_item["FOOTER_SUM_TITLE"];
+                $stats_data_arr[$stats_curr_row][$group_col] = $group_col_show_arr[$group_col];
+                if(!$stat_trad[$group_col]) 
+                {
+                    $nom_col_short = "$group_col.stat";
+                    $trad_col_short  = $myObj_item->translate($nom_col_short,$lang);
+                    if($trad_col_short == $nom_col_short) {
+                        $nom_col_short = "$group_col.short";
+                        $trad_col_short  = $myObj_item->translate($nom_col_short,$lang);
+                    }
+                    if($trad_col_short == $nom_col_short) $stat_trad[$group_col] = $myObj_item->translate($group_col,$lang);
+                    else $stat_trad[$group_col] = $trad_col_short;
+                    
+                } 
+        }           
+        
+        $bloc_col_end = array();
+        
+        foreach($config_stats_display_cols as $config_stats_display_col_index => $config_stats_display_col_item)
+        {
+                $stats_display_col = $config_stats_display_col_item["COLUMN"];    
+                $myobj_item_struct = AfwStructureHelper::getStructureOf($myObj_item, $stats_display_col);
+                $unit = $myobj_item_struct["UNIT"];
+                $gf = $config_stats_display_col_item["GROUP-FUNCTION"];
+                $footer_sum = $config_stats_display_col_item["FOOTER_SUM"]; 
+                $show_unit_header = $config_stats_display_col_item["SHOW-UNIT-HEADER"];
+                if($show_unit) $show_unit_val = " ".$unit;
+                else $show_unit_val = ""; 
+                $show_unit = $config_stats_display_col_item["SHOW-UNIT"];
+                
+                
+                $show_name = $config_stats_display_col_item["SHOW-NAME"];
+                if(!$show_name) $show_name = $stats_display_col;
+
+                
+                if((!$curropt) or $config_stats_options[$curropt][$show_name])
+                {
+                
+                    $bloc_col_end[$show_name] = $config_stats_display_col_item["BLOC-COL-END"];
+                    $footer_sum_title_arr[$show_name] = $config_stats_display_col_item["FOOTER_SUM_TITLE"];
+
+
+                    if($config_stats_display_col_item["COLUMN_IS_FORMULA"])
+                        $stats_display_col_val = $myObj_item->calc($stats_display_col);
+                    else 
+                        $stats_display_col_val = $myObj_item->getVal($stats_display_col);
+                    
+                    if(!$stat_trad[$show_name]) 
+                    {
+                            $nom_col_short = "$show_name.stat";
+                            $trad_col_short  = $myObj_item->translate($nom_col_short,$lang);
+                            if($trad_col_short == $nom_col_short) {
+                                $nom_col_short = "$show_name.short";
+                                $trad_col_short  = $myObj_item->translate($nom_col_short,$lang);
+                            }
+                            if($trad_col_short == $nom_col_short) $stat_trad[$show_name] = $myObj_item->translate($show_name,$lang);
+                            else $stat_trad[$show_name] = $trad_col_short;
+                    }
+                    $new_val = 0;
+                    if($gf == "sum") 
+                    {
+                        if(!$sum_by_col_arr[$group_value][$stats_display_col]) $sum_by_col_arr[$group_value][$stats_display_col] = 0;
+                        $new_val =  $stats_display_col_val;
+                        
+                        $sum_by_col_arr[$group_value][$stats_display_col] += $new_val;
+
+                        // if(!$new_val) die("for $myObj_item value of col $stats_display_col = $new_val, so stats sum_by_col_arr[$group_value][$stats_display_col] = ".$sum_by_col_arr[$group_value][$stats_display_col]);
+                        $stats_data_arr[$stats_curr_row][$show_name] = $sum_by_col_arr[$group_value][$stats_display_col].$show_unit_val; 
+                    }
+                    
+                    if($gf == "count") 
+                    {
+                        if(!$count_by_col_arr[$group_value][$stats_display_col]) $count_by_col_arr[$group_value][$stats_display_col] = 0;
+                        $new_val = 1;
+                        $count_by_col_arr[$group_value][$stats_display_col] ++;
+                        $stats_data_arr[$stats_curr_row][$show_name] = $count_by_col_arr[$group_value][$stats_display_col]; 
+                    }
+                    
+                    if($footer_sum)
+                    {
+                        if(!$footer_total_arr[$show_name]) $footer_total_arr[$show_name] = 0;
+                        $footer_total_arr[$show_name] += $new_val;
+                        // $footer_total_arr["log".$show_name] .= "+".$stats_data_arr[$stats_curr_row][$show_name]; 
+                    }
+                }
+        }
+
+        
+    }
+}
+
+/*************************************************************************/
+// show statistics doesn't matter the source of data is php, sql or whatever
 
 foreach($stats_data_arr as $stats_curr_row => $stats_data_row)
 {
@@ -458,8 +575,8 @@ if($show_pie)
     }
     $file_dir_name = dirname(__FILE__); 
     $statsClass = $cl;
-    require_once("$file_dir_name/afw_gpie_header.php");
-    require_once("$file_dir_name/afw_gpie_body.php");
+    require_once("$file_dir_name/../afw_gpie_header.php");
+    require_once("$file_dir_name/../afw_gpie_body.php");
 }
 
 ?>

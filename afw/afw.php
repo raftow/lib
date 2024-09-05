@@ -742,30 +742,7 @@ class AFWObject extends AFWRoot
             $attribute == 'draft';
     }
 
-    /**
-     * count
-     * return count(*)
-     */
-    public function count($throw_error = true, $throw_analysis_crash = true)
-    {
-        $query =
-            "select count(*) as cnt \n from " .
-            self::_prefix_table(static::$TABLE) .
-            " me\n where 1" .
-            $this->SEARCH;
-        $this->clearSelect();
-        $module_server = $this->getModuleServer();
-        $return = AfwDatabase::db_recup_value(
-            $query,
-            $throw_error,
-            $throw_analysis_crash,
-            $module_server
-        );
-
-        //if((!$return) or (static::$TABLE == "school_class"))
-        //die("query=$query return=$return");
-        return $return;
-    }
+    
 
     /**
      * liste
@@ -804,12 +781,7 @@ class AFWObject extends AFWRoot
     ) {
         $obj = new static();
         $obj->where($where);
-        return $obj->func(
-            $function,
-            $group_by,
-            $throw_error,
-            $throw_analysis_crash
-        );
+        return AfwSqlHelper::aggregFunction($obj, $function, $group_by, $throw_error, $throw_analysis_crash);
     }
 
     public static function loadRecords($where, $limit = '', $order_by = '')
@@ -849,61 +821,7 @@ class AFWObject extends AFWRoot
         );
     }
 
-/**
-     * func
-     * return func
-     * @param string sql function
-     */
-    public function func(
-        $function,
-        $group_by = '',
-        $throw_error = true,
-        $throw_analysis_crash = true
-    ) {
-        $module_server = $this->getModuleServer();
-        if (!$function) {
-            $function = 'count(*)';
-        }
-        if ($group_by) {
-            $group_by_tab = explode(',', $group_by);
-            $query_select = ', ' . $group_by;
-            $query_group_by = ' group by ' . $group_by;
-        } else {
-            $group_by_tab = [];
-            $query_select = '';
-            $query_group_by = '';
-        }
-        $query =
-            'select ' .
-            $function .
-            ' as res' .
-            $query_select .
-            "\n from " .
-            self::_prefix_table(static::$TABLE) .
-            " me\n where 1" .
-            $this->SEARCH .
-            $query_group_by;
-        $this->clearSelect();
-        if (count($group_by_tab)) {
-            $return = [];
-            $query_res = AfwDatabase::db_recup_rows($query, $throw_error, $throw_analysis_crash, $module_server);
-            foreach ($query_res as $row) {
-                foreach ($group_by_tab as $index) {
-                    $index = trim($index);
-                    $return[$row[$index]] = $row['res'];
-                }
-            }
-        } else {
-            $return = AfwDatabase::db_recup_value(
-                $query,
-                $throw_error,
-                $throw_analysis_crash,
-                $module_server
-            );
-        }
-        
-        return $return;
-    }
+
 
     /**
      * loadVirtualRow
@@ -4877,9 +4795,10 @@ class AFWObject extends AFWRoot
         $this->select_visibilite_horizontale_default($dropdown, $selects);
     }
 
-    public function getMyTable()
+    public function getMyTable($prefix=false)
     {
-        return static::$TABLE;
+        if($prefix) return self::_prefix_table(static::$TABLE);
+        else return static::$TABLE;
     }
 
     public function getMyClass()

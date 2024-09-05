@@ -457,6 +457,26 @@ class AfwLoadHelper extends AFWRoot
         return [$data, $isAvail];
     }
 
+    /**
+     * @param AFWObject $object : afw object instance
+     * @param string $attribute : attribute to decode should be of type FK
+     * 
+     */
+    
+    public static function decodeFkAttribute($object, $attribute, $value, $separator = ",", $emptyMessage = "no-data-decoded")
+    {
+        if(!$object) throw new AfwRuntimeException("decodeFkAttribute function : \$object attribute should not be null");
+        if(!($object instanceof AFWObject)) throw new AfwRuntimeException("decodeFkAttribute function : \$object attribute should be subclass of AFWObject");
+        $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        if($structure["TYPE"] != "FK") throw new AfwRuntimeException("$attribute attribute is not of type FK from class ".$object->getMyClass());
+        $ans_module = $structure["ANSMODULE"];
+        $ans_table = $structure["ANSWER"];
+        $pk = $object->getPKField();
+        
+
+        return self::decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $structure["SMALL-LOOKUP"]);
+    }
+
     public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $small_lookup=false)
     {
 
