@@ -174,7 +174,7 @@ class AfwUmsPagHelper extends AFWRoot
         return [$mdl, $tbl, $mdl_id, $tbl_id, $mdl_new, $tbl_new];
     }
 
-    public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false)
+    public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false, $restrictToField="")
     {
         global $lang;
         $file_dir_name = dirname(__FILE__);
@@ -201,7 +201,7 @@ class AfwUmsPagHelper extends AFWRoot
                 "can't find or create table [$table_name] in module [$mcode/$mdl_id]."
             );
         }
-
+        if ($tbl_new) $restrictToField = "";
         $fld_u = 0; // updated
         if ($tbl_new or $updateIfExists) {
             $tbl->set('titre_short', $obj->transClassPlural('ar'));
@@ -246,7 +246,11 @@ class AfwUmsPagHelper extends AFWRoot
             }
         }
         // else die("updateIfExists=$updateIfExists");
-        $tbl->createUpdateMySteps($lang);
+        if(!$restrictToField)
+        {
+            $tbl->createUpdateMySteps($lang);
+        }
+        
 
         $fnum = 10;
 
@@ -259,152 +263,155 @@ class AfwUmsPagHelper extends AFWRoot
         
         foreach ($this_db_structure as $attribute => $structr) 
         {
-            $structure = AfwStructureHelper::repareMyStructure($obj, $structr, $attribute);
-            list($toPag, $notToPagReason) = $obj->attributeIsToPag($attribute);
+            if((!$restrictToField) or ($restrictToField==$attribute))
+            {
+                $structure = AfwStructureHelper::repareMyStructure($obj, $structr, $attribute);
+                list($toPag, $notToPagReason) = $obj->attributeIsToPag($attribute);
 
-            if (!$toPag) {
-                if ($attribute == 'moduleList') {
-                    die("$attribute is not to pag reason : $notToPagReason");
-                }
-            }
-
-            if ($toPag) {
-                unset($fld);
-                $fld = new Afield();
-
-                $fld->select('atable_id', $tbl_id);
-                $fld->select('field_name', $attribute);
-                if (!$fld->load()) {
-                    $field_to_create = true;
-                } else {
-                    $field_to_create = false;
+                if (!$toPag) {
+                    if ($attribute == 'moduleList') {
+                        die("$attribute is not to pag reason : $notToPagReason");
+                    }
                 }
 
-                if ($field_to_create) {
-                    $fld->set('atable_id', $tbl_id);
-                    $fld->set('field_name', $attribute);
-                }
+                if ($toPag) {
+                    unset($fld);
+                    $fld = new Afield();
 
-                $fld->set('avail', 'Y');
-                $fld->set('answer_module_id', '0');
-                $fld->commit();
-                if ($field_to_create or $updateIfExists) {
-                    if ($structure['FGROUP']) {
-                        $fgroup_id = AfieldGroup::loadByMainIndex(
-                            $tbl_id,
-                            $structure['FGROUP'],
-                            $create_obj_if_not_found = true
+                    $fld->select('atable_id', $tbl_id);
+                    $fld->select('field_name', $attribute);
+                    if (!$fld->load()) {
+                        $field_to_create = true;
+                    } else {
+                        $field_to_create = false;
+                    }
+
+                    if ($field_to_create) {
+                        $fld->set('atable_id', $tbl_id);
+                        $fld->set('field_name', $attribute);
+                    }
+
+                    $fld->set('avail', 'Y');
+                    $fld->set('answer_module_id', '0');
+                    $fld->commit();
+                    if ($field_to_create or $updateIfExists) {
+                        if ($structure['FGROUP']) {
+                            $fgroup_id = AfieldGroup::loadByMainIndex(
+                                $tbl_id,
+                                $structure['FGROUP'],
+                                $create_obj_if_not_found = true
+                            );
+                            if ($fgroup_id) {
+                                $fld->set('afield_group_id', $fgroup_id);
+                            }
+                        }
+
+                        //$afw.... = $structure["...."];
+                        $afwType = $structure['TYPE'];
+                        $afwCat = $structure['CATEGORY'];
+                        $afield_type_id = self::fromAFWtoAfieldType(
+                            $afwType,
+                            $afwCat,
+                            $structure
                         );
-                        if ($fgroup_id) {
-                            $fld->set('afield_group_id', $fgroup_id);
+
+                        if ($afield_type_id == $afwType) {
+                            die(
+                                "for attribute [$attribute] can not decode afw type [$afwType] : " .
+                                    var_export($obj, true)
+                            );
+                        }
+
+                        $fld->set('titre',trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = false))));
+                        $fld->set('titre_short',trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = true))));
+
+                        $fld->set('titre_en',trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = false))));
+                        $fld->set('titre_short_en',trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = true))));
+
+
+                        $this_help_text_ar = $obj->translate(
+                            $attribute . '_help_text',
+                            'ar'
+                        );
+                        if ($this_help_text_ar != $attribute . '_help_text') {
+                            $fld->set('help_text', $this_help_text_ar);
+                        }
+
+                        $this_help_text_en = $obj->translate(
+                            $attribute . '_help_text',
+                            'en'
+                        );
+                        if ($this_help_text_en != $attribute . '_help_text') {
+                            $fld->set('help_text_en', $this_help_text_en);
+                        }
+
+                        $this_question_text_ar = $obj->translate(
+                            $attribute . '_question',
+                            'ar'
+                        );
+                        if ($this_question_text_ar != $attribute . '_question') {
+                            $fld->set('question_text', $this_question_text_ar);
+                        }
+
+                        $this_question_text_en = $obj->translate(
+                            $attribute . '_question',
+                            'en'
+                        );
+                        if ($this_question_text_en != $attribute . '_question') {
+                            $fld->set('question_text_en', $this_question_text_en);
+                        }
+
+                        $fld->set('afield_type_id', $afield_type_id);
+
+                        $row = AfwStructureHelper::getStructureOf($obj,$attribute);
+
+                        $row['atable'] = $tbl;
+                        $row['obj'] = $obj;
+
+                        $fld_att = Afield::to_afield_att($id_main_sh, $row);
+                        /*
+                        if($attribute=="idn")
+                        {
+                            unset($row["atable"]);
+                            unset($row["obj"]);
+                            die("row=". var_export($row,true) . " fld_att=" .var_export($fld_att,true));
+                        }*/
+                        foreach ($fld_att as $prop => $propvalue) {
+                            $fld->set($prop, $propvalue);
+                        }
+
+                        $fld->set('field_order', $fnum);
+                        $fnum += 10;
+
+                        if ($field_to_create) {
+                            $fld->set('additional', 'N');
+                        }
+
+                        if ($structure['CATEGORY']) {
+                            $fld->set('reel', 'N');
+                        } else {
+                            $fld->set('reel', 'Y');
+                        }
+
+                        if (isset($obj->UNIQUE_KEY) and is_array($obj->UNIQUE_KEY) and (!in_array($attribute, $obj->UNIQUE_KEY))) {
+                            $fld->set('distinct_for_list', 'N');
+                        } else {
+                            $fld->set('distinct_for_list', 'Y');
                         }
                     }
 
-                    //$afw.... = $structure["...."];
-                    $afwType = $structure['TYPE'];
-                    $afwCat = $structure['CATEGORY'];
-                    $afield_type_id = self::fromAFWtoAfieldType(
-                        $afwType,
-                        $afwCat,
-                        $structure
-                    );
-
-                    if ($afield_type_id == $afwType) {
-                        die(
-                            "for attribute [$attribute] can not decode afw type [$afwType] : " .
-                                var_export($obj, true)
-                        );
-                    }
-
-                    $fld->set('titre',trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = false))));
-                    $fld->set('titre_short',trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = true))));
-
-                    $fld->set('titre_en',trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = false))));
-                    $fld->set('titre_short_en',trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = true))));
-
-
-                    $this_help_text_ar = $obj->translate(
-                        $attribute . '_help_text',
-                        'ar'
-                    );
-                    if ($this_help_text_ar != $attribute . '_help_text') {
-                        $fld->set('help_text', $this_help_text_ar);
-                    }
-
-                    $this_help_text_en = $obj->translate(
-                        $attribute . '_help_text',
-                        'en'
-                    );
-                    if ($this_help_text_en != $attribute . '_help_text') {
-                        $fld->set('help_text_en', $this_help_text_en);
-                    }
-
-                    $this_question_text_ar = $obj->translate(
-                        $attribute . '_question',
-                        'ar'
-                    );
-                    if ($this_question_text_ar != $attribute . '_question') {
-                        $fld->set('question_text', $this_question_text_ar);
-                    }
-
-                    $this_question_text_en = $obj->translate(
-                        $attribute . '_question',
-                        'en'
-                    );
-                    if ($this_question_text_en != $attribute . '_question') {
-                        $fld->set('question_text_en', $this_question_text_en);
-                    }
-
-                    $fld->set('afield_type_id', $afield_type_id);
-
-                    $row = AfwStructureHelper::getStructureOf($obj,$attribute);
-
-                    $row['atable'] = $tbl;
-                    $row['obj'] = $obj;
-
-                    $fld_att = Afield::to_afield_att($id_main_sh, $row);
-                    /*
-                    if($attribute=="idn")
-                    {
-                        unset($row["atable"]);
-                        unset($row["obj"]);
-                        die("row=". var_export($row,true) . " fld_att=" .var_export($fld_att,true));
-                    }*/
-                    foreach ($fld_att as $prop => $propvalue) {
-                        $fld->set($prop, $propvalue);
-                    }
-
-                    $fld->set('field_order', $fnum);
-                    $fnum += 10;
-
                     if ($field_to_create) {
-                        $fld->set('additional', 'N');
-                    }
-
-                    if ($structure['CATEGORY']) {
-                        $fld->set('reel', 'N');
+                        if ($fld->commit()) {
+                            $fld_i++;
+                        }
                     } else {
-                        $fld->set('reel', 'Y');
+                        if ($fld->update()) {
+                            $fld_u++;
+                        }
                     }
 
-                    if (isset($obj->UNIQUE_KEY) and is_array($obj->UNIQUE_KEY) and (!in_array($attribute, $obj->UNIQUE_KEY))) {
-                        $fld->set('distinct_for_list', 'N');
-                    } else {
-                        $fld->set('distinct_for_list', 'Y');
-                    }
+                    Afield::props_to_foptions($obj, $tbl, $fld, true);
                 }
-
-                if ($field_to_create) {
-                    if ($fld->commit()) {
-                        $fld_i++;
-                    }
-                } else {
-                    if ($fld->update()) {
-                        $fld_u++;
-                    }
-                }
-
-                Afield::props_to_foptions($obj, $tbl, $fld, true);
             }
         }
 

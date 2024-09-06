@@ -7540,13 +7540,13 @@ $dependencies_values
         return [true, ''];
     }
 
-    public function pagMe($id_main_sh, $updateIfExists = false)
+    public function pagMe($id_main_sh, $updateIfExists = false, $restrictToField = "")
     {
         $this_db_structure = static::getDbStructure(
             $return_type = 'structure',
             'all'
         );
-        return AfwUmsPagHelper::pagObject($this, $this_db_structure, static::$MODULE, static::$TABLE, $id_main_sh, $updateIfExists);
+        return AfwUmsPagHelper::pagObject($this, $this_db_structure, static::$MODULE, static::$TABLE, $id_main_sh, $updateIfExists, $restrictToField);
     }
 
 
@@ -9081,6 +9081,19 @@ $dependencies_values
         }
 
         return $val_arr;
+    }
+
+    public function count()
+    {
+        return AfwSqlHelper::aggregCount($this);
+    }
+
+    public function func($function,
+                            $group_by = '',
+                            $throw_error = true,
+                            $throw_analysis_crash = true)
+    {
+        return AfwSqlHelper::aggregFunction($this, $function, $group_by, $throw_error, $throw_analysis_crash);
     }
 
 

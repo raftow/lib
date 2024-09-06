@@ -20,10 +20,15 @@
               return "<div class=\"cline-att att-$lang bg-$odd_oven\"><div class=\"cline-att-name att-name-$lang\">$name_html</div><div class=\"cline-att-val att-val-$lang\">$val_html</div></div>";
         }
         
-        function hzm_format_command_line($type, $string, $lang="en")
+        function hzm_format_command_line($type, $string, $lang="en", $pre=false)
         {
             $string = str_replace("  ","&nbsp;&nbsp;", $string);
-            return "<span class=\"cline-$lang cline-message cline-$type\">$string</span>";
+            $type_arr = explode("_",$type);
+            $type_css = implode(" ",$type_arr);
+            if($pre) $type_css .= " ".$pre;
+
+            if(!$pre) return "<span class=\"cline-$lang cline-message cline-$type\">$string</span>";
+            else return "<span class=\"cline-$lang cline-message cline-$type\"><pre class='$type_css'>$string</pre></span>";
         }
         
         function decodeHzmTemplate($tpl_content, $data_tokens)
@@ -69,25 +74,25 @@
                   
                   if($object_module_class == "module")
                   {
-                     $object_class_file = "module";
+                     $object_table_file = "module";
                      $object_module = "ums";
                   }
                   elseif($object_module_class == "table")
                   {
-                     $object_class_file = "atable";
+                     $object_table_file = "atable";
                      $object_module = "pag";
                   }
                   elseif($object_module_class == "field")
                   {
-                     $object_class_file = "afield";
+                     $object_table_file = "afield";
                      $object_module = "pag";
                   }
                   else
                   {
-                     list($object_class_file, $object_module) = explode(".",$object_module_class);
+                     list($object_table_file, $object_module) = explode(".",$object_module_class);
                   }
                   
-                  return array($object_class_file, $object_module);
+                  return array($object_table_file, $object_module);
         }
         
           
