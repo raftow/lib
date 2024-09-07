@@ -20,15 +20,17 @@
               return "<div class=\"cline-att att-$lang bg-$odd_oven\"><div class=\"cline-att-name att-name-$lang\">$name_html</div><div class=\"cline-att-val att-val-$lang\">$val_html</div></div>";
         }
         
-        function hzm_format_command_line($type, $string, $lang="en", $pre=false)
+        function hzm_format_command_line($type, $string, $lang="en", $pre=false, $coding=false)
         {
-            $string = str_replace("  ","&nbsp;&nbsp;", $string);
+            if($type=="php") $coding=true;   
+            if($type=="sql") $coding=true;
+            if(!$coding) $string = str_replace("  ","&nbsp;&nbsp;", $string);
             $type_arr = explode("_",$type);
             $type_css = implode(" ",$type_arr);
             if($pre) $type_css .= " ".$pre;
 
             if(!$pre) return "<span class=\"cline-$lang cline-message cline-$type\">$string</span>";
-            else return "<span class=\"cline-$lang cline-message cline-$type\"><pre class='$type_css'>$string</pre></span>";
+            else return "<span class=\"cline-$lang cline-message cline-$type\"><textarea class='$type_css'>$string</textarea></span>";
         }
         
         function decodeHzmTemplate($tpl_content, $data_tokens)
@@ -68,31 +70,36 @@
         }
         
         
-        function parse_table_and_module($object_module_class)
+        function parse_table_and_module($object_module_table)
         {
-                  $object_module_class = strtolower($object_module_class);
+                  $object_module_table = strtolower($object_module_table);
                   
-                  if($object_module_class == "module")
+                  if($object_module_table == "module")
                   {
-                     $object_table_file = "module";
+                     $object_table = "module";
                      $object_module = "ums";
                   }
-                  elseif($object_module_class == "table")
+                  elseif($object_module_table == "table")
                   {
-                     $object_table_file = "atable";
+                     $object_table = "atable";
                      $object_module = "pag";
                   }
-                  elseif($object_module_class == "field")
+                  elseif($object_module_table == "field")
                   {
-                     $object_table_file = "afield";
+                     $object_table = "afield";
+                     $object_module = "pag";
+                  }
+                  elseif($object_module_table == "domain")
+                  {
+                     $object_table = "domain";
                      $object_module = "pag";
                   }
                   else
                   {
-                     list($object_table_file, $object_module) = explode(".",$object_module_class);
+                     list($object_table, $object_module) = explode(".",$object_module_table);
                   }
                   
-                  return array($object_table_file, $object_module);
+                  return array($object_table, $object_module);
         }
         
           
