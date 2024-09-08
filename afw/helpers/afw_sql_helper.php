@@ -106,6 +106,7 @@ class AfwSqlHelper extends AFWRoot
         // if($table_prefixed=="c 0license.license")  throw new AfwRuntimeException("obj->fieldsHasChanged() = ".var_export($obj->fieldsHasChanged(),true));
         // rafik : since version 2.0.1 we put FIELDS_UPDATED the old value
         $old_val_query_part = "\n";
+        // if($obj->getMyClass()=='Afield') throw new AfwRuntimeException("logicDelete after setting active false . hasChanged=".var_export($obj->hasChanged(),true)." fieldsHasChanged=".var_export($obj->fieldsHasChanged(),true));
         foreach ($obj->fieldsHasChanged() as $key => $old_value) {
             $value = $obj->getAfieldValue($key);
             if (is_array($value)) {
@@ -115,6 +116,12 @@ class AfwSqlHelper extends AFWRoot
             $isTechField = $obj->isTechField($key);
             if (!$isTechField) {
                 $structure = AfwStructureHelper::getStructureOf($obj, $key);
+                /*
+                if($obj->getMyClass()=='Afield' and $key=='avail') 
+                {
+                    throw new AfwRuntimeException("logicDelete after setting $key = $value and it was $old_value . hasChanged=".var_export($obj->hasChanged(),true)." fieldsHasChanged=".var_export($obj->fieldsHasChanged(),true));
+                }
+                */
 
                 if (
                     isset($structure) and
@@ -235,11 +242,13 @@ class AfwSqlHelper extends AFWRoot
         $sql_query,
         $throw_error = true,
         $throw_analysis_crash = true
-    ) {
+    ) 
+    {
+        
         AfwBatch::print_sql("<br>\n ############################################################################# <br>\n");
         AfwBatch::print_sql("<br>\nexecQuery will execute : <br>\n");
         AfwBatch::print_sql("<br>\n$sql_query <br>\n");
-
+        
 
 
         list($result, $project_link_name) = AfwDatabase::db_query(
@@ -1147,6 +1156,9 @@ class AfwSqlHelper extends AFWRoot
                     die(static::$TABLE." updating ... before get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($object-> FIELDS_UPDATED)." / can update = $can_update / FIELDS_UPDATED = " . var_export($object-> FIELDS_UPDATED,true));
                 }
                 */
+
+                
+        
 
                 list($query, $fields_updated, $report) = AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated);
 
