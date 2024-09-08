@@ -679,10 +679,15 @@ class AFWObject extends AFWRoot
         }
         if (AfwStructureHelper::fieldExists($this,$this->fld_ACTIVE())) {
             $this->set($this->fld_ACTIVE(), 'N');
-
+            
             if ($commit) {
+                
                 return $this->update($only_me);
             }
+        }
+        else
+        {
+            throw new AfwRuntimeException("call to logicDelete without define an 'active' field in structure.");
         }
 
         return 0;
@@ -2036,7 +2041,7 @@ class AFWObject extends AFWRoot
                     $this->FIELDS_UPDATED[$attribute] = $old_value_changed;
                     // $this->debugg_field_updated_for_insert_from = $old_value_changed;
                 } else {
-                    $this->FIELDS_UPDATED[$attribute] = $value;
+                    $this->FIELDS_UPDATED[$attribute] = '@@nov@@'; // ie. no old value as empty object example if we work on empty object to do an update not only on me
                     // $this->debugg_field_updated_from = $value;
                 }
                 //if(($attribute=="status_id")) throw new AfwRuntimeException(" nothing_updated = $nothing_updated, simul_do_not_save = $simul_do_not_save id=".$this->getId().", attribute=$attribute, value = $value, this->FIELDS_UPDATED=".var_export($this->FIELDS_UPDATED,true));
@@ -2763,6 +2768,7 @@ class AFWObject extends AFWRoot
      */
     public function update($only_me = true)
     {
+        
         return AfwSqlHelper::updateObject($this, $only_me);
     }
 

@@ -176,7 +176,7 @@ class AfwUmsPagHelper extends AFWRoot
 
     public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false, $restrictToField="")
     {
-        global $lang;
+        global $lang, $the_last_sql;
         $file_dir_name = dirname(__FILE__);
         $mcode = strtolower($module);
         $table_name = strtolower($table);
@@ -259,7 +259,8 @@ class AfwUmsPagHelper extends AFWRoot
         $fldObj = new Afield();
         $fldObj->where("atable_id = $tbl_id");
         $fldObj->logicDelete(true, false);
-
+        
+        // throw new AfwRuntimeException("rafik medali debugg framework the_last_sql=$the_last_sql or debugg_reason_non_update=".$fldObj->debugg_reason_non_update);
         
         foreach ($this_db_structure as $attribute => $structr) 
         {
@@ -396,6 +397,7 @@ class AfwUmsPagHelper extends AFWRoot
                         if (isset($obj->UNIQUE_KEY) and is_array($obj->UNIQUE_KEY) and (!in_array($attribute, $obj->UNIQUE_KEY))) {
                             $fld->set('distinct_for_list', 'N');
                         } else {
+                            if($attribute == "original_name") throw new AfwRuntimeException("rafik-medali : obj->UNIQUE_KEY = ".var_export($obj->UNIQUE_KEY,true)." obj = ".var_export($obj,true));
                             $fld->set('distinct_for_list', 'Y');
                         }
                     }
