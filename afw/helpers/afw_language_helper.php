@@ -12,6 +12,11 @@ class AfwLanguageHelper
         return $lang;
     }
 
+    /**
+     * @param AFWObject $object
+     * 
+     * 
+     */
 
     public static final function getAttributeTranslation($object, $attribute, $lang = 'ar', $short = false)
     {
@@ -105,9 +110,10 @@ class AfwLanguageHelper
                 //        AFWDebugg::log("traduire from file $nom_file ");
 
                 if (file_exists($nom_file2)) {
+                    // if(($module=="adm") and ($nom_table=="applicant")) echo("tarjem find 1 the file $nom_file2");
                     //if($this->MY_DEBUG)
                     //    AFWDebugg::log("traduire include_once $nom_file ");
-                    include_once $nom_file2;
+                    include $nom_file2;
                     //if($this->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
@@ -121,11 +127,12 @@ class AfwLanguageHelper
                 }
 
                 if (file_exists($nom_file)) {
-                    // if(($module=="sis") and ($nom_table=="student")) die("nom_file2=$nom_file2 not found");
+                    //if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) echo(" 2. tarjem find the file nom_file=$nom_file <br>");
                     //if($this->MY_DEBUG)
                     //    AFWDebugg::log("traduire include_once $nom_file ");
-                    include_once $nom_file;
-                    //if($this->MY_DEBUG)
+                    include $nom_file;
+                    // if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) die(" 2. tarjem : trad[$nom_table][$nom_col] = ".$trad[$nom_table][$nom_col]);
+                    // if($this->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
                     if (isset($trad) and $trad and (!is_array($trad))) {
@@ -149,8 +156,8 @@ class AfwLanguageHelper
                     '_all.php';
 
                 if (file_exists($general_nom_file)) {
-                    include_once $general_nom_file;
-
+                    include $general_nom_file;
+                    // if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) die("tarjem find 3 the file general_nom_file=$general_nom_file");
                     if (isset($trad) and $trad and (!is_array($trad))) {
                         throw new AfwRuntimeException("after include_once $general_nom_file trad 3 is " . var_export($trad, true));
                     }

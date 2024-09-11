@@ -174,6 +174,12 @@ class AfwUmsPagHelper extends AFWRoot
         return [$mdl, $tbl, $mdl_id, $tbl_id, $mdl_new, $tbl_new];
     }
 
+    /**
+     * @param AFWObject $obj
+     * 
+     * 
+     */
+
     public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false, $restrictToField="")
     {
         global $lang, $the_last_sql;
@@ -294,7 +300,7 @@ class AfwUmsPagHelper extends AFWRoot
 
                     $fld->set('avail', 'Y');
                     $fld->set('answer_module_id', '0');
-                    $fld->commit();
+                    
                     if ($field_to_create or $updateIfExists) {
                         if ($structure['FGROUP']) {
                             $fgroup_id = AfieldGroup::loadByMainIndex(
@@ -323,11 +329,23 @@ class AfwUmsPagHelper extends AFWRoot
                             );
                         }
 
-                        $fld->set('titre',trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = false))));
-                        $fld->set('titre_short',trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = true))));
+                        $titre       = trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = false)));
+                        $titre_short = trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = true )));
+                        $titre_en    = trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = false)));
+                        $titre_short_en = trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = true )));
+                        /*
+                        if($attribute == "address_type_enum")
+                        {
+                            die("rafik ddbbgg : titre_short_en = $titre_short_en titre_short_en = $titre_short_en titre_en = $titre_en titre = $titre titre_short = $titre_short");
+                        }
+                        */
+                        
 
-                        $fld->set('titre_en',trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = false))));
-                        $fld->set('titre_short_en',trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = true))));
+                        $fld->set('titre',$titre);
+                        $fld->set('titre_short',$titre_short);
+
+                        $fld->set('titre_en',$titre_en);
+                        $fld->set('titre_short_en',$titre_short_en);
 
 
                         $this_help_text_ar = $obj->translate(
@@ -401,14 +419,14 @@ class AfwUmsPagHelper extends AFWRoot
                             $fld->set('distinct_for_list', 'Y');
                         }
                     }
-
-                    if ($field_to_create) {
-                        if ($fld->commit()) {
-                            $fld_i++;
+                    if ($fld->commit()) {
+                        if ($field_to_create) 
+                        {
+                                $fld_i++;
                         }
-                    } else {
-                        if ($fld->update()) {
-                            $fld_u++;
+                        else 
+                        {
+                                $fld_u++;
                         }
                     }
 

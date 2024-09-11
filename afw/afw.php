@@ -3703,11 +3703,11 @@ class AFWObject extends AFWRoot
             $nom_table,
             $module
         );
-        if (!$return and $nom_col == '_DISPLAY') {
-            throw new AfwRuntimeException(
-                "AfwLanguageHelper::tarjem($nom_col, $langue,$operator,$nom_table, $module)"
-            );
+        /*
+        if ($nom_col == 'address_type_enum') {
+            throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem($nom_col, $langue,$operator,$nom_table, $module)");
         }
+        */
         return $return;
     }
 
