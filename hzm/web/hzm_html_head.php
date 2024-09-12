@@ -97,6 +97,7 @@ if (!$my_font) $my_font = "front";
   <!-- end plugins -->
   <!-- datatable/css/js -->
   <?php
+  $pagecode = AfwUrlManager::currentPageCode();
   $cmodule = AfwUrlManager::currentURIModule();
   $xmodule = AfwSession::getCurrentlyExecutedModule();
 
@@ -230,6 +231,8 @@ if (!$my_font) $my_font = "front";
   ?>
 
   <script src="./js/module.js"></script>
+  <script src="./js/<?php echo $pagecode; ?>.js"></script>
+  
   <?php
   include("my_javascripts.php");
   ?>

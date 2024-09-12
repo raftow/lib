@@ -200,4 +200,62 @@ class AfwUrlManager extends AFWRoot
         $phpself_arr = explode('/', $phpself);
         return strtolower($phpself_arr[0]);
     }
+
+    public static function currentPageCode()
+    {
+        $currentPageCodeArr = [];
+        $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
+        $serv_uri = str_replace('.php','',$serv_uri);
+        $serv_uri = str_replace('?','/', $serv_uri);
+        $serv_uri = str_replace('\\','/', $serv_uri);
+        $serv_uri = str_replace('=','/', $serv_uri);
+        $serv_uri = str_replace('.','/', $serv_uri);
+        $serv_uri = str_replace('&','/', $serv_uri);
+        $uri_items = explode('/', $serv_uri);
+        unset($uri_items[0]);
+        unset($uri_items[1]);
+        foreach($_POST as $var => $varval)
+        {
+            if(is_string($varval))
+            {
+                $uri_items[] = trim(strtolower($var));  
+                $varval = str_replace('.php','',$varval);          
+                $uri_items[] = $varval;            
+            }
+        }
+        $previous_item = "";
+        foreach($uri_items as $uri_item) 
+        {
+            if(AfwStringHelper::stringStartsWith($uri_item,'afw_mode_'))
+            {
+                $uri_item = str_replace('afw_mode_','',$uri_item);
+            }
+
+            if(($uri_item=="main")) $uri_item = "m";
+            if(($uri_item=="main_page")) $uri_item = "mp";
+            if(($uri_item=="ed") and ($previous_item=="mp")) $uri_item = "edit";
+            
+            if(
+                (strlen($uri_item)>=3) 
+                and (!is_numeric($uri_item)) 
+                and (!AfwStringHelper::stringStartsWith($uri_item,'sel_'))
+                and ($uri_item != "currmod")
+                and ($uri_item != "php")
+                and ($uri_item != "submit")
+                and ($uri_item != "newo")
+                and ($uri_item != "limit")
+                and ($uri_item != "main_page")
+                and (!AfwStringHelper::is_arabic($uri_item,0.4))
+            )
+            {
+                $currentPageCodeArr[] = strtolower($uri_item);
+            }
+            $previous_item = $uri_item;
+        }
+
+        return implode("_",$currentPageCodeArr);
+    }
+
+
+    
 }
