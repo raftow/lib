@@ -15,6 +15,7 @@ foreach($_REQUEST as $key => $value)
         elseif($key=="mp") $Main_Page = $value;
         elseif($key=="pm") $Main_Page_Module = $value;
         elseif($key=="cm") $currmod = $value;
+        elseif($key=="cs") $currstep = $value;
         elseif($key=="io") $id_origin = $value;
         elseif($key=="co") $class_origin = $value;
         elseif($key=="mo") $module_origin = $value;

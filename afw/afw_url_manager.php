@@ -10,6 +10,7 @@ class AfwUrlManager extends AFWRoot
             if($param == "Main_Page") return "mp";
             if($param == "Main_Page_Module") return "pm";
             if($param=="currmod") return "cm";
+            if($param=="currstep") return "cs";
             if($param=="id_origin") return "io";
             if($param=="class_origin") return "co";
             if($param=="module_origin") return "mo";

@@ -254,6 +254,7 @@ else
     $out_scr .= '   <input type="hidden" name="pbmon"     value="1"/>
             <input type="hidden" name="file_obj"   value="_'.$cl.'"/>
             <input type="hidden" name="class_obj"  value="'.$cl.'"/>
+            <input type="hidden" name="class_parent"  value="'.$clp.'"/>
             <input type="hidden" name="id_obj"     value="'.$id.'"/>
                     <input type="hidden" name="currmod"   value="'.$currmod.'"/>
                     <input type="hidden" name="popup"   value="'.$popup.'"/>

@@ -737,10 +737,21 @@ class AfwLoadHelper extends AFWRoot
                     foreach ($result_row as $attribute => $attribute_value) {
                         if (!is_numeric($attribute)) {
                             // if($attribute=="PK") die("rafik-20240204-01 result_row=".var_export($result_row,true));
-                            if(($attribute!="PK") and ($attribute!="debugg_source"))
+                            if(($attribute!="PK") and 
+                               ($attribute!="debugg_source") and
+                               (!self::isJoinEagerAttribute($attribute))
+                               )
                             {
-                                $object->set($attribute, $attribute_value);
-                                $object->unsetAfieldDefaultValue($attribute);
+                                try
+                                {
+                                    $object->set($attribute, $attribute_value);
+                                    $object->unsetAfieldDefaultValue($attribute);
+                                }
+                                catch(Exception $e)
+                                {
+                                    throw new AfwRuntimeException($e->getMessage().". The set is from result_row = ".var_export($result_row,true));
+                                }
+                                
                             }                            
                         } else {
                             $debugg_res_row .= ",$attribute";
@@ -854,6 +865,11 @@ class AfwLoadHelper extends AFWRoot
         return $return;
     }
 
+    private static function isJoinEagerAttribute($attribute)
+    {
+        return (AfwStringHelper::stringStartsWith($attribute, 'join') and AfwStringHelper::stringContain($attribute, 'id00'));
+    }
+
 
     /**
      * loadMany
@@ -877,7 +893,7 @@ class AfwLoadHelper extends AFWRoot
 
 
         // DISABLED EAGER to check lenteur from there or no ?
-        // No it is ok not from eager find the reason elsewhere
+        // Now it is ok it is not from eager find the reason elsewhere
         // $eager_joins = false;
 
         global $lang, $_lmany_analysis, $loadMany_max, $MODE_DEVELOPMENT;
@@ -1363,7 +1379,7 @@ class AfwLoadHelper extends AFWRoot
 
         $from_join_row = [];
         foreach ($row as $col => $val) {
-            if (AfwStringHelper::stringStartsWith($col, "join" . $attribute . "00_")) {
+            if ((!is_numeric($col)) and AfwStringHelper::stringStartsWith($col, "join" . $attribute . "00_")) {
                 $attrib_real = AfwStringHelper::removePrefix($col, "join" . $attribute . "00_");
                 // die("AfwStringHelper::removePrefix($attribute, join${attribute}00_) = $attrib_real");
                 $from_join_row[$attrib_real] = $val;

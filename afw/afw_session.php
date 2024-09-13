@@ -563,6 +563,20 @@ class AfwSession extends AFWRoot {
                 self::setSessionVar("error", self::pushString(self::getSessionVar("error"),$error));
                 if($css_class) self::setSessionVar("error-class", $css_class);
         }
+
+        public static function pushPbmResult($lang, $error, $info, $warn, $technical, $pbMethodCode="mainpage")
+        {
+                if($technical)
+                {
+                        // die("here warn = $warn");
+                        if($warn) $warn .= "<br>";
+                        $warn .= AfwLanguageHelper::tarjemMessage("There are more technical details with administrator",$lang);
+                        $warn .= "<div class='technical'>$technical</div>";
+                }
+                if($info) AfwSession::pushInformation($info, "method-$pbMethodCode"); 
+                if($error) AfwSession::pushError($error); 
+                if($warn) AfwSession::pushWarning($warn);         
+        }
         
 
         public static function pullSuccess()

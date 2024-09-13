@@ -1829,8 +1829,8 @@ class AFWObject extends AFWRoot
             $forceSet = $this->force_mode;
         }
         //$call_method = "set(attribute = $attribute, value = $value)";
-        if ($attribute == 'id' and !$value and !$this->authorize_empty_of_id) {
-            throw new AfwRuntimeException('trying to empty id ...');
+        if ($attribute == 'id' and $this->id and !$value and !$this->authorize_empty_of_id) {
+            throw new AfwRuntimeException($this->class.' : trying to empty id ... it was id='.$this->id);
         }
 
         $attribute = AfwStructureHelper::shortNameToAttributeName($this,$attribute);
@@ -3104,7 +3104,7 @@ class AFWObject extends AFWRoot
         return $this->getDefaultDisplay($lang);
     }
 
-    final public function getDefaultDisplay($lang = 'ar')
+    final public function getDefaultDisplay($lang = 'ar', $implodeChar = " ")
     {
         //if ($this instanceof Applicant) die("df is ".var_export($this->DISPLAY_FIELD,true));
         if (!$this->id) 
@@ -3125,7 +3125,7 @@ class AFWObject extends AFWRoot
             {
                 $disp_decoded[] = $this->decode($key);
             }
-            $return = implode(" ", $disp_decoded);
+            $return = implode($implodeChar, $disp_decoded);
             //if ($this instanceof Applicant) die("for instanceof Applicant return = $return because $disp_decoded = ".var_export($disp_decoded,true));
         } 
         elseif ($this->DISPLAY_FIELD) 
@@ -3139,7 +3139,7 @@ class AFWObject extends AFWRoot
             {
                 $uk_decoded[] = $this->decode($key);
             }
-            $return = implode("-", $uk_decoded);
+            $return = implode($implodeChar, $uk_decoded);
         } 
         else
         {
@@ -5046,8 +5046,6 @@ class AFWObject extends AFWRoot
             $langue = 'ar';
         }
 
-        $target = '';
-        $popup_t = '';
         $this->debugg_last_attribute = $attribute;
 
         if (!$structure) {
@@ -5093,706 +5091,48 @@ class AFWObject extends AFWRoot
             // done
         } elseif ($structure['TYPE'] == 'FK') {
             if (empty($structure['CATEGORY'])) {
-                if ($value) {
-                    if (!$structure['DISPLAY']) {
-                        $structure['DISPLAY'] = $structure['FORMAT'];
-                    }
-                    if (
-                        strtoupper($structure['DISPLAY']) == 'SHOW' and
-                        $value > 0
-                    ) {
-                        $valObj = $this->get($key);
-                        if ($valObj) {
-                            $data_to_display = $valObj->showMe(
-                                $structure['STYLE']
-                            );
-                        } else {
-                            $data_to_display = '';
-                        }
-                        $link_to_display = '';
-                    } elseif (strtoupper($structure['DISPLAY']) == 'MINIBOX') {
-                        $valObj = $this->get($key);
-                        if ($valObj) {
-                            $data_to_display = $valObj->showMinibox(
-                                $structure['STYLE']
-                            );
-                        } else {
-                            $data_to_display = '';
-                        }
-                        $link_to_display = '';
-                    } elseif (strtoupper($structure['DISPLAY']) == 'SHORT') {
-                        $valObj = $this->get($key);
-                        if ($valObj) {
-                            $data_to_display = $valObj->getShortDisplay($lang);
-                        } else {
-                            $data_to_display = '';
-                        }
-                        $link_to_display = '';
-                    } else {
-                        $data_to_display = $this->decode($key);
-                        // if(($key == "cher_id") and (!contient(trim(strtolower($data_to_display)),"<img"))) die($this->getDisplay("ar")."rafik::data_to_display=$data_to_display");
-                        // if(($key == "cher_id") and (!trim($data_to_display))) die($this->getDisplay("ar")."->decode($key) empty ->getVal($key) = ".$this->getVal($key));
-                        if ($getlink) {
-                            $link_to_display = $this->getLinkForAttribute(
-                                $structure['ANSWER'],
-                                $value,
-                                'display',
-                                $structure['ANSMODULE'],
-                                false,
-                                $getlink
-                            );
-                        }
-                    }
-                } else {
-                    $data_to_display = '';
-                    if ($structure['EMPTY_IS_ALL']) {
-                        $all_code = "ALL-$attribute";
-                        $data_to_display = $this->translate($all_code, $lang);
-                        if ($data_to_display == $all_code) {
-                            $data_to_display = $this->translateOperator(
-                                'ALL',
-                                $lang
-                            );
-                        }
-                    }
-                }
-            } else {
-
-
-                switch ($intelligent_category) {
-                    case 'VIRTUAL':
-                        $data_to_display = $this->getVirtual($key, 'value', '');
-                        if ($getlink) {
-                            $link_to_display = $this->getLinkForAttribute(
-                                $structure['ANSWER'],
-                                $value,
-                                'display',
-                                $structure['ANSMODULE']
-                            );
-                        }
-                        break;
-
-                    case 'ITEMS':
-                        if ($structure['SHOW_DATA'] != 'EXAMPLE') {
-                            $items_objs = $this->get($key, 'object', '', false);
-                            // if($key=="attendanceList") throw new AfwRuntimeException("$this - > get($key) = ".var_export($items_objs,true));
-                        } else {
-                            $max_items_to_show = $structure['SHOW_MAX_DATA'];
-                            if (!$max_items_to_show) {
-                                $max_items_to_show = 600;
-                            }
-                            $items_objs = $this->get(
-                                $key,
-                                'object',
-                                '',
-                                false,
-                                $max_items_to_show
-                            );
-                        }
-                        if (strtoupper($structure['FORMAT']) == 'TREE') {
-                            reset($items_objs);
-                            $first_item = current($items_objs);
-                            $data_to_display = '';
-                            if ($first_item) {
-                                //$objme = AfwSession::getUserConnected();
-                                $first_item->deleteIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'DELETE',
-                                    $structure
-                                );
-                                $first_item->editIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'EDIT',
-                                    $structure
-                                );
-                                $first_item->viewIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'VIEW',
-                                    $structure
-                                );
-                                $first_item->attachIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'ATTACH',
-                                    $structure
-                                );
-                                $first_item->showId = $structure['SHOW-ID'];
-
-                                list(
-                                    $html_tree,
-                                    $js_tree,
-                                    $countNodes,
-                                ) = AfwShowHelper::showTree(
-                                    $key . 'tree',
-                                    $items_objs,
-                                    $structure['LINK_COL'],
-                                    $structure['ITEMS_COL'],
-                                    $structure['FEUILLE_COL'],
-                                    $structure['FEUILLE_COND_METHOD'],
-                                    $objme = AfwSession::getUserConnected(),
-                                    $langue,
-                                    $structure['ALL_ITEMS'],
-                                    !$structure['IFRAME_BELOW']
-                                );
-
-                                //die("showTree($key tree = $countNodes, $html_tree");
-
-                                if (!$countNodes) {
-                                    if ($structure['EMPTY-ITEMS-MESSAGE']) {
-                                        $empty_code =
-                                            $structure['EMPTY-ITEMS-MESSAGE'];
-                                    } else {
-                                        $empty_code = 'atr-empty';
-                                    }
-
-                                    $data_to_display =
-                                        "<div class='empty_message'>" .
-                                        $this->translate($empty_code, $langue) .
-                                        '</div>';
-                                } else {
-                                    $data_to_display =
-                                        $html_tree .
-                                        "\n<script>\n$js_tree\n</script>\n\n\n";
-                                }
-                            }
-                        } elseif (strtoupper($structure['FORMAT']) == 'CROSSED') {
-                            reset($items_objs);
-                            $first_item = current($items_objs);
-                            $data_to_display = '';
-                            if ($first_item) {
-                                // $ret_cols_arr = $first_item->getRetrieveCols($mode);
-
-                                $cross_col = $structure['CROSS_COL'];
-                                $crossed_field_col =
-                                    $structure['CROSSED_FIELD_COL'];
-                                $crossed_value_col =
-                                    $structure['CROSSED_VALUE_COL'];
-                                $data = [];
-                                $index_cross = [];
-
-                                $indexc = 1;
-                                $header_trad = [];
-                                $header_trad[$cross_col] = $first_item->translate($cross_col, $langue);
-                                foreach ($items_objs as $objI) {
-                                    $cross_val = $objI->showAttribute($cross_col); //$objI->getVal($cross_col);
-                                    if (!$index_cross[$cross_val]) {
-                                        $index_cross[$cross_val] = $indexc;
-                                        $indexc++;
-                                    }
-                                    $data[$index_cross[$cross_val] - 1][$cross_col] = $cross_val;
-
-                                    if (
-                                        !$objI->attributeIsApplicable(
-                                            $crossed_value_col
-                                        )
-                                    ) {
-                                        list(
-                                            $icon,
-                                            $textReason,
-                                            $wd,
-                                            $hg,
-                                        ) = $objI->whyAttributeIsNotApplicable(
-                                            $crossed_value_col
-                                        );
-                                        if (!$wd) {
-                                            $wd = 20;
-                                        }
-                                        if (!$hg) {
-                                            $hg = 20;
-                                        }
-                                        $data[$index_cross[$cross_val] - 1][$objI->calc($crossed_field_col)] = "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>";
-                                    } else {
-                                        $data[$index_cross[$cross_val] - 1][$objI->calc($crossed_field_col)] = $objI->showAttribute(
-                                            $crossed_value_col
-                                        );
-                                    }
-
-                                    $header_trad[$objI->calc($crossed_field_col)]
-                                        = $objI->translate($objI->decode($crossed_field_col), $langue);
-                                }
-
-                                list($html, $ids) = AfwShowHelper::tableToHtml($data, $header_trad);
-
-                                $data_to_display = $html; //." data=".var_export($data,true)." header=".var_export($header_trad,true)
-                            }
-                        } 
-                        elseif (strtoupper($structure['FORMAT']) == 'RETRIEVE') 
-                        {
-                            reset($items_objs);
-                            $first_item = current($items_objs);
-                            $data_to_display = '';
-                            if ($first_item) {
-                                //$objme = AfwSession::getUserConnected();
-                                $first_item->deleteIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'DELETE',
-                                    $structure
-                                );
-                                $first_item->editIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'EDIT',
-                                    $structure
-                                );
-                                $first_item->viewIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'VIEW',
-                                    $structure
-                                );
-                                $first_item->attachIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'ATTACH',
-                                    $structure
-                                );
-                                $first_item->showId = $structure['SHOW-ID'];
-                                //if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("first_item = ".var_export($first_item,true));
-
-                                // if($attribute=="allEmployeeList") die("structure = ".var_export($structure,true));
-                                $hide_retrieve_cols =
-                                    $structure['DO-NOT-RETRIEVE-COLS'];
-                                if (!$hide_retrieve_cols) {
-                                    $hide_retrieve_cols = [];
-                                }
-                                if ($structure['ITEM']) {
-                                    $hide_retrieve_cols[] = $structure['ITEM'];
-                                }
-
-                                // if($attribute=="currentRequests") die("structure = ".var_export($structure,true)." first_item->hide_retrieve_cols = ".var_export($first_item->hide_retrieve_cols,true)." structure[DO-NOT-RETRIEVE-COLS]=".var_export($structure["DO-NOT-RETRIEVE-COLS"],true));
-
-                                $force_retrieve_cols =
-                                    $structure['FORCE-RETRIEVE-COLS'];
-                                $nowrap_cols = $structure['NOWRAP-COLS'];
-
-                                $group_retieve_arr = $structure['RETRIEVE-GROUPS']
-                                    ? $structure['RETRIEVE-GROUPS']
-                                    : $structure['RETRIEVE_GROUPS'];
-
-                                if (!$group_retieve_arr) {
-                                    $group_retieve_arr = [];
-                                    $group_retieve_arr[] = 'display';
-                                    $no_tabs = true;
-                                } else {
-                                    $no_tabs = false;
-                                }
-
-                                $html_display = [];
-
-                                foreach ($group_retieve_arr as $group_retieve) {
-                                    $first_item->mode_retieve = $group_retieve;
-                                    $first_item->showAsDataTable =
-                                        count($items_objs) > 20 ? ($structure['DATA_TABLE'] ? $structure['DATA_TABLE'] : "dtb_$key") : '';
-                                    if ($first_item->showAsDataTable) 
-                                    {
-                                        $first_item->showAsDataTable .= '_' . $group_retieve;
-                                    }
-                                    $options = [];
-                                    $options['hide_retrieve_cols'] = $hide_retrieve_cols;
-                                    $options['force_retrieve_cols'] = $force_retrieve_cols;
-                                    $options['nowrap_cols'] = $nowrap_cols;
-                                    list(
-                                        $html_display[$group_retieve],
-                                        $items_objs,
-                                        $ids,
-                                    ) = AfwShowHelper::showManyObj(
-                                        $items_objs,
-                                        $first_item,
-                                        $objme = AfwSession::getUserConnected(),
-                                        $options
-                                    );
-                                    if ($html_display[$group_retieve] == '') {
-                                        if ($structure['EMPTY-ITEMS-MESSAGE']) {
-                                            $empty_code =
-                                                $structure['EMPTY-ITEMS-MESSAGE'];
-                                        } else {
-                                            $empty_code = 'atr-empty';
-                                        }
-
-                                        $html_display[$group_retieve] =
-                                            "<div class='empty_message'>" .
-                                            $this->translate(
-                                                $empty_code,
-                                                $langue
-                                            ) .
-                                            '</div>';
-                                    }
-                                }
-
-                                //if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("html_display = ".var_export($html_display,true));
-
-                                if ($no_tabs) {
-                                    $data_to_display = $html_display['display'];
-                                } else {
-                                    $data_to_display =
-                                        "<ul class='nav nav-tabs'>\n";
-                                    $div_tabs = "<div class='tab-content'>\n";
-
-                                    $itab = 0;
-                                    foreach ($html_display
-                                        as $group_retieve =>
-                                        $html_group_retrieve) {
-                                        if ($first_item) {
-                                            $group_retieve_label = $first_item->translate(
-                                                $group_retieve,
-                                                $langue
-                                            );
-                                        } else {
-                                            $group_retieve_label = $this->translate(
-                                                $group_retieve,
-                                                $langue
-                                            );
-                                        }
-                                        if ($itab == 0) {
-                                            $tab_active =
-                                                " class='hzm-tab active'";
-                                        } else {
-                                            $tab_active = " class='hzm-tab'";
-                                        }
-                                        if ($itab == 0) {
-                                            $div_tab_active = ' in active';
-                                        } else {
-                                            $div_tab_active = '';
-                                        }
-
-                                        $data_to_display .= "   <li $tab_active><a data-toggle='tab' href='#tab${attribute}$itab' class='hzm-tab-link'>$group_retieve_label</a></li>\n";
-                                        $div_tabs .= "<div id='tab${attribute}$itab' class='tab-pane fade $div_tab_active'>\n";
-                                        $div_tabs .=
-                                            $html_group_retrieve . "\n";
-                                        $div_tabs .= "</div>\n";
-                                        $itab++;
-                                    }
-                                    $data_to_display .= "</ul>\n";
-                                    $div_tabs .= "</div>\n";
-                                    $data_to_display .= $div_tabs;
-                                }
-                                // if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("data_to_display : <br> ".var_export($data_to_display,true));
-                            }
-                        } elseif (
-                            strtoupper($structure['FORMAT']) == 'MINIBOX'
-                        ) {
-                            reset($items_objs);
-                            $first_item = current($items_objs);
-                            $data_to_display = '';
-                            if ($first_item) {
-
-                                $first_item->deleteIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'DELETE',
-                                    $structure
-                                );
-                                // if($first_item->deleteIcon) die("attribute $attribute has in minibox mode the icon delete, see structure : ".var_export($structure,true));
-                                $first_item->editIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'EDIT',
-                                    $structure
-                                );
-                                // if($first_item->editIcon) die("attribute $attribute has in minibox mode the icon edit, see structure : ".var_export($structure,true));
-                                $first_item->viewIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'VIEW',
-                                    $structure
-                                );
-                                // if($first_item->viewIcon) die("attribute $attribute has in minibox mode the icon view, see structure : ".var_export($structure,true));
-                                $first_item->attachIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'ATTACH',
-                                    $structure
-                                );
-
-                                $first_item->showId = $structure['SHOW-ID'];
-
-                                $first_item->id_origin = $id_origin;
-                                $first_item->class_origin = $class_origin;
-                                $first_item->module_origin = $module_origin;
-                                $first_item->del_level =
-                                    $structure['ITEMS_DEL_LEVEL'];
-
-                                list(
-                                    $data_to_display,
-                                    $items_objs,
-                                    $ids,
-                                ) = AfwShowHelper::manyMiniBoxes(
-                                    $items_objs,
-                                    $first_item,
-                                    $objme = AfwSession::getUserConnected(),
-                                    $structure
-                                );
-                            }
-
-                            if ($data_to_display == '') {
-                                if ($structure['EMPTY-ITEMS-MESSAGE']) {
-                                    $empty_code =
-                                        $structure['EMPTY-ITEMS-MESSAGE'];
-                                } else {
-                                    $empty_code = 'atr-empty';
-                                }
-
-                                $data_to_display =
-                                    "<div class='empty_message'>" .
-                                    $this->translate($empty_code, $langue) .
-                                    '</div>';
-                            }
-                        } elseif (
-                            strtoupper($structure['FORMAT']) == 'CUSTOM'
-                        ) {
-
-                            $methodCustom = $structure['CUSTOM_FORMAT'];
-                            $data_to_display = '';
-                            reset($items_objs);
-                            $first_item = current($items_objs);
-                            if ($first_item) {
-                                $first_item->deleteIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'DELETE'
-                                );
-                                $first_item->editIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'EDIT'
-                                );
-                                $first_item->viewIcon = $this->enabledIcon(
-                                    $attribute,
-                                    'VIEW'
-                                );
-                                $first_item->showId = $structure['SHOW-ID'];
-                                $first_item->id_origin = $id_origin;
-                                $first_item->class_origin = $class_origin;
-                                $first_item->module_origin = $module_origin;
-                                $first_item->del_level =
-                                    $structure['ITEMS_DEL_LEVEL'];
-                            }
-                            list($data_to_display, $ids) = $this->$methodCustom(
-                                $items_objs,
-                                $first_item,
-                                $objme = AfwSession::getUserConnected(),
-                                $structure
-                            );
-
-                            if ($data_to_display == '') {
-                                if ($structure['EMPTY-ITEMS-MESSAGE']) {
-                                    $empty_code =
-                                        $structure['EMPTY-ITEMS-MESSAGE'];
-                                } else {
-                                    $empty_code = 'atr-empty';
-                                }
-
-                                $data_to_display =
-                                    "<div class='empty_message'>" .
-                                    $this->translate($empty_code, $langue) .
-                                    '</div>';
-                            }
-                        } else {
-                            $data_to_display = '';
-                            foreach ($items_objs as $objs_item) {
-                                if ($getlink) {
-                                    $data_to_display .=
-                                        "<a href=\"" .
-                                        $this->getLinkForAttribute(
-                                            $structure['ANSWER'],
-                                            $objs_item->getId(),
-                                            'display',
-                                            $structure['ANSMODULE']
-                                        ) .
-                                        "\" >";
-                                }
-                                $data_to_display .= (string) $objs_item;
-                                if ($getlink) {
-                                    $data_to_display .= '</a><br/>';
-                                }
-                            }
-                        }
-                        break;
-                    case 'SHORTCUT':
-                        $data_to_display = $this->decode($key);
-                        break;
-                    case 'FORMULA':
-                        if (!$structure['DISPLAY']) {
-                            $structure['DISPLAY'] = $structure['FORMAT'];
-                        }
-                        if (strtoupper($structure['DISPLAY']) == 'MINIBOX') {
-                            $data_to_display = $this->get($key)->showMinibox(
-                                $structure['STYLE']
-                            );
-                            $link_to_display = '';
-                        } else {
-                            $data_to_display = $this->decode($key);
-                            // if($key == "session_status_id") die("$data_to_display = this->decode($key)");
-                            if ($getlink) {
-                                if (
-                                    !$structure['ANSWER'] or
-                                    !$structure['ANSMODULE']
-                                ) {
-                                    throw new AfwRuntimeException(
-                                        " cannot get link for attribute $key , ANSWER table and ANSMODULE should be specified"
-                                    );
-                                }
-                                $link_to_display = $this->getLinkForAttribute(
-                                    $structure['ANSWER'],
-                                    $value,
-                                    'display',
-                                    $structure['ANSMODULE']
-                                );
-                            }
-                        }
-                        break;
-                    default:
-                        $data_to_display = $this->decode($key);
-                        /*foreach ($temp_obj as $val)
-							$str .= $val."<br/>";
-							$data_to_display = $str;*/
-                        break;
-                }
+                list($data_to_display, $link_to_display) = AfwShowHelper::showFK($this, $attribute, $value, $langue, $structure, $getlink);    
+            } 
+            else
+            {
+                list($data_to_display, $link_to_display) = AfwShowHelper::showVirtualAttribute($this, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $langue, $structure, $getlink);
             }
         } elseif ($structure['TYPE'] == 'MFK') {
-            if (true) {
-                $temp_obj = $this->get($key, 'object', '', false);
-                if (!is_array($temp_obj)) throw new AfwRuntimeException("get($key, object) returned non array type");
-                // if($key=="attendanceList") throw new AfwRuntimeException("$this - > get($key) = ".var_export($temp_obj,true));
-
-                if (strtoupper($structure['FORMAT']) == 'RETRIEVE') {
-                    reset($temp_obj);
-                    $first_item = current($temp_obj);
-                    if ($first_item) {
-                        if (!isset($structure['ICONS']) or $structure['ICONS']) {
-                            // DELETE-ICON is not allowed for MFK as the items are not owned by this object (not like ITEMS)
-                            if ($structure['EDIT-ICON']) {
-                                $first_item->editIcon = $structure['EDIT-ICON'];
-                            }
-                            if (
-                                !isset($structure['VIEW-ICON']) or
-                                $structure['VIEW-ICON']
-                            ) {
-                                $first_item->viewIcon = true;
-                            }
-                            if ($structure['SHOW-ID']) {
-                                $first_item->showId = true;
-                            }
-                        }
-
-                        $objme = AfwSession::getUserConnected();
-
-                        $options = [];
-                        $options['hide_retrieve_cols'] =
-                            $structure['DO-NOT-RETRIEVE-COLS'];
-                        $options['force_retrieve_cols'] =
-                            $structure['FORCE-RETRIEVE-COLS'];
-                        $options['nowrap_cols'] = $structure['NOWRAP-COLS'];
-
-                        list($data_to_display) = AfwShowHelper::showManyObj(
-                            $temp_obj,
-                            $first_item,
-                            $objme,
-                            $options
-                        ); //todo ici il faut utiliser un mode a developper qui n'affiche pas les boutons edit/delete
-                        $link_to_display = '';
-                        //die("rafik : [$data_to_display] ".var_export($temp_obj,true));
-                    }
-                } else {
-                    unset($data_to_display);
-                    unset($link_to_display);
-                    $data_to_display = [];
-                    $link_to_display = [];
-                    foreach ($temp_obj as $id => $val) {
-                        // if(!is_object($val)) throw new AfwRuntimeException("strang non object in mfk array ".var_export($temp_obj,true));
-                        if (is_object($val)) {
-                            $data_to_display[$id] = $val->getDisplay($langue);
-                            if ($getlink) {
-                                $link_to_display[$id] = $this->getLinkForAttribute(
-                                    $structure['ANSWER'],
-                                    $val->getId(),
-                                    'display',
-                                    $structure['ANSMODULE']
-                                );
-                            }
-                        }
-                    }
-
-                    //if($attribute=="arole_mfk") die("data_to_display ($attribute) = ".var_export($data_to_display));
-                }
-            } else {
-                $data_to_display = '';
-            }
-        } elseif ($structure['TYPE'] == 'YN') {
+            list($data_to_display, $link_to_display) = AfwShowHelper::showMFK($this, $attribute, $langue, $structure, $getlink);
+        } 
+        elseif ($structure['TYPE'] == 'YN') 
+        {
             $ynCode = strtoupper($this->decode($key));
-            $data_to_display = $this->showYNValueForAttribute(
-                $ynCode,
-                $key,
-                $langue
-            );
-        } elseif ($structure['TYPE'] == 'PK') {
+            $data_to_display = $this->showYNValueForAttribute($ynCode, $key, $langue);
+        } 
+        elseif ($structure['TYPE'] == 'PK') 
+        {
             if (!$structure['OFFSET']) {
                 $data_to_display = $this->getId();
             } else {
                 $data_to_display = $this->getId() + $structure['OFFSET'];
             }
-        } elseif ($structure['TYPE'] == 'DEL') {
-            $objme = AfwSession::getUserConnected();
-            $val_id = $this->getId();
-            if ($this->userCanDeleteMe($objme) > 0) {
-
-                $currmod = $this->getMyModule();
-                $lbl = $this->getDisplay($langue);
-                $lvl = $structure['DEL_LEVEL'];
-                if (!$lvl) {
-                    $lvl = 2;
-                }
-                if ($attribute == 'atr') {
-                    die('structure = ' . var_export($structure, true));
-                }
-                //$data_to_display = "<a target='popup' href='main.php?Main_Page=afw_mode_delete.php&popup=1&id_origin=$id_origin&class_origin=$class_origin&module_origin=$module_origin;&cl=$val_class&currmod=$currmod&id=$val_id' ><img src='../lib/images/delete.png' width='24' heigth='24'></a>";
-                $data_to_display = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$currmod' lbl='$lbl' lvl='$lvl' class='trash afw-authorised'><img id='del_from_mfk_${val_id}_$key' src='../lib/images/trash.png' width='24' heigth='24'></a>";
-            } else {
-                $data_to_display = "<img id='del_not_authorised_${val_id}_$key' src='../lib/images/lockme.png' width='24' heigth='24'></a>";
-            }
-        } elseif ($structure['TYPE'] == 'SHOW') {
-            $val_id = $this->getId();
-            $currmod = $this->getMyModule();
-            if ($structure['LABEL']) {
-                $my_label = $structure['LABEL'];
-            }
-            if ($structure['ICON']) {
-                $my_icon = $structure['ICON'];
-            }
-            if (!$my_icon) {
-                $my_icon = 'view_ok';
-            }
-            if (!$my_label) {
-                $my_label = "<img src='../lib/images/$my_icon.png' width='24' heigth='24'>";
-            }
-            if ($structure['TARGET']) {
-                $target = "target='" . $structure['TARGET'] . "'";
-            }
-
-            $data_to_display = "<a $target href='main.php?Main_Page=afw_mode_display.php&popup=$popup_t&cl=$val_class&currmod=$currmod&id=$val_id' >$my_label</a>";
-        } elseif ($structure['TYPE'] == 'EDIT') {
-            $val_id = $this->getId();
-            $currmod = $this->getMyModule();
-            if ($structure['LABEL']) {
-                $my_label = $structure['LABEL'];
-            }
-            if ($structure['ICON']) {
-                $my_icon = $structure['ICON'];
-            }
-            if (!$my_icon) {
-                $my_icon = 'modifier';
-            }
-            if (!$my_label) {
-                $my_label = "<img src='../lib/images/$my_icon.png' width='24' heigth='24'>";
-            }
-            if ($structure['TARGET']) {
-                $target = "target='" . $structure['TARGET'] . "'";
-            }
-
-            $data_to_display = "<a $target href='main.php?Main_Page=afw_mode_edit.php&popup=$popup_t&cl=$val_class&currmod=$currmod&id=$val_id' >$my_label</a>";
-        } elseif ($structure['TYPE'] == 'ENUM') {
-            $val = $value;
-            $display_val = $this->decode($key);
-            if ($display_val and $structure['FORMAT-INPUT'] == 'hzmtoggle') {
-                //if(!$display_val) $display_val = "...";
-                // die("key=$key, val=$val, display_val=$display_val, HZM-CSS=".$structure["HZM-CSS"]);
-                $css_arr = AfwStringHelper::afw_explode($structure['HZM-CSS']);
-                $css_val = $css_arr[$val];
-                $data_to_display = "<div class='$css_val'>$display_val</div>";
-            } else {
-                $data_to_display = $display_val;
-            } // ." ==> ".$structure["FORMAT-INPUT"]
-        } else {
+        } 
+        elseif ($structure['TYPE'] == 'DEL') 
+        {
+            list($data_to_display, $link_to_display) = AfwShowHelper::showDeleteButton($this, $attribute, $langue, $structure);
+            
+        } 
+        elseif ($structure['TYPE'] == 'SHOW') 
+        {
+            list($data_to_display, $link_to_display) = AfwShowHelper::showDisplayButton($this, $attribute, $langue, $structure);            
+        } 
+        elseif ($structure['TYPE'] == 'EDIT') 
+        {
+            list($data_to_display, $link_to_display) = AfwShowHelper::showEditButton($this, $attribute, $class_origin, $langue, $structure);            
+            
+        } 
+        elseif ($structure['TYPE'] == 'ENUM') 
+        {
+            list($data_to_display, $link_to_display) = AfwShowHelper::showEnum($this, $attribute, $value, $langue, $structure);            
+        } 
+        else 
+        {
             $data_to_display = $this->decode($key);
             //if($key=="days_nb") die("data_to_display of ($key val:$value) is $data_to_display");
         }
@@ -5803,47 +5143,7 @@ class AFWObject extends AFWRoot
             //if($key == "session_status_id") throw new AfwRuntimeException("we will return [$data_to_display, $link_to_display]");
             return [$data_to_display, $link_to_display];
         } else {
-            //if($key == "session_status_id") die("merge for ($key) ??!!");
-            if (!is_array($data_to_display)) {
-                $data_to_display_arr = [];
-                $data_to_display_arr[] = $data_to_display;
-                $link_to_display_arr = [];
-                $link_to_display_arr[] = $link_to_display;
-            } else {
-                $data_to_display_arr = $data_to_display;
-                $link_to_display_arr = $link_to_display;
-            }
-
-            $disp_attr = '';
-
-            $mfk_show_sep = $structure['LIST_SEPARATOR'];
-            if (!$mfk_show_sep) {
-                $mfk_show_sep = $structure['MFK-SHOW-SEPARATOR'];
-            }
-            if (!$mfk_show_sep) {
-                $mfk_show_sep = "<br>\n";
-            }
-
-            foreach ($data_to_display_arr as $ii => $data_to_display_item) {
-                if ($disp_attr) {
-                    $disp_attr .= $mfk_show_sep;
-                }
-                $disp_attr .= $link_to_display_arr[$ii]
-                    ? '<a class=\'afw cl_' . $val_class . '\'' .
-                    $target .
-                    ' href="' .
-                    $link_to_display_arr[$ii] .
-                    '">'
-                    : ''; // '.$key.'
-                $disp_attr .= $data_to_display_arr[$ii];
-                $disp_attr .= $link_to_display_arr[$ii] ? '</a>' : '';
-            }
-
-            if ($disp_attr and $structure['TITLE_AFTER']) {
-                $disp_attr .= ' ' . $structure['TITLE_AFTER'];
-            }
-
-            return $disp_attr;
+            return AfwShowHelper::mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class);
         }
     }
 
@@ -5980,7 +5280,7 @@ class AFWObject extends AFWRoot
         return $text_to_decode;
     }
 
-    protected function getLinkForAttribute(
+    public function getLinkForAttribute(
         $table,
         $id,
         $operation,
@@ -8431,7 +7731,7 @@ $dependencies_values
 
 
 
-    protected function enabledIcon($attribute, $icon, $structure = null)
+    public function enabledIcon($attribute, $icon, $structure = null)
     {
         $thisWizwrd = new AfwWizardHelper($this);
         return $thisWizwrd->standardEnabledIcon($attribute, $icon, $structure);
