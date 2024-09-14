@@ -198,6 +198,7 @@ class AfwInputHelper extends AFWRoot
                                                 if(true)
                                                 {
                                                         $help_atc = $auto_c["HELP"];
+                                                        $depend = $obj->getDependencyIdsArray($col_name, $desc);
                                                         $html .= "
                                                         <table cellspacing='0' cellpadding='0' style='width:100%'>
                                                                 <tr style='background-color: rgba(255, 255, 255, 0);'>
@@ -215,7 +216,7 @@ class AfwInputHelper extends AFWRoot
                                                         $(function() {
                                                         
                                                         $(\"#$col_name_atc\").autocomplete({
-                                                                source: \"../lib/api/autocomplete.php?cl=$nom_class_fk&currmod=$nom_module_fk&clp=$clp&idp=$idp&modp=$modp&attp=$attp \",
+                                                                source: \"../lib/api/autocomplete.php?cl=$nom_class_fk&currmod=$nom_module_fk&clp=$clp&idp=$idp&modp=$modp&attp=$attp&depend=$depend \",
                                                                 minLength: 0,
                                                                 
                                                                 change:function(event, ui) {

@@ -232,7 +232,7 @@ else
         //echo("obj->fixmtit=$obj->fixmtit");
         foreach($fixm_input as $col => $input)
         {
-           echo $input;
+           echo "<!-- fixminput of $col -->".$input;
 
 	}
 }

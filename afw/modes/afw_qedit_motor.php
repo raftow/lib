@@ -206,6 +206,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 <?php 
                 } else {
                     $help_atc = $auto_c["HELP"];
+                    $depend = $obj->getDependencyIdsArray($col_name, $desc);
                 ?>
                     <table cellspacing='0' cellpadding='0'>
                         <tr style="background-color: rgba(255, 255, 255, 0);">
@@ -225,7 +226,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         $(function() {
 
                             $("#<?= $col_name_atc ?>").autocomplete({
-                                source: "../lib/api/autocomplete.php?cl=<?= $nom_class_fk ?>&currmod=<?= $nom_module_fk ?>&clp=<?= $clp ?>&idp=<?= $idp ?>&modp=<?= $modp ?>&attp=<?= $attp ?>",
+                                source: "../lib/api/autocomplete.php?cl=<?= $nom_class_fk ?>&currmod=<?= $nom_module_fk ?>&clp=<?= $clp ?>&idp=<?= $idp ?>&modp=<?= $modp ?>&attp=<?= $attp ?>&depend=<?php echo $depend ?>",
                                 minLength: 0,
 
                                 change: function(event, ui) {

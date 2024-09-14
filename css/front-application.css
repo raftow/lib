@@ -2065,8 +2065,8 @@ li.wizardv1_li.CurrentStep {
 .form-control-div.errors {
     border-color: #df806f;
     padding-top: 8px !important;
-    color: #690404;
-    background-color: #ffc2b6;
+    color: wheat;
+    background-color: red;
 }
 
 .hzm_tooltip {
@@ -4504,6 +4504,10 @@ td.params {
     min-height: 500px;
     height: fit-content !important;
     background-color: white !important;
+}
+
+div.errors>.hzm_data.form-control.inputreadonly.inputarea {
+    margin-top: 18px;
 }
 
 button.toggle-hzm-btn {

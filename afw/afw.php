@@ -6167,6 +6167,51 @@ class AFWObject extends AFWRoot
         return $js_source;
     }
 
+    public function getDependencyIdsArray($attribute, $desc=null, $implode=true, $js=true)
+    {
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
+        }
+
+        if ($desc['DEPENDENCY']) {
+            $desc['DEPENDENCIES'] = [$desc['DEPENDENCY']];
+        }
+
+        
+            
+        if($js)
+        {
+            $dependencies_value_arr = [];
+            foreach ($desc['DEPENDENCIES'] as $fld) {
+                $dependencies_value_arr[] = "\$(\"#$fld\").val()";
+            }
+
+            if($implode)  $return = implode(". ',' .", $dependencies_value_arr);
+            else  $dependencies_value_arr;
+        }
+        else
+        {
+            $dependencies_value_arr = [];
+            foreach ($desc['DEPENDENCIES'] as $fld) {
+                $dependencies_value_arr[] = $this->getVal($fld);
+                /*
+                if($attribute=="training_unit_id") 
+                {
+                    die(" $this => getVal($fld) = ".$this->getVal($fld));
+                }*/
+            }
+
+            if($implode)  $return = implode(",", $dependencies_value_arr);
+            else $return = $dependencies_value_arr;
+        }
+        
+        
+
+        // if($attribute=="training_unit_id") die("getDependencyIdsArray($attribute) = [$return] : desc['DEPENDENCIES'] = ".var_export($desc['DEPENDENCIES'],true)." ");
+
+        return $return;
+    }
+
     public function getJsOfReloadOf(
         $attribute,
         $desc = '',
@@ -7466,7 +7511,7 @@ $dependencies_values
     public function canFinishOnCurrentStep()
     {
         return !$this->finishOnlyLastStep or
-            $this->currentStep == $this->editNbSteps;
+            ($this->currentStep == $this->editNbSteps);
     }
 
     // if class is displayed in edit mode so we can finish wizard by saving and remaining in same current step
@@ -7495,7 +7540,7 @@ $dependencies_values
         $form_readonly = 'RO'
     ) {
         $className = $this->getMyClass();
-        if (self::classIsDisplayedInEditMode($className)) {
+        if (self::classIsDisplayedInEditMode($className) and (!$this->after_save_edit)) {
             if ($form_readonly != 'RO') {
                 return $this->translate('SAVE', $lang, true);
             } else {

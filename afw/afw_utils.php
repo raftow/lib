@@ -79,7 +79,17 @@
                      $object_table = "module";
                      $object_module = "ums";
                   }
+                  if($object_module_table == "m")
+                  {
+                     $object_table = "module";
+                     $object_module = "ums";
+                  }
                   elseif($object_module_table == "table")
+                  {
+                     $object_table = "atable";
+                     $object_module = "pag";
+                  }
+                  elseif($object_module_table == "t")
                   {
                      $object_table = "atable";
                      $object_module = "pag";
@@ -89,7 +99,17 @@
                      $object_table = "afield";
                      $object_module = "pag";
                   }
+                  elseif($object_module_table == "f")
+                  {
+                     $object_table = "afield";
+                     $object_module = "pag";
+                  }
                   elseif($object_module_table == "domain")
+                  {
+                     $object_table = "domain";
+                     $object_module = "pag";
+                  }
+                  elseif($object_module_table == "d")
                   {
                      $object_table = "domain";
                      $object_module = "pag";

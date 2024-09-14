@@ -288,6 +288,11 @@ class AfwStructureHelper extends AFWRoot
         return $struct;
     }
 
+    /**
+     * @param AFWObject $object
+     * 
+     */
+
     public static final function repareMyStructure($object, $struct, $field_name)
     {
         //if($field_name == "nomcomplet") die("in getStructureOf($field_name) run of this->getMyDbStructure($return_type, $field_name) = ".var_export($struct,true));
@@ -301,6 +306,14 @@ class AfwStructureHelper extends AFWRoot
             $struct['STEP'] = 999;
             $struct['EDIT'] = true;
             $struct['READONLY'] = true;
+        }
+
+        if($struct['READONLY-AFTER-INSERT'])
+        {
+            if(!$object->isEmpty())
+            {
+                $struct['READONLY'] = true;
+            } 
         }
 
         foreach($struct as $col_struct => $value_struct)

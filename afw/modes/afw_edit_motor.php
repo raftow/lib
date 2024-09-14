@@ -281,6 +281,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 else 
                 {
                     $help_atc = $auto_c["HELP"];
+                    $depend = $obj->getDependencyIdsArray($col_name, $desc);
                 ?>
                     <div class='hzm_input_atc'>
                         <table cellspacing='0' cellpadding='0' style="width:100%">
@@ -306,9 +307,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                     </div>
                     <script>
                         $(function() {
-
                             $("#<?php echo $col_name_atc ?>").autocomplete({
-                                source: "../lib/api/autocomplete.php?cl=<?php echo $nom_class_fk ?>&currmod=<?php echo $nom_module_fk ?>&clp=<?php echo $clp ?>&idp=<?php echo $idp ?>&modp=<?php echo $modp ?>&attp=<?php echo $attp ?>",
+                                source: "../lib/api/autocomplete.php?cl=<?php echo $nom_class_fk ?>&currmod=<?php echo $nom_module_fk ?>&clp=<?php echo $clp ?>&idp=<?php echo $idp ?>&modp=<?php echo $modp ?>&attp=<?php echo $attp ?>&depend="+<?php echo $depend ?>,
                                 minLength: 0,
 
                                 change: function(event, ui) {

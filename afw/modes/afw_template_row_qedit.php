@@ -127,6 +127,10 @@ foreach($class_db_structure as $nom_col => $desc)
                         if($obj_id_display<=0) $obj_id_display = " + ";
                 }
                 else $obj_id_display = "";
+
+                // hide the ID as it is bad showed outside of table
+                $obj_id_display = "";
+                
                 $qedit_input_arr[1][$qedit_nom_col] = ["input"=>$qedit_hidden_pk_input.$obj_id_display, "cols"=>0];
                
         }        

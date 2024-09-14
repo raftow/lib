@@ -867,7 +867,7 @@ class AfwLoadHelper extends AFWRoot
 
     private static function isJoinEagerAttribute($attribute)
     {
-        return (AfwStringHelper::stringStartsWith($attribute, 'join') and AfwStringHelper::stringContain($attribute, 'id00'));
+        return (AfwStringHelper::stringStartsWith($attribute, 'join') and AfwStringHelper::stringContain($attribute, '00'));
     }
 
 
