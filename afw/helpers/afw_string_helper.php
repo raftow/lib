@@ -4,6 +4,7 @@ class AfwStringHelper
 {
         public static function stringStartsWith($stringbody, $string_start)
         {
+                if(!$stringbody) $stringbody = "";
                 if(!is_string($stringbody))
                 {
                         throw new AfwRuntimeException(var_export($stringbody,true)." is not a valid string for stringStartsWith($stringbody, $string_start)");
