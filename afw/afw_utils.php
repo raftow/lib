@@ -79,7 +79,7 @@
                      $object_table = "module";
                      $object_module = "ums";
                   }
-                  if($object_module_table == "m")
+                  elseif($object_module_table == "m")
                   {
                      $object_table = "module";
                      $object_module = "ums";

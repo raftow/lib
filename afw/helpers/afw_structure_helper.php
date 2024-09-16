@@ -295,6 +295,11 @@ class AfwStructureHelper extends AFWRoot
 
     public static final function repareMyStructure($object, $struct, $field_name)
     {
+        if(!($object instanceof AFWObject))
+        {
+            throw new AfwRuntimeException("repareMyStructure first parameter should be AFWObject instance");
+        }
+
         //if($field_name == "nomcomplet") die("in getStructureOf($field_name) run of this->getMyDbStructure($return_type, $field_name) = ".var_export($struct,true));
         if (
             $object->editByStep and
@@ -328,9 +333,16 @@ class AfwStructureHelper extends AFWRoot
                 }
                 elseif(AfwStringHelper::stringStartsWith($value_struct,'::'))
                 {
-                    if($field_name=="mobile") die("rafik-20240717-field_name=$field_name col_struct=$col_struct value_struct=$value_struct");
+                    // if($field_name=="value") die("rafik-20240916-field_name=$field_name col_struct=$col_struct value_struct=$value_struct");
                     $methodStructEval = substr($value_struct,2);
                     $struct[$col_struct] = $object->$methodStructEval($field_name, $col_struct);
+                    $objectClass = get_class($object);
+                    if($field_name=="value") die("rafik-20240916-field_name=[$field_name], 
+                                                    <br> col_struct=[$col_struct], 
+                                                    <br> value_struct=$value_struct, 
+                                                    <br> object class is $objectClass,
+                                                    <br> calculated struct[$col_struct] = object-> $methodStructEval($field_name, $col_struct) 
+                                                    <br> result : struct[$col_struct] = ".$struct[$col_struct]);
                 }
             }
             
