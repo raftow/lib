@@ -389,7 +389,7 @@ class AfwUmsPagHelper extends AFWRoot
 
                         $fld_att = Afield::to_afield_att($id_main_sh, $row);
                         /*
-                        if($attribute=="idn")
+                        if($attribute=="aparameter_id")
                         {
                             unset($row["atable"]);
                             unset($row["obj"]);
@@ -1168,7 +1168,12 @@ class AfwUmsPagHelper extends AFWRoot
     public static function afieldTypeToAfwType($afield_type_id)
     {
         $return = "no-afwtype-for-afield_type_id=$afield_type_id";
-        if ($afield_type_id == AfwUmsPagHelper::$afield_type_mtxt) {
+         
+        if ($afield_type_id == AfwUmsPagHelper::$afield_type_date) {
+            $return = "DATE";
+        } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_Gdat) {
+            $return = "GDAT";
+        } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_mtxt) {
             $return = "TEXT";
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_text) {
             $return = "TEXT";
