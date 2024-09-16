@@ -337,12 +337,13 @@ class AfwStructureHelper extends AFWRoot
                     $methodStructEval = substr($value_struct,2);
                     $struct[$col_struct] = $object->$methodStructEval($field_name, $col_struct);
                     $objectClass = get_class($object);
+                    /*
                     if($field_name=="value") die("rafik-20240916-field_name=[$field_name], 
                                                     <br> col_struct=[$col_struct], 
                                                     <br> value_struct=$value_struct, 
                                                     <br> object class is $objectClass,
                                                     <br> calculated struct[$col_struct] = object-> $methodStructEval($field_name, $col_struct) 
-                                                    <br> result : struct[$col_struct] = ".$struct[$col_struct]);
+                                                    <br> result : struct[$col_struct] = ".$struct[$col_struct]);*/
                 }
             }
             

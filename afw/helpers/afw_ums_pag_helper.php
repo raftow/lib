@@ -268,16 +268,17 @@ class AfwUmsPagHelper extends AFWRoot
         foreach ($this_db_structure as $attribute => $structr) {
             if ((!$restrictToField) or ($restrictToField == $attribute)) {
                 $structure = AfwStructureHelper::repareMyStructure($obj, $structr, $attribute);
+                /*
                 if ($attribute == 'value') {
                     die("for attribute $attribute after repareMyStructure, $structure = ".var_export($structure,true));
-                }
+                }*/
                 list($toPag, $notToPagReason) = $obj->attributeIsToPag($attribute);
-
+                /*
                 if (!$toPag) {
                     if ($attribute == 'moduleList') {
                         die("$attribute is not to pag reason : $notToPagReason");
                     }
-                }
+                }*/
 
                 if ($toPag) {
                     unset($fld);
@@ -1168,6 +1169,8 @@ class AfwUmsPagHelper extends AFWRoot
     {
         $return = "no-afwtype-for-afield_type_id=$afield_type_id";
         if ($afield_type_id == AfwUmsPagHelper::$afield_type_mtxt) {
+            $return = "TEXT";
+        } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_text) {
             $return = "TEXT";
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_items) {
             $return = "FK";
