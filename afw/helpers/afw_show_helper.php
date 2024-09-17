@@ -2473,11 +2473,24 @@ $('#$showAsDataTable').DataTable( {
     public static function showMFK($object, $attribute, $lang = "ar", $structure = null, $getlink = false)
     {
         $temp_obj = $object->get($attribute, 'object', '', false);
-        if (!is_array($temp_obj)) throw new AfwRuntimeException("get($attribute, object) returned non array type");
+        
         // if($attribute=="attendanceList") throw new AfwRuntimeException("$object - > get($attribute) = ".var_export($temp_obj,true));
         if (!$structure) {
             $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         }
+
+        if($structure["CATEGORY"]=="SHORTCUT")
+        {
+            if (!$temp_obj) $temp_obj = []; 
+        }
+
+
+        if (!is_array($temp_obj)) 
+        {
+            $cls00 = get_class($object);
+            throw new AfwRuntimeException("[$cls00]->get($attribute, object) returned non array type => ".var_export($temp_obj,true));
+        }
+
         if (strtoupper($structure['FORMAT']) == 'RETRIEVE') {
             reset($temp_obj);
             $first_item = current($temp_obj);

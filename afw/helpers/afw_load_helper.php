@@ -1505,7 +1505,7 @@ class AfwLoadHelper extends AFWRoot
 /**
      * getAttributeData
      * Load into an array of values returned rows
-     * @param object $object : afw object instance
+     * @param AFWObject $object : afw object instance
      * @param string $attribute 
      * @param string $what 
      * @param string $format
@@ -1528,6 +1528,8 @@ class AfwLoadHelper extends AFWRoot
         // $cache_management = AfwLoadHelper::cacheManagement($object);
         // $target = '';
         // $popup_t = '';
+
+        $cl00 = get_class($object);
 
         $lang = strtolower(trim($lang));
         if (!$lang) {
@@ -1576,9 +1578,9 @@ class AfwLoadHelper extends AFWRoot
         }*/
 
         if (($what == 'object') and (!$structure)) {
-            return null;
+            //return null;
             // I dont know why this exception is not thrown below
-            //throw new AfwRuntimeException("to get object from attribute $attribute it should have defined structure");
+            throw new AfwRuntimeException("to get object from attribute $attribute it should have defined structure in class : ".get_class($object));
         }
 
         $attribute_category = $structure['CATEGORY'];
@@ -1588,14 +1590,21 @@ class AfwLoadHelper extends AFWRoot
         $afw_getter_log[] = "attribute_category=$attribute_category, fieldReallyExists($attribute) = $fieldReallyExists";
         if ($attribute_category or $fieldReallyExists) 
         {
-            if ($attribute_category) {
+            if ($attribute_category) 
+            {
                 if($attribute_category=="SHORTCUT") $integrity = false;
+                $case = "object[$cl00]->getCategorizedAttribute($attribute, $attribute_category, ..)"; // ($attribute, $attribute_category, $attribute_type, structure, $what, $format, $integrity, $max_items, $lang, $call_method)
                 $return = $object->getCategorizedAttribute($attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method);
-            } else {
-                $return = self::getReallyExistsNonCategorizedAttribute($object, $attribute, $attribute_type, $optim_lookup, $structure, $what, $format, $integrity, $lang, $call_method);
+            } 
+            else 
+            {
+                $case = "AfwLoadHelper::getReallyExistsNonCategorizedAttribute"; // ($object, $attribute, $attribute_type, $optim_lookup, structure, $what, $format, $integrity, $lang, $call_method)
+                $return = AfwLoadHelper::getReallyExistsNonCategorizedAttribute($object, $attribute, $attribute_type, $optim_lookup, $structure, $what, $format, $integrity, $lang, $call_method);
             }
         } 
-        else {
+        else 
+        {
+            $case = "object[$cl00]->getNonExistingAttribute($attribute, $what)";
             $return = $object->getNonExistingAttribute($attribute, $what);
         }
         // if("arole_mfk" == $attribute) throw new AfwRuntimeException("strange get($attribute) = $return details ".implode("\n<br>",$afw_getter_log));
@@ -1624,6 +1633,8 @@ class AfwLoadHelper extends AFWRoot
         }
         if ($return) $get_stats_analysis[$this_TABLE][$attribute][$this_id][$what]++;
         */
+
+        // if($attribute=="level_degree_mfk") throw new AfwRuntimeException("rafik 20240917-medali case=$case return=$return");
         return $return;
     }
 
