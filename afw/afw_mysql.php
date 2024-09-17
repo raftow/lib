@@ -72,7 +72,7 @@ class AfwMysql
             }
             catch(Exception $e)
             {
-                throw new AfwRuntimeException("Error happened when query : $sql : ".$e->getMessage());
+                throw new AfwRuntimeException("Exception happened when query : $sql : ".$e->getMessage());
             }
             $log = date("H:i:s")." > ".$sql." > $aff_rows affected rows";
             if($is_update) AfwBatch::print_hard_sql($log);

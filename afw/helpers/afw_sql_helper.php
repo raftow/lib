@@ -776,6 +776,7 @@ class AfwSqlHelper extends AFWRoot
     /**
      * insert
      * Insert row
+     * @param AFWObject $object
      * @param int $pk : Optional, specify the primary key
      */
     public static function insertObject($object, $pk = '', $check_if_exists_by_uk = true)
@@ -979,6 +980,11 @@ class AfwSqlHelper extends AFWRoot
                         
                     }
                     $fields_updated[$key] = $value;
+                    /*
+                    if($key=='field_width')
+                    {
+                       die("object->getAllfieldValues() = ".var_export($object->getAllfieldValues(),true)." fields_updated=".var_export($fields_updated,true)); 
+                    }*/
                 }
             }
             $query = trim($query, ',');
