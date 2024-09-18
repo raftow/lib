@@ -61,7 +61,7 @@
                     $liste_css_text = "['" . implode("','", $liste_css) . "']";
 ?>
                     <input type='hidden' name='<?php echo $col_name ?>' id='<?php echo $col_name ?>' value='<?php echo $val ?>'>
-                    <button type="button" id="btn_<?php echo $col_name ?>" class="toggle-hzm-btn <?php echo $css_val ?>" onClick="toggleHzmBtn('<?php echo $col_name ?>', <?php echo $liste_choix_text ?>, <?php echo $liste_codes_text ?>, <?php echo $listeOrdres_text ?>, <?php echo $liste_css_text ?>,<?php echo count($liste_choix) ?>)"><?php echo $display_val ?></button>
+                    <button type="button" id="btn_<?php echo $col_name ?>" class="toggle-hzm-btn <?php echo $css_val ?>"  <?php echo $input_disabled ?> onClick="toggleHzmBtn('<?php echo $col_name ?>', <?php echo $liste_choix_text ?>, <?php echo $liste_codes_text ?>, <?php echo $listeOrdres_text ?>, <?php echo $liste_css_text ?>,<?php echo count($liste_choix) ?>)"><?php echo $display_val ?></button>
 <?php
                 } 
                 else 

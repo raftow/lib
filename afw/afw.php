@@ -1031,7 +1031,7 @@ class AFWObject extends AFWRoot
         $this->FIELDS_INITED = [];
     }*/
 
-    private function getAllfieldDefaultValues()
+    public function getAllfieldDefaultValues()
     {
         // if(!isset($this->AFIELD _VALUE)) $this->AFIELD _VALUE = array();
         return $this->FIELDS_INITED;
@@ -6125,6 +6125,18 @@ class AFWObject extends AFWRoot
         }
 
         return null;
+    }
+
+
+    /**
+     * @description
+     *  to be overridden to implement when attribute input is readonly and/or disabled
+     * 
+     */
+    
+    public function disableOrReadonlyForInput ($field_name, $col_struct)
+    {
+        return '';
     }
 
     // NO-ERROR-CHECK : option to disable error check on attribute

@@ -848,14 +848,14 @@ class AfwSqlHelper extends AFWRoot
             // may be has been changed in the previous before insert event
             $fields_to_insert = $object->getAllfieldsToInsert();
             /*
-            if($object::$TABLE == "cher_file") 
+            if($object::$TABLE == "applicant") 
             {
                 die("afw.insert($pk) after before insert die : object->FIELDS_ INITED = ".var_export($object->getAllfieldDefaultValues(),true).", 
                             object -> FIELDS_UPDATED = ".var_export($object->fieldsHasChanged(),true)." 
-                            after merge => ".var_export($fields_to_insert,true)." 
+                            after merge fields_to_insert => ".var_export($fields_to_insert,true)." 
                             object->AFIELD _VALUE =>".var_export($object->getAllfieldValues(),true));
-            }
-            */
+            }*/
+            
 
             if (!count($fields_to_insert)) {
                 $debugg_tech_notes =
@@ -992,12 +992,12 @@ class AfwSqlHelper extends AFWRoot
             //die($query);
             // throw new AfwRuntimeException("should not query : $query");
             /*
-            if(($object::$TABLE == "cher_file") and 
+            if(($object::$TABLE == "applicant") and 
                (contient($query, "INSERT INTO"))) 
             {
-                   die("INSERT INTO to be executed : $query, fields_to_insert[] = ".var_export($fields_to_insert,true));
-            }
-            */
+                   die("INSERT INTO to be executed : $query, "."<br>fields_to_insert[] = ".var_export($fields_to_insert,true));
+            }*/
+            
             //if(!contient($query, "SELECT")) die("query to be executed : $query");
             $return = $object->execQuery($query);
 

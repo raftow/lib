@@ -176,6 +176,7 @@ if($id)
         else
         {
             $die_message = $myObj->tm("object can not be loaded")." >> $cl load by [id=$id]";
+            throw new RuntimeException("mode dev qedit load by id failed");
         }
 }
 else

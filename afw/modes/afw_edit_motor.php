@@ -147,7 +147,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
     else $is_required = false;
 
 
-    $disabled = $desc["DISABLED"];
+    $input_disabled = $disabled = $desc["DISABLED"];
 
     switch ($desc["TYPE"]) 
     {

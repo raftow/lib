@@ -4,15 +4,15 @@ if (!$my_font) $my_font = "front";
 ?>
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=<?= $page_charset ?>">
-  <!-- <link type="text/css" rel="stylesheet" href="../lib/css/<?= $my_theme ?>/pag_checkboxes.css"> -->
+  <meta http-equiv="Content-Type" content="text/html; charset=<?php echo  $page_charset ?>">
+  <!-- <link type="text/css" rel="stylesheet" href="../lib/css/<?php echo  $my_theme ?>/pag_checkboxes.css"> -->
   <!-- plugins -->
   <link type="text/css" rel="stylesheet" href="../lib/bmulti/css/bootstrap-multiselect.css" />
   <!-- end plugins -->
   <link rel="stylesheet" href="../lib/css/jquery-ui-1.11.4.css">
   <link rel="stylesheet" href="../lib/css/font-awesome.min-4.3.css">
   <link rel="stylesheet" href="../lib/css/font-awesome.min.css">
-  <link rel="stylesheet" href="../lib/css/menu_<?= $lang ?>.css">
+  <link rel="stylesheet" href="../lib/css/menu_<?php echo  $lang ?>.css">
   <?php
   if ($front_header) {
   ?>
@@ -90,7 +90,7 @@ if (!$my_font) $my_font = "front";
   <?php
   if ($lang != "en") {
   ?>
-    <script src="../lib/js/localization/messages_<?= $lang ?>.js"></script>
+    <script src="../lib/js/localization/messages_<?php echo  $lang ?>.js"></script>
   <?php
   }
   ?>
@@ -118,14 +118,14 @@ if (!$my_font) $my_font = "front";
     if ($lang == "ar") {
   ?>
       <script src="../lib/js/jquery.dataTables.min.js"></script>
-    <?
+    <?php
 
     } 
     else  //if($lang=="en")
     {
     ?>
       <script src="../lib/js/jquery.dataTables_en.min.js"></script>
-  <?
+  <?php
 
     }
   } 
@@ -154,52 +154,52 @@ if (!$my_font) $my_font = "front";
   <link href="../lib/css/responsive.css" rel="stylesheet" type="text/css">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="<?= $config["website-description"] ?>">
-  <meta name="keywords" content="<?= $config["website-keywords"] ?>">
+  <meta name="description" content="<?php echo  $config["website-description"] ?>">
+  <meta name="keywords" content="<?php echo  $config["website-keywords"] ?>">
   <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=EDGE">
   <link href="<?php echo $config["img-path"] ?>favicon.ico" rel="shortcut icon">
 
-  <title><?= $NOM_SITE[$lang] ?></title>
+  <title><?php echo  $NOM_SITE[$lang] ?></title>
 
-  <link href="../lib/css/def_<?= $lang ?>_<?php echo $my_font ? $my_font : "front"; ?>.css" rel="stylesheet" type="text/css">
-  <link href="../lib/css/<?= $my_theme ?>/style_common.css?crst=<?=$crst?>" rel="stylesheet" type="text/css">
-  <link href="../lib/css/<?= $my_theme ?>/style_<?= $lang ?>.css?crst=<?=$crst?>" rel="stylesheet" type="text/css">
-  <link href="../lib/css/<?= $my_theme ?>/front_menu.css?crst=<?=$crst?>" rel="stylesheet" type="text/css">
+  <link href="../lib/css/def_<?php echo  $lang ?>_<?php echo $my_font ? $my_font : "front"; ?>.css" rel="stylesheet" type="text/css">
+  <link href="../lib/css/<?php echo  $my_theme ?>/style_common.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
+  <link href="../lib/css/<?php echo  $my_theme ?>/style_<?php echo  $lang ?>.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
+  <link href="../lib/css/<?php echo  $my_theme ?>/front_menu.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
   <?php
   if ($header_style) {
   ?>
-    <link href="../lib/css/<?= $header_style ?>.css?crst=<?=$crst?>" rel="stylesheet">
+    <link href="../lib/css/<?php echo  $header_style ?>.css?crst=<?php echo $crst?>" rel="stylesheet">
   <?php
   }
   if ($page_css_file) {
   ?>
-    <link href="./css/<? echo $page_css_file ?>.css?crst=<?=$crst?>" rel="stylesheet" type="text/css" type="text/css">
+    <link href="./css/<?php echo $page_css_file ?>.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
   }
   
   if ($main_module and ($xmodule != $main_module)) {
   ?>
-    <link href="../<?= $main_module ?>/css/module.css?crst=<?=$crst?>" rel="stylesheet" type="text/css" type="text/css">
+    <link href="../<?php echo  $main_module ?>/css/module.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
 
   <?php
   }
 
   if (!$no_common_css) {
   ?>
-    <link href="../external/css/common.css?crst=<?=$crst?>" rel="stylesheet" type="text/css" type="text/css">
+    <link href="../external/css/common.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
   }
   ?>
-  <link href="./css/module.css?crst=<?=$crst?>" rel="stylesheet" type="text/css" type="text/css">
+  <link href="./css/module.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
   if ($cmodule and $xmodule and ($cmodule != $xmodule)) {
   ?>
-    <link href="./css/module_<?= $xmodule ?>.css?crst=<?=$crst?>" rel="stylesheet" type="text/css">
+    <link href="./css/module_<?php echo  $xmodule ?>.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
   <?php
   }
   if ($main_module and $cmodule and ($cmodule != $main_module)) {
   ?>
-    <link href="../<?= $main_module ?>/css/module_<?= $cmodule ?>.css?crst=<?=$crst?>" rel="stylesheet" type="text/css" type="text/css">
+    <link href="../<?php echo  $main_module ?>/css/module_<?php echo  $cmodule ?>.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
   }
 

@@ -27,6 +27,7 @@ else
         "tabindex" => $qedit_orderindex,
         "onchange" => $onchange,
         "style" => $input_style,
+        "disabled" => $disabled,
 
     );
     if ($desc["SEL_OPTIONS"]) $infos_arr = array_merge($infos_arr, $desc["SEL_OPTIONS"]);
