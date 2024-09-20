@@ -34,7 +34,7 @@ if($objToShow and $objToShow->isAdmin() and false)
 {
         die("here rafik 20210321");
         $_GET["Main_Page"] = "afw_mode_edit.php";
-        $_GET["My_Module"] = "pag";
+        $_GET["My_Module"] = "ums";
         $_GET["cl"] = "Auser";
         $_GET["currmod"]="ums";
         $_GET["id"] = $objToShow->getId();

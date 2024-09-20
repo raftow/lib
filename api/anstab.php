@@ -55,7 +55,7 @@ $desc = AfwStructureHelper::getStructureOf($obj,$attribute);
 if(!$obj->answerTableForAttributeIsPublic($attribute,$desc))
 {
         $only_members = true;
-        include("$file_dir_name/../pag/check_member.php");
+        include("$file_dir_name/../lib/afw/afw_check_member.php");
 }
 
 

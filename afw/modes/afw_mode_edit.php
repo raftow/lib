@@ -13,7 +13,7 @@ if(!$currmod)
 {
     $currmod = $uri_module;
 }
-if(!$currmod) $currmod = "pag";
+if(!$currmod) $currmod = "ums";
 
 $objme = AfwSession::getUserConnected();
 if(!$objme) 

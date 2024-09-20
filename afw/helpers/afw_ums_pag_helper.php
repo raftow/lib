@@ -48,8 +48,6 @@ class AfwUmsPagHelper extends AFWRoot
             return null;
         }
 
-        // list($module_fileName,) = AfwStringHelper::getHisFactory("module", "ums");
-        // require_once($module_fileName);
         $mod = new Module();
         $mod->select('module_code', $module);
         $mod->load();
@@ -57,8 +55,6 @@ class AfwUmsPagHelper extends AFWRoot
             return null;
         }
 
-        // list($atable_fileName,) = AfwStringHelper::getHisFactory("atable", "pag");
-        // require_once($atable_fileName);
         $atb = new Atable();
         $atb->select('atable_name', $table);
         $atb->select('id_module', $mod->getId());
@@ -273,12 +269,7 @@ class AfwUmsPagHelper extends AFWRoot
                     die("for attribute $attribute after repareMyStructure, $structure = ".var_export($structure,true));
                 }*/
                 list($toPag, $notToPagReason) = $obj->attributeIsToPag($attribute);
-                /*
-                if (!$toPag) {
-                    if ($attribute == 'moduleList') {
-                        die("$attribute is not to pag reason : $notToPagReason");
-                    }
-                }*/
+                
 
                 if ($toPag) {
                     unset($fld);
@@ -1031,40 +1022,9 @@ class AfwUmsPagHelper extends AFWRoot
                 $fk_on_me_col_type = $af_item->valFtype();
 
                 $fk_className = AfwStringHelper::tableToClass($fk_on_me_table);
-                $fk_fileName = AfwStringHelper::tableToFile($fk_on_me_table);
+                // $fk_fileName = AfwStringHelper::tableToFile($fk_on_me_table);
 
-                $file_dir_name_pag_module = $file_dir_name . '/../pag';
-                $file_dir_name_fk_module =
-                    $file_dir_name . "/../$fk_on_me_module_code";
-
-                if (file_exists("$file_dir_name_fk_module/$fk_fileName")) {
-                    require_once "$file_dir_name_fk_module/$fk_fileName";
-                } elseif (
-                    file_exists("$file_dir_name_pag_module/$fk_fileName")
-                ) {
-                    require_once "$file_dir_name_pag_module/$fk_fileName";
-                } else {
-                    $error_mess = "MOMKEN : An error has occured when trying to check dependency of the object you want to delete, file $fk_fileName not found in $file_dir_name_fk_module";
-                    if ($objme and $objme->isSuperAdmin()) {
-                        $error_mess .= "<br>  pag path : $file_dir_name_pag_module";
-                        $error_mess .= "<br>  $fk_on_me_module_code path : $file_dir_name_fk_module";
-                        $error_mess .= "<br>  file not exists $file_dir_name_fk_module/$fk_fileName tried also under pag path !";
-                        $error_mess .= "<br>   -> fk field   : $af_item ($fk_on_me_col,$fk_on_me_col_type)";
-                        $error_mess .= "<br>   -> fk module : $fk_on_me_module -> code    : $fk_on_me_module_code";
-
-                        $error_mess .= "<br>   -> fk table   : $fk_on_me_tab";
-                        $error_mess .= "<br>   -> fk class  $fk_className";
-                        $error_mess .= "<br>   -> fk file name $fk_fileName";
-                    }
-
-                    if (
-                        $fk_on_me_tab
-                        ->getModule()
-                        ->getVal('id_module_status') == 6
-                    ) {
-                        throw new AfwRuntimeException($error_mess);
-                    }
-                }
+                
 
                 if (!$error_mess) {
                     $fk_obj = new $fk_className();

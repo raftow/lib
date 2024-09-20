@@ -6,7 +6,7 @@
    if($lang=="ar") $dir = "rtl";
    else $dir = "ltr";  
    
-   if(!$MODULE) $MODULE = "pag";  
+   if(!$MODULE) $MODULE = "ums";  
     
      
 ?>

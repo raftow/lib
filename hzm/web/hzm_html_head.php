@@ -58,7 +58,7 @@ if (!$my_font) $my_font = "front";
   }
   ?>
   <link rel="stylesheet" href="../lib/css/dropdowntree.css" />
-  <script src="../pag/pagjs/qedit.js"></script>
+  <script src="../lib/js/qedit.js"></script>
   <script src="../lib/js/jquery-1.12.0.min.js"></script>
   <?php
   if ($ivviewer_activate) {

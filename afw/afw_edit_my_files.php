@@ -13,7 +13,7 @@ if(!$objme)
 
 if(!isset($MODULE) or (!$MODULE)) 
 {
-        $MODULE = "pag"; 
+        $MODULE = "ums"; 
         require_once("$file_dir_name/../$MODULE/ini.php"); 
         require_once("$file_dir_name/../$MODULE/module_config.php"); 
 
@@ -44,7 +44,7 @@ if($correct_codeme==$codeme)
         
         $Main_Page="afw_mode_qedit.php";
         $cl = "Afile";
-        $currmod="pag";
+        $currmod="ums";
         $limit="200";
         $popup="";
         $ids="cond";

@@ -122,31 +122,15 @@ if(true)
         $time_stamp_start = intval(date("His"));
         
         // die(var_export($_POST,true));
-        // if pag module exists then call afw check member.php
+        // call afw check member.php
         // may need to be reviewed
-        $pag_check_member_file = "$module_dir_name/../lib/afw/afw_check_member.php";
-        if(file_exists($pag_check_member_file))
+        $afw_check_member_file = "$module_dir_name/../lib/afw/afw_check_member.php";
+        if(file_exists($afw_check_member_file))
         {
-            include($pag_check_member_file);
+            include($afw_check_member_file);
         }
         
-        // die("DBG-check-member started");   
-        /* KHARABIT OF V1 to be reviewed
-        if(!$check_depending_user_type)
-        {
-            include("$module_dir_name/../pag/check_employee.php");
-            // die("DBG-$module_dir_name/../pag/check_employee.php started");
-        }        
-        elseif($check_depending_user_type!="NO-CHECK")
-        {
-            include("$module_dir_name/../$uri_module/$check_depending_user_type.php"); 
-            // die("DBG-check_depending_user_type => $module_dir_name/../$uri_module/$check_depending_user_type.php started");
-        }
-        else
-        {
-            // die("DBG-NO-CHECK to start"); 
-        }
-        */
+       
 
            
         if((AfwStringHelper::stringStartsWith($Main_Page,"afw_mode_"))) $My_Module = "lib/afw/modes";
@@ -232,7 +216,6 @@ if(true)
         } 
         elseif((!$nohf) and (!AfwSession::config("no_header_and_footer", false)))
         {
-            // die("mode pag header");
             // if(!$jstree_activate) throw new AfwRuntimeException("jstree not activated");
             // die("DBG-hzm_header=> $module_dir_name/../lib/hzm/web/hzm_header.php");
             include("$module_dir_name/../lib/hzm/web/hzm_header.php");

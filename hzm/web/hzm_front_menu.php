@@ -114,7 +114,7 @@
 
         if($objme)
         {
-                include "$file_hzm_dir_name/../pag/module_options.php";
+                include "$file_hzm_dir_name/../ums/module_options.php";
                 include "$file_hzm_dir_name/../$MODULE/special_module_options.php";
         }
         $enable_language_switch = AfwSession::config("enable_language_switch",false);

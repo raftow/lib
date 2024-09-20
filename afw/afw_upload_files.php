@@ -1,4 +1,4 @@
-<link href="../pag/assets/css/style.css" rel="stylesheet" />
+<link href="../lib/assets/css/style.css" rel="stylesheet" />
 <?php
     require_once("doc_type.php");
     
@@ -34,48 +34,17 @@
 
         
 		<!-- JavaScript Includes -->
-		<script src="../pag/assets/js/jquery.knob.js"></script>
+		<script src="../lib/assets/js/jquery.knob.js"></script>
 
 		<!-- jQuery File Upload Dependencies -->
-		<script src="../pag/assets/js/jquery.ui.widget.js"></script>
-		<script src="../pag/assets/js/jquery.iframe-transport.js"></script>
-		<script src="../pag/assets/js/jquery.fileupload.js"></script>
+		<script src="../lib/assets/js/jquery.ui.widget.js"></script>
+		<script src="../lib/assets/js/jquery.iframe-transport.js"></script>
+		<script src="../lib/assets/js/jquery.fileupload.js"></script>
 		
 		<!-- Our main JS file -->
-		<script src="../pag/assets/js/script.js"></script>
+		<script src="../lib/assets/js/script.js"></script>
 <table style="padding:10px;width:100%">
 <tr>
-<!--
-<td style="padding:10px !important">
-        <form name="qedit_updateForm" id="qedit_updateForm" method="post" action="main.php" <?=$target?>>
-        <input type="hidden" name="Main_Page" value="afw_mode_qedit.php">
-        <input type="hidden" name="cl" value="Afile">
-        <input type="hidden" name="currmod" value="pag">
-        <table cellspacing="3" cellpadding="1">
-        <tbody>
-          <tr>
-                  <td>
-                     <input type="submit" class="yellowbtn btn fright" name="submit" id="submit-form" value="تحديد مواصفات المرفقات التي تم تحميلها مؤخرا">
-                  </td>
-                  <td>
-                     <input type="hidden" size="3" name="newo" value="0">
-                  </td>
-          </tr>
-        </tbody>
-        </table>
-        <input type="hidden" name="limit" value="200">
-        <input type="hidden" name="popup" value="<?=$popup_t?>">
-        <input type="hidden" name="ids" value="all">
-        <input type="hidden" name="fixm" value="owner_id=<?=$me?>">
-        <input type="hidden" name="sel_doc_type_id" value="1">
-        <input type="hidden" name="sel_owner_id" value="<?=$me?>">
-        <input type="hidden" name="fixmtit" value="تحديد مواصفات الملفات التي تم تحميلها مؤخرا">
-        <input type="hidden" name="fixmdisable" value="1">
-        <input type="hidden" name="not_found_mess" value="لا يوجد ملفات تم تحميلها مؤخرا وبحاجة لتعديل مواصفاتها">
-        
-        
-        </form>
-</td>-->
 <?
 $codeme = substr(md5("code".$me),0,8);
 ?>

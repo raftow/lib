@@ -1280,18 +1280,15 @@ class AfwDateHelper
             //if(count($hgreg_matrix)>0) die("gregdate_of_first_hijri_day($hijri_year, $hijri_month) : ".var_export($hgreg_matrix,true));
             $server_db_prefix = AfwSession::config('db_prefix', 'c0');
             $sql_greg = " select greg_date
-                            from $server_db_prefix"."pag.hijra_date_base 
+                            from $server_db_prefix"."cmn.hijra_date_base 
                             where hijri_year = $hijri_year
                                     and hijri_month = $hijri_month";
             //echo "<br>sql_greg = $sql_greg";
 
-            //$file_dir_name = dirname(__FILE__);
-            //include_once "$file_dir_name/../pag/common.php";
-
             $greg_date = AfwDatabase::db_recup_value($sql_greg);
             if(!$greg_date)
             {
-                if($throwError) throw new AfwRuntimeException("Error : no greg date in pag.hijra_date_base for hijri_year = $hijri_year and hijri_month = $hijri_month : $sql_greg");
+                if($throwError) throw new AfwRuntimeException("Error : no greg date in cmn.hijra_date_base for hijri_year = $hijri_year and hijri_month = $hijri_month : $sql_greg");
                 else return "";
             }
             $hgreg_matrix[$hijri_year . $hijri_month] = self::add_dashes($greg_date);
@@ -1459,8 +1456,8 @@ class AfwDateHelper
         $sql_hij = "select hijri_year as HY,
                         hijri_month as HM,
                         greg_date as GD
-                        from $server_db_prefix"."pag.hijra_date_base
-                where greg_date = (select max(greg_date) from $server_db_prefix"."pag.hijra_date_base where greg_date <= '$wd_gdate')";
+                        from $server_db_prefix"."cmn.hijra_date_base
+                where greg_date = (select max(greg_date) from $server_db_prefix"."cmn.hijra_date_base where greg_date <= '$wd_gdate')";
 
         $row_hijri = AfwDatabase::db_recup_row($sql_hij);
 

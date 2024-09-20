@@ -94,10 +94,10 @@ class AfwRunHelper
 
                         $message .= "<div class='medium-12 large-12 columns text-center large-text-right'>
                                 <div class='logo_company'>  
-                                <img src='../../external/pic/logo-company-pag.png' alt='' style='margin-top:5px;height: px;'> 
+                                <img src='../../external/pic/logo-company.png' alt='' style='margin-top:5px;height: px;'> 
                                 </div>  
                                 <div class='title_company'>  
-                                <img src='../../external/pic/title-company-pag.png' alt='' style='margin-top:-10px;height: px;'> 
+                                <img src='../../external/pic/title-company.png' alt='' style='margin-top:-10px;height: px;'> 
                                 </div>
                                 $application_info     
                                 </div>";

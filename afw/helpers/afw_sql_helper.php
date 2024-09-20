@@ -683,7 +683,7 @@ class AfwSqlHelper extends AFWRoot
                     $moduleCol = $object::$MODULE;
                 }
                 if (!$moduleCol) {
-                    $moduleCol = 'pag';
+                    $moduleCol = 'ums';
                 }
 
                 $join_sentence_arr[] = "left join $server_db_prefix" . "$moduleCol.$tableCol join" . $col_ret . "00 on me.$col_ret = join" . $col_ret . "00.id";

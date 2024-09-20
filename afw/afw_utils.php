@@ -70,57 +70,7 @@
         }
         
         
-        function parse_table_and_module($object_module_table)
-        {
-                  $object_module_table = strtolower($object_module_table);
-                  
-                  if($object_module_table == "module")
-                  {
-                     $object_table = "module";
-                     $object_module = "ums";
-                  }
-                  elseif($object_module_table == "m")
-                  {
-                     $object_table = "module";
-                     $object_module = "ums";
-                  }
-                  elseif($object_module_table == "table")
-                  {
-                     $object_table = "atable";
-                     $object_module = "pag";
-                  }
-                  elseif($object_module_table == "t")
-                  {
-                     $object_table = "atable";
-                     $object_module = "pag";
-                  }
-                  elseif($object_module_table == "field")
-                  {
-                     $object_table = "afield";
-                     $object_module = "pag";
-                  }
-                  elseif($object_module_table == "f")
-                  {
-                     $object_table = "afield";
-                     $object_module = "pag";
-                  }
-                  elseif($object_module_table == "domain")
-                  {
-                     $object_table = "domain";
-                     $object_module = "pag";
-                  }
-                  elseif($object_module_table == "d")
-                  {
-                     $object_table = "domain";
-                     $object_module = "pag";
-                  }
-                  else
-                  {
-                     list($object_table, $object_module) = explode(".",$object_module_table);
-                  }
-                  
-                  return array($object_table, $object_module);
-        }
+        
         
           
 ?>

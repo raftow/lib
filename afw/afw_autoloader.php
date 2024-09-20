@@ -7,8 +7,7 @@ if(!class_exists('AfwAutoLoader'))
         
         class AfwAutoLoader extends AFWRoot 
         {
-        
-                private static $modules_autoload_by_prio = ["/","/../pag/", "/../bau/", "/../ums/", "/../hrm/", "/../crm/","/../afw/"];            
+                private static $modules_autoload_by_prio = ["/","/../ums/", "/../hrm/", ];            // "/../crm/","/../p-ag/", "/../bau/",
 
                 public static function addModule($module)
                 {

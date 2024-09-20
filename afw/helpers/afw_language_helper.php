@@ -40,9 +40,7 @@ class AfwLanguageHelper
 
         $paths = array();
 
-        //if((!$module) and isset(static::$MODULE)) $module = self::$MODULE;
-
-        $paths[] = "$file_dir_name/../../pag";
+        $paths[] = "$file_dir_name/../../lib";
         $paths[] = "$file_dir_name/../../ums";
         $paths[] = "$file_dir_name/../../hrm";
         $paths[] = "$file_dir_name/../../crm";
@@ -69,7 +67,7 @@ class AfwLanguageHelper
 
     public static function tarjemText($text, $langue = 'ar')
     {
-        return self::tarjem($text, $langue, false, '', 'pag');
+        return self::tarjem($text, $langue, false, '', '');
     }
 
 
@@ -250,7 +248,7 @@ class AfwLanguageHelper
 
     public static function tarjemOperator($text, $langue = 'ar', $external = 'obsolete')
     {
-            return AfwLanguageHelper::tarjem($text, $langue, true, '', 'pag');
+            return AfwLanguageHelper::tarjem($text, $langue, true, '', '');
     }
 
     public static function tarjemMessage($message, $module, $lang = 'ar')
@@ -258,7 +256,7 @@ class AfwLanguageHelper
             global $messages;
             $file_dir_name = dirname(__FILE__)."/..";
 
-            include_once "$file_dir_name/../../pag/messages_$lang.php";
+            include_once "$file_dir_name/../../lib/messages_$lang.php";
             include_once "$file_dir_name/../../$module/messages_$lang.php";
 
             if ($messages[$message]) {

@@ -195,7 +195,7 @@ if($objme)
 <?
    }
    
-   include "$file_hzm_dir_name/../pag/module_options.php";
+   include "$file_hzm_dir_name/../ums/module_options.php";
    include "$file_hzm_dir_name/../$MODULE/special_module_options.php";
    
 
@@ -293,7 +293,7 @@ if($objme)
                   {
                        if($curr_context_id==$con_id)
                        {
-                             $href = "main.php?My_Module=pag&Main_Page=show_current_context_info.php";
+                             $href = "main.php?My_Module=ums&Main_Page=show_current_context_info.php";
                              $classContext = "bookmark";
                        }
                        else
@@ -335,7 +335,7 @@ if($objme)
                        }
                        
                 ?>                    
-                        <li id="li_options-<?=$option_code?>"><a href="main.php?Main_Page=toggle_option.php&option=<?=$option_code?>&My_Module=pag">
+                        <li id="li_options-<?=$option_code?>"><a href="main.php?Main_Page=toggle_option.php&option=<?=$option_code?>&My_Module=ums">
                              <i class="fa fa-<?=$classContext?>" aria-hidden="true"></i><?=$option_props[$lang]?></a>
                         </li>
                 <?

@@ -3798,32 +3798,13 @@ class AFWObject extends AFWRoot
         $module = static::$MODULE;
 
         include "$file_dir_name/../../$module/messages_$lang.php";
-        /*
-        if($message == "Please choose more refined criteria")
-        {
-            die("tm($message) from $file_dir_name/../pag/messages_$lang.php and $file_dir_name/../$module/messages_$lang.php : ".var_export($messages,true));
-        }
-        */
+        
         if ($messages[$message]) {
             return $messages[$message];
         }
 
         include "$file_dir_name/../../lib/messages_$lang.php";
-        /*
-        if($message == "Please choose more refined criteria")
-        {
-            die("tm($message) from $file_dir_name/../pag/messages_$lang.php and $file_dir_name/../$module/messages_$lang.php : ".var_export($messages,true));
-        }*/
-        if ($messages[$message]) {
-            return $messages[$message];
-        }
-
-        include "$file_dir_name/../../pag/messages_$lang.php";
-        /*
-        if($message == "Please choose more refined criteria")
-        {
-            die("tm($message) from $file_dir_name/../pag/messages_$lang.php and $file_dir_name/../$module/messages_$lang.php : ".var_export($messages,true));
-        }*/
+        
         if ($messages[$message]) {
             return $messages[$message];
         }
@@ -7118,7 +7099,11 @@ $dependencies_values
                 $war = "Can't find scenario item for TBL ($myAtable_id) stepnum=$currstep, contact your ADMIN.";
                 $objme = AfwSession::getUserConnected();
 
-                if ($objme and $objme->isAdmin()) $war .= "<br>.Check to be sure that scenario steps are created <a href='main.php?Main_Page=afw_mode_display.php&cl=Atable&id=$myAtable_id&currmod=pag&currstep=6'>click here to check</a>";
+                if ($objme and $objme->isAdmin()) 
+                {
+                    $fwToolModule = "p"."ag";
+                    $war .= "<br>.Check to be sure that scenario steps are created <a href='main.php?Main_Page=afw_mode_display.php&cl=Atable&id=$myAtable_id&currmod=$fwToolModule&currstep=6'>click here to check or use the 'reverse' frameword commandline</a>";
+                }
 
 
                 AfwSession::pushWarning($war);

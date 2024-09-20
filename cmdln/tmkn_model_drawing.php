@@ -1,4 +1,6 @@
 <?php
+// obsolete
+/*
    function convert_position_name($posName)
    {
       $posName = strtoupper($posName);
@@ -78,10 +80,7 @@
    
    function imagelinethick($canvas, $x1, $y1, $x2, $y2, $color, $thick = 1)
    {
-            /* this way it works well only for orthogonal lines
-            imagesetthickness($canvas, $thick);
-            return imageline($canvas, $x1, $y1, $x2, $y2, $color);
-            */
+            
             if ($thick == 1) {
                 return imageline($canvas, $x1, $y1, $x2, $y2, $color);
             }
@@ -143,14 +142,7 @@
          $black = imagecolorallocate($canvas, 0, 0, 0);
          $green = imagecolorallocate($canvas, 132, 135, 28);
          $fk_num = 1;
-         /*
-         echo "<b>drawRelatedFKs for : </b> <br>\n";
-         foreach($tableListByName as $table_name => $tableRow)
-         {
-                  $internal = $tableRow["internal"];
-                  echo "<b>table_name : </b> $table_name , internal=$internal<br>\n";
-         }
-         die(); */
+         
          
          $toPointArr = array();
                       
@@ -499,13 +491,7 @@
         $t_h_header = 0;
         $t_h_footer = $width_small;
         list($fields_arr, $otherFields) = $tbObj->getImportantFields($nbColsMax);
-        /*
-        $fields_arr = array();
-        $fields_arr[] = array('name' => "id", 'title' => "المسلسل", type=>"PK");
-        $fields_arr[] = array('name' => "name", 'title' => "الإسم" , type=>"TEXT");
-        $fields_arr[] = array('name' => "date", 'title' => "التاريخ", type=>"DATE" );
-        $fields_arr[] = array('name' => "work_id", 'title' => "الوظيفة", type=>"FK" );
-        */
+        
         $nb_fiels = count($fields_arr);
         $t_height = $zoom * ($t_h_title*2 + $t_h_field*$nb_fiels + $t_h_header + $t_h_footer);
         
@@ -602,5 +588,3 @@
         
         
    }
-   
-?>

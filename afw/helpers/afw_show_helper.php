@@ -545,7 +545,7 @@ class AfwShowHelper
             $js = "\n\n\t\$(function () {
         \$('#$tree_id').jstree({ plugins : [\"sort\",\"types\",\"wholerow\"], \"types\" : { \"file\" : { \"icon\" : \"jstree-file\" }, \"folder\" : {\"icon\" : \"../lib/images/gf_58.png\"}$list_of_custom_icon_types } });
         \$('#$tree_id').on(\"changed.jstree\", function (e, data) {
-        v_url = \"main.php?My_Module=pag&Main_Page=hzm_view.php&popup=1&a=\"+data.selected[0];
+        v_url = \"main.php?My_Module=ums&Main_Page=hzm_view.php&popup=1&a=\"+data.selected[0];
         console.log(v_url);
         console.log(\$('#view_$tree_id').attr(\"id\"));
         \$('#view_$tree_id').attr(\"src\", v_url);
