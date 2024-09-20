@@ -11,8 +11,8 @@
      
   
 
-     // ex bau-RAMObject-9:ums-arole-212
-     if(($a0_arr[0]=="bau") and ($a0_arr[1]=="RAMObject"))
+     // ex b-au-RAMObject-9:ums-arole-212
+     if(($a0_arr[0]=="b-au") and ($a0_arr[1]=="RAMObject"))
      {
           $module = $a1_arr[0];
           $classe = $a1_arr[1];
