@@ -1024,8 +1024,6 @@ class AfwUmsPagHelper extends AFWRoot
                 $fk_className = AfwStringHelper::tableToClass($fk_on_me_table);
                 // $fk_fileName = AfwStringHelper::tableToFile($fk_on_me_table);
 
-                
-
                 if (!$error_mess) {
                     $fk_obj = new $fk_className();
 
@@ -1131,6 +1129,8 @@ class AfwUmsPagHelper extends AFWRoot
          
         if ($afield_type_id == AfwUmsPagHelper::$afield_type_date) {
             $return = "DATE";
+        } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_yn) {
+            $return = "YN";
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_Gdat) {
             $return = "GDAT";
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_mtxt) {

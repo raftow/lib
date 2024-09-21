@@ -143,11 +143,16 @@ class AfwUrlManager extends AFWRoot
                         {
                             include("$file_lib_afw_dir_name/../../external/chsys/module_$module_code.php");
                             $bf_id = $tbf_info[$object_table][$afw_action]["id"];
+                            if(!$bf_id) AfwSession::pushWarning("The config file module_$module_code does not contain a definition for BF[$object_table][$afw_action]");
                         }
                         else AfwSession::pushWarning("System need cache optimisation by creating module_$module_code file <!-- file not found $file_lib_afw_dir_name/../../external/chsys/module_$module_code.php -->");    
-                        if(!$bf_id)
-                        {
-                                $bf_id = UmsManager::getBunctionIdForOperationOnTable(
+
+                        
+                        if((!$bf_id) and AfwSession::config("MODE_DEVELOPMENT",false))
+                        {                            
+                            AfwSession::pushInformation("You can resolve this by doing reverse table $object_table.$module_code and re-generate table the module_$module_code.php file");
+                            AfwAutoLoader::addModule("p"."ag");
+                            $bf_id = UmsManager::getBunctionIdForOperationOnTable(
                                         $module_code,
                                         $object_table,
                                         $afw_action,
