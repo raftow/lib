@@ -150,7 +150,7 @@ class AfwUrlManager extends AFWRoot
                         
                         if((!$bf_id) and AfwSession::config("MODE_DEVELOPMENT",false))
                         {                            
-                            AfwSession::pushInformation("You can resolve this by doing reverse table $object_table.$module_code and re-generate table the module_$module_code.php file");
+                            AfwSession::pushInformation("You can resolve this by doing <b>reverse table $object_table.$module_code</b> and then do <b>generate-chsys module $module_code</b> and erase content of module_$module_code.php file");
                             AfwAutoLoader::addModule("p"."ag");
                             $bf_id = UmsManager::getBunctionIdForOperationOnTable(
                                         $module_code,
@@ -220,14 +220,33 @@ class AfwUrlManager extends AFWRoot
         $uri_items = explode('/', $serv_uri);
         unset($uri_items[0]);
         unset($uri_items[1]);
+        $post_i = 0;
+        $POST_MAX = 3;
         foreach($_POST as $var => $varval)
         {
-            if(is_string($varval))
+            if(
+                (strlen($var)>=3) 
+                and (!is_numeric($var)) 
+                and (!AfwStringHelper::stringStartsWith($var,'sel_'))
+                and (!AfwStringHelper::stringStartsWith($var,'cur'))
+                and ($var != "currmod")
+                and ($var != "php")
+                and ($var != "submit")
+                and ($var != "newo")
+                and ($var != "limit")
+                and ($var != "main_page")
+                and (!AfwStringHelper::is_arabic($var,0.4))
+            )
             {
-                $uri_items[] = trim(strtolower($var));  
-                $varval = str_replace('.php','',$varval);          
-                $uri_items[] = $varval;            
+                if(is_string($varval) and (strlen($varval)<= 8) and ($post_i < $POST_MAX))
+                {
+                    $uri_items[] = trim(strtolower($var));  
+                    $varval = str_replace('.php','',$varval);          
+                    $uri_items[] = $varval;            
+                    $post_i++;
+                }
             }
+            
         }
         $previous_item = "";
         foreach($uri_items as $uri_item) 
