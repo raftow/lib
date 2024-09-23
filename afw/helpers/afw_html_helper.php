@@ -81,6 +81,32 @@ class AfwHtmlHelper extends AFWRoot {
                 return $data_arr;
         }
 
+        /**
+         * @param AFWObject $obj
+         * 
+         */
+
+        public static function showHelpPicture($obj, $currentStep, $modulo=2)
+        {
+                $id = $obj->id;
+                $ii = date("ss");
+                $num = $ii % $modulo;
+                if(!$currentStep) $currentStep = 1;
+                $helppic = $obj->getMyTable()."_".$currentStep."_".$num;
+                $moduleCode = $obj->getMyModule();
+                $picFile = "pic/$helppic.png";
+                $file_dir_name = dirname(__FILE__);
+                $picture_path = "$file_dir_name/../../../$moduleCode/".$picFile;
+                $showAlways = false; // put true to debugg why picture doesn't appear
+                $picture_help_html = "<img class='helppic pic$id' src='$picFile'>";
+                if(file_exists($picture_path) or $showAlways)
+                {
+                        return [$picture_help_html,""];
+                }
+                else return ["", $picture_help_html];
+                
+        }
+
 
         public static function genereBulles($arr_bulles)
         {

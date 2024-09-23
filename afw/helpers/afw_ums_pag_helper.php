@@ -379,13 +379,16 @@ class AfwUmsPagHelper extends AFWRoot
                         $row['obj'] = $obj;
 
                         $fld_att = Afield::to_afield_att($id_main_sh, $row);
+                        
                         /*
-                        if($attribute=="aparameter_id")
+                        if($attribute=="qualification_id")
                         {
                             unset($row["atable"]);
                             unset($row["obj"]);
                             die("row=". var_export($row,true) . " fld_att=" .var_export($fld_att,true));
-                        }*/
+                        }
+                        */
+                        
                         foreach ($fld_att as $prop => $propvalue) {
                             $fld->set($prop, $propvalue);
                         }

@@ -983,16 +983,19 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             }
                                             break;
                                         case 'MFK':
-                                            $objs = $val->get(
-                                                $col,
-                                                'object',
-                                                '',
-                                                false
-                                            );
+                                            $objs = $val->get($col,'object','',false);
+                                            
                                             if (!is_array($objs)) {
                                                 throw new AfwRuntimeException("How $val => get($col,'object','',false) return " . var_export($objs, true));
                                             }
-                                            if (count($objs)) {
+                                            $nbc = count($objs);
+                                            /*
+                                            if(($col=="show_field_mfk") and $nbc<2)
+                                            {
+                                                die("rafik 20240923 : $val => get($col,'object','',false) = ".var_export($objs,true));
+                                            }*/
+                                            if ($nbc>0) 
+                                            {
                                                 $mfk_show_sep =
                                                     $desc['LIST_SEPARATOR'];
                                                 if (!$mfk_show_sep) {
@@ -1002,15 +1005,14 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                 if (!$mfk_show_sep) {
                                                     $mfk_show_sep = "<br>\n";
                                                 }
-                                                $str = '';
+                                                $str_arr = [];
                                                 foreach ($objs as $instance) {
-                                                    if ($str) {
-                                                        $str .= $mfk_show_sep;
-                                                    }
-                                                    $str .= $instance;
+                                                    $str_arr[] = $instance->getShortDisplay($lang);
+                                                    unset($instance);
                                                 }
-
-                                                $tuple[$col] = $str;
+                                                
+                                                $tuple[$col] = implode($mfk_show_sep, $str_arr); // ." nbc=".$nbc;
+                                                unset($objs);
                                             }
                                             break;
                                         case 'ANSWER':

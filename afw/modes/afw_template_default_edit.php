@@ -648,18 +648,38 @@ else
                         </div>
 <?                           
                $form_right_width = 80;
-          }
-          else $form_right_width = 100;
+           }
+           else 
+           {
+                $form_right_width = 100;
+           }     
     }
     else
     {
        $form_right_width = 100;
     }
+
+    if($form_right_width == 100)
+    {
+        list($help_picture, $logHelpPic) = AfwHtmlHelper::showHelpPicture($obj, $obj->currentStep); 
+        if($help_picture)
+        {
+?>
+                        <div class="form_left form_left_buttons help_picture_<?=$clStep."_".$obj->currentStep?>" style="/*width: 12%;height:100%;*/">
+                                <?
+                                       echo $help_picture;
+                                ?>        
+                        </div>
+<?                           
+               $form_right_width = 80;
+        }
+        else echo "<!-- ".$logHelpPic." -->";
+    }
 ?>
 
 <div class="form_right form_wizard_body form_wizard_<?php echo $cl_short; ?> form_right_<?php echo $clStep." step_body_".$obj->currentStep; ?>" style="/*width:<?=$form_right_width?>% !important;height:100%; */">
-<div  class="form_content form_content_<?php echo $cl_short?>">
-   <div class='body_form_hzm body_form_<?php echo $cl_short?>'>
+        <div  class="form_content form_content_<?php echo $cl_short?>">
+                <div class='body_form_hzm body_form_<?php echo $cl_short?>'>
 <?
 
 	$firstTr = true;
@@ -905,17 +925,17 @@ else
         if($tr_obj==$class_tr2) $tr_obj=$class_tr1; else $tr_obj=$class_tr2; 
 ?>
        <br>
-       </div>
-</div>
-<div class="form_buttons">
-  <div class="panel_bottom form_bottom_buttons ">
+                </div>
+        </div>
+        <div class="form_buttons">
+                <div class="panel_bottom form_bottom_buttons ">
 <!-- <h5 class='greentitle'><i></i>وظائف ذات صلة</h5>-->
         <?
                 echo $html_buttons_spec_methods_bis;
         ?>        
-  </div> 
-  <div class='body_nav_hzm'>     
-  <p>
+                </div> 
+                <div class='body_nav_hzm'>     
+                  <p>
 <?php              
 if($obj->editByStep)
 {
@@ -991,9 +1011,9 @@ else  // not edit by step
 } 
 ?>              
 </p>
-</div>
+                </div>
             
-<div id="all_btns" class="panel_links" style="width: 100%;height:100%">
+                <div id="all_btns" class="panel_links" style="width: 100%;height:100%">
 <?php
         if($obj->editByStep)
         {
@@ -1035,11 +1055,11 @@ else  // not edit by step
 
 ?>        
 
-</table>
-</div>
+                </table>
+                </div>
 
-</div>
-</div>
+        </div>
+</div> <!-- form_right -->
 
 </div>
 </div>

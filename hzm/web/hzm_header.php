@@ -6,6 +6,8 @@
   
   $f3c = substr($Main_Page,0,3);
   $f7c = substr($Main_Page,0,7);
+  if(!$pagecode) $pagecode = AfwUrlManager::currentPageCode();
+  $pagecode_splitted = implode(" ",explode("_",$pagecode));
   // die("rafik-adm-001 : config=".var_export($config,true));
   
 ?>
@@ -64,7 +66,7 @@ else $dir = "ltr";
     if(!$html_hedear) $html_hedear = "$file_hzm_dir_name/hzm_html_head.php";
     //    die("include of $html_hedear");
     include($html_hedear);
-    if(!$body_css_class) $body_css_class = "hzm_body $f7c";
+    if(!$body_css_class) $body_css_class = "hzm_body $f7c $pagecode_splitted";
 ?>
 <body class="<?=$body_css_class ?>" dir="<?=$dir?>" >
 	<!-- #Header -->

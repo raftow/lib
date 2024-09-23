@@ -1658,9 +1658,9 @@ class AfwLoadHelper extends AFWRoot
                 if ($attribute_type == 'MFK') {
                     $ids_mfk = trim($object->getAfieldValue($attribute), ',');
 
-                    $ids = explode(',', $ids_mfk);
+                    $ids_mfk_arr = explode(',', $ids_mfk);
 
-                    $afw_getter_log[] = "here is MFK field and ids_mfk=$ids_mfk count = " . count($ids);
+                    $afw_getter_log[] = "here is MFK field and ids_mfk=$ids_mfk count = " . count($ids_mfk_arr);
 
                     list($ansTab, $ansMod,) = $object->getMyAnswerTableAndModuleFor($attribute, $structure);
                     list($fileName, $className,) = AfwStringHelper::getHisFactory($ansTab, $ansMod);
@@ -1679,16 +1679,17 @@ class AfwLoadHelper extends AFWRoot
                         $afw_getter_log[] = "cache ignored and reloading objects";
                         unset($object->OBJECTS_CACHE[$attribute]);
                         $object->OBJECTS_CACHE[$attribute] = [];
-                        foreach ($ids as $id) {
-                            if ($id) {
-                                $object = new $className();
+                        foreach ($ids_mfk_arr as $id_mfk) {
+                            if ($id_mfk) {
+                                $objectMfk = new $className();
                                 // $object->setMyDebugg($object->MY_DEBUG);
-                                if ($object->load($id)) {
-                                    $afw_getter_log[] = "success of laoding of instance id = $id";
-                                    $object->OBJECTS_CACHE[$attribute][$id] = $object;
+                                if ($objectMfk->load($id_mfk)) {
+                                    $afw_getter_log[] = "success of laoding of instance id = $id_mfk";
+                                    $object->OBJECTS_CACHE[$attribute][$id_mfk] = $objectMfk;
+                                    // if($attribute=="show_field_mfk") echo "count(OBJECTS_CACHE[$attribute])=".count($object->OBJECTS_CACHE[$attribute])."<br>\n";
                                 } else {
-                                    $afw_getter_log[] = "fail of laoding of instance id = $id";
-                                    $object->OBJECTS_CACHE[$attribute][$id] = null;
+                                    $afw_getter_log[] = "fail of laoding of instance id = $id_mfk";
+                                    $object->OBJECTS_CACHE[$attribute][$id_mfk] = null;
                                 }
                             }
                         }
@@ -1699,9 +1700,14 @@ class AfwLoadHelper extends AFWRoot
                     if (!$cache_management) {
                         unset($object->OBJECTS_CACHE[$attribute]);
                     }
-                    $afw_getter_log[] = "laoded : " . var_export($return, true);
+                    $afw_getter_log[] = "loaded mfk arr to return : " . var_export($return, true);
+                    /*
+                    if($attribute=="show_field_mfk")
+                    {
+                        die("afw_getter_log for MFK attribute $attribute = ".implode("<br>\n", $afw_getter_log));
+                    }*/
                     if (!is_array($return)) {
-                        throw new AfwRuntimeException("MFK should never return-back non array result, rlch=$reload_objects_cache, className=$className, ids=" . var_export($ids, true));
+                        throw new AfwRuntimeException("MFK should never return-back non array result, rlch=$reload_objects_cache, className=$className, ids_mfk_arr=" . var_export($ids_mfk_arr, true));
                     }
                 } elseif ($attribute_type == 'FK') {
                     // if($old_attribute=="campaign") die("degugg 3 rafik2 old=$old_attribute new=$attribute attribute_value=$attribute_value getTypeOf($attribute) == FK, structure : ".var_export($structure, true));

@@ -3106,6 +3106,7 @@ class AFWObject extends AFWRoot
 
     final public function getDefaultDisplay($lang = 'ar', $implodeChar = " ")
     {
+        $return = "";
         //if ($this instanceof Applicant) die("df is ".var_export($this->DISPLAY_FIELD,true));
         if (!$this->id) 
         {
@@ -3132,20 +3133,25 @@ class AFWObject extends AFWRoot
         {
             $return = $this->getVal($this->DISPLAY_FIELD);
         }
-        elseif(is_array($this->UNIQUE_KEY) and count($this->UNIQUE_KEY)>0)
+
+        if(!$return)
         {
-            $uk_decoded = [];
-            foreach($this->UNIQUE_KEY as $key)
+            if(is_array($this->UNIQUE_KEY) and count($this->UNIQUE_KEY)>0)
             {
-                $uk_decoded[] = $this->decode($key);
+                $uk_decoded = [];
+                foreach($this->UNIQUE_KEY as $key)
+                {
+                    $uk_decoded[] = $this->decode($key);
+                }
+                $return = implode($implodeChar, $uk_decoded);
+            } 
+            else
+            {
+                $return = $this->transClassSingle($lang) . ' &larr; ' . $this->id;
             }
-            $return = implode($implodeChar, $uk_decoded);
-        } 
-        else
-        {
-            $return =
-                $this->transClassSingle($lang) . ' &larr; ' . $this->id;
+
         }
+        
 
         if (!$return) {
             $return = $this->getMyClass()." id " . $this->id;

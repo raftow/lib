@@ -890,6 +890,7 @@ class AfwFormatHelper
                 
                 $small_lookup  = $structure["SMALL-LOOKUP"];
                 $return = AfwLoadHelper::lookupDecodeValues($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message,$pk, $small_lookup);
+                // $return = "$return = AfwLoadHelper::lookupDecodeValues($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message,$pk, $small_lookup)";
                 
                 /* rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes                
                 /*

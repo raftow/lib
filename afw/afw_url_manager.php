@@ -227,8 +227,11 @@ class AfwUrlManager extends AFWRoot
             if(
                 (strlen($var)>=3) 
                 and (!is_numeric($var)) 
+                and (is_string($varval))
+                and (!AfwStringHelper::stringStartsWith($varval,'['))
                 and (!AfwStringHelper::stringStartsWith($var,'sel_'))
                 and (!AfwStringHelper::stringStartsWith($var,'cur'))
+                and (!AfwStringHelper::stringEndsWith($var,'go'))
                 and ($var != "currmod")
                 and ($var != "php")
                 and ($var != "submit")
