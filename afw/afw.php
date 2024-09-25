@@ -6994,11 +6994,8 @@ $dependencies_values
                 $structure["$mode_code-ROLES"] or
                 $structure[$mode] or
                 $structure[$mode_code] or
-                $auser and
-                $auser->isAdmin() and
-                $structure["$mode_code-ADMIN"] or
-                $this->arr_erros['all'][$key] and
-                $structure["$mode_code-ERROR"]))
+                ($structure["$mode_code-ADMIN"] and $auser and $auser->isAdmin()) or
+                ($this->arr_erros['all'][$key] and $structure["$mode_code-ERROR"])))
             ? $structure
             : false;
     }

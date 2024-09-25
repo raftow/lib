@@ -1848,4 +1848,16 @@ div.modal-dialog {
             padding: 8px;
         }
 
-        
+        .hzm_data.form-control.inputreadonly.hzm_data_created_at,
+        .hzm_data.form-control.inputreadonly.hzm_data_updated_at,
+        .hzm_data.form-control.inputreadonly.hzm_data_validated_at,
+        .hzm_data.form-control.inputreadonly.hzm_data_date_aut,
+        .hzm_data.form-control.inputreadonly.hzm_data_date_mod,
+        .hzm_data.form-control.inputreadonly.hzm_data_date_valid {
+            direction: ltr;
+            text-align: right;
+            font-size: 22px !important;
+            font-weight: normal;
+            color: darkmagenta;
+            font-family: 'digi';
+        }

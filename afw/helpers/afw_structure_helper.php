@@ -308,7 +308,7 @@ class AfwStructureHelper extends AFWRoot
                 $object->isTechField($field_name))
         ) {
             $struct['SHOW'] = true;
-            $struct['STEP'] = 999;
+            if(!$struct['STEP-CUSTOMIZED']) $struct['STEP'] = 999;
             $struct['EDIT'] = true;
             $struct['READONLY'] = true;
         }
