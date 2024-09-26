@@ -2,8 +2,8 @@
         
         function hzm_object_command_line($type, $odd_oven, $objId, $objTitle, $dataErrors, $lang, $error_class="error")
         {
-              $id_html = hzm_format_command_line("info", $objId, $lang);
-              $title_html = hzm_format_command_line("success", $objTitle, $lang);
+              $id_html = hzm_format_command_line($type, $objId, $lang);
+              $title_html = hzm_format_command_line($type, $objTitle, $lang);
               $errors_html = hzm_format_command_line($error_class, $dataErrors, $lang);
               
               return "<div class=\"cline-obj obj-$lang bg-$odd_oven\">

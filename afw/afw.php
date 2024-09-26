@@ -8014,6 +8014,7 @@ $dependencies_values
                         list($ansTab, $ansMod,) = static::answerTableAndModuleFor($attribute);
                         if ($ansTab) {
                             $className = AfwStringHelper::tableToClass($ansTab);
+                            AfwAutoLoader::addModule($ansMod);
                             $object = new $className();
                             // $object->setMyDebugg($this->MY_DEBUG);
                             if ($structure['ITEM']) {
