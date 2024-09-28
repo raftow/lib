@@ -165,12 +165,11 @@ include_once("hzm_footer_features_js.php");
     if($objme)
     {
         $me_id = $objme->id;
-        $file_lib_hzm_web_dir_name = dirname(__FILE__); 
-        if(file_exists("$file_lib_hzm_web_dir_name/../../../external/chusers/user_$me_id"."_data.php"))
+        list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = AfwFrontMenu::loadUmsCacheForUser($me_id, $lang);
+        if($cache_found)
         {
-            include("$file_lib_hzm_web_dir_name/../../../external/chusers/user_$me_id"."_data.php");
-            $quick_links_arr = $quick_links_arr[$lang];
-            $tocheck = "$file_lib_hzm_web_dir_name/../../../external/chusers/user_$me_id"."_data";
+          $quick_links_arr = $quick_links_arr[$lang]; 
+          $tocheck = $user_cache_file_path;
         }
         else
         {

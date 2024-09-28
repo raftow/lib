@@ -93,11 +93,11 @@ else $dir = "ltr";
                 if($objme)
                 {
                         $me_id = $objme->id;
-                        $file_lib_hzm_web_dir_name = dirname(__FILE__); 
-                        $file_cache = "$file_lib_hzm_web_dir_name/../../../external/chusers/user_${me_id}_data.php";
-                        if(file_exists($file_cache))
+                        
+                        list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = AfwFrontMenu::loadUmsCacheForUser($me_id, $lang);
+
+                        if($cache_found)
                         {
-                            include($file_cache);
                             $user_full = $user_info["user_full_name"][$lang];
                             $user_dep = $user_info["user_department"][$lang];
                             $user_job = $user_info["user_job"][$lang];

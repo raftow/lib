@@ -5219,6 +5219,10 @@ class AFWObject extends AFWRoot
                 if (strpos($text_to_decode, $token) !== false) 
                 {
                     $field_val = $this->calc($fieldname);
+                    /* if($fieldname == "afield_type_id")
+                    {
+                        die("debugg rafik 2024092808 <br> [$field_val] = $this => calc($fieldname)");
+                    }*/
                     if ($add_cotes and !$struct_item['NO-COTE'] and $struct_item['TYPE'] != 'PK') {
                         $val_token = "'" . $field_val . "'";
                     } else {

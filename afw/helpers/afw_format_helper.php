@@ -1321,6 +1321,23 @@ class AfwFormatHelper
             return $return;
         }
 
+        public static function decodeObjectList($objList,$what,$lang="ar", $implodeSeparator=",")
+        {
+            $returnList = [];
+            foreach($objList as $idobj => $obj)
+            {
+                if($what=="value") $returnList[] = $obj ? $obj->id : 0;
+                elseif($what=="decodeme")  $returnList[] = $obj ? $obj->getDisplay($lang) : "";
+                else $returnList[$obj->id] = $obj;
+
+
+            }
+            if(($what=="value") and $implodeSeparator)
+            {
+                return $implodeSeparator. implode($implodeSeparator,$returnList).$implodeSeparator;
+            }
+            return $returnList;
+        }
 
         public static function decode_result($obj,$what,$lang="ar")
         {

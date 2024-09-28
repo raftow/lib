@@ -104,20 +104,20 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 $mode_field_edit_log = "";
                 if ($mode_field_edit) $mode_field_edit_log .= "$nom_col is editable";
                 // if(($nom_col=="sci_id") and $mode_field_edit) die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) ".var_export($obj_errors,true));
-
+                //**
                 $nom_col_to_see = $desc["EDIT-FOR"];
                 if (!$nom_col_to_see) $nom_col_to_see = $nom_col;
                 $ican_display_key = $obj->keyIsToDisplayForUser($nom_col_to_see, $objme, "DISPLAY");
                 $ican_display_data = $obj->dataAttributeCanBeDisplayedForUser($nom_col_to_see, $objme, "DISPLAY", $desc);
                 $i_can_see_attribute = ($ican_display_key and $ican_display_data);
                 if (!$i_can_see_attribute) {
-                        $i_can_not_see_attribute_reason = "ican_display_key = " . var_export($ican_display_key) . " ican_display_data = " . var_export($ican_display_data);
+                        $i_can_not_see_attribute_reason = "ican_display_key = " . var_export($ican_display_key,true) . " ican_display_data = " . var_export($ican_display_data,true);
                 }
-
+                //**
                 $column_is_authorised_to_be_edited_by_me = $obj->keyIsToDisplayForUser($nom_col, $objme, "EDIT");
 
                 $horizontal_editability_for_me = $obj->dataAttributeCanBeDisplayedForUser($nom_col, $objme, "EDIT", $desc);
-
+                //**
                 $i_can_edit_attribute = ($column_is_authorised_to_be_edited_by_me and $horizontal_editability_for_me);
                 $i_can_not_edit_attribute_log = "";
                 if (!$i_can_edit_attribute) {
@@ -126,6 +126,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 }
                 $nom_colIsApplicable = $obj->attributeIsApplicable($nom_col);
                 $data[$nom_col]["log-na"] = "$obj => attributeIsApplicable($nom_col)";
+                
         } else {
                 $mode_field_read_only = true;
                 $mode_field_read_only_log = "$nom_col is not in step " . $obj->currentStep . " but in step " . $desc["STEP"];
@@ -177,7 +178,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
         $buttons = $desc["BUTTONS"];
         // if($nom_col=="aconditionList") die("mode_field_edit=$mode_field_edit, mode_field_read_only=$mode_field_read_only, i_can_edit_attribute=$i_can_edit_attribute log=$mode_field_edit_log");
         //echo "$nom_col <br>";
-
+        
 
         $separator = $obj->getSeparatorFor($nom_col);
 
@@ -520,6 +521,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                         <?
                                                 }
                                         }
+                                        
                                         ?>
                                 </ul>
                         </div>
@@ -533,6 +535,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
 
                 <?
                 }
+                
                 ?>
 
                 <div class="hzm_form_panel hzm_step_body_<?= $clStep . " step_panel_" . $obj->currentStep ?>">

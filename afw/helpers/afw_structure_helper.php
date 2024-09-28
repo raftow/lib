@@ -20,6 +20,7 @@ class AfwStructureHelper extends AFWRoot
 
     public static final function getStructureOf($object, $field_name)
     {
+        // if($field_name=="level_enum") throw new RuntimeException("rafik 240927");
         $orig_field_name = $field_name;
         $field_name = AfwStructureHelper::shortNameToAttributeName($object, $field_name);
         if(!$field_name) $field_name = $orig_field_name;

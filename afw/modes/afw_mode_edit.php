@@ -248,8 +248,8 @@ else
         
         $myObj->currentStep = $currstep;
         // @todo-$objme->curStepFor[$myObj->getTableName()][$myObj->getId()] = $currstep;
+        
     }
-
     $out_scr .= $myObj->showHTML("afw_template_default_edit.php", array("inited_cols"=>$inited_cols));
 
     $out_scr .= '   <input type="hidden" name="pbmon"     value="1"/>

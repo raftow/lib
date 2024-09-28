@@ -264,8 +264,13 @@ class AfwFormulaHelper extends AFWRoot
         } else {
             $struct = AfwStructureHelper::repareMyStructure($object, $struct, $attribute);
         }
+        /*
+        if(($attribute=="arole_mfk") and ($what != "value"))
+        {
+            die("$attribute what=$what");
+        }*/
 
-        $formula_cache_attribute = "debugg_formula_cache_$attribute";
+        $formula_cache_attribute = "debugg_".$what."_formula_cache_$attribute";
 
         $object_formula_log = [];
         $object_formula_log[$attribute] = "calculate Formula($attribute)";
@@ -328,11 +333,17 @@ class AfwFormulaHelper extends AFWRoot
                     $access_formula = false;
                 }
             }
+            /*
+            if(($attribute=="arole_mfk") and ($what != "value"))
+            {
+                die("$attribute access_formula=$access_formula");
+            }*/
+            
             if ($access_formula) {
                 $object_formula_log[$attribute] = "authorized getFormuleResult($attribute, $what)";
                 $return = $object->getFormuleResult($attribute, $what);
                 /*
-                if($attribute=="school_class_id") 
+                if(($attribute=="arole_mfk") and ($what != "value"))
                 {
                     $objectdis = $object->getDisplay($lang);
                     die("rafik shoof $objectdis => getFormuleResult($attribute, $what) => [$return]");

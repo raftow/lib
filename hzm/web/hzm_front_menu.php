@@ -142,11 +142,22 @@
                 else
                 { 
                         $me_id = $objme->id;
-                        $file_lib_hzm_web_dir_name = dirname(__FILE__); 
-                        $file_cache = "$file_lib_hzm_web_dir_name/../../../external/chusers/user_${me_id}_data.php";
-                        if(file_exists($file_cache) and (!$ncu)) // ncu = get option to say "no cache use" to retrieve roles and menus (ums)
+                        
+                        if(!$ncu)
                         {
-                            include($file_cache);
+                             list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = AfwFrontMenu::loadUmsCacheForUser($me_id, $lang);
+                        }
+                        else
+                        {
+                             $cache_found = false;
+                             $quick_links_arr = null;
+                             $mau_info = null;
+                             $menu = null;
+                             $user_cache_file_path = null; 
+                        }
+
+                        if(!$ncu and $cache_found) // ncu = get option to say "no cache use" to retrieve roles and menus (ums)
+                        {
                             $application_code = $mau_info["m$application_id"]["code"];
                             $menu_folders_arr = $menu[$application_code][$lang];
 

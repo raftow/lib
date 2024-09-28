@@ -138,19 +138,22 @@ class AfwUrlManager extends AFWRoot
             if ($direct_access == 'N') {
                 if ($module_code and $object_table and $afw_action) 
                 {
-                        $file_lib_afw_dir_name = dirname(__FILE__); 
-                        if(file_exists("$file_lib_afw_dir_name/../../external/chsys/module_$module_code.php"))
+                        list($found, $role_info, $tab_info, $tbf_info, $module_sys_file) = AfwPrevilege::loadModulePrevileges($module_code);
+                        if($found)
                         {
-                            include("$file_lib_afw_dir_name/../../external/chsys/module_$module_code.php");
                             $bf_id = $tbf_info[$object_table][$afw_action]["id"];
-                            if(!$bf_id) AfwSession::pushWarning("The config file module_$module_code does not contain a definition for BF[$object_table][$afw_action]");
+                            if(!$bf_id) AfwSession::pushWarning("The previlege file of module $module_code does not contain a definition for BF[$object_table][$afw_action]");
                         }
-                        else AfwSession::pushWarning("System need cache optimisation by creating module_$module_code file <!-- file not found $file_lib_afw_dir_name/../../external/chsys/module_$module_code.php -->");    
+                        else AfwSession::pushWarning("System need cache optimisation by creating previleges file for module $module_code <!-- file not found $module_sys_file -->");    
 
                         
                         if((!$bf_id) and AfwSession::config("MODE_DEVELOPMENT",false))
                         {                            
-                            AfwSession::pushInformation("You can resolve this by doing <b>reverse table $object_table.$module_code</b> and then do <b>generate-chsys module $module_code</b> and erase content of module_$module_code.php file");
+                            AfwSession::pushInformation("BF [$object_table][$afw_action] not found in module previleges cache file<br> 
+                                                        You can resolve this by doing :
+                                                           <b>reverse table $object_table.$module_code</b> and then do :<br> 
+                                                           <b>generate-chsys module $module_code</b> <br> 
+                                                           and <u><b>merge</b></u> its content in ../$module_code/previleges.php file");
                             AfwAutoLoader::addModule("p"."ag");
                             $bf_id = UmsManager::getBunctionIdForOperationOnTable(
                                         $module_code,

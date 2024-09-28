@@ -51,25 +51,63 @@ if($MODULE != $currmod)
 
 $debug_name = "get_dropdown_elements";
 $obj = new $cl();
+if($debugg or $debug)
+{
+        echo "<b>the object is a new $cl</b> <br>";
+}
+
 $desc = AfwStructureHelper::getStructureOf($obj,$attribute);
+if($debugg or $debug)
+{
+        echo "<b>the structure of attribute $attribute</b> : <br>";  
+        echo var_export($desc,true)."<br><br>";
+}
+
 if(!$obj->answerTableForAttributeIsPublic($attribute,$desc))
 {
+        if($debugg or $debug)
+        {
+                echo "check member activated : <br>";  
+        }
         $only_members = true;
         include("$file_dir_name/../lib/afw/afw_check_member.php");
 }
 
+if($debugg or $debug)
+{
+        echo "<b>the object</b> : <br>";  
+        echo var_export($obj,true)."<br><br>";
+}
+
+
 
 foreach($attr_arr as $nom_col => $val)
 {
-   $obj->set($nom_col,$val);
+        $obj->set($nom_col,$val);
+        if($debugg or $debug)
+        {
+                echo "<b>the object->set($nom_col, $val)</b> : <br>";
+        }
+}
+
+if($debugg or $debug)
+{
+        if(($cl == "Acondition") and ($attribute == "aparameter_id"))
+        {
+                echo "<br><b>the object->calc(afield_type_id)</b> : <br>"; 
+                echo $obj->calc("afield_type_id"); 
+        }
 }
 
 $ans_tab_where = $obj->getSearchWhereOfAttribute($attribute);
 
 if($debugg or $debug)
 {
-        echo var_export($obj,true);  
-        die(" ::: ans_tab_where = ".var_export($ans_tab_where,true));
+        echo "<br><b>the object->getSearchWhereOfAttribute($attribute)</b> : <br>";
+        echo var_export($ans_tab_where,true);
+
+        
+        
 }
 
 
@@ -103,11 +141,19 @@ if(!file_exists($full_file_path))
 require_once $full_file_path;*/
 //AfwSession::getLog();
 $obj_rep      = new $nom_class_fk();
+
+if($debugg or $debug)
+{
+        echo "<br><b>the object ans tab is a new $nom_class_fk</b> <br>";
+}
+
 $obj_rep->select_visibilite_horizontale();
 if($ans_tab_where) $obj_rep->where($ans_tab_where);
-if($dbg)
+
+if($debugg or $debug)
 {
-        die("ans_tab_where=$ans_tab_where SQL = ".$obj_rep->getSQLMany());
+        echo "<br>SQL = ".$obj_rep->getSQLMany();
+        echo "<br>";
 }
 
 $liste_rep = $obj_rep->loadMany();
