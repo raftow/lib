@@ -1716,7 +1716,7 @@ class AFWObject extends AFWRoot
         return $old_val != $new_mfk;
     }
 
-    protected function dynamicHelpCondition($attribute)
+    public function dynamicHelpCondition($attribute)
     {
         return true;
     }

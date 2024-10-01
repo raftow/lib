@@ -7,19 +7,37 @@ if(!class_exists('AfwAutoLoader'))
         
         class AfwAutoLoader extends AFWRoot 
         {
+                private static $MAX_MODULES = 30;
+
                 private static $modules_autoload_by_prio = ["/","/../ums/", "/../hrm/", ];            // "/../crm/","/../p-ag/", "/../b-au/",
 
                 public static function addModule($module)
                 {
-                        array_push(self::$modules_autoload_by_prio, "/../$module/");
+                        $to_add = "/../$module/";
+                        // if($module=="license") throw new AfwRuntimeException("why add module $module here");
+                        if(!in_array($to_add, self::$modules_autoload_by_prio))
+                        {
+                                array_push(self::$modules_autoload_by_prio, $to_add);
+                                if(count(self::$modules_autoload_by_prio)>self::$MAX_MODULES) 
+                                   throw new AfwRuntimeException("adding module($module) : too much modules, self::modules_autoload_by_prio=".var_export(self::$modules_autoload_by_prio,true));                                
+                        }
+                        
                 }
 
                 public static function addMainModule($module)
                 {
-                        $tmp_modules_arr = self::$modules_autoload_by_prio;
-                        self::$modules_autoload_by_prio = array();
-                        self::$modules_autoload_by_prio[] = "/../$module/";
-                        self::$modules_autoload_by_prio = array_unique(array_merge(self::$modules_autoload_by_prio, $tmp_modules_arr));
+                        $to_add = "/../$module/";
+                        // if($module=="license") throw new AfwRuntimeException("why add main module $module here");
+                        if(self::$modules_autoload_by_prio[0]!=$to_add)
+                        {
+                                $tmp_modules_arr = self::$modules_autoload_by_prio;
+                                self::$modules_autoload_by_prio = array();
+                                self::$modules_autoload_by_prio[] = $to_add;
+                                self::$modules_autoload_by_prio = array_unique(array_merge(self::$modules_autoload_by_prio, $tmp_modules_arr));
+                                if(count(self::$modules_autoload_by_prio)>20) 
+                                        throw new AfwRuntimeException("adding Main module($module) : too much modules, self::modules_autoload_by_prio=".var_export(self::$modules_autoload_by_prio,true));
+                        }
+                        
                 }
 
                 public static function getClassPath($class)
@@ -134,7 +152,7 @@ if(!class_exists('AfwAutoLoader'))
                                 
                                 
                                 $modules_to_fetch = array_merge($modules_to_fetch, self::$modules_autoload_by_prio);
-                                
+                                // if(count($modules_to_fetch)>100) die("modules_to_fetch=".var_export($modules_to_fetch,true));
 
                                 foreach ($modules_to_fetch as $module_relative_path)
                                 {

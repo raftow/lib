@@ -2345,7 +2345,8 @@ ul.ulcircle li {
 	background: #ede9c7;
 	border-radius: 4px;
 }
-
+/*
+not logic to put specific css into common css file
 .gender,.radiogroup {
 	padding: 5px !important;
 	display: block;
@@ -2360,6 +2361,7 @@ ul.ulcircle li {
 	min-width: 14px;
 	min-height: 14px;
 }
+*/
 
 .ltr {
 	direction: ltr;

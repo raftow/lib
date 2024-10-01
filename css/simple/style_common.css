@@ -6302,6 +6302,7 @@ td.rtd.tb {
 
 .afwerr {
     background-color: white;
+    color: black !important;
 }    
 
 div.afwerr h1 {
