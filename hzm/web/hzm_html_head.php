@@ -93,13 +93,16 @@ if (!$my_font) $my_font = "front";
     <script src="../lib/js/localization/messages_<?php echo  $lang ?>.js"></script>
   <?php
   }
+  $cmodule = AfwUrlManager::currentURIModule();
+  $xmodule = AfwSession::getCurrentlyExecutedModule();
+  $pagecode = AfwUrlManager::currentPageCode();
+  
   ?>
   <!-- end plugins -->
   <!-- datatable/css/js -->
   <?php
-  $pagecode = AfwUrlManager::currentPageCode();
-  $cmodule = AfwUrlManager::currentURIModule();
-  $xmodule = AfwSession::getCurrentlyExecutedModule();
+  
+  
 
   // echo "[$Main_Page/$datatable_css_file/$datatable_on]"
 

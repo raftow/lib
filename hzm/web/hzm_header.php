@@ -353,6 +353,13 @@ $user_full
 
 <?php
   include_once("gpie_body.php");
+  $file_special_php_page_code = "/../../../$xmodule/special/$pagecode.php";
+  $full_file_special_php_page_code = $file_hzm_dir_name.$file_special_php_page_code;
+  if(!file_exists($full_file_special_php_page_code))
+  {
+        echo "<!-- any specific html code to generate here is to put in xxx$file_special_php_page_code";
+  }
+  else include_once($full_file_special_php_page_code);
 ?>
 <!-- #END OF Header -->
 
