@@ -217,19 +217,19 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 $val_help = $obj->translate($col_help, $lang);
                                 if ($val_help != $col_help) $data[$nom_col]["help"]     = $val_help;
 
-                                $data[$nom_col]["ehelp"]     = trim($obj->getTranslatedAttributeProperty($nom_col, "EHELP", $lang, $desc));
-                                $data[$nom_col]["hint"]     = trim($obj->getTranslatedAttributeProperty($nom_col, "HINT", $lang, $desc));
-                                $data[$nom_col]["tooltip"]  = trim($obj->getTranslatedAttributeProperty($nom_col, "TOOLTIP", $lang, $desc));
+                                $data[$nom_col]["ehelp"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "EHELP", $lang, $desc));
+                                $data[$nom_col]["hint"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "HINT", $lang, $desc));
+                                $data[$nom_col]["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "TOOLTIP", $lang, $desc));
                                 if (!$data[$nom_col]["tooltip"]) {
                                         $tltp = $obj->getAttributeTooltip($nom_col, $lang);
                                         if ($tltp) $data[$nom_col]["tooltip"] = $tltp;
                                 }
 
-                                $data[$nom_col]["unit"]  = trim($obj->getTranslatedAttributeProperty($nom_col, "UNIT", $lang, $desc));
+                                $data[$nom_col]["unit"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "UNIT", $lang, $desc));
                                 $data[$nom_col]["no-hzm-unit"]  = $desc["NO-HZM-UNIT"];
                                 if ($data[$nom_col]["unit_explain"]) $data[$nom_col]["unit"]  = "الوحدة = " . $data[$nom_col]["unit"];
 
-                                $data[$nom_col]["title_after"]  = trim($obj->getTranslatedAttributeProperty($nom_col, "TITLE_AFTER", $lang, $desc));
+                                $data[$nom_col]["title_after"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "TITLE_AFTER", $lang, $desc));
 
                                 //if($nom_col=="picture_height") die("data[$nom_col][unit] = ".$data[$nom_col]["unit"]);
 
@@ -278,7 +278,8 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 if (($desc['TYPE'] == 'GDAT') or ($desc['TYPE'] == 'GDATE') or ($desc['TYPE'] == 'DATE')) {
                                         if (!$obj->getVal($nom_col)) $col_val_class = "hzm_value_empty_date col$nom_col";
                                 }
-
+                                $data[$nom_col]["ehelp"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "EHELP", $lang, $desc));                                
+                                // if($nom_col=="applicationModelConditionList") die("ehelp=".$data[$nom_col]["ehelp"]);
                                 $data[$nom_col]["input"] = "<div class='hzm_data hzm_data_$nom_col $col_val_class $ro_classes_form' style='$style_div_form_control'>";
                                 if ((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) {
                                         $col_val = $obj->{"val$nom_col"}();
@@ -301,16 +302,16 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                         if ($obj_errors[$nom_col]) $data[$nom_col]["error"] = $obj_errors[$nom_col];
                                 }
                                 $data[$nom_col]["input"] .= "</div>";
-                                $data[$nom_col]["tooltip"]  = trim($obj->getTranslatedAttributeProperty($nom_col, "TOOLTIP", $lang, $desc));
+                                $data[$nom_col]["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "TOOLTIP", $lang, $desc));
                                 if (!$data[$nom_col]["tooltip"]) {
                                         $tltp = $obj->getAttributeTooltip($nom_col, $lang);
                                         if ($tltp) $data[$nom_col]["tooltip"] = $tltp;
                                 }
-                                $data[$nom_col]["unit"]  = trim($obj->getTranslatedAttributeProperty($nom_col, "UNIT", $lang, $desc));
+                                $data[$nom_col]["unit"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "UNIT", $lang, $desc));
                                 $data[$nom_col]["no-hzm-unit"]  = $desc["NO-HZM-UNIT"];
                         }
 
-                        $data[$nom_col]["warning"]  = trim($obj->getTranslatedAttributeProperty($nom_col, "WARNING", $lang, $desc));
+                        $data[$nom_col]["warning"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "WARNING", $lang, $desc));
                         if (!$data[$nom_col]["warning"]) {
                                 $col_warning = $nom_col . "_warning";
                                 $val_warning = $obj->translate($col_warning, $lang);
@@ -793,6 +794,10 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
 
 
                                                                 echo "</div><!-- fg-$col -->";
+                                                        }
+                                                        elseif ($info["ehelp"])
+                                                        {
+                                                                echo "$br_if_needed<div class='ehelp'>" . $info["ehelp"] . "</div>"; //
                                                         }
                                                 }
 

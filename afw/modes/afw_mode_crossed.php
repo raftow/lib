@@ -161,8 +161,8 @@ if($nb_objs>0)
         $pk_col = $first_item->getPK();
         $pk_desc = AfwStructureHelper::getStructureOf($first_item, $pk_col);
         
-        $info_tooltip  = trim($first_item->getTranslatedAttributeProperty($crossed_value_col, "TOOLTIP", $lang));
-        $info_unit  = trim($first_item->getTranslatedAttributeProperty($crossed_value_col, "UNIT", $lang));
+        $info_tooltip  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($first_item, $crossed_value_col, "TOOLTIP", $lang));
+        $info_unit  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($first_item,$crossed_value_col, "UNIT", $lang));
         $html_before = "";
         $html_after = "";
         if($info_unit or $info_tooltip)

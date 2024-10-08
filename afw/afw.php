@@ -3729,47 +3729,7 @@ class AFWObject extends AFWRoot
 
 
 
-    public function getTranslatedAttributeProperty(
-        $attribute,
-        $attribute_property,
-        $lang,
-        $desc = null
-    ) {
-        if (!$desc) $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        $attribute_property_code = $desc[$attribute_property];
-
-        if (!$attribute_property_code) {
-            $attribute_property_code = $attribute . '_' . $attribute_property;
-        }
-
-        $attribute_property_code = strtoupper($attribute_property_code);
-        $attribute_property_trans = $this->translateMessage(
-            $attribute_property_code,
-            $lang
-        );
-        if ($attribute_property_trans == $attribute_property_code) {
-            $attribute_property_trans = '';
-        }
-        $attribute_property_code = strtolower($attribute_property_code);
-        if (!$attribute_property_trans) {
-            $attribute_property_trans = $this->translate(
-                $attribute_property_code,
-                $lang
-            );
-        }
-
-        //if(($attribute=="picture_height") and ($attribute_property=="UNIT")) die(" $attribute_property_trans = this->translate($attribute_property_code,$lang) ");
-
-        if ($attribute_property_trans == $attribute_property_code) {
-            $attribute_property_trans = '';
-        }
-
-        if (!$attribute_property_trans) {
-            $attribute_property_trans = $desc[$attribute_property];
-        }
-
-        return $attribute_property_trans;
-    }
+    
 
     public function tm($message, $langue = '')
     {

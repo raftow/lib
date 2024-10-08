@@ -104,15 +104,15 @@ class AfwLanguageHelper
                     "$file_dir_name/../../external/translate/$module/trad_" .
                     strtolower($langue) .
                     "_$nom_table.php";
-                //if($this->MY_DEBUG)
+                //if($object->MY_DEBUG)
                 //        AFWDebugg::log("traduire from file $nom_file ");
 
                 if (file_exists($nom_file2)) {
                     // if(($module=="adm") and ($nom_table=="applicant")) echo("tarjem find 1 the file $nom_file2");
-                    //if($this->MY_DEBUG)
+                    //if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire include_once $nom_file ");
                     include $nom_file2;
-                    //if($this->MY_DEBUG)
+                    //if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
                     if (isset($trad) and $trad and (!is_array($trad))) {
@@ -126,11 +126,11 @@ class AfwLanguageHelper
 
                 if (file_exists($nom_file)) {
                     //if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) echo(" 2. tarjem find the file nom_file=$nom_file <br>");
-                    //if($this->MY_DEBUG)
+                    //if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire include_once $nom_file ");
                     include $nom_file;
                     // if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) die(" 2. tarjem : trad[$nom_table][$nom_col] = ".$trad[$nom_table][$nom_col]);
-                    // if($this->MY_DEBUG)
+                    // if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
                     if (isset($trad) and $trad and (!is_array($trad))) {
@@ -185,16 +185,16 @@ class AfwLanguageHelper
                     "$file_dir_name/../../$module/tr/trad_" .
                     strtolower($langue) .
                     "_$nom_table.php";
-                //if($this->MY_DEBUG)
+                //if($object->MY_DEBUG)
                 //        AFWDebugg::log("traduire from file $nom_file ");
                 if (file_exists($nom_file0)) {
-                    //if($this->MY_DEBUG)
+                    //if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire include_once $nom_file ");
                     include_once $nom_file0;
                     if (isset($trad) and $trad and (!is_array($trad))) {
                         throw new AfwRuntimeException("after include_once $nom_file0 trad 4 is " . var_export($trad, true));
                     }
-                    //if($this->MY_DEBUG)
+                    //if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
                     if ($trad['OPERATOR'][$nom_col]) {
@@ -264,5 +264,65 @@ class AfwLanguageHelper
             } else {
                     return $message;
             }
+    }
+
+    /**
+     * @param AFWObject $object
+     * 
+     * 
+     */
+
+    public static function getTranslatedAttributeProperty(
+        $object,
+        $attribute,
+        $attribute_property,
+        $lang,
+        $desc = null
+    ) {
+        if (!$desc) $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        $attribute_property_code = $desc[$attribute_property];
+
+        if (!$attribute_property_code) {
+            $attribute_property_code = $attribute . '_' . $attribute_property;
+        }
+
+        $attribute_property_trans = $object->translateMessage(
+            $attribute_property_code,
+            $lang
+        );
+        if ($attribute_property_trans == $attribute_property_code) {
+            $attribute_property_trans = '';
+        }
+        
+        if (!$attribute_property_trans) {
+            $attribute_property_code = strtoupper($attribute_property_code);
+            $attribute_property_trans = $object->translateMessage(
+                $attribute_property_code,
+                $lang
+            );
+            if ($attribute_property_trans == $attribute_property_code) {
+                $attribute_property_trans = '';
+            }
+        }
+        
+        if (!$attribute_property_trans) {
+            $attribute_property_code = strtolower($attribute_property_code);
+            $attribute_property_trans = $object->translate(
+                $attribute_property_code,
+                $lang
+            );
+        }
+
+        //if(($attribute=="picture_height") and ($attribute_property=="UNIT")) die(" $attribute_property_trans = this->translate($attribute_property_code,$lang) ");
+
+        if ($attribute_property_trans == $attribute_property_code) {
+            $attribute_property_trans = '';
+        }
+
+        if (!$attribute_property_trans) {
+            $attribute_property_trans = $desc[$attribute_property];
+        }
+
+        return $attribute_property_trans;
     }
 }
