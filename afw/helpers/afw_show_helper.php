@@ -1635,6 +1635,7 @@ $('#$showAsDataTable').DataTable( {
 
     public static function quickShowAttribute($objItem, $col, $lang = "ar", $desc = null, $newline = "\n<br>")
     {
+        // $htr_s = hrtime()[1];
         if (!$desc) $desc = AfwStructureHelper::getStructureOf($objItem, $col);
         $return = "???";
         switch ($desc['TYPE']) {
@@ -1659,9 +1660,9 @@ $('#$showAsDataTable').DataTable( {
                     //@tooptimize $return = self::quickShowOneOrListOfObjects($objs, $lang, $newline);
                     $nom_table_fk   = $desc["ANSWER"];
                     $nom_module_fk  = $desc["ANSMODULE"];
-                    if (!isset($structure["SMALL-LOOKUP"])) {
+                    if (!isset($desc["SMALL-LOOKUP"])) {
                         list($lkp, $issmall) = AfwLoadHelper::getLookupProps($nom_module_fk, $nom_table_fk);
-                        $structure["SMALL-LOOKUP"] = ($lkp and $issmall);
+                        $desc["SMALL-LOOKUP"] = ($lkp and $issmall);
                     }
                     $small_lookup  = $desc["SMALL-LOOKUP"];
                     $pk = $desc["ANSWER-PK"];
@@ -1669,7 +1670,11 @@ $('#$showAsDataTable').DataTable( {
                     $val = $objItem->getVal($col);
                     $emptyMessage = $objItem->translate('obj-empty', $lang);
                     $return = AfwLoadHelper::decodeLookupValue($nom_module_fk, $nom_table_fk, $val, $separator = $newline, $emptyMessage, $pk, $small_lookup);
-                    if ($val and (!$return)) $return = "<!-- quickShowAttribute $nom_module_fk / $nom_table_fk -->$val";
+                    if ($val and (!$return)) $return = $val . "<!-- val only -->";
+                    /* $htr_e = hrtime()[1];
+                    $htr = $htr_e - $htr_s;
+                    if($htr < 4000000) $htr = "";*/
+                    $return .= "<!-- quickShowAttribute case FK $nom_module_fk / $nom_table_fk -->"; //  / htr = $htr
                 }
 
 

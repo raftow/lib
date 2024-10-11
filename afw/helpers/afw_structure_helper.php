@@ -379,23 +379,36 @@ class AfwStructureHelper extends AFWRoot
 
     }
 
+    public static $allRealFields = null;
+
     /**
      * @param AFWObject $object 
      * @param boolean $structure 
      * @return array
      */
 
-
     public static final function getAllRealFields($object, $structure=false)
     {
+        if(!$structure)
+        {
+            $cls = $object->getMyClass();
+            if (self::$allRealFields[$cls]) return self::$allRealFields[$cls];
+        }
+        
+        
         $class_db_structure = $object->getMyDbStructure();
         $result_arr = [];
         foreach ($class_db_structure as $attribute => $desc) {
-            if (AfwStructureHelper::attributeIsReel($object, $attribute)) {
+            if (AfwStructureHelper::attributeIsReel($object, $attribute, $desc)) {
                 if(!$structure) $result_arr[] = $attribute;
                 else $result_arr[$attribute] = $desc;
             }
         }
+        if(!$structure)
+        {
+            self::$allRealFields[$cls] = $result_arr;
+        }
+
         return $result_arr;
     }
 
@@ -840,6 +853,11 @@ class AfwStructureHelper extends AFWRoot
                     !($objme = AfwSession::getUserConnected()) or
                     !$objme->isSuperAdmin()));
     }
+
+    /**
+     * 
+     * @return AFWObject
+     */
 
     public static function getEmptyObject($object, $attribute)
     {

@@ -5749,12 +5749,16 @@ pre.sql.hzm {
 }
 
 pre.log.top.critical {
-    border-top: 14px dashed red;
+    border-top: 28px dashed red;
 } 
 
 pre.log.critical {
-    border-top: 14px dashed orange;
-} 
+    border-top: 14px dashed red;
+}
+
+pre.log.require-attention {
+    border-top: 10px dashed orange;
+}
 
 .form-control.error {
     background-color: white !important;

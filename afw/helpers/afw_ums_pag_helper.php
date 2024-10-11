@@ -601,6 +601,11 @@ class AfwUmsPagHelper extends AFWRoot
         }
     }
 
+    /**
+     * @param AFWObject $object 
+     * @param Auser $auser
+     */
+
     public static final function userCanDoOperationOnObject(
         $object,
         $auser,
@@ -613,6 +618,8 @@ class AfwUmsPagHelper extends AFWRoot
             return true;
         }
 
+        if(!$object->public_display) $object->public_display = $object->canBePublicDisplayed();
+
         if ($operation == 'display' and $object->public_display) {
             return true;
         }
@@ -623,9 +630,7 @@ class AfwUmsPagHelper extends AFWRoot
             return true;
         }
 
-        if ($operation == 'display' and $object->canBePublicDisplayed()) {
-            return true;
-        }
+        
         if (
             $operation == 'display' and
             $object->canBeSpeciallyDisplayedBy($auser)
@@ -783,6 +788,74 @@ class AfwUmsPagHelper extends AFWRoot
         return implode("<br>\n", $return_arr);
     }
 
+    /* @todo later if needed 
+    public static final function getAllActionsFromRow($row, $cl, $currmod, $colActive="active", $step=0, $takeViewIcon = true)
+    {
+        global $images, $lang;
+        // $objme = AfwSession::getUserConnected();
+
+        
+
+        $actions_tpl_arr = $object->getSpecificActions($step);
+        // die("$object : getSpecificActions = ".var_export($actions_tpl_arr,true));
+        list($editAction, $editFilename) = $object->editAction($step);
+        list($displayAction, $displayFilename) = $object->displayAction($step);
+        list($deleteAction, $deleteFilename) = $object->deleteAction($step);
+
+        if ($row[$colActive]!="Y") 
+        {
+            $viewIcon = 'view_off';
+            $data_errors = 'سجل محذوف الكترونيا';
+        } 
+        elseif 
+        (
+            $object->showRetrieveErrors and
+            (AfwSession::hasOption('CHECK_ERRORS') or $object->forceCheckErrors)
+        ) {
+            if (!$object->isOk()) {
+                $viewIcon = 'view_err';
+                $arr_dataErrors = $object->getDataErrors($lang);
+                $data_errors = implode(' / ', $arr_dataErrors);
+                if (strlen($data_errors) > 596 or count($arr_dataErrors) > 18) {
+                    $data_errors = 'أخطاء كثيرة';
+                    $viewIcon = 'view_error';
+                }
+            } else {
+                $viewIcon = 'view_ok';
+                $data_errors = 'لا يوجد أخطاء';
+            }
+        } else {
+            $viewIcon = 'view_me';
+            $data_errors = 'لم يتم تفعيل التثبت من الأخطاء';
+            if (!$object->showRetrieveErrors) {
+                $data_errors .= ' في العرض الاستردادي (retrieve mode)';
+            }
+        }
+        if ($takeViewIcon) {
+            $actions_tpl_arr['view'] = [
+                'link' => "Main_Page=$displayFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
+                'img' => "../lib/images/$viewIcon.png",
+                'framework_action' => $displayAction,
+                'help' => htmlentities($data_errors),
+            ];
+        }
+
+        $actions_tpl_arr['edit'] = [
+            'link' => "Main_Page=$editFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
+            'img' => $images['modifier'],
+            'framework_action' => $editAction,
+        ];
+        //$actions_tpl_arr["delete"] = array("link"=>"Main_Page=$deleteFilename&cl=$cl&currmod=$currmod&id=[id]&popup=", "img"=>$images['delete'],"target"=>"_del_popup","framework_action"=>$deleteAction);
+        $actions_tpl_arr['delete'] = [
+            'link' => '#todo',
+            'img' => $images['delete'],
+            'framework_action' => $deleteAction,
+            'ajax_class' => 'trash',
+        ];
+
+        return $actions_tpl_arr;
+    }*/
+
     public static final function getAllActions($object, $step = 0, $takeViewIcon = true)
     {
         global $images, $lang;
@@ -857,6 +930,18 @@ class AfwUmsPagHelper extends AFWRoot
 
         return $actions_tpl_matrix;
     }
+    
+    /* to be used later for very quick search no eager no FKs decode etc ...
+       but now it is not needed for current projects
+    public static final function getActionsMatrixFromData($data, $cl, $currmod, $colActive = "active", $step = 0)
+    {
+        $actions_tpl_matrix = [];
+        foreach ($data as $id => $row) {
+            $actions_tpl_matrix[$id] = AfwUmsPagHelper::getAllActionsFromRow($row, $cl, $currmod, $colActive, $step);
+        }
+
+        return $actions_tpl_matrix;
+    }*/
 
 
     public static final function getRetrieveHeader(

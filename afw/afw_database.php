@@ -227,10 +227,12 @@ class AfwDatabase extends AFWRoot
             $sql_info_class = 'sqlinfo';
             if($is_update) $sql_info_class .= ' sqlupdate';
             $start_q_time = date('Y-m-d H:i:s');
+            $start_m_time = 0;
             $start_m_time = microtime();
             $result = AfwMysql::query($sql_query,AfwDatabase::getLinkByName($project_link_name), $is_update);
             // var_dump($result);
             // die("AfwMysql::query($sql_query) result above");
+            $end_m_time = 0;
             $end_m_time = microtime();
             $end_q_time = date('Y-m-d H:i:s');
 

@@ -95,6 +95,7 @@ if($datatable_on)
 {
         // die("DBG-before afw_handle_default_search");
 	include 'afw_handle_default_search.php';
+        AfwSession::log("End of afw_handle_default_search");
         // die("DBG-after afw_handle_default_search");
         $collapse_show = "";
 }

@@ -215,8 +215,8 @@ class Bdata extends AFWObject{
 	}
         
         public function init_bdata($btable_id) {
-                $this->setNotSecure("btable_id",$btable_id,true,true);
-                $this->setNotSecure("row_id","(select IF(ISNULL(max(row_id)), 0, max(row_id))+1 from r fwdb.bdata bdt2 where bdt2.btable_id=$btable_id)",true,true);
+                $this->nativeSet("btable_id",$btable_id,true,true);
+                $this->nativeSet("row_id","(select IF(ISNULL(max(row_id)), 0, max(row_id))+1 from r fwdb.bdata bdt2 where bdt2.btable_id=$btable_id)",true,true);
         }
         
         public function beforeInsert($id, $fields_updated) {

@@ -32,7 +32,10 @@ class AfwCacheSystem
                                         'id' => array("TYPE" => "PK", "SHOW" => true),
                                     );
     
-    
+    /**
+     * @return AfwCacheSystem
+     * 
+     */
     
     public static function getSingleton()
     {
@@ -54,6 +57,10 @@ class AfwCacheSystem
     {
         return $this->putIntoCache("hzm", $class_name, $db_structure, $indexValue="structure", $context="structure_cache");        
     }
+    /**
+     * 
+     * @return AFWObject
+     */
     
     function getFromCache($module_code, $table_name, $id, $context="")
     {

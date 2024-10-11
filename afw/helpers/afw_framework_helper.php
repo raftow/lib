@@ -262,26 +262,35 @@ class AfwFrameworkHelper extends AFWRoot
         return $main_reason;
     }
 
+    /**
+     * @param AFWObject $object
+     * @param string $frameworkAction
+     */
 
-    public static final function acceptHimSelf($object, $frameworkAction)
+    public static final function acceptHimSelf($object, $frameworkAction, $forMode="all")
     {
-        if (
-            $frameworkAction == 'edit' or
-            $frameworkAction == 'insert' or
-            $frameworkAction == 'update'
-        ) {
-            return ($object->editToDisplay() or 
-                        ($object->iAcceptAction('edit') 
-                            and self::stepIsEditable($object, 'all') and (!AfwStructureHelper::stepIsReadOnly($object,'all'))));
+        if(($forMode != "retrieve") or (!$object->umsCheckDisabledInRetrieveMode()))
+        {
+            if (
+                $frameworkAction == 'edit' or
+                $frameworkAction == 'insert' or
+                $frameworkAction == 'update'
+            ) 
+            {
+                return ($object->editToDisplay() or 
+                            ($object->iAcceptAction('edit') 
+                                and self::stepIsEditable($object, 'all') 
+                                and (!AfwStructureHelper::stepIsReadOnly($object,'all'))));
 
-            if (!self::stepIsEditable($object, 'all')) {
-                return false;
-            }
-            if (AfwStructureHelper::stepIsReadOnly($object,'all')) {
-                return false;
-            }
-            if (!$object->iAcceptAction('edit')) {
-                return false;
+                if (!self::stepIsEditable($object, 'all')) {
+                    return false;
+                }
+                if (AfwStructureHelper::stepIsReadOnly($object,'all')) {
+                    return false;
+                }
+                if (!$object->iAcceptAction('edit')) {
+                    return false;
+                }
             }
         }
 

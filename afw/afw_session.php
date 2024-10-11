@@ -340,7 +340,12 @@ class AfwSession extends AFWRoot {
 
         public static function currTime()
         {
-                return intval(date("H"))*3600+intval(date("i"))*60+intval(date("s"));
+                return round(hrtime(true)/100000000)/10;
+        }
+
+        public static function currMilliSeconds()
+        {
+                return round(hrtime(true)/1000000);
         }
 
         public static function log($string, $css_class="paglog hzmlog", $separator="<br>\n", $show_time=true, $context="log")
@@ -363,18 +368,20 @@ class AfwSession extends AFWRoot {
                         if($oldLastLogTime)
                         {
                                 $durationSinceLastLog = $now_time - $oldLastLogTime;  
-                                if($durationSinceLastLog>3) $critical = "critical";
-                                if($durationSinceLastLog>5) $critical = "top critical";
+                                if($durationSinceLastLog>1) $critical = "require-attention";
+                                if($durationSinceLastLog>2) $critical = "critical";
+                                if($durationSinceLastLog>3) $critical = "top critical";
                         }
 
                         if($critical)
                         {
-                                $string.= "iCanDo LOG <br>\n".self::getLog("iCanDo");
+                                $icdLog = self::getLog("iCanDo");
+                                if($icdLog) $string.= "<br>\niCanDo LOG : <br>\n".$icdLog;
                         }
                 }
                 $html = trim(self::getVar($context));
                 if($html) $html .= $separator;
-                if($show_time) $string .= $separator . " [". date("Y-m-d H:i:s") ."]";
+                if($show_time) $string .= $separator . " [". date("Y-m-d H:i:s").".".self::currMilliSeconds() ."]";
                 // if($css_class == "hzm") 
                 $html .= "<pre class='$css_class $context $critical'>$string</pre>"; //  N$now_time O$oldLastLogTime D$durationSinceLastLog
                 //if($css_class != "hzm") die("[[[[[$string]]]]]");

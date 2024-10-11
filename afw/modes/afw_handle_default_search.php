@@ -237,19 +237,24 @@ if (!$liste_obj) {
         }
         if (!isset($sql_order_by)) $sql_order_by = "";
         if (!$genere_xls) {
-                $liste_obj       = $obj->loadManyEager($limite . ", " . $MAX_ROW, $sql_order_by);
+                $the_limit = $limite . ", " . $MAX_ROW;
                 // $liste_obj       = $obj->loadMany($limite . ", " . $MAX_ROW, $sql_order_by);
                 // die("DBG-loadManyEager normal limited load : liste_obj = obj->loadManyEager($limite, $MAX_ROW, $sql_order_by) = ".var_export($liste_obj,true));
         } else {
-                $liste_obj       = $obj->loadManyEager("", $sql_order_by);
+                $the_limit = "";
                 // $liste_obj       = $obj->loadMany("", $sql_order_by);
                 // die("DBG-loadManyEager excel illimited load");    
         }
+
+        $liste_obj       = $obj->loadManyEager($the_limit, $sql_order_by);
+        //$dataRetrive = AfwLoadHelper::retrieveMany($obj, $the_limit, $sql_order_by);
 }
 
+AfwSession::log("End of Data retrieve in afw_handle_default_search");
 
 // if search result is big data we should not keep heavy calculated fields like shortcuts
 // in retrieved columns
+//$liste_count = count($dataRetrive);
 $liste_count = count($liste_obj);
 $too_much_records = AfwSession::config("too_much_records", 500);
 if($liste_count>$too_much_records)
@@ -268,19 +273,41 @@ if($liste_count>$too_much_records)
 // mais pour localiser (espioner) la lenteur est avant ou apres
 // AfwSession::sqlLog("espion-time-0002", "hzm");
 
-
-
-list($data, $isAvail) = AfwLoadHelper::getRetrieveDataFromObjectList($liste_obj, $header, $lang, $newline = "\n<br>");
+// $ddtt_s = date("H:i:s.u");
+// list($data, $isAvail) = AfwLoadHelper::formatRetrievedDataForRetrieveMode($dataRetrive, $header, $obj->fld_ACTIVE(), $lang);
+AfwSession::log("Before execute LoadHelper::getRetrieveDataFromObjectList in afw_handle_default_search");
+list($data, $isAvail) = AfwLoadHelper::getRetrieveDataFromObjectList($liste_obj, $header, $lang, $newline = "\n<br>",true);
+AfwSession::log("After execute LoadHelper::getRetrieveDataFromObjectList in afw_handle_default_search");
 // die("data = ".var_export($data,true)." when liste_obj= ".var_export($liste_obj,true));
+// $ddtt_e = date("H:i:s.u");
+// die("ddtt_e=$ddtt_e ddtt_s=$ddtt_s");
+// $actions_tpl_matrix = AfwUmsPagHelper::getActionsMatrixFromData($dataRetrive, $obj->getMyClass(), $obj->getMyModule(), $obj->fld_ACTIVE());
+/*
+$getActionsMatrix_time_start = hrtime(true);
+*/
+AfwSession::log("Before execute UmsPagHelper::getActionsMatrix in afw_handle_default_search");
 $actions_tpl_matrix = AfwUmsPagHelper::getActionsMatrix($liste_obj);
+AfwSession::log("After execute UmsPagHelper::getActionsMatrix in afw_handle_default_search");
 
-
-if ($genere_xls) {
+/*
+$getActionsMatrix_time_end = hrtime(true); // nano sec
+// time in milli second
+$getActionsMatrix_time_t = round(($getActionsMatrix_time_end - $getActionsMatrix_time_start) / 1000000);
+die("getActionsMatrix_time_t=$getActionsMatrix_time_t");
+*/
+if ($genere_xls) 
+{
+        AfwSession::log("Before execute getRetrieveDataFromObjectList for excel generation in afw_handle_default_search");
         list($data_excel, $isAvail_excel) = AfwLoadHelper::getRetrieveDataFromObjectList($liste_obj, $header_excel, $lang, $newline = "\n");
+        AfwSession::log("After execute getRetrieveDataFromObjectList for excel generation in afw_handle_default_search");
         //die("header_excel =".var_export($header_excel,true)." data_excel = ".var_export($data_excel,true));
 }
 
-if ($action and ($action != "retrieve") and ($qsearchview == "exec")) {
+
+
+if ($action and ($action != "retrieve") and ($qsearchview == "exec")) 
+{
+        AfwSession::log("Before execute action $action in afw_handle_default_search");
         $actions_tpl_arr = array();
         $methodAction = $action."RetrieveAction";
         if ($action_params) $actionParamsArr = explode(",", $action_params);
@@ -319,6 +346,8 @@ if ($action and ($action != "retrieve") and ($qsearchview == "exec")) {
                         AfwSession::pushInformation($warn);
                 }
         }
+
+        AfwSession::log("After execute action $action in afw_handle_default_search");
 }
 
 
@@ -359,6 +388,7 @@ if (true) {
                                                 <td id='bloc_result'>
 
                                                         <?
+                                                        AfwSession::log("Before prepare of header and can_action array matrix in afw_handle_default_search");
                                                         if (count($header) != 0) {
                                                                 $datatable_header = "";
                                                                 /*
@@ -420,6 +450,8 @@ if (true) {
                                                                 }
                                                         }
 
+                                                        AfwSession::log("After prepare of header and can_action array matrix in afw_handle_default_search");
+
                                                         // die("can_action_arr = ".var_export($can_action_arr,true)); 
                                                         ?>
 
@@ -443,8 +475,12 @@ if (true) {
                                                                 ?>
                                                                 <tbody>
                                                                         <?
+                                                                        AfwSession::log("Before show data retrieve in afw_handle_default_search");
                                                                         $ids = "";
                                                                         $ids_count = 0;
+                                                                        $maxRecordsUmsCheck = $obj->maxRecordsUmsCheck();
+                                                                        $umsCheckDisabledInRetrieveMode = $obj->umsCheckDisabledInRetrieveMode();
+                                                                        if ($maxRecordsUmsCheck > 100) $maxRecordsUmsCheck = 100;
                                                                         foreach ($data as $id => $tuple) 
                                                                         {
                                                                                 //if($ids_count<50)
@@ -478,6 +514,7 @@ if (true) {
 
                                                                                         // die(var_export($actions_tpl_arr,true));
                                                                                         if ($ids_count < 3000) {
+                                                                                                
                                                                                                 foreach ($actions_tpl_arr as $action_item => $action_item_props) {
                                                                                                         if ($actions_tpl_matrix[$id][$action_item]) $action_item_props = $actions_tpl_matrix[$id][$action_item];
 
@@ -526,9 +563,8 @@ if (true) {
 
                                                                                                         if ($can) 
                                                                                                         {
-                                                                                                                $maxRecordsUmsCheck = $liste_obj[$id]->maxRecordsUmsCheck();
-                                                                                                                if ($maxRecordsUmsCheck > 100) $maxRecordsUmsCheck = 100;
-                                                                                                                if (!$maxRecordsUmsCheck) 
+                                                                                                                
+                                                                                                                if ((!$maxRecordsUmsCheck) or ($umsCheckDisabledInRetrieveMode))
                                                                                                                 {
                                                                                                                         $canOnMe = true;
                                                                                                                 } 
@@ -568,13 +604,13 @@ if (true) {
                                                                                                         // $canOnMe = true;
                                                                                                         // $can = true;
                                                                                                         if ($can and $canOnMe) {
-                                                                                                                $accept_HimSelf = AfwFrameworkHelper::acceptHimSelf($liste_obj[$id], $frameworkAction);
+                                                                                                                $accept_HimSelf = AfwFrameworkHelper::acceptHimSelf($liste_obj[$id], $frameworkAction, "retrieve");
                                                                                                                 if ($accept_HimSelf) {
-                                                                                                                        /* @note rafik/17/6/2021 obsolete and fill the session of user better to remove
-                                                        if($page)
-                                                               $sess_link = savePageInSession($page,$page_params);
-                                                        else
-                                                               $sess_link = saveLinkInSession("main.php"."?".$link);*/
+                                                                                                                        /* @note rafik/17/6/2021 obsolete and will fill the session of user so better to remove
+                                                                                                                        if($page)
+                                                                                                                        $sess_link = savePageInSession($page,$page_params);
+                                                                                                                        else
+                                                                                                                        $sess_link = saveLinkInSession("main.php"."?".$link);*/
 
                                                                                                                         if ($btnclass) {
                                                                                         ?>

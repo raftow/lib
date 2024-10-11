@@ -191,6 +191,7 @@ class AFWObject extends AFWRoot
         }
 
         // $table != "cache_system" to avoid infinite loop  (may be)
+        
         if ($table != 'cache_system') {
             if (class_exists('AfwAutoLoader') or class_exists('AfwCacheSystem')) {
                 AfwCacheSystem::getSingleton()->triggerCreation(
@@ -203,7 +204,7 @@ class AFWObject extends AFWRoot
         }
 
         AfwMemoryHelper::checkMemoryBeforeInstanciating($this);
-
+        
         $call_method = "__construct(table = $table)";
 
         if ($table != '') {
@@ -220,7 +221,7 @@ class AFWObject extends AFWRoot
             throw new AfwRuntimeException('The parameter $table of constructor is not defined.');
         }
 
-        $this->init_row();
+        $this->init_row($table);
 
         $this->general_check_errors = true;
     }
@@ -230,45 +231,55 @@ class AFWObject extends AFWRoot
         $this->destroyData();
     }
 
+    private static $attributeDefaultsArr = [];
+
+    private final function attributeDefaults($table_name, $field_name)
+    {
+        if(self::$attributeDefaultsArr[$table_name][$field_name]) return self::$attributeDefaultsArr[$table_name][$field_name];
+        $struct = AfwStructureHelper::getStructureOf($this, $field_name);
+        $def_type = $struct['TYPE'];
+        if ($def_type == 'FK' and !isset($struct['DEFAUT'])) {
+            $def_val = 0;
+            $def_val_force = true;
+        } elseif (
+            AfwSession::config('SQL_STRICT_MODE', true) and
+            ($def_type == 'TEXT' or
+                $def_type == 'DATE' or
+                $def_type == 'GDAT') and
+            (!isset($struct['MANDATORY']) or $struct['MANDATORY']) and
+            (!isset($struct['DEFAUT']))
+        ) {
+            if ($def_type == 'GDAT') {
+                if ($struct['MANDATORY']) {
+                    $def_val = date("Y-m-d H:i:s");
+                    $def_val_force = true;
+                } else {
+                    $def_val = null;
+                    $def_val_force = false;
+                }
+            } else {
+                $def_val = '';
+                $def_val_force = true;
+            }
+        } else {
+            //if(($field_name=="active") and static::$TABLE == "bus_seat") die("struct = ".var_export($struct,true));
+            $def_val = $struct['DEFAUT'];
+            $def_val_force = $struct['DEFAULT_FORCE'];
+        }
+        self::$attributeDefaultsArr[$table_name][$field_name] = [$def_val, $def_val_force];
+
+        return self::$attributeDefaultsArr[$table_name][$field_name];
+    }
+
     /**
      * init_row
      * called by constructor to init state of object after creation
      */
-    public final function init_row()
+    public final function init_row($table_name)
     {
         $all_real_fields = AfwStructureHelper::getAllRealFields($this);
         foreach ($all_real_fields as $field_name) {
-            $struct = AfwStructureHelper::getStructureOf($this, $field_name);
-            $def_type = $struct['TYPE'];
-            if ($def_type == 'FK' and !isset($struct['DEFAUT'])) {
-                $def_val = 0;
-                $def_val_force = true;
-            } elseif (
-                AfwSession::config('SQL_STRICT_MODE', true) and
-                ($def_type == 'TEXT' or
-                    $def_type == 'DATE' or
-                    $def_type == 'GDAT') and
-                (!isset($struct['MANDATORY']) or $struct['MANDATORY']) and
-                (!isset($struct['DEFAUT']))
-            ) {
-                if ($def_type == 'GDAT') {
-                    if ($struct['MANDATORY']) {
-                        $def_val = date("Y-m-d H:i:s");
-                        $def_val_force = true;
-                    } else {
-                        $def_val = null;
-                        $def_val_force = false;
-                    }
-                } else {
-                    $def_val = '';
-                    $def_val_force = true;
-                }
-            } else {
-                //if(($field_name=="active") and static::$TABLE == "bus_seat") die("struct = ".var_export($struct,true));
-                $def_val = $struct['DEFAUT'];
-                $def_val_force = $struct['DEFAULT_FORCE'];
-            }
-
+            list($def_val, $def_val_force) = self::attributeDefaults($table_name, $field_name);
             if ($def_val || $def_val_force) {
                 $this->setAfieldValue($field_name, $def_val);
                 $this->setAfieldDefaultValue($field_name, $def_val);
@@ -956,17 +967,7 @@ class AFWObject extends AFWRoot
         return true;
     }
 
-    private function setAfieldValue($field_name, $value, $reset = false)
-    {
-        // if(!isset($this->AFIELD _VALUE)) $this->AFIELD _VALUE = array();
-        /*
-        if(static::$TABLE == "cher_file") 
-        {
-            if(($field_name == "active") and (!$reset) and (!$value)) throw new AfwRuntimeException("case 2021-10-20 cher_file found for debugg");
-        }*/
-        $this->AFIELD_VALUE[$field_name] = $value;
-        return $value;
-    }
+    
 
     public final function isAfieldValueSetted($field_name)
     {
@@ -1817,135 +1818,51 @@ class AFWObject extends AFWRoot
     }
 
     /**
-     * set
-     * Set attribute's value for next insert or update
+     * superNativeSet
+     * light native set of attribute's value without 
+     * it doen't make :
+     *                 neither the check if attribute is shortname 
+     *                 neither the structure check 
+     *                 neither the format value even if needed 
+     *                 nor the trigger of events like beforeSet afterSet etc...
      * @param string $attribute
      * @param string $value
-     * @param boolean $check
+     * 
+     * It is developed for performance purposes but to be used very carefully and only
+     * with experienced developers because of explanation above
      */
-    public function set($attribute, $value, $forceSet = null, $is_numeric_field = false)
+    public function superNativeSet($field_name, $value)
     {
-        if ($forceSet === null) {
-            $forceSet = $this->force_mode;
-        }
-        //$call_method = "set(attribute = $attribute, value = $value)";
-        if ($attribute == 'id' and $this->id and !$value and !$this->authorize_empty_of_id) {
-            throw new AfwRuntimeException($this->class.' : trying to empty id ... it was id='.$this->id);
-        }
-
-        $attribute = AfwStructureHelper::shortNameToAttributeName($this,$attribute);
-        $structure = AfwStructureHelper::getStructureOf($this, $attribute);
-        if (!$structure) {
-            throw new AfwRuntimeException("attribute $attribute doesn't exist in strcuture of this class : " . $this->getMyClass());
-        }
-        if ($structure['TYPE'] == 'DATE') {
-            if ($value and $value != 'now()') {
-                $value = AfwDateHelper::formatDateForDB($value);
-            }
-        }
-
-        if ($structure['TYPE'] == 'GDAT') {
-            if ($value and $value != 'now()') {
-                $value = AfwDateHelper::formatGDateForDB($value);
-            }
-        }
-
-        if (is_array($value)) {
-            $value = var_export($value, true);
-        }
-
-        if ($structure['WRITE_PRIVATE']) {
-            throw new AfwRuntimeException("cannot set the attribute $attribute of table " . static::$TABLE . " protected by property [WRITE_PRIVATE]");
-        } else {
-            $return = $this->setNotSecure(
-                $attribute,
-                $value,
-                $check = true,
-                $nothing_updated = false,
-                $simul_do_not_save = false,
-                $forceSet,
-                $is_numeric_field
-            );
-        }
-        $this->debugg_last_attribute_setted = "attribute=$attribute, value=$value, check = $check, nothing_updated = $nothing_updated, simul_do_not_save = $simul_do_not_save, forceSet=$forceSet return = $return";
-        return $return;
+        $this->setAfieldValue($field_name, $value);
     }
 
-    public function simulSet($attribute, $value)
-    {
-        return $this->setNotSecure($attribute, $value, false, true, true);
-    }
 
-    protected function beforeSetAttribute($attribute, $newvalue)
+
+    private function setAfieldValue($field_name, $value)
     {
-        $oldvalue = $this->getVal($attribute);
+        // if(!isset($this->AFIELD _VALUE)) $this->AFIELD _VALUE = array();
         /*
-          if($attribute=="capproval")
-          {
-           throw new AfwRuntimeException("before set attribute $attribute from '$oldvalue' to '$newvalue'");
-          }
-          */
-        return true;
-    }
-
-    final public function afterSetOfAttribute($attribute, $newvalue, $struct = null)
-    {
-        if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
-
-        // if($attribute=="nasrani_birth_date") die("afterSetOfAttribute($attribute) -> struct : ".var_export($struct,true));
-        if ($struct['DATE_CONVERT'] == 'NASRANI') {
-            $attribute_original = $struct['ORIGINAL_ATTRIBUTE'];
-            if (!$attribute_original) {
-                $attribute_original = str_replace('nasrani_', '', $attribute);
-            }
-            // die("afterSetOfAttribute($attribute) -> update of $attribute_original");
-            if ($attribute_original) {
-                $nasrani_val = $newvalue;
-                $this->set(
-                    $attribute_original,
-                    AfwDateHelper::to_hijri($nasrani_val)
-                );
-                // die("afterSetOfAttribute : $attribute, $attribute_original = to_hijri($nasrani_val) = ".$this->getVal($attribute_original));
-            }
-        }
-
-        $this->afterSetAttribute($attribute);
-    }
-
-    protected function afterSetAttribute($attribute)
-    {
-        // It is to be rewritten in sub classes
-    }
-
-    public function setSlient($attribute, $value)
-    {
-        return $this->setNotSecure($attribute, $value, true, true);
-    }
-
-    // il faut utiliser setForce si on essaye de vider attribut dans un multi update (many records not only one) donc on va utiliser
-    // un objet vide et on essaye de vider un attribut deja vide et donc par conclusion l'optimisateur va ignorer l'operation
-    // si on n'utilise pas le mode force
-    public function setForce($attribute, $value, $is_numeric_field = false)
-    {
-        return $this->setNotSecure(
-            $attribute,
-            $value,
-            $check = true,
-            $nothing_updated = false,
-            $simul_do_not_save = false,
-            $forceSet = true,
-            $is_numeric_field
-        );
+        if(static::$TABLE == "cher_file") 
+        {
+            if(($field_name == "active") and (!$reset) and (!$value)) throw new AfwRuntimeException("case 2021-10-20 cher_file found for debugg");
+        }*/
+        $this->AFIELD_VALUE[$field_name] = $value;
+        return $value;
     }
 
     /**
-     * setNotSecure
-     * Set attribute's value for next insert or update
+     * nativeSet
+     * light native set of attribute's value without 
+     * it doen't make :
+     *                 neither the check if attribute is shortname 
+     *                 neither the structure check 
+     *                 nor the format value even if needed 
+     * but it trigger events like beforeSet afterSet etc...
      * @param string $attribute
      * @param string $value
      * @param boolean $check
      */
-    public function setNotSecure(
+    public function nativeSet(
         $attribute,
         $value,
         $check = true,
@@ -2053,6 +1970,132 @@ class AFWObject extends AFWRoot
 
         return $return;
     }
+
+    /**
+     * set
+     * Set attribute's value for next insert or update
+     * it make the check if attribute is shortname and check structure and format value if needed 
+     * it also trigger events like beforeSet afterSet etc... 
+     * @param string $attribute
+     * @param string $value
+     * @param boolean $check
+     */
+    public function set($attribute, $value, $forceSet = null, $is_numeric_field = false)
+    {
+        if ($forceSet === null) {
+            $forceSet = $this->force_mode;
+        }
+        //$call_method = "set(attribute = $attribute, value = $value)";
+        if ($attribute == 'id' and $this->id and !$value and !$this->authorize_empty_of_id) {
+            throw new AfwRuntimeException($this->class.' : trying to empty id ... it was id='.$this->id);
+        }
+
+        $attribute = AfwStructureHelper::shortNameToAttributeName($this,$attribute);
+        $structure = AfwStructureHelper::getStructureOf($this, $attribute);
+        if (!$structure) {
+            throw new AfwRuntimeException("attribute $attribute doesn't exist in strcuture of this class : " . $this->getMyClass());
+        }
+        if ($structure['TYPE'] == 'DATE') {
+            if ($value and $value != 'now()') {
+                $value = AfwDateHelper::formatDateForDB($value);
+            }
+        }
+
+        if ($structure['TYPE'] == 'GDAT') {
+            if ($value and $value != 'now()') {
+                $value = AfwDateHelper::formatGDateForDB($value);
+            }
+        }
+
+        if (is_array($value)) {
+            $value = var_export($value, true);
+        }
+
+        if ($structure['WRITE_PRIVATE']) {
+            throw new AfwRuntimeException("cannot set the attribute $attribute of table " . static::$TABLE . " protected by property [WRITE_PRIVATE]");
+        } else {
+            $return = $this->nativeSet(
+                $attribute,
+                $value,
+                $check = true,
+                $nothing_updated = false,
+                $simul_do_not_save = false,
+                $forceSet,
+                $is_numeric_field
+            );
+        }
+        $this->debugg_last_attribute_setted = "attribute=$attribute, value=$value, check = $check, nothing_updated = $nothing_updated, simul_do_not_save = $simul_do_not_save, forceSet=$forceSet return = $return";
+        return $return;
+    }
+
+    public function simulSet($attribute, $value)
+    {
+        return $this->nativeSet($attribute, $value, false, true, true);
+    }
+
+    protected function beforeSetAttribute($attribute, $newvalue)
+    {
+        $oldvalue = $this->getVal($attribute);
+        /*
+          if($attribute=="capproval")
+          {
+           throw new AfwRuntimeException("before set attribute $attribute from '$oldvalue' to '$newvalue'");
+          }
+          */
+        return true;
+    }
+
+    final public function afterSetOfAttribute($attribute, $newvalue, $struct = null)
+    {
+        if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+
+        // if($attribute=="nasrani_birth_date") die("afterSetOfAttribute($attribute) -> struct : ".var_export($struct,true));
+        if ($struct['DATE_CONVERT'] == 'NASRANI') {
+            $attribute_original = $struct['ORIGINAL_ATTRIBUTE'];
+            if (!$attribute_original) {
+                $attribute_original = str_replace('nasrani_', '', $attribute);
+            }
+            // die("afterSetOfAttribute($attribute) -> update of $attribute_original");
+            if ($attribute_original) {
+                $nasrani_val = $newvalue;
+                $this->set(
+                    $attribute_original,
+                    AfwDateHelper::to_hijri($nasrani_val)
+                );
+                // die("afterSetOfAttribute : $attribute, $attribute_original = to_hijri($nasrani_val) = ".$this->getVal($attribute_original));
+            }
+        }
+
+        $this->afterSetAttribute($attribute);
+    }
+
+    protected function afterSetAttribute($attribute)
+    {
+        // It is to be rewritten in sub classes
+    }
+
+    public function setSlient($attribute, $value)
+    {
+        return $this->nativeSet($attribute, $value, true, true);
+    }
+
+    // il faut utiliser setForce si on essaye de vider attribut dans un multi update (many records not only one) donc on va utiliser
+    // un objet vide et on essaye de vider un attribut deja vide et donc par conclusion l'optimisateur va ignorer l'operation
+    // si on n'utilise pas le mode force
+    public function setForce($attribute, $value, $is_numeric_field = false)
+    {
+        return $this->nativeSet(
+            $attribute,
+            $value,
+            $check = true,
+            $nothing_updated = false,
+            $simul_do_not_save = false,
+            $forceSet = true,
+            $is_numeric_field
+        );
+    }
+
+    
 
     public function isChanged()
     {
@@ -5902,11 +5945,14 @@ class AFWObject extends AFWRoot
         $operation,
         $operation_sql
     ) {
+        /* we disable this until ugroups become used and sys-cached and optimized
         return $this->userCanDoOperationOnMeStandard(
             $auser,
             $operation,
             $operation_sql
-        );
+        );*/
+
+        return true;
     }
 
     public function canBePublicDisplayed()
@@ -6996,7 +7042,12 @@ $dependencies_values
         $auser,
         $mode = 'DISPLAY',
         $structure
-    ) {
+    ) 
+    {
+        // until we develop an optimized use of $mode-UGROUPS 
+        // we will always authorize 
+        return $structure;
+
         $mode = strtoupper($mode);
 
         if (!$structure) {
@@ -7018,6 +7069,12 @@ $dependencies_values
         ($canDisplay = !$ugroups) or $auser_belong_to_ugroups;
 
         return $canDisplay ? $structure : false;
+        
+    }
+
+    public function quickRetrieveMethod()
+    {
+        return 'decode';
     }
 
     public function getPercentEdited()
@@ -7863,6 +7920,13 @@ $dependencies_values
         return 50;
     }
 
+    // should be overridden only if the ums Check is absolutely needed in Retrieve Mode
+    // because it make the QSearch page go very slow
+    public function umsCheckDisabledInRetrieveMode()
+    {
+        return true;
+    }
+
     public function forceShowRetrieveErrorsIfSmallListe()
     {
         return true;
@@ -7909,6 +7973,10 @@ $dependencies_values
         return true;
     }
 
+    /**
+     * override editToDisplay() method to use edit for display mode
+     * 
+     */
     public function editToDisplay()
     {
         return false;
@@ -8008,7 +8076,7 @@ $dependencies_values
                             if (!$structure['LOGICAL_DELETED_ITEMS_ALSO']) {
                                 $object->select($object->fld_ACTIVE(),'Y');
                             }
-                            $object->debugg_tech_notes = "before loadMany for Items of attribute : $attribute";
+                            $object->debugg_tech_notes = "before load Many for Items of attribute : $attribute";
                             if ($max_items) {
                                 $limit_loadMany = $max_items;
                             } else {

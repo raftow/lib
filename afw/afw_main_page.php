@@ -41,7 +41,8 @@ if($MODULE) AfwAutoLoader::addModule($MODULE);
 if($currmod) AfwAutoLoader::addModule($currmod);
 if($parent_module) AfwAutoLoader::addMainModule($parent_module);
 // die("DBG-AfwAutoLoader started");
-
+$start_main_time = 0;
+$end_main_time = 0;
 if($mode_analysis)
 {
     AfwSession::hzmLog("begin of session start", $MODULE);
@@ -96,6 +97,7 @@ if($_GET["sslnk"])
 else*/
 if(true)
 {
+        $start_main_time = 0;
         if($mode_analysis)
         {
             AfwSession::hzmLog("begin of header-checks", $MODULE);
@@ -149,13 +151,16 @@ if(true)
         
         if($mode_analysis)
         {
+            $end_main_time = 0;
             $end_main_time = microtime();
             $duree_ms = round(($end_main_time - $start_main_time)*100000)/100;
             if($duree_ms<0) $duree_ms += 1000;
             AfwSession::hzmLog("end of header-checks $duree_ms milli-sec", $MODULE);
 
             AfwSession::hzmLog("begin of including-main-page", $MODULE);
+            $start_main_time = 0;
             $start_main_time = microtime();
+            
         }
         // die("DBG-je suis avant include $Main_Page_path/$Main_Page");
         if(AfwSession::config("MODE_DEVELOPMENT", false)) $dbg_text = "$Main_Page_path/$Main_Page";
@@ -198,12 +203,14 @@ if(true)
         //else die("out_scr=$out_scr"); 
         if($mode_analysis)
         {
+            $end_main_time = 0;
             $end_main_time = microtime();
             $duree_ms = round(($end_main_time - $start_main_time)*100000)/100;
             if($duree_ms<0) $duree_ms += 1000;
             AfwSession::hzmLog("end of including-main-page $duree_ms milli-sec", $MODULE);
 
             AfwSession::hzmLog("begin of header-include", $MODULE);
+            $start_main_time = 0;
             $start_main_time = microtime();
         }
 
@@ -229,12 +236,14 @@ if(true)
 
         if($mode_analysis)
         {
+            $end_main_time = 0;
             $end_main_time = microtime();
             $duree_ms = round(($end_main_time - $start_main_time)*100000)/100;
             if($duree_ms<0) $duree_ms += 1000;
             AfwSession::hzmLog("end of header-include $duree_ms milli-sec", $MODULE);
 
             AfwSession::hzmLog("begin of footer-include", $MODULE);
+            $start_main_time = 0;
             $start_main_time = microtime();
         }
 
