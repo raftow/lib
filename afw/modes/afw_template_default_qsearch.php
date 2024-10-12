@@ -143,7 +143,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                 </div>
                         </div>
         	<? 
-                        $need_to_close_div = false;
+                        $need_to_close_div = true;// false;
                         $totqsize += $qsize;
                         if($totqsize>=12)
                         {
@@ -174,7 +174,7 @@ foreach($class_db_structure as $nom_col => $desc)
               if($need_to_close_div)
               {
 ?>
-</div>
+
 <?
               }
    }

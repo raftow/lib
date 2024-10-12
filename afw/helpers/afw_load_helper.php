@@ -39,18 +39,19 @@ class AfwLoadHelper extends AFWRoot
             }
             else
             {
-                if($nom_table_fk=="major") throw new RuntimeException("$nom_table_fk table where = $where : why not optimized and load all");
+                // if($nom_table_fk=="identity_type") throw new RuntimeException("$nom_table_fk table where = $where : why not optimized and load all");
             }
             
         }
 
-        // if($nom_table_fk=="major") die("getLookupData($nom_module_fk, $nom_table_fk, $where) will use self::lookupMatrix=".var_export(self::$lookupMatrix,true));
+        // if($nom_table_fk=="identity_type") die("getLookupData($nom_module_fk, $nom_table_fk, $where) will use self::lookupMatrix=".var_export(self::$lookupMatrix,true));
 
-        return self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"];
+        return $dataLookup;
     } 
 
     public static function vhGetListe($obj, $where, $action="default", $lang="ar", $val_to_keep=null, $order_by="", $dropdown = false, $optim = true)
     {
+        $return = [];
         if(!$where) $where = "1";
         if($action=="default") 
         {
@@ -107,7 +108,7 @@ class AfwLoadHelper extends AFWRoot
                 $return = self::constructDropDownItems($listeRep, $lang, 'fk-somewhere-on:'. $obj->getTableName(),'table-somewhere');
             }
         }
-
+        if(!$return) throw new RuntimeException("liste is empty vhGetListe(obj, $where, $action, etc.. ");
         return $return;
     }
 

@@ -2402,6 +2402,19 @@ class AFWObject extends AFWRoot
     }
 
     /**
+     * afterSelect
+     * To be overridden if need by sub-classes,
+     * this event happen when we filter a column with select($attribute, $value) method
+     * Set attribute's value in the Search criteria
+     * @param string $attribute
+     * @param string $value
+     */
+    public function afterSelect($attribute, $value)
+    {
+        // overridde your code here
+    }
+
+    /**
      * select
      * Set attribute's value in the Search criteria
      * @param string $attribute
@@ -2428,6 +2441,7 @@ class AFWObject extends AFWRoot
                 $_utf8 = '';
             }
             $this->SEARCH_TAB[$attribute] = AfwStringHelper::_real_escape_string($value);
+            $this->afterSelect($attribute, $value);
 
             if ($structure['FIELD-FORMULA']) {
                 $attribute_sql = $structure['FIELD-FORMULA'];

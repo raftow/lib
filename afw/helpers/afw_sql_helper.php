@@ -328,12 +328,22 @@ class AfwSqlHelper extends AFWRoot
             $nom_col = $prefix_col;
             $prefix_col = "";
         }
+        $original_nom_col = $nom_col;
+        // if($val_col=="1007294216") die("getClauseWhere(object,$nom_col,$oper,$val_col,$val_col2,$lang)"); 
         $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
+        $mode_clause_where_col = false;
+        if($desc["CLAUSE-WHERE-COL"])
+        {
+            $mode_clause_where_col = true;
+            $nom_col = $desc["CLAUSE-WHERE-COL"];
+            // die("CLAUSE-WHERE-COL : $original_nom_col => $nom_col");
+            $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
+            $original_nom_col = $nom_col;
+        }
         $desc["FIELD-FORMULA"] = $object->decodeText($desc["FIELD-FORMULA"]);
         if (!$desc) {
             throw new AfwRuntimeException("can't find structure of field $nom_col");
         }
-        $original_nom_col = $nom_col;
 
         if ($desc['UTF8']) {
             $codage = '_utf8';
@@ -350,12 +360,24 @@ class AfwSqlHelper extends AFWRoot
             $nom_col = $formula_module . $desc['FIELD-FORMULA'];
             $prefixed_nom_col = $nom_col;
         } elseif ($desc['TYPE'] == 'TEXT') {
-            $nom_col = "IF(ISNULL(me.$nom_col), '', me.$nom_col)";
-            $prefixed_nom_col = $nom_col;
+            if($desc['MANDATORY'] or $desc['REQUIRED'])
+            {
+                $prefixed_nom_col = "me.".$nom_col;
+            }
+            else
+            {
+                $nom_col = "IF(ISNULL(me.$nom_col), '', me.$nom_col)";
+                $prefixed_nom_col = $nom_col;
+            }
+            
+            
         }
         else {
-            $nom_col = $prefixed_nom_col;
+            // $nom_col = $prefixed_nom_col;
+            $prefixed_nom_col = "me.".$nom_col;
         }
+
+        // if($val_col=="1007294216") die("nom_col=$nom_col prefixed_nom_col=$prefixed_nom_col"); 
 
         //if($original_nom_col=="cvalid") throw new AfwRuntimeException("nom_col = ".$nom_col." because structure=".var_export($desc,true));
         
