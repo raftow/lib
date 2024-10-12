@@ -5756,8 +5756,13 @@ pre.log.critical {
     border-top: 14px dashed red;
 }
 
+pre.log.bad {
+    border-top: 7px dashed red;
+}
+
+
 pre.log.require-attention {
-    border-top: 10px dashed orange;
+    border-top: 7px dashed orange;
 }
 
 .form-control.error {

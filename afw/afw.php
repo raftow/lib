@@ -2133,7 +2133,7 @@ class AFWObject extends AFWRoot
         return $attribute;
     }
     
-
+    /* obsoleted
     public final function stdShortNameToAttributeName($attribute)
     {
         // use of short names in strcucture 
@@ -2146,7 +2146,7 @@ class AFWObject extends AFWRoot
         }
 
         return $attribute;
-    }
+    }*/
 
     protected function isSpecificOption($attribute)
     {

@@ -368,9 +368,10 @@ class AfwSession extends AFWRoot {
                         if($oldLastLogTime)
                         {
                                 $durationSinceLastLog = $now_time - $oldLastLogTime;  
-                                if($durationSinceLastLog>1) $critical = "require-attention";
-                                if($durationSinceLastLog>2) $critical = "critical";
                                 if($durationSinceLastLog>3) $critical = "top critical";
+                                elseif($durationSinceLastLog>2) $critical = "critical";
+                                elseif($durationSinceLastLog>1) $critical = "bad";
+                                elseif($durationSinceLastLog>0.5) $critical = "require-attention";
                         }
 
                         if($critical)
@@ -381,7 +382,7 @@ class AfwSession extends AFWRoot {
                 }
                 $html = trim(self::getVar($context));
                 if($html) $html .= $separator;
-                if($show_time) $string .= $separator . " [". date("Y-m-d H:i:s").".".self::currMilliSeconds() ."]";
+                if($show_time) $string .= $separator . " [". date("Y-m-d H:i:s").".".self::currMilliSeconds() ."] <b>(d=$durationSinceLastLog)</b>";
                 // if($css_class == "hzm") 
                 $html .= "<pre class='$css_class $context $critical'>$string</pre>"; //  N$now_time O$oldLastLogTime D$durationSinceLastLog
                 //if($css_class != "hzm") die("[[[[[$string]]]]]");

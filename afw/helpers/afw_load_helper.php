@@ -481,6 +481,7 @@ class AfwLoadHelper extends AFWRoot
                         {
                             // $htr_s = hrtime()[1];
                             $qrm = $objItem->quickRetrieveMethod();
+                            // $qrm = "val";
                             if($qrm=="qshow") $tuple[$col] = AfwShowHelper::quickShowAttribute($objItem, $col, $lang, $desc, $newline);
                             elseif($qrm=="decode") $tuple[$col] = $objItem->decode($col);
                             else $tuple[$col] = $objItem->getVal($col);
@@ -1661,14 +1662,16 @@ class AfwLoadHelper extends AFWRoot
             throw new AfwRuntimeException($message);
         }
 
-        $old_attribute = $attribute;
-        $attribute = AfwStructureHelper::shortNameToAttributeName($object, $attribute);
-
         if (!$object->seemsCalculatedField($attribute)) {
             if ($what == 'value') {
                 return $object->getAfieldValue($attribute);
             }
         }
+
+        $old_attribute = $attribute;
+        $attribute = AfwStructureHelper::shortNameToAttributeName($object, $attribute);
+
+        
 
         $afw_getter_log = array();
         $afw_getter_log[] = "start get($attribute,$what,$format,$integrity,$max_items)";
@@ -1681,13 +1684,13 @@ class AfwLoadHelper extends AFWRoot
 
         $return = '';
         
-
-        $structure = AfwStructureHelper::getStructureOf($object, $attribute);
-
         if (strpos($attribute, '.') !== false) {
             $structure['CATEGORY'] = 'SHORTCUT';
             $structure['SHORTCUT'] = $attribute;
         }
+        else $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+
+        
         /*
         if ($attribute == 'schoollist') {
             die(

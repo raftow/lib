@@ -6,6 +6,8 @@ class AfwStructure
 
 class AfwStructureHelper extends AFWRoot 
 {
+    private static $shortNamesArray = [];
+    private static $structuresArray = [];
     public static function dd($message, $to_die=true, $to_debugg=false, $trace=true, $light=false)
     {
         if($trace) $message = $message."<br>"._back_trace($light);
@@ -20,29 +22,34 @@ class AfwStructureHelper extends AFWRoot
 
     public static final function getStructureOf($object, $field_name)
     {
-        // if($field_name=="level_enum") throw new RuntimeException("rafik 240927");
-        $orig_field_name = $field_name;
-        $field_name = AfwStructureHelper::shortNameToAttributeName($object, $field_name);
-        if(!$field_name) $field_name = $orig_field_name;
-        $struct = $object->getMyDbStructure(
-            $return_type = 'structure',
-            $field_name
-        );
-
-        if ($struct) {
-            $struct = AfwStructureHelper::repareMyStructure($object, $struct, $field_name);
-        }
-
-        if($struct["CATEGORY"]=="SHORTCUT")
+        $cl = get_class($object);
+        $struct = self::$structuresArray[$cl][$field_name];
+        if(!$struct)
         {
-            if(!$object->shouldBeCalculatedField($field_name))
-            {
-                $cl = get_class($object);
-                throw new AfwRuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$field_name] is shortcut but not declared in overridden shouldBeCalculatedField method, do like this : <pre><code>".self::suggestAllCalcFields($object)."</code></pre>");
+            // if($field_name=="level_enum") throw new RuntimeException("rafik 240927");
+            $orig_field_name = $field_name;
+            $field_name = AfwStructureHelper::shortNameToAttributeName($object, $field_name);
+            if(!$field_name) $field_name = $orig_field_name;
+            $struct = $object->getMyDbStructure(
+                $return_type = 'structure',
+                $field_name
+            );
+
+            if ($struct) {
+                $struct = AfwStructureHelper::repareMyStructure($object, $struct, $field_name);
             }
-            
+
+            if($struct["CATEGORY"]=="SHORTCUT")
+            {
+                if(!$object->shouldBeCalculatedField($field_name))
+                {
+                    throw new AfwRuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$field_name] is shortcut but not declared in overridden shouldBeCalculatedField method, do like this : <pre><code>".self::suggestAllCalcFields($object)."</code></pre>");
+                }
+                
+            }
+
+            self::$structuresArray[$cl][$field_name]=$struct;
         }
-        
         return $struct;
     }
 
@@ -977,8 +984,6 @@ class AfwStructureHelper extends AFWRoot
         }
         if (!$structure) {
             $structure = AfwStructureHelper::getStructureOf($object, $attribute);
-        } else {
-            $structure = AfwStructureHelper::repareMyStructure($object, $structure, $attribute);
         }
         // if($attribute=="nomcomplet") die("structure of $attribute =".var_export($structure,true));
         return $structure and !$structure['CATEGORY'];
@@ -1100,22 +1105,18 @@ class AfwStructureHelper extends AFWRoot
 
     public static function shortNameToAttributeName($object, $attribute)
     {
-        $std_att = $object->stdShortNameToAttributeName($attribute);
-        $my_att = $object->myShortNameToAttributeName($attribute);
-
-
-        if(!$my_att)
+        $cl = get_class($object);
+        $attribute_reel = self::$shortNamesArray[$cl][$attribute];
+        if(!$attribute_reel)
         {
-            throw new AfwRuntimeException("Momken 3.0 Error : myShortNameToAttributeName failed to decode $attribute attribute");
+            $attribute_reel = $object->myShortNameToAttributeName($attribute);
         }
+        
+        if(!$attribute_reel) $attribute_reel = $attribute;
 
-        if(($std_att != $attribute) and ($my_att == $attribute))
-        {
-            $cl = get_class($object);
-            throw new AfwRuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$std_att, Shortname=$attribute] Use of short names in strcucture obsoleted except if you override myShortNameToAttributeName method to return it example : <pre><code>".AfwStructureHelper::suggestAllShortNames($object)."</code></pre>");
-        }
+        self::$shortNamesArray[$cl][$attribute] = $attribute_reel;
 
-        return $my_att;
+        return $attribute_reel;
     }
 
     public static final function containItems($object, $attribute)
