@@ -2133,6 +2133,8 @@ class AFWObject extends AFWRoot
         return $attribute;
     }
     
+
+
     /* obsoleted
     public final function stdShortNameToAttributeName($attribute)
     {
@@ -3955,6 +3957,11 @@ class AFWObject extends AFWRoot
                 $is_searchable);
         //die("$attribute : return=$return = $attributeIsToDisplayForMe and $can_be_searched_technically and $is_searchable ".var_export($desc,true));
         return $return;
+    }
+
+    public function qsearchByTextEnabled()
+    {
+        return true;
     }
 
     public function isQSearchCol($attribute, $desc = '')

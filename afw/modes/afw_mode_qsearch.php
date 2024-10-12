@@ -385,7 +385,7 @@ if($action=="retrieve")
                 ";
                 $qsrch_fgroups = $myClassInstance->getFieldGroupArr($lang);
                 $size_qsearch_text = ${"size_qsearch_".$myClassInstance};
-                if(!$size_qsearch_text) $size_qsearch_text = 6;
+                if(!$size_qsearch_text) $size_qsearch_text = 3;
                 foreach($qsrch_fgroups as $fgroupcode =>$fgroupname)
                 {
                    if($qsearchview==$fgroupcode) $fgroup_selected = "selected";

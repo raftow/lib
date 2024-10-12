@@ -83,24 +83,28 @@ foreach($class_db_structure as $nom_col => $desc)
 
 
 <? 
-   $qs_by_txt_qsize = 99 - $total_qsize;
-   if($qs_by_txt_qsize>3) $qs_by_txt_qsize = 3;
-   if($qs_by_txt_qsize>0)
+   if($obj->qsearchByTextEnabled())
    {
-           $tr_obj=$class_tr1;
-           $qsearch_by_text = $_POST["qsearch_by_text"];
-           $desc_qsearch_by_text = array('TYPE'=>'TEXT', 'SIZE'=>64, 'UTF8'=>true, 'PLACEHOLDER'=>"any_word");
-           ob_start();
-           type_input("qsearch_by_text", $desc_qsearch_by_text, $obj, $qsearch_by_text);
-           $trad_qsearch_by_text_input = ob_get_clean();
-            
-           $trad_qsearch_by_text = $obj->translate("qsearch_by_text",$lang);
-           $trad_qsearch_by_help = $obj->translate("qsearch_by_help",$lang);
-           $qsearch_by_text_cols = $obj->getAllTextSearchableCols();
-           $translated_text_searchable_cols_arr = $obj->translateCols($qsearch_by_text_cols,$lang, true); 
-           
-           $translated_text_searchable_cols_txt = $trad_qsearch_by_help." : ".implode("، ", $translated_text_searchable_cols_arr);
+        $qs_by_txt_qsize = 99 - $total_qsize;
+        if($qs_by_txt_qsize>3) $qs_by_txt_qsize = 3;
+        if($qs_by_txt_qsize>0)
+        {
+                $tr_obj=$class_tr1;
+                $qsearch_by_text = $_POST["qsearch_by_text"];
+                $desc_qsearch_by_text = array('TYPE'=>'TEXT', 'SIZE'=>64, 'UTF8'=>true, 'PLACEHOLDER'=>"any_word");
+                ob_start();
+                type_input("qsearch_by_text", $desc_qsearch_by_text, $obj, $qsearch_by_text);
+                $trad_qsearch_by_text_input = ob_get_clean();
+                 
+                $trad_qsearch_by_text = $obj->translate("qsearch_by_text",$lang);
+                $trad_qsearch_by_help = $obj->translate("qsearch_by_help",$lang);
+                $qsearch_by_text_cols = $obj->getAllTextSearchableCols();
+                $translated_text_searchable_cols_arr = $obj->translateCols($qsearch_by_text_cols,$lang, true); 
+                
+                $translated_text_searchable_cols_txt = $trad_qsearch_by_help." : ".implode("، ", $translated_text_searchable_cols_arr);
+        }
    }
+   else $qsearch_by_text_cols = [];
    
    if(true)
    {        
@@ -139,10 +143,12 @@ foreach($class_db_structure as $nom_col => $desc)
                                 </div>
                         </div>
         	<? 
+                        $need_to_close_div = false;
                         $totqsize += $qsize;
                         if($totqsize>=12)
                         {
                             $totqsize = 0;
+                            $need_to_close_div = true;
                 ?>
 </div>
 <div class="row">                
@@ -163,6 +169,12 @@ foreach($class_db_structure as $nom_col => $desc)
                         <?php echo $trad_qsearch_by_text_input;?>
                 </div>
         </div>
+<?
+              }
+              if($need_to_close_div)
+              {
+?>
+</div>
 <?
               }
    }
