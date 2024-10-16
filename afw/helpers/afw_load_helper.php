@@ -53,6 +53,7 @@ class AfwLoadHelper extends AFWRoot
     {
         $return = [];
         if(!$where) $where = "1";
+        $obj_cl = get_class($obj);
         if($action=="default") 
         {
             if($obj->IS_LOOKUP) $action="liste";
@@ -79,7 +80,10 @@ class AfwLoadHelper extends AFWRoot
                     $where = "($where) or ($pk in ($val_to_keep))";
                 }                
             }
-            $return = self::getLookupData($obj->getMyModule(), $obj->getMyTable(), $where, $val_to_keep);
+            $module_code = $obj->getMyModule();
+            $table_name = $obj->getMyTable();
+            $return = self::getLookupData($module_code, $table_name, $where, $val_to_keep);
+            $case = "self::getLookupData($module_code, $table_name, $where, $val_to_keep)";
         }
         else
         {
@@ -92,6 +96,7 @@ class AfwLoadHelper extends AFWRoot
                 if($action=="loadMany") 
                 {
                     $listeRep = $obj->loadMany('',$order_by, $optim);
+                    $case = "$obj_cl=>loadMany('',$order_by, $optim)";
                     // die("$obj --> loadMany('',$order_by, $optim) => ".var_export($listeRep,true));
                 }
 
@@ -103,12 +108,16 @@ class AfwLoadHelper extends AFWRoot
                     $desc['WHERE'] = $where;
                     $desc['ORDERBY'] = $order_by;
                     list($sql,$listeRep) = self::loadManyFollowingStructureAndValue($obj,$desc,$val_to_keep, null, $dropdown, $optim);
+                    $case = "self::loadManyFollowingStructureAndValue from : cl=$obj_cl, where=$where, order_by=$order_by, val_to_keep=$val_to_keep ";
                     
                 }
                 $return = self::constructDropDownItems($listeRep, $lang, 'fk-somewhere-on:'. $obj->getTableName(),'table-somewhere');
             }
         }
-        if(!$return) throw new RuntimeException("liste is empty vhGetListe(obj, $where, $action, etc.. ");
+        if(!isset($return)) 
+        {
+            throw new RuntimeException("liste is empty vhGetListe($obj_cl, $where, $action, etc..) case $case ");
+        }
         return $return;
     }
 
