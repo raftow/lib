@@ -366,8 +366,7 @@ class AfwSqlHelper extends AFWRoot
             }
             else
             {
-                $nom_col = "IF(ISNULL(me.$nom_col), '', me.$nom_col)";
-                $prefixed_nom_col = $nom_col;
+                $prefixed_nom_col = "IF(ISNULL(me.$nom_col), '', me.$nom_col)";
             }
             
             
@@ -447,7 +446,7 @@ class AfwSqlHelper extends AFWRoot
                     '</span>';
 
                 return [
-                    $nom_col .
+                    $prefixed_nom_col .
                         ' ' .
                         $oper .
                         " $codage'" .
