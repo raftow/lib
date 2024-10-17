@@ -39,6 +39,11 @@ class AFWRelation extends AFWRoot {
      
      }
      
+
+     /**
+     * @return AFWRelation
+     * 
+     */
      public function resetWhere($where="")
      {
          $this->answer_where = $where;
@@ -46,6 +51,10 @@ class AFWRelation extends AFWRoot {
          return $this;
      }
      
+     /**
+     * @return AFWRelation
+     * 
+     */
      public function orderBy($orderby="")
      {
          $this->answer_orderby = $orderby;
@@ -53,6 +62,11 @@ class AFWRelation extends AFWRoot {
          return $this;
      }
      
+
+     /**
+     * @return AFWRelation
+     * 
+     */
      public function limit($limit="")
      {
          $this->answer_limit = $limit;

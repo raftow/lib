@@ -982,7 +982,7 @@ class AfwStructureHelper extends AFWRoot
         if (is_numeric($attribute)) {
             return false;
         }
-        if (!$structure) {
+        if ((!$structure) or (AfwStringHelper::stringStartsWith($structure['CATEGORY'],"::"))) {
             $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         }
         // if($attribute=="nomcomplet") die("structure of $attribute =".var_export($structure,true));

@@ -1483,6 +1483,11 @@ class AFWObject extends AFWRoot
         return AfwLoadHelper::loadAfwObject($this, $value, $result_row, $order_by_sentence, $optim_lookup);
     }
 
+    /**
+     * @return AFWRelation
+     * 
+     */
+
     public function getRelation($attribute, $struct = null)
     {
         $attribute_old = $attribute;

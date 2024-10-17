@@ -43,6 +43,7 @@ class AfwLoadHelper extends AFWRoot
             }
             
         }
+        else $dataLookup = self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"];
 
         // if($nom_table_fk=="identity_type") die("getLookupData($nom_module_fk, $nom_table_fk, $where) will use self::lookupMatrix=".var_export(self::$lookupMatrix,true));
 
