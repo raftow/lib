@@ -88,22 +88,24 @@ class AfwLanguageHelper
             $langue = 'ar';
         }
 
-
+        $langue = strtolower($langue);
         if (isset($trad) and $trad and (!is_array($trad))) {
             $trad = [];
             // throw new AfwRuntimeException("before any include trad 0 is ".var_export($trad,true));
         }
 
-        if (empty($operator)) {
-            if ($nom_table) {
-                $nom_file =
-                    "$file_dir_name/../../$module/tr/trad_" .
-                    strtolower($langue) .
-                    "_$nom_table.php";
-                $nom_file2 =
-                    "$file_dir_name/../../external/translate/$module/trad_" .
-                    strtolower($langue) .
-                    "_$nom_table.php";
+        if ($trad[$nom_table][$nom_col]) {
+            return $trad[$nom_table][$nom_col];
+        }
+
+
+
+        if (empty($operator)) 
+        {
+            if ($nom_table) 
+            {
+                $nom_file  = "$file_dir_name/../../$module/tr/trad_" . $langue . "_$nom_table.php";
+                $nom_file2 = "$file_dir_name/../../external/translate/$module/trad_" . $langue . "_$nom_table.php";
                 //if($object->MY_DEBUG)
                 //        AFWDebugg::log("traduire from file $nom_file ");
 
@@ -128,10 +130,22 @@ class AfwLanguageHelper
                     //if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) echo(" 2. tarjem find the file nom_file=$nom_file <br>");
                     //if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire include_once $nom_file ");
-                    include $nom_file;
+
+                    $classTranslator = AfwStringHelper::tableToClass($nom_table."_".$langue."_translator");
+                    if(!class_exists($classTranslator,false))
+                    {
+                        include $nom_file;
+                    }
                     // if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) die(" 2. tarjem : trad[$nom_table][$nom_col] = ".$trad[$nom_table][$nom_col]);
                     // if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
+
+                    
+                    if(class_exists($classTranslator,false))
+                    {
+                        $trad = $classTranslator::initData();
+                    }
+                    
 
                     if (isset($trad) and $trad and (!is_array($trad))) {
                         throw new AfwRuntimeException("after include_once $nom_file trad 1 is " . var_export($trad, true));
@@ -141,18 +155,18 @@ class AfwLanguageHelper
                         return $trad[$nom_table][$nom_col];
                     }
                 }
-            } else {
+            } 
+            else 
+            {
                 $nom_table = '*';
             }
+            
             if (
                 !isset($trad[$nom_table][$nom_col]) ||
                 empty($trad[$nom_table][$nom_col])
-            ) {
-                $general_nom_file =
-                    "$file_dir_name/tr/trad_" .
-                    strtolower($langue) .
-                    '_all.php';
-
+            ) 
+            {
+                $general_nom_file = "$file_dir_name/tr/trad_" .$langue . '_all.php';
                 if (file_exists($general_nom_file)) {
                     include $general_nom_file;
                     // if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) die("tarjem find 3 the file general_nom_file=$general_nom_file");
@@ -174,74 +188,23 @@ class AfwLanguageHelper
                 //echo "<br>4)translate $nom_table.$nom_col in $langue from memory = ".$trad[$nom_table][$nom_col]."=".$trad[$nom_table][$nom_col];
                 return $trad[$nom_table][$nom_col];
             }
-        } else {
-            $langue = strtolower($langue);
-            if (!$langue) {
-                $langue = 'ar';
-            }
-
-            if ($nom_table) {
-                $nom_file0 =
-                    "$file_dir_name/../../$module/tr/trad_" .
-                    strtolower($langue) .
-                    "_$nom_table.php";
-                //if($object->MY_DEBUG)
-                //        AFWDebugg::log("traduire from file $nom_file ");
-                if (file_exists($nom_file0)) {
-                    //if($object->MY_DEBUG)
-                    //    AFWDebugg::log("traduire include_once $nom_file ");
-                    include_once $nom_file0;
-                    if (isset($trad) and $trad and (!is_array($trad))) {
-                        throw new AfwRuntimeException("after include_once $nom_file0 trad 4 is " . var_export($trad, true));
-                    }
-                    //if($object->MY_DEBUG)
-                    //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
-
-                    if ($trad['OPERATOR'][$nom_col]) {
-                        return $trad['OPERATOR'][$nom_col];
-                    }
-                }
-            }
-
-            $file_name = "$file_dir_name/../../external/translate/$module/trad_" . $langue . '_afw.php';
-            if (file_exists($file_name)) {
-                $ff = 'file found';
-                include_once $file_name;
-                if (isset($trad) and $trad and (!is_array($trad))) {
-                    throw new AfwRuntimeException("after include_once $file_name trad 5 is " . var_export($trad, true));
-                }
-
-                $trad_val = $trad['OPERATOR'][$nom_col];
-                if ($trad_val) {
-                    return $trad_val;
-                }
-            }
-            //else die($file_name);
-
+        } 
+        else // case operator translation
+        {
             $file_name = "$file_dir_name/tr/trad_" . $langue . '_afw.php';
-            // if($nom_col=="_DISPLAY") die("AfwLanguageHelper::tarjem($nom_col, $langue,$operator,$nom_table, $module) : file_name=$file_name");
-            $ff = 'file not found';
-            if (file_exists($file_name)) {
-                $ff = 'file found';
-                include_once $file_name;
-                if (isset($trad) and $trad and (!is_array($trad))) {
-                    throw new AfwRuntimeException("after include_once $file_name trad 6 is " . var_export($trad, true));
-                }
-                $trad_val = $trad['OPERATOR'][$nom_col];
-                if ($trad_val) {
-                    return $trad_val;
-                }
-            } else {
-                AfwRunHelper::simpleError(
-                    "file not exists $file_name for langue $langue"
-                );
+            
+            $classTranslator = AfwStringHelper::tableToClass("afw_operator_".$langue."_translator");
+            if(!class_exists($classTranslator,false))
+            {
+                include $file_name;
+            }
+                    
+            $trad = $classTranslator::initData();
+            
+            if ($trad['OPERATOR'][$nom_col]) {
+                return $trad['OPERATOR'][$nom_col];
             }
 
-            if ($nom_col == '_DISPLAY') {
-                AfwRunHelper::simpleError(
-                    "AfwLanguageHelper::tarjem($nom_col, $langue,$operator,$nom_table, $module) = '$trad_val' from $file_name ($ff)"
-                );
-            }
             return $nom_col;
         }
     }

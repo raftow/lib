@@ -95,7 +95,7 @@ $table_search_result_class = "search_result_table";
 
 $page_label = AfwLanguageHelper::tarjemOperator("page", $lang);
 $record_label = AfwLanguageHelper::tarjemOperator("record", $lang);
-$page_of_label = AfwLanguageHelper::tarjemOperator("page_of", $lang); 
+// $page_of_label = AfwLanguageHelper::tarjemOperator("page_of", $lang); 
 $new_instance =  AfwLanguageHelper::tarjemOperator("new_instance", $lang);
 $qedit_new =     AfwLanguageHelper::tarjemOperator("qedit_new", $lang); 
 $qedit_update =  AfwLanguageHelper::tarjemOperator("qedit_update", $lang); 

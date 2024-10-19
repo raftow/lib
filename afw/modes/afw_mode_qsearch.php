@@ -51,7 +51,10 @@ if(!$currmod)
 }
 
 $cl_short = strtolower(substr($cl,0,10));
-
+/**
+ * @var AFWObject $myClassInstance
+ * 
+ */
 $myClassInstance = new $cl();
 $my_contextCols = $myClassInstance->getContextCols();
 $take_context = true;
