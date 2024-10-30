@@ -162,14 +162,14 @@ class AfwFrameworkHelper extends AFWRoot
                 $find_max_elekh_nb_chars = 9999,
                 $find_alsoVirtualFields = false
             );
-        } else {
-            $display_field = $obj->AUTOCOMPLETE_FIELD;
+        } elseif (is_string($obj->AUTOCOMPLETE_FIELD)) {
+            $display_field = trim($obj->AUTOCOMPLETE_FIELD);
         }
-        if (!$display_field) {
+        if (!$display_field and is_string($obj->DISPLAY_FIELD)) {
             $display_field = trim($obj->DISPLAY_FIELD);
         }
 
-        if (!$display_field) {
+        if (!$display_field and is_string($obj->FORMULA_DISPLAY_FIELD)) {
             $display_field = trim($obj->FORMULA_DISPLAY_FIELD);
         }
 

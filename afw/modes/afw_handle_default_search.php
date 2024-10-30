@@ -198,7 +198,7 @@ if (!$liste_obj) {
                 if (preg_match('and$', $sql_conds))
                         $sql_conds = substr($sql_conds, 0, -2);
                 $obj->where($sql_conds);
-                // die("DBG-where special sql_conds = $sql_conds");
+                // die("DBG-where special sql_conds = $sql_conds arr_sql_conds = ".var_export($arr_sql_conds,true));
                 $obj->select_visibilite_horizontale();
                 $count_liste_obj = $obj->func("count(*)");
                 $obj->where($sql_conds);

@@ -234,7 +234,9 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 //if($nom_col=="picture_height") die("data[$nom_col][unit] = ".$data[$nom_col]["unit"]);
 
                                 if (($desc['TYPE'] == 'MFK')) {
-                                        $data[$nom_col]["tooltip"] .= " (" . $obj->translateMessage("MULTI CHOICE ALLOWED") . ")";
+                                        $data[$nom_col]["tooltip"] .= $obj->translateMessage("MULTI CHOICE ALLOWED") . ".\n";
+                                        $data[$nom_col]["tooltip"] .= $obj->translateMessage("CURRENT CHOICES") . " : \n";
+                                        $data[$nom_col]["tooltip"] .= str_replace('<br>'," / ",$obj->showAttribute($nom_col));
                                 }
                                 //if($nom_col=="booking_comment") die("step_show_error=$step_show_error , obj_errors[$nom_col]=".$obj_errors[$nom_col]);
                                 if ($obj_errors[$nom_col] and $step_show_error) {

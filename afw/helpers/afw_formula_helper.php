@@ -351,7 +351,7 @@ class AfwFormulaHelper extends AFWRoot
             } else {
                 $option = $object->translateMessage($option_key, $lang);
                 $message_no_access_formula = $object->translateMessage('SHOULD-ACTIVATE-THE-OPTION',$lang) . ' : ' . $option;
-                $object_formula_log[$attribute] = "not authorized getFormuleResult($attribute, $what='value') " . $message_no_access_formula;
+                $object_formula_log[$attribute] = "not authorized getFormuleResult($attribute, $what) " . $message_no_access_formula;
 
                 $return = "<img src='../lib/images/fields.png' data-toggle='tooltip' data-placement='top' title='$message_no_access_formula'  width='20' heigth='20'>";
             }

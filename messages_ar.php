@@ -8,6 +8,7 @@
 
 
      $messages["MULTI CHOICE ALLOWED"] = "يسمح بالاختيار المتعدد";
+     $messages["CURRENT CHOICES"] = "الخيارات الحالية";
      $messages["NA-HERE"] = "لا ينطبق هنا";
      $messages["ACTIVATE-STATS-COMPUTE-OPTION"] = "تحتاج تفعيل الخيار حساب الاحصائيات لمشاهدة قيمة هذا الحقل";
      $messages["SHOULD-ACTIVATE-THE-OPTION"] = "يجب أولا تفعيل الخيار ";

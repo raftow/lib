@@ -1634,6 +1634,33 @@ class AFWObject extends AFWRoot
         if (!$returnErrors) return $is_ok; else return [$is_ok, $dataErr];
     }
 
+
+    public final function mfkValueToArrayOrBoolIndex($attribute, $boolIndex=true, $takeDefault=true)
+    {
+        $old_val = $this->getVal($attribute);
+        if (!$old_val and $takeDefault) {
+            $old_val = AfwStructureHelper::getDefaultValue($this, $attribute);
+        }
+        
+        $old_val = trim($old_val);
+        $old_val = trim($old_val, ',');
+        if ($old_val) {
+            $old_val_arr = explode(',', $old_val);
+        } else {
+            $old_val_arr = [];
+        }
+
+        if(!$boolIndex) return $old_val_arr;
+
+        $bool_index_arr = [];
+
+        foreach ($old_val_arr as $old_val_item) {
+            $bool_index_arr[$old_val_item] = true;
+        }
+
+        return $bool_index_arr;
+    }
+
     public final function findInMfk($attribute,$id_to_find, $mfk_empty_so_found = false, $struct=null) 
     {
         if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
@@ -1642,29 +1669,11 @@ class AFWObject extends AFWRoot
                 "Only MFK Fields can use this method, $attribute is not MFK"
             );
         }
+        $takeDefault = true;
+        $boolIndex = true;
+        $boolIndexArr = $this->mfkValueToArrayOrBoolIndex($attribute, $boolIndex, $takeDefault);
 
-        $old_val = $this->getVal($attribute);
-        if (!$old_val) {
-            $old_val = AfwStructureHelper::getDefaultValue($this, $attribute);
-        }
-        if (!$old_val) {
-            return $mfk_empty_so_found;
-        }
-
-        $old_val = trim($old_val, ',');
-        if ($old_val) {
-            $old_val_arr = explode(',', $old_val);
-        } else {
-            $old_val_arr = [];
-        }
-
-        $old_index = [];
-
-        foreach ($old_val_arr as $old_val_item) {
-            $old_index[$old_val_item] = true;
-        }
-
-        return $old_index[$id_to_find];
+        return $boolIndexArr[$id_to_find];
     }
 
     public function addRemoveInMfk($attribute,$ids_to_add_arr,$ids_to_remove_arr, $struct = null)
@@ -7852,8 +7861,15 @@ $dependencies_values
      */
     public function rowCategoryAttribute()
     {
-        return '';
+        return $this->fld_ACTIVE();
     }
+
+    public function getCssClassName()
+    {
+        return substr($this->getTableName(), 0, 5);
+    }
+
+    
 
     public function getCurrentFrontStep()
     {

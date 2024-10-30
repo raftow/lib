@@ -107,7 +107,7 @@ foreach($class_db_structure as $nom_col => $desc){
                     {
                         $uk_vals = array();
                         foreach($auto_c_uk as $uk_col) $uk_vals[$uk_col] = $obj->getVal($uk_col);
-                        $obj_by_uk = $obj_at::loadByUK($uk_vals);
+                        $obj_by_uk = $obj_at->loadWithUniqueKey($uk_vals);
                     }
                     
                     if($obj_by_uk)
@@ -164,7 +164,7 @@ if($obj->editByStep)
              $currstep = AfwFrameworkHelper::findNextEditableStep($obj, $currstep, "after save_next", true);
              if($currstep < 0) 
              {
-                if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) die("$obj -> findNextEditableStep($old_currstep,after save_next) = $currstep");
+                if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) echo("$obj -> findNextEditableStep($old_currstep,after save_next) = $currstep");
                 $currstep = $old_currstep;
              }   
         }
@@ -376,12 +376,25 @@ if($save_update and $obj->after_save_edit)
 {
     $file = $obj->after_save_edit["file"];
     $cl = $obj->after_save_edit["class"];
+    $mode = $obj->after_save_edit["mode"];
+    if(!$mode) $mode = "display";
+    
     
     if($cl) 
     {
-        if((!$obj->after_save_edit["attribute"]) and (!$obj->after_save_edit["formulaAttribute"])) AfwRunHelper::simpleError("bad configration for after_save_edit option : ".var_export($obj->after_save_edit,true));
-        if($obj->after_save_edit["formulaAttribute"]) $id = $obj->calc($obj->after_save_edit["formulaAttribute"]);
-        else $id = $obj->getVal($obj->after_save_edit["attribute"]);
+        $_POST = [];
+        if(($mode == "display") or ($mode == "edit"))
+        {
+            if((!$obj->after_save_edit["attribute"]) and (!$obj->after_save_edit["formulaAttribute"])) AfwRunHelper::simpleError("bad configration for after_save_edit option : ".var_export($obj->after_save_edit,true));
+            if($obj->after_save_edit["formulaAttribute"]) $id = $obj->calc($obj->after_save_edit["formulaAttribute"]);
+            else $id = $obj->getVal($obj->after_save_edit["attribute"]);            
+        }
+
+        if(($mode == "qsearch") or ($mode == "search"))
+        {
+            $datatable_on = $obj->after_save_edit["submit"];
+        }
+        
         $currmod = $obj->after_save_edit["currmod"];
         $currstep = $obj->after_save_edit["currstep"];
         if(is_string($currstep))
@@ -393,7 +406,7 @@ if($save_update and $obj->after_save_edit)
             }
         }
         
-        include("afw_mode_display.php");
+        include("afw_mode_$mode.php");
     }
     else if($file) include($file);
 }
