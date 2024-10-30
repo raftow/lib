@@ -559,8 +559,8 @@ class AfwShowHelper
 
     /**  
      *   @param array of AFWObject $liste_obj
-     *   @param object
-     *   @param object
+     *   @param AFWObject $obj
+     *   @param Auser $objme
      *   @param array 
      *   @return array
      */
@@ -1134,7 +1134,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             $rows_by_table,
             $obj->detailModeWidthedTable,
             $categoryAttribute,
-            substr($obj->getTableName(), 0, 5)
+            $obj->getCssClassName()
         );
 
         if (!$mode_show_all_records) {
@@ -1169,7 +1169,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
         $rows_by_table = 0,
         $showWidthedTable = '',
         $row_class_key = '',
-        $col_class_key = '',
+        $css_class_name = '',
         $class_td_off = 'off'
     ) {
         //die("dataImportance=".var_export($dataImportance,true));
@@ -1238,10 +1238,13 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             $cl_tr = '';
             $my_class_name = '';
             foreach ($data as $id => $tuple) {
+                $row_class_css = $css_class_name;
                 if ($row_class_key) {
-                    $row_class_css = 'hzm_row_' . $tuple[$row_class_key];
+                    $row_class_key_val = "".$tuple[$row_class_key];
+                    $row_class_key_val = str_replace("-","_", $row_class_key_val);
+                    $row_class_css .= ' '.$row_class_key.' hzm_row_' . $row_class_key_val;
                 } else {
-                    $row_class_css = '';
+                    $row_class_css .= ' hzm_row_std';
                 }
                 if ($ids) {
                     $ids .= ',';
@@ -1324,10 +1327,13 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             $my_class_name = '';
             $cl_tr = '';
             foreach ($data as $id => $tuple) {
+                $row_class_css = $css_class_name;
                 if ($row_class_key) {
-                    $row_class_css = 'hzm_row_' . $tuple[$row_class_key];
+                    $row_class_key_val = "".$tuple[$row_class_key];
+                    $row_class_key_val = str_replace("-","_", $row_class_key_val);
+                    $row_class_css .= ' csr_'.$row_class_key.' hzm_row_' . $row_class_key_val;
                 } else {
-                    $row_class_css = '';
+                    $row_class_css .= ' hzm_row_std';
                 }
                 if ($ids) {
                     $ids .= ',';

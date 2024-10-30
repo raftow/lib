@@ -106,7 +106,7 @@ for($i=0;$i<$nb_objs;$i++)
                             {
                                 $uk_vals = array();
                                 foreach($auto_c_uk as $uk_col) $uk_vals[$uk_col] = $obj->getVal($uk_col);
-                                $obj_by_uk = $obj_at::loadByUK($uk_vals);
+                                $obj_by_uk = $obj_at->loadWithUniqueKey($uk_vals);
                             }
                             
                             if($obj_by_uk)

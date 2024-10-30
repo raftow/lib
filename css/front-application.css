@@ -2067,6 +2067,7 @@ li.wizardv1_li.CurrentStep {
     padding-top: 8px !important;
     color: wheat;
     background-color: red;
+    min-height: fit-content;
 }
 
 .hzm_tooltip {
