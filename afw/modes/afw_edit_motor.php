@@ -282,6 +282,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 {
                     $help_atc = $auto_c["HELP"];
                     $depend = $obj->getDependencyIdsArray($col_name, $desc);
+                    if(!$depend) $depend = "0";
                 ?>
                     <div class='hzm_input_atc'>
                         <table cellspacing='0' cellpadding='0' style="width:100%">

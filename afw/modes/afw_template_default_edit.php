@@ -492,7 +492,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 else
                                                                         $class_step = "CurrentStep";
                                                                 $link = "#";
-                                                        } elseif (($kstep <= $last_edited_step) or (!$obj->stepsAreOrdered())) {
+                                                        } elseif (($kstep <= $last_edited_step) or (!$obj->stepsAreOrdered()) or ($obj->stepsAreOrdered()<=$obj->currentStep)) {
                                                                 if ($step_erroned)
                                                                         $class_step = "AlreadyStep ErronedStep ZZO";
                                                                 else
