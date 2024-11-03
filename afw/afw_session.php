@@ -466,17 +466,28 @@ class AfwSession extends AFWRoot {
 
         public static function getCurrentlyExecutedModule()
         {
-                $objme = self::getUserConnected();
+                
                 $exec_module = "";
-                if($objme and self::config("x_module_means_company", false))
+
+                if(self::config("pictures_suffix", ""))
                 {
-                        $myOrg = null;
-                        $myOrgId = $objme->getMyOrganizationId("");
-                        if($myOrgId) $myOrg = Orgunit::loadById($myOrgId);
-                        // we simulate our application as a specific application of the user company 
-                        // to load specific css, pictures and may be business rules etc...
-                        if($myOrg) $exec_module = $myOrg->getVal("hrm_code");
+                        $exec_module = self::config("pictures_suffix", "");
                 }
+                else
+                {
+                        $objme = self::getUserConnected();
+                        if($objme and self::config("x_module_means_company", false))
+                        {
+                                $myOrg = null;
+                                $myOrgId = $objme->getMyOrganizationId("");
+                                if($myOrgId) $myOrg = Orgunit::loadById($myOrgId);
+                                // we simulate our application as a specific application of the user company 
+                                // to load specific css, pictures and may be business rules etc...
+                                if($myOrg) $exec_module = $myOrg->getVal("hrm_code");
+                        }
+                }
+
+                
                 
                 if(!$exec_module)
                 {

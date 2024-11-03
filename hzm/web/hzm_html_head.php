@@ -181,6 +181,7 @@ if (!$my_font) $my_font = "front";
   }
   
   if ($main_module and ($xmodule != $main_module)) {
+    // @todo theme and scss here
   ?>
     <link href="../<?php echo  $main_module ?>/css/module.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
 
@@ -191,6 +192,7 @@ if (!$my_font) $my_font = "front";
   ?>
     <link href="../external/css/common.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
+   // @todo theme and scss here
   }
   ?>
   <link href="./css/module.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">

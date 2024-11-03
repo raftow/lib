@@ -597,7 +597,7 @@ class AfwLoadHelper extends AFWRoot
 
         $module = $object::$MODULE;
         $table = $object::$TABLE;
-        $server_db_prefix = AfwSession::config('db_prefix', 'c0');
+        $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
 
         $pk = $object->getPKField();
 

@@ -1,7 +1,7 @@
 <?php
  // to check before bfunction generation :
- // select titre_u, titre_u_s, titre_short from c0pag.atable where id_module = $MODULE and (titre_u is null or titre_u_s is null or titre_short is null);   
- // update c0pag.atable set titre_u_s = titre_u where id_module = $MODULE and titre_u_s is null;
+ // select titre_u, titre_u_s, titre_short from ".$server_db_prefix."pag.atable where id_module = $MODULE and (titre_u is null or titre_u_s is null or titre_short is null);   
+ // update ".$server_db_prefix."pag.atable set titre_u_s = titre_u where id_module = $MODULE and titre_u_s is null;
  // 
       
 

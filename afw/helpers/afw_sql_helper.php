@@ -4,7 +4,7 @@ class AfwSqlHelper extends AFWRoot
     /*
     public static final function deduire _where($nom_col, $desc, $oper, $val_col, $val_col2 = null)
     {
-        $server_db_prefix = AfwSession::config("db_prefix", "c0");
+        $server_db_prefix = AfwSession::config("db_prefix", "default_db_");
         
         if ($desc["UTF8"]) $codage = "_utf8";
         else $codage = "";
@@ -303,7 +303,7 @@ class AfwSqlHelper extends AFWRoot
     ) 
     {
         
-        $server_db_prefix = AfwSession::config('db_prefix', 'c0');
+        $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
 
         $all_oper_arr = [
             'in (.)' => AfwLanguageHelper::tarjemOperator('IN', $lang),
@@ -684,7 +684,7 @@ class AfwSqlHelper extends AFWRoot
         $join_sentence_arr = [];
         $join_retrieve_fields = [];
 
-        $server_db_prefix = AfwSession::config('db_prefix', 'c0');
+        $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
 
         // add left joins for all retrieved fields with type = FK and category empty (real fields)
         $colsRet = $object->getRetrieveCols(

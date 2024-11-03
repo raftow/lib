@@ -1278,7 +1278,7 @@ class AfwDateHelper
         else
         {
             //if(count($hgreg_matrix)>0) die("gregdate_of_first_hijri_day($hijri_year, $hijri_month) : ".var_export($hgreg_matrix,true));
-            $server_db_prefix = AfwSession::config('db_prefix', 'c0');
+            $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
             $sql_greg = " select greg_date
                             from $server_db_prefix"."cmn.hijra_date_base 
                             where hijri_year = $hijri_year
@@ -1452,7 +1452,7 @@ class AfwDateHelper
             }
         }
         //else die("please check $hg_cache_file");
-        $server_db_prefix = AfwSession::config('db_prefix', 'c0');
+        $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
         $sql_hij = "select hijri_year as HY,
                         hijri_month as HM,
                         greg_date as GD
