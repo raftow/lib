@@ -4657,3 +4657,91 @@ input#save_only {
 .sqlinfo.sqlupdate {
     background-color: #f49ec7;
 }
+
+.success.cell {
+    color: white !important;
+    background-color: #81ad3a !important;
+    padding: 6px !important;
+    text-align: center !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.error.cell {
+    color: white !important;
+    background-color: red !important;
+    padding: 6px !important;
+    text-align: center !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+.warning.cell {
+    color: white !important;
+    background-color: rgb(218, 143, 4) !important;
+    padding: 6px !important;
+    text-align: center !important;
+    border: none !important;
+    border-radius: 0 !important;
+}
+
+/*    mobi select*/
+
+.mbsc-ios.mbsc-textfield-tag {
+    background: #fff;
+    border: 1px solid silver;
+}
+
+.mbsc-ios.mbsc-textfield-tag {
+    border-radius: 0;
+    padding: 4px;
+}
+
+label.mbsc-ios.mbsc-rtl.mbsc-form-control-wrapper {
+    width: 100%;
+    min-height: 200px;
+    padding: 0;
+    margin: 0;
+}
+
+.mbsc-textfield.mbsc-textfield-tags.mbsc-textarea {
+    display: block;
+    height: auto;
+    max-height: 100%;
+    overflow: visible;
+}
+
+.form-control-div.MFK {
+    height: max-content !important;
+}
+
+span.mbsc-ios.mbsc-rtl.mbsc-textfield-inner.mbsc-textfield-inner-outline {
+    border-radius: 0px;
+    width: 100%;
+    min-height: 70px;
+}
+
+div.mbsc-scroller-wheel-item.mbsc-ios.mbsc-rtl.mbsc-wheel-item-checkmark.mbsc-wheel-item-multi>div>div {
+    color: transparent !important;
+}
+
+label.mbsc-select-filter.mbsc-ios.mbsc-rtl.mbsc-form-control-wrapper.mbsc-textfield-wrapper {
+    min-height: 28px !important;
+    padding: 2px;
+    width: auto !important;
+}
+
+.mbsc-font {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-text-size-adjust: 100%;
+    font-family: 'menu';
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.mbsc-ios.mbsc-scroller-pointer .mbsc-scroller-wheel-item.mbsc-selected {
+    color: white;
+    background-color: #007aff;
+    border-radius: 0;
+    border-bottom: 2px solid white;
+}

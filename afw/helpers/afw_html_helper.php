@@ -19,9 +19,25 @@ class AfwHtmlHelper extends AFWRoot {
         </div>";
         }
 
-        public static function tableToHtml($data, $header_trad)
+        public static function array_keysToHeader($row)
+        {
+                $header_trad = [];
+                if($row and (count($row)>0))
+                {
+                        $header_keys = array_keys($row);
+                        foreach($header_keys as $header_col)
+                        {
+                                $header_trad[$header_col] = $header_col;
+                        }
+                }
+
+                return $header_trad;
+        }
+
+        public static function tableToHtml($data, $header_trad=null)
         {
                 $data = self::resetIndexesToDataArray($data);
+                if(!$header_trad) $header_trad = self::array_keysToHeader($data[0]);
                 list($html, $ids) = AfwShowHelper::tableToHtml($data, $header_trad, $showAsDataTable=false, $isAvail=null, $nowrap_cols=null, $class_table="grid", $class_tr1="altitem", $class_tr2="item", $class_td_off="asttdoff", $lang="ar", $dir="rtl", $bigtitle="", $bigtitle_tr_class="bigtitle", $width_th_arr=array(),$img_width="", $rows_by_table=0, $showWidthedTable="",$row_class_key="",$col_class_key="");
                 return $html;
         }

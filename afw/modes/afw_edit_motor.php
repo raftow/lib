@@ -368,28 +368,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
             $class_of_input_select_multi = $class_inputSelect_multi_big;
             if ($desc["MEDIUM_DROPDOWN_WIDTH"]) $class_of_input_select_multi = $class_inputSelect_multi;
-            $infos_arr = array(
-                "class" => "form-control form-mfk",
-                "name"  => $col_name . "[]",
-                "id"  => $col_name,
-                "size"  => 5,
-                "multi" => true,
-                "tabindex" => $qedit_orderindex,
-                "onchange" => $onchange,
-                "style" => $input_style,
-
-            );
-            if ($desc["SEL_OPTIONS"]) $infos_arr = array_merge($infos_arr, $desc["SEL_OPTIONS"]);
-
-            if ($desc["SEL_CSS_CLASS"]) $infos_arr["class"] = $desc["SEL_CSS_CLASS"];
-
-            select(
-                $l_rep,
-                explode($separator, trim($val, $separator)),
-                $infos_arr,
-                "",
-                false
-            );
+            include("tpl/helper_edit_mfk.php");
+            
 
             break;
         case 'MENUM':
@@ -786,6 +766,77 @@ function clock($col_name, $input_name, $valaff, $minimum, $maximum, $onchange, $
     <?
 }
 
+function mobiselector($list_id_val, $selected = array(), $info = array())
+{
+    global $lang;
+
+    if (count($list_id_val) > 7) 
+    {
+        $info["enableFiltering"] = true;
+        $info["numberDisplayed"] = 3;
+        $info["filterPlaceholder"] = "اكتب كلمة للبحث";
+    }
+    else
+    {
+        $info["enableFiltering"] = false;
+        $info["filterPlaceholder"] = "اختيار";
+    }
+
+    $multi = " multiple";
+?>
+
+
+<script>
+
+mobiscroll.setOptions({
+  locale: mobiscroll.localeAr,
+  theme: 'ios',
+  themeVariant: 'light'
+});
+
+$(function () {
+  $('#<?php echo $info["id"] ?>')
+    .mobiscroll()
+    .select({
+      inputElement: document.getElementById('<?php echo $info["id"] ?>-input'),
+      filter: <?php echo $info["enableFiltering"] ? "true" : "false" ?>,
+    });
+});
+</script>  
+
+<label>
+    <input mbsc-input id="<?php echo $info["id"] ?>-input" placeholder="<?php echo $info["filterPlaceholder"] ?>" data-dropdown="true" data-input-style="outline" data-label-style="stacked" data-tags="true" />
+</label>
+    <select class="<?php echo $info["class"] ?>" 
+            name="<?php echo $info["name"] ?>" 
+            id="<?php echo $info["id"] ?>" 
+            tabindex="<?php echo $info["tabindex"] ?>" 
+            onchange="<?php echo $info["onchange"] ?>" 
+            <?php echo $multi ?> 
+            <?php echo $info["style"] ?> 
+            <?php if ($info["required"]) echo "required" ?>
+        >
+<?php 
+        
+        $data_content = "";
+        
+
+        foreach ($list_id_val as $id => $val) 
+        {
+            if ($info["bsel_css"]) {
+                $opt_css = $info["bsel_css"][$id];
+                $data_content = "data-content=\"<span class='$opt_css'>$val</span>\"";
+            }
+?> 
+    <option value="<?php echo $id ?>" <?php echo (in_array($id, $selected)) ? " selected" : ""; ?> <?php echo $data_content ?>><?php echo $val ?></option>
+<?php   
+        } 
+?>
+    </select>
+<?php
+
+}
+
 function select($list_id_val, $selected = array(), $info = array(), $sort_order = "", $null_val = true, $langue = "")
 {
     global $lang;
@@ -912,6 +963,9 @@ function select($list_id_val, $selected = array(), $info = array(), $sort_order 
     ?>
 <?php
 }
+
+
+
 function subval_sort($table_a_trie, $table_ref, $ord = "desc")
 {
     $res = array();

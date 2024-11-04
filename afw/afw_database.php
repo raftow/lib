@@ -532,18 +532,30 @@ class AfwDatabase extends AFWRoot
                 //if (AfwSession::config('LOG_SQL', true)) {
                     //// AFWDebugg::log($row,true);
                 //}
+                /*
+                $rowCleaned = [];
+                foreach($row as $col => $val)
+                {
+                    if(!is_numeric($col)) $rowCleaned[$col] = $val;
+                }
+                $array[] = $rowCleaned;
+                
+*/
+
+                foreach($row as $col => $val)
+                {
+                    if(is_integer($col)) unset($row[$col]);
+                }
+                // die("rafik row 123 = ".var_export($row,true));
                 $array[] = $row;
-                $last_row = $row;
+                // $last_row = $row;
             }
-            if(($nbRows==1) and $print_row and $last_row)
-            {
-                AfwBatch::print_simpler_row($last_row);
-            }
+            
         } else {
             $array = [];
         }
 
-        // die("RAFIK :   : db_recup_rows : ".var_export($array,true)." <br>");
+        //die("RAFIK :   : db_recup_rows : ".var_export($array,true)." <br>");
         return $array;
     }
 

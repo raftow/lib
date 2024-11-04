@@ -8,6 +8,8 @@ if (!$my_font) $my_font = "front";
   <!-- <link type="text/css" rel="stylesheet" href="../lib/css/<?php echo  $my_theme ?>/pag_checkboxes.css"> -->
   <!-- plugins -->
   <link type="text/css" rel="stylesheet" href="../lib/bmulti/css/bootstrap-multiselect.css" />
+  <link type="text/css" rel="stylesheet" href="../lib/css/mobiscroll.jquery.min.css" />
+  
   <!-- end plugins -->
   <link rel="stylesheet" href="../lib/css/jquery-ui-1.11.4.css">
   <link rel="stylesheet" href="../lib/css/font-awesome.min-4.3.css">
@@ -72,6 +74,7 @@ if (!$my_font) $my_font = "front";
   <script src="../lib/bootstrap/bootstrap-v3.min.js"></script>
   <!-- plugins -->
   <script src="../lib/bmulti/js/bootstrap-multiselect.js"></script>
+  <script src="../lib/js/mobiscroll.jquery.min.js"></script>
   <script src="../lib/js/jquery-clock-timepicker.min.js"></script>
   <script src="../lib/bsel/js/bootstrap-select.js"></script>
   <script src="../lib/js/hzm.js"></script>
@@ -197,10 +200,23 @@ if (!$my_font) $my_font = "front";
   ?>
   <link href="./css/module.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
-  if ($cmodule and $xmodule and ($cmodule != $xmodule)) {
+  if ($cmodule and $xmodule and ($cmodule != $xmodule)) 
+  {
+    $xmodule_css_file = "module_$xmodule.css";
+    $file_dir_name = dirname(__FILE__);
+    $xmodule_css_file_full_path = $file_dir_name ."/../../../$cmodule/css/module_$xmodule.css";
+    if(file_exists($xmodule_css_file_full_path))
+    {
   ?>
-    <link href="./css/module_<?php echo  $xmodule ?>.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
+    <link href="./css/<?php echo $xmodule_css_file?>?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
   <?php
+    }
+    else 
+    {
+  ?>
+    <!-- file not defined : <?php echo $xmodule_css_file." in $cmodule/css"?> -->
+  <?php    
+    } 
   }
   if ($main_module and $cmodule and ($cmodule != $main_module)) {
   ?>
@@ -236,10 +252,17 @@ if (!$my_font) $my_font = "front";
   ?>
 
   <script src="./js/module.js"></script>
-  <script src="./js/<?php echo $pagecode; ?>.js"></script>
-  
   <?php
-  include("my_javascripts.php");
+    $pagecode_js_file = "$pagecode.js";
+    $file_dir_name = dirname(__FILE__);
+    $pagecode_js_file_full_path = $file_dir_name ."/../../../$cmodule/js/$pagecode_js_file";
+    if(file_exists($pagecode_js_file_full_path))
+    {
+  ?>      
+  <script src="./js/<?php echo $pagecode_js_file; ?>"></script>  
+  <?php
+    }
+    include("my_javascripts.php");
   ?>
 
 

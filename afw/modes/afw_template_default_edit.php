@@ -213,6 +213,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 $data[$nom_col]["input"] = "<!-- start of input for attrib $nom_col : [$col_val] = obj->val($nom_col) desc=$desc_export-->";
                                 $data[$nom_col]["input"] .= ob_get_clean();
                                 $data[$nom_col]["input"] .= "<!-- end of input for attrib $nom_col -->";
+                                $data[$nom_col]["type"] = $desc["TYPE"];
                                 $col_help = $nom_col . "_help";
                                 $val_help = $obj->translate($col_help, $lang);
                                 if ($val_help != $col_help) $data[$nom_col]["help"]     = $val_help;
@@ -233,10 +234,19 @@ foreach ($class_db_structure as $nom_col => $desc) {
 
                                 //if($nom_col=="picture_height") die("data[$nom_col][unit] = ".$data[$nom_col]["unit"]);
 
-                                if (($desc['TYPE'] == 'MFK')) {
-                                        $data[$nom_col]["tooltip"] .= $obj->translateMessage("MULTI CHOICE ALLOWED") . ".\n";
-                                        $data[$nom_col]["tooltip"] .= $obj->translateMessage("CURRENT CHOICES") . " : \n";
-                                        $data[$nom_col]["tooltip"] .= str_replace('<br>'," / ",$obj->showAttribute($nom_col));
+                                if ($desc['TYPE'] == 'MFK') 
+                                {
+                                        if($desc['FORMAT'] == 'dropdown')
+                                        {
+                                                $data[$nom_col]["tooltip"] .= $obj->translateMessage("MULTI CHOICE ALLOWED") . ".\n";
+                                                $data[$nom_col]["tooltip"] .= $obj->translateMessage("CURRENT CHOICES") . " : \n";
+                                                $data[$nom_col]["tooltip"] .= str_replace('<br>'," / ",$obj->showAttribute($nom_col));
+                                        }
+                                        else
+                                        {
+                                                unset($data[$nom_col]["tooltip"]);
+                                        }
+                                        
                                 }
                                 //if($nom_col=="booking_comment") die("step_show_error=$step_show_error , obj_errors[$nom_col]=".$obj_errors[$nom_col]);
                                 if ($obj_errors[$nom_col] and $step_show_error) {
@@ -707,6 +717,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 $newTr = true;
                                                                 if (!$class_db_structure[$col]["NO-LABEL"]) 
                                                                 {
+                                                                        
                                                                         if ($info["trad"]) {
                                                                                 $class_label0 = "hzm_label hzm_label_$col";
                                                                                 if ($class_db_structure[$col]["REQUIRED"]) $class_label = "class='$class_label0 label_required'";
@@ -765,7 +776,8 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                                 $errors_in_data = "errors";
                                                                                 echo "<!-- $col >> err " . str_replace("-->", "", $info["error"]) . " -->";
                                                                         } else $errors_in_data = "";
-                                                                        echo "<div class=\"form-control-div hzm_control_div_$col $errors_in_data $css_unit_tooltip_active $css_form_control_div_special\">";
+                                                                        $col_type = $info["type"];
+                                                                        echo "<div class=\"form-control-div $col_type hzm_control_div_$col $errors_in_data $css_unit_tooltip_active $css_form_control_div_special\">";
                                                                         if ($info["tooltip"] or $info["error"]) {
                                                                                 if ($info["error"] and (!$class_db_structure[$col]["ERROR-HIDE"])) {
                                                                                         echo "<div id='attr_error_$col' class=\"hzm_tooltip hzm_tooltip_error\"><img data-toggle=\"tooltip-error\" data-placement=\"left\" class=\"hzm_tt\" style=\"width: 24px;height: 24px;margin-top: -8px;\" title=\"" . $info["error"] . "\" src=\"../lib/images/error.png\" /></div>" . $info["error"];
@@ -944,7 +956,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
         $file_js = "./js/edit_" . $tb . '.js';
         $file_js_path = "$file_dir_name/../$md/js/edit_" . $tb . '.js';
 
-        if (file_exists($file_js)) {
+        if (file_exists($file_js_path)) {
         ?>
                 <script src='<?php echo $file_js ?>'></script>
         <?php
