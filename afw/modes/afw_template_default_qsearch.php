@@ -197,15 +197,22 @@ foreach($class_db_structure as $nom_col => $desc)
                         <input id="submit_advanced" type="button" name="submit_advanced" class="form-control togglebtn" onclick="avancedSubmitToggle();" value="إستعلام فقط">
                 </div>
         </div>
-<?
+<?php
    }
 
-   $file_js = $obj->getTableName() . '.js';
-   
+   $file_js = "search_".$obj->getTableName() . '.js';
+   $file_dir_name = dirname(__FILE__);
+   $md = $obj->getMyModule();
+   $file_js_path = "$file_dir_name/../$md/js/$file_js";
 
+   if (file_exists($file_js_path)) 
+   {
+?>                
+<script src="./js/<?=$file_js?>"></script>
+<?php
+   }
 ?>                
 
-<script src="./js/search_<?=$file_js?>"></script>
 
 
 

@@ -7,23 +7,25 @@ ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERRO
 $lang = "en";
 
 AfwSession::startSession();
-$update_context = "delete with afw trash network service";
+$update_context = "YN Fields switcher with afw switcher network api";
 // echo "here5"; 
 require_once("$file_dir_name/../../external/db.php");
 // echo "here6";
 // old include of afw.php
 $only_members = true;
-$debug_name = "afw trash";
+$debug_name = "afw switcher";
 // echo "here4";
 
 $cl = trim($_POST['cl']);
 $currmod = trim($_POST['currmod']);
-$del_id = trim($_POST['del_id']);
-if((!$del_id) or (!$cl)) die("afw error : nothing to delete, set cl and del_id param to non empty value");
+$swc_id = trim($_POST['swc_id']);
+$swc_col = trim($_POST['swc_col']);
+
+if((!$swc_id) or (!$cl) or (!$swc_col)) die("afw error : nothing to switch, set cl and swc_id and swc_col param to non empty value");
 
 $MODULE = $currmod;
 
-if(!$MODULE) die("module not defined to access trahser");
+if(!$MODULE) die("module not defined to access switcher");
   
 include("$file_dir_name/../lib/afw/afw_check_member.php");
 $lang = AfwSession::getSessionVar("lang");
@@ -45,43 +47,34 @@ if(!$isAjax) {
 
 // echo "here3";
 AfwAutoLoader::addMainModule($currmod);
+/**
+ * @var AFWObject $myObj
+ */
 $myObj = new $cl();
-$myObj_loaded = $myObj->load($del_id);
-$can_delete_me = $myObj->userCanDeleteMe($objme);
-if($can_delete_me === -1)
+$myObj_loaded = $myObj->load($swc_id);
+
+if(!$myObj_loaded)
 {
-	$return_message = "المعذرة هذه العملية تحتاج صلاحية ";
+   $return_message = $myObj->tm("OBJECT_NOT_FOUND");
+   die($return_message);
+}
+
+$can_switch_me = $myObj->userCanSwitchCol($objme, $swc_col);
+if(!$can_switch_me)
+{
+	$return_message = "المعذرة هذه عملية تقليب  هذا الحقل تحتاج صلاحية ! ";
    die($return_message);
    // die(AfwSession::getLog("iCanDo")."<br>$return_message<br>can_delete_me = $can_delete_me");
 }
 
-if($can_delete_me === -2)
+list($can_edit_me, $can_t_edit_me_reason) = $myObj->userCanEditMe($objme);
+if(!$can_edit_me)
 {
-	$return_message = "قواعد العمل تمنعك من اجراء هذه العملية";
-   die($return_message);
-   // die(AfwSession::getLog("iCanDo")."<br>$return_message<br>can_delete_me = $can_delete_me");
-}
-
-if((!$can_delete_me) or ($can_delete_me <= 0))
-{
-	$return_message = "فشلت عملية اخذ اذن المسح";
+	$return_message = "المعذرة هذه العملية للتعديل على هذا السجل تحتاج صلاحية : ".$can_t_edit_me_reason;
    die($return_message);
    // die(AfwSession::getLog("iCanDo")."<br>$return_message<br>can_delete_me = $can_delete_me");
 }
 
 
-$deleted = false;
-
-if($myObj_loaded)
-{
-   
-   $deleted = $myObj->delete();
-   if($deleted) $deleted_message = "DELETED";
-   else $deleted_message = $myObj->tm("DELETE_NOT_ALLOWED")." : ".$myObj->deleteNotAllowedReason;
-}
-else
-{
-   $deleted_message = $myObj->tm("OBJECT_NOT_FOUND");
-}
-
-echo $deleted_message;
+$switched_message = $myObj->switchCol($swc_col);
+echo $switched_message;

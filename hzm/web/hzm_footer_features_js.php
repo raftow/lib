@@ -1,4 +1,37 @@
 <script>
+
+function switchRun(cl, md, swc_id, swc_col)
+{
+    console.log('switch running before ajax action on md='+md+' cl='+cl+' id='+swc_id+' col='+swc_col);
+    $.ajax({
+            type:'POST',
+            url:'../lib/api/afw_switcher.php',
+            data:{cl:cl, currmod:md, swc_id:swc_id, swc_col:swc_col},
+            success: function(data)
+            {
+                data = data.trimLeft();
+                data = data.trimRight();
+
+                console.log('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col+' afw_switcher res = '+data);
+
+                if(data=="SWITCHED-OFF")
+                {
+                    $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/off.png' width='24' heigth='24'>");                                     
+                }
+                else if(data=="SWITCHED-ON")
+                {
+                    $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/on.png' width='24' heigth='24'>");                                     
+                }
+                else
+                {
+                    <?php echo $response_data_format ?>
+                    swal("<?php echo $you_dont_have_rights?>["+data+"]");
+                }
+            }
+
+    });
+}
+
 $(document).ready(function(){
 <?php
   if((!$objme) or (!$objme->isAdmin())) $response_data_format = "data = '';\n";
@@ -115,6 +148,44 @@ $(document).ready(function(){
                     swal("<?=$safely_cancelled?>");
                   }
                 });
+       }
+       );
+
+       $(".switcher").click(function()
+        {
+            var swc_id= $(this).attr("oid");
+            var swc_col= $(this).attr("col");
+            var cl= $(this).attr("cl");
+            var md= $(this).attr("md");
+            var ttl = $(this).attr("ttl");
+            var txt = $(this).attr("txt");
+            
+            
+            if((ttl != '') && (txt != ''))
+            {
+                $(".alert.messages").fadeOut().remove();
+                swal({
+                      title: ttl,
+                      text: txt,
+                      icon: "warning",
+                      buttons: true,
+                      dangerMode: false,
+                    })
+                    .then((willSwitch) => {
+                          if(willSwitch)
+                          {
+                            switchRun(cl, md, swc_id, swc_col);
+                          }
+                    });
+            }
+            else 
+            {              
+              console.log('switch will run because no swal texts defined');
+              switchRun(cl, md, swc_id, swc_col);
+            }
+            
+            
+            
        }
        );
 

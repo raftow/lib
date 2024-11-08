@@ -2856,6 +2856,81 @@ class AFWObject extends AFWRoot
         return AfwSqlHelper::hideObject($this);
     }
 
+
+     /**
+      * switcherConfig
+     * @param string $col
+     * @param Auser $auser
+     * should be overridden in subclasses if more columns should be switchable
+     * return array[$switcher_authorized, $switcher_title, $switcher_text]
+     * 
+     * $switcher_authorized : if true means the column $col should be switchable
+     * $switcher_title, $switcher_text are the title and warning that will be shown by the confirmation popup before do the switch
+     */
+
+    public function switcherConfig($col, $auser=null)
+    {
+        $switcher_authorized = false;        
+        $switcher_title = "";
+        $switcher_text = "";
+
+        if($col== $this->fld_ACTIVE())
+        {
+            $switcher_authorized = true;        
+        }
+
+        return [$switcher_authorized, $switcher_title, $switcher_text];
+    }
+
+    /**
+     * @param Auser $auser
+     * @param string $col
+     * 
+     */
+     
+    public final function userCanSwitchCol($auser, $col)
+    {
+        if($auser->isSuperAdmin()) return true;
+        list($switcher_authorized,) = $this->switcherConfig($col, $auser);
+
+        return $switcher_authorized;
+
+    }
+
+    public final function switchCol($swc_col)
+    {
+        try
+        {
+            $switch_mess = 'SWITCH FAILED ';
+            $swc_col_old_val = $this->getVal($swc_col);
+            if($swc_col_old_val=="N")
+            {
+                $this->set($swc_col, "Y");
+                $switch_mess = "SWITCHED-ON";
+            } 
+            else
+            {
+                $this->set($swc_col, "N");
+                $switch_mess = "SWITCHED-OFF";
+            }
+
+            $this->commit();
+        }
+        catch(Exception $e)
+        {
+            $switch_mess .= $e->getMessage()."\n The stack trace is : ".$e->getTraceAsString();
+        }
+        catch(Error $e)
+        {
+            $switch_mess .= $e->__toString();
+        } 
+        
+
+        return $switch_mess;
+
+    }
+
+
     /** APPROVED *** */
 
     public function singleTranslation($lang = 'ar')
@@ -7109,7 +7184,7 @@ $dependencies_values
 
     public function quickRetrieveMethod()
     {
-        return 'decode';
+        return 'qshow';
     }
 
     public function getPercentEdited()

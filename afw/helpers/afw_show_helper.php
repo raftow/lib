@@ -1019,14 +1019,37 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             $tuple[$col] = $val->decode($col);
                                             break;
                                         case 'YN':
-                                            // die("desc['FORMAT']=".$desc['FORMAT']);
+                                            // if(($val->id==476) and ($col=="active")) echo("see FORMAT in desc = ".var_export($desc,true));
                                             if ($desc['FORMAT'] == 'icon') {
+                                                
                                                 $onoff = $val->est($col) ? "on" : "off";
-                                                $tuple[$col] = "<img src='../lib/images/$onoff.png' width='24' heigth='24'>";
+                                                list($switcher_authorized, $switcher_title, $switcher_text) = $val->switcherConfig($col, $objme);
+                                                if($switcher_authorized)
+                                                {
+                                                    $switcher_img_style = "";
+                                                }
+                                                else
+                                                {
+                                                    $switcher_img_style = "style='opacity: 0.6;'";
+                                                }
+                                                
+                                                $img_onoff = "<img src='../lib/images/$onoff.png' width='24' heigth='24' $switcher_img_style>";                                                
+
+                                                if($switcher_authorized)
+                                                {
+                                                    $tuple[$col] = "<span id='$currmod-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currmod' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
+                                                }
+                                                else
+                                                {
+                                                    $tuple[$col] = $img_onoff;
+                                                }
+                                                
                                             } else {
                                                 $col_decoded = $val->decode($col);
                                                 $tuple[$col] = $col_decoded;
                                             }
+
+                                            // if(($val->id==476) and ($col=="active"))  echo("tuple[$col] = ".$tuple[$col]);
 
                                             /*
                                              $yn_decoded = $col.strtoupper($col_decoded);
@@ -1081,10 +1104,10 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                         list($categoryAttribute, $categoryAttributeCATEGORY) = explode(":", $obj->rowCategoryAttribute());
                         //die("list(attr=$categoryAttribute, cat=$categoryAttributeCATEGORY)");
                         if ($categoryAttributeCATEGORY) {
-                            $tuple[$categoryAttribute] = $val->calc($categoryAttribute);
+                            $tuple["ca-".$categoryAttribute] = $val->calc($categoryAttribute);
                             //die("tuple[$categoryAttribute] = ".$tuple[$categoryAttribute]." = $val-->calc($categoryAttribute)");
                         } else
-                            $tuple[$categoryAttribute] = $val->getVal($categoryAttribute);
+                            $tuple["ca-".$categoryAttribute] = $val->getVal($categoryAttribute);
                     }
                     $data[$id] = $tuple;
                     $isAvail[$id] = $objIsActive;
@@ -1240,7 +1263,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             foreach ($data as $id => $tuple) {
                 $row_class_css = $css_class_name;
                 if ($row_class_key) {
-                    $row_class_key_val = "".$tuple[$row_class_key];
+                    $row_class_key_val = "".$tuple['ca-'.$row_class_key];
                     $row_class_key_val = str_replace("-","_", $row_class_key_val);
                     $row_class_css .= ' '.$row_class_key.' hzm_row_' . $row_class_key_val;
                 } else {
@@ -1329,7 +1352,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             foreach ($data as $id => $tuple) {
                 $row_class_css = $css_class_name;
                 if ($row_class_key) {
-                    $row_class_key_val = "".$tuple[$row_class_key];
+                    $row_class_key_val = "".$tuple['ca-'.$row_class_key];
                     $row_class_key_val = str_replace("-","_", $row_class_key_val);
                     $row_class_css .= ' csr_'.$row_class_key.' hzm_row_' . $row_class_key_val;
                 } else {
@@ -1639,7 +1662,7 @@ $('#$showAsDataTable').DataTable( {
 
 
 
-    public static function quickShowAttribute($objItem, $col, $lang = "ar", $desc = null, $newline = "\n<br>")
+    public static function quickShowAttribute($objItem, $col, $lang = "ar", $desc = null, $newline = "\n<br>", $objme=null)
     {
         // $htr_s = hrtime()[1];
         if (!$desc) $desc = AfwStructureHelper::getStructureOf($objItem, $col);
@@ -1726,8 +1749,33 @@ $('#$showAsDataTable').DataTable( {
             case 'YN':
                 if ($desc['FORMAT'] == 'icon') {
                     $onoff = $objItem->est($col) ? "on" : "off";
-                    $return = "<img src='../lib/images/$onoff.png' width='24' heigth='24'>";
-                } else {
+                    list($switcher_authorized, $switcher_title, $switcher_text) = $objItem->switcherConfig($col, $objme);
+                    if($switcher_authorized)
+                    {
+                        $switcher_img_style = "";
+                    }
+                    else
+                    {
+                        $switcher_img_style = "style='opacity: 0.6;'";
+                    }
+                    
+                    $img_onoff = "<img src='../lib/images/$onoff.png' width='24' heigth='24' $switcher_img_style>";
+
+                    if($switcher_authorized)
+                    {
+                        $currmod = $objItem->getMyModule();
+                        $val_class = $objItem->getMyClass();
+                        $val_id = $objItem->id;
+                        $return = "<span id='$currmod-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currmod' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
+                    }
+                    else
+                    {
+                        $return = $img_onoff;
+                    }
+
+                } 
+                else 
+                {
                     $return = $objItem->showYNValueForAttribute(strtoupper($objItem->decode($col)), $col, $lang);
                 }
 

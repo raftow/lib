@@ -2858,7 +2858,7 @@ ul.footerlinks li {
     margin: 0 0 1rem 0;
     font-family: inherit;
     padding: 0.85em 1em;
-    -webkit-appearance: none;
+    --webkit-appearance: none;
     border: 1px solid transparent;
     border-radius: 3px;
     transition: background-color 0.25s ease-out, color 0.25s ease-out;
@@ -3130,22 +3130,7 @@ div.column-block>h1 {
     background-color: #ffffffe6;
 }
 
-.swal-text {
-    font-size: 22px;
-    position: relative;
-    float: none;
-    line-height: normal;
-    vertical-align: top;
-    text-align: left;
-    display: inline-block;
-    margin: 0;
-    padding: 0 10px;
-    font-weight: 400;
-    color: rgb(199, 117, 45);
-    max-width: calc(100% - 20px);
-    overflow-wrap: break-word;
-    box-sizing: border-box;
-}
+
 
 
 .technical_dev{
@@ -4744,4 +4729,12 @@ label.mbsc-select-filter.mbsc-ios.mbsc-rtl.mbsc-form-control-wrapper.mbsc-textfi
     background-color: #007aff;
     border-radius: 0;
     border-bottom: 2px solid white;
+}
+
+div.mbsc-popup.mbsc-popup-anchored {
+    border: 3px solid #007aff7d !important;
+}
+
+.switcher.afw-authorised {
+    cursor: pointer;
 }
