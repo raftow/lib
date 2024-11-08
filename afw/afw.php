@@ -4914,6 +4914,7 @@ class AFWObject extends AFWRoot
 
     public function getMyModule()
     {
+        //if(static::$TABLE=="acondition") die("for ".static::$TABLE." module is ".static::$MODULE);
         return static::$MODULE;
     }
 

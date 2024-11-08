@@ -135,7 +135,7 @@ $(document).ready(function(){
                                     else
                                     {
                                         <?php echo $response_data_format ?>
-                                            swal("<?php echo $you_dont_have_rights?>["+data+"]");
+                                            swal("<?php echo $you_dont_have_rights_todelete?>["+data+"]");
                                     }
                                 }
         

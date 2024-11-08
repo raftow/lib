@@ -1021,7 +1021,6 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                         case 'YN':
                                             // if(($val->id==476) and ($col=="active")) echo("see FORMAT in desc = ".var_export($desc,true));
                                             if ($desc['FORMAT'] == 'icon') {
-                                                
                                                 $onoff = $val->est($col) ? "on" : "off";
                                                 list($switcher_authorized, $switcher_title, $switcher_text) = $val->switcherConfig($col, $objme);
                                                 if($switcher_authorized)
@@ -1037,7 +1036,10 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
 
                                                 if($switcher_authorized)
                                                 {
-                                                    $tuple[$col] = "<span id='$currmod-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currmod' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
+                                                    $val_class = $val->getMyClass();
+                                                    $currm = $val->getMyModule();
+                                                    $val_id = $val->id;
+                                                    $tuple[$col] = "<span case='1' id='$currm-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currm' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
                                                 }
                                                 else
                                                 {
@@ -1660,7 +1662,10 @@ $('#$showAsDataTable').DataTable( {
         return $return;
     }
 
-
+    /**
+     * @param AFWObject $objItem
+     * 
+     */
 
     public static function quickShowAttribute($objItem, $col, $lang = "ar", $desc = null, $newline = "\n<br>", $objme=null)
     {
@@ -1763,10 +1768,10 @@ $('#$showAsDataTable').DataTable( {
 
                     if($switcher_authorized)
                     {
-                        $currmod = $objItem->getMyModule();
                         $val_class = $objItem->getMyClass();
+                        $currm = $objItem->getMyModule();
                         $val_id = $objItem->id;
-                        $return = "<span id='$currmod-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currmod' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
+                        $return = "<span id='$currm-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currm' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
                     }
                     else
                     {
