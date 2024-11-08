@@ -8,6 +8,18 @@ if ($obj->fixm_disable)
     <input type="hidden" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
     <span><? if (!$obj->hideQeditCommonFields) echo $answer_list[$val] ?></span>
 <?php
+}
+elseif ($desc["SWITCHER"]) 
+{
+    $onoff = ($val=="Y") ? "on" : "off";
+    
+    $switcher_img = "<img class='switcher-btn' for='$col_name' id='img-$col_name' src='../lib/images/$onoff.png' width='32' heigth='32'>";                                                
+?>
+    <div class='form-control form-switcher'>
+        <input type="hidden" value="<?php echo $val ?>" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" <?php echo $checkbox_checked ?>>
+        <?php echo $switcher_img ?>
+    </div>
+<?php
 } 
 elseif ($desc["CHECKBOX"]) 
 {

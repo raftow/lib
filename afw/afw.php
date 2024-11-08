@@ -2890,6 +2890,8 @@ class AFWObject extends AFWRoot
      
     public final function userCanSwitchCol($auser, $col)
     {
+        $desc = AfwStructureHelper::getStructureOf($this, $col);
+        if(!$this->attributeCanBeEditedBy($col, $auser, $desc)) return false;
         if($auser->isSuperAdmin()) return true;
         list($switcher_authorized,) = $this->switcherConfig($col, $auser);
 

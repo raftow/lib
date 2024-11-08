@@ -189,6 +189,25 @@ $(document).ready(function(){
        }
        );
 
+       $(".switcher-btn").click(function()
+       {
+          var swc_col = $(this).attr("for");
+
+          old_val = $('#'+swc_col).val();
+          if(old_val == 'N') new_val = 'Y'; else new_val = 'N';
+          console.log('swc_col='+swc_col+' old_val='+old_val+' new_val='+new_val);
+          $('#'+swc_col).val(new_val);
+          if(new_val == 'N')
+          {
+              $('#img-'+swc_col).attr("src", '../lib/images/off.png');                                                   
+          }
+          else
+          {
+              $('#img-'+swc_col).attr("src", '../lib/images/on.png');                                     
+          }
+       }
+      );
+
     // Swal.fire({
     //   template: '#swal-my-notification'
     // });

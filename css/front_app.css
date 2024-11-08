@@ -1516,6 +1516,10 @@ div.modal-dialog {
 
         /*****************   swal nice can be applied for all - end *****************************/
 
+        .form-control.form-switcher {
+            border: none;
+        }
+
         .qfilter {
             margin-top: 15px;
             padding-top: 5px;
