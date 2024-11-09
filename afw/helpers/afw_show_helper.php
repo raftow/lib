@@ -1032,7 +1032,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                     $switcher_img_style = "style='opacity: 0.6;'";
                                                 }
                                                 
-                                                $img_onoff = "<img src='../lib/images/$onoff.png' width='24' heigth='24' $switcher_img_style>";                                                
+                                                $img_onoff = "<img src='../lib/images/$onoff.png' width='36' heigth='24' $switcher_img_style>";                                                
 
                                                 if($switcher_authorized)
                                                 {
@@ -1764,7 +1764,7 @@ $('#$showAsDataTable').DataTable( {
                         $switcher_img_style = "style='opacity: 0.6;'";
                     }
                     
-                    $img_onoff = "<img src='../lib/images/$onoff.png' width='24' heigth='24' $switcher_img_style>";
+                    $img_onoff = "<img src='../lib/images/$onoff.png' width='36' heigth='24' $switcher_img_style>";
 
                     if($switcher_authorized)
                     {

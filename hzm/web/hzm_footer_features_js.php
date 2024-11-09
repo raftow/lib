@@ -16,11 +16,11 @@ function switchRun(cl, md, swc_id, swc_col)
 
                 if(data=="SWITCHED-OFF")
                 {
-                    $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/off.png' width='24' heigth='24'>");                                     
+                    $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/off.png' width='36' heigth='24'>");                                     
                 }
                 else if(data=="SWITCHED-ON")
                 {
-                    $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/on.png' width='24' heigth='24'>");                                     
+                    $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/on.png' width='36' heigth='24'>");                                     
                 }
                 else
                 {
