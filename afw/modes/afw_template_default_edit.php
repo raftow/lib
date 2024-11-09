@@ -1,5 +1,5 @@
 <?php
-require_once("afw_config.php");
+$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
 
 define("LIMIT_INPUT_SELECT", 10);
 

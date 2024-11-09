@@ -1534,6 +1534,12 @@ div.modal-dialog {
             font-weight: bold;
         }
 
+        div#search_result_div {
+            display: grid;
+            min-height: min-content;
+            padding-bottom: 50px !important;
+        }
+
         h5.bluetitle.search{
             font-size: 200%;
             font-weight: bold;

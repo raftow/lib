@@ -6,7 +6,7 @@
         global $r;
         if(!isset($r)) $r = $_REQUEST["r"];
         // die("r=$r , _REQUEST = ".var_export($_REQUEST,true));
-
+        if(!$MODULE) throw new AfwRuntimeException("MODULE constant should be defined in config file");
         $right_menu = array();
         if($objme) $my_firstname = $objme->valFirstname();
         $my_account_title = AfwLanguageHelper::tarjemOperator("MYACCOUNT", $lang);
@@ -179,7 +179,7 @@
                                 {   
                                         $menu_color = $menu_next_color[$menu_color];
                                         $menu_folder_i["color_class"] = $menu_color; 
-                                        $menu_folder_i_html = AfwFrontMenu::genereFrontMenuItem($menu_folder_i, $lang, true, $iamAdmin);
+                                        $menu_folder_i_html = AfwFrontMenu::genereFrontMenuItem($menu_folder_i, $MODULE, $lang, true, $iamAdmin);
                                         // if($menu_folder_id=="-1") die($menu_folder_i_html);
                                         // if($menu_folder_i_html) die("menu[$menu_folder_id] => ".$menu_folder_i_html." item => ".var_export($menu_folder_i,true));
                                         $html_hzm_menu .= $menu_folder_i_html;

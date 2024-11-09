@@ -80,6 +80,7 @@ class AfwLanguageHelper
     ) 
     {
         global $lang, $trad;
+        $company = AfwSession::config("main_company", "");
         $file_dir_name = dirname(__FILE__)."/..";
         if (!$langue) {
             $langue = $lang;
@@ -105,7 +106,7 @@ class AfwLanguageHelper
             if ($nom_table) 
             {
                 $nom_file  = "$file_dir_name/../../$module/tr/trad_" . $langue . "_$nom_table.php";
-                $nom_file2 = "$file_dir_name/../../external/translate/$module/trad_" . $langue . "_$nom_table.php";
+                $nom_file2 = "$file_dir_name/../../external/translate-$company/$module/trad_" . $langue . "_$nom_table.php";
                 //if($object->MY_DEBUG)
                 //        AFWDebugg::log("traduire from file $nom_file ");
 

@@ -40,6 +40,7 @@ class AfwShowHelper
         $options = [],
         $public_show = false
     ) {
+        $theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
         // options
         $arr_col = 0;
         $trad_erase = [];
@@ -198,7 +199,8 @@ class AfwShowHelper
                         } elseif ($col == 'عرض') {
                             $tuple['عرض'] = "<a $target href='main.php?Main_Page=afw_mode_display.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='../lib/images/view_ok.png' width='24' heigth='24'></a>";
                         } elseif ($col == 'تعديل') {
-                            $tuple['تعديل'] = "<a target=\"_new\" href='main.php?Main_Page=afw_mode_edit.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='../lib/images/square.png' width='24' heigth='24'></a>";
+                            $edit_button_path = $images['modifier'];
+                            $tuple['تعديل'] = "<a target=\"_new\" href='main.php?Main_Page=afw_mode_edit.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='$edit_button_path' width='24' heigth='24'></a>";
                         } elseif ($col == 'مرفقات') {
                             $attach_url = $liste_obj[$id]->getAttachUrl();
                             $tuple['مرفقات'] = "<a target=\"_new\" href='$attach_url' ><img src='../lib/images/attach.png' width='24' heigth='24'></a>";
@@ -213,8 +215,10 @@ class AfwShowHelper
                             }
                             $userCanDel = $liste_obj[$id]->userCanDeleteMe($objme);
                             if ($userCanDel > 0) {
+                                $delete_button_path = $images['delete'];
+
                                 // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
-                                $tuple[$col] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' div_to_del='${obj_table}${id}_minibox_container' class='trash manyminiboxes'><img src='../lib/images/delete-button.png' style='height: 22px !important;'></a>";
+                                $tuple[$col] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' div_to_del='${obj_table}${id}_minibox_container' class='trash manyminiboxes'><img src='$delete_button_path' style='height: 22px !important;'></a>";
                                 $tuple['del_status'] = 'OK';
                             } else {
                                 if ($userCanDel == -1) {
@@ -567,6 +571,7 @@ class AfwShowHelper
 
     public static function showManyObj($liste_obj, $obj, $objme, $options = [])
     {
+        $theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
         $arr_col = 0;
         $trad_erase = [];
         $limit = '';
@@ -796,9 +801,10 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             }
                                             $userCanDel = $val->userCanDeleteMe($objme);
                                             if ($userCanDel > 0) {
+                                                $delete_button_path = $images['delete'];
                                                 $lbl = $val->getShortDisplay($lang);
                                                 // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
-                                                $tuple[$col] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='../lib/images/delete-button.png' style='height: 22px !important;'></a>";
+                                                $tuple[$col] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='$delete_button_path' style='height: 22px !important;'></a>";
                                             } else {
                                                 if ($userCanDel == -1) {
                                                     $explanation = "لا يوجد صلاحية عامة لمسح هذا النوع من السجلات";
@@ -875,7 +881,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                 $cantEditReason,
                                             ) = $val->userCanEditMe($objme);
                                             if ($canEdit) {
-                                                $tuple[$col] = "<a href='m.php?mp=ed&cl=$val_class&cm=$val_currmod&id=$val_id&cs=$currstep&clp=$class_origin' class='editme showmany'><img src='../lib/images/modifier.png' width='22' heigth='22'></a>";
+                                                $edit_button_path = $images['modifier'];
+                                                $tuple[$col] = "<a href='m.php?mp=ed&cl=$val_class&cm=$val_currmod&id=$val_id&cs=$currstep&clp=$class_origin' class='editme showmany'><img src='$edit_button_path' width='22' heigth='22'></a>";
                                             } else {
                                                 $tuple[$col] = "<a href='#'><img src='../lib/images/lock.png'  data-toggle='tooltip' data-placement='top' title='$cantEditReason' width='24' heigth='24'></a>";
                                             }

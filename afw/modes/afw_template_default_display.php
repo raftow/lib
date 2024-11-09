@@ -2,7 +2,7 @@
 global $lang;
 if(!$lang) $lang = 'ar';
 
-require 'afw_config.php';
+$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
 require_once 'afw_rights.php';
 
 global $currmod,$sub_pack,$cl,$TMP_ROOT, $other_search, $uri_module, $popup, $file_box_css_class;

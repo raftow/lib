@@ -1,14 +1,13 @@
 <?php
 if(!$page_label and !$images['calendar'])
 {
-    // throw new RuntimeException("why afw config");
     $images =array(
         'today' 		=> '../lib/images/calendar.png' ,
         'calendar' 		=> '../lib/images/calendar.png',
         'select'		=> '../lib/images/loop24.png',
-        'delete'		=> '../lib/images/delete-button.png', // delete.png
-        //'trash'		        => '../lib/images/delete-button.png',  
-        'modifier'		=> '../lib/images/square.png',    
+        'delete'		=> '../lib/images/trash.png', 
+        //'trash'		        => '../lib/images/trash.png',  
+        'modifier'		=> '../lib/images/edit-blue.png',
         'editppp'		=> '../lib/images/editppp.png',
         'background-submit'	=> '../lib/images/box-ombre.jpg',
         'locked'  		=> '../lib/images/locked.png',
@@ -115,4 +114,5 @@ if(!$page_label and !$images['calendar'])
     $qedit_mode_default_max_edit_rows_nb = 30;
     $height_tr_form_edit = 60;
 }
+
 ?>

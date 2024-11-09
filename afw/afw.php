@@ -3859,6 +3859,8 @@ class AFWObject extends AFWRoot
             $nom_table,
             $module
         );
+
+        $return = AfwReplacement::trans_replace($return, $module, $langue);
         /*
         if ($nom_col == 'address_type_enum') {
             throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem($nom_col, $langue,$operator,$nom_table, $module)");
@@ -3913,19 +3915,25 @@ class AFWObject extends AFWRoot
         $file_dir_name = dirname(__FILE__);
         $module = static::$MODULE;
 
+        $return = $message;
+
         include "$file_dir_name/../../$module/messages_$lang.php";
         
         if ($messages[$message]) {
-            return $messages[$message];
+            $return = $messages[$message];
         }
-
-        include "$file_dir_name/../../lib/messages_$lang.php";
+        else
+        {
+            include "$file_dir_name/../../lib/messages_$lang.php";
         
-        if ($messages[$message]) {
-            return $messages[$message];
+            if ($messages[$message]) {
+                $return = $messages[$message];
+            }
         }
+        
+        $return = AfwReplacement::trans_replace($return, $module, $langue);
 
-        return $message;
+        return $return;
     }
 
     public function getAllMyDbStructure()

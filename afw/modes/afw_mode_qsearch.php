@@ -3,7 +3,7 @@
 require_once(dirname(__FILE__)."/../../../external/db.php");
 
 
-require_once("afw_config.php");
+$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
 require_once("afw_rights.php");
 require_once("afw_qsearch_motor.php");
 
@@ -185,14 +185,30 @@ if($datatable_on)
         $out_scr_btns .= "<div class='btns-qsearch'>";
         
         $btn_num = 1;
+
+
+        if($btns_display["add"])
+        {
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="">';
+                $out_scr_btns .= '<form name="editForm" id="editForm" method="post" action="'."main.php".'">';
+                $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_edit.php"/>';
+                $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
+                $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
+                $out_scr_btns .= '<input type="submit" class="longbtn bluebtn submit-btn fright" name="submit"  id="submit-form-new-instance" value="'.$new_instance." ".$single_obj_name.'" /><input type="hidden" size="3" name="newo" value="'.$newo.'"/>';
+                $out_scr_btns .= '<input type="hidden" name="limit" value=""/>';
+                $out_scr_btns .= '</form>';
+                $out_scr_btns .= '</div>';
+                $btn_num++;
+        }
+
         if($btns_display["lookup"])        
         {
-                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="height: 34px;">';
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="">';
                 $out_scr_btns .= '<form name="qeditForm" id="qeditForm" method="post" action="'."main.php".'">';
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
-                $out_scr_btns .= '<input type="submit" class="longbtn redbtn submit-btn fright" name="submit"  id="submit-form-qedit-new" value="'.$qedit_new." ".$plural_obj_name_short.'" />';
+                $out_scr_btns .= '<input type="submit" class="longbtn purplebtn submit-btn fright" name="submit"  id="submit-form-qedit-new" value="'.$qedit_new." ".$plural_obj_name_short.'" />';
                 $out_scr_btns .= '<input type="hidden" size="3" name="newo" value="'.$newo.'"/>';
                 $out_scr_btns .= '<input type="hidden" name="limit" value=""/>';
                 $out_scr_btns .= '</form>';
@@ -205,7 +221,7 @@ if($datatable_on)
 
         if($btns_display["excel"])
         {
-                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="height: 34px;">';
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="">';
                 $xls_export = $myClassInstance->translate('EXCEL-EXPORT',$lang,true);
                 
                 $out_scr_btns .= '<form name="xlsForm" id="xlsForm" method="post" action="'."main.php".'">';
@@ -220,41 +236,10 @@ if($datatable_on)
                 $out_scr_btns .= '</div>';
                 $btn_num++;
         }
-        
 
-        if($btns_display["ddb"])
-        {
-                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="height: 34px;">';
-                $out_scr_btns .= '<form name="ddbForm" id="ddbForm" method="post" action="'."main.php".'">';
-                $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_ddb.php"/>';
-                $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
-                $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
-                $ddb_btn = $myClassInstance->translate('DDB-BTN',$lang,true);
-                $out_scr_btns .= '<input type="submit" class="longbtn bluebtn submit-btn fright" name="submit"  id="submit-form-ddb" value="'.$ddb_btn.'" />';
-                $out_scr_btns .= '<input type="hidden" name="ids" value="'.$ids.'"/>';
-                $out_scr_btns .= '</form>';
-                $out_scr_btns .= '</div>';
-                $btn_num++;
-        }
-        
-        if($btns_display["add"])
-        {
-                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="height: 34px;">';
-                $out_scr_btns .= '<form name="editForm" id="editForm" method="post" action="'."main.php".'">';
-                $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_edit.php"/>';
-                $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
-                $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
-                $out_scr_btns .= '<input type="submit" class="longbtn bluebtn submit-btn fright" name="submit"  id="submit-form-new-instance" value="'.$new_instance." ".$single_obj_name.'" /><input type="hidden" size="3" name="newo" value="'.$newo.'"/>';
-                $out_scr_btns .= '<input type="hidden" name="limit" value=""/>';
-                $out_scr_btns .= '</form>';
-                $out_scr_btns .= '</div>';
-                $btn_num++;
-        }
-        
-                 
         if($btns_display["qedit-result"])
         {
-                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="height: 34px;">';
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="">';
                 $out_scr_btns .= '<form name="qedit_updateForm" id="qedit_updateForm" method="post" action="'."main.php".'">';
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
@@ -272,6 +257,27 @@ if($datatable_on)
                 $out_scr_btns .= '</div>';
                 $btn_num++;
         }
+        
+
+        if($btns_display["ddb"])
+        {
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="">';
+                $out_scr_btns .= '<form name="ddbForm" id="ddbForm" method="post" action="'."main.php".'">';
+                $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_ddb.php"/>';
+                $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
+                $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
+                $ddb_btn = $myClassInstance->translate('DDB-BTN',$lang,true);
+                $out_scr_btns .= '<input type="submit" class="longbtn redbtn submit-btn fright" name="submit"  id="submit-form-ddb" value="'.$ddb_btn.'" />';
+                $out_scr_btns .= '<input type="hidden" name="ids" value="'.$ids.'"/>';
+                $out_scr_btns .= '</form>';
+                $out_scr_btns .= '</div>';
+                $btn_num++;
+        }
+        
+        
+        
+                 
+        
         $out_scr_btns .= '</div>';
         $out_scr_btns .= '<br><br>';
 }
@@ -479,7 +485,7 @@ $out_scr .= '<script type="text/javascript">
         $(document).ready(function() {       
                 $("#qsearch-submit-form").click(function(){
                         $(".alert-dismissable").fadeOut().remove();
-                        $("#search_result_div").html(\'<div class="footer1 hzm-relative-loader-div" id="mySQLloader"><div class="hzm-loading-div" id="myloading">الرجاء الانتظار جارٍ معالجة الطلب                   </div></div>\');
+                        $("#search_result_div").html(\'<div class="footer1 hzm-relative-loader-div" id="mySQLloader"><div class="relative hzm-loading-div" id="myloading">الرجاء الانتظار جارٍ معالجة الطلب                   </div></div>\');
                 });
         });
     

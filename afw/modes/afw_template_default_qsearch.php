@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__)."/../../../external/db.php");
-require_once 'afw_config.php';
+$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
 require_once 'afw_rights.php';
 global  $TMP_DIR,$cl,$pk,$spk,$TMP_ROOT, $lang, $class_table, $class_tr1, $class_tr2, $pct_tab_search_criteria, $class_tr1_sel, $class_tr2_sel ;
 $objme = AfwSession::getUserConnected();
