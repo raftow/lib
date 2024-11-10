@@ -90,7 +90,7 @@ class AfwLoginUtilities extends AFWRoot
                         $ldap_dbg .= "<br>\nafter ldap_set_options = $ldap";
                         
                         $bind = @ldap_bind($ldap, $ldaprdn, $user_password);
-                        $ldap_dbg .= "<br>\nldap_bind($ldap, $ldaprdn, ******) = [$bind] : ".var_export($bind);
+                        $ldap_dbg .= "<br>\nldap_bind($ldap, $ldaprdn, ******) = [$bind] : ".var_export($bind, true);
                         if($bind) 
                         {
                                 $ldap_filter = "($ldap_username_var=$username)";

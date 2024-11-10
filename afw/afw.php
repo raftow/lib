@@ -858,22 +858,32 @@ class AFWObject extends AFWRoot
     }
 
 
-    /*
-        syncSameFieldsWith :
-        I (this) take from him (obj) only what I need
-        but after
-        He (obj) take from me (this) all my fields except primary key and unique index columns
-        so (this) is the master
+    /**
+     * @param AFWObject $obj
+     * @param array $avoid_if_filled_fields
+     * 
+     * syncSameFieldsWith :
+     *   I (this) take from him (obj) only what I need
+     *   but after
+     *   He (obj) take from me (this) all my fields 
+     *   except primary key and unique index columns and filled columns if they are specified in $avoid_if_filled_fields
+     *   so (this) is the master
+     */
+        
 
-    */
-
-    public function syncSameFieldsWith($obj, $commit_obj = true, $commit_this = false)
+    public function syncSameFieldsWith($obj, $commit_obj = true, $commit_this = false, $avoid_if_filled_fields = [])
     {
+        $logActive = true;
         $exception_fields = null;
         // I take from him only what I need (all fields not filled except primary key and unique index columns);
-        $fields1 = $this->copyDataFrom($obj, $exception_fields, $avoid_if_filled_fields = "all");
+        $fields1 = $this->copyDataFrom($obj, $exception_fields, $avoid_if_filled_fields0 = "all", true, $logActive);
         // and after he take from me all my fields (except primary key and unique index columns)
-        $fields0 = $obj->copyDataFrom($this, $exception_fields, $avoid_if_filled_fields = []);
+        $fields0 = $obj->copyDataFrom($this, $exception_fields, $avoid_if_filled_fields, true, $logActive);
+        /*
+        if($obj->id == '1114138306')
+        {
+            die("rafik for 1114138306 : avoid_if_filled_fields = ".var_export($avoid_if_filled_fields,true)." fields0 = ".var_export($fields0,true));
+        }*/
 
         if ($commit_obj) $obj->commit();
         if ($commit_this) $this->commit();
@@ -892,7 +902,8 @@ class AFWObject extends AFWRoot
         $obj,
         $exception_fields = null,
         $avoid_if_filled_fields = [],
-        $avoid_unique_index = true
+        $avoid_unique_index = true,
+        $logHistory=false
     ) {
         $field_name_to_debugg = "prof_id-xxx-rr";
         $fields_updated = [];
@@ -915,12 +926,21 @@ class AFWObject extends AFWRoot
                 if (!$ex_u_i) {
                     $old_val = $this->getVal($field_name);
                     $erase_even_if_filled = (($avoid_if_filled_fields != "all") and (!$avoid_if_filled_fields[$field_name]));
-                    if (!$old_val or $erase_even_if_filled) {
+                    
+                    if ((!$old_val) or $erase_even_if_filled) {
+                        if ($old_val)
+                        {
+                            $erase_even_if_filled_log = ($avoid_if_filled_fields != "all") ? "old_val=$old_val erase_even_if_filled=$erase_even_if_filled because ".var_export($avoid_if_filled_fields,true)."=> $field_name is not to avoid if filled" : "strange : all is to avoid if filled and $field_name is filled";
+                        }
+                        else $erase_even_if_filled_log = "NO-OLD-VAL";
+                        
+
                         $val = $obj->getVal($field_name);
                         if ($val and ($val !== $old_val)) {
                             $this->set($field_name, null);
                             $this->set($field_name, $val);
-                            $fields_updated[] = $field_name;
+                            if(!$logHistory) $fields_updated[] = $field_name;
+                            else $fields_updated[] = $field_name." was '$old_val' become '$val' explanation : $erase_even_if_filled_log";
                         } else if ($field_name == $field_name_to_debugg) die("val=$val empty or same as old_val=$old_val ");
                     } else if ($field_name == $field_name_to_debugg) die("old_val=$old_val is filled or $field_name is in avoid_if_filled_fields=" . var_export($avoid_if_filled_fields, true) . " ??");
                 } else if ($field_name == $field_name_to_debugg) die("$field_name_to_debugg is in UNIQUE_KEY");
