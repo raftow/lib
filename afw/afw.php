@@ -2876,6 +2876,83 @@ class AFWObject extends AFWRoot
         return AfwSqlHelper::hideObject($this);
     }
 
+
+     /**
+      * switcherConfig
+     * @param string $col
+     * @param Auser $auser
+     * should be overridden in subclasses if more columns should be switchable
+     * return array[$switcher_authorized, $switcher_title, $switcher_text]
+     * 
+     * $switcher_authorized : if true means the column $col should be switchable
+     * $switcher_title, $switcher_text are the title and warning that will be shown by the confirmation popup before do the switch
+     */
+
+    public function switcherConfig($col, $auser=null)
+    {
+        $switcher_authorized = false;        
+        $switcher_title = "";
+        $switcher_text = "";
+
+        if($col== $this->fld_ACTIVE())
+        {
+            $switcher_authorized = true;        
+        }
+
+        return [$switcher_authorized, $switcher_title, $switcher_text];
+    }
+
+    /**
+     * @param Auser $auser
+     * @param string $col
+     * 
+     */
+     
+    public final function userCanSwitchCol($auser, $col)
+    {
+        $desc = AfwStructureHelper::getStructureOf($this, $col);
+        if(!$this->attributeCanBeEditedBy($col, $auser, $desc)) return false;
+        if($auser->isSuperAdmin()) return true;
+        list($switcher_authorized,) = $this->switcherConfig($col, $auser);
+
+        return $switcher_authorized;
+
+    }
+
+    public final function switchCol($swc_col)
+    {
+        try
+        {
+            $switch_mess = 'SWITCH FAILED ';
+            $swc_col_old_val = $this->getVal($swc_col);
+            if($swc_col_old_val=="N")
+            {
+                $this->set($swc_col, "Y");
+                $switch_mess = "SWITCHED-ON";
+            } 
+            else
+            {
+                $this->set($swc_col, "N");
+                $switch_mess = "SWITCHED-OFF";
+            }
+
+            $this->commit();
+        }
+        catch(Exception $e)
+        {
+            $switch_mess .= $e->getMessage()."\n The stack trace is : ".$e->getTraceAsString();
+        }
+        catch(Error $e)
+        {
+            $switch_mess .= $e->__toString();
+        } 
+        
+
+        return $switch_mess;
+
+    }
+
+
     /** APPROVED *** */
 
     public function singleTranslation($lang = 'ar')
@@ -3802,6 +3879,8 @@ class AFWObject extends AFWRoot
             $nom_table,
             $module
         );
+
+        $return = AfwReplacement::trans_replace($return, $module, $langue);
         /*
         if ($nom_col == 'address_type_enum') {
             throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem($nom_col, $langue,$operator,$nom_table, $module)");
@@ -3856,19 +3935,25 @@ class AFWObject extends AFWRoot
         $file_dir_name = dirname(__FILE__);
         $module = static::$MODULE;
 
+        $return = $message;
+
         include "$file_dir_name/../../$module/messages_$lang.php";
         
         if ($messages[$message]) {
-            return $messages[$message];
+            $return = $messages[$message];
         }
-
-        include "$file_dir_name/../../lib/messages_$lang.php";
+        else
+        {
+            include "$file_dir_name/../../lib/messages_$lang.php";
         
-        if ($messages[$message]) {
-            return $messages[$message];
+            if ($messages[$message]) {
+                $return = $messages[$message];
+            }
         }
+        
+        $return = AfwReplacement::trans_replace($return, $module, $langue);
 
-        return $message;
+        return $return;
     }
 
     public function getAllMyDbStructure()
@@ -4859,6 +4944,7 @@ class AFWObject extends AFWRoot
 
     public function getMyModule()
     {
+        //if(static::$TABLE=="acondition") die("for ".static::$TABLE." module is ".static::$MODULE);
         return static::$MODULE;
     }
 
@@ -7129,7 +7215,7 @@ $dependencies_values
 
     public function quickRetrieveMethod()
     {
-        return 'decode';
+        return 'qshow';
     }
 
     public function getPercentEdited()

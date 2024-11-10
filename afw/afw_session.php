@@ -464,19 +464,19 @@ class AfwSession extends AFWRoot {
                return self::getSingleton()->getStudent(); 
         }
 
+
+        public static function getCurrentModuleTemplate()
+        {
+                return self::config("module-template", "default");
+        }
+
         public static function getCurrentlyExecutedModule()
         {
-                
-                $exec_module = "";
-
-                if(self::config("pictures_suffix", ""))
-                {
-                        $exec_module = self::config("pictures_suffix", "");
-                }
-                else
+                $exec_module = self::config("main_company", "");
+                if((!$exec_module) and self::config("x_module_means_company", false))
                 {
                         $objme = self::getUserConnected();
-                        if($objme and self::config("x_module_means_company", false))
+                        if($objme)
                         {
                                 $myOrg = null;
                                 $myOrgId = $objme->getMyOrganizationId("");
@@ -486,7 +486,6 @@ class AfwSession extends AFWRoot {
                                 if($myOrg) $exec_module = $myOrg->getVal("hrm_code");
                         }
                 }
-
                 
                 
                 if(!$exec_module)

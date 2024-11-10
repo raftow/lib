@@ -1455,7 +1455,38 @@ div.modal-dialog {
         .swal-text {
             font-size: 20px;
             font-family: title;
-            color: #133d01;
+            position: relative;
+            float: none;
+            line-height: normal;
+            vertical-align: top;
+            text-align: center;
+            display: inline-block;
+            margin: 0;
+            padding: 0 10px;
+            font-weight: 400;
+            color: #0d3c0d;
+            max-width: calc(100% - 20px);
+            overflow-wrap: break-word;
+            box-sizing: border-box;
+        }
+
+        
+        
+        .swal-button {
+            background-color: #50c127;
+            color: #fff;
+            border: none;
+            box-shadow: none;
+            border-radius: 5px;
+            font-weight: normal;
+            font-size: 16px !important;
+            padding: 10px 24px;
+            margin: 0;
+            cursor: pointer;
+        }
+        
+        .swal-button--danger {
+            background-color: #e64942 !important;
         }
 
         .swal-icon--warning__body, .swal-icon--warning__dot {
@@ -1468,7 +1499,7 @@ div.modal-dialog {
         }
 
         .swal-title {
-            color: rgb(100 69 10);
+            color: #f81c05 !important;
             font-weight: normal;
             font-size: 24px;
         }
@@ -1477,18 +1508,17 @@ div.modal-dialog {
             color: #550404;
         }
 
-        .swal-button {
-            background-color: #157de5;
-            font-weight: normal;
-            font-size: 16px !important;
-        }
-
+        
         .swal-button--cancel {
             color: #555 !important;
             background-color: #efefef !important;
         }
 
         /*****************   swal nice can be applied for all - end *****************************/
+
+        .form-control.form-switcher {
+            border: none;
+        }
 
         .qfilter {
             margin-top: 15px;
@@ -1502,6 +1532,12 @@ div.modal-dialog {
         div.qfilter>h1 {
             font-size: 200%;
             font-weight: bold;
+        }
+
+        div#search_result_div {
+            display: grid;
+            min-height: min-content;
+            padding-bottom: 50px !important;
         }
 
         h5.bluetitle.search{

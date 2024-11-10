@@ -4,6 +4,7 @@
      $messages["THE_FOLLOWING_RECORD_HAS_BEEN_DELETED"] = "The following record has been deleted";
      $messages["CANT_DELETE_THE_ROW_EITHER_IT_IS_USED_OR_YOU_DONT_HAVE_RIGHTS"] = "Can't delete the row, either it is used or you don't have rights";
      $messages["CANT_DELETE_THE_ROW"] = "Can't delete the row";
+     $messages["CANT_DO_THIS"] = "Can't do this";
      $messages["DELETE_HAVE_BEEN_SAFELY_CANCELLED"] = "Delete have been safely cancelled";
 
      

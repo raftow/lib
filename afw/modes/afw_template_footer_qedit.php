@@ -4,7 +4,7 @@ $altern_xy = true;
 global $lang;
 if(!$lang) $lang = 'ar';
 
-include("afw_config.php");
+$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
 
 define("LIMIT_INPUT_SELECT", 30);
 
@@ -16,7 +16,10 @@ $pct_tab_edit_mode, $qedit_other_search, $Main_Page,
 $qedit_trad, $popup;
 
 $objme = AfwSession::getUserConnected();
-
+/**
+ * 
+ * @var AFWObject $obj
+ */
 $check_error_activated = "";
 if($obj->general_check_errors) $check_error_activated = "general_check_errors";
 elseif(AfwSession::hasOption("CHECK_ERRORS")) $check_error_activated = "has option CHECK_ERRORS";
@@ -169,7 +172,7 @@ if(!$obj->qedit_minibox)
 <?
 } 
 
-  if(isset($obj::$copypast)  and $obj::$copypast)
+  if($obj->COPY_PAST)
   {
 ?>  
 <tr>  
@@ -205,7 +208,7 @@ if(!$obj->qedit_minibox)
 ?>
 </table>
 <?
-  if(isset($obj::$copypast)  and $obj::$copypast)
+  if($obj->COPY_PAST)
   {
 ?>        
 <table cellspacing="3" cellpadding="4" style="width: 100% !important;">

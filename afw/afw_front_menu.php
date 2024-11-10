@@ -17,7 +17,7 @@ class AfwFrontMenu extends AFWRoot {
 
         }
 
-        public static function genereFrontMenuItem($menu_folder, $lang="ar", $menu_bar ="", $iamAdmin = false)
+        public static function genereFrontMenuItem($menu_folder, $module, $lang, $menu_bar ="", $iamAdmin = false)
         {
                 global $MENU_ICONS, $r;
                 //$iamAdmin = 
@@ -25,6 +25,7 @@ class AfwFrontMenu extends AFWRoot {
                 $childs_arr = $menu_folder["sub-folders"];
                 $menu_title = $menu_folder["menu_name"];
                 if(($lang=="en") and (!$menu_title)) $menu_title = "menu.arole.".$menu_folder["id"]; 
+                $menu_title = AfwReplacement::trans_replace($menu_title, $module, $lang);
                 $menu_page = $menu_folder["page"];
                 $menu_item_css = $menu_folder["css"];
                 $menu_icon = $menu_folder["icon"];

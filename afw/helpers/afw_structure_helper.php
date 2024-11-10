@@ -321,6 +321,12 @@ class AfwStructureHelper extends AFWRoot
             $struct['READONLY'] = true;
         }
 
+        if(($struct["TYPE"]=="YN") and (strtoupper($struct["FORMAT"])=="ICON") and (!$struct["SWITCHER"]))
+        {
+            $struct["SWITCHER"] = "onoff";
+        }
+        
+
         if($struct['READONLY-AFTER-INSERT'])
         {
             if(!$object->isEmpty())

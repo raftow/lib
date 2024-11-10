@@ -98,8 +98,9 @@ if (!$my_font) $my_font = "front";
   }
   $cmodule = AfwUrlManager::currentURIModule();
   $xmodule = AfwSession::getCurrentlyExecutedModule();
+  $xtemplate = AfwSession::getCurrentModuleTemplate();
   $pagecode = AfwUrlManager::currentPageCode();
-  
+  // 
   ?>
   <!-- end plugins -->
   <!-- datatable/css/js -->
@@ -200,24 +201,28 @@ if (!$my_font) $my_font = "front";
   ?>
   <link href="./css/module.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
-  if ($cmodule and $xmodule and ($cmodule != $xmodule)) 
+  if ($cmodule and $xtemplate) 
   {
-    $xmodule_css_file = "module_$xmodule.css";
+    $xtemplate_css_file = "template_$xtemplate.css";
     $file_dir_name = dirname(__FILE__);
-    $xmodule_css_file_full_path = $file_dir_name ."/../../../$cmodule/css/module_$xmodule.css";
-    if(file_exists($xmodule_css_file_full_path))
+    $xtemplate_css_file_full_path = $file_dir_name ."/../../../$cmodule/css/".$xtemplate_css_file;
+    // die("xtemplate_css_file=".$xtemplate_css_file." should be in $cmodule/css");
+    if(file_exists($xtemplate_css_file_full_path))
     {
   ?>
-    <link href="./css/<?php echo $xmodule_css_file?>?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
+    <link href="./css/<?php echo $xtemplate_css_file?>?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
   <?php
     }
     else 
     {
+      die("xtemplate_css_file=".$xtemplate_css_file." in $cmodule/css not found");
   ?>
-    <!-- file not defined : <?php echo $xmodule_css_file." in $cmodule/css"?> -->
+    <!-- file not defined : <?php echo $xtemplate_css_file." in $cmodule/css"?> -->
   <?php    
     } 
   }
+  else die("xtemplate not defined (define 'module-template' var in config file)");
+
   if ($main_module and $cmodule and ($cmodule != $main_module)) {
   ?>
     <link href="../<?php echo  $main_module ?>/css/module_<?php echo  $cmodule ?>.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">

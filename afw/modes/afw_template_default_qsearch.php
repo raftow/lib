@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__)."/../../../external/db.php");
-require_once 'afw_config.php';
+$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
 require_once 'afw_rights.php';
 global  $TMP_DIR,$cl,$pk,$spk,$TMP_ROOT, $lang, $class_table, $class_tr1, $class_tr2, $pct_tab_search_criteria, $class_tr1_sel, $class_tr2_sel ;
 $objme = AfwSession::getUserConnected();
@@ -197,15 +197,22 @@ foreach($class_db_structure as $nom_col => $desc)
                         <input id="submit_advanced" type="button" name="submit_advanced" class="form-control togglebtn" onclick="avancedSubmitToggle();" value="إستعلام فقط">
                 </div>
         </div>
-<?
+<?php
    }
 
-   $file_js = $obj->getTableName() . '.js';
-   
+   $file_js = "search_".$obj->getTableName() . '.js';
+   $file_dir_name = dirname(__FILE__);
+   $md = $obj->getMyModule();
+   $file_js_path = "$file_dir_name/../$md/js/$file_js";
 
+   if (file_exists($file_js_path)) 
+   {
+?>                
+<script src="./js/<?=$file_js?>"></script>
+<?php
+   }
 ?>                
 
-<script src="./js/search_<?=$file_js?>"></script>
 
 
 

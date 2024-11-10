@@ -4,6 +4,8 @@
      $messages["THE_FOLLOWING_RECORD_HAS_BEEN_DELETED"] = "السجل التالي تم حذفه بنجاح";
      $messages["CANT_DELETE_THE_ROW_EITHER_IT_IS_USED_OR_YOU_DONT_HAVE_RIGHTS"] = "لا يمكن حذف هذا السجل إما لأنه مستخدم أو لأنه ليس عندك صلاحية لذلك";
      $messages["CANT_DELETE_THE_ROW"] = "لا يمكن حذف هذا السجل";
+     $messages["CANT_DO_THIS"] = "لا يسمح بهذا الفعل";
+     
      $messages["DELETE_HAVE_BEEN_SAFELY_CANCELLED"] = "بحمد الله تم إلغاء عملية المسح بكل أمان";
 
 
