@@ -51,7 +51,7 @@ class AfwRunHelper
 
                 $mode_dev = AfwSession::config("MODE_DEVELOPMENT", false);
                 $mode_batch = AfwSession::config("MODE_BATCH", false);
-
+                $xmodule = AfwSession::getCurrentlyExecutedModule();
                 $open_mode = ($force_mode_dev or $mode_dev or $mode_batch);
 
                 if (!$message) {
@@ -65,7 +65,7 @@ class AfwRunHelper
                                 <link rel='stylesheet' href='../lib/css/front-application.css?crst=$crst'>
                                 <link rel='stylesheet' href='../lib/css/hzm-v001.css?crst=$crst'>                                
                                 
-                                <link rel='stylesheet' href='../lib/css/front_screen.css?crst=$crst'>
+                                <link rel='stylesheet' href='../lib/css/front_screen_pc.css?crst=$crst'>
                                 <link rel='stylesheet' href='../lib/css/front_tablet.css?crst=$crst'>
                                 <link rel='stylesheet' href='../lib/css/front_mobile.css?crst=$crst'>
                                 <link rel='stylesheet' href='../lib/css/front_mobile_thin.css?crst=$crst'>
@@ -78,7 +78,7 @@ class AfwRunHelper
                                 <link href='../lib/css/simple/style_common.css?crst=$crst' rel='stylesheet' type='text/css'>
                                 <link href='../lib/css/simple/style_ar.css?crst=$crst' rel='stylesheet' type='text/css'>
                                 <link href='../lib/css/simple/front_menu.css?crst=$crst' rel='stylesheet' type='text/css'>
-                                <link href='../../external/css/common.css' rel='stylesheet' type='text/css' type='text/css'>
+                                <link href='../../external/css/common-$xmodule.css' rel='stylesheet' type='text/css' type='text/css'>
                                 <link href='./css/module.css?crst=$crst' rel='stylesheet' type='text/css' type='text/css'>
                                 <link href='../lib/skins/square/green.css' rel='stylesheet' type='text/css'>
                                 <link href='../lib/skins/square/red.css' rel='stylesheet' type='text/css'>

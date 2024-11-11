@@ -6,6 +6,8 @@
         {
                 $show_technical_details = "hide";
         }
+
+        $xmodule = AfwSession::getCurrentlyExecutedModule();
 ?>
 <style>
 body{
@@ -32,7 +34,7 @@ body{
 
 
 </style>
-<link href="../../external/css/common.css" rel="stylesheet" type="text/css" type="text/css">
+<link href="../../external/css/common-<?php echo $xmodule ?>.css" rel="stylesheet" type="text/css" type="text/css">
 <div class="body_front_error">     
         <p>
                 انتهت الجلسة. سجل الدخول مرة أخرى

@@ -104,7 +104,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front-application.css">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/hzm-v001.css">
 
-<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_screen.css?crst=<?php echo $crst ?>">
+<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_screen_pc.css?crst=<?php echo $crst ?>">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_tablet.css?crst=<?php echo $crst ?>">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_mobile.css?crst=<?php echo $crst ?>">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_mobile_thin.css?crst=<?php echo $crst ?>">

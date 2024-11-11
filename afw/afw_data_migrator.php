@@ -304,7 +304,7 @@ class AfwDataMigrator extends AFWRoot {
         $created = false;
         $updated = false;
         $skipped = true;
-        if(!$destinationObj) return array($created, $updated, $skipped, "skipped : object can't be loaded from ".var_export($rowMapped,true));
+        if(!$destinationObj) return array($created, $updated, $skipped, "skipped : object can't be loaded by $destinationClass::$destinationLoadMethod from rowMapped = ".var_export($rowMapped,true));
         $log_arr = array();
         $log_arr[] = $log_initial;
         $affected_row_count = 0;

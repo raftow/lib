@@ -35,11 +35,11 @@ $crst = md5("crst" . date("YmdHis"));
   <?php
   if ($front_application) {
   ?>
-    <link rel="stylesheet" href="../lib/css/front_screen.css?crst=<?php echo $crst ?>">
+    <link rel="stylesheet" href="../lib/css/front_screen_pc.css?crst=<?php echo $crst ?>">
     <link rel="stylesheet" href="../lib/css/front_tablet.css?crst=<?php echo $crst ?>">
     <link rel="stylesheet" href="../lib/css/front_mobile.css?crst=<?php echo $crst ?>">
     <link rel="stylesheet" href="../lib/css/front_mobile_thin.css?crst=<?php echo $crst ?>">
-    
+
     <link rel="stylesheet" href="../lib/css/material-design-iconic-font.min.css">
   <?php
   }
@@ -198,24 +198,25 @@ $crst = md5("crst" . date("YmdHis"));
   }
 
   if (!$no_common_css) {
+    
   ?>
-    <link href="../external/css/common.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
+    <link href="../external/css/common-<?php echo $xmodule ?>.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
    // @todo theme and scss here
   }
   ?>
   <link href="./css/module.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
-  if ($cmodule and $xtemplate) 
+  if ($xtemplate) 
   {
     $xtemplate_css_file = "template_$xtemplate.css";
     $file_dir_name = dirname(__FILE__);
-    $xtemplate_css_file_full_path = $file_dir_name ."/../../../$cmodule/css/".$xtemplate_css_file;
+    $xtemplate_css_file_full_path = $file_dir_name ."/../../../lib/css/".$xtemplate_css_file;
     // die("xtemplate_css_file=".$xtemplate_css_file." should be in $cmodule/css");
     if(file_exists($xtemplate_css_file_full_path))
     {
   ?>
-    <link href="./css/<?php echo $xtemplate_css_file?>?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
+    <link hint='rafik' href="../lib/css/<?php echo $xtemplate_css_file?>?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
   <?php
     }
     else 
