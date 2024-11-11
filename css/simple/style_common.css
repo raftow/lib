@@ -5487,27 +5487,6 @@ nav.navbar.navbar-inverse {
         }
 }
 
-@media (max-width:1240px){
-
-        .btn-qsearch {
-            width: 48% !important;
-             margin-top: 5px; 
-             margin-bottom: 5px; 
-             margin-left: 1%; 
-             margin-right: 1%; 
-        }
-}
-
-@media (max-width:660px){
-
-    .btn-qsearch {
-        width: 96% !important;
-         margin-top: 5px; 
-         margin-bottom: 5px; 
-         margin-left: 2%; 
-         margin-right: 2%; 
-    }
-}
 
 .full-right-width {
     width: 100%;

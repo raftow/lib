@@ -64,7 +64,12 @@ class AfwRunHelper
                                 <link rel='stylesheet' href='../lib/css/menu_ar.css'>
                                 <link rel='stylesheet' href='../lib/css/front-application.css?crst=$crst'>
                                 <link rel='stylesheet' href='../lib/css/hzm-v001.css?crst=$crst'>                                
-                                <link rel='stylesheet' href='../lib/css/front_app.css?crst=$crst'>
+                                
+                                <link rel='stylesheet' href='../lib/css/front_screen.css?crst=$crst'>
+                                <link rel='stylesheet' href='../lib/css/front_tablet.css?crst=$crst'>
+                                <link rel='stylesheet' href='../lib/css/front_mobile.css?crst=$crst'>
+                                <link rel='stylesheet' href='../lib/css/front_mobile_thin.css?crst=$crst'>
+                                
                                 <link rel='stylesheet' href='../lib/css/material-design-iconic-font.min.css'>
                                 <link rel='stylesheet' href='../lib/bootstrap/bootstrap-v3.min.css'>
                                 <link rel='stylesheet' href='../lib/bsel/css/bootstrap-select.css'>

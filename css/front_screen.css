@@ -1610,29 +1610,7 @@ div.modal-dialog {
         }
 
 
-        @media screen and (max-width: 1280px)
-        {
-            div.qsearch_page {
-                padding-left: 5% !important;
-                padding-right: 5% !important;
-            }
-    
-            table.search_result_table {
-                margin-right: 5% !important;
-                margin-left: 5% !important;
-                width: 90%;
-            }
-    
-            .btns-qsearch {
-                margin-right: 5% !important;
-                margin-left: 5% !important;
-                width: 90%;
-                padding-top: 12px;
-                padding-bottom: 12px;
-                background-color: white !important;
-                float: right;
-            }
-        }
+        
 
 
         @media screen and (max-width: 1520px)
@@ -1661,224 +1639,238 @@ div.modal-dialog {
 
         .btn-qsearch {
             float: right;
-            margin-top: 10px;
         }
 
+        
         .btn-centered-1-btn-1{
                 margin-right: 35% !important;
                 margin-left: 35% !important;
-                width: 30%;
+                width: 30% !important;
         }
 
         .btn-centered-2-btn-1{
             margin-right: 19% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 30% !important;
         }
 
         .btn-centered-2-btn-2{
             margin-right: 1% !important;
             margin-left: 19% !important;
-            width: 30%;
+            width: 30% !important;
         }
 
         .btn-centered-3-btn-1{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 31%;
         }
 
         .btn-centered-3-btn-2{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 31%;
         }
 
         .btn-centered-3-btn-3{
-            margin-right: 35% !important;
-            margin-left: 35% !important;
-            width: 30%;
+            margin-right: 1% !important;
+            margin-left: 1% !important;
+            width: 31%;
         }
 
         .btn-centered-4-btn-1{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 23%;
         }
 
         .btn-centered-4-btn-2{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 23%;
         }
 
         .btn-centered-4-btn-3{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 23%;
         }
 
         .btn-centered-4-btn-4{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 23%;
         }
 
         .btn-centered-5-btn-1{
-            margin-right: 19% !important;
-            margin-left: 1% !important;
-            width: 30%;
+            margin-right: 1% !important;
+            margin-left: 0% !important;
+            width: 19%;
         }
 
         .btn-centered-5-btn-2{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 18%;
         }
 
         .btn-centered-5-btn-3{
-            margin-right: 19% !important;
+            margin-right: 0% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 19%;
         }
 
         .btn-centered-5-btn-4{
-            margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-right: 0% !important;
+            margin-left: 1% !important;
+            width: 19%;
         }
 
         .btn-centered-5-btn-5{
-            margin-right: 35% !important;
-            margin-left: 35% !important;
-            width: 30%;
+            margin-right: 0% !important;
+            margin-left: 1% !important;
+            width: 19%;
         }
 
         .btn-centered-6-btn-1{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 31%;
         }
 
         .btn-centered-6-btn-2{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 31%;
         }
 
         .btn-centered-6-btn-3{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 31%;
         }
 
         .btn-centered-6-btn-4{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 31%;
         }
 
         .btn-centered-6-btn-5{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 31%;
+
         }
 
         .btn-centered-6-btn-6{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 31%;
         }
 
         .btn-centered-7-btn-1{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 23%;
         }
 
         .btn-centered-7-btn-2{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 23%;
         }
 
         .btn-centered-7-btn-3{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 23%;
         }
 
         .btn-centered-7-btn-4{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 23%;
         }
 
         .btn-centered-7-btn-5{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 31%;
         }
 
         .btn-centered-7-btn-6{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 31%;
         }
 
         .btn-centered-7-btn-7{
-            margin-right: 35% !important;
-            margin-left: 35% !important;
-            width: 30%;
+            margin-right: 1% !important;
+            margin-left: 1% !important;
+            width: 31%;
         }
 
         .btn-centered-8-btn-1{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 23%;
         }
 
         .btn-centered-8-btn-2{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 23%;
         }
 
         .btn-centered-8-btn-3{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 23%;
         }
 
         .btn-centered-8-btn-4{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 23%;
         }
 
         .btn-centered-8-btn-5{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 23%;
         }
 
         .btn-centered-8-btn-6{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 23%;
         }
 
         .btn-centered-8-btn-7{
-            margin-right: 19% !important;
+            margin-right: 1% !important;
             margin-left: 1% !important;
-            width: 30%;
+            width: 23%;
         }
 
         .btn-centered-8-btn-8{
             margin-right: 1% !important;
-            margin-left: 19% !important;
-            width: 30%;
+            margin-left: 1% !important;
+            width: 23%;
         }
+        /*
+        
+
+        @media (max-width:660px)
+        {
+            .btn-qsearch {
+                width: 96% !important;
+                margin-top: 5px !important; 
+                margin-bottom: 5px !important; 
+                margin-left: 2% !important; 
+                margin-right: 2% !important; 
+            }
+        }*/
 
         img.helppic {
             padding: 8px;

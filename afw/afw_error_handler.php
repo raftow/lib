@@ -81,6 +81,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                 {
                         $lines = file( $file );
                 }
+                $crst = md5("crst" . date("YmdHis"));
     
 ?></div>
 </div>
@@ -103,7 +104,10 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front-application.css">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/hzm-v001.css">
 
-<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_app.css">
+<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_screen.css?crst=<?php echo $crst ?>">
+<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_tablet.css?crst=<?php echo $crst ?>">
+<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_mobile.css?crst=<?php echo $crst ?>">
+<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_mobile_thin.css?crst=<?php echo $crst ?>">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/material-design-iconic-font.min.css">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/bootstrap/bootstrap-v3.min.css">
 <link href="<?php echo $relative_path;?>../lib/attention/attention.css" rel="stylesheet">

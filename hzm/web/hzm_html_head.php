@@ -1,6 +1,7 @@
 <?php
 if (!$lang) $lang = "ar";
 if (!$my_font) $my_font = "front";
+$crst = md5("crst" . date("YmdHis"));
 ?>
 
 <head>
@@ -34,7 +35,11 @@ if (!$my_font) $my_font = "front";
   <?php
   if ($front_application) {
   ?>
-    <link rel="stylesheet" href="../lib/css/front_app.css">
+    <link rel="stylesheet" href="../lib/css/front_screen.css?crst=<?php echo $crst ?>">
+    <link rel="stylesheet" href="../lib/css/front_tablet.css?crst=<?php echo $crst ?>">
+    <link rel="stylesheet" href="../lib/css/front_mobile.css?crst=<?php echo $crst ?>">
+    <link rel="stylesheet" href="../lib/css/front_mobile_thin.css?crst=<?php echo $crst ?>">
+    
     <link rel="stylesheet" href="../lib/css/material-design-iconic-font.min.css">
   <?php
   }

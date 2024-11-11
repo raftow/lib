@@ -21,7 +21,12 @@
 <link rel="stylesheet" href="../../css/front-application.css">
 <link rel="stylesheet" href="../../css/hzm-v001.css">
 
-<link rel="stylesheet" href="../../css/front_app.css">
+<link rel='stylesheet' href='../lib/css/front_screen.css?crst=<?php echo $crst ?>'>
+<link rel='stylesheet' href='../lib/css/front_tablet.css?crst=<?php echo $crst ?>'>
+<link rel='stylesheet' href='../lib/css/front_mobile.css?crst=<?php echo $crst ?>'>
+<link rel='stylesheet' href='../lib/css/front_mobile_thin.css?crst=<?php echo $crst ?>'>
+
+
 <link rel="stylesheet" href="../../bootstrap/bootstrap-v3.min.css">
 <link rel="stylesheet" href="../../bsel/css/bootstrap-select.css">
 <link href="./css/logo-app-icon.png" rel="shortcut icon">
