@@ -302,13 +302,13 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 }
 
 .purplebtn {
-    color: #bb58cc;
-    background-color: #f7e1fb;
+    color: #716b72;
+    background-color: #e5e3e5;
 }
 
 .purplebtn:hover {
-    background-color: #bb58cc;
-    color: #f7e1fb;
+    background-color: #716b72;
+    color: #e5e3e5;
 }
 
 .purplebtn:active {
@@ -638,7 +638,8 @@ div#footer_div {
     z-index: 9999999;
 }
 
-table.dataTable tbody tr:hover>td {
+table.dataTable tbody tr:hover>td,
+table.grid tbody tr:hover>td {
     background-color: rgb(229 247 255) !important;
 }
 
@@ -659,6 +660,13 @@ table.dataTable tbody tr:hover>td {
     border-color: #e09600 transparent #e09600 #e09600;
     background-color: #f9d384 !important;
     color: #8f590a !important;
+    box-shadow: 8px 0 0 #e09600;
+}
+
+.messages--error {
+    border-color: red transparent red red;
+    background-color: red !important;
+    box-shadow: 8px 0 0 #cb0909;
 }
 
 .alert.messages>a.close {
@@ -695,4 +703,53 @@ li.wizardv1_li.CurrentStep {
 .steps_wizardv1 li.CurrentStep a {
     color: #000;
     font-weight: normal;
+}
+
+a.hzm3-button.hzm3-block>.hzm4-title {
+    color: #000 !important;
+    font-weight: normal;
+    font-size: 18px;
+}
+
+.hzm-custom.hzm-custom-icon-container.only-border.border-primary {
+    border-color: transparent;
+    /* border-radius: 50%; */
+    border-width: 2px;
+    background-color: transparent;
+}
+
+.hzm3-col.m3, .hzm3-quarter {
+    min-width: 0 !important;
+    min-height: 0 !important;
+}
+
+.hzm-custom.hzm-custom-icon-container.only-border.border-primary i {
+    color: #777;
+}
+
+
+.hzm-custom.hzm-custom-icon-container i {
+    font-size: 48px;
+}
+
+.hzm-custom.hzm-custom-icon-container {
+    width: 100%;
+    height: 100%;
+}
+
+.bf.hzm-menu-item {
+    border: 1px solid silver;
+}
+
+div.hzm_home_bloc>h3 {
+    font-size: 32px;
+    font-weight: normal;
+    color: #777;
+    /* text-shadow: 4px 4px 4px #bdeafb; */
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.qfilter {
+    border: none !important;
 }
