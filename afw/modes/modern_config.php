@@ -7,7 +7,7 @@ if(!$page_label and !$images['calendar'])
         'select'		=> '../lib/images/loop24.png',
         'delete'		=> '../lib/images/trash.png', 
         //'trash'		        => '../lib/images/trash.png',  
-        'modifier'		=> '../lib/images/edit-blue.png',
+        'modifier'		=> '../lib/images/pencil.png',
         'editppp'		=> '../lib/images/editppp.png',
         'background-submit'	=> '../lib/images/box-ombre.jpg',
         'locked'  		=> '../lib/images/locked.png',

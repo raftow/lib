@@ -445,7 +445,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
         </div>
         <div class="<?php echo $wizard_class . " " . $module_code; ?>">
                 <?
-                if ($obj->editByStep>1){
+                if ($obj->editNbSteps > 1){
                         $step_name = array();
                         $nbStepsEditable = 0;
                         for ($kstep = 1; $kstep <= $obj->editNbSteps; $kstep++) {
