@@ -187,7 +187,7 @@ if(!class_exists('AfwAutoLoader'))
 
                                 if (!$found)
                                 {
-                                        throw new AfwRuntimeException('Unable to locate the class you have specified ['.$path.']: failed_loadings_arr = '.var_export($failed_loadings_log_arr,true));
+                                        throw new RuntimeException('Unable to locate the class ['.$class.'] in configured paths : <!-- failed_loadings_arr = '.var_export($failed_loadings_log_arr,true). " -->");
                                         // rafik : I commented this below because not clear for me what other possible autoloaders ?
                                         // should not throw exception but give the hand to other possible autoloaders ...
                                         // return FALSE;

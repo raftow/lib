@@ -1,0 +1,25 @@
+.bluetitle.search {
+    font-size: 168%;
+    font-weight: normal !important;
+    color: white;
+    text-shadow: 4px 4px 8px silver;
+    margin-bottom: 10px;
+    text-align: center;
+    padding-top: 19px;
+    padding-bottom: 10px;
+    background-color: #07224bf7;
+}
+
+.bluetitle i {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background: #50bef1;
+    margin-left: 10px;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #1387d9;
+    position: relative;
+    top: 0px;
+    border-radius: 50%;
+}

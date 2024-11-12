@@ -116,8 +116,6 @@ class AfwUmsPagHelper extends AFWRoot
         $mdl_id = $mdl->getId();
 
         if ($mdl_id) {
-
-
             $tbl = Atable::getAtableByName($mdl_id, $table_name);
             if (!$tbl) {
                 $tbl_id = 0;
@@ -146,9 +144,16 @@ class AfwUmsPagHelper extends AFWRoot
                     $tbl->set('utf8', 'Y');
                     $tbl->set('dbengine_id', 2);
                     $tbl->ignore_initial_translation_fields = true;
-                    $tbl->insert();
-                    $tbl_id = $tbl->getId();
-                    $tbl_new = true;
+                    if($tbl->insert())
+                    {
+                        $tbl_id = $tbl->getId();
+                        $tbl_new = true;
+                    }
+                    else
+                    {
+                        throw new AfwRuntimeException("::getMyAtable : failed to insert atable record : ".$tbl->debugg_tech_notes);
+                    }
+                    
                 } else {
                     $tbl_new = null;
                 }
@@ -157,12 +162,7 @@ class AfwUmsPagHelper extends AFWRoot
                 $tbl_new = false;
             }
         } else {
-            unset($mdl);
-            $mdl = null;
-            $tbl = null;
-            $mdl_id = 0;
-            $tbl_id = 0;
-            $tbl_new = null;
+            throw new AfwRuntimeException("::getMyAtable : Invalid Module Object (Seems Empty)");
         }
 
         return [$mdl, $tbl, $mdl_id, $tbl_id, $mdl_new, $tbl_new];
@@ -426,7 +426,7 @@ class AfwUmsPagHelper extends AFWRoot
             }
         }
 
-        return [$fld_i, $fld_u];
+        return [$fld_i, $fld_u, $mdl_new, $tbl_new, $mdl, $tbl];
     }
 
     public static final function isValueType($typeOfAttribute)

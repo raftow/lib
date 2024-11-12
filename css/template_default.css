@@ -77,16 +77,17 @@ ul.hzm_front_menu_bar.hzm_front_menu_bar.nav.navbar-nav>li.active>a {
 /* titles, labels and buttons */
 
 .bluetitle.search {
-    font-size: 168%;
+    font-size: 140% !important;
     font-weight: normal !important;
-    color: white;
-    text-shadow: 4px 4px 8px silver;
+    color: #1567a1;
+    border-bottom: 1px solid #719dc3b8;
     margin-bottom: 10px;
     text-align: center;
-    padding-top: 19px;
+    padding-top: 10px;
     padding-bottom: 10px;
-    background-color: #07224bf7;
-}   
+    background-color: transparent;
+}
+
 
 .bluetitle i {
     display: inline-block;
@@ -101,15 +102,6 @@ ul.hzm_front_menu_bar.hzm_front_menu_bar.nav.navbar-nav>li.active>a {
     top: 0px;
     border-radius: 50%;
 }
-
-h5.bluetitle.search {
-    font-size: 200%;
-    font-weight: bold;
-    padding-right: 10px;
-    border-bottom: 1px solid #1280d2;
-    padding-bottom: 15px;
-}
-
 
 
 /*  tables */
@@ -188,7 +180,9 @@ tbody tr.even {
 }
 
 table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.dataTable.display tbody th, table.dataTable.display tbody td {
-    border-top: 2px solid rgb(119 165 155 / 37%);
+    border-top: 1px solid rgb(51 102 133 / 37%);
+    color: black !important;
+    font-size: 90%;
 }
 
 
@@ -642,5 +636,44 @@ div#footer_div {
     padding-top: 25px;
     padding-bottom: 10px;
     z-index: 9999999;
+}
+
+table.dataTable tbody tr:hover>td {
+    background-color: rgb(229 247 255) !important;
+}
+
+
+
+.messages {
+    border-style: solid;
+    border-width: 1px 0 1px 1px;
+    border-top-width: 1px;
+    border-right-width: 0px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-radius: 2px;
+    padding: 6px !important;
+}
+
+.messages--warning {
+    border-color: #e09600 transparent #e09600 #e09600;
+    background-color: #f9d384 !important;
+    color: #8f590a !important;
+}
+
+.alert.messages>a.close {
+    float: left;
+    background-color: transparent !important;
+    margin-top: -4px !important;
+    text-shadow: none !important;
+    border: none !important;
+}
+
+div.qfilter>h1 {
+    font-size: 140%;
+    font-weight: normal;
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #8e9193a8;
 }
 
