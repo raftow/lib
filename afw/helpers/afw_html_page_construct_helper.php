@@ -68,10 +68,14 @@
                 global $lang;
                 self::initLanguage();
                 $current_module = AfwUrlManager::currentURIModule();
-                
-                $f3c = substr($the_main_section_file,0,3);
-                $f7c = substr($the_main_section_file,0,7);
+                $the_main_section_file_arr = explode("/",$the_main_section_file);
+                $main_section_file_name = $the_main_section_file_arr[count($the_main_section_file_arr)-1];
+                list($main_section_file_name, ) = explode(".",$main_section_file_name);
+                // die("main_section_file_name=$main_section_file_name");
+                $f3c = substr($main_section_file_name,0,3);
+                $f7c = substr($main_section_file_name,0,7);
                 $pagecode = AfwUrlManager::currentPageCode();
+                // die("pagecode=$pagecode");
                 $pagecode_splitted = implode(" ",explode("_",$pagecode));
                 // to avoid infinite mirroring
                 self::$header_entry_counter++; 
@@ -176,6 +180,7 @@
                                 $main_section_class = "",
                                 $notifications_class="notification_message_container")
         {
+                $my_page_code = $page_code;
                 $tpl_content = "";
                 if(!$template_path) $template_path = self::hzmTplPath();
                 $the_body_template_file = $template_path."/$body_template"."_body_tpl.php";
@@ -185,8 +190,8 @@
                         include($the_body_template_file);
                         $tpl_content = ob_get_clean();
                 }
-                if(!$container_class) $container_class = $module." $page_code";
-                if(!$main_section_class) $main_section_class = "hzm_body $page_code";
+                if(!$container_class) $container_class = $module." $my_page_code";
+                if(!$main_section_class) $main_section_class = "hzm_body $my_page_code";
                 
                 $section_tokens = [];
                 $section_tokens["container-class"] = $container_class;
