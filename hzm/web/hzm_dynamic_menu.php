@@ -60,13 +60,13 @@ throw new AfwRuntimeException("rafik I think it is obsolete now : 10 nov 2021");
 
           $right_menu = array();
           if($objme) $my_firstname = $objme->valFirstname();
-          $my_account_title = AfwLanguageHelper::tarjemOperator("MYACCOUNT", $lang);
+          $my_account_title = AfwLanguageHelper::translateKeyword("MYACCOUNT", $lang);
           $my_home = $MY_HOME[$lang];
-          if(!$my_home) $my_home = AfwLanguageHelper::tarjemOperator("HOME", $lang);
+          if(!$my_home) $my_home = AfwLanguageHelper::translateKeyword("HOME", $lang);
           if($objme) $right_menu[] = array('href' => "index.php",'css' => "home", 'title' => $my_home);
           
-          //if($objme and $objme->isAdmin()) $right_menu[] = array('href' => "data_admin.php",'css' => "data", 'title' => AfwLanguageHelper::tarjemOperator("DATA-ADMIN", $lang));
-          if($objme and $objme->isAdmin() and $PAG) $right_menu[] = array('href' => "panel_analyst.php",'css' => "analyst", 'title' => AfwLanguageHelper::tarjemOperator("ANALYST", $lang));
+          //if($objme and $objme->isAdmin()) $right_menu[] = array('href' => "data_admin.php",'css' => "data", 'title' => AfwLanguageHelper::translateKeyword("DATA-ADMIN", $lang));
+          if($objme and $objme->isAdmin() and $PAG) $right_menu[] = array('href' => "panel_analyst.php",'css' => "analyst", 'title' => AfwLanguageHelper::translateKeyword("ANALYST", $lang));
 
           
           if($my_account_page)
@@ -87,10 +87,10 @@ throw new AfwRuntimeException("rafik I think it is obsolete now : 10 nov 2021");
           
           
           
-          $my_files = AfwLanguageHelper::tarjemOperator("MY-FILES", $lang);
+          $my_files = AfwLanguageHelper::translateKeyword("MY-FILES", $lang);
           $right_menu[] = array('href' => "afw_my_files.php?x=1",'css' => "file", 'title' => "$my_files");
           
-          $my_files = AfwLanguageHelper::tarjemOperator("EDIT-MY-FILES", $lang);
+          $my_files = AfwLanguageHelper::translateKeyword("EDIT-MY-FILES", $lang);
           
           $codeme = substr(md5("code".$me),0,8);
           $right_menu[] = array('href' => "afw_edit_my_files.php?x=$me&y=$codeme",'css' => "files-o", 'title' => "$my_files");
@@ -98,10 +98,10 @@ throw new AfwRuntimeException("rafik I think it is obsolete now : 10 nov 2021");
           if($my_account_page) 
               $right_menu[] = array('href' => $my_account_page,'css' => "user", 'title' => "$my_account_title ($my_firstname)");
           else 
-              $right_menu[] = array('href' => "#",'css' => "myprofile", 'title' => AfwLanguageHelper::tarjemOperator("SIGN-UP", $lang));
+              $right_menu[] = array('href' => "#",'css' => "myprofile", 'title' => AfwLanguageHelper::translateKeyword("SIGN-UP", $lang));
               
           
-          $right_menu[] = array('href' => "#",'css' => "mobile", 'title' => AfwLanguageHelper::tarjemOperator("CONTACT_US", $lang));
+          $right_menu[] = array('href' => "#",'css' => "mobile", 'title' => AfwLanguageHelper::translateKeyword("CONTACT_US", $lang));
 
           $right_menu[] = array('href' => $login_out_page, 'css' => $login_out_css, 'title' => $login_out_title);
 
@@ -206,7 +206,7 @@ if($objme)
    {
    
 ?>      
-  <li class="menu-small-item <?=$menu_color?>-item"><a href="#"><i class="fa fa-globe" aria-hidden="true"></i><?=AfwLanguageHelper::tarjemOperator("LANGUE", $lang)?></a>
+  <li class="menu-small-item <?=$menu_color?>-item"><a href="#"><i class="fa fa-globe" aria-hidden="true"></i><?=AfwLanguageHelper::translateKeyword("LANGUE", $lang)?></a>
      <ul>
      <?   
             foreach($uri_arr as $lang_code => $uri_item)
@@ -314,10 +314,10 @@ if($objme)
 <?
         }
 ?>  
-  <li class="menu-small-item <?=$menu_color?>-item"><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i><?=AfwLanguageHelper::tarjemOperator("CONTROL", $lang)?></a>
+  <li class="menu-small-item <?=$menu_color?>-item"><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i><?=AfwLanguageHelper::translateKeyword("CONTROL", $lang)?></a>
      <ul>
           <li id="li_options">
-          <a href="#"><i class="fa fa-cog info" aria-hidden="true"></i><?=AfwLanguageHelper::tarjemOperator("OPTIONS", $lang)?><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-cog info" aria-hidden="true"></i><?=AfwLanguageHelper::translateKeyword("OPTIONS", $lang)?><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                 <ul><!--ul-options-->
                 <?
                    foreach($options_arr as $option_code => $option_props) 
@@ -362,7 +362,7 @@ if($objme)
   <li class="search-bar-item">
                     <form class="navbar-form navbar-left">
                               <div class="search fleft">
-                                        <input type="button" class="searchbtn fleft"><input type="text" class="searchtxt fleft" placeholder="<?=AfwLanguageHelper::tarjemOperator("SEARCH_HERE", $lang)?>...">
+                                        <input type="button" class="searchbtn fleft"><input type="text" class="searchtxt fleft" placeholder="<?=AfwLanguageHelper::translateKeyword("SEARCH_HERE", $lang)?>...">
                               </div>
                     </form>​
   </li>

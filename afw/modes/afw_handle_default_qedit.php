@@ -1,6 +1,10 @@
 <?php
 require_once(dirname(__FILE__)."/../../../external/db.php");
-$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+$themeArr = AfwThemeHelper::loadTheme();
+foreach($themeArr as $theme => $themeValue)
+{
+    $$theme = $themeValue;
+}
 
 
 $class = $_POST["class_obj"];
@@ -267,8 +271,8 @@ for($i=0;$i<$nb_objs;$i++)
 }
 
 
-if($updated_nb_objs>0) AfwSession::pushSuccess(AfwLanguageHelper::tarjemOperator("save_with_sucess", $lang) . " $updated_nb_objs ".AfwLanguageHelper::tarjemOperator("record(s)", $lang));
-else AfwSession::pushInformation(AfwLanguageHelper::tarjemOperator("no_update_found", $lang));
+if($updated_nb_objs>0) AfwSession::pushSuccess(AfwLanguageHelper::translateKeyword("save_with_sucess", $lang) . " $updated_nb_objs ".AfwLanguageHelper::translateKeyword("record(s)", $lang));
+else AfwSession::pushInformation(AfwLanguageHelper::translateKeyword("no_update_found", $lang));
 if($submit_return)
 {
     $id = $_POST["id_origin"];
@@ -303,7 +307,7 @@ $out_scr .= '<td><br>';
 $out_scr .= '<form name="editForm" id="editForm" method="post" action="main.php">';
 $out_scr .= '<input type="hidden" name="Main_Page" value="afw_mode_search.php"/>';
 $out_scr .= '<input type="hidden" name="cl" value="'.$class.'"/>';
-$out_scr .= '<input type="submit" class="yellowbtn btn fright" name="submit"  id="submit-form" value="'.$other_search.'" />';
+$out_scr .= '<input type="submit" class="yellowbtn btn fright" name="submit"  id="submit-form" value="'.$other _search.'" />';
 $out_scr .= '</form><br>';
 $out_scr .= '</td>';
 $out_scr .= '</tr>';
@@ -323,7 +327,7 @@ foreach($fixm_array as $fixm_col => $fixm_val) {
        if($fixm_col) $out_scr .= '<input type="hidden" name="sel_'.$fixm_col.'" value="'.$fixm_val.'"/>';
 }
 
-$out_scr .= '<input type="submit" class="bluebtn btn fright" name="submit"  id="submit-form" value="'.$back_to_last_form.'" />';
+$out_scr .= '<input type="submit" class="bluebtn btn fright" name="submit"  id="submit-form" value="'.$back _to_last_form.'" />';
 $out_scr .= '</form><br>';
 $out_scr .= '</td>';
 $out_scr .= '</tr>';

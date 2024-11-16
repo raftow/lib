@@ -4,15 +4,20 @@ $altern_xy = true;
 global $lang;
 if(!$lang) $lang = 'ar';
 
-$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+$themeArr = AfwThemeHelper::loadTheme();
+foreach($themeArr as $theme => $themeValue)
+{
+    $$theme = $themeValue;
+}
 
 define("LIMIT_INPUT_SELECT", 30);
 
-
+$back_to_last_form = AfwLanguageHelper::translateKeyword("back_to_last_form", $lang);
+$new_search_operation = AfwLanguageHelper::translateKeyword("new_search", $lang);
 
 global $TMP_DIR,$TMP_ROOT,$lang,$cl,$pack,$sub_pack,$id,$aligntd, $first_disp, $first_val, $diff_val, $not_filled, $filled, $nb_objs,
 // $class_tr1, $class_tr2, $class_titre, $class_table, $class_inputSubmit, $class_inputLien, $class_inputNew, 
-$pct_tab_edit_mode, $qedit_other_search, $Main_Page, 
+$pct_tab_edit_mode, $Main_Page, 
 $qedit_trad, $popup;
 
 $objme = AfwSession::getUserConnected();

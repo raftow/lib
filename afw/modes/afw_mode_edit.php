@@ -3,7 +3,11 @@
 require_once(dirname(__FILE__)."/../../../external/db.php");
 // here was old const php
 
-$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+$themeArr = AfwThemeHelper::loadTheme();
+foreach($themeArr as $theme => $themeValue)
+{
+    $$theme = $themeValue;
+}
 require_once("afw_edit_motor.php");
 
 
@@ -25,10 +29,9 @@ if(!$objme)
 
 $myObj = new $cl();
 
-
-
+$options = [];
 $default_display_settings = $myObj->getDefautDisplaySettings();
-$page_css_file = $default_display_settings["default_css_page"];
+$options["page_css_file"] = $default_display_settings["default_css_page"];
 
 if($myObj->datatable_on_for_mode["edit"] or $default_display_settings["datatable_on_for_mode_edit"])
 {

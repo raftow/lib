@@ -14,9 +14,7 @@ function hidden_input($col_name, $desc, $val, &$obj)
 
 function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = false, $force_css = "", $qedit_orderindex = 0, $data_length_class_default_for_fk = "inputmoyen")
 {
-    global $TMP_DIR, $_SERVER, $Main_Page, $_GET, $_POST,
-        $header_bloc_edit, $footer_bloc_edit,
-        $aligntd, $lang, $mode_hijri_edit, $yes_label, $no_label, $dkn_label, $objme;
+    global $Main_Page, $_GET, $_POST, $lang, $mode_hijri_edit, $objme;
 
     $development_mode = AfwSession::config("MODE_DEVELOPMENT", false);
 
@@ -44,9 +42,11 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
     $placeholder = $desc["PLACE-HOLDER"];
     if (!$placeholder) $placeholder = $col_title;
 
-    $theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
-
-    global $images;
+    $images = AfwThemeHelper::loadTheme();
+    foreach($images as $theme => $themeValue)
+    {
+        $$theme = $themeValue;
+    }
 
     $type_input_ret = "";
 

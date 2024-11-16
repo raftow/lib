@@ -14,7 +14,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right topcontrols">
                           <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?=AfwLanguageHelper::tarjemOperator("LANGUE", $lang)?>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?=AfwLanguageHelper::translateKeyword("LANGUE", $lang)?>
                                 <span class="caret" style="padding: 0px 0px 0px 0px !important;"></span></a>
                                 <ul class='dropdown-menu'>
                                 <?   
@@ -30,7 +30,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right topcontrols">
                           <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?=AfwLanguageHelper::tarjemOperator("OPTIONS", $lang)?>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?=AfwLanguageHelper::translateKeyword("OPTIONS", $lang)?>
                                 <span class="caret" style="padding: 0px 0px 0px 0px !important;"></span></a>
                                 <ul class='dropdown-menu'>
                                 <?   
@@ -47,7 +47,7 @@
                     </ul>
                     <form class="navbar-form navbar-left">
                               <div class="search fleft">
-        						<input type="button" class="searchbtn fleft"><input type="text" class="searchtxt fleft" placeholder="<?=AfwLanguageHelper::tarjemOperator("SEARCH_HERE", $lang)?>...">
+        						<input type="button" class="searchbtn fleft"><input type="text" class="searchtxt fleft" placeholder="<?=AfwLanguageHelper::translateKeyword("SEARCH_HERE", $lang)?>...">
         		      </div>
                     </form>                       
                   </div>

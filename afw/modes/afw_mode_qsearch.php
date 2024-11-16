@@ -3,11 +3,17 @@
 require_once(dirname(__FILE__)."/../../../external/db.php");
 
 
-$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+$themeArr = AfwThemeHelper::loadTheme();
+foreach($themeArr as $theme => $themeValue)
+{
+    $$theme = $themeValue;
+}
 require_once("afw_rights.php");
 require_once("afw_qsearch_motor.php");
 
-
+$new_instance =  AfwLanguageHelper::translateKeyword("new_instance", $lang);
+$qedit_new =     AfwLanguageHelper::translateKeyword("qedit_new", $lang); 
+$qedit_update =  AfwLanguageHelper::translateKeyword("qedit_update", $lang); 
 // die("DBG-qsearch requirements");
 
 if(!$currmod)

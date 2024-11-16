@@ -1,6 +1,10 @@
 <?php
 require_once(dirname(__FILE__)."/../../../external/db.php");
-$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+$themeArr = AfwThemeHelper::loadTheme();
+foreach($themeArr as $theme => $themeValue)
+{
+    $$theme = $themeValue;
+}
 
 $class = $_POST["class_obj"];
 $currmod = $_POST["currmod"];
@@ -137,8 +141,8 @@ if($_POST["submit_ddb"])
 
 
 
-if($updated_nb_objs>0) AfwSession::pushSuccess(AfwLanguageHelper::tarjemOperator("save_with_sucess", $lang) . " $updated_nb_objs ".AfwLanguageHelper::tarjemOperator("record(s)", $lang));
-else AfwSession::pushInformation(AfwLanguageHelper::tarjemOperator("no_update_found", $lang));
+if($updated_nb_objs>0) AfwSession::pushSuccess(AfwLanguageHelper::translateKeyword("save_with_sucess", $lang) . " $updated_nb_objs ".AfwLanguageHelper::translateKeyword("record(s)", $lang));
+else AfwSession::pushInformation(AfwLanguageHelper::translateKeyword("no_update_found", $lang));
 
 
 $ids = implode(",",$list_objs_ids);

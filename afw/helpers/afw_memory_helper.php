@@ -10,7 +10,7 @@ class AfwMemoryHelper extends AFWRoot
             $nb_instances_total;
 
         //$objme = AfwSession::getUserConnected();
-
+        $html_log = "";
         if (!$mm) {
             $mm = memory_get_usage(true);
         }
@@ -21,21 +21,23 @@ class AfwMemoryHelper extends AFWRoot
             // die("rafik 2021 123456");
             $mm_used = memory_get_usage(false);
             $mm_unused = $mm - $mm_used;
-            echo "<pre class=\"mem hzm log\">";
-            echo "\n Usage    : " . $mm_used;
-            echo "\n Not used : " . $mm_unused;
-            echo "\n Total    : " . $mm;
-            echo "\n Peak :" . memory_get_peak_usage();
+            $html_log .= "<pre class=\"mem hzm log\">";
+            $html_log .= "\n Usage    : " . $mm_used;
+            $html_log .= "\n Not used : " . $mm_unused;
+            $html_log .= "\n Total    : " . $mm;
+            $html_log .= "\n Peak :" . memory_get_peak_usage();
 
-            echo "\n report of objects created : " .
+            $html_log .= "\n report of objects created : " .
                 var_export($tab_instances, true);
-            echo "\n report of objects cached : " .
+            $html_log .= "\n report of objects cached : " .
                 var_export($tab_cached_instances, true);
             $average_used_by_object = round($mm_used / $nb_instances);
-            echo "\n created : $nb_instances_total, should be used in memory : $nb_instances object(s)";
-            echo "\n average-memory-by afw object : $average_used_by_object";
-            echo '</pre>';
+            $html_log .= "\n created : $nb_instances_total, should be used in memory : $nb_instances object(s)";
+            $html_log .= "\n average-memory-by afw object : $average_used_by_object";
+            $html_log .= '</pre>';
             
+
+            return $html_log;
         }
     }
 

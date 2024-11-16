@@ -17,7 +17,8 @@ function type_input($col_name, $desc, $obj, $selected = false)
     global $lang, $class_inputSelect_multi_big, $class_inputInt, $class_inputText, $class_inputSelected;
     $objme = AfwSession::getUserConnected();
     require_once('afw_rights.php');
-    global $images, $TMP_ROOT;
+    // global $TMP_ROOT;
+    // $images = AfwThemeHelper::loadTheme();
     $maxlength_input = 1000;
     $class_inputSearch = "input_search";
     $class_inputSmallSearch = "input_small_search";
@@ -504,7 +505,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
 {
     global $lang;
     $null_val_value = 0;
-    $null_val_display = AfwLanguageHelper::tarjemOperator('NULL', $lang);
+    $null_val_display = AfwLanguageHelper::translateKeyword('NULL', $lang);
 
     switch (strtolower($ordre)) {
         case 'asc':

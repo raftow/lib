@@ -40,7 +40,11 @@ class AfwShowHelper
         $options = [],
         $public_show = false
     ) {
-        $theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+        $themeArr = AfwThemeHelper::loadTheme();
+        foreach($themeArr as $theme => $themeValue)
+        {
+            $$theme = $themeValue;
+        }
         // options
         $arr_col = 0;
         $trad_erase = [];
@@ -571,7 +575,11 @@ class AfwShowHelper
 
     public static function showManyObj($liste_obj, $obj, $objme, $options = [])
     {
-        $theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+        $themeArr = AfwThemeHelper::loadTheme();
+        foreach($themeArr as $theme => $themeValue)
+        {
+            $$theme = $themeValue;
+        }
         $arr_col = 0;
         $trad_erase = [];
         $limit = '';
@@ -1490,7 +1498,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                 $html .= '</td></tr></table>';
             }
 
-            if ($showAsDataTable and !$datatables_arr[$showAsDataTable]) {
+            if ($showAsDataTable and !$datatables_arr[$showAsDataTable]) 
+            {
                 $html .= "<script type=\"text/javascript\">
 $(document).ready(function() {
 $('#$showAsDataTable').DataTable( {
@@ -1498,6 +1507,10 @@ $('#$showAsDataTable').DataTable( {
 } );
 } );
 </script>";
+            }
+            else
+            {
+                $html .= "<!-- show As Data Table off -->";
             }
         }
 

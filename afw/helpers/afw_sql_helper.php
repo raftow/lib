@@ -306,21 +306,21 @@ class AfwSqlHelper extends AFWRoot
         $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
 
         $all_oper_arr = [
-            'in (.)' => AfwLanguageHelper::tarjemOperator('IN', $lang),
-            '=' => AfwLanguageHelper::tarjemOperator('EQUAL', $lang, true),
-            '<' => AfwLanguageHelper::tarjemOperator('LESS_THAN', $lang, true),
-            '>' => AfwLanguageHelper::tarjemOperator('GREATER_THAN', $lang, true),
-            '<=' => AfwLanguageHelper::tarjemOperator('LESS_OR_EQUAL_THAN', $lang, true),
-            '>=' => AfwLanguageHelper::tarjemOperator('GREATER_OR_EQUAL_THAN', $lang, true),
-            '!=' => AfwLanguageHelper::tarjemOperator('NOT_EQUAL', $lang, true),
-            'between' => AfwLanguageHelper::tarjemOperator('BETWEEN', $lang, true),
-            "like X'%.%'" => AfwLanguageHelper::tarjemOperator('CONTAIN', $lang, true),
-            "like X'.%'" => AfwLanguageHelper::tarjemOperator('BEGINS_WITH', $lang, true),
-            "like X'%.'" => AfwLanguageHelper::tarjemOperator('ENDS_WITH', $lang, true),
-            "like X'.'" => AfwLanguageHelper::tarjemOperator('EQUAL', $lang, true),
-            "not like X'%.%'" => AfwLanguageHelper::tarjemOperator('NOT_CONTAIN', $lang, true),
-            "=''" => AfwLanguageHelper::tarjemOperator('IS_EMPTY', $lang, true),
-            "!=''" => AfwLanguageHelper::tarjemOperator('IS_NOT_EMPTY', $lang, true),
+            'in (.)' => AfwLanguageHelper::translateKeyword('IN', $lang),
+            '=' => AfwLanguageHelper::translateKeyword('EQUAL', $lang, true),
+            '<' => AfwLanguageHelper::translateKeyword('LESS_THAN', $lang, true),
+            '>' => AfwLanguageHelper::translateKeyword('GREATER_THAN', $lang, true),
+            '<=' => AfwLanguageHelper::translateKeyword('LESS_OR_EQUAL_THAN', $lang, true),
+            '>=' => AfwLanguageHelper::translateKeyword('GREATER_OR_EQUAL_THAN', $lang, true),
+            '!=' => AfwLanguageHelper::translateKeyword('NOT_EQUAL', $lang, true),
+            'between' => AfwLanguageHelper::translateKeyword('BETWEEN', $lang, true),
+            "like X'%.%'" => AfwLanguageHelper::translateKeyword('CONTAIN', $lang, true),
+            "like X'.%'" => AfwLanguageHelper::translateKeyword('BEGINS_WITH', $lang, true),
+            "like X'%.'" => AfwLanguageHelper::translateKeyword('ENDS_WITH', $lang, true),
+            "like X'.'" => AfwLanguageHelper::translateKeyword('EQUAL', $lang, true),
+            "not like X'%.%'" => AfwLanguageHelper::translateKeyword('NOT_CONTAIN', $lang, true),
+            "=''" => AfwLanguageHelper::translateKeyword('IS_EMPTY', $lang, true),
+            "!=''" => AfwLanguageHelper::translateKeyword('IS_NOT_EMPTY', $lang, true),
         ];
         $prefixed_nom_col = $nom_col;
         list($prefix_col, $nom_col) = explode('.', $nom_col);

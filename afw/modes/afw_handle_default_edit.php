@@ -178,7 +178,7 @@ if($obj->editByStep)
         if($obj->stepsAreOrdered() and ($currstep > $obj->getLastEditedStep(false))) $obj->setLastEditedStep($currstep);        
 }
 $new_label = $obj->insertNewLabel("ar");
-$successful_save = AfwLanguageHelper::tarjemOperator("save_with_sucess", $lang). " " . AfwLanguageHelper::tarjemOperator("changes", $lang);        
+$successful_save = AfwLanguageHelper::translateKeyword("save_with_sucess", $lang). " " . AfwLanguageHelper::translateKeyword("changes", $lang);        
 
 $case_of_handle = "unknown";
 

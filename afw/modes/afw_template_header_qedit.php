@@ -3,7 +3,11 @@
 global $lang;
 if(!$lang) $lang = 'ar';
 
-$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+$themeArr = AfwThemeHelper::loadTheme();
+foreach($themeArr as $theme => $themeValue)
+{
+    $$theme = $themeValue;
+}
 define("LIMIT_INPUT_SELECT", 30);
 
 
@@ -140,14 +144,14 @@ foreach($class_db_structure as $nom_col => $desc)
 
 if($obj->ENABLE_DISPLAY_MODE_IN_QEDIT)
 {
-   $qedit_trad["show"] = AfwLanguageHelper::tarjemOperator("show", $lang);
+   $qedit_trad["show"] = AfwLanguageHelper::translateKeyword("show", $lang);
 }
 else
 {
    $qedit_trad["show"] =  "";
 }
 
-// @todo if($obj->QEDIT_SHOW_EDIT_MODE) $qedit_trad["edit"] = AfwLanguageHelper::tarjemOperator("edit", $lang);
+// @todo if($obj->QEDIT_SHOW_EDIT_MODE) $qedit_trad["edit"] = AfwLanguageHelper::translateKeyword("edit", $lang);
 
 /*
 $obj->simpleError("fixm_input = ".var_export($fixm_input,true)."    
@@ -166,7 +170,7 @@ $css       = $obj->getStyle();
 
 if($obj->updatedFromQEdit)
 {
-    $obj_updatedFromQEdit = AfwLanguageHelper::tarjemOperator("records_updated", $lang)." (".$obj->updatedFromQEdit.") ".AfwLanguageHelper::tarjemOperator("record(s)", $lang);
+    $obj_updatedFromQEdit = AfwLanguageHelper::translateKeyword("records_updated", $lang)." (".$obj->updatedFromQEdit.") ".AfwLanguageHelper::translateKeyword("record(s)", $lang);
 }
 else
 {
@@ -181,7 +185,7 @@ if($obj->fixmtit)
 }
 else
 {
-    $fixmtit = AfwLanguageHelper::tarjemOperator("qedit_some_records", $lang).AfwUmsPagHelper::getPluralTitle($obj, $lang,false);
+    $fixmtit = AfwLanguageHelper::translateKeyword("qedit_some_records", $lang).AfwUmsPagHelper::getPluralTitle($obj, $lang,false);
 }
 
 if($js_for_compute) echo "<script>\n $js_for_compute \n</script>\n";

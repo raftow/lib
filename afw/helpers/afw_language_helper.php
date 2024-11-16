@@ -210,7 +210,7 @@ class AfwLanguageHelper
         }
     }
 
-    public static function tarjemOperator($text, $langue = 'ar', $external = 'obsolete')
+    public static function translateKeyword($text, $langue = 'ar', $external = 'obsolete')
     {
             return AfwLanguageHelper::tarjem($text, $langue, true, '', '');
     }

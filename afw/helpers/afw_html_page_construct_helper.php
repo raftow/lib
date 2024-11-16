@@ -1,0 +1,234 @@
+<?php
+
+  class AfwHtmlPageConstructHelper extends AfwHtmlHelper{
+
+        private static $header_entry_counter = 0;
+        private static $html = "";
+
+        private static function initLanguage()
+        {
+                global $lang; 
+                $lang = AfwSession::getSessionVar("lang");
+                if(!$lang) $lang = "ar";
+                $lang = strtolower($lang);
+        }
+        
+        private static function addHtml($bloc, $title="")
+        {
+                if($title) self::$html .= "<!-- $title start -->\n";
+                self::$html .= $bloc ."\n";
+                if($title)self::$html .= "<!-- $title end --> \n\n\n";
+                
+                
+        }
+
+        private static function renderHtml()
+        {
+                $return = self::$html;
+                self::$html = "";
+                return $return;
+        }
+
+
+        private static function prepareNeededTranslations($lang)
+        {
+                if(!AfwSession::getSessionVar("user_id"))
+                {
+                        // $page_label = AfwLanguageHelper::translateKeyword("page", $lang);
+                        // $record_label = AfwLanguageHelper::translateKeyword("record", $lang);
+                        // $page_of_label = AfwLanguageHelper::translateKeyword("page_of", $lang); 
+                        // $yes_label = AfwLanguageHelper::translateKeyword("Y", $lang);
+                        // $no_label = AfwLanguageHelper::translateKeyword("N", $lang);
+                        // $dkn_label = AfwLanguageHelper::translateKeyword("W", $lang);                         
+                        
+                          
+                }
+        }
+
+        public static function renderPage( 
+                $header_template,
+                $menu_template,
+                $body_template,
+                $footer_template,
+                $arrRequest,
+                $the_main_section_file,
+                $need_ob = false,
+                $options = [],
+                $custom_scripts = [],
+                $selected_menu = "", 
+                $tpl_path = "", 
+                $my_font = "front",
+                $dir = "",
+                $page_charset = "UTF-8",
+                $docType = "<!DOCTYPE html>",
+                $needUserObject = true,
+                $my_afw_theme = "simple"
+             )
+        {
+                global $lang;
+                self::initLanguage();
+                $current_module = AfwUrlManager::currentURIModule();
+                
+                $f3c = substr($the_main_section_file,0,3);
+                $f7c = substr($the_main_section_file,0,7);
+                $pagecode = AfwUrlManager::currentPageCode();
+                $pagecode_splitted = implode(" ",explode("_",$pagecode));
+                // to avoid infinite mirroring
+                self::$header_entry_counter++; 
+                if(self::$header_entry_counter>1)
+                {
+                        throw new ("HzmHeader called twice, in general this happen when you include main.php or afw main_page.php when you are inside body of MainPage");
+                }
+
+                if($needUserObject) $objme = AfwSession::getUserConnected();
+
+                self::addHtml($docType);
+                self::addHtml("<html>");
+                
+
+                if(!$dir)
+                {
+                        if($lang=="ar") $dir = "rtl";
+                        else $dir = "ltr";
+                }
+                
+
+                self::addHtml(AfwHtmlIncluderHelper::outputHeader($lang, $page_charset, $my_afw_theme, $options, $custom_scripts, $my_font));
+
+                self::addHtml("<body class=\"hzm_body $f7c $pagecode_splitted\" dir=\"$dir\" >");
+
+                
+                if((!$options["disable_header"]) and (!AfwSession::hasOption("FULL_SCREEN")))
+                {
+                        $the_header = AfwHtmlMenuHelper::renderHeader($header_template, $lang, $tpl_path, $selected_menu, $options);
+                }
+
+                if((!$options["disable_menu"]) and (!AfwSession::hasOption("FULL_SCREEN")))
+                {
+                        $the_menu = AfwHtmlMenuHelper::renderMenu($menu_template, $lang, $tpl_path, $selected_menu, $options);
+                }
+
+
+                $the_footer = "";
+                $the_footer .= AfwHtmlFooterJsHelper::render($objme, $lang, $options);
+                $the_footer .= AfwHtmlFooterHelper::renderFooter($footer_template, $lang, $current_module, $tpl_path, $options);
+
+                // the_menu and the_header each one can contain token with the other
+                $tok_arr = []; 
+                $tok_arr["the_header"] = $the_header;
+                $tok_arr["the_menu"] = $the_menu;
+                $the_menu = self::decodeHzmTemplate($the_menu,$tok_arr, $lang);
+                $the_header = self::decodeHzmTemplate($the_header,$tok_arr, $lang);
+
+                $notifications = [];
+
+                $notifications["warning"] = AfwHtmlNotificationHelper::getWarningNotification();
+                $notifications["info"] = AfwHtmlNotificationHelper::getInfoNotification();
+                $notifications["error"] = AfwHtmlNotificationHelper::getErrorNotification();
+                $notifications["success"] = AfwHtmlNotificationHelper::getSuccessNotification();
+                $notifications["slog"] = AfwHtmlNotificationHelper::getSLogNotification();
+                if($need_ob)
+                {
+                        $the_section = self::obRenderMainSection($the_main_section_file, $arrRequest);
+                }
+                else
+                {
+                        $the_section = self::renderMainSection($the_main_section_file, $arrRequest);
+                }
+
+                $notifications_html = "";
+                foreach($notifications as $notification_code => $notification_html)
+                {
+                        if($notification_html) $notifications_html .= $notification_html;
+                }
+                
+
+                $the_body = self::constructBodyWithTemplate($body_template, 
+                        $the_header, 
+                        $the_menu, 
+                        $the_section, 
+                        $notifications_html,
+                        $lang,
+                        $current_module,
+                        $pagecode,
+                        $the_footer
+                );
+
+                self::addHtml($the_body, "the body");     
+                self::addHtml("</body>");
+                self::addHtml("</html>");
+                
+                
+                return self::renderHtml();
+        }
+
+        public static function constructBodyWithTemplate($body_template,
+                                $the_header, 
+                                $the_menu, 
+                                $the_section, 
+                                $notifications,
+                                $lang, 
+                                $module,
+                                $page_code,
+                                $the_footer="",
+                                $template_path="", 
+                                $container_class="",
+                                $main_section_class = "",
+                                $notifications_class="notification_message_container")
+        {
+                $tpl_content = "";
+                if(!$template_path) $template_path = self::hzmTplPath();
+                $the_body_template_file = $template_path."/$body_template"."_body_tpl.php";
+                if (file_exists($the_body_template_file)) 
+                {
+                        ob_start();
+                        include($the_body_template_file);
+                        $tpl_content = ob_get_clean();
+                }
+                if(!$container_class) $container_class = $module." $page_code";
+                if(!$main_section_class) $main_section_class = "hzm_body $page_code";
+                
+                $section_tokens = [];
+                $section_tokens["container-class"] = $container_class;
+                $section_tokens["notifications-class"] = $notifications_class;
+                $section_tokens["main-section-class"] = $main_section_class;
+                $section_tokens["header"] = $the_header;
+                $section_tokens["notifications"] = $notifications;
+                $section_tokens["menu"] = $the_menu;
+                $section_tokens["main-section"] = $the_section;
+                $section_tokens["footer"] = $the_footer;
+
+                return self::decodeHzmTemplate($tpl_content, $section_tokens, $lang);                
+        }
+
+        public static function renderMainSection($the_main_section_file, $arrRequest)
+        {
+                foreach ($arrRequest as $col => $val) ${$col} = $val;
+                $out_scr = "";
+                if (file_exists($the_main_section_file)) {
+                        include($the_main_section_file);
+                } 
+                else throw new AfwRuntimeException("failed to open : the_main_section_file = $the_main_section_file");
+
+                return $out_scr;
+        } 
+
+        public static function obRenderMainSection($the_main_section_file, $arrRequest)
+        {
+                foreach ($arrRequest as $col => $val) ${$col} = $val;
+                $out_scr = "";
+                if (file_exists($the_main_section_file)) 
+                {
+                        ob_start();
+                        include($the_main_section_file);
+                        $out_scr = ob_get_clean();
+                } 
+                else throw new AfwRuntimeException("failed to open : the_main_section_file = $the_main_section_file");
+
+                return $out_scr;
+        } 
+
+
+
+  } 
+  

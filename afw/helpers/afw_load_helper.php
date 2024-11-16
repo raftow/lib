@@ -996,7 +996,9 @@ class AfwLoadHelper extends AFWRoot
         // Now it is ok it is not from eager find the reason elsewhere
         // $eager_joins = false;
 
-        global $lang, $_lmany_analysis, $loadMany_max, $MODE_DEVELOPMENT;
+        global $_lmany_analysis;
+
+        $loadMany_max = AfwSession::config("load_many_max", 1000);
 
         $cache_management = AfwLoadHelper::cacheManagement($object);
 

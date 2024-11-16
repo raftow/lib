@@ -9,6 +9,8 @@ class AfwDatabase extends AFWRoot
      */
     private static $connect = false;
     private static $first_query = true;
+
+    public static $sql_picture_arr = null;
     /**
      *
      * Link of connection
@@ -75,7 +77,6 @@ class AfwDatabase extends AFWRoot
         $is_update =true
     ) {
         global $_sql_analysis,
-            $_sql_picture,
             $the_last_sql,
             $nb_queries_executed,
             $print_debugg,
@@ -209,7 +210,7 @@ class AfwDatabase extends AFWRoot
                     AfwRunHelper::simpleError(
                         "MODE_BATCH_LOURD=$MODE_BATCH_LOURD empty ? and MODE_SQL_PROCESS_LOURD=$MODE_SQL_PROCESS_LOURD empty ? and $nb_queries_executed > $_sql_analysis_seuil_calls ?<br>
                         Too much queries executed when mode is not MODE_BATCH_LOURD or MODE_SQL_PROCESS_LOURD ! ",
-                        'sql_picture => ' . var_export($_sql_picture, true)
+                        'sql_picture => ' . var_export(self::$sql_picture_arr, true)
                     );
                 }
             }
@@ -298,16 +299,16 @@ class AfwDatabase extends AFWRoot
                         die("not upper $this_table from explode('.', $this_table_all) w from $anal_sql_query w from $anal_sql_query_orig");
                     }*/
 
-                    if (!$_sql_picture[$this_module][$this_table]) 
+                    if (!self::$sql_picture_arr[$this_module][$this_table]) 
                     {
-                        $_sql_picture[$this_module][$this_table] = 1;
+                        self::$sql_picture_arr[$this_module][$this_table] = 1;
                     } 
                     else 
                     {
-                        $_sql_picture[$this_module][$this_table]++;
+                        self::$sql_picture_arr[$this_module][$this_table]++;
                     }
 
-                    if($_sql_picture[$this_module][$this_table]>$_sql_analysis_seuil_calls_by_table)
+                    if(self::$sql_picture_arr[$this_module][$this_table]>$_sql_analysis_seuil_calls_by_table)
                     {
                         if ($throw_error and $throw_analysis_crash and $MODE_DEVELOPMENT) 
                         {
@@ -315,7 +316,7 @@ class AfwDatabase extends AFWRoot
                                 "<p>static analysis crash : The table $this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times</p>
                                  <h5>$sql_query</h5><br> 
                                  <div class='technical'>
-                                 So it is to be optimized sql_picture => ". var_export($_sql_picture, true) .
+                                 So it is to be optimized sql_picture => ". var_export(self::$sql_picture_arr, true) .
                                 " all_vars => " . AfwSession::log_all_data(). 
                                 "</div>"
                             );

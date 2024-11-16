@@ -1,17 +1,7 @@
-</div>
-<!-- #Footer -->
 <?php
 
  $objme = AfwSession::getUserConnected();
 
- if($objme)
- {
-         $are_you_sure = $objme->translateMessage("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECORD",$lang);
-         $once_deleted = $objme->translateMessage("ONCE_DELETED_YOU_WILL_NOT_BE_ABLE_TO_GO_BACK",$lang);
-         $has_been_deleted = $objme->translateMessage("THE_FOLLOWING_RECORD_HAS_BEEN_DELETED",$lang);
-         $you_dont_have_rights = $objme->translateMessage("CANT_DELETE_THE_ROW",$lang);
-         $safely_cancelled = $objme->translateMessage("DELETE_HAVE_BEEN_SAFELY_CANCELLED",$lang);
- }
 
   if($datatable_on) include("../lib/datatable/datatable_js.php");
 
@@ -75,5 +65,4 @@
         }
 ?>
   
-</body>
-</html>
+

@@ -75,7 +75,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
         
         $theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/modes/".$theme_name.'_config.php');     
              
-	global $images;
+	$images = AfwThemeHelper::loadTheme();
         
         $type_input_ret = "";
         
@@ -309,8 +309,6 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                                 
                                 $type_input_ret = "select";
                                 
-                                $class_of_input_select_multi = $class_inputSelect_multi_big;
-                                if($desc["MEDIUM_DROPDOWN_WIDTH"]) $class_of_input_select_multi = $class_inputSelect_multi;
                                 $infos_arr = array(
 						"class" => "form-control",
 						"name"  => $formInputName."[]",
@@ -347,8 +345,6 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 else $data_length_class = " inputmoyen";
                                 $type_input_ret = "select";
                                 
-                                $class_of_input_select_multi = $class_inputSelect_multi_big;
-                                if($desc["MEDIUM_DROPDOWN_WIDTH"]) $class_of_input_select_multi = $class_inputSelect_multi;
                                 
                                 $infos_arr = array(
 						"class" => "form-control",
@@ -399,7 +395,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 else{
                                         $type_input_ret = "text";
 	?>				<input placeholder="<?=$placeholder?>"  type="text" tabindex="<?=$qedit_orderindex?>" class="form-control" name="<?php echo $formInputName ?>" id="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=33 maxlength=255>
-					<input type="button"   class="<?=$class_inputButton?>" name="" value="<?=$obj->translate('SEARCH',$lang,true)?>" onclick="popup('<?php echo "main.php"?>?Main_Page=afw_mode_search.php&cl=<?php echo $desc["ANSWER"]?>')">
+					<input type="button"   class="<?=$class _inputButton?>" name="" value="<?=$obj->translate('SEARCH',$lang,true)?>" onclick="popup('<?php echo "main.php"?>?Main_Page=afw_mode_search.php&cl=<?php echo $desc["ANSWER"]?>')">
 					<script language="javascript">
 						function popup(page) 
                                                 {
@@ -501,12 +497,10 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                                 if($desc["FORMAT-INPUT"]=="hzmsel")
                                                 {
                                                     $css_arr = AfwStringHelper::afw_explode($desc["HZM-CSS"]);
-                                                    $css_class = "selectpicker";//." ".$data_loaded_class.$data_length_class
                                                 }
                                                 else
                                                 {
                                                     $css_arr = null;
-                                                    $css_class = $class_inputSelect.$data_loaded_class.$data_length_class;
                                                 }   
                                                 
                                                 $info = array(

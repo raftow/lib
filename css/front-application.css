@@ -4737,3 +4737,8 @@ div.mbsc-popup.mbsc-popup-anchored {
 .switcher.afw-authorised {
     cursor: pointer;
 }
+
+div#system_log_div {
+    width: 100%;
+    height: min-content;
+}

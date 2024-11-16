@@ -3,7 +3,11 @@
 require_once(dirname(__FILE__) . "/../../../external/db.php");
 require_once('afw_rights.php');
 
-$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+$themeArr = AfwThemeHelper::loadTheme();
+foreach($themeArr as $theme => $themeValue)
+{
+    $$theme = $themeValue;
+}
 
 
 if (!$objme) $objme = AfwSession::getUserConnected();
@@ -212,6 +216,7 @@ if (!$liste_obj) {
         // die("DBG-where select_visibilite_horizontale");
 
         if (($action != "retrieve")) {
+                // die(" strange action=$action");
                 $actions_tpl_arr = array();
         } elseif ($count_liste_obj > $MAX_ROW) {
                 AfwSession::pushWarning("$count_liste_obj " . $obj->tm("records in the result exceeds the limit allowed by data security to allow executing edit delete actions on"));
@@ -421,6 +426,8 @@ if (true) {
                                                                         if ($unit and (!$hide_unit)) $col_trad .= " ($unit)";
                                                                         $datatable_header .= "<th class='col-importance-$importance srch-result-col-$nom_col'>" . $col_trad . "</th>";
                                                                 }
+
+                                                                // echo "actions_tpl_arr = ".var_export($actions_tpl_arr,true);
 
                                                                 foreach ($actions_tpl_arr as $action_item => $action_item_props) 
                                                                 {
@@ -639,7 +646,7 @@ if (true) {
                                                                                                                                 }
 
                                                                                                                                 // die("DBG-after ajax test\n"); 
-                                                                                                                        } else echo "<td  class='col-importance-$importance $frameworkAction'>no_image_for_mode_$frameworkAction</td>";
+                                                                                                                        } else echo "<td  class='col-importance-$importance $frameworkAction'>no_image_for_mode_$frameworkAction action_item_props=".var_export($action_item_props,true)."</td>";
                                                                                                                         // die("DBG-accept_HimSelf true finished\n"); 
                                                                                                                 } else {
                                                                                                                         $rejectHimSelfReason = AfwStringHelper::stripCotes(AfwFrameworkHelper::rejectHimSelfReason($liste_obj[$id],$frameworkAction));

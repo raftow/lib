@@ -1,0 +1,1 @@
+<li id='li01-[menu_id]' class='[li_class]'><a href='[menu_page]'><i class='fa fa-[menu_icon] [menu_item_css]'></i>[menu_title]</a></li>

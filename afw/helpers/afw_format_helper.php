@@ -296,7 +296,7 @@ class AfwFormatHelper
                         10
                     );
                     $date_en = explode('-', $date_en);
-                    $month_name = AfwLanguageHelper::tarjemOperator('MONTH_' . $date_en[1],$lang);
+                    $month_name = AfwLanguageHelper::translateKeyword('MONTH_' . $date_en[1],$lang);
                     $return = $date_en[2] .' ' . $month_name . ' ' . $date_en[0];
                 } elseif ($decode_format == 'FR') {
                     $date_en = substr(
@@ -696,7 +696,7 @@ class AfwFormatHelper
                             else  $return = $all_code;                  
 
                             if ($return == $all_code) {
-                                $return = AfwLanguageHelper::tarjemOperator(
+                                $return = AfwLanguageHelper::translateKeyword(
                                     'ALL',
                                     $lang
                                 );
@@ -815,7 +815,7 @@ class AfwFormatHelper
                         $all_code = "ALL-$attribute";
                         $return = $obj->translate($all_code,$lang);
                         if ($return == $all_code) {
-                            $return = AfwLanguageHelper::tarjemOperator('ALL',$lang);
+                            $return = AfwLanguageHelper::translateKeyword('ALL',$lang);
                         }
                     }
                     //if($attribute=="status_id") throw new AfwRuntimeException("this->decode($attribute) : return=$return");
@@ -858,7 +858,7 @@ class AfwFormatHelper
                         $all_code = "ALL-$attribute";
                         $return = $obj->translate($all_code,$lang);
                         if ($return == $all_code) {
-                            $return = AfwLanguageHelper::tarjemOperator('ALL',$lang);
+                            $return = AfwLanguageHelper::translateKeyword('ALL',$lang);
                         }
                     }
                     //if($attribute=="status_id") throw new AfwRuntimeException("this->decode($attribute) : return=$return");

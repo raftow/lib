@@ -1,7 +1,11 @@
 <?php
 require_once(dirname(__FILE__)."/../../../external/db.php");
 
-//$theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+//$themeArr = AfwThemeHelper::loadTheme();
+foreach($themeArr as $theme => $themeValue)
+{
+    $$theme = $themeValue;
+}
 require_once("afw_qedit_motor.php");
 require_once ('afw_rights.php');
 
@@ -209,7 +213,7 @@ else
     }
     else
     {
-        $fixmtit = AfwLanguageHelper::tarjemOperator("qedit_some_records", $lang).AfwUmsPagHelper::getPluralTitle($myMainObject, $lang,false);
+        $fixmtit = AfwLanguageHelper::translateKeyword("qedit_some_records", $lang).AfwUmsPagHelper::getPluralTitle($myMainObject, $lang,false);
     }*/
     if($fixmtit) 
     {

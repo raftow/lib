@@ -470,9 +470,40 @@ class AfwSession extends AFWRoot {
                 return self::config("module-template", "default");
         }
 
+        public static function currentMenuTemplate()
+        {
+                return self::config("menu-template", "default");
+        }
+
+        public static function currentLoginTemplate()
+        {
+                return self::config("login-template", "right-left");
+        }
+
+        public static function currentSystemDateFormat()
+        {
+                return self::config("system-date-format", "hijri");
+        }
+
+        
+
+        
+
+        public static function getCurrentSiteName($lang)
+        {
+                $application_nameArr = self::config("application_name", []);
+                return $application_nameArr[$lang];
+        }
+
+
+        public static function currentCompany()
+        {
+                return self::config("main_company", "");
+        }
+
         public static function getCurrentlyExecutedModule()
         {
-                $exec_module = self::config("main_company", "");
+                $exec_module = self::currentCompany();
                 if((!$exec_module) and self::config("x_module_means_company", false))
                 {
                         $objme = self::getUserConnected();

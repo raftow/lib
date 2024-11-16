@@ -791,7 +791,7 @@ class AfwUmsPagHelper extends AFWRoot
     /* @todo later if needed 
     public static final function getAllActionsFromRow($row, $cl, $currmod, $colActive="active", $step=0, $takeViewIcon = true)
     {
-        global $images, $lang;
+        global $lang;
         // $objme = AfwSession::getUserConnected();
 
         
@@ -858,8 +858,9 @@ class AfwUmsPagHelper extends AFWRoot
 
     public static final function getAllActions($object, $step = 0, $takeViewIcon = true)
     {
-        global $images, $lang;
-        $objme = AfwSession::getUserConnected();
+        global $lang;
+        $images = AfwThemeHelper::loadTheme();
+        // $objme = AfwSession::getUserConnected();
 
         $cl = $object->getMyClass();
         $currmod = $object->getMyModule();

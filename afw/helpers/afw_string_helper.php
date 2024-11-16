@@ -188,15 +188,7 @@ class AfwStringHelper
                 return $result;
         }*/
 
-        public static function uniord($u) 
-        {
-            // i just copied this function fron the php.net comments, but it should work fine!
-            $k = mb_convert_encoding($u, 'UCS-2LE', 'UTF-8');
-            $k1 = ord(substr($k, 0, 1));
-            $k2 = ord(substr($k, 1, 1));
-            return $k2 * 256 + $k1;
-        }
-
+        
         public static function is_latin($str, $seuil_pct = 0.6)
         {
                 if (mb_detect_encoding($str) !== 'UTF-8') {
@@ -234,6 +226,16 @@ class AfwStringHelper
                 return false;
         }
 
+
+        public static function uniord($u) 
+        {
+            // i just copied this function fron the php.net comments, but it should work fine!
+            $k = mb_convert_encoding($u, 'UCS-2LE', 'UTF-8');
+            $k1 = ord(substr($k, 0, 1));
+            $k2 = ord(substr($k, 1, 1));
+            return $k2 * 256 + $k1;
+        }
+
         public static function is_arabic($str, $seuil_pct = 0.6)
         {
                 global $print_full_debugg;
@@ -248,7 +250,7 @@ class AfwStringHelper
                 $total_count = 0;
                 foreach ($chars as $char) {
                         //$pos = ord($char); we cant use that, its not binary safe 
-                        $pos = uniord($char);
+                        $pos = self::uniord($char);
                         if ($print_full_debugg) AfwBatch::print_debugg($char . " --> " . $pos . PHP_EOL . "<br>");
 
                         if ($pos >= 1536 && $pos <= 1791) {

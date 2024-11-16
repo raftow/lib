@@ -9,7 +9,11 @@ else
         // die("display_in_edit_mode=".var_export($display_in_edit_mode,true)." display_in_display_mode=".var_export($display_in_display_mode,true));
 
         require_once("afw_rights.php");
-        $theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+        $themeArr = AfwThemeHelper::loadTheme();
+foreach($themeArr as $theme => $themeValue)
+{
+    $$theme = $themeValue;
+}
 
         if(!$objme) $objme = AfwSession::getUserConnected();
         if(!$objme) 

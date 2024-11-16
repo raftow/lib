@@ -29,15 +29,7 @@ if($footer_call>1)
  {
    $system_date = "Date : ".date("d/m/Y")." eq ".AfwDateHelper::currentHijriDate("hdate");
  }
- if($objme)
- {
-         $are_you_sure = $objme->translateMessage("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECORD",$lang);
-         $once_deleted = $objme->translateMessage("ONCE_DELETED_YOU_WILL_NOT_BE_ABLE_TO_GO_BACK",$lang);
-         $has_been_deleted = $objme->translateMessage("THE_FOLLOWING_RECORD_HAS_BEEN_DELETED",$lang);
-         $you_dont_have_rights_todelete = $objme->translateMessage("CANT_DELETE_THE_ROW",$lang);
-         $you_dont_have_rights = $objme->translateMessage("CANT_DO_THIS",$lang);
-         $safely_cancelled = $objme->translateMessage("DELETE_HAVE_BEEN_SAFELY_CANCELLED",$lang);
- }
+ 
  
 
 include_once("hzm_footer_features_js.php");
@@ -45,8 +37,6 @@ include_once("hzm_footer_features_js.php");
 <!-- #Footer -->
 
 
-</div>
-</center>
 <?php
   if((!$nomenu) and ((!AfwSession::hasOption("FULL_SCREEN"))))
   {
@@ -320,26 +310,7 @@ if($_GET["tipofday"]==1)
 <?
 
 }
-  if(AfwSession::config("MODE_DEVELOPMENT",false) or AfwSession::hasOption("SQL_LOG"))
-  {
-          $end_main_time = microtime();
-          $duree_ms = round(($end_main_time - $start_main_time)*100000)/100;
-          if($duree_ms<0) $duree_ms += 1000;
-          AfwSession::hzmLog("end of footer-include $duree_ms milli-sec", $MODULE);
-
-          echo "<div id='analysis_log'><div id=\"analysis_log\"><div class=\"fleft\"><h1><b>System LOG activated :</b></h1></div><br><br>";
-          echo "_sql_picture=".var_export($_sql_picture, true)."<br>";
-          echo AfwSession::getLog();
-          
-          if($objme)
-          {
-                if(AfwSession::hasOption("ICAN_DO_LOG")) $objme->showICanDoLog();
-                if(AfwSession::hasOption("MEMORY_REPORT")) AfwMemoryHelper::memReport();
-          }      
-          echo "</div>";
-
-
-  }
+  
   // else die("analysis_log = ".$_SE SSION["analysis_log"]);
 
   /*

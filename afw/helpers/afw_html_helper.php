@@ -4,6 +4,11 @@
 
 class AfwHtmlHelper extends AFWRoot {
 
+        public static function hzmTplPath()
+        {
+                return dirname(__FILE__)."/../../hzm/web"; 
+        }
+
         public static function arrayToHtml($arr_key_vals)
         {
                 $html_rows = '';
@@ -514,6 +519,48 @@ class AfwHtmlHelper extends AFWRoot {
 
                 return $html_notification;
         
+        }
+
+        public static function decodeHzmTemplate($tpl_content, $data_tokens, $lang)
+        {
+                $token_arr = $data_tokens;
+                
+                $token_arr["[lang]"] = $lang;
+                
+                $text_to_decode = $tpl_content;
+                
+                foreach($token_arr as $token => $val_token)
+		{
+                     if((!isset($val_token)) or ($val_token===null))
+                     {
+                        $val_token = "";
+                     }   
+                     if(is_array($val_token))   
+                     {
+                        throw new AfwRuntimeException("Any token of tpl should be a string, found token [$token] value is : ".var_export($val_token, true));
+                     }
+                     $text_to_decode = str_replace("[".$token."]",$val_token,$text_to_decode);
+                }
+                
+                return $text_to_decode;
+                
+        } 
+        
+        
+        public static function showUsingHzmTemplate($html_template_file, $data_tokens, $lang)
+        {
+               ob_start();
+               if(file_exists($html_template_file))
+               {
+                       include($html_template_file);
+                       $tpl_content = ob_get_clean();
+            
+                       return self::decodeHzmTemplate($tpl_content, $data_tokens, $lang);
+               }
+               else
+               {
+                       return "showUsingHzmTemplate : file $html_template_file not found";
+               }        
         }
 
 

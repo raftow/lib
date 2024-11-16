@@ -17,9 +17,8 @@ function hidden_input($col_name, $desc, $val, &$obj)
 
 function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = false, $force_css = "", $qedit_orderindex = 0, $data_length_class_default_for_fk = "inputmoyen")
 {
-    global $TMP_DIR, $_SERVER, $Main_Page, $_GET, $_POST,
-        $header_bloc_edit, $footer_bloc_edit,
-        $aligntd, $lang, $mode_hijri_edit, $yes_label, $no_label, $dkn_label, $objme;
+    global $Main_Page, $_GET, $_POST,        
+        $lang, $mode_hijri_edit,  $objme;
 
     $editor = $desc["EDITOR"];
 
@@ -86,9 +85,13 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
     else $input_style = "";
 
 
-    $theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/../modes/".$theme_name.'_config.php');
+    $themeArr = AfwThemeHelper::loadTheme();
+    foreach($themeArr as $theme => $themeValue)
+    {
+        $$theme = $themeValue;
+    }
 
-    global $images;
+    $images = AfwThemeHelper::loadTheme();
 
     $type_input_ret = "";
 
@@ -179,8 +182,6 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             if ($force_css) $data_length_class = " " . $force_css;
             else $data_length_class = " " . $data_length_class_default_for_fk;
 
-            if ($force_css != "inputlong") $class_select = $class_inputSelect;
-            else $class_select = $class_inputSelectLong;
             
             $objRep  = new $nom_class_fk;
 
@@ -366,8 +367,6 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
             $type_input_ret = "select";
 
-            $class_of_input_select_multi = $class_inputSelect_multi_big;
-            if ($desc["MEDIUM_DROPDOWN_WIDTH"]) $class_of_input_select_multi = $class_inputSelect_multi;
             include("tpl/helper_edit_mfk.php");
             
 
@@ -385,8 +384,6 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             else $data_length_class = " inputmoyen";
             $type_input_ret = "select";
 
-            $class_of_input_select_multi = $class_inputSelect_multi_big;
-            if ($desc["MEDIUM_DROPDOWN_WIDTH"]) $class_of_input_select_multi = $class_inputSelect_multi;
             include("tpl/helper_edit_menum.php");
             
             break;
@@ -496,7 +493,6 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 if ($force_css) $data_length_class = " " . $force_css;
                 else $data_length_class = " inputcourt";
                 $type_input_ret = "text";
-                $class_of_input = $class_inputInt;
                 if ($desc["JS-COMPUTED"]) {
                     if ($obj->class_of_input_computed_readonly) $class_of_input = $obj->class_of_input_computed_readonly;
 
