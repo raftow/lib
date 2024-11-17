@@ -537,6 +537,11 @@ class AfwStringHelper
                 return [$file_path, $className];
         }
 
+        public static function strlen_ar($str)
+        {
+                return mb_convert_encoding($str, 'ISO-8859-1', 'UTF-8');
+        }
+
         public static function truncateArabicJomla($jomla, $maxlen, $etc="...")
         {
              $jomla = trim($jomla);
@@ -560,7 +565,7 @@ class AfwStringHelper
                      $pref_len = 0;
                  }
                   
-                 if($maxlen>=(strlen_ar($result)+strlen_ar($word)+$pref_len))
+                 if($maxlen>=(self::strlen_ar($result)+self::strlen_ar($word)+$pref_len))
                  {
                        $result .= $pref . $word;
                  }
@@ -799,7 +804,7 @@ class AfwStringHelper
 
         public static function toEnglishText($text, $upperCaseFirst=true) 
         {
-		if((se_termine_par($text,"name")) and (!se_termine_par($text,"_name")))
+		if((AfwStringHelper::stringStartsWith($text,"name")) and (!AfwStringHelper::stringStartsWith($text,"_name")))
                 {
                     $text = substr($text, 0, strlen($text)-4)."_name";;
                 }

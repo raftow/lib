@@ -1398,7 +1398,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                 $html .= "   <tr class='$cl_tr $row_class_css' alt='old_cl=$old_cl'>\n";
                 foreach ($header_trad as $nom_col => $desc) {
                     $importance = ($dataImportance and is_array($dataImportance)) ? $dataImportance[$nom_col] : "";
-                    $nom_col_ltn = arabic_to_latin_chars($nom_col);
+                    $nom_col_ltn = AfwStringHelper::arabic_to_latin_chars($nom_col);
                     $type_col = substr($nom_col_ltn, 0, 5);
                     if (!$my_class_name) {
                         $my_class_name = 'afw';

@@ -58,7 +58,7 @@ class AfwInputHelper extends AFWRoot
                 else $data_loaded_class= " data_notloaded";
                 
                 if(AfwStringHelper::stringStartsWith($col_name,"titre_short") && (!$desc["SIZE"])) $desc["SIZE"] = 40;
-                if(se_termine_par($col_name,"titre_short") && (!$desc["SIZE"])) $desc["SIZE"] = 40;
+                if(AfwStringHelper::stringStartsWith($col_name,"titre_short") && (!$desc["SIZE"])) $desc["SIZE"] = 40;
                 if(AfwStringHelper::stringStartsWith($col_name,"titre") && (!$desc["SIZE"])) $desc["SIZE"] = 255;
                 
                 
@@ -261,8 +261,6 @@ class AfwInputHelper extends AFWRoot
                                         
                                         $type_input_ret = "select";
                                         
-                                        // $class_of_input_select_multi = $class_inputSelect_multi_big;
-                                        // if($desc["MEDIUM_DROPDOWN_WIDTH"]) $class_of_input_select_multi = $class_inputSelect_multi;
                                         $infos_arr = array(
                                                         "class" => "form-control",
                                                         "name"  => $col_name."[]",
@@ -296,9 +294,6 @@ class AfwInputHelper extends AFWRoot
                                         if($force_css) $data_length_class = " ".$force_css;
                                         else $data_length_class = " inputmoyen";
                                         $type_input_ret = "select";
-                                        
-                                        // $class_of_input_select_multi = $class_inputSelect_multi_big;
-                                        // if($desc["MEDIUM_DROPDOWN_WIDTH"]) $class_of_input_select_multi = $class_inputSelect_multi;
                                         
                                         $infos_arr = array(
                                                         "class" => "form-control",

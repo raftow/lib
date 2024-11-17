@@ -3247,9 +3247,9 @@ class AFWObject extends AFWRoot
         }
 
         if (
-            se_termine_par($this->DISPLAY_FIELD, '_ar') or
-            se_termine_par($this->DISPLAY_FIELD, '_fr') or
-            se_termine_par($this->DISPLAY_FIELD, '_en')
+            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_ar') or
+            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_fr') or
+            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_en')
         ) {
             $disp_fld_std = substr(
                 $this->DISPLAY_FIELD,
@@ -5976,7 +5976,7 @@ class AFWObject extends AFWRoot
 
         $plural = false;
 
-        if (se_termine_par($operation, '_')) {
+        if (AfwStringHelper::stringStartsWith($operation, '_')) {
             $plural = true;
         }
 
@@ -7734,26 +7734,26 @@ $dependencies_values
     final public function getFieldGroupDefaultInfos($fgroup)
     {
         $css_fg = 'none';
-        if (se_termine_par($fgroup, 'List')) {
+        if (AfwStringHelper::stringStartsWith($fgroup, 'List')) {
             $css_fg = 'pct_100';
         }
 
         if (
-            se_termine_par($fgroup, 'Group') or
-            se_termine_par($fgroup, 'Group50')
+            AfwStringHelper::stringStartsWith($fgroup, 'Group') or
+            AfwStringHelper::stringStartsWith($fgroup, 'Group50')
         ) {
             $css_fg = 'pct_50';
         }
 
-        if (se_termine_par($fgroup, 'Group66')) {
+        if (AfwStringHelper::stringStartsWith($fgroup, 'Group66')) {
             $css_fg = 'pct_66';
         }
 
-        if (se_termine_par($fgroup, 'Group33')) {
+        if (AfwStringHelper::stringStartsWith($fgroup, 'Group33')) {
             $css_fg = 'pct_33';
         }
 
-        if (se_termine_par($fgroup, 'Group25')) {
+        if (AfwStringHelper::stringStartsWith($fgroup, 'Group25')) {
             $css_fg = 'pct_25';
         }
 

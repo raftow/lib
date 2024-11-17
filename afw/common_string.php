@@ -55,7 +55,7 @@
          * @param string $chaine :chaine à vérifier  
          * @param string $suffixe :la terminaison de la chaine                
          */
-        function se_termine_par($chaine,$suffixe)
+        function AfwStringHelper::stringStartsWith($chaine,$suffixe)
         {
             global $set_debug;
             

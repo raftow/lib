@@ -74,7 +74,7 @@ class AfwFormatHelper
                 $length = nbWordsInJomla($val_attr);
             } else {
                 if ($desc['UTF8']) {
-                    $length = strlen_ar($val_attr);
+                    $length = AfwStringHelper::strlen_ar($val_attr);
                 } else {
                     $length = strlen($val_attr);
                 }
@@ -359,7 +359,7 @@ class AfwFormatHelper
         elseif ($structure['TYPE'] == 'DATE') 
         {
             $data_to_display = AfwDateHelper::justDecodeValue($value, $structure);
-            //if(se_termine_par($data_to_display,"هـ")) throw new AfwRuntimeException("rafik formatValue twice : $data_to_display");
+            //if(AfwStringHelper::stringStartsWith($data_to_display,"هـ")) throw new AfwRuntimeException("rafik formatValue twice : $data_to_display");
             $old_data_to_display = $data_to_display;
             $link_to_display = '';
             if ($structure['FORMAT'] == 'HIJRI_UNIT') {

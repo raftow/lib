@@ -99,7 +99,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
     else $data_loaded_class = "data_notloaded";
 
     if (AfwStringHelper::stringStartsWith($col_name, "titre_short") && (!$desc["SIZE"])) $desc["SIZE"] = 40;
-    if (se_termine_par($col_name, "titre_short") && (!$desc["SIZE"])) $desc["SIZE"] = 40;
+    if (AfwStringHelper::stringStartsWith($col_name, "titre_short") && (!$desc["SIZE"])) $desc["SIZE"] = 40;
     if (AfwStringHelper::stringStartsWith($col_name, "titre") && (!$desc["SIZE"])) $desc["SIZE"] = 255;
 
 
