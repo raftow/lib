@@ -82,4 +82,19 @@
      // login / register / reset pwd
      $messages["A new password has been sent to your mobile number"] = "كلمة مرور جديدة أرسلت على رقم جوالك";   
      $messages["Your are registered now, you can contact your administrator to give you privileges"] = "أنت الآن مسجل يمكنك التواصل مع المشرف لإعطاءك الصلاحية على هذا النظام إذا كنت ممن يحتاج إليه";
+     $messages["User-name"] = "اسم المستخدم";
+     $messages["password"] = "كلمة المرور";
+     $messages["Login"] = "تسجيل الدخول";
+     $messages["Signup"] = "التسجيل لأول مرة";
+     $messages["Forgot password ?"] = "التذكير بكلمة المرور";
+     $messages["You can authenticate by your usual user-name and password"] = "يمكنك تسجيل الدخول باستخدام اسم المستخدم ثم كلمة المرور الاعتيادية";
+     $messages["Please enter correct login information"] = "الرجاء إدخال بيانات تسجيل الدخول كاملة";
+
+     $messages["customers"] = "العملاء";
+     $messages["Customers Login"] = "دخول العملاء";
+
+
+     
+     
+
 ?>

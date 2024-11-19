@@ -3903,7 +3903,7 @@ class AFWObject extends AFWRoot
 
     
 
-    public function tm($message, $langue = '')
+    public function tm($message, $langue = '', $company="")
     {
         global $lang;
         if (!$langue) {
@@ -3913,7 +3913,7 @@ class AFWObject extends AFWRoot
             $langue = 'ar';
         }
 
-        return $this->translateMessage($message, $langue);
+        return $this->translateMessage($message, $langue, $company);
     }
 
     public function tf($message, $langue = '')
@@ -3930,21 +3930,31 @@ class AFWObject extends AFWRoot
         return $message_tm;
     }
 
-    public function translateMessage($message, $lang = 'ar')
+    public function translateMessage($message, $lang = 'ar', $company="")
     {
-        $file_dir_name = dirname(__FILE__);
         $module = static::$MODULE;
+        if(!$module) throw new AfwRuntimeException("static::\$MODULE should be defined in class : ".get_class($this));
+        return self::translateCompanyMessage($message, $module, $lang, $company);
+    }
 
+    public static function translateCompanyMessage($message, $module, $lang = 'ar', $company="")
+    {
+        if(!$module) throw new AfwRuntimeException("\$module param should be defined for translateCompanyMessage method");
         $return = $message;
+        $file_dir_name = dirname(__FILE__);
 
         include "$file_dir_name/../../$module/messages_$lang.php";
+        if($company)
+        {
+            include "$file_dir_name/../../external/translate/messages_$module"."_$company"."_$lang.php";                
+        }
         
         if ($messages[$message]) {
             $return = $messages[$message];
         }
         else
         {
-            include "$file_dir_name/../../lib/messages_$lang.php";
+            include "$file_dir_name/../../lib/messages_$lang.php";            
         
             if ($messages[$message]) {
                 $return = $messages[$message];

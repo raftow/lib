@@ -186,8 +186,6 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 }
 
 
-
-
 /*  buttons*/
 .submit-btn {
     display: inline-block;
@@ -752,4 +750,103 @@ div.hzm_home_bloc>h3 {
 
 .qfilter {
     border: none !important;
+}
+
+/****   login    *******/
+
+.modal-dialog.popup-login {
+    background: transparent;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-bottom: 30px;
+    float: right;
+    min-height: 700px;
+    min-width: 300px !important;
+    width: 80% !important;
+    /* max-width: 550px; */
+    margin-right: 10% !important;
+    margin-left: 10% !important;
+    margin-top: 120px !important;
+}
+
+  
+.modal-dialog.popup-register {
+    background: transparent;
+    padding-top: 15px;
+    padding-left: 280px;
+    padding-right: 50px;
+    padding-bottom: 180px;
+    float: right;
+    min-height: 1190px;
+    margin-right: 10% !important;
+    margin-left: 0% !important;
+    width: 80% !important;
+    min-width: 0px !important;
+    max-width: 630px !important;
+    
+}   
+
+@media (min-width:1671px)
+{
+    .modal-dialog.popup-register {
+        padding-left: 30px;
+        padding-right: 25px;
+    }
+}
+
+@media (max-width: 1670px)
+{
+    .modal-dialog.popup-register {
+        padding-left: 10px !important;
+        padding-right: 20px !important;
+    }
+
+}
+
+@media screen and (max-width: 980px) {
+    .modal-dialog.popup-login {
+        width: 36% !important;
+        margin-right: 32% !important;
+        margin-left: 32% !important;
+        max-width: none !important;
+        min-height: 650px !important;
+        padding-bottom: 50px !important;
+    }
+}
+
+
+@media screen and (max-width: 767px) {
+    .modal-dialog.popup-login {
+        width: 44% !important;
+        margin-right: 27% !important;
+        margin-left: 27% !important;
+        max-width: none !important;
+        min-height: 650px !important;
+        min-width: 320px !important;
+        padding-bottom: 50px !important;
+    }
+
+
+    .modal-content {
+        -webkit-box-shadow: 20px 60px 60px rgb(160 209 213);
+        box-shadow: 20px 60px 60px rgb(160 209 213);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .modal-dialog.popup-register {
+        padding-top: 15px !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+        padding-bottom: 15px !important;
+    }
+
+    .modal-dialog.popup-login {
+        width: 60% !important;
+        margin-right: 20% !important;
+        margin-left: 20% !important;
+        max-width: none !important;
+        min-height: 450px !important;
+        padding-bottom: 50px !important;
+    }
 }

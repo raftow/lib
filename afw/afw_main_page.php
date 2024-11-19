@@ -1,15 +1,43 @@
 <?php
 class AfwMainPage
 {
-    public static function echoMainPage($curent_module)
+    public static function echoMainPage($current_module)
     {
-        $MODULE = $curent_module;
         $curr_path = dirname(__FILE__);
         include("$curr_path/afw_main_start.php");
-        echo self::renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $curent_module);
+        // die("dbg rafik 20241119 lang = ".$lang);
+        echo self::renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module);
     }
 
-    private static function renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $My_Module)
+    public static function echoDirectPage($current_module, $direct_page, $direct_page_path, $header_template="direct", $menu_template="direct", $body_template="direct", $footer_template="direct")
+    {
+        $curr_path = dirname(__FILE__);
+        include("$curr_path/afw_direct_start.php");
+        // die("dbg rafik 20241119 lang = ".$lang);
+        echo self::renderDirectPage($direct_page, $direct_page_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module);
+    }
+
+    private static function renderDirectPage($direct_page, $module_path, $header_template="direct", $menu_template="direct", 
+                        $body_template="direct", $footer_template="direct", $lang, $current_module)
+    {
+        // die("dgb::renderDirectPage($direct_page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $current_module)");
+        if(!$current_module) $current_module = "ums";
+        $the_main_section_file = "$module_path/$direct_page";
+        $out_scr =  AfwHtmlPageConstructHelper::renderPage($lang, $header_template, 
+                        $menu_template, 
+                        $body_template, 
+                        $footer_template, 
+                        $_REQUEST, 
+                        $the_main_section_file,
+                        $need_ob=true,        
+                    );
+
+        return $out_scr;  
+        
+    }
+
+
+    private static function renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $My_Module)
     {
         if ((AfwStringHelper::stringStartsWith($Main_Page, "afw_mode_"))) $My_Module = "lib/afw/modes";
         elseif ((AfwStringHelper::stringStartsWith($Main_Page, "afw_handle_"))) $My_Module = "lib/afw/modes";
@@ -27,7 +55,7 @@ class AfwMainPage
         
         $the_main_section_file = "$Main_Page_path/$Main_Page";
         
-        $out_scr =  AfwHtmlPageConstructHelper::renderPage($header_template, 
+        $out_scr =  AfwHtmlPageConstructHelper::renderPage($lang, $header_template, 
         $menu_template, 
         $body_template, 
         $footer_template, 

@@ -2,8 +2,11 @@
 // die("DBG-mode main page");
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
+global $loops;
+if(!$loops) $loops = 1;
+else $loops++;
 
-
+if($loops>3) throw new AfwRuntimeException("Seems infinite loop call of afw direct page");
 
 
 if (!$MODULE) $MODULE = $current_module;
@@ -16,7 +19,7 @@ include(dirname(__FILE__) . "/../../external/db.php");
 
 
 if (!$MODULE) {
-    throw new RuntimeException("MODULE not defined in afw main start");
+    throw new RuntimeException("MODULE not defined in afw direct start");
 } else {
     if (!$currmod) $currmod = $_GET["currmod"];
     // die("afw main page MODULE is $MODULE currmod is $currmod");
@@ -35,28 +38,29 @@ if (!$objme) $objme = AfwSession::getUserConnected();
 $lang = $_GET["lang"];
 if(!$lang) $lang = AfwSession::config("default_lang", "ar");
 
+
 $parent_module = AfwSession::config("main_module", "");
 if ($MODULE) AfwAutoLoader::addModule($MODULE);
 if ($currmod) AfwAutoLoader::addModule($currmod);
 if ($parent_module) AfwAutoLoader::addMainModule($parent_module);
-
-//$uri_module = AfwUrlManager::currentURIModule();
+$uri_module = AfwUrlManager::currentURIModule();
+$xmodule = AfwSession::getCurrentlyExecutedModule();
+$company = AfwSession::currentCompany();
+$site_name = AfwSession::getCurrentSiteName($lang);
 
 include("afw_error_handler.php");
 
 if (!$force_allow_access_to_customers) $only_members = true;
 
-//foreach ($_REQUEST as $col => $val) ${$col} = $val;
-$Main_Page = $_REQUEST["Main_Page"];
 // die(var_export($_REQUEST,true));
-
+/*
 $afw_check_member_file = "$module_path/../lib/afw/afw_check_member.php";
 if (file_exists($afw_check_member_file)) {
     include($afw_check_member_file);
-}
+}*/
 
-$header_template = AfwSession::config("header-template", "default"); 
-$menu_template = AfwSession::config("menu-template", "default");
-$body_template = AfwSession::config("body-template", "default");
-$footer_template = AfwSession::config("footer-template", "default");
+$header_template = AfwSession::config("header-template", "direct"); 
+$menu_template = AfwSession::config("menu-template", "direct");
+$body_template = AfwSession::config("body-template", "direct");
+$footer_template = AfwSession::config("footer-template", "direct");
 

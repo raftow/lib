@@ -7,17 +7,19 @@
 
         private static function initLanguage()
         {
+                /*
                 global $lang; 
                 $lang = AfwSession::getSessionVar("lang");
                 if(!$lang) $lang = "ar";
                 $lang = strtolower($lang);
+                */
         }
         
         private static function addHtml($bloc, $title="")
         {
                 if($title) self::$html .= "<!-- $title start -->\n";
                 self::$html .= $bloc ."\n";
-                if($title)self::$html .= "<!-- $title end --> \n\n\n";
+                if($title) self::$html .= "<!-- $title end --> \n\n\n";
                 
                 
         }
@@ -45,7 +47,7 @@
                 }
         }
 
-        public static function renderPage( 
+        public static function renderPage($lang, 
                 $header_template,
                 $menu_template,
                 $body_template,
@@ -65,8 +67,8 @@
                 $my_afw_theme = "simple"
              )
         {
-                global $lang;
-                self::initLanguage();
+                //self::initLanguage();
+                //die("dbg-002 rafik 20241119 lang = ".$lang);
                 $current_module = AfwUrlManager::currentURIModule();
                 $the_main_section_file_arr = explode("/",$the_main_section_file);
                 $main_section_file_name = $the_main_section_file_arr[count($the_main_section_file_arr)-1];
@@ -112,17 +114,19 @@
                         $the_menu = AfwHtmlMenuHelper::renderMenu($menu_template, $lang, $tpl_path, $selected_menu, $options);
                 }
 
-
                 $the_footer = "";
                 $the_footer .= AfwHtmlFooterJsHelper::render($objme, $lang, $options);
+                $the_footer .= "<!-- built with footer template $footer_template -->\n";
                 $the_footer .= AfwHtmlFooterHelper::renderFooter($footer_template, $lang, $current_module, $tpl_path, $options);
 
                 // the_menu and the_header each one can contain token with the other
                 $tok_arr = []; 
-                $tok_arr["the_header"] = $the_header;
-                $tok_arr["the_menu"] = $the_menu;
                 $the_menu = self::decodeHzmTemplate($the_menu,$tok_arr, $lang);
                 $the_header = self::decodeHzmTemplate($the_header,$tok_arr, $lang);
+
+                $tok_arr["the_header"] = "<!-- built with header template $header_template -->\n".$the_header;
+                $tok_arr["the_menu"] = "<!-- built with menu template $menu_template -->\n".$the_menu;
+
 
                 $notifications = [];
 
@@ -131,13 +135,14 @@
                 $notifications["error"] = AfwHtmlNotificationHelper::getErrorNotification();
                 $notifications["success"] = AfwHtmlNotificationHelper::getSuccessNotification();
                 $notifications["slog"] = AfwHtmlNotificationHelper::getSLogNotification();
+                $the_section = "<!-- built with main section file $the_main_section_file need_ob=$need_ob -->\n";
                 if($need_ob)
                 {
-                        $the_section = self::obRenderMainSection($the_main_section_file, $arrRequest);
+                        $the_section .= self::obRenderMainSection($the_main_section_file, $arrRequest, $lang);
                 }
                 else
                 {
-                        $the_section = self::renderMainSection($the_main_section_file, $arrRequest);
+                        $the_section .= self::renderMainSection($the_main_section_file, $arrRequest, $lang);
                 }
 
                 $notifications_html = "";
@@ -146,8 +151,8 @@
                         if($notification_html) $notifications_html .= $notification_html;
                 }
                 
-
-                $the_body = self::constructBodyWithTemplate($body_template, 
+                $the_body = "<!-- built with _body template $body_template -->\n";
+                $the_body .= self::constructBodyWithTemplate($body_template, 
                         $the_header, 
                         $the_menu, 
                         $the_section, 
@@ -218,15 +223,23 @@
                 return $out_scr;
         } 
 
-        public static function obRenderMainSection($the_main_section_file, $arrRequest)
+        public static function obRenderMainSection($the_main_section_file, $arrRequest, $lang)
         {
                 foreach ($arrRequest as $col => $val) ${$col} = $val;
                 $out_scr = "";
                 if (file_exists($the_main_section_file)) 
                 {
                         ob_start();
+                        if(!file_exists($the_main_section_file))
+                        {
+                                throw new AfwRuntimeException("file main section [$the_main_section_file] not found");
+                        }
                         include($the_main_section_file);
                         $out_scr = ob_get_clean();
+                        if(!$out_scr)
+                        {
+                                throw new AfwRuntimeException("file main section [$the_main_section_file] should return html");
+                        }
                 } 
                 else throw new AfwRuntimeException("failed to open : the_main_section_file = $the_main_section_file");
 

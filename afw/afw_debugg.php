@@ -13,9 +13,10 @@ class AFWDebugg {
     private static $sep = "/";
 
     public static function initialiser($pathName,$fileName) {
+        if(!$pathName) self::defaultLogPath();
         self::$pathName = ($pathName) ? $pathName : '';
         self::$fileName = ($fileName) ? $fileName : 'debugg.txt';
-        self::$modeBatch= false;
+        self::$modeBatch = false;
         self::log(" --------------- Debut session : ".date("Y-m-d H:i:s")." --------------- ");
     }    
     
@@ -175,6 +176,22 @@ class AFWDebugg {
                 AfwFileSystem::write($fileFullPathName, self::genereHeader($fileFullPathName)."\n", 'append');
             }     
     }    
+
+    public static function defaultLogPath() 
+    {
+            $DEBUGG_SQL_DIR = AfwSession::config("DEBUGG_SQL_DIR","");
+            return AfwSession::config("LOG_PATH",$DEBUGG_SQL_DIR);
+    }
+
+    public static function startDebuggPage() 
+    {        
+        $dtm = date("YmdHis");
+        $logbl = substr(md5($_SERVER["HTTP_USER_AGENT"] . "-" . date("Y-m-d")),0,10);
+        $my_debug_file = "debugg_before_login_$logbl"."_$dtm.log";
+        //die("AFWDebugg::initialiser(".$DEBUGG_SQL_DIR.$my_debug_file.")");
+        AFWDebugg::initialiser("", $my_debug_file);
+        AFWDebugg::setEnabled(true);
+    }
 
 }
 
