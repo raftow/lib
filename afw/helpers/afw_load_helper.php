@@ -1075,7 +1075,7 @@ class AfwLoadHelper extends AFWRoot
             // $object_ref = new $className();
             // chakek sbab lenteur => is ok
             /*
-            $colsFK = $object_ref->getRetrieveCols(
+            $colsFK = $object_ref->get RetrieveCols(
                 'display',
                 $lang,
                 false,
@@ -1479,12 +1479,12 @@ class AfwLoadHelper extends AFWRoot
 
     public static final function loadAllFkRetrieve($object, $row, $colsRet = null)
     {
-        global $lang;
+        //global $lang;
         // load objects from added left joins for all retrieved fields with type = FK and category empty (real fields)
         if (!$colsRet) {
             $colsRet = $object->getRetrieveCols(
                 $mode = 'display',
-                $lang,
+                '',
                 $all = false,
                 $type = 'FK',
                 $debugg = false,

@@ -34,6 +34,7 @@ if (!$objme) $objme = AfwSession::getUserConnected();
 
 $lang = $_GET["lang"];
 if(!$lang) $lang = AfwSession::config("default_lang", "ar");
+// die("main start lang = ".$lang);
 
 $parent_module = AfwSession::config("main_module", "");
 if ($MODULE) AfwAutoLoader::addModule($MODULE);
@@ -47,14 +48,14 @@ include("afw_error_handler.php");
 if (!$force_allow_access_to_customers) $only_members = true;
 
 //foreach ($_REQUEST as $col => $val) ${$col} = $val;
-$Main_Page = $_REQUEST["Main_Page"];
+if(!$Main_Page) $Main_Page = $_REQUEST["Main_Page"];
 // die(var_export($_REQUEST,true));
-
+// die("main start 2 lang = ".$lang);
 $afw_check_member_file = "$module_path/../lib/afw/afw_check_member.php";
 if (file_exists($afw_check_member_file)) {
     include($afw_check_member_file);
 }
-
+// die("main start 3 lang = ".$lang);
 $header_template = AfwSession::config("header-template", "default"); 
 $menu_template = AfwSession::config("menu-template", "default");
 $body_template = AfwSession::config("body-template", "default");

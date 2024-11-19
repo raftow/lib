@@ -34,6 +34,12 @@ class AfwHtmlIncluderHelper
           $options["autocomplete"] = true;
           $options["calendars"] = true;
         }
+        else
+        {
+          // @todo
+          // below to remove when options["edit"] = true is managed
+          $options["mobiscroll"] = true;
+        }
 
         if($options["qedit"])
         {

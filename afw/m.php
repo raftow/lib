@@ -4,26 +4,26 @@ include_once("$m_file_dir_name/request_entry.php");
 
 if($Main_Page)
 {
+        if(!$MODULE) throw new AfwRuntimeException("m.php : MODULE not defined");
+        $file_module_path = "$m_file_dir_name/../../$MODULE";
+        /*
+        
+
         if(!$Main_Page_Module)
         {
-                $main_toks = explode("_",$Main_Page);    
-                if($main_toks[0] == "modes/afw") $Main_Page_Module = "lib/afw";                
+                $main_toks = explode("_",$Main_Page);
+                if($main_toks[0] == "modes/afw") $Main_Page_Module = "lib/afw";
         }
-        if(!$Main_Page_Module) $Main_Page_Module = $MODULE;
+        if(!$Main_Page_Module) $Main_Page_Module = $MODULE;                
+        $file_page_path = "$m_file_dir_name/../../$Main_Page_Module";
         
-        $Main_Page_Path = "$m_file_dir_name/../../$Main_Page_Module/$Main_Page";
-        if(!file_exists($Main_Page_Path))
-        {
-                throw new AfwRuntimeException("main page file not found : $Main_Page_Path Main_Page=[$Main_Page], Main_Page_Module=[$Main_Page_Module]");
-        }
-        else include ($Main_Page_Path);
+        */
 
-        
-        require("$m_file_dir_name/../hzm/web/hzm_header.php");
-        
-        echo $out_scr;
-        require("$m_file_dir_name/../hzm/web/hzm_footer.php");
-        
+        include_once ("$file_module_path/ini.php");
+        include_once ("$file_module_path/module_config.php"); 
+        require("$m_file_dir_name/afw_main_page.php"); 
+        // die("before AfwMainPage::echoMainPag Main_Page=$Main_Page MODULE=$MODULE");
+        AfwMainPage::echoMainPage($MODULE, $Main_Page, $file_module_path);
 
 }
-else die("Main_Page not defined");
+else throw new AfwRuntimeException("m.php : Main_Page not defined");

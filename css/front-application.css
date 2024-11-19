@@ -515,6 +515,7 @@ ul.hzm_front_menu_bar.nav.navbar-nav {
     height: fit-content;
     min-height: max-content;
     text-align: center !important;
+    background-color: transparent;
     /* margin: auto !important; */
 }
 

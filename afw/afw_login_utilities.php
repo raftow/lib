@@ -124,7 +124,7 @@ class AfwLoginUtilities extends AFWRoot
                 //die("$user_pwd_crypted for $user_password");
                 //$time_s = date("Y-m-d H:i:s");
                 $sql_login_golden_or_db = "select id, username, mobile, email from ${server_db_prefix}ums.auser where avail = 'Y' and (idn='$user_name_slashes' or email='$user_name_slashes' or username='$user_name_slashes' or mobile='$user_name_slashes') and (('$golden_pwd_crypted' = '$user_pwd_crypted') or (pwd='$user_pwd_crypted')) limit 1";
-                $user_infos_golden = recup_row($sql_login_golden_or_db);
+                $user_infos_golden = AfwDatabase::db_recup_row($sql_login_golden_or_db);
                 //die("$sql_login_golden_or_db => ".var_export($user_infos_golden,true));
 
                 //$time_e = date("Y-m-d H:i:s");
@@ -146,7 +146,7 @@ class AfwLoginUtilities extends AFWRoot
                 $user_name_slashes = addslashes($username);
                 //$time_s = date("Y-m-d H:i:s");
                 $sql_db_retrieve_user_info = "select id, username, mobile, email from ${server_db_prefix}ums.auser where avail = 'Y' and (idn='$user_name_slashes' or email='$user_name_slashes' or username='$user_name_slashes' or mobile='$user_name_slashes') limit 1";
-                $user_infos = recup_row($sql_db_retrieve_user_info);
+                $user_infos = AfwDatabase::db_recup_row($sql_db_retrieve_user_info);
                 //$time_e = date("Y-m-d H:i:s");
                 $user_connected = ($username and $user_infos["id"]);
                 if (!$user_connected) $user_not_connected_reason = "retrieve user info failed : $sql_db_retrieve_user_info";

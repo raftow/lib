@@ -1876,9 +1876,9 @@ class AFWObject extends AFWRoot
     {
         // if(!isset($this->AFIELD _VALUE)) $this->AFIELD _VALUE = array();
         /*
-        if(static::$TABLE == "cher_file") 
+        if(static::$TABLE == "academic_term") 
         {
-            if(($field_name == "active") and (!$reset) and (!$value)) throw new AfwRuntimeException("case 2021-10-20 cher_file found for debugg");
+            if(($field_name == "active") and ($value=="N")) throw new AfwRuntimeException("case Medali found for debugg");
         }*/
         $this->AFIELD_VALUE[$field_name] = $value;
         return $value;
@@ -4507,7 +4507,7 @@ class AFWObject extends AFWRoot
         if(static::$TABLE=="practice")
         {
             $message = "tableau = ".var_export($tableau,true);
-            throw new AfwRuntimeException("getRetrieveCols : debugg : $message");
+            throw new AfwRuntimeException("get RetrieveCols : debugg : $message");
         }
         */
         return $tableau;

@@ -539,7 +539,7 @@ class AfwStringHelper
 
         public static function strlen_ar($str)
         {
-                return mb_convert_encoding($str, 'ISO-8859-1', 'UTF-8');
+                return strlen(mb_convert_encoding($str, 'ISO-8859-1', 'UTF-8'));
         }
 
         public static function truncateArabicJomla($jomla, $maxlen, $etc="...")

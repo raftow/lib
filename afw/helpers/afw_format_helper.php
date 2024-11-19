@@ -96,18 +96,19 @@ class AfwFormatHelper
                 return [false, 'TEXT-MIN-LENGTH'];
             }
             if ($length > $max_length) {
+                die("TEXT-MAX-LENGTH ERROR FOUND $length > $max_length desc=".var_export($desc,true));
                 return [false, 'TEXT-MAX-LENGTH'];
             }
         }
 
         if (strtoupper($desc['TYPE']) == 'GDAT') {
             $val_GDAT = substr($val_attr, 0, 10);
-            if (!greg_date_format($val_GDAT)) {
+            if (!AfwDateHelper::isCorrectGregDate($val_GDAT)) {
                 return [false, 'FORMAT-GDAT'];
             }
         }
         if (strtoupper($desc['TYPE']) == 'DATE') {
-            if (!hijri_date_format($val_attr)) {
+            if (!AfwDateHelper::isCorrectHijriDate($val_attr)) {
                 return [false, 'FORMAT-DATE'];
             }
             //if(!AfwDateHelper::isCorrectHijriDate($val_attr)) return array(false,"FORMAT-DATE");

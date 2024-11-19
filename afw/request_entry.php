@@ -32,17 +32,17 @@ foreach($_REQUEST as $key => $value)
 
         if($key=="mp") 
         {
-                if($value=="mb") $Main_Page = "modes/afw_mode_minibox.php";  
-                elseif($value=="ed") $Main_Page = "modes/afw_mode_edit.php";  
-                elseif($value=="qe") $Main_Page = "modes/afw_mode_qedit.php";  
-                elseif($value=="ds") $Main_Page = "modes/afw_mode_display.php";  
-                elseif($value=="st") $Main_Page = "modes/afw_mode_stats.php";  
-                elseif($value=="au") $Main_Page = "modes/afw_mode_audit.php";  
-                elseif($value=="cn") $Main_Page = "modes/afw_mode_confirm.php";  
-                elseif($value=="ce") $Main_Page = "modes/afw_mode_crossed.php";  
-                elseif($value=="db") $Main_Page = "modes/afw_mode_ddb.php";  
-                elseif($value=="qs") $Main_Page = "modes/afw_mode_qsearch.php";  
-                elseif($value=="sr") $Main_Page = "modes/afw_mode_search.php";  
+                if($value=="mb") $Main_Page = "afw_mode_minibox.php";    // modes/ removed from all below
+                elseif($value=="ed") $Main_Page = "afw_mode_edit.php";  
+                elseif($value=="qe") $Main_Page = "afw_mode_qedit.php";  
+                elseif($value=="ds") $Main_Page = "afw_mode_display.php";  
+                elseif($value=="st") $Main_Page = "afw_mode_stats.php";  
+                elseif($value=="au") $Main_Page = "afw_mode_audit.php";  
+                elseif($value=="cn") $Main_Page = "afw_mode_confirm.php";  
+                elseif($value=="ce") $Main_Page = "afw_mode_crossed.php";  
+                elseif($value=="db") $Main_Page = "afw_mode_ddb.php";  
+                elseif($value=="qs") $Main_Page = "afw_mode_qsearch.php";  
+                elseif($value=="sr") $Main_Page = "afw_mode_search.php";  
                 else $Main_Page = $value; //throw new AfwRuntimeException("afw mode $value unknown");
         }
         

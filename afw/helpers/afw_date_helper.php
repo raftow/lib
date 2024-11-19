@@ -1029,7 +1029,7 @@ class AfwDateHelper
         }
 
         if (strpos($hdate, '/') === false) {
-            $hdate_cs = add_slashes($hdate);
+            $hdate_cs = self::add_slashes($hdate);
         }
 
         $hd_arr = explode('/', $hdate_cs);
@@ -1571,7 +1571,7 @@ class AfwDateHelper
         }
 
         if (strpos($hdate, '/') === false) {
-            $hdate = add_slashes($hdate);
+            $hdate = self::add_slashes($hdate);
         }
 
         $hd_arr = explode('/', $hdate);

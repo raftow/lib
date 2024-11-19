@@ -699,12 +699,12 @@ li.wizardv1_li.CurrentStep {
 }
 
 .steps_wizardv1 li.CurrentStep a {
-    color: #000;
+    color: #838080 !important;
     font-weight: normal;
 }
 
 a.hzm3-button.hzm3-block>.hzm4-title {
-    color: #000 !important;
+    color: #838080 !important;
     font-weight: normal;
     font-size: 18px;
 }

@@ -77,8 +77,8 @@
         $me = AfwSession::getSessionVar("user_id");
         if(!$me) $me = 0;
         if($me)
-        {       
-                AFWDebugg::log("user id connected : ".$me);
+        {       if(!$lang) $lang = AfwSession::getSessionVar("lang"); 
+                // AFWDebugg::log("user id connected : ".$me." lang $lang ");
                 if(!$objme)
                 {
                         $objme = new Auser();
@@ -118,7 +118,7 @@
                         }
                         // die("objme->load($me) = ".var_export($objme,true));
                         $objme->loadOptions(); 
-                        $lang = AfwSession::getSessionVar("lang"); 
+                        
                         if(!$lang)
                         {
                                 $langobj = $objme->hetLang();
@@ -146,7 +146,6 @@
                 else
                 {
                         $objme =& $objme;
-                        $lang = AfwSession::getSessionVar("lang");
                 }   
                 // si on vient d'un mail officiel alors marquer qu'il est ouvert
                 /*

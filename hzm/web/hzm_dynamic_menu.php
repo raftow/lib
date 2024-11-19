@@ -1,6 +1,7 @@
 <?php
 throw new AfwRuntimeException("rafik I think it is obsolete now : 10 nov 2021");
-          if(!$objme) $objme = AfwSession::getUserConnected();
+/*
+if(!$objme) $objme = AfwSession::getUserConnected();
           $file_hzm_dir_name = dirname(__FILE__);
 
           function genereMenuHtml($menu_folder,$lang,$menu_bar, $iamAdmin)
@@ -118,9 +119,9 @@ throw new AfwRuntimeException("rafik I think it is obsolete now : 10 nov 2021");
 <?
   $uri = AfwStringHelper::clean_my_url($_SERVER["REQUEST_URI"]);
   $get_lang = $_GET["lang"];
-  if(se_termine_par($uri,"main.php")) $uri = str_replace("main.php", "index.php?home=1", $uri);
-  if(se_termine_par($uri,".php")) $uri = str_replace(".php", ".php?abc=1", $uri);
-  if(se_termine_par($uri,"/")) $uri .= "?abc=1";
+  if(se_ termine_par($uri,"main.php")) $uri = str_replace("main.php", "index.php?home=1", $uri);
+  if(se_ termine_par($uri,".php")) $uri = str_replace(".php", ".php?abc=1", $uri);
+  if(se_ termine_par($uri,"/")) $uri .= "?abc=1";
   if((!$get_lang) or (strpos($uri, "lang=$get_lang") === false))
   {
        $get_lang = $lang;
@@ -397,9 +398,8 @@ if($objme)
 
 
 
-*/
 
      }
 ?>     
 </ul>
-</nav>
+</nav>*/

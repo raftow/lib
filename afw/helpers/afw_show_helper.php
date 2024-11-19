@@ -9,7 +9,7 @@ class AfwShowHelper
     //                       "ALL-BY-TAB" => to see all retieve columns but splitted into tabs each fgroup in a special tab,
     // it is very useful for afield for example which have ITEMS attribute in atable but we can't see all attributes (too much)
 
-    public static function showMany($obj, $cols, $objme, $options = [])
+    public static function showMany($obj, $cols, $objme, $lang, $options = [])
     {
         foreach ($options as $option => $option_value) {
             ${$option} = $option_value;
@@ -19,7 +19,7 @@ class AfwShowHelper
 
         $arr_col = explode(',', $cols);
 
-        return self::showManyObj($liste_obj, $obj, $objme, $options);
+        return self::showManyObj($liste_obj, $obj, $objme, $lang, $options);
     }
 
     /**  
@@ -40,8 +40,8 @@ class AfwShowHelper
         $options = [],
         $public_show = false
     ) {
-        $themeArr = AfwThemeHelper::loadTheme();
-        foreach($themeArr as $theme => $themeValue)
+        $images = AfwThemeHelper::loadTheme();
+        foreach($images as $theme => $themeValue)
         {
             $$theme = $themeValue;
         }
@@ -573,10 +573,10 @@ class AfwShowHelper
      *   @return array
      */
 
-    public static function showManyObj($liste_obj, $obj, $objme, $options = [])
+    public static function showManyObj($liste_obj, $obj, $objme, $lang, $options = [])
     {
-        $themeArr = AfwThemeHelper::loadTheme();
-        foreach($themeArr as $theme => $themeValue)
+        $images = AfwThemeHelper::loadTheme();
+        foreach($images as $theme => $themeValue)
         {
             $$theme = $themeValue;
         }
@@ -589,7 +589,6 @@ class AfwShowHelper
         $class_tr1 = 'altitem';
         $class_tr2 = 'item';
         $class_td_off = 'off';
-        $lang = 'ar';
         $dir = 'rtl';
         $bigtitle = '';
         $bigtitle_tr_class = 'bigtitle';
@@ -637,7 +636,7 @@ class AfwShowHelper
         if (!$arr_col) {
             $arr_col = $obj->getRetrieveCols(
                 $mode,
-                'ar',
+                $lang,
                 $all = false,
                 $type = 'all',
                 $debugg = true,
@@ -753,7 +752,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                 if ($mode_show_all_records or !$val_isOk) {
                     $objIsActive = $val->isActive() ? 'active' : 'inactive';
                     $viewIcon = $val->isActive() ? 'view_me' : 'view_off';
-                    // die("showManyObj, val = ".var_export($val,true));
+                    // die("show ManyObj, val = ".var_export($val,true));
                     if ($val->isActive()) {
                         if ($check_errors_needed_in_object) {
                             if ($val_isOk) {
@@ -2070,6 +2069,7 @@ $('#$showAsDataTable').DataTable( {
                                 $items_objs,
                                 $first_item,
                                 $objme = AfwSession::getUserConnected(),
+                                $lang,
                                 $options
                             );
                             if ($html_display[$group_retieve] == '') {
@@ -2610,6 +2610,7 @@ $('#$showAsDataTable').DataTable( {
                     $temp_obj,
                     $first_item,
                     $objme,
+                    $lang,
                     $options
                 ); //todo ici il faut utiliser un mode a developper qui n'affiche pas les boutons edit/delete
                 $link_to_display = '';

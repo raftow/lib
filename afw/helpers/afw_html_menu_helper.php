@@ -31,7 +31,9 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $display_date_day = $hijri_date_arr[1];
             $display_date_month = $hijri_date_arr[2];
         } else {
-            list($wday, $display_date_day, $display_date_month, $display_date_year) = current_greg_date_arr();
+            $display_date_day = date("d");
+             $display_date_month = date("m"); 
+             $display_date_year = date("Y");
         }
         $system_date = "Date : " . date("d/m/Y");
 
