@@ -4741,5 +4741,10 @@ div.mbsc-popup.mbsc-popup-anchored {
 
 div#system_log_div {
     width: 100%;
-    height: min-content;
+    /* height: min-content; */
+    z-index: 999999;
+    position: relative;
+    background-color: white !important;
+    min-height: 1000px;
+    height: max-content;
 }

@@ -67,6 +67,7 @@
                 $my_afw_theme = "simple"
              )
         {
+                $role = $arrRequest["r"];
                 //self::initLanguage();
                 //die("dbg-002 rafik 20241119 lang = ".$lang);
                 $current_module = AfwUrlManager::currentURIModule();
@@ -106,12 +107,12 @@
                 
                 if((!$options["disable_header"]) and (!AfwSession::hasOption("FULL_SCREEN")))
                 {
-                        $the_header = AfwHtmlMenuHelper::renderHeader($header_template, $lang, $tpl_path, $selected_menu, $options);
+                        $the_header = AfwHtmlMenuHelper::renderHeader($header_template, $lang, $role, $tpl_path, $selected_menu, $options);
                 }
 
                 if((!$options["disable_menu"]) and (!AfwSession::hasOption("FULL_SCREEN")))
                 {
-                        $the_menu = AfwHtmlMenuHelper::renderMenu($menu_template, $lang, $tpl_path, $selected_menu, $options);
+                        $the_menu = AfwHtmlMenuHelper::renderMenu($menu_template, $lang, $role, $tpl_path, $selected_menu, $options);
                 }
 
                 $the_footer = "";
@@ -121,11 +122,14 @@
 
                 // the_menu and the_header each one can contain token with the other
                 $tok_arr = []; 
+                $tok_arr["the_header"] = "<!-- prebuilt with header template $header_template -->\n".$the_header;
+                $tok_arr["the_menu"] = "<!-- prebuilt with menu template $menu_template -->\n".$the_menu;
+
                 $the_menu = self::decodeHzmTemplate($the_menu,$tok_arr, $lang);
                 $the_header = self::decodeHzmTemplate($the_header,$tok_arr, $lang);
 
-                $tok_arr["the_header"] = "<!-- built with header template $header_template -->\n".$the_header;
-                $tok_arr["the_menu"] = "<!-- built with menu template $menu_template -->\n".$the_menu;
+                $the_header = "<!-- built with header template $header_template -->\n".$the_header;
+                $the_menu = "<!-- built with menu template $menu_template -->\n".$the_menu;
 
 
                 $notifications = [];

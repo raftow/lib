@@ -7,5 +7,6 @@
         <div class="dash-content">
             [main-section]
         </div>
+        [footer]
     </section>
-    [footer]
+    

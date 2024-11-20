@@ -229,13 +229,7 @@ nav.close ~ .dashboard .top{
     color: var(--text-color);
     cursor: pointer;
 }
-.dashboard .top .search-box{
-    position: relative;
-    height: 45px;
-    max-width: 600px;
-    width: 100%;
-    margin: 0 30px;
-}
+
 .top .search-box input{
     position: absolute;
     border: 1px solid var(--border-color);
@@ -262,9 +256,19 @@ nav.close ~ .dashboard .top{
     width: 40px;
     border-radius: 50%;
 }
-.dashboard .dash-content{
-    padding-top: 50px;
+
+.logo_company {
+    min-width: 0 !important;
+    float: left;
 }
+
+.title_company {
+    width: auto;
+    float: left;
+    min-width: 208px;
+    padding-top: 0px !important;
+}
+
 .dash-content .title{
     display: flex;
     align-items: center;
@@ -446,4 +450,8 @@ nav.close ~ .dashboard .top{
         right: 0;
         width: 100%;
     }
+}
+
+.hzm-user-account.hzm-container-center.hzm-custom-icon-container {
+    float: left;
 }

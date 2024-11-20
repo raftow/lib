@@ -139,7 +139,7 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["NULL"]	         	                = "غير محدد";
         $trad["OPERATOR"]["NOT YET"]	         	                = "ليس بعد";
         
-        
+        $trad["OPERATOR"]["dark mode"]	         	            = "ليلي";
         $trad["OPERATOR"]["page"]	         	                = "صفحة";
         $trad["OPERATOR"]["record"]	         	                = "سجل";
         $trad["OPERATOR"]["new_instance"]	         	        = "إضافة"; 

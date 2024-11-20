@@ -56,8 +56,8 @@ if (file_exists($afw_check_member_file)) {
     include($afw_check_member_file);
 }
 // die("main start 3 lang = ".$lang);
-$header_template = AfwSession::config("header-template", "default"); 
-$menu_template = AfwSession::config("menu-template", "default");
-$body_template = AfwSession::config("body-template", "default");
-$footer_template = AfwSession::config("footer-template", "default");
+$header_template = AfwSession::config("header-template", "modern"); 
+$menu_template = AfwSession::config("menu-template", "modern");
+$body_template = AfwSession::config("body-template", "modern");
+$footer_template = AfwSession::config("footer-template", "modern");
 

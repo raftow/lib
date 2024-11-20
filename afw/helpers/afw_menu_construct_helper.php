@@ -3,7 +3,7 @@ class AfwMenuConstructHelper
 {
     private static $current_arole = 0;
 
-    public static function genereMenu($menu_template, $module, $objme, $lang, $module_languages)
+    public static function genereMenu($menu_template, $module, $objme, $lang, $module_languages, $r)
     {
         $menu_template = AfwSession::currentMenuTemplate();
         $tpl_path = "";
@@ -17,7 +17,11 @@ class AfwMenuConstructHelper
 
         $file_helper_dir_name = dirname(__FILE__); 
         $html_hzm_menu = "";
-        if($_REQUEST["r"]) self::$current_arole = $_REQUEST["r"];
+        self::$current_arole = $r;
+        if(!self::$current_arole and $_REQUEST["r"])
+        {
+            self::$current_arole = $_REQUEST["r"];
+        }
         
         
         // $right_menu = array();
@@ -179,7 +183,7 @@ class AfwMenuConstructHelper
                     if (($iamAdmin) or (!$menu_folder_i["need_admin"])) {
                         $menu_color = $menu_next_color[$menu_color];
                         $menu_folder_i["color_class"] = $menu_color;
-                        $menu_folder_i_html = AfwFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder_i, $module, $lang, true, $iamAdmin);
+                        $menu_folder_i_html = AfwFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder_i, $module, $lang, $r, true, $iamAdmin);
                         // if($menu_folder_id=="-1") die($menu_folder_i_html);
                         // if($menu_folder_i_html) die("menu[$menu_folder_id] => ".$menu_folder_i_html." item => ".var_export($menu_folder_i,true));
                         $html_hzm_menu .= $menu_folder_i_html;

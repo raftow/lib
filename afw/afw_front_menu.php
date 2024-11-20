@@ -17,9 +17,9 @@ class AfwFrontMenu extends AFWRoot {
 
         }
 
-        public static function genereFrontMenuItem($tpl_path, $menu_template, $menu_folder, $module, $lang, $menu_bar ="", $iamAdmin = false)
+        public static function genereFrontMenuItem($tpl_path, $menu_template, $menu_folder, $module, $lang, $r, $menu_bar ="", $iamAdmin = false)
         {
-                global $MENU_ICONS, $r;
+                global $MENU_ICONS;
 
                 $tokens = [];
                 //$iamAdmin = 
@@ -38,7 +38,7 @@ class AfwFrontMenu extends AFWRoot {
                 else $css_class = "";
                 
                 $tokens["menu_id"] = $menu_id;
-                
+                $tokens["menu_li_class"] = $css_class;
                 if($menu_color_class) $tokens["li_class"] = "front-menu-item front-$menu_color_class-item $css_class";
                 else $tokens["li_class"] = "front-menu-item $css_class";
                 

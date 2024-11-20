@@ -1,4 +1,41 @@
-.logo_company {
-    min-width: 0 !important;
-    float: left;
+
+ul.nav-links>li.active>a>span, ul.nav-links>li.active>a>i:before {
+    color: #266CC6 !important;
+    font-weight: bold;
+}
+
+.dashboard .dash-content{
+    padding-top: 50px;
+    min-height: 800px;
+}
+
+.dashboard .top .search-box {
+    position: relative;
+    height: 45px;
+    /* max-width: 600px; */
+    width: calc(100% - 470px);
+    margin: 0 30px;
+}
+
+.hzm-user-account.hzm-container-center.hzm-custom-icon-container {
+    border-radius: 50% !important;
+    background-color: silver;
+    overflow: hidden;
+    width: 48px;
+    height: 42px;
+    text-align: center;
+    padding-top: 4px;
+    margin-left: 3%;
+}
+
+i.hzm-container-center.hzm-vertical-align-middle.hzm-icon-std.hzm-user-account.fa-user {
+    font-size: 32px;
+    color: #777777;
+}
+
+.user-account {
+    font-size: 20px;
+    color: #1f7178;
+    /* font-weight: bold;*/ 
+    padding-top: 4px;
 }

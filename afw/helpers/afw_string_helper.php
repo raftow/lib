@@ -773,6 +773,31 @@ class AfwStringHelper
                 
                 return AfwStringHelper::firstCharLower($str);
 	}
+        
+        public static function initialsOfName($text) 
+        {
+                list($str,) = explode('@', $text);
+		$str = str_replace('_', ' ', strtolower($str));
+                $str = str_replace('.', ' ', strtolower($str));
+                $str = str_replace('-', ' ', strtolower($str));
+
+                $str_arr = explode(" ", $str);
+                $fc0 = substr($str_arr[0],0,1);
+                if($str_arr[1])
+                {
+                        $fc1 = substr($str_arr[1],0,1);
+                }
+                else
+                {
+                        $fc1 = substr($str_arr[0],1,1);
+                        // $fc1 = substr($str_arr[0],strlen($str_arr[1])-1,1);
+                }
+                
+		
+                
+                return strtoupper($fc0.$fc1);
+	}
+
 
 
         public static function hzmArrayStringFormat($arr)

@@ -2,9 +2,13 @@
 class AfwHtmlMenuHelper extends AfwHtmlHelper
 {
 
+    /**
+     * @param Auser $objme
+     */
     private static function prepareTokens(
         $lang,
         $objme,
+        $role,
         $selected_menu = "",
         $options = [],
     ) {
@@ -58,6 +62,13 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
 
             $welcome = $objme->translate("welcome", $lang);
             $welcome_user = "<span> $welcome </span><br>$user_full<p>$user_job</p><p>$user_dep</p>";
+            $user_picture = $objme->getUserPicture();
+            $user_account_page = "user_account.php";
+        }
+        else
+        {
+            $user_picture = '<i class="hzm-container-center hzm-vertical-align-middle hzm-icon-std hzm-user-account fa-user"></i></a>';
+            $user_account_page = "login.php";
         }
 
         $welcome_div = "";
@@ -65,10 +76,17 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $welcome_div = "<div class=\"title_company_user\">$welcome_user</div>";
         }
         $module_languages = AfwSession::config("languages", ["ar"=>true, "en"=>true]);
-        $data_tokens = array();
         $run_mode_var = AfwSession::config("run_mode_var", "run_mode");
         $run_mode = AfwSession::config($run_mode_var, "");
         if ($run_mode) $run_mode = "-" . $run_mode;
+
+
+
+        $data_tokens = array();
+
+        $data_tokens["user_picture"] = $user_picture;
+        $data_tokens["user_account_page"] = $user_account_page;        
+        
         $data_tokens["run_mode"] = $run_mode;
         $data_tokens["welcome_div"] = $welcome_div;
         if(!$options["img-path"]) $options["img-path"] = "pic/";
@@ -156,7 +174,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
 
         $menu_template = AfwSession::currentMenuTemplate();
 
-        $data_tokens["hzm_front_menu"] = AfwMenuConstructHelper::genereMenu($menu_template, $xmodule, $objme, $lang, $module_languages);
+        $data_tokens["hzm_front_menu"] = AfwMenuConstructHelper::genereMenu($menu_template, $xmodule, $objme, $lang, $module_languages, $role);
 
         if ((!$objme) and (!$no_menu)) {
             $data_tokens["me_connected_s"] = "<!--";
@@ -175,7 +193,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $data_tokens["me_not_connected_e"] = "-->";
         }
 
-        
+        $data_tokens["dark_mode"] = AfwLanguageHelper::translateKeyword("dark mode", $lang);
 
         $data_tokens["site_name"] = AfwSession::getCurrentSiteName($lang);
         if (!$options["bg_height"]) $options["bg_height"] = 400;
@@ -190,6 +208,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
 
     public static function renderMenu($menu_template,
             $lang,
+            $role,
             $tpl_path = "",
             $selected_menu = "",
             $options = [],
@@ -200,6 +219,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $data_tokens = self::prepareTokens(
             $lang,
             $objme,
+            $role,
             $selected_menu,
             $options
         );
@@ -213,6 +233,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
 
     public static function renderHeader($header_template,
             $lang,
+            $role,
             $tpl_path = "",
             $selected_menu = "",
             $options = [],
@@ -223,6 +244,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $data_tokens = self::prepareTokens(
             $lang,
             $objme,
+            $role,
             $selected_menu,
             $options
         );

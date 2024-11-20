@@ -472,7 +472,7 @@ class AfwSession extends AFWRoot {
 
         public static function currentMenuTemplate()
         {
-                return self::config("menu-template", "default");
+                return self::config("menu-template", "modern");
         }
 
         public static function currentLoginTemplate()
