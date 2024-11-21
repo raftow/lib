@@ -4632,7 +4632,12 @@ too much ui components use btn-group class so can not be overridden like this
 
 span.submit-btn.otln {
     margin-bottom: 10px;
-    width: 98% !important;
+    width: 48% !important;
+    background-color: #e6e6e630;
+    margin-right: 26% !important;
+    margin-left: 26% !important;
+    animation: 3000ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 0s infinite normal none running attirant;
+    
 }
 
 input#save_only {
@@ -4747,4 +4752,14 @@ div#system_log_div {
     background-color: white !important;
     min-height: 1000px;
     height: max-content;
+}
+
+@keyframes attirant {
+    0%, 33% {
+        box-shadow: 0 0 0 1px var(--ds-border-discovery, #65C054), 0 0 0 var(--ds-border-discovery, rgba(101, 192, 84, 1));
+    }
+
+    66%, 100% {
+        box-shadow: 0 0 0 1px var(--ds-border-discovery, #65C054), 0 0 0 10px rgba(101, 192, 84, 0.01);
+    }
 }
