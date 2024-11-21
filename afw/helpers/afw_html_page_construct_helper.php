@@ -115,10 +115,6 @@
                         $the_menu = AfwHtmlMenuHelper::renderMenu($menu_template, $lang, $role, $tpl_path, $selected_menu, $options);
                 }
 
-                $the_footer = "";
-                $the_footer .= AfwHtmlFooterJsHelper::render($objme, $lang, $options);
-                $the_footer .= "<!-- built with footer template $footer_template -->\n";
-                $the_footer .= AfwHtmlFooterHelper::renderFooter($footer_template, $lang, $current_module, $tpl_path, $options);
 
                 // the_menu and the_header each one can contain token with the other
                 $tok_arr = []; 
@@ -132,13 +128,6 @@
                 $the_menu = "<!-- built with menu template $menu_template -->\n".$the_menu;
 
 
-                $notifications = [];
-
-                $notifications["warning"] = AfwHtmlNotificationHelper::getWarningNotification();
-                $notifications["info"] = AfwHtmlNotificationHelper::getInfoNotification();
-                $notifications["error"] = AfwHtmlNotificationHelper::getErrorNotification();
-                $notifications["success"] = AfwHtmlNotificationHelper::getSuccessNotification();
-                $notifications["slog"] = AfwHtmlNotificationHelper::getSLogNotification();
                 $the_section = "<!-- built with main section file $the_main_section_file need_ob=$need_ob -->\n";
                 if($need_ob)
                 {
@@ -148,6 +137,20 @@
                 {
                         $the_section .= self::renderMainSection($the_main_section_file, $arrRequest, $lang);
                 }
+
+                $notifications = [];
+
+                $notifications["warning"] = AfwHtmlNotificationHelper::getWarningNotification();
+                $notifications["info"] = AfwHtmlNotificationHelper::getInfoNotification();
+                $notifications["error"] = AfwHtmlNotificationHelper::getErrorNotification();
+                $notifications["success"] = AfwHtmlNotificationHelper::getSuccessNotification();
+                $notifications["slog"] = AfwHtmlNotificationHelper::getSLogNotification();
+
+                $the_footer = "";
+                $the_footer .= AfwHtmlFooterJsHelper::render($objme, $lang, $options);
+                $the_footer .= "<!-- built with footer template $footer_template -->\n";
+                $the_footer .= AfwHtmlFooterHelper::renderFooter($footer_template, $lang, $current_module, $tpl_path, $options);
+
 
                 $notifications_html = "";
                 foreach($notifications as $notification_code => $notification_html)

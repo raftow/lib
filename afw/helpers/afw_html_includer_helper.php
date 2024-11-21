@@ -58,13 +58,13 @@ class AfwHtmlIncluderHelper
 
           
           
-  
+        // <link rel='stylesheet' href='../lib/css/line.css'>
 
         $header .= "
         <meta http-equiv='Content-Type' content='text/html; charset=$page_charset'>
         <link rel='stylesheet' href='../lib/css/font-awesome.min-4.3.css'>
         <link rel='stylesheet' href='../lib/css/font-awesome.min.css'>
-        <link rel='stylesheet' href='../lib/css/line.css'>
+        
         <link rel='stylesheet' href='../lib/css/menu_$lang.css'>
         <script src='../lib/js/hzm.js'></script>
         ";

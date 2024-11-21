@@ -807,12 +807,12 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         $class_btn_prev = "graybtn";
                                                                 }
                                                         ?>
-                                                                <input type="submit" name="save_previous" id="save_previous" class="<?= $class_btn_prev ?> wizardbtn fright" value="&nbsp;<?= $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?= $disabled_prev ?> />
+                                                                <input type="submit" name="save_previous" id="save_previous" class="fa previous <?= $class_btn_prev ?> wizardbtn fright" value="&nbsp;<?= $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?= $disabled_prev ?>></input>
                                                                 <?
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
                                                                 if ($obj->canSaveOnly($obj->currentStep)) {
                                                                 ?>
-                                                                        <input type="submit" name="save_only" id="save_only" class="bluebtn wizardbtn" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;" />
+                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
                                                                 <?
                                                                 }
                                                                 // $nextStep will be = -1 if all next steps are R/O not editable, so no next editable step
@@ -830,7 +830,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 if ($nextStep > 0) {
                                                                         // ." ($currStep -> $nextStep)"
                                                                 ?>
-                                                                        <input type="submit" name="save_next" id="save_next" class="greenbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" />
+                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
                                                                 <?
                                                                 }
 
@@ -842,7 +842,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         )
                                                                 ) {
                                                                 ?>
-                                                                        <input type="submit" name="save_update" id="save_update" hint="<?= "NextStep:" . $nextStep ?>" class="save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $finish_label ?>&nbsp;" style="margin-right: 5px;" />
+                                                                        <input type="submit" name="save_update" id="save_update" hint="<?= "NextStep:" . $nextStep ?>" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $finish_label ?>&nbsp;" style="margin-right: 5px;" ></input>
                                                                 <?
                                                                 } else {
                                                                 ?>
@@ -852,8 +852,8 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                         } else  // not edit by step
                                                         {
                                                                 ?>
-                                                                <input type="submit" name="save_update" id="save_update" class="save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;" />
-                                                                <input type="submit" name="save_only" id="save_only" class="bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;" />
+                                                                <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
                                                         <?
                                                         }
                                                         ?>

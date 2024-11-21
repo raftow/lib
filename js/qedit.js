@@ -3,7 +3,7 @@ function iHaveBeenChanged(input)
      $('#'+input).addClass('input_changed');
 }
 
-function iHaveBeenEdited(input)
+function iHaveBeenQEdited(input)
 {
      $('#'+input).addClass('input_edited');
      $('#attr_error_'+input).remove();

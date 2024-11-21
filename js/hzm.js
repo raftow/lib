@@ -95,6 +95,12 @@
         console.log("btn_"+inputname+" new val => listCod[neword] =>"+listCod[neword]);        
   }
 
+  function iHaveBeenEdited(input)
+  {
+      $('#'+input).addClass('input_edited');
+      $('#attr_error_'+input).remove();
+  }
+
   function open_loading()
   {
      $(".loader").css('visibility', 'visible');

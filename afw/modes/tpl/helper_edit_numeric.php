@@ -42,7 +42,7 @@
                     else 
                     {
 ?>
-                        <input type="<?php echo $input_type_html ?>" tabindex="<?php echo $qedit_orderindex ?>" class="form-control hzm_numeric" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" <?php echo $input_options_html ?> <?php echo $input_required ?>>
+                        <input type="<?php echo $input_type_html ?>" tabindex="<?php echo $qedit_orderindex ?>" class="form-control hzm_numeric" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" <?php echo $input_options_html ?>  onchange="<?php echo $onchange ?>" <?php echo $input_required ?>>
 <?php
                     }
                 }

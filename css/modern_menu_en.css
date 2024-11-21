@@ -437,3 +437,7 @@ nav.close ~ .dashboard .top{
 .hzm-user-account.hzm-container-center.hzm-custom-icon-container {
     float: right;
 }
+
+.form-control.input_edited {
+    border-left: 2px solid #3099db !important;
+}

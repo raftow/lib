@@ -85,7 +85,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
         $onchange .= $after_change;
         if ($mode_qedit) $onchange .= "iHaveBeenChanged('$col_name'); ";
-        else $onchange .= "iHaveBeenEdited('$col_name'); ";
+        else $onchange .= "iHaveBeenQEdited('$col_name'); ";
     }
 
     switch ($desc["TYPE"]) {
