@@ -124,15 +124,7 @@ nav .menu-items{
 body.dark li a:hover:before{
     background-color: var(--text-color);
 }
-.menu-items li a i{
-    font-size: 24px;
-    min-width: 45px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--black-light-color);
-}
+
 .menu-items li a .link-name{
     font-size: 18px;
     font-weight: 400;
@@ -208,17 +200,7 @@ nav.close ~ .dashboard{
     width: calc(100% - 73px);
 }
 .dashboard .top{
-    position: fixed;
-    top: 0;
     left: 250px;
-    display: flex;
-    width: calc(100% - 250px);
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 14px;
-    background-color: var(--panel-color);
-    transition: var(--tran-05);
-    z-index: 10;
 }
 nav.close ~ .dashboard .top{
     left: 73px;

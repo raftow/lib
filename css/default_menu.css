@@ -1,0 +1,69 @@
+button.bf.hzm-otherlink {
+    width: 85%;
+    border: 1px #aed8fbb0 solid;
+    background-color: #f5faff;
+    color: #0c5cb1;
+    margin-bottom: 35px;
+    float: right;
+    max-width: 400px;
+    height: 120px;
+    overflow: hidden;
+    padding: 8px 15px !important;
+}
+
+.editcard {
+    width: 98%;
+    min-height: 650px;
+    min-width: 400px;
+    margin: auto;
+    margin-top: 0px;
+    background-color: #ffffffc2;
+}
+
+.panel-heading {
+    color: #1169d3;
+    background-color: transparent;
+    min-height: 44px;
+    padding: 5px 15px;
+    margin-top: 0px;
+    border: none;
+    width: 100%;
+}
+
+.wizardv1 {
+    background-color: transparent;
+    border: none !important;
+    width: 100%;
+}
+
+.hzm_form_panel.hzm_step_body_wizardv1_li {
+    border-width: 1px 0 1px 1px;
+    border-color: white;
+    border-style: solid;
+    float: right;
+}
+
+.wizardv1 .steps_wizardv1 {
+    width: 13.55%;
+    min-width: 190px;
+    margin-left: 0px;
+    padding-right: 20px;
+    background-color: white;
+    padding-top: 15px;
+    border-width: 1px 1px 1px 0;
+    border-color: white;
+    border-style: solid;
+}
+
+.steps_wizardv1 ul {
+    border: 1px solid white;
+    /* border-right: 3px solid rgba(193, 208, 238, 0.4); */
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    min-height: 450px;
+}
+
+li.wizardv1_li.AlreadyStep {
+    background-color: #e1e7ea42;
+}

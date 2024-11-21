@@ -583,6 +583,29 @@ class AfwStringHelper
         
         }
 
+
+        public static function nbWordsInJomla($jomla, $empty_is_counted=false)
+        {
+             $jomla = str_replace("\n", " ",$jomla);
+             $jomla = trim($jomla);
+             
+             $jomlaWords = explode(" ", $jomla);
+             
+             $result = 0;
+             
+             foreach($jomlaWords as $word)
+             {
+                 $word = trim($word);
+                 if($word or $empty_is_counted)
+                 {
+                     $result++;
+                 }
+             }
+             
+             return $result;
+        
+        }
+
         public static function intelligentArabicPlural($word, $plural_word, $nb, $female=false, $add_wahid_word = true)
         {
             if($add_wahid_word)

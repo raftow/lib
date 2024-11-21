@@ -5824,7 +5824,7 @@ class AFWObject extends AFWRoot
                             $title .= 'ملف ';
                         }
                         if ($struct['OTM-RETURNTO']) {
-                            $title .= 'الانتقال إلى ';
+                            $title .= 'إلى ';
                         }
                         if (!$struct['OTM-NO-LABEL']) {
                             $title .= $link_label . ' : ';

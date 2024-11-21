@@ -89,21 +89,6 @@ ul.hzm_front_menu_bar.hzm_front_menu_bar.nav.navbar-nav>li.active>a {
 }
 
 
-.bluetitle i {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    background: #50bef1;
-    margin-left: 10px;
-    border-width: 3px;
-    border-style: solid;
-    border-color: #1387d9;
-    position: relative;
-    top: 0px;
-    border-radius: 50%;
-}
-
-
 /*  tables */
 
 table.dataTable {

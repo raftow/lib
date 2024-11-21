@@ -64,11 +64,14 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $welcome_user = "<span> $welcome </span><br>$user_full<p>$user_job</p><p>$user_dep</p>";
             $user_picture = $objme->getUserPicture();
             $user_account_page = "user_account.php";
+            $ord = $objme->id % 5;
+            $user_bg_class = "ubg".$ord;
         }
         else
         {
             $user_picture = '<i class="hzm-container-center hzm-vertical-align-middle hzm-icon-std hzm-user-account fa-user"></i></a>';
             $user_account_page = "login.php";
+            $user_bg_class = "ubg0";
         }
 
         $welcome_div = "";
@@ -80,11 +83,13 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $run_mode = AfwSession::config($run_mode_var, "");
         if ($run_mode) $run_mode = "-" . $run_mode;
 
-
+        
+        
 
         $data_tokens = array();
-
+        
         $data_tokens["user_picture"] = $user_picture;
+        $data_tokens["user_bg_class"] = $user_bg_class;
         $data_tokens["user_account_page"] = $user_account_page;        
         
         $data_tokens["run_mode"] = $run_mode;

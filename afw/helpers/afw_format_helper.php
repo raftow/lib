@@ -71,7 +71,7 @@ class AfwFormatHelper
                 $desc['TYPE'] = 'MTEXT';
             }
             if (strtoupper($desc['TYPE']) == 'MTEXT') {
-                $length = nbWordsInJomla($val_attr);
+                $length = AfwStringHelper::nbWordsInJomla($val_attr);
             } else {
                 if ($desc['UTF8']) {
                     $length = AfwStringHelper::strlen_ar($val_attr);

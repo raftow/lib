@@ -282,6 +282,7 @@ class AfwSession extends AFWRoot {
 
         public static function setVar($var, $value)
         {
+                // if(($var=="log") and (!$value)) throw new AfwRuntimeException("emptying log ...".self::getSingleton()->getData($var));                       
                 self::getSingleton()->setData($var, $value);
         }
 

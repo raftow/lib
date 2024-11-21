@@ -555,54 +555,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                 ?>
 
                 <div class="hzm_form_panel hzm_step_body_<?= $clStep . " step_panel_" . $obj->currentStep ?>">
-                        <?
-                        $pbm_arr = $obj->getPublicMethodsForUser($objme, "display");
-                        if (count($pbm_arr) > 0) {
-                                $html_buttons_spec_methods = "";
-                                $html_buttons_spec_methods_bis = "";
-                                foreach ($pbm_arr as $pbm_code => $pbm_item) {
-                                        // if we click on the button and have action_lourde css class 
-                                        // it will open the loader at the same time the form can not submit because of
-                                        // missed required data or the form errors
-                                        $action_lourde = (($check_error_activated) and (count($obj_errors) == 0));
-                                        $html_buttons_spec_methods .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin());
-                                        $html_buttons_spec_methods_bis .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin(), "bis");
-                                }
-                                $html_buttons_spec_methods = trim($html_buttons_spec_methods);
-                                $html_buttons_spec_methods_bis = trim($html_buttons_spec_methods_bis);
-
-                                if ($html_buttons_spec_methods) {
-                        ?>
-                                        <div class="form_left form_left_buttons form_left_<?= $clStep . "_" . $obj->currentStep ?>" style="/*width: 12%;height:100%;*/">
-                                                <?
-                                                echo $html_buttons_spec_methods;
-                                                ?>
-                                        </div>
-                                <?
-                                        $form_right_width = 80;
-                                } else {
-                                        $form_right_width = 100;
-                                }
-                        } else {
-                                $form_right_width = 100;
-                        }
-
-                        if ($form_right_width == 100) {
-                                list($help_picture, $logHelpPic) = AfwHtmlHelper::showHelpPicture($obj, $obj->currentStep);
-                                if ($help_picture) {
-                                ?>
-                                        <div class="form_left form_left_buttons help_picture_<?= $clStep . "_" . $obj->currentStep ?>" style="/*width: 12%;height:100%;*/">
-                                                <?
-                                                echo $help_picture;
-                                                ?>
-                                        </div>
-                        <?
-                                        $form_right_width = 80;
-                                } else echo "<!-- " . $logHelpPic . " -->";
-                        }
-                        ?>
-
-                        <div class="form_right form_wizard_body form_wizard_<?php echo $cl_short; ?> form_right_<?php echo $clStep . " step_body_" . $obj->currentStep; ?>" style="/*width:<?= $form_right_width ?>% !important;height:100%; */">
+                        <div class="form_right form_wizard_body form_wizard_<?php echo $cl_short; ?> form_right_<?php echo $clStep . " step_body_" . $obj->currentStep; ?>" >
                                 <div class="form_content form_content_<?php echo $cl_short ?>">
                                         <div class='body_form_hzm body_form_<?php echo $cl_short ?>'>
                                                 <?
@@ -918,7 +871,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 $other_links = $obj->getOtherLinksForUser("edit", $objme, $otherLink_genereLog, $getOtherLinkStep);
                                                 if (count($other_links) > 0) {
                                                 ?>
-                                                        <h5 class='greentitle'><i></i>روابط ذات صلة</h5>
+                                                        <h5 class='bluetitle'><i></i>روابط ذات صلة</h5>
 
                                                         <?
 
@@ -948,7 +901,57 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
 
                                 </div>
                         </div> <!-- form_right -->
+                        <?
+                        // calculate form_left
+                        $pbm_arr = $obj->getPublicMethodsForUser($objme, "display");
+                        if (count($pbm_arr) > 0) {
+                                $html_buttons_spec_methods = "";
+                                $html_buttons_spec_methods_bis = "";
+                                foreach ($pbm_arr as $pbm_code => $pbm_item) {
+                                        // if we click on the button and have action_lourde css class 
+                                        // it will open the loader at the same time the form can not submit because of
+                                        // missed required data or the form errors
+                                        $action_lourde = (($check_error_activated) and (count($obj_errors) == 0));
+                                        $html_buttons_spec_methods .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin());
+                                        $html_buttons_spec_methods_bis .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin(), "bis");
+                                }
+                                $html_buttons_spec_methods = trim($html_buttons_spec_methods);
+                                $html_buttons_spec_methods_bis = trim($html_buttons_spec_methods_bis);
 
+                                if ($html_buttons_spec_methods) {
+                        ?>
+                                        <!-- form_left -->
+                                        <div class="form_left form_left_buttons form_left_<?= $clStep . "_" . $obj->currentStep ?>" style="/*width: 12%;height:100%;*/">
+                                                <h5 class='greentitle'><i></i>أوامر للتنفيذ</h5>
+                                                <?
+                                                echo $html_buttons_spec_methods;
+                                                ?>
+                                        </div>
+                                        <!-- form_left -->
+                                <?
+                                        // $form_right_width = 80;
+                                } else {
+                                        // $form_right_width = 100;
+                                }
+                        } else {
+                                // $form_right_width = 100;
+                        }
+
+                        if (false) { // $form_right_width == 100
+                                list($help_picture, $logHelpPic) = AfwHtmlHelper::showHelpPicture($obj, $obj->currentStep);
+                                if ($help_picture) {
+                                ?>
+                                        <div class="form_left form_left_buttons help_picture_<?= $clStep . "_" . $obj->currentStep ?>" style="/*width: 12%;height:100%;*/">
+                                                <?
+                                                echo $help_picture;
+                                                ?>
+                                        </div>
+                        <?
+                                        $form_right_width = 80;
+                                } else echo "<!-- " . $logHelpPic . " -->";
+                        }
+                        // calculate form_left - end
+                        ?>
                 </div>
         </div>
         <!-- check_error_activated = <?php echo $check_error_activated ?> -->

@@ -73,6 +73,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
             $val = $_POST[$nom_col];
 
         //if($nom_col=="active") die("switcher val=$val");        
+        // This below fix the bug of switcher 
         if ($yn_checkbox) {
             //if(($nom_col=="mode_search") and ($i==3)) die("for col [$nom_col] i=$i : posted_val[$qedit_nom_col]=[$val] from ".var_export($_POST,true));
             // case ($val == "1") checkbox

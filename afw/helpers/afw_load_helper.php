@@ -1058,6 +1058,7 @@ class AfwLoadHelper extends AFWRoot
             if (AfwSession::config('MODE_DEVELOPMENT', false) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
                 $object->debugg_sql_for_loadmany = $query;
             }
+            //die("rafik load many query will call db_recup_rows with ".$query);
             $result_rows = AfwDatabase::db_recup_rows($query, $module_server);
 
             /*
