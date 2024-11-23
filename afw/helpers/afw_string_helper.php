@@ -583,6 +583,11 @@ class AfwStringHelper
         
         }
 
+        public static function arrow($lang)
+        {
+                if($lang=="ar") return "&raquo;";
+                else return "&laquo;";
+        }
 
         public static function nbWordsInJomla($jomla, $empty_is_counted=false)
         {

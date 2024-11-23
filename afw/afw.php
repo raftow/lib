@@ -3317,7 +3317,7 @@ class AFWObject extends AFWRoot
             } 
             else
             {
-                $return = $this->transClassSingle($lang) . ' &larr; ' . $this->id;
+                $return = $this->transClassSingle($lang) . ' '.AfwStringHelper::arrow($lang).' ' . $this->id;
             }
 
         }
@@ -7406,6 +7406,14 @@ $dependencies_values
     {
         return $this->SEARCH;
     }
+
+
+    public function getSelectedValueForAttribute($attribute)
+    {
+        return $this->SEARCH_TAB[$attribute];
+    }
+
+
     /*
     public function getSQLConditionsArray()
     {
@@ -7905,7 +7913,7 @@ $dependencies_values
             }
             $return = implode($mfk_show_sep, $array);
             $etc = '.. (' . count($array) . ' item(s))';
-            $return = truncateArabicJomla($return, $max_length, $etc);
+            $return = AfwStringHelper::truncateArabicJomla($return, $max_length, $etc);
         }
 
         return $return;
@@ -8592,6 +8600,9 @@ $dependencies_values
 
         return $return;
     }
+
+
+    
 
 
     public function getMfkArray($attribute)

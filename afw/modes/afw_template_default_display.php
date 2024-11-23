@@ -190,7 +190,7 @@ $idobj = $obj->getId();
 
 $titre_display = $obj->translate("FILE",$lang,true)." > ".$obj->singleTranslation($lang)." > ".$obj->getShortDisplay($lang);
 
-if($lang=="ar") $titre_display = truncateArabicJomla($titre_display, 115, $etc="...");
+if($lang=="ar") $titre_display = AfwStringHelper::truncateArabicJomla($titre_display, 115, $etc="...");
 
 if(!$file_box_css_class) $file_box_css_class = "filebox";
 ?>

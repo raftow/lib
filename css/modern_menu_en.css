@@ -60,8 +60,8 @@ nav{
     top: 0;
     left: 0;
     height: 100%;
-    width: 250px;
-    padding: 10px 14px;
+    width: 200px;
+    padding: 10px 8px;
     background-color: var(--panel-color);
     border-right: 1px solid var(--border-color);
     transition: var(--tran-05);
@@ -188,10 +188,10 @@ body.dark .switch:before{
 
 .dashboard{
     position: relative;
-    left: 250px;
+    left: 200px;
     background-color: var(--panel-color);
     min-height: 100vh;
-    width: calc(100% - 250px);
+    width: calc(100% - 200px);
     padding: 10px 14px;
     transition: var(--tran-05);
 }
@@ -200,7 +200,7 @@ nav.close ~ .dashboard{
     width: calc(100% - 73px);
 }
 .dashboard .top{
-    left: 250px;
+    left: 200px;
 }
 nav.close ~ .dashboard .top{
     left: 73px;
@@ -343,7 +343,7 @@ nav.close ~ .dashboard .top{
         width: 73px;
     }
     nav.close{
-        width: 250px;
+        width: 200px;
     }
     nav .logo_name{
         opacity: 0;
@@ -366,16 +366,16 @@ nav.close ~ .dashboard .top{
         width: calc(100% - 73px);
     }
     nav.close ~ .dashboard{
-        left: 250px;
-        width: calc(100% - 250px);
+        left: 200px;
+        width: calc(100% - 200px);
     }
     nav ~ .dashboard .top{
         left: 73px;
         width: calc(100% - 73px);
     }
     nav.close ~ .dashboard .top{
-        left: 250px;
-        width: calc(100% - 250px);
+        left: 200px;
+        width: calc(100% - 200px);
     }
     .activity .activity-data{
         overflow-X: scroll;

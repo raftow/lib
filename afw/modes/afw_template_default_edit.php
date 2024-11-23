@@ -423,7 +423,8 @@ $subType = $obj->mySubType();
 if ($subType)
         $str_name = $subType;
 else
-        $str_name = $titre_display = $obj->translate("FILE", $lang, true) . " &larr; " . $obj->singleTranslation($lang) . " &larr; " . $obj->getShortDisplay($lang);
+        $str_name = $titre_display = $obj->translate("FILE", $lang, true) . " ".AfwStringHelper::arrow($lang)." " . 
+                                        $obj->singleTranslation($lang) . " ".AfwStringHelper::arrow($lang)." " . $obj->getShortDisplay($lang);
 
 if (!$file_box_css_class) $file_box_css_class = "filebox";
 $wizard_class = $wizObj->getWizardClass();
