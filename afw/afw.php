@@ -2106,6 +2106,11 @@ class AFWObject extends AFWRoot
     protected function afterSetAttribute($attribute)
     {
         // It is to be rewritten in sub classes
+        /* ca be useful for some debugg 
+        if(($attribute=="id") and $this->id == 3000000002) 
+        {
+            throw new AfwRuntimeException("Here the bug");
+        }*/
     }
 
     public function setSlient($attribute, $value)
@@ -6991,7 +6996,14 @@ $dependencies_values
         if (!isset($this->arr_erros[$step]) or $recheck) {
             $common_e_arr   =   $this->getCommonDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step);
             // die("showErrorsAsSessionWarnings::getCommonDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step) => ".var_export($common_e_arr,true));
-            $specific_e_arr = $this->getSpecificDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step);
+            if (!$attribute or $this->stepContainAttribute($step, $attribute))
+            {
+                $specific_e_arr = $this->getSpecificDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step);
+            }
+            else
+            {
+                $specific_e_arr = [];
+            }
             $this->arr_erros[$step] = array_merge(
                 $common_e_arr,
                 $specific_e_arr

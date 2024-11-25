@@ -493,9 +493,9 @@ class AfwHtmlHelper extends AFWRoot {
                                 $html_notification .=  "
                                 <div class='alert messages messages--warning alert-dismissable' role='alert' >
                                 <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-                                <div class='swal2-hzm swal2-icon swal2-warning swal2-icon-show' style='display: flex;color: orange;border-color: transparent !important;'>
+                                <!--<div class='swal2-hzm swal2-icon swal2-warning swal2-icon-show' style='display: flex;color: orange;border-color: transparent !important;'>
                                         <div class='swal2-icon-content'>!</div>
-                                </div>
+                                </div>-->
                                 $war
                                 </div><br>";
 
@@ -506,9 +506,9 @@ class AfwHtmlHelper extends AFWRoot {
                                 $html_notification .=  "
                                 <div class='alert messages messages--status alert-dismissable' role='alert' >
                                 <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
-                                <div class='swal2-hzm swal2-icon swal2-info swal2-icon-show' style='display: flex;'>
+                                <!--<div class='swal2-hzm swal2-icon swal2-info swal2-icon-show' style='display: flex;'>
                                         <div class='swal2-icon-content'>i</div>
-                                </div>
+                                </div>-->
                                 $inf
                                 </div><br>";
 

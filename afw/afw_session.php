@@ -604,6 +604,7 @@ class AfwSession extends AFWRoot {
 
         public static function pushWarning($warning, $css_class="")
         {
+                throw new AfwRuntimeException("who sent this warning");
                 self::setSessionVar("warning", self::pushString(self::getSessionVar("warning"),$warning));
                 if($css_class) self::setSessionVar("warning-class", $css_class);
         }

@@ -704,6 +704,7 @@ class AfwLoadHelper extends AFWRoot
                     $result_row[$attribute] = $attribute_value;
                 }
                 $result_row['debugg_source'] = 'system cache';
+                $query = 'from cache';
                 /*$result_row_from =
                     'getFromCache(' .
                     $object::$MODULE .
@@ -790,8 +791,10 @@ class AfwLoadHelper extends AFWRoot
                     //
                 }
                 // $time_end4_4 = microtime(true);
-
-                if (count($result_row) > 1) {
+                $the_pk = $object->getPK();
+                if($object->id==3000000002) throw new AfwRuntimeException("here 2 the (the_pk=$the_pk) = 3000000002 result_row = ".var_export($result_row,true));
+                if ((count($result_row) > 1) and ($result_row[$the_pk])) {
+                    if($object->id==3000000002) throw new AfwRuntimeException("here the id = 3000000002 result_row = ".var_export($result_row,true));
                     $debugg_res_row = '';
                     foreach ($result_row as $attribute => $attribute_value) {
                         if (!is_numeric($attribute)) {
@@ -834,8 +837,9 @@ class AfwLoadHelper extends AFWRoot
                         throw new AfwRuntimeException("test_rafik 1005 : query=$query debugg_res_row=$debugg_res_row<br>\n this->getAllfieldValues()=".var_export($object->getAllfieldValues(),true)." <br>\n result_row from ($result_row_from) <br>\n result_row here is => ".var_export($result_row,true));
                     }
                     */
-
-                    $return = $object->id > 0;
+                    $result_row["query"] = $query;
+                    $return_true =  "result_row=".var_export($result_row, true);
+                    $return = $object->id > 0 ? $return_true : false;
                 } else {
                     // die("test_rafik 1003 : count(result_row) = ".count($result_row));
                     $return = false;
@@ -846,9 +850,9 @@ class AfwLoadHelper extends AFWRoot
         } else {
             throw new AfwRuntimeException($classNameTable . ' : Unable to use the method load() without any research criteria (' . $object->getSQL() . "), use select() or where() before.");
         }
-
+        $has_been_loaded = $return;
         // $time_end4 = microtime(true);
-        if ($return) {
+        if ($has_been_loaded) {
             $object->afterLoad();
             // -- $className = AfwStringHelper::tableToClass($object::$TABLE);
 
@@ -859,7 +863,7 @@ class AfwLoadHelper extends AFWRoot
         $object->resetUpdates();
 
         if ($cache_management) {
-            if ($loaded_by) {
+            if ($has_been_loaded and $loaded_by) {
                 AfwCacheSystem::getSingleton()->putIntoCache(
                     $classNameModule,
                     $classNameTable,

@@ -4754,6 +4754,10 @@ div#system_log_div {
     height: max-content;
 }
 
+.hasCalendarsPicker[disabled] {
+    background-image: none !important;
+}
+
 @keyframes attirant {
     0%, 33% {
         box-shadow: 0 0 0 1px var(--ds-border-discovery, #65C054), 0 0 0 var(--ds-border-discovery, rgba(101, 192, 84, 1));
@@ -4763,3 +4767,4 @@ div#system_log_div {
         box-shadow: 0 0 0 1px var(--ds-border-discovery, #65C054), 0 0 0 10px rgba(101, 192, 84, 0.01);
     }
 }
+

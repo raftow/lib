@@ -896,21 +896,28 @@ class AfwSqlHelper extends AFWRoot
                 $myClass = $object->getMyClass();
                 // $this_copy = cl one $object;
                 // $this_copy->clearSelect();
+                /**
+                 * @var AFWObject $this_copy
+                 */
                 $this_copy = new $myClass();
                 foreach ($object->UNIQUE_KEY as $key_col) {
                     $unique_key_vals[] = $object->getVal($key_col);
                     $this_copy->select($key_col, $object->getVal($key_col));
                 }
-                if ($this_copy->load() and $this_copy->getId() > 0) {
+                $load_result = $this_copy->load();
+                if ($load_result and ($this_copy->id == 3000000002)) {
+                    throw new AfwRuntimeException("3000000002 loaded here load_result = $load_result");
+                }
+                if ($load_result and ($this_copy->id > 0)) {
                     $object->debugg_tech_notes =
-                        'has existing doublon id = ' . $this_copy->getId();
+                        'has existing doublon id = ' . $this_copy->id;
                     $dbl_message =
                         $object::$TABLE .
                         ' UNIQUE-KEY-CONSTRAINT : (' .
                         implode(',', $object->UNIQUE_KEY) .
-                        ") broken id already exists = ('" .
+                        ") broken, This record with key ('" .
                         implode("','", $unique_key_vals) .
-                        "') " .
+                        "') already exists (with ID=".$this_copy->id.") : " .
                         var_export($this_copy, true);
                     //die("rafik 135004 query($query) : ".var_export($object,true));
                     if ($object->ignore_insert_doublon) {
@@ -921,9 +928,9 @@ class AfwSqlHelper extends AFWRoot
                         AfwSession::sqlLog($information, 'HZM');
                         $object->debugg_tech_notes = $debugg_tech_notes;
                         return false;
-                    } elseif ($object->isFromUI and $user_id != 1) {
+                    } elseif ($object->isFromUI and false) {
                         //die("rafik 135006 query($query) : ".var_export($object,true));
-                        return AfwRunHelper::simpleError($dbl_message);
+                        // return AfwRunHelper::niceUserError($dbl_message);
                     } else {
                         throw new AfwRuntimeException($dbl_message);
                     }

@@ -25,6 +25,7 @@ class AfwHtmlIncluderHelper
         $options["jquery"] = true;
         $options["sweetalert"] = true;
         $options["dataTables"] = true;
+        $options["calendars"] = true;
 
         if($options["edit"])
         {

@@ -664,7 +664,7 @@ table.grid tbody tr:hover>td {
 .messages--warning {
     border-color: #e09600 transparent #e09600 #e09600;
     background-color: #f9d384 !important;
-    color: #8f590a !important;
+    color: #000 !important;
     box-shadow: 8px 0 0 #e09600;
 }
 
@@ -707,6 +707,16 @@ li.wizardv1_li.CurrentStep {
 
 .steps_wizardv1 li.CurrentStep a {
     color: #2263b7 !important;
+    font-weight: normal;
+    font-size: 100%;
+}
+
+li.wizardv1_li.ErronedStep {
+    border-right: 5px solid red !important;
+}
+
+.steps_wizardv1 li.ErronedStep a {
+    color: red !important;
     font-weight: normal;
     font-size: 100%;
 }
@@ -926,4 +936,30 @@ input:-internal-autofill-selected {
     background-image: none !important;
     background-color: white !important;
     color: fieldtext !important;
+}
+
+.form_content {
+    padding: 10px;
+    height: 100%;
+    min-height: 480px;
+    float: right;
+    margin-top: 1%;
+    margin-right: 1%;
+    width: 98%;
+    -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
+    /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.5), 0 -1px 0 rgba(255, 255, 255, 0.4); */
+}
+
+div.body_nav_hzm>p {
+    background-color: #ffffff;
+    border-bottom: none;
+    border-top: none;
+}
+
+.notification_message_container {
+    float: right;
+    width: 50%;
+    margin-right: 30%;
+    margin-left: 20%;
 }

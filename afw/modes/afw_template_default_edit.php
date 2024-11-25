@@ -493,8 +493,12 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 if ($obj->show_draft_errors) $step_show_error_why = "show_draft_errors is active for this class $cl";
                                                         }
                                                         if ($check_error_activated  and $step_show_error) {
-                                                                $stepErrorsList = $obj->getStepErrors($kstep);
+                                                                $stepErrorsList = $obj->getStepErrors($kstep);                                                                
                                                                 $step_errors_list = implode("\n", $stepErrorsList);
+                                                                /*if($kstep==1 and $step_errors_list)
+                                                                {
+                                                                        die("for $clObj `$obj` step $kstep step_errors_list=$step_errors_list");
+                                                                }*/
                                                                 $step_erroned = (count($stepErrorsList) > 0);
                                                         } else {
                                                                 $stepErrorsList = array();
