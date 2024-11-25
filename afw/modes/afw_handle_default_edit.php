@@ -9,6 +9,7 @@ $currstep = $_POST["currstep"];*/
 if (!$lang) $lang = "ar";
 $file_dir_name = dirname(__FILE__);
 
+if(!$objme) $objme = AfwSession::getUserConnected();
 
 //AFWDebugg::setEnabled(true);
 ////AFWObject::setDebugg(true);

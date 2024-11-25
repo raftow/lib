@@ -6556,7 +6556,7 @@ $dependencies_values
         $erroned_attribute = null,
         $stop_on_first_error = false, $start_step=null, $end_step=null
     ) {
-        global $errors_check_count, $errors_check_count_max;
+        global $errors_check_count;
 
         $cm_errors = [];
 
@@ -6816,13 +6816,10 @@ $dependencies_values
                                     is_object($objVal) and
                                     $errors_i < $errors_max
                                 ) {
-                                    if (
-                                        $errors_check_count >
-                                        $errors_check_count_max
-                                    ) {
-                                        throw new AfwRuntimeException(
-                                            "too mauch commomn errors found by getCommonDataErrors for attribute $attribute (nb=$errors_check_count), be carefull on infinite loops"
-                                        );
+                                    if ($errors_check_count[$attribute] > 30) 
+                                    {
+                                        $errors_check_count_attr = $errors_check_count[$attribute];
+                                        throw new AfwRuntimeException("too mauch error checks called for attribute $attribute (nb=$errors_check_count_attr), be carefull on infinite loops");
                                     }
                                     $err_obj_arr = $objVal->getDataErrors(
                                         $lang,
@@ -6983,10 +6980,10 @@ $dependencies_values
         $attribute = null,
         $stop_on_first_error = false, $start_step=null, $end_step=null
     ) {
-        global $errors_check_count, $errors_check_count_max;
-
-        //if($errors_check_count>$errors_check_count_max) throw new AfwRuntimeException("too mauch errors found by getDataErrors (nb=$errors_check_count)");
-        $errors_check_count++;
+        global $errors_check_count;
+        //, $errors_ check_count _max;
+        //if($errors_ check_count>$errors_ check_count _max) throw new AfwRuntimeException("too mauch errors found by getDataErrors (nb=$errors _check_count)");
+        if($attribute) $errors_check_count[$attribute]++;
 
         // throw new AfwRuntimeException("what you do here");
 
