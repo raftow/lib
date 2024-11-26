@@ -2107,7 +2107,7 @@ class AFWObject extends AFWRoot
     {
         // It is to be rewritten in sub classes
         /* ca be useful for some debugg 
-        if(($attribute=="id") and $this->id == 3000000002) 
+        if(($attribute=="id") and $this->id == 300 0000002) 
         {
             throw new AfwRuntimeException("Here the bug");
         }*/

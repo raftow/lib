@@ -792,9 +792,9 @@ class AfwLoadHelper extends AFWRoot
                 }
                 // $time_end4_4 = microtime(true);
                 $the_pk = $object->getPK();
-                if($object->id==3000000002) throw new AfwRuntimeException("here 2 the (the_pk=$the_pk) = 3000000002 result_row = ".var_export($result_row,true));
+                //if($object->id==30000 00002) throw new AfwRuntimeException("here 2 the (the_pk=$the_pk) = 3000000 002 result_row = ".var_export($result_row,true));
                 if ((count($result_row) > 1) and ($result_row[$the_pk])) {
-                    if($object->id==3000000002) throw new AfwRuntimeException("here the id = 3000000002 result_row = ".var_export($result_row,true));
+                    //if($object->id==3000 000002) throw new AfwRuntimeException("here the id = 300000 0002 result_row = ".var_export($result_row,true));
                     $debugg_res_row = '';
                     foreach ($result_row as $attribute => $attribute_value) {
                         if (!is_numeric($attribute)) {
