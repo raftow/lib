@@ -46,6 +46,9 @@ $obj  = new $cl();
 
 $tentative = "first";
 $header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang);
+
+// die("AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang) = ".var_export($header_retrieve,true));
+
 if (count($header_retrieve) == 0) {
         $tentative = "second";
         // echo "header_retrieve is empty try all :<br>";   

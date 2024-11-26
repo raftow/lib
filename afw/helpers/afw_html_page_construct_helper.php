@@ -69,7 +69,7 @@
         {
                 $role = $arrRequest["r"];
                 //self::initLanguage();
-                //die("dbg-002 rafik 20241119 lang = ".$lang);
+                // die("dbg-002 rafik 20241119 lang = ".$lang);
                 $current_module = AfwUrlManager::currentURIModule();
                 $the_main_section_file_arr = explode("/",$the_main_section_file);
                 $main_section_file_name = $the_main_section_file_arr[count($the_main_section_file_arr)-1];

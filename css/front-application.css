@@ -743,10 +743,7 @@ ul.hzm_front_menu_bar.nav.navbar-nav {
 .hzm3-bar a, .hzm3-button, .hzm3-btn {
     text-decoration: none !important;
 }
-.hzm3-light-grey, .hzm3-hover-light-grey:hover, .hzm3-light-gray, .hzm3-hover-light-gray:hover {
-    color: #000!important;
-    background-color: #f1f1f1!important;
-}
+
 .hzm3-block {
     display: block;
     width: 100%;
@@ -4756,6 +4753,11 @@ div#system_log_div {
 
 .hasCalendarsPicker[disabled] {
     background-image: none !important;
+}
+
+div.content-annonce>ul {
+    margin: 1em;
+    font-weight: normal;
 }
 
 @keyframes attirant {

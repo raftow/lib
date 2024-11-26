@@ -84,13 +84,16 @@ nav .logo-image img{
     border-radius: 50%;
 }
 
-nav .logo-name .logo_name{
-    font-size: 22px;
+nav .logo-name .logo_name {
+    font-size: 13px;
     font-weight: 600;
     color: var(--text-color);
-    margin-left: 14px;
+    padding-top: 12px;
+    margin-left: -12px;
     transition: var(--tran-05);
+    text-align: center;
 }
+
 nav.close .logo_name{
     opacity: 0;
     pointer-events: none;
@@ -126,7 +129,7 @@ body.dark li a:hover:before{
 }
 
 .menu-items li a .link-name{
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 400;
     color: var(--black-light-color);    
     transition: var(--tran-05);
