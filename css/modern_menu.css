@@ -21,8 +21,8 @@ ul.nav-links>li.active>a>span, ul.nav-links>li.active>a>i:before {
     border-radius: 50% !important;
     background-color: silver;
     overflow: hidden;
-    width: 46px;
-    height: 42px;
+    width: 32px;
+    height: 32px;
     text-align: center;
     padding-top: 5px;
     margin-left: 3%;
@@ -34,7 +34,7 @@ i.hzm-container-center.hzm-vertical-align-middle.hzm-icon-std.hzm-user-account.f
 }
 
 .user-account {
-    font-size: 20px;
+    font-size: 12px;
     color: #fff;
     /* font-weight: bold;*/ 
     padding-top: 4px;

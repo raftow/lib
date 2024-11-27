@@ -149,7 +149,7 @@ if($desc_site)
                                 
                     ?>
                 <div class="modal-body"><h1><?=$user_prefix?>قم بادخال البيانات التالية</h1>
-                        <form id="formlogin0" name="formlogin0" method="post" action="<?echo $action_page?>"  onSubmit="return checkForm();" dir="rtl" enctype="multipart/form-data">
+                        <form id="formlogin0" name="formlogin0" method="post" action="<?echo $action_page?>"  onSubmit="return checkForm();" dir="ltr" enctype="multipart/form-data">
                         <?php                                
                                 if(AfwSession::config("sms-captcha-register",true))
                                 {

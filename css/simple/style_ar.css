@@ -5002,12 +5002,6 @@ h2.title_login {
     font-weight: normal;
 }
 
-.modal-body h1 {
-    font-size: 120%;
-    font-family: menu;
-    font-weight: normal;
-}
-
 .display>thead>tr>th {
         text-align: right;
         padding: 6px 2px;

@@ -52,25 +52,6 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section {
 	display: block;
 }
 
-audio,canvas,video {
-	display: inline-block;
-	*display: inline;
-	*zoom: 1;
-}
-
-audio
-:not
-(
-[
-controls
-]
-)
-{
-display:none;
-}
-[hidden] {
-	display: none;
-}
 /* =============================================================================
    Base
    ========================================================================== */
@@ -257,7 +238,7 @@ label {
  */
 legend {
 	border: 0;
-	*margin-left: -7px;
+	margin-left: -7px;
 	padding: 0;
 }
 /*
@@ -269,7 +250,7 @@ button,input,select,textarea {
 	font-size: 100%;
 	margin: 0;
 	vertical-align: baseline;
-	*vertical-align: middle;
+	vertical-align: middle;
 }
 /*
  * 1. Define line-height as normal to match FF3/4 (set using !important in the UA stylesheet)
@@ -277,13 +258,13 @@ button,input,select,textarea {
  */
 button,input {
 	line-height: normal;
-	*overflow: visible;
+	overflow: visible;
 }
 /*
  * Reintroduce inner spacing in 'table' to avoid overlap and whitespace issues in IE6/7
  */
 table button,table input {
-	*overflow: auto;
+	overflow: auto;
 }
 /*
  * 1. Display hand cursor for clickable form elements
@@ -3053,7 +3034,6 @@ input[type="file"] {
 
 .Steps ul li {
 	margin-top: 20px;
-	margin-top: 20px!ie;
 	position: relative;
 	float: right;
 	list-style: none;
@@ -3428,13 +3408,13 @@ input[type="file"] {
 
 .datagrid table .blue1 td {
 	background: rgb(245, 251, 254) !important;
-	color: #000 !important !important;
+	color: #000 !important;
 	font-weight: normal !important;
 }
 
 .datagrid table .blue2 td {
 	background: rgb(224, 243, 253) !important;
-	color: #000 !important !important;
+	color: #000 !important;
 	font-weight: normal !important;
 }
 
@@ -3446,7 +3426,7 @@ input[type="file"] {
 
 .datagrid table .orange2 td {
 	background: rgb(224, 243, 253) !important;
-	color: rgb(63, 72, 204) !important !important;
+	color: rgb(63, 72, 204) !important;
 	font-weight: bold !important;
 }
 
@@ -4482,7 +4462,7 @@ span.database, span.gear {
     width :90%;
 } */
 
-/* has been modified for the caret (?™â€¦??A«?™â€???A«) on internal submenu drop down list = other links in display mode */
+/* has been modified for the caret (?ï¿½â€¦??Aï¿½?ï¿½ï¿½???Aï¿½) on internal submenu drop down list = other links in display mode */
 .btn-group>.btn+.dropdown-toggle {
     padding-right: 6px;
     padding-left: 6px;
@@ -4491,12 +4471,6 @@ span.database, span.gear {
     border: 1px white solid !important;
     border-style: solid;
     margin-top: -1px;
-}
-
-.btn-primary.active, .btn-primary:active, .open>.dropdown-toggle.btn-primary {
-    color: #fff;
-    background-color: rgba(13, 60, 145, 0.99) !important;
-    border-color: #3e4875 !important;
 }
 
 .dropdown-menu>li>a {
@@ -4601,314 +4575,6 @@ span.database, span.gear {
 	display: inline-block !important;
 	text-decoration: none !important;
 	color: #266CC6 !important;
-}
-
-.jobelig {
-    background: linear-gradient(to right, #e6e6e1 0%, #ffffff 50%, #cac4b7 100%);
-    border-top: 2px solid #636363;
-    border-bottom: 2px solid #636363;
-    border-right: 2px solid #636363;
-    border-left: 2px solid #636363;
-    text-align: center;
-    font-size: 20px !important;
-    font-weight: normal;
-    color: #1f1a1a;
-    font-family: rgt;
-    padding-bottom: 18px;
-    padding-top: 18px;
-}
-
-
-.job3 {
-    background: linear-gradient(to top, #e0c945 0%, #d0b42e 50%, #c1932c 100%);
-    border-top: 1px solid #926116;
-    border-bottom: 0px solid #926116;
-    border-right: 2px solid #926116;
-    border-left: 2px solid #926116;
-    text-align: center;
-    font-size: 20px !important;
-    font-weight: normal;
-    color: #ffffff;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-}
-
-.job3_plage{
-    background: linear-gradient(to bottom, #efe4a3 0%, #ffffff 100%);
-    border-top: 0px solid #266f0f;
-    border-bottom: 0px solid #266f0f;
-    border-right: 2px solid #266f0f;
-    border-left: 2px solid #266f0f;
-    text-align: center;
-    font-size: 16px !important;
-    font-weight: normal;
-    color: #266f0f;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-
-
-.job4{
-    background: linear-gradient(to top, #8fc1f5 0%, #5ea6f1 50%, #3a95f5 100%);
-    border-top: 1px solid #0c5cb1;
-    border-bottom: 0px solid #0c5cb1;
-    border-right: 2px solid #0c5cb1;
-    border-left: 2px solid #0c5cb1;
-    text-align: center;
-    font-size: 20px !important;
-    font-weight: normal;
-    color: #ffffff;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-}
-
-.job4_plage{
-    background: linear-gradient(to bottom, #d0e5fb 0%, #ffffff 100%);
-    border-top: 0px solid #0c5cb1;
-    border-bottom: 0px solid #0c5cb1;
-    border-right: 2px solid #0c5cb1;
-    border-left: 2px solid #0c5cb1;
-    text-align: center;
-    font-size: 16px !important;
-    font-weight: normal;
-    color: #009;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
-
-}
-
-.job10{
-    background: linear-gradient(to top, #4f994c 0%, #48b246 50%, #57a919 100%);
-    border-top: 1px solid #266f0f;
-    border-bottom: 0px solid #266f0f;
-    border-right: 2px solid #266f0f;
-    border-left: 2px solid #266f0f;
-    text-align: center;
-    font-size: 20px !important;
-    font-weight: normal;
-    color: #ffffff;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-}
-
-.job10_plage{
-    background: linear-gradient(to bottom, #edeeec 0%, #e7eae5 100%);
-    border-top: 0px solid #266f0f;
-    border-bottom: 0px solid #266f0f;
-    border-right: 2px solid #266f0f;
-    border-left: 2px solid #266f0f;
-    text-align: center;
-    font-size: 12px !important;
-    font-weight: normal;
-    color: #090;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-
-
-.job15{
-    background: linear-gradient(to top, #dce0bb 0%, #c6caa6 50%, #ced2af 100%);
-    border-top: 1px solid #626544;
-    border-bottom: 0px solid #626544;
-    border-right: 2px solid #626544;
-    border-left: 2px solid #626544;
-    text-align: center;
-    font-size: 20px !important;
-    font-weight: normal;
-    color: #000;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-}
-
-.job15_plage{
-    background: linear-gradient(to bottom, #eef0de 0%, #ffffff 100%);
-    border-top: 0px solid #626544;
-    border-bottom: 0px solid #626544;
-    border-right: 2px solid #626544;
-    border-left: 2px solid #626544;
-    text-align: center;
-    font-size: 12px !important;
-    font-weight: normal;
-    color: #000;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-
-.job16{
-    background: linear-gradient(to top, #ececec 0%, #d9dad2 50%, #bfbfbf 100%);
-    border-top: 1px solid #0e0e0e;
-    border-bottom: 0px solid #0e0e0e;
-    border-right: 2px solid #0e0e0e;
-    border-left: 2px solid #0e0e0e;
-    text-align: center;
-    font-size: 20px !important;
-    font-weight: normal;
-    color: #000;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-}
-
-.job16_plage{
-    background: linear-gradient(to bottom, #fcfcfc 0%, #ffffff 100%);
-    border-top: 0px solid #0e0e0e;
-    border-bottom: 0px solid #0e0e0e;
-    border-right: 2px solid #0e0e0e;
-    border-left: 2px solid #0e0e0e;
-    text-align: center;
-    font-size: 12px !important;
-    font-weight: normal;
-    color: #000;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-
-.job6 {
-    background: background: #6aa625;
-    border-top: 1px solid #5b901e;
-    border-bottom: 0px solid #5b901e;
-    border-right: 2px solid #5b901e;
-    border-left: 2px solid #5b901e;
-    text-align: center;
-    font-size: 20px !important;
-    font-weight: normal;
-    color: #000;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-}
-
-.job6_plage {
-    background: linear-gradient(to bottom, #fafcf8 0%, #ffffff 100%);
-    border-top: 0px solid #5b901e;
-    border-bottom: 0px solid #5b901e;
-    border-right: 2px solid #5b901e;
-    border-left: 2px solid #5b901e;
-    text-align: center;
-    font-size: 12px !important;
-    font-weight: normal;
-    color: #000;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-
-
-.job14 {
-    background: linear-gradient(to top, #f9eddb 0%, #f9e0bb 50%, #f5d3a0 100%);
-    border-top: 1px solid #af7115;
-    border-bottom: 0px solid #af7115;
-    border-right: 2px solid #af7115;
-    border-left: 2px solid #af7115;
-    text-align: center;
-    font-size: 20px !important;
-    font-weight: normal;
-    color: #000;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-}
-
-.job14_plage {
-    background: linear-gradient(to bottom, #fdf8f0 0%, #ffffff 100%);
-    border-top: 0px solid #af7115;
-    border-bottom: 0px solid #af7115;
-    border-right: 2px solid #af7115;
-    border-left: 2px solid #af7115;
-    text-align: center;
-    font-size: 12px !important;
-    font-weight: normal;
-    color: #000;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-
-.job18 {
-    background: linear-gradient(to top, #dbeef7 0%, #b3dff3 50%, #91d3f1 100%);
-    border-top: 1px solid #128cc3;
-    border-bottom: 0px solid #128cc3;
-    border-right: 2px solid #128cc3;
-    border-left: 2px solid #128cc3;
-    text-align: center;
-    font-size: 20px !important;
-    font-weight: normal;
-    color: #000;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-}
-
-.job18_plage {
-    background: linear-gradient(to bottom, #f6fbfd  0%, #ffffff 100%);
-    border-top: 0px solid #128cc3;
-    border-bottom: 0px solid #128cc3;
-    border-right: 2px solid #128cc3;
-    border-left: 2px solid #128cc3;
-    text-align: center;
-    font-size: 12px !important;
-    font-weight: normal;
-    color: #000;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
-}
-
-.job0 {
-    background: linear-gradient(to top, #f7e9e4 0%, #f9cabb 50%, #f78764 100%);
-    border-top: 1px solid #FF5722;
-    border-bottom: 0px solid #FF5722;
-    border-right: 2px solid #FF5722;
-    border-left: 2px solid #FF5722;
-    text-align: center;
-    font-size: 20px !important;
-    font-weight: normal;
-    color: #900;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-}
-
-.job0_plage {
-    background: linear-gradient(to bottom, #fdf9f7  0%, #ffffff 100%);
-    border-top: 0px solid #FF5722;
-    border-bottom: 1px solid #FF5722;
-    border-right: 2px solid #FF5722;
-    border-left: 2px solid #FF5722;
-    text-align: center;
-    font-size: 12px !important;
-    font-weight: normal;
-    color: #900;
-    font-family: rgt;
-    padding-bottom: 8px;
-    padding-top: 8px;
-    padding-right: 8px;
-    padding-left: 8px;
 }
 
 

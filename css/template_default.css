@@ -18,6 +18,7 @@ header.top-header {
 
 .hzm_body {
     background-color: white !important;
+    overflow: hidden !important;
 }
 
 ul.hzm_front_menu_bar.hzm_front_menu_bar.nav.navbar-nav>li>a.aregister {
@@ -172,6 +173,20 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 
 
 /*  buttons*/
+
+.simple-btn {
+    background-color: transparent;
+    border: 1px silver solid;
+    font-size: 95% !important;
+    color: gray !important;
+}
+
+.simple-btn:hover {
+    background-color: rgb(37, 98, 178);
+    border-color: #147ae0;
+    color: white !important;
+}
+
 .submit-btn {
     display: inline-block;
     padding: 7px 0px !important;
@@ -918,9 +933,12 @@ div.mbsc-popup.mbsc-popup-anchored {
     border: 1px solid #aaa !important;
 }
 
-.modal-content {
+.modal_login.modal-content {
+    width: 50% !important;
+    margin-left: 25%;
+    margin-right: 25%;
     position: relative;
-    background-color: #ffffff69;
+    background-color: #ffffff75;
     -webkit-background-clip: padding-box;
     background-clip: padding-box;
     border: 1px solid #8a8c8d !important;
@@ -928,7 +946,7 @@ div.mbsc-popup.mbsc-popup-anchored {
     outline: 0;
     -webkit-box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
     box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
-    animation: 3000ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 0s infinite normal none running attirant;
+    /* animation: 3000ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 0s infinite normal none running attirant; */
 }
 
 input:-internal-autofill-selected {
@@ -962,4 +980,84 @@ div.body_nav_hzm>p {
     width: 50%;
     margin-right: 30%;
     margin-left: 20%;
+}
+
+input.form-auth.login {
+    height: 60px !important;
+    font-size: 28px !important;
+    line-height: 36px !important;
+    font-family: monospace;
+    text-align: center;
+    width: 100%;
+}
+
+
+.form-group.submit-login>input {
+    width: 60%;
+    margin-right: 20%;
+    margin-left: 20%;
+    border-radius: 0px;
+    margin-top: 29px;
+    font-size: 22px;
+    height: 60px;
+}
+
+label.label.login {
+    display: block;
+    font-family: 'menu';
+    color: inherit;
+    line-height: 45px !important;
+    text-align: center;
+    font-weight: normal !important;
+    font-size: 20px;
+}
+
+.login.title_company {
+    width: 70%;
+}
+
+.login.logo_company {
+    margin-right: 10%;
+    width: 20%;
+}
+
+h1.modal-title {
+    font-size: 140%;
+    font-family: menu;
+    /* font-weight: bold; */
+    text-align: center;
+    font-weight: normal;
+    padding: 10px;
+    color: white;
+    background-color: #00537d;
+    border: none !important;
+}
+
+.modal-body h1 {
+    font-size: 140%;
+    font-family: menu;
+    font-weight: bold;
+}
+
+.modal-body h2 {
+    font-size: 120%;
+    font-family: menu;
+    font-weight: normal;
+}
+
+.modal-body h4 {
+    font-size: 99%;
+    font-family: menu;
+    font-weight: normal;
+    color: black !important;
+    text-align: center !important;
+    background-color: #ffffff69;
+}
+
+.uil-bars:before {
+    content: "\f0c9";
+}
+
+.uil {
+    font: normal normal normal 16px / 1 FontAwesome !important;
 }

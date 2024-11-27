@@ -54,7 +54,7 @@ class AfwHtmlIncluderHelper
           <link rel='stylesheet' href='../lib/css/jquery-ui-1.11.4.css'>
           <script src='../lib/js/jquery-ui-1.11.4.js'></script>
           <!-- script src='../lib/tree/tree.jquery.js'></script> -->
-
+          
           ";
 
           
