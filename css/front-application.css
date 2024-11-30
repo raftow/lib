@@ -4727,7 +4727,7 @@ label.mbsc-select-filter.mbsc-ios.mbsc-rtl.mbsc-form-control-wrapper.mbsc-textfi
 }
 
 .mbsc-ios.mbsc-scroller-pointer .mbsc-scroller-wheel-item.mbsc-selected {
-    color: white;
+    color: white !important;
     background-color: #007aff;
     border-radius: 0;
     border-bottom: 2px solid white;
