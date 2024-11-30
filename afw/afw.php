@@ -6121,6 +6121,10 @@ class AFWObject extends AFWRoot
         return false;
     }
 
+    public function canBeDeletedWithoutRoleBy($auser)
+    {
+        return [false, 'canBeDeletedWithoutRoleBy - not implemented'];
+    }
 
 
     public function getStructureObject($class, $id)

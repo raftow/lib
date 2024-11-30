@@ -34,7 +34,7 @@ $can = $objme->iCanDoOperationOnObjClass($mainObject,"edit");
 if(!$can)
 {
       $log_ums_work = ($objme->isAdmin() or (AfwSession::hasOption("UMS_LOG"))) ? 1 : 1;
-      header("Location: lib/afw/modes/afw_denied_access_page.php?CL=$cl&MODE=edit&bf=$bf_id&rsn=$reason&LOG=$log_ums_work");
+      header("Location: /lib/afw/modes/afw_denied_access_page.php?CL=$cl&MODE=edit&bf=$bf_id&rsn=$reason&LOG=$log_ums_work");
       exit();
 }
 

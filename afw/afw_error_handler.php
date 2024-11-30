@@ -1,6 +1,6 @@
 <?php
-$SHOW_ARGS = true;
-$SHOW_ALL_ARGS = false;
+const _SHOW_ARGS = true;
+const _SHOW_ALL_ARGS = false;
 
 if(!isset($relative_path)) $relative_path = "./";
 
@@ -73,7 +73,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 
         function dump_exception($ex)
         {
-            global $relative_path, $SHOW_ARGS, $SHOW_ALL_ARGS;
+            global $relative_path;
                 $file = $ex->getFile();
                 $line = $ex->getLine();
 
@@ -181,7 +181,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                         <td><?= isset($trace[ 'class' ]) ? $trace[ 'class' ] : ''; ?></td>
                         <td><?= isset($trace[ 'function' ]) ? $trace[ 'function' ] : ''; ?></td>
                         <td>
-                            <? if(isset($SHOW_ARGS) and $SHOW_ARGS) : ?>
+                            <? if(_SHOW_ARGS) : ?>
                                 <? if(isset($trace['args']) and $trace['args'] ) : ?>
                                     <? foreach ( $trace['args'] as $i => $arg ) : ?>
                                         <? if(!is_object($arg) and !is_array($arg)) : ?> 
@@ -199,7 +199,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                             <? endif; ?>
                         </td>
                     </tr>                    
-                    <? if(isset($SHOW_ALL_ARGS) and $SHOW_ALL_ARGS and $trace['args']) { ?>
+                    <? if(_SHOW_ALL_ARGS and $trace['args']) { ?>
                     <tr class="<?= $i % 2 == 0 ? 'even' : 'odd'; ?>">
                         <td class="args" colspan="5">
                             <?php echo var_export($trace['args'],true) ?>

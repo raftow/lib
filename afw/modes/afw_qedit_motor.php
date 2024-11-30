@@ -134,7 +134,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 if ($development_mode or $objme->isAdmin()) echo "<!-- for ($obj_className).$col_name : [$objRep] -> loadMany FollowingStructureAndValue($col_name, $desc,$val, $obj) -->";
                 //list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj);
                 $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
-                $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                 
                 
                 if ($obj->qedit_minibox)
@@ -288,7 +288,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             }
             */
             $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
-            $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+            $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                                                 
             $type_input_ret = "select";
 

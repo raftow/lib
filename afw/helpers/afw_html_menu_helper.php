@@ -14,6 +14,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
     ) {
         $login_template = AfwSession::currentLoginTemplate();
         $xmodule = AfwSession::getCurrentlyExecutedModule();
+        $module = AfwUrlManager::currentURIModule();
         $login_out_css = "sign-in";
         $login_out_cl = "login $login_template";
         $login_page = "login-$login_template.php";
@@ -181,7 +182,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
 
         $menu_template = AfwSession::currentMenuTemplate();
 
-        $data_tokens["hzm_front_menu"] = AfwMenuConstructHelper::genereMenu($menu_template, $xmodule, $objme, $lang, $module_languages, $role);
+        $data_tokens["hzm_front_menu"] = AfwMenuConstructHelper::genereMenu($menu_template, $module, $objme, $lang, $module_languages, $role);
 
         if ((!$objme) and (!$no_menu)) {
             $data_tokens["me_connected_s"] = "<!--";

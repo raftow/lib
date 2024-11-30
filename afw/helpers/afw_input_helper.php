@@ -127,7 +127,7 @@ class AfwInputHelper extends AFWRoot
                                                 // list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
                                                 // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl");                                                
                                                 $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
-                                                $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                                                $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                                                 
                                                 if($placeholder != $col_title)
                                                 {
@@ -256,7 +256,7 @@ class AfwInputHelper extends AFWRoot
                                         // list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
                                         // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl");
                                         $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
-                                        $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                                        $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                                                 
                                         
                                         $type_input_ret = "select";

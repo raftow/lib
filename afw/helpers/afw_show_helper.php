@@ -226,9 +226,9 @@ class AfwShowHelper
                                 $tuple['del_status'] = 'OK';
                             } else {
                                 if ($userCanDel == -1) {
-                                    $explanation = "لا يوجد صلاحية عامة لمسح هذا النوع من السجلات";
+                                    $explanation = "لا يوجد لديك صلاحية لمسح هذا النوع من السجلات";
                                 } else {
-                                    $explanation = "لا يوجد صلاحية خاصة لمسح هذا السجل بعينه";
+                                    $explanation = "انك تحتاج لصلاحية خاصة لمسح هذا السجل بعينه";
                                 }
                                 $tuple[$col] =
                                     "<a href='#'><img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$explanation' width='24' heigth='24' ></a>";
@@ -814,9 +814,9 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                 $tuple[$col] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='$delete_button_path' style='height: 22px !important;'></a>";
                                             } else {
                                                 if ($userCanDel == -1) {
-                                                    $explanation = "لا يوجد صلاحية عامة لمسح هذا النوع من السجلات";
+                                                    $explanation = "لا يوجد لديك صلاحية لمسح هذا النوع من السجلات";
                                                 } else {
-                                                    $explanation = "لا يوجد صلاحية خاصة لمسح هذا السجل بعينه";
+                                                    $explanation = "انك تحتاج لصلاحية خاصة لمسح هذا السجل بعينه";
                                                 }
                                                 $tuple[$col] =
                                                     "<a href='#'><img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$explanation'  width='24' heigth='24'></a>";

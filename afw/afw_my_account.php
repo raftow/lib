@@ -22,7 +22,7 @@ require_once("$file_dir_name/../../external/db.php");
 
 require_once("afw_session.php");
 AfwSession::startSession();
-// $home_path_browser = $menu_title." &larr; ".$path_title;
+// $home_path_browser = $menu_title." ".AfwStringHelper::arrow($lang)." ".$path_title;
 $force_allow_access_to_customers = true;
 
 $check_depending_user_type="NO-CHECK";

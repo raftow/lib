@@ -446,7 +446,9 @@ class AfwSession extends AFWRoot {
                 self::log($log);                       
         }
 
-                
+        /**
+         * @return Auser
+         *  */        
 
         public static function getUserConnected()
         {

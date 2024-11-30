@@ -44,7 +44,14 @@ class AfwHtmlNotificationHelper {
     private static function prepareNofication($notification_message, $type)
     {
         $alter_type = $type;
-        if($type = "information") $alter_type = "status";
+        if($type == "information") $alter_type = "status";
+        /*
+        if($alter_type = "status")
+        {
+            if(AfwStringHelper::stringContain($notification_message, "هو عدد السجلات في نتائج البحث"))
+            throw new AfwRuntimeException("Here rafik the pbbbbbb");
+        }*/
+        
         return "<div class=\"alert messages messages--$alter_type alert-dismissable\" role=\"alert\" >
                         <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>
                         $notification_message                

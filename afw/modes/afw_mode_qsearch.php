@@ -30,6 +30,11 @@ if(!$objme)
     exit();
 }
 
+/**
+ * @var Auser $objme
+ * 
+ */
+
 
 if($xls_on) $datatable_on = true;
 if(!$action) $action = "retrieve";
@@ -142,7 +147,7 @@ if(!$can)
         AfwSession::setSessionVar("result", "failed");
         AfwSession::setSessionVar("report", $report_can_qsearch);
         AfwSession::setSessionVar("other_log", $log);
-        header("Location: lib/afw/modes/afw_denied_access_page.php");      
+        header("Location: /lib/afw/modes/afw_denied_access_page.php");      
         exit();
 }
 

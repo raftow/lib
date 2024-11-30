@@ -96,7 +96,7 @@ if($newo==0) $newo = $my_class->QEDIT_MODE_NEW_OBJECTS_DEFAULT_NUMBER;
 $can = $objme->iCanDoOperationOnObjClass($my_class,"search");
 if(!$can)
 {
-      header("Location: lib/afw/modes/afw_denied_access_page.php?CL=$cl&MODE=search&bf=$bf_id&rsn=$reason");      
+      header("Location: /lib/afw/modes/afw_denied_access_page.php?CL=$cl&MODE=search&bf=$bf_id&rsn=$reason");      
       exit();
 }
 

@@ -52,7 +52,7 @@ foreach($themeArr as $theme => $themeValue)
         if(!$can)
         {
                 //die("rafik denied_access case to check");
-                header("Location: lib/afw/modes/afw_denied_access_page.php?CL=$cl&MODE=display");      
+                header("Location: /lib/afw/modes/afw_denied_access_page.php?CL=$cl&MODE=display");      
                 exit();
         }
 

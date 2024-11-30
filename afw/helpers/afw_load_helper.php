@@ -50,7 +50,7 @@ class AfwLoadHelper extends AFWRoot
         return $dataLookup;
     } 
 
-    public static function vhGetListe($obj, $where, $action="default", $lang="ar", $val_to_keep=null, $order_by="", $dropdown = false, $optim = true)
+    public static function vhGetListe($obj, $fk_attribute, $fk_table, $where, $action="default", $lang="ar", $val_to_keep=null, $order_by="", $dropdown = false, $optim = true)
     {
         $return = [];
         if(!$where) $where = "1";
@@ -112,7 +112,8 @@ class AfwLoadHelper extends AFWRoot
                     $case = "self::loadManyFollowingStructureAndValue from : cl=$obj_cl, where=$where, order_by=$order_by, val_to_keep=$val_to_keep ";
                     
                 }
-                $return = self::constructDropDownItems($listeRep, $lang, 'fk-somewhere-on:'. $obj->getTableName(),'table-somewhere');
+                
+                $return = self::constructDropDownItems($listeRep, $lang, $fk_attribute, $fk_table);
             }
         }
         if(!isset($return)) 

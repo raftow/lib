@@ -156,7 +156,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
 					}
                                         */
                                         $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
-                                        $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="load ManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                                        $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="load ManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                                                 
                                         $prop_sel =
                                               array(  "class" => "form-control",
@@ -305,7 +305,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
 				}
                                 */
                                 $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
-                                $l_rep = AfwLoadHelper::vhGetListe($objRep, $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+                                $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                                                 
                                 $type_input_ret = "select";
                                 
