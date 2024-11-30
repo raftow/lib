@@ -91,6 +91,8 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $data_tokens["user_picture"] = $user_picture;
         $data_tokens["user_bg_class"] = $user_bg_class;
         $data_tokens["user_account_page"] = $user_account_page;        
+        $data_tokens["search_here"] = AfwLanguageHelper::translateKeyword("Search here", $lang);;        
+        
         
         $data_tokens["run_mode"] = $run_mode;
         $data_tokens["welcome_div"] = $welcome_div;

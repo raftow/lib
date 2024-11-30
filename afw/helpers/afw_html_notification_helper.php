@@ -1,19 +1,19 @@
 <?php
 class AfwHtmlNotificationHelper {
     public static function getWarningNotification(){
-        self::getNotification("success", "");
+        return self::getNotification("warning", "يوجد تنبيهات");
     }
 
     public static function getInfoNotification(){
-        self::getNotification("information", "");
+        return self::getNotification("information", "");
     }
     
     public static function getErrorNotification(){
-        self::getNotification("error", "يوجد أخطاء");
+        return self::getNotification("error", "يوجد أخطاء");
     }
     
     public static function getSuccessNotification(){
-        self::getNotification("warning", "يوجد تنبيهات");
+        return self::getNotification("success", "");
     }
     
     public static function getSLogNotification(){

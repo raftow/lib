@@ -3884,13 +3884,13 @@ class AFWObject extends AFWRoot
             $nom_table,
             $module
         );
-
+        $return_before = $return;
         $return = AfwReplacement::trans_replace($return, $module, $langue);
-        /*
-        if ($nom_col == 'address_type_enum') {
-            throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem($nom_col, $langue,$operator,$nom_table, $module)");
-        }
-        */
+        
+        /*if ($nom_col == 'trainingunittype.single') {
+            throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem(col=$nom_col, lng=$langue, oper=$operator, tbl=$nom_table, module=$module) (intermediaire = $return_before)");
+        }*/
+        
         return $return;
     }
 
@@ -4305,7 +4305,7 @@ class AFWObject extends AFWRoot
         if (!$attributeIsToDisplayForMe) {
             return false;
         }
-
+        if(!$lang) throw new AfwRuntimeException("lang param is required for isRetrieveCol method");
         $RETRIEVE_LANG = 'RETRIEVE-' . strtoupper($lang);
 
         if (!$desc) {
@@ -7028,15 +7028,15 @@ $dependencies_values
         $this->arr_erros['all'][$attribute] = $error;
     }
 
-    protected function paggableAttribute($attribute)
+    protected function paggableAttribute($attribute, $structure)
     {
         // can be overridden in subclasses
         return [true, ""];
     }
 
-    public function attributeIsToPag($attribute)
+    public function attributeIsToPag($attribute, $structure=null)
     {
-        list($paggable, $reason) = $this->paggableAttribute($attribute);
+        list($paggable, $reason) = $this->paggableAttribute($attribute, $structure);
         if(!$paggable)
         {
             return [false, $reason];
@@ -7055,6 +7055,12 @@ $dependencies_values
         }
         if ($this->isSystemField($attribute)) {
             return [false, 'isSystemField'];
+        }
+
+        if(!$structure) $structure = AfwStructureHelper::getStructureOf($this, $attribute);
+
+        if($structure["OBSOLETE"]) {
+            return [false, 'obsolete'];
         }
 
         return [true, ''];

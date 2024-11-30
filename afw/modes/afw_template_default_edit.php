@@ -676,6 +676,9 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         $newTr = true;
                                                                 }
                                                                 $newTr = true;
+                                                                if ($class_db_structure[$col]["OTHER-LINKS-TOP"] or (!$class_db_structure[$col]["OTHER-LINKS-BOTTOM"])) {
+                                                                        echo "<!-- other links top -->\n".$info["btns"];
+                                                                }
                                                                 if (!$class_db_structure[$col]["NO-LABEL"]) 
                                                                 {
                                                                         
@@ -709,9 +712,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         }
                                                                 }
 
-                                                                if ($class_db_structure[$col]["OTHER-LINKS-TOP"]) {
-                                                                        echo $info["btns"];
-                                                                }
+                                                                
                                                                 $br_if_needed = "";
 
                                                                 if ($info["error"] and $class_db_structure[$col]["ERROR-SHOW"]) echo "$br_if_needed<div id='attr_error_$col' class='error' for='$col'>" . $info["error"] . "</div>"; //
@@ -755,8 +756,8 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 // if($info["tooltip"])  echo '</a>';
 
                                                                 //echo "BTN-BTN-BTN-BTN-BTN-BTN-BTN-BTN-";
-                                                                if ((!$class_db_structure[$col]["OTHER-LINKS-TOP"]) or ($class_db_structure[$col]["OTHER-LINKS-BOTTOM"])) {
-                                                                        echo $info["btns"];
+                                                                if ($class_db_structure[$col]["OTHER-LINKS-BOTTOM"]) {
+                                                                        echo "<!-- other links bottom -->\n".$info["btns"];
                                                                 }
 
                                                                 if ($info["title_after"]) {

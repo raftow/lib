@@ -268,7 +268,7 @@ class AfwUmsPagHelper extends AFWRoot
                 if ($attribute == 'value') {
                     die("for attribute $attribute after repareMyStructure, $structure = ".var_export($structure,true));
                 }*/
-                list($toPag, $notToPagReason) = $obj->attributeIsToPag($attribute);
+                list($toPag, $notToPagReason) = $obj->attributeIsToPag($attribute, $structure);
                 
 
                 if ($toPag) {

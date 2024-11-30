@@ -1003,7 +1003,8 @@ class AfwLoadHelper extends AFWRoot
         global $_lmany_analysis;
 
         $loadMany_max = AfwSession::config("load_many_max", 1000);
-
+        $modeDev = AfwSession::config('MODE_DEVELOPMENT', false);
+        $memCacheOptim = AfwSession::config('MODE_MEMORY_OPTIMIZE', true);
         $cache_management = AfwLoadHelper::cacheManagement($object);
 
         $this_cl = get_class($object);
@@ -1059,7 +1060,8 @@ class AfwLoadHelper extends AFWRoot
                         $query
                 );
             }
-            if (AfwSession::config('MODE_DEVELOPMENT', false) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
+            
+            if ($modeDev and (!$memCacheOptim)) {
                 $object->debugg_sql_for_loadmany = $query;
             }
             //die("rafik load many query will call db_recup_rows with ".$query);
@@ -1114,7 +1116,10 @@ class AfwLoadHelper extends AFWRoot
                     $objectCache = new $className();
                     $newObject_time_end = hrtime(true);
                     $time_newObject = round(($newObject_time_end - $newObject_time_start)/1000000);
-                    if($time_newObject>2) throw new RuntimeException("$className class have heavy time to create new instance = $time_newObject milli sec = $newObject_time_end - $newObject_time_start");
+                    if(($time_newObject>10) and $modeDev)
+                    {
+                        throw new RuntimeException("$className class have heavy time to create new instance = $time_newObject milli sec = $newObject_time_end - $newObject_time_start");
+                    } 
                         
                     if ($pk_field) {
                         $objectCache->setPKField($pk_field);

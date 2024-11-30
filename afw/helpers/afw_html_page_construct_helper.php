@@ -157,6 +157,8 @@
                 {
                         if($notification_html) $notifications_html .= $notification_html;
                 }
+
+                // die("notifications_html=$notifications_html");
                 
                 $the_body = "<!-- built with _body template $body_template -->\n";
                 $the_body .= self::constructBodyWithTemplate($body_template, 
@@ -218,7 +220,7 @@
                 return self::decodeHzmTemplate($tpl_content, $section_tokens, $lang);                
         }
 
-        public static function renderMainSection($the_main_section_file, $arrRequest)
+        public static function renderMainSection($the_main_section_file, $arrRequest, $lang)
         {
                 foreach ($arrRequest as $col => $val) ${$col} = $val;
                 $out_scr = "";

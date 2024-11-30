@@ -3,7 +3,7 @@
 
             <div class="search-box">
                 <i class="uil uil-search"></i>
-                <input type="text" placeholder="Search here...">
+                <input type="text" placeholder="[search_here]...">
             </div>
             <div class="hzm-user-account hzm-container-center hzm-custom-icon-container [user_bg_class]">
                 <a href="[user_account_page]">
