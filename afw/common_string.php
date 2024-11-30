@@ -49,28 +49,7 @@
                 else return false;
         }
 
-         /**
-         * Cette fonction permet de vérifier si une chaine donnée se termine par un tel suffixe.    
-         * @return boolean         
-         * @param string $chaine :chaine à vérifier  
-         * @param string $suffixe :la terminaison de la chaine                
-         */
-        function AfwStringHelper::stringEndsWith($chaine,$suffixe)
-        {
-            global $set_debug;
-            
-                if($set_debug) print("chaine = $chaine suffixe=$suffixe\n"); 
-                $ls = strlen($suffixe);
-                $lc = strlen($chaine);
-                $inc = 1;
-                $result = true;
-                while ($inc<=$ls and $result)
-                {
-                        if ($chaine[$lc-$inc]!=$suffixe[$ls-$inc]) $result=false;
-                        $inc++;
-                }
-                return $result;
-        }
+         
         
         function uniord($u) 
         {
