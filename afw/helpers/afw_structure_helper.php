@@ -10,7 +10,7 @@ class AfwStructureHelper extends AFWRoot
     private static $structuresArray = [];
     public static function dd($message, $to_die=true, $to_debugg=false, $trace=true, $light=false)
     {
-        if($trace) $message = $message."<br>"._back_trace($light);
+        if($trace) $message = $message."<br>".AfwRunHelper::show_back_trace($light);
         if($to_debugg) AFWDebugg::log($message);
         if($to_die) 
         {

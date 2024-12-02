@@ -324,3 +324,12 @@ li.wizardv1_li.AlreadyStep {
     font-weight: normal;
     color: #182228;
 }
+
+i.uil.uil-moon {
+    margin: 5px;
+}
+
+
+.fa-signout:before { 
+    content: '\f2f5'; 
+}

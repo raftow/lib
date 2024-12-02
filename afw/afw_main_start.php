@@ -12,7 +12,7 @@ $module_path = "$file_dir_name/../../$MODULE";
 
 require_once("afw_autoloader.php");
 include(dirname(__FILE__) . "/../../external/db.php");
-// here old require of common.php
+// 
 
 
 if (!$MODULE) {

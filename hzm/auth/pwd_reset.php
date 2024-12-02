@@ -24,7 +24,7 @@ if(!$lang) $lang = "ar";
 
 
 require_once ("$module_auth_dir_name/../../../external/db.php");
-// here old require of common.php
+// 
 
 $file_dir_name = dirname(__FILE__);
 
