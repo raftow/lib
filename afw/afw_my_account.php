@@ -6,7 +6,7 @@ $SPECIALITY_EXPERT_ID = 162;
 // set_time_limit(8400);
 // ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 
-//// here old require of common.php
+//// 
 /*
 require_once("$file_dir_name/../cms/menu_functions.php");
 require_once("$file_dir_name/../../external/db.php");  

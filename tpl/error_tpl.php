@@ -62,7 +62,7 @@ table.dataTable tfoot th, table.dataTable tfoot td {
 }
 table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
 	cursor: pointer;
-	*cursor: hand
+	cursor: hand
 }
 table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc, table.dataTable thead .sorting_asc_disabled, table.dataTable thead .sorting_desc_disabled {
 	background-repeat: no-repeat;
@@ -153,6 +153,6 @@ table.dataTable.hover tbody tr:hover.selected, table.dataTable.display tbody tr:
         <div class="back_tr tech <?php echo $show_technical_details?>">
                 Error details : <br>
                 <?php echo $error_details;?><br>
-                <?php echo _back_trace();?>
+                <?php echo AfwRunHelper::show_back_trace();?>
         </div>
 </div>

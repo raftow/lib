@@ -582,7 +582,7 @@ function gregdate_of_first_hijri_day($hijri_year, $hijri_month)
      //echo "<br>sql_greg = $sql_greg";             
      
      $file_dir_name = dirname(__FILE__);
-     // here old require of common.php
+     // 
      
      $greg_date = recup_value($sql_greg);
      $hgreg_matrix[$hijri_year.$hijri_month] = add_dashes($greg_date);

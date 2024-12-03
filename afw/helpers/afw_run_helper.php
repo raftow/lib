@@ -1,6 +1,68 @@
 <?php
-class AfwRunHelper 
+class AfwRunHelper
 {
+        public static function show_back_trace($light = false)
+        {
+                global $lang;
+                // $light=true; // otherwise sometime loop infite
+                if ($light) $max_trace = 20;
+                else $max_trace = 50;
+                $backtrace = debug_backtrace(1, $max_trace);
+                $html = "<table dir='ltr' style='width:100%' class='display dataTable display_ltr back_trace'>
+                        <tr>
+                                <th><b>Function </b>
+                                </th><th><b>File </b></th>
+                                <th><b>Line </b></th>
+                        </tr>
+                        ";
+                $odd_even = "odd";
+                $i = 1;
+                foreach ($backtrace as $entry) {
+                        $i++;
+                        $html .= "<tr class='$odd_even'>";
+                        $html .= "<td  style='border-top:1px solid #000;'>" . $entry['function'] . "</td>";
+                        $html .= "<td  style='border-top:1px solid #000;'>" . $entry['file'] . "</td>";
+                        $html .= "<td  style='border-top:1px solid #000;'>" . $entry['line'] . "</td>";
+                        $html .= "</tr>
+                ";
+                        if (($entry['function'] != "safeDie") and ($entry['function'] != "show_back_trace")) {
+                                if (($entry['object']) or (count($entry['args']) > 0)) {
+
+                                        $html .= "<tr class='backtrace_tech_details $odd_even'>";
+                                        $html .= "<td>id=" . $entry['object']->id . "</td>";
+                                        if ($entry['object']) {
+                                                if (class_exists("AFWObject") and ($entry['object'] instanceof AFWObject) and (!$light)) {
+                                                        // Warning rafik : This do infinite loop seems do not call methods in error handlers
+                                                        // $shdisp = $entry['object']->getShortDisplay($lang);
+                                                        $shdisp = "class=" . get_class($entry['object']);
+                                                } else $shdisp = get_class($entry['object']) . "-> display object";
+                                        } else {
+                                                $shdisp = "no-object";
+                                        }
+
+                                        if (!$light) {
+                                                $html .= "<td colspan='2'>" . $shdisp . "</td>";
+                                        } else {
+                                                $html .= "<td colspan='2'>light-mode : $shdisp </td>"; // rafik may be create this->getLightDisplay ??
+                                        }
+
+                                        $html .= "</tr>\n";
+                                        $html .= "<tr class='backtrace_tech_details $odd_even'>";
+                                        $html .= "<td colspan='3'  style='border-bottom:1px solid #000;'>";
+                                        if (class_exists("AfwHtmlHelper")) {
+                                                $html .= AfwHtmlHelper::genereAccordion("<pre>" . var_export($entry['args'], true) . "</pre>", "Arguments", "Arguments$i");
+                                        }
+                                        $html .= "</td>";
+                                        $html .= "</tr>\n";
+                                }
+                        }
+                        if ($odd_even == "odd") $odd_even = "even";
+                        else $odd_even = "odd";
+                }
+                $html .= "</table>\n";
+
+                return $html;
+        }
 
         public static function afw_guard($source, $message)
         {
@@ -16,21 +78,21 @@ class AfwRunHelper
 
         public static function lightError($msg)
         {
-            return AfwRunHelper::simpleError($msg, $call_method = "", $light=true);
+                return AfwRunHelper::simpleError($msg, $call_method = "", $light = true);
         }
-        
 
-        public static function simpleError($msg, $call_method = "", $light=false) 
+
+        public static function simpleError($msg, $call_method = "", $light = false)
         {
-            throw new AfwRuntimeException($msg." : call_method=$call_method");                 
+                throw new AfwRuntimeException($msg . " : call_method=$call_method");
         }
 
         public static function lightSafeDie($error_title, $objToExport = null)
         {
-            $message = $error_title;
-            if ($objToExport) $message .= "<br><pre class='code php' style='direction:ltr;text-align:left'>" . var_export($objToExport, true) . "</pre>";
-            throw new AfwRuntimeException($message);
-            //return AfwRunHelper::safeDie($error_title, $error_description_details="", $analysis_log=false, $objToExport, $light = true);
+                $message = $error_title;
+                if ($objToExport) $message .= "<br><pre class='code php' style='direction:ltr;text-align:left'>" . var_export($objToExport, true) . "</pre>";
+                throw new AfwRuntimeException($message);
+                //return AfwRunHelper::safeDie($error_title, $error_description_details="", $analysis_log=false, $objToExport, $light = true);
         }
 
 
@@ -108,10 +170,7 @@ class AfwRunHelper
                                 </div>";
                 }
 
-                if (!function_exists("_back_trace")) {
-                        include_once("common.php");
-                }
-                $back_trace_light = _back_trace($light);
+                $back_trace_light = self::show_back_trace($light);
 
                 if ($open_mode) {
 

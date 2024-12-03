@@ -17,7 +17,7 @@
                     <ul class="logout-mode">
                         [me_connected_s]
                         <li><a href="[logout_page]">
-                            <i class="uil uil-signout"></i>
+                            <i class="fa fa-signout"></i>
                             <span class="link-name">[logout_title]</span>
                         </a></li>
                         [me_connected_e]

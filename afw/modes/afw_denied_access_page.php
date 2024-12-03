@@ -23,7 +23,7 @@ $NOM_SITE = AfwSession::config("application_name","This Application");
 $MODE_DEVELOPMENT = AfwSession::config("MODE_DEVELOPMENT",true);
 
 require_once("$file_dir_name/../../../external/db.php");
-// here old require of common.php
+// 
 
 include("$file_dir_name/../../hzm/web/hzm_header.php");
 

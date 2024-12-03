@@ -2,7 +2,7 @@
 $file_dir_name = dirname(__FILE__); 
 include_once("$file_dir_name/../../external/config.php");
 include_once("$file_dir_name/../../external/db.php");
-// here old require of common.php
+// 
 AfwSession::startSession();
 $me = AfwSession::getSessionVar("user_id");
 $uploads_root_path = AfwSession::config("uploads_root_path","");

@@ -22,7 +22,7 @@ AfwSession::startSession();
 //setcookie(session_name(), session_id(), NULL, NULL, NULL, 0);
 //die("rafik 3002 session table : ".var_export($_SES SION,true));
 require_once("$direct_dir_name/../external/db.php");
-// here old require of common.php
+// 
 
 $only_members = false;
 

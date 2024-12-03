@@ -1,6 +1,6 @@
 <?
 $file_dir_front = dirname(__FILE__);
-require_once("$file_dir_front/../includes/common.php");
+// require_once("$file_dir_front/../includes/com mon.php");
 require_once("$file_dir_front/../includes/unicode.php");
 
 interface MailSystemInterface {
