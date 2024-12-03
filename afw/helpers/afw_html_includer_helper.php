@@ -79,6 +79,15 @@ class AfwHtmlIncluderHelper
           <link rel='stylesheet' href='../lib/css/hzm-v001.css'>";
         }
 
+        if ($options["dashboard-stats"]) {
+          $header .= "<link rel='stylesheet' href='../lib/css/dashboard-stats.css'>";
+        }
+
+        if ($options["chart-js"]) {
+          $header .= "<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js'></script>";
+        }
+
+
         if($options["otp"]) $header .= "
           <link rel='stylesheet' href='../lib/css/otp.css'>";
 

@@ -1,25 +1,25 @@
 <?php
 class AfwMainPage
 {
-    public static function echoMainPage($current_module, $Main_Page, $module_path)
+    public static function echoMainPage($current_module, $Main_Page, $module_path, $options = [],)
     {
         $curr_path = dirname(__FILE__);
         include("$curr_path/afw_main_start.php");
         // die("echoMainPage($current_module, $Main_Page, $module_path) after afw_main_start lang=$lang");
         // die("echoMainPage 20241119  : after include($curr_path/afw_main_start.php) lang = ".$lang);
-        echo self::renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module);
+        echo self::renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);
     }
 
-    public static function echoDirectPage($current_module, $direct_page, $direct_page_path, $header_template="direct", $menu_template="direct", $body_template="direct", $footer_template="direct")
+    public static function echoDirectPage($current_module, $direct_page, $direct_page_path, $header_template="direct", $menu_template="direct", $body_template="direct", $footer_template="direct", $options = [],)
     {
         $curr_path = dirname(__FILE__);
         include("$curr_path/afw_direct_start.php");
         // die("echoDirectPage 20241119  : after include($curr_path/afw_main_start.php) lang = ".$lang);
-        echo self::renderDirectPage($direct_page, $direct_page_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module);
+        echo self::renderDirectPage($direct_page, $direct_page_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);
     }
 
     private static function renderDirectPage($direct_page, $module_path, $header_template="direct", $menu_template="direct", 
-                        $body_template="direct", $footer_template="direct", $lang, $current_module)
+                        $body_template="direct", $footer_template="direct", $lang="ar", $current_module="", $options = [],)
     {
         // die("dgb::renderDirectPage($direct_page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $current_module)");
         if(!$current_module) $current_module = "ums";
@@ -31,6 +31,7 @@ class AfwMainPage
                         $_REQUEST, 
                         $the_main_section_file,
                         $need_ob=true,        
+                        $options,
                     );
 
         return $out_scr;  
@@ -38,7 +39,7 @@ class AfwMainPage
     }
 
 
-    private static function renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module)
+    private static function renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options = [],)
     {
         if(!$Main_Page) throw new AfwRuntimeException("Main Page not defined in renderMainPage");;
         if(!$module_path) throw new AfwRuntimeException("Module path not defined in renderMainPage");;
@@ -64,10 +65,13 @@ class AfwMainPage
         }
         
         $out_scr =  AfwHtmlPageConstructHelper::renderPage($lang, $header_template, 
-        $menu_template, 
-        $body_template, 
-        $footer_template, 
-        $_REQUEST, $the_main_section_file);
+                                        $menu_template, 
+                                        $body_template, 
+                                        $footer_template, 
+                                        $_REQUEST, 
+                                        $the_main_section_file,
+                                        false,
+                                        $options);
         
         
         if (!$out_scr) {
