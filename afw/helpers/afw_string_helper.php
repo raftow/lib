@@ -1180,5 +1180,264 @@ class AfwStringHelper
                 return $string2;
         }
 
+        public static function Allah_names($unchakl = true, $indexed = true)
+        {
+             $arr = array("اللَّه",
+                        "الرَّحْمَنُ",
+                        "الرَّحِيمُ",
+                        "المَلِكُ",
+                        "القُدُّوسُ",
+                        "السَّلَامُ",
+                        "المُؤْمِنُ",
+                        "المُهَيْمِنُ",
+                        "العَزِيزُ",
+                        "الجَبَّارُ",
+                        "المُتَكَبِّرُ",
+                        "الخَالِقُ",
+                        "البَارِىءُ",
+                        "المُصَوِّرُ",
+                        "الغَفَّارُ",
+                        "القَهَّارُ",
+                        "الوَهَّابُ",
+                        "الرَّزَّاقُ",
+                        "الفَتَّاحُ",
+                        "العَلِيمُ",
+                        "القَابِضُ",
+                        "البَاسِطُ",
+                        "الخَافِضُ",
+                        "الرَّافِعُ",
+                        "المُعِزُّ",
+                        "المُذِلُّ",
+                        "السَّمِيعُ",
+                        "البَصِيرُ",
+                        "الحَكَمُ",
+                        "العَدْلُ",
+                        "اللَّطِيفُ",
+                        " الخَبِيرُ",
+                        " الحَلِيمُ",
+                        "العَظِيمُ",
+                        "الغَفُورُ",
+                        "الشَّكُورُ",
+                        "العَلِيُّ",
+                        "الكَبِيرُ",
+                        "الحَفِيظُ",
+                        " المُقِيتُ",
+                        "الحَسِيبُ",
+                        "الجَلِيلُ",
+                        "الكَرِيمُ",
+                        "الرَّقِيبُ",
+                        "المُجِيبُ",
+                        "الوَاسِعُ",
+                        "الحَكِيمُ",
+                        "الوَدُودُ",
+                        "المَجِيدُ",
+                        "البَاعِثُ",
+                        "الشَّهِيدُ",
+                        "الحَقُّ",
+                        "الوَكِيلُ",
+                        "القَوِيُّ",
+                        "المَتِينُ",
+                        "الوَلِيُّ",
+                        "الحَمِيدُ",
+                        "المُحْصِي",
+                        "المُبْدِىءُ",
+                        "المُعِيدُ",
+                        "المُحْيِي",
+                        "المُمِيتُ",
+                        "الحَيُّ",
+                        "القَيُّومُ",
+                        "الوَاجِدُ",
+                        "المَاجِدُ",
+                        "الوَاحِدُ",
+                        "الصَّمَدُ",
+                        "القَادِرُ",
+                        "المُقْتَدِرُ",
+                        "المُقَدِّمُ",
+                        "المُؤَخِّرُ",
+                        "الأَوَّلُ",
+                        "الآخِرُ",
+                        "الظَّاهِرُ",
+                        "البَاطِنُ",
+                        "الوَالِي",
+                        "المُتَعَالِ",
+                        "البَرُّ",
+                        "التَّوَّابُ",
+                        "المُنْتَقِمُ",
+                        "العَفُوُّ",
+                        "الرَّءُوفُ",
+                        "مَالِكُ المُلْكِ",
+                        "ذُو الجَلَالِ وَالإِكْرَامِ",
+                        "المُقْسِطُ",
+                        "الجَامِعُ",
+                        "الغَنِيُّ",
+                        "المُغْنِيُّ",
+                        "المَانِعُ",
+                        "الضَّارُ",
+                        "النَّافِعُ",
+                        "النُّورُ",
+                        "الهَادِي",
+                        "البَدِيعُ",
+                        "البَاقِي",
+                        "الوَارِثُ",
+                        "الرَّشِيدُ",
+                        "الصَّبُورُ");
+                
+                if($unchakl)
+                {
+                        $arr_final = array();
+                        
+                        foreach($arr as $name)
+                        {
+                            $arr_final[] = self::arabic_unchakl($name);
+                        }
+                }
+                else
+                {
+                   $arr_final = $arr;
+                }
+                
+                if($indexed)
+                {
+                        $arr_indexed = array();
+                        
+                        foreach($arr_final as $name)
+                        {
+                            $arr_indexed[$name] = true;
+                        }
+                        
+                        $arr_final = $arr_indexed;
+                }
+                
+                return $arr_final;        
+        }
+
+        public static function arabic_full_name_explode($full_name, $gfather=false)
+        {
+            $full_name_arr = explode(" ",$full_name);
+            
+            $prefix_items = array("عبد"=>true,
+                                  "عبيد"=>true,
+                                  "آل"=>true,
+                                  "ال"=>true,
+                                  "ابو"=>true,
+                                  "ابا"=>true,
+                                  "ابي"=>true,
+                                  "أبو"=>true,
+                                  "أبا"=>true,
+                                  "أبي"=>true,
+                                   
+                                   );
+                                   
+            $suffix_items = array("الدين"=>true,
+                                   
+                                   );                       
+                                   
+                                   
+                                   
+            $Allah_names = self::Allah_names();                       
+            
+            
+            $full_name_list = array();
+            $k = 0;
+            for($i = 0; $i < count($full_name_arr); $i++)
+            {
+                 if($full_name_arr[$i])
+                 {
+                         // is prefix
+                         if($prefix_items[$full_name_arr[$i]])
+                         {
+                            $full_name_arr[$i] .= " " . $full_name_arr[$i+1]; 
+                            $full_name_arr[$i+1] = "";
+                            
+                            $full_name_list[$k] = $full_name_arr[$i];
+                            $k++;
+                         }
+                         elseif($Allah_names[$full_name_arr[$i]] or $suffix_items[$full_name_arr[$i]])
+                         {
+                            // is suffix
+                            if($k) $full_name_list[$k-1] = $full_name_list[$k-1]." ".$full_name_arr[$i];
+                         }
+                         else
+                         {
+                            // is word
+                            $full_name_list[$k] = $full_name_arr[$i];
+                            $k++;
+                         }
+                 }
+            }
+            
+            $first_name = "";
+            $father_name = "";
+            $last_name = "";
+            
+            switch(count($full_name_list))
+            {
+                  case 0 :
+                     break;
+                  case 1 : 
+                     $first_name = $full_name_list[0];
+                     break;
+                  case 2 : 
+                     $first_name = $full_name_list[0];
+                     $last_name = $full_name_list[1];
+                     break; 
+                  case 3 : 
+                     $first_name = $full_name_list[0];
+                     $father_name = $full_name_list[1];
+                     $last_name = $full_name_list[2];
+                     break;
+                  case 4 : 
+                     $first_name = $full_name_list[0];
+                     if(!$gfather) 
+                     {
+                        $father_name = $full_name_list[1]." ".$full_name_list[2];
+                        $gfather_name = "";
+                     }
+                     else
+                     {
+                        $father_name = $full_name_list[1];
+                        $gfather_name = $full_name_list[2];
+                     }
+                     $last_name = $full_name_list[3];
+                     break;
+                  case 5 : 
+                    if(!$gfather) 
+                    {
+                        $first_name = $full_name_list[0]." ".$full_name_list[1];
+                        $father_name = $full_name_list[2]." ".$full_name_list[3];
+                        $gfather_name = "";
+                        
+                    }
+                    else
+                    {
+                        $first_name = $full_name_list[0]." ".$full_name_list[1];
+                        $father_name = $full_name_list[2];
+                        $gfather_name = $full_name_list[3];
+                    }
+                    $last_name = $full_name_list[4]; 
+                     break;
+                  default :
+                    if(!$gfather) 
+                    {
+                        $first_name = $full_name_list[0]." ".$full_name_list[1];
+                        $father_name = $full_name_list[2]." ".$full_name_list[3];
+                        $gfather_name = "";
+                        
+                    }
+                    else
+                    {
+                        $first_name = $full_name_list[0]." ".$full_name_list[1];
+                        $father_name = $full_name_list[2];
+                        $gfather_name = $full_name_list[3];
+                    }
+                     for($ii=0;$ii<4;$ii++) unset($full_name_list[$ii]);
+                     $last_name = implode(" ",$full_name_list);
+                     break;          
+            } 
+        
+            if(!$gfather) return array($first_name, $father_name, $last_name);
+            else return array($first_name, $father_name, $gfather_name, $last_name);
+        }
+
 
 }

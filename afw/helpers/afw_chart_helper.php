@@ -121,8 +121,8 @@ class AfwChartHelper
 
         $return =
             "<script>
-    const xValues = $x_js_code;
-    const yValues = $y_js_code;
+    xValues = $x_js_code;
+    yValues = $y_js_code;
 
     new Chart(\"$idCanvas\", {
     type: \"line\",
@@ -132,7 +132,7 @@ class AfwChartHelper
         fill: false,
         lineTension: 0,
         backgroundColor: \"rgba(0,0,255,1.0)\",
-        borderColor: \"rgba(0,0,255,0.05)\",
+        borderColor: \"rgba(0,0,255,0.2)\",
         data: yValues
         }]
     },

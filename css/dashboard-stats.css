@@ -15239,7 +15239,7 @@ textarea.form-control-lg {
     -webkit-transition: 0.5s;
     transition: 0.5s;
     background-size: cover;
-    background-image: url(../img/diamond.png);
+    background-image: url(../images/diamond.png);
   }
   
   @media (max-width: 575.98px) {
@@ -18794,7 +18794,7 @@ textarea.form-control-lg {
   }
 
   .row.justify-content-center {
-    background-color: #c9eeff;
+    background-color: #93b1bf3d;
     padding-top: 30px;
   }
   

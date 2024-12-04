@@ -27,7 +27,7 @@ AfwSession::startSession();
 $uri_module = AfwUrlManager::currentURIModule();
 $direct_dir_name = dirname(__FILE__)."/../../$uri_module";
 include_once ("$direct_dir_name/ini.php");
-// die("$direct_dir_name/application_config.php");
+//die("$direct_dir_name/application_config.php");
 include_once ("$direct_dir_name/application_config.php");
 AfwSession::initConfig($config_arr);
 $parent_module = AfwSession::config("main_module", "");
@@ -37,13 +37,6 @@ include_once (dirname(__FILE__)."/../../$uri_module/module_config.php");
 
 include("afw_error_handler.php");
 
-//die("$direct_dir_name/ini.php");
-/*
-include_once ("$direct_dir_name/ini.php");
-include_once ("$direct_dir_name/module_config.php");
-include_once ("$direct_dir_name/application_config.php");
-AfwSession::initConfig($config_arr);
-*/
 
 // rafik : should be after the above includes to avoid objme : __PHP_Incomplete_Class Auser  or Employee or Sempl etc ....
 
