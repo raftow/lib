@@ -6126,3 +6126,8 @@ label.error>span {
     font-family: arial;
 }
 
+table.trace td>span {
+    background-color: #ffeec2;
+    padding: 6px;
+    border: 1px solid orange;
+}

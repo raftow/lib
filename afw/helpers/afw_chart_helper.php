@@ -147,4 +147,83 @@ class AfwChartHelper
 
         return $return;
     }
+
+    // object number increase chart functions
+            
+    public static function objectNumberAt($className, $gdate, $dateColumn='', $dateSys='greg')
+    {
+        if(!$dateColumn) $dateColumn = "created_at";
+        if($dateSys=='hijri') $idate = AfwDateHelper::to_hijri($gdate);
+        else $idate = $gdate;
+
+        $obj = new $className();
+        $obj->where("$dateColumn <= '$idate'");
+        return $obj->count();
+    }
+
+
+
+    // data to use for chart by default 1 year ago
+    public static function oniData($className,
+        $start = -360,
+        $end = 0,
+        $step = 30,
+        $unit = 'd',
+        $index = 'year',
+        $valMode = '',
+        $options = ['min' => 50, 'max' => 150],
+        $dateColumn = '',
+        $dateSys = 'greg'
+    ) {
+        if ($unit == 'd') $unit_value = 1;
+        if ($unit == 'm') $unit_value = 30;
+        if ($unit == 'y') $unit_value = 360;
+
+        $step_value = $step * $unit_value;
+        $start_value = $start * $unit_value;
+        $end_value = $end * $unit_value;
+
+        $data = [];
+
+        $allzero = true;
+        for ($i = $start; $i <= $end; $i += $step) {
+            $gdate = AfwDateHelper::shiftGregDate("", $i * $unit_value);
+            $c = static::objectNumberAt($className, $gdate, $dateColumn, $dateSys);
+            if ($c) $allzero = false;
+            if ($index == 'date') $indx = $gdate;
+            elseif ($index == 'year') list($indx,) = explode("-", $gdate);
+            else $indx = $i;
+            $data[$indx] = $c;
+        }
+
+        if (!$valMode) $valMode = 'randomAlways';
+
+        if (($allzero and ($valMode == 'randomIfAllzero')) or ($valMode == 'randomAlways')) {
+            // throw new AfwRuntimeException("will be randomed data = ".var_export($data,true));
+            foreach ($data as $dindx => $dc) {
+                $data[$dindx] = round(rand($options['min'], $options['max']));
+            }
+            // throw new AfwRuntimeException("has been randomed data = ".var_export($data,true));
+        }
+
+        return $data;
+    }
+
+    public static function oniChartScript($className,
+        $idCanvas,
+        $type,
+        $start = -360,
+        $end = 0,
+        $step = 30,
+        $unit = 'd',
+        $index = 'year',
+        $valMode = '',
+        $options = ['min' => 50, 'max' => 150],
+        $dateColumn = '',
+        $dateSys = 'greg'
+    ) {
+        $data = static::oniData($className, $start, $end, $step, $unit, $index, $valMode, $options, $dateColumn, $dateSys);
+        if ($type == "scatter") return AfwChartHelper::scatterChartScript($data, $idCanvas);
+        if ($type == "line") return AfwChartHelper::lineChartScript($data, $idCanvas);
+    }
 }

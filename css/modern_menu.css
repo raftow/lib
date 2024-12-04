@@ -333,3 +333,32 @@ i.uil.uil-moon {
 .fa-signout:before { 
     content: '\f2f5'; 
 }
+
+.header_notification_warp {
+    margin-right: 8px;
+    margin-left: 8px;
+    min-width:100px;
+}
+
+.header_notification_warp li {
+    display: inline-block;
+    list-style: none;
+}
+
+.header_notification_warp li a {
+    font-size: 20px;
+    color: #929BB5;
+    position: relative;
+    margin: 4px;
+    padding: 4px;
+    display: inline-block;
+    transition: 0.5s;
+    text-decoration: none;
+}
+
+.top .header_notification_warp li a > img, svg {
+    vertical-align: middle;
+    width: 30px !important;
+    height: 30px !important;
+}
+

@@ -185,11 +185,11 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                                 <? if(isset($trace['args']) and $trace['args'] ) : ?>
                                     <? foreach ( $trace['args'] as $i => $arg ) : ?>
                                         <? if(!is_object($arg) and !is_array($arg)) : ?> 
-                                            <span title=""><?= gettype($arg); ?> : <?= var_export( $arg, true ); ?></span>
-                                            <?= $i < count( $trace['args'] ) -1 ? ',' : ''; ?> 
+                                            <span><?= gettype($arg); ?> : <?= var_export( $arg, true ); ?></span>
                                         <? else : ?>
-                                            Array or Object
+                                            <span>Array or Object</span>
                                         <? endif; ?>
+                                        <?= $i < count( $trace['args'] ) -1 ? ',' : ''; ?> 
                                     <? endforeach; ?>
                                 <? else : ?>
                                     NULL

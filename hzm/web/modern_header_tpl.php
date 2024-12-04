@@ -5,6 +5,14 @@
                 <i class="uil uil-search"></i>
                 <input type="text" placeholder="[search_here]...">
             </div>
+            <div class="header_notification_warp d-flex align-items-center">
+                <li>
+                    <a href="#"> <img src="/lib/images/bell.svg" alt=""> </a>
+                </li>
+                <li>
+                    <a href="#"> <img src="/lib/images/msg.svg" alt=""> </a>
+                </li>
+            </div>
             <div class="hzm-user-account hzm-container-center hzm-custom-icon-container [user_bg_class]">
                 <a href="[user_account_page]">
                     [user_picture]

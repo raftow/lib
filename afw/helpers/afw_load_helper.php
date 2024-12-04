@@ -320,7 +320,7 @@ class AfwLoadHelper extends AFWRoot
                     $struct = AfwStructureHelper::getStructureOf($myObject, $attribute);
                     if ($struct['MANDATORY']) {
                         throw new AfwRuntimeException(
-                            "The mandatory attribute $attribute of " .
+                            "The mandatory attribute $attribute which is a FK on table " .
                                 $className .
                                 ' has empty object for value : ' .
                                 $object_id .
