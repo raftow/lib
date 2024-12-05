@@ -8,7 +8,7 @@ class AfwFormatHelper
         } // in this cas MANDATORY property that will reject
 
         if ($desc['FORMAT'] == 'ARABIC-TEXT') {
-            if (!is_arabic($val_attr)) {
+            if (!AfwStringHelper::is_arabic($val_attr)) {
                 return [false, 'FORMAT-ARABIC-TEXT'];
             }
         }
@@ -559,7 +559,7 @@ class AfwFormatHelper
                     }
 
                     $key_struct = var_export($structure, true);
-                    $data_to_display = "<pre id='$key-$key' $pre_class style='direction: $dir;padding:8px;height: auto;min-width:${min_wd};width:${wd};$text_align'>$data_to_display </pre>"; // .$key_struct;
+                    $data_to_display = "<pre id='$key-$key' $pre_class style='direction: $dir;padding:8px;height: 100%;overflow: scroll;min-width:${min_wd};width:${wd};$text_align'>$data_to_display </pre>"; // .$key_struct;
                 }
 
                 if ($getFormatLink) {
