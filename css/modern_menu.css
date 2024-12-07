@@ -362,3 +362,10 @@ i.uil.uil-moon {
     height: 30px !important;
 }
 
+.mbsc-icon>svg {
+    fill: currentColor;
+    display: block;
+    height: 100% !important;
+    margin: 0 auto;
+    width: 100% !important;
+}

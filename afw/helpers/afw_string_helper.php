@@ -1439,5 +1439,126 @@ class AfwStringHelper
             else return array($first_name, $father_name, $gfather_name, $last_name);
         }
 
+        public static function arabicSpecialTrim($string)
+        {
+             $string = self::arTrim($string,"السلام عليكم");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"وعليكم السلام");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"ورحمة الله");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"ورحمه الله");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"وبركاته");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"أما بعد");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"أما بعد");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"تحية طيبة");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"تحية طيبه");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"تحيه طيبه");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"تحيه طيبة");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"وبعد");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"بعد التحيه");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"بعد التحية");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"شكرا لك على تواصلك");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"شكرا لك");
+             $string = self::trimSpecialChars($string);
+             
+             $string = self::arTrim($string,"نشكرك على تواصلك");
+             $string = self::trimSpecialChars($string);
+             $string = self::arTrim($string,"نشكرك");
+             $string = self::trimSpecialChars($string);
+             
+             return $string;
+        }
+        
+        public static function arabicSpecialJomlaTrim($string, $counter=30)
+        {
+             for($c=1;$c<=$counter;$c++) $string = self::arabicSpecialTrim($string);
+             
+             return $string;
+        }
+        
+        public static function arabicStartOfJomlaTrim($jomla, $maxlen=64, $counter=30, $etc="...")
+        {
+            $trimmed = self::arabicSpecialJomlaTrim($jomla, $counter);
+            //return "tt=".$trimmed; 
+            return self::truncateArabicJomla($trimmed, $maxlen, $etc);
+        }
+        
+        public static function arabicCounter($cnt, $genre="M", $prefix="ال", $suffix="")
+        {
+              $array_of_arabicCounters = array();
+              
+              $array_of_arabicCounters["M"] = array(
+                1=>"أول",
+                2=>"ثاني",
+                3=>"ثالث",
+                4=>"رابع",
+                5=>"خامس",
+                6=>"سادس",
+                7=>"سابع",
+                8=>"ثامن",
+                9=>"تاسع",
+                10=>"عاشر",
+              );
+              
+              $array_of_arabicCounters["F"] = array(
+                1=>"أولى",
+                2=>"ثانية",
+                3=>"ثالثة",
+                4=>"رابعة",
+                5=>"خامسة",
+                6=>"سادسة",
+                7=>"سابعة",
+                8=>"ثامنة",
+                9=>"تاسعة",
+                10=>"عاشرة",
+              );
+              
+              $word = $array_of_arabicCounters[$genre][$cnt];
+              if($word) $word = $prefix . $word . $suffix;
+              else $word = "رقم ". $cnt;
+        
+        
+              return $word;
+        }
+        
+        public static function arTrim($string, $strTrimmed)
+        {
+            $string_after = $string;
+            // rafik this below is bugged do not use and we may create another self::arTrim function later
+            // preg_replace('/^['.$strTrimmed.'\s]+|['.$strTrimmed.'\s]+$/u', '', $string);
+            //echo "strTrimmed=$strTrimmed   :::: string=$string   => <br>\n string_after = $string_after<br>\n";
+            return $string_after;
+        }        
+
+        public static function trimSpecialChars($string)
+        {
+             $string = trim($string);
+             $string = trim($string,"\n");
+             $string = trim($string,",");
+             $string = trim($string,".");
+             
+             $string = trim($string,":");
+             $string = trim($string,"/");
+             $string = trim($string,"*");
+             $string = trim($string,"-");
+             $string = trim($string,"+");
+             //$string = arTrim($string,"،");
+             
+             return $string;
+        }
+
 
 }

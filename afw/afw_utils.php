@@ -66,6 +66,7 @@
             $type_arr = explode("_",$type);
             $type_css = implode(" ",$type_arr);
             if($pre) $type_css .= " ".$pre;
+            if(!trim($string)) $string = "[EMPTY]";
 
             if(!$pre) $return = "<span class=\"cline-$lang cline-message cline-$type\">$string</span>";
             else $return = "<span class=\"cline-$lang cline-message cline-$type\"><textarea class='$type_css'>$string</textarea></span>";

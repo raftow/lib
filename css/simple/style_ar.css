@@ -280,7 +280,7 @@ table button,table input {
  */
 button,input[type="button"],input[type="reset"],input[type="submit"] {
 	cursor: pointer;
-	-webkit-appearance: button;
+	--webkit-appearance: button;
         font-family: menu;
 	font-size: inherit;
 	line-height: inherit;
@@ -290,14 +290,14 @@ button,input[type="button"],input[type="reset"],input[type="submit"] {
  */
 input[type="checkbox"],input[type="radio"] {
 	box-sizing: border-box;
-        margin-right: -30px;
-        margin-top: -4px;
+		margin-right: 0px;
+		margin-top: 2px;
         width: 20px;
         height: 20px;
 }
 
 input[type="search"] {
-	-webkit-appearance: textfield;
+	--webkit-appearance: textfield;
 	-moz-box-sizing: content-box;
 	-webkit-box-sizing: content-box;
 	box-sizing: content-box;
@@ -321,10 +321,6 @@ textarea {
 	overflow: auto;
 	vertical-align: top;
 	resize: vertical;
-}
-/* Colors for form validity */
-input:invalid,textarea:invalid {
-	/* background-color: #f0dddd;*/
 }
 /* =============================================================================
    Tables

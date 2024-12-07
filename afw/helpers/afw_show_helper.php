@@ -1035,7 +1035,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                         case 'YN':
                                             // if(($val->id==476) and ($col=="active")) echo("see FORMAT in desc = ".var_export($desc,true));
                                             if ($desc['FORMAT'] == 'icon') {
-                                                $onoff = $val->est($col) ? "on" : "off";
+                                                $onoff = $val->sureIs($col) ? "on" : "off";
                                                 list($switcher_authorized, $switcher_title, $switcher_text) = $val->switcherConfig($col, $objme);
                                                 if($switcher_authorized)
                                                 {
@@ -1772,7 +1772,7 @@ $('#$showAsDataTable').DataTable( {
 
             case 'YN':
                 if ($desc['FORMAT'] == 'icon') {
-                    $onoff = $objItem->est($col) ? "on" : "off";
+                    $onoff = $objItem->sureIs($col) ? "on" : "off";
                     list($switcher_authorized, $switcher_title, $switcher_text) = $objItem->switcherConfig($col, $objme);
                     if($switcher_authorized)
                     {

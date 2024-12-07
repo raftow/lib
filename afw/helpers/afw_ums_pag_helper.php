@@ -630,11 +630,10 @@ class AfwUmsPagHelper extends AFWRoot
             return true;
         }
 
-        if (
-            $operation == 'delete' and
-            $object->canBeDeletedWithoutRoleBy($auser)
-        ) {
-            return true;
+        if ($operation == 'delete') 
+        {
+            list($canBeDeletedWithoutRole, $reasonBeDeletedWithoutRole) = $object->canBeDeletedWithoutRoleBy($auser);
+            if($canBeDeletedWithoutRole) return true;
         }
         
         if (

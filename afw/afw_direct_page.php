@@ -85,7 +85,7 @@ if((count($_POST)>0) and ($Direct_Page == "cline.php"))
 
 //die(dirname(__FILE__)."/../../$uri_module/$Direct_Page");
 include(dirname(__FILE__)."/../../$uri_module/$Direct_Page");
-
+/*
 if($popup)
 {
     include_once(dirname(__FILE__)."/../hzm/web/hzm_popup_footer.php");
@@ -98,7 +98,7 @@ elseif((!$nohf) and (!AfwSession::config("no_header_and_footer", false)))
 {
     include_once(dirname(__FILE__)."/../hzm/web/hzm_footer.php");
 } 
-
+*/
 
 
 ?>

@@ -1449,10 +1449,15 @@ class AFWObject extends AFWRoot
         return $value == 'N';
     }
 
-    public function est($attribute)
+    public function sureIs($attribute)
     {
         // work with shortcuts
         return $this->is($attribute, false);
+    }
+
+    public function may($attribute)
+    {
+        return $this->is($attribute);
     }
 
     /**
@@ -2373,7 +2378,7 @@ class AFWObject extends AFWRoot
                 break;
             case 'est':
                 if (!AfwStructureHelper::fieldReallyExists($this, $attribute)) throw new AfwRuntimeException("unknown attribute $attribute when call to method $name from " . static::class);
-                return $this->est($attribute);
+                return $this->sureIs($attribute);
                 break;
             case 'dec':
                 if (!AfwStructureHelper::fieldReallyExists($this, $attribute)) throw new AfwRuntimeException("unknown attribute $attribute when call to method $name from " . static::class);
