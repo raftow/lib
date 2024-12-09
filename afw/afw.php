@@ -753,9 +753,10 @@ class AFWObject extends AFWRoot
 
     public function isSystemField($attribute)
     {
-        return $attribute == 'lookup_code' or
-            $attribute == $this->fld_ACTIVE() or
+        return $attribute == $this->fld_ACTIVE() or
             $attribute == 'draft';
+        // it is mistake to consider lookup_code as system field as major tables doenst contain it and it should be paggable
+        // $attribute == 'lookup_code' or    
     }
 
 
@@ -2626,7 +2627,7 @@ class AFWObject extends AFWRoot
 
     public static function loadAllLookupObjects($orderBy = '')
     {
-        $obj = new self();
+        $obj = new static();
         if (!self::$all_data[static::$TABLE]) {
             $obj->select($obj->fld_ACTIVE(), 'Y');
             self::$all_data[static::$TABLE] = $obj->loadMany('', $orderBy);
@@ -5116,7 +5117,7 @@ class AFWObject extends AFWRoot
 
 
 
-    public function showMyLink($step = 0, $target = '', $what = "icon", $whatis = "view_ok", $mode = "display")
+    public function showMyLink($step = 0, $target = '', $what = "icon", $whatis = "view_ok", $mode = "edit")
     {
         global $lang;
         $val_id = $this->getId();
