@@ -83,6 +83,8 @@ class AfwHtmlIncluderHelper
           $header .= "<link rel='stylesheet' href='../lib/css/dashboard-stats.css'>";
         }
 
+        
+
         if ($options["chart-js"]) {
           $header .= "<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js'></script>";
         }
@@ -154,6 +156,13 @@ class AfwHtmlIncluderHelper
           if($options["sweetalert"]) $header .= "
           <script src='../lib/js/sweetalert.min.js'></script>
           ";
+
+          if ($options["other-js-arr"]) {
+            foreach($options["other-js-arr"] as $js_file_path)
+            {
+              $header .= "<script src='$js_file_path'></script>";
+            }          
+          }
 
           if($options["edit"]) $header .= "
           <link href='../lib/skins/square/green.css' rel='stylesheet' type='text/css'>
@@ -272,7 +281,12 @@ class AfwHtmlIncluderHelper
           <link rel='stylesheet' type='text/css' href='../lib/css/table_obj_style.css' />
           ";
 
-          
+          if ($options["other-css-arr"]) {
+            foreach($options["other-css-arr"] as $css_file_path)
+            {
+              $header .= "<link rel='stylesheet' type='text/css' href='$css_file_path' />";
+            }          
+          }
 
           $pagecode_js_file = "$pagecode.js";
           $file_dir_name = dirname(__FILE__);

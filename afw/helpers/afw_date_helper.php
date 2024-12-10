@@ -1,7 +1,4 @@
 <?php
-
-// old require of afw_root
-// alter table hijra_date_base add unique key(HIJRI_YEAR,HIJRI_MONTH);
 class AfwDateHelper 
 {
     private static $hijri_date_limit = '14280918';

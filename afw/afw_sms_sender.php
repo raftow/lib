@@ -34,10 +34,6 @@ class AfwSmsSender extends AFWRoot {
                         
                         if($mobile_error) return array(false, "mobile format error : ".$mobile_error.$error_details_if_failed);
                         
-                        
-
-                        
-
                         $res = self::hzmSMS($mobile, $body, $username, $application_id);
                         $error_details_if_failed .= " result of hzmSMS : " . var_export($res,true);
                         
@@ -94,12 +90,16 @@ class AfwSmsSender extends AFWRoot {
                 } 
                 catch (SoapFault $fault) 
                 { 
-                        echo var_export($fault,true);
+                        $message = "hzm SMS sender failed with fault : ".var_export($fault,true);
+                        AfwSession::log($message);
+                        //throw $fault;
                         $error = 1; 
                 }
                 catch (Exception $e) 
                 { 
-                        echo var_export($e,true);
+                        // throw $e;
+                        $message = "hzm SMS sender failed with exception : ".var_export($e,true);
+                        AfwSession::log($message);
                         $error = 1; 
                 }
                 

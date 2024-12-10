@@ -7,7 +7,7 @@ include_once(dirname(__FILE__)."/request_entry.php");
 if(!$controllerName) $controllerName = AfwSession::config("default_controller_name", "");
 if($controllerName)
 {
-        $controllerTemplate = AfwSession::config("$controllerName-controller-template", "modern");
+        $controllerType = AfwSession::config("$controllerName-controller-type", "modern");
         $module = "unknown-module";
         try{
                 $ControllerClass = $controllerName."Controller";
@@ -23,17 +23,24 @@ if($controllerName)
                 $prepareMethodName = "prepare".ucfirst($methodName);
                 $initiateMethodName = "initiate".ucfirst($methodName);
                 
-                if($controllerTemplate=="standard")
+                if($controllerType=="standard")
                 {
                         list($html_hedear, $page_header_file, $page_footer_file) = $controllerObj->myViewSettings($methodName);                        
                 }
+                /*
                 else
                 {
                         list($module, $is_direct, $page, $page_path, $options) = $controllerObj->myNewViewSettings($methodName);                        
-                }
+                }*/
 
                 if($controllerObj->alwaysNeedPrepare($request) or method_exists($controllerObj, $prepareMethodName)) $custom_scripts = $controllerObj->$prepareMethodName($request);
                 if(method_exists($controllerObj, $initiateMethodName)) $request = $controllerObj->$initiateMethodName($request);
+                if(!$request) 
+                {
+                        // if method can't be initialized we return back to default method
+                        $methodName = $defaultMethod;  
+                        $request = $old_request;
+                }
         }
         catch(Exception $e) 
         {
@@ -45,40 +52,43 @@ if($controllerName)
                 else $controllerObjError = "Disabled because of non dev mode";*/
         }
 
-        if($controllerTemplate=="standard")
+        if(!$controllerObj)
+        {
+                throw new AfwRuntimeException("failed to instanciate controller $controllerName : $controllerObjError");
+        }
+        elseif($controllerObjError)
+        {
+                throw new AfwRuntimeException("Controller $controllerName (".get_class($controllerObj).") prepare/initiate failed : $controllerObjError");
+        }
+        elseif(!method_exists($controllerObj,$methodName))
+        {
+                throw new AfwRuntimeException("Controller $controllerName (".get_class($controllerObj).") does'nt contain method ".$methodName);
+        }
+
+        $request["controllerObj"] = $controllerObj;
+        $request["methodName"] = $methodName;
+        $options = $controllerObj->prepareOptions($methodName);
+        $options["other-js-arr"] = [];
+        $options["other-css-arr"] = [];
+        foreach ($custom_scripts as $custom_script) {
+                if ($custom_script["type"] == "css") {
+                        $options["other-css-arr"][] = $custom_script["path"];
+                } elseif ($custom_script["type"] == "js") {
+                        $options["other-js-arr"][] = $custom_script["path"];
+                } else throw new AfwRuntimeException("Custom script ".$custom_script["path"] . " has unknown type, review your controller prepare method : $prepareMethodName ");
+        }
+        $options["controllerObj"] = $controllerObj;
+        if($controllerType=="standard")
         {
                 //die("custom_scripts=".var_export($custom_scripts,true));
                 //die("rafik see : will include once ".dirname(__FILE__)."/../../$page_header_file with \$config =".var_export($config,true));
                 include_once (dirname(__FILE__)."/../../$page_header_file");
-                if(!$controllerObj)
-                {
-                        AfwRunHelper::safeDie("failed to instanciate controller $controllerName : $controllerObjError");
-                }
-                elseif($controllerObjError)
-                {
-                        AfwRunHelper::safeDie($controllerName."Controller => failed : $controllerObjError");
-                }
-                elseif(!method_exists($controllerObj,$methodName))
-                {
-                        AfwRunHelper::safeDie(get_class($controllerObj)." does'nt contain method ".$methodName);
-                }
-                if($request !== null) $controllerObj->$methodName($request);
-                else $controllerObj->$defaultMethod($old_request);  // if method can't be initialized we return back to default method
-
+                echo AfwControllerHelper::showControllerPage($controllerObj, $controllerName, $methodName, $request, true, $options);
                 include_once (dirname(__FILE__)."/../../$page_footer_file");
         }
         else
         {
-                $file_dir_name = dirname(__FILE__);                
-                require("$file_dir_name/afw_main_page.php"); 
-                if($is_direct)
-                {
-                        AfwMainPage::echoDirectPage($module, $page, $page_path, $header_template = "direct", $menu_template = "direct", $body_template = "direct", $footer_template = "direct", $options);
-                }
-                else
-                {
-                        AfwMainPage::echoMainPage($module, $page, $page_path, $options);
-                }
+                echo AfwControllerHelper::showControllerPage($controllerObj, $controllerName, $methodName, $request, false, $options);
         }
         
         

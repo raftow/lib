@@ -222,15 +222,30 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $options = [],
     ) 
     {
-        $objme = AfwSession::getUserConnected();
+        if($options["controllerObj"])
+        {
+            $data_tokens = $options["controllerObj"]->prepareMenuTokens(
+                $lang,
+                $role,
+                $selected_menu,
+                $options
+            );
+            // die("DGB241210 data_tokens=".var_export($data_tokens,true));
+        }
+        else
+        {
+            // die("DGB241210 options=".var_export($options,true));
+            $objme = AfwSession::getUserConnected();
 
-        $data_tokens = self::prepareTokens(
-            $lang,
-            $objme,
-            $role,
-            $selected_menu,
-            $options
-        );
+            $data_tokens = self::prepareTokens(
+                $lang,
+                $objme,
+                $role,
+                $selected_menu,
+                $options
+            );
+        }
+        
         if(!$tpl_path) $tpl_path = self::hzmTplPath();
         $html_template_file = "$tpl_path/$menu_template"."_menu_tpl.php";
                              

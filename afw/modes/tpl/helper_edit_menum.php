@@ -33,11 +33,24 @@ else
     if ($desc["SEL_OPTIONS"]) $infos_arr = array_merge($infos_arr, $desc["SEL_OPTIONS"]);
 
 
-    select(
-        $liste_rep,
-        $val_arr,
-        $infos_arr,
-        "",
-        false
-    );
+    if ($desc["FORMAT"]=="dropdown")
+    {
+        select(
+            $liste_rep,
+            $val_arr,
+            $infos_arr,
+            "",
+            false
+        );
+    }
+    else
+    {
+        mobiselector(
+            $liste_rep,
+            $val_arr,
+            $infos_arr
+        );
+    }
+
+    
 }

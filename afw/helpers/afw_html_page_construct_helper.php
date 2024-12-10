@@ -222,36 +222,43 @@
 
         public static function renderMainSection($the_main_section_file, $arrRequest, $lang)
         {
-                foreach ($arrRequest as $col => $val) ${$col} = $val;
-                $out_scr = "";
-                if (file_exists($the_main_section_file)) {
-                        include($the_main_section_file);
-                } 
-                else throw new AfwRuntimeException("failed to open : the_main_section_file = $the_main_section_file");
-
+                $out_scr = self::executeMainSection($the_main_section_file, $arrRequest, $lang);
                 return $out_scr;
         } 
+
+        public static function executeMainSection($the_main_section_file, $arrRequest, $lang)
+        {
+                if($the_main_section_file == "Controller::method")
+                {
+                        $methodName = $arrRequest["methodName"];
+                        // unset($arrRequest["methodName"]);
+                        $controllerObj = $arrRequest["controllerObj"];
+                        unset($arrRequest["controllerObj"]);
+                        return $controllerObj->$methodName($arrRequest);
+                }
+                else
+                {
+                        if(!file_exists($the_main_section_file))
+                        {
+                                throw new AfwRuntimeException("main section file [$the_main_section_file] not found");
+                        }
+                        foreach ($arrRequest as $col => $val) ${$col} = $val;
+                        include($the_main_section_file);
+                        return $out_scr;
+                }
+                
+        }
 
         public static function obRenderMainSection($the_main_section_file, $arrRequest, $lang)
         {
                 foreach ($arrRequest as $col => $val) ${$col} = $val;
-                $out_scr = "";
-                if (file_exists($the_main_section_file)) 
+                ob_start();
+                self::executeMainSection($the_main_section_file, $arrRequest, $lang);
+                $out_scr = ob_get_clean();
+                if(!$out_scr)
                 {
-                        ob_start();
-                        if(!file_exists($the_main_section_file))
-                        {
-                                throw new AfwRuntimeException("file main section [$the_main_section_file] not found");
-                        }
-                        include($the_main_section_file);
-                        $out_scr = ob_get_clean();
-                        if(!$out_scr)
-                        {
-                                throw new AfwRuntimeException("file main section [$the_main_section_file] should return html");
-                        }
-                } 
-                else throw new AfwRuntimeException("failed to open : the_main_section_file = $the_main_section_file");
-
+                        throw new AfwRuntimeException("file main section [$the_main_section_file] should return html");
+                }
                 return $out_scr;
         } 
 

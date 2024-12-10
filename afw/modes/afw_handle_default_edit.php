@@ -4,8 +4,8 @@ require_once(dirname(__FILE__) . "/../../../external/db.php");
 $class = $_POST["class_obj"];
 $file  = $_POST["file_obj"];
 $id    = $_POST["id_obj"];
-/* $currmod = $_POST["currmod"];
-$currstep = $_POST["currstep"];*/
+$posted_currmod = $_POST["currmod"];
+/*$currstep = $_POST["currstep"];*/
 if (!$lang) $lang = "ar";
 $file_dir_name = dirname(__FILE__);
 
@@ -14,7 +14,8 @@ if(!$objme) $objme = AfwSession::getUserConnected();
 //AFWDebugg::setEnabled(true);
 ////AFWObject::setDebugg(true);
 //AFWDebugg::initialiser("C:\\dbg\\debug\\","afw_debugg.txt");
-
+AfwAutoLoader::addModule($posted_currmod);
+// die("AfwAutoLoader::addModule(posted_currmod=$posted_currmod) _POST=".var_export($_POST,true));
 /////////////////////////////
 $obj = new $class();
 //$currmod = $obj->getMyModule();

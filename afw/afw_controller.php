@@ -28,6 +28,12 @@ class AfwController extends AFWRoot {
             return false;
         }
 
+        public function checkLoggedIn()
+        {
+                // to be overridden depending on controller business logic
+                return false;
+        }
+
         public function render($view_module, $view_name, $data)
         {
                 global $lang;
@@ -115,7 +121,20 @@ class AfwController extends AFWRoot {
                 $this->renderError($error_message,array(),"lib","loggedout",true);
         }
 
+        /**  added below for modern look */
 
+        public function prepareOptions($methodName)
+        {
+              // can be overriden if the method page need some options featured  
+              return [];
+        }
+
+        public function prepareMenuTokens($lang, $role, $selected_menu, $options)
+        {
+              // can be overriden if the method page need some options featured  
+              return [];  
+        }
+                
         
 
 }

@@ -1021,7 +1021,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                 }
                                                 $str_arr = [];
                                                 foreach ($objs as $instance) {
-                                                    $str_arr[] = $instance->getShortDisplay($lang);
+                                                    if($instance) $str_arr[] = $instance->getShortDisplay($lang);
                                                     unset($instance);
                                                 }
                                                 

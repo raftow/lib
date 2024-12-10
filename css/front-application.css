@@ -4760,6 +4760,11 @@ div.content-annonce>ul {
     font-weight: normal;
 }
 
+.fa-user:before {
+    content: "\f007";
+    color: white;
+}
+
 @keyframes attirant {
     0%, 33% {
         box-shadow: 0 0 0 1px var(--ds-border-discovery, #65C054), 0 0 0 var(--ds-border-discovery, rgba(101, 192, 84, 1));

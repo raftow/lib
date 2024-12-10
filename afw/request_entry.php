@@ -11,24 +11,24 @@ $request = array();
 foreach($_REQUEST as $key => $value) 
 {
         if($key=="cn") $controllerName = $value;
-        elseif($key=="mt") $methodName = $value;
-        elseif($key=="mp") $Main_Page = $value;
-        elseif($key=="pm") $Main_Page_Module = $value;
-        elseif($key=="cm") $currmod = $value;
-        elseif($key=="cs") $currstep = $value;
-        elseif($key=="io") $id_origin = $value;
-        elseif($key=="co") $class_origin = $value;
-        elseif($key=="mo") $module_origin = $value;
-        elseif($key=="so") $step_origin = $value;
-        elseif($key=="no") $newo = $value;
-        elseif($key=="lm") $limit = $value;
-        elseif($key=="xt") $fixmtit = $value;
-        elseif($key=="xd") $fixmdisable = $value;
-        elseif($key=="xm") $fixm = $value;
-        elseif($key=="cl") $cl = $value;
-        elseif($key=="md") $currmod = $value;
-        elseif($key=="id") $id = $value;
-        else $$key = $request[$key] = $value;
+        elseif($key=="mt") {$methodName = $value;$_REQUEST["methodName"]=$value;}
+        elseif($key=="mp") {$Main_Page = $value;$_REQUEST["Main_Page"]=$value;}
+        elseif($key=="pm") {$Main_Page_Module = $value;$_REQUEST["Main_Page_Module"]=$value;}
+        elseif($key=="cm") {$currmod = $value;$_REQUEST["currmod"]=$value;}
+        elseif($key=="cs") {$currstep = $value;$_REQUEST["currstep"]=$value;}
+        elseif($key=="io") {$id_origin = $value;$_REQUEST["id_origin"]=$value;}
+        elseif($key=="co") {$class_origin = $value;$_REQUEST["class_origin"]=$value;}
+        elseif($key=="mo") {$module_origin = $value;$_REQUEST["module_origin"]=$value;}
+        elseif($key=="so") {$step_origin = $value;$_REQUEST["step_origin"]=$value;}
+        elseif($key=="no") {$newo = $value;$_REQUEST["newo"]=$value;}
+        elseif($key=="lm") {$limit = $value;$_REQUEST["limit"]=$value;}
+        elseif($key=="xt") {$fixmtit = $value;$_REQUEST["fixmtit"]=$value;}
+        elseif($key=="xd") {$fixmdisable = $value;$_REQUEST["fixmdisable"]=$value;}
+        elseif($key=="xm") {$fixm = $value;$_REQUEST["fixm"]=$value;}
+        elseif($key=="cl") {$cl = $value;$_REQUEST["cl"]=$value;}
+        elseif($key=="md") {$currmod = $value;$_REQUEST["currmod"]=$value;}
+        elseif($key=="id") {$id = $value;$_REQUEST["id"]=$value;}
+        else $$key = $request[$key] = $_REQUEST[$key] = $value;
 
         if($key=="mp") 
         {
@@ -44,6 +44,8 @@ foreach($_REQUEST as $key => $value)
                 elseif($value=="qs") $Main_Page = "afw_mode_qsearch.php";  
                 elseif($value=="sr") $Main_Page = "afw_mode_search.php";  
                 else $Main_Page = $value; //throw new AfwRuntimeException("afw mode $value unknown");
+                
+                $_REQUEST["Main_Page"]=$Main_Page;
         }
         
 }
@@ -65,7 +67,11 @@ ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERRO
 require_once("afw_autoloader.php");
 $parent_module = AfwSession::config("main_module", "");
 if($MODULE) AfwAutoLoader::addModule($MODULE);
-if($currmod) AfwAutoLoader::addModule($currmod);
+if($currmod) 
+{
+        AfwAutoLoader::addModule($currmod);
+        // die("request entry AfwAutoLoader::addModule($currmod);");
+}
 if($parent_module) AfwAutoLoader::addMainModule($parent_module);
 //die("rafik see this : AfwAutoLoader::addMainModule($MODULE)");
 
