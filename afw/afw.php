@@ -5187,7 +5187,7 @@ class AFWObject extends AFWRoot
             $intelligent_category = $structure['CATEGORY'];
         }
 
-        if ($intelligent_category == 'ITEMS') {
+        if (($intelligent_category == 'ITEMS') or ($intelligent_category == 'FORMULA')) {
             $value = '';
             $formatted = false;
         } else {
@@ -5227,18 +5227,21 @@ class AFWObject extends AFWRoot
             list($data_to_display, $link_to_display) = AfwShowHelper::showEditButton($this, $attribute, $class_origin, $langue, $structure);
         } elseif ($structure['TYPE'] == 'ENUM') {
             list($data_to_display, $link_to_display) = AfwShowHelper::showEnum($this, $attribute, $value, $langue, $structure);
-        } else {
+        }         
+        else {
             $data_to_display = $this->decode($key);
-            //if($key=="days_nb") die("data_to_display of ($key val:$value) is $data_to_display");
+            //if($key=="response_templates") die("data_to_display of ($key val:$value) is $data_to_display");
         }
 
         //if($attribute=="warning_nb") die("Rafik CSSED($cssed_to_class) : data_to_display of ($key) is $data_to_display");
 
         if (!$merge) {
-            //if($key == "session_status_id") throw new AfwRuntimeException("we will return [$data_to_display, $link_to_display]");
+            // if($key == "response_templates") throw new AfwRuntimeException("no merge we will return [$data_to_display, $link_to_display]");
             return [$data_to_display, $link_to_display];
-        } else {
-            return AfwShowHelper::mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class);
+        } else {            
+            $return = AfwShowHelper::mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class, "", $key);
+            //if($key == "response_templates") throw new AfwRuntimeException("need merge we will return AfwShowHelper::mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class) = $return");
+            return $return;
         }
     }
 
@@ -8138,6 +8141,12 @@ $dependencies_values
 
     public function getCategorizedAttribute($attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = "")
     {
+        /*
+        if(($attribute=="response_templates"))
+        {
+            die("rafik shoof getCategorizedAttribute has been called for $attribute");
+        }*/
+        
         /*
         if (!$structure['NO-CACHE'] and isset($this->gotItemCache[$attribute][$what])) {
 

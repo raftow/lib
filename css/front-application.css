@@ -4484,7 +4484,7 @@ td.params {
 }
 
 .hzm_data.form-control.inputreadonly.inputarea {
-    min-height: 500px;
+    min-height: 50px;
     height: fit-content !important;
     background-color: white !important;
 }

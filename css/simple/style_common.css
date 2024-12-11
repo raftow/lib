@@ -6131,3 +6131,9 @@ table.trace td>span {
     padding: 6px;
     border: 1px solid orange;
 }
+
+.btn-group-vertical>.btn, .btn-group>.btn {
+    position: relative;
+    min-width: 340px !important;
+    width: max-content !important;
+}

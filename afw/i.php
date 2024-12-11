@@ -3,21 +3,20 @@
 include_once(dirname(__FILE__)."/request_entry.php");
 
 // throw new AfwRuntimeException("test eh03");
-
+$devMode = AfwSession::config('MODE_DEVELOPMENT', false);
 if(!$controllerName) $controllerName = AfwSession::config("default_controller_name", "");
 if($controllerName)
 {
         $controllerType = AfwSession::config("$controllerName-controller-type", "modern");
-        $module = "unknown-module";
+        //$module = "unknown-module";
         try{
                 $ControllerClass = $controllerName."Controller";
                 $controllerObj = new $ControllerClass ($request);
                 $old_request = $request;
                 
-                
+                $defaultMethod = $controllerObj->defaultMethod($request);                
                 if(!$methodName)                         
-                {
-                        $defaultMethod = $controllerObj->defaultMethod($request);                
+                {                        
                         $methodName = $defaultMethod;
                 }        
                 $prepareMethodName = "prepare".ucfirst($methodName);
@@ -35,11 +34,21 @@ if($controllerName)
 
                 if($controllerObj->alwaysNeedPrepare($request) or method_exists($controllerObj, $prepareMethodName)) $custom_scripts = $controllerObj->$prepareMethodName($request);
                 if(method_exists($controllerObj, $initiateMethodName)) $request = $controllerObj->$initiateMethodName($request);
+                // if method can't be initialized
                 if(!$request) 
                 {
-                        // if method can't be initialized we return back to default method
-                        $methodName = $defaultMethod;  
-                        $request = $old_request;
+                        // if dev mode
+                        if($devMode)
+                        {
+                                throw new AfwRuntimeException($controllerName."Controller->$initiateMethodName doen't return a correct request array");
+                        }
+                        else
+                        {
+                                // we return back to default method
+                                $methodName = $defaultMethod;  
+                                $request = $old_request;
+                        }
+                        
                 }
         }
         catch(Exception $e) 
@@ -62,7 +71,7 @@ if($controllerName)
         }
         elseif(!method_exists($controllerObj,$methodName))
         {
-                throw new AfwRuntimeException("Controller $controllerName (".get_class($controllerObj).") does'nt contain method ".$methodName);
+                throw new AfwRuntimeException("Controller $controllerName (".get_class($controllerObj).") does'nt contain method (".$methodName.")");
         }
 
         $request["controllerObj"] = $controllerObj;

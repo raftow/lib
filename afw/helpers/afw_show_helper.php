@@ -193,7 +193,8 @@ class AfwShowHelper
 
                 $tuple = [];
                 if (count($header) != 0) {
-                    $tuple['description'] = $liste_obj[$id]->__toString();
+                    // below is old code should now be obsolete
+                    // $tuple['description'] = $liste_obj[$id]->__toString();
                     foreach ($header as $col => $desc) {
                         $currstep = $desc["GO-TO-STEP"];
                         if (!$currstep) $currstep = $val->getDefaultStep();
@@ -2517,7 +2518,7 @@ $('#$showAsDataTable').DataTable( {
      * xxxxx
      * @param AFWObject $object
      * */
-    public static function mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class, $mfk_show_sep = "")
+    public static function mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class, $mfk_show_sep = "", $key="")
     {
         if (!is_array($data_to_display)) {
             $data_to_display_arr = [];
@@ -2548,6 +2549,8 @@ $('#$showAsDataTable').DataTable( {
         if ($disp_attr and $structure['TITLE_AFTER']) {
             $disp_attr .= ' ' . $structure['TITLE_AFTER'];
         }
+
+        // if($key == "response_templates") throw new AfwRuntimeException("For key $key : AfwShowHelper::mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class) = $disp_attr");
 
         return $disp_attr;
     }

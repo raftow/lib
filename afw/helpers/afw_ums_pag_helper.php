@@ -314,7 +314,7 @@ class AfwUmsPagHelper extends AFWRoot
 
                         if ($afield_type_id == $afwType) {
                             throw new AfwRuntimeException(
-                                "for attribute <b>[$attribute]</b> can not decode afield type [$afield_type_id] to afw type <b>[$afwType]</b> : <br><b>struct</b> = " .
+                                "for attribute <b>[$attribute]</b> can not decode afw type <b>[$afwType]</b> to afield type : <br><b>struct</b> = " .
                                     var_export($structure, true) .
                                     "<br> <b>obj</b> = " . var_export($obj, true)
                             );
@@ -552,7 +552,7 @@ class AfwUmsPagHelper extends AFWRoot
     {
         $file_dir_name = dirname(__FILE__);
         // 
-
+        $afwType = strtoupper($afwType);
         if ($afwType == 'FK') {
             if ($afwCat == 'ITEMS') {
                 return AfwUmsPagHelper::$afield_type_items;

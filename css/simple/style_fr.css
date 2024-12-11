@@ -4921,8 +4921,6 @@ input:focus {
 }
 
 .btn-group-vertical>.btn, .btn-group>.btn {
-    position: relative;
-    min-width: 420px;
     float: left;
     font-size: 12px;
     border: 1px #b1bbcd;

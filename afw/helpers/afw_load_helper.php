@@ -4,6 +4,10 @@ class AfwLoadHelper extends AFWRoot
     private static $lookupMatrix;
     private static $lookupProps;
 
+    public static function getLookupMatrix()
+    {
+        return self::$lookupMatrix;
+    }
     public static function getLookupProps($nom_module_fk, $nom_table_fk)
     {
         if(!isset(self::$lookupProps["$nom_module_fk-$nom_table_fk"])) 
@@ -1780,7 +1784,7 @@ class AfwLoadHelper extends AFWRoot
         if ($return) $get_stats_analysis[$this_TABLE][$attribute][$this_id][$what]++;
         */
 
-        // if($attribute=="level_degree_mfk") throw new AfwRuntimeException("rafik 20240917-medali case=$case return=$return");
+        // if($attribute=="response_templates") throw new AfwRuntimeException("rafik 20240917-medali case=$case return=$return");
         return $return;
     }
 

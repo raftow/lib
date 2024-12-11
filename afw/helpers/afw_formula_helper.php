@@ -259,6 +259,12 @@ class AfwFormulaHelper extends AFWRoot
 
     public static final function executeFormulaAttribute($object, $attribute, $struct=null, $lang="ar", $what="value")
     {
+        /*
+        if(($attribute=="response_templates"))
+        {
+            die("rafik shoof executeFormulaAttribute has been called for $attribute");
+        }
+        */
         if (!$struct) {
             $struct = AfwStructureHelper::getStructureOf($object,$attribute);
         } else {
@@ -326,6 +332,10 @@ class AfwFormulaHelper extends AFWRoot
         }
         else
         {
+            /*if(($attribute=="response_templates"))
+            {
+                die("rafik shoof 0 normal formula case");
+            }*/
             $access_formula = true;
             $option_key = $struct['OPTION_KEY'];
             if ($option_key) {
@@ -342,13 +352,18 @@ class AfwFormulaHelper extends AFWRoot
             if ($access_formula) {
                 $object_formula_log[$attribute] = "authorized getFormuleResult($attribute, $what)";
                 $return = $object->getFormuleResult($attribute, $what);
-                /*
-                if(($attribute=="arole_mfk") and ($what != "value"))
+                
+                /*if(($attribute=="response_templates"))
                 {
                     $objectdis = $object->getDisplay($lang);
-                    die("rafik shoof $objectdis => getFormuleResult($attribute, $what) => [$return]");
+                    die("rafik shoof 1 $objectdis => getFormuleResult($attribute, $what) => [$return]");
                 }*/
             } else {
+                /*if(($attribute=="response_templates"))
+                {
+                    $objectdis = $object->getDisplay($lang);
+                    die("rafik shoof 2 $objectdis => access_formula = false because option_key=$option_key is not enabled in current session");
+                }*/
                 $option = $object->translateMessage($option_key, $lang);
                 $message_no_access_formula = $object->translateMessage('SHOULD-ACTIVATE-THE-OPTION',$lang) . ' : ' . $option;
                 $object_formula_log[$attribute] = "not authorized getFormuleResult($attribute, $what) " . $message_no_access_formula;

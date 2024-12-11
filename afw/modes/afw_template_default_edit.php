@@ -189,10 +189,12 @@ foreach ($class_db_structure as $nom_col => $desc) {
         if ($nom_colIsApplicable) {
 
                 // if ($nom_col == "created_by") die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) " . var_export($obj_errors, true));
-                if ($mode_field_edit) {
-                        if (!$mode_field_read_only) {
+                if ($mode_field_edit) 
+                {
+                        if (!$mode_field_read_only) 
+                        {
                                 $col_val = $obj->getVal($nom_col);
-                                // if($nom_col=="lastname_en") die("nom_col = $nom_col, value = $col_val ");
+                                //if($nom_col=="response_templates") die("case not mode_field_read_only nom_col = $nom_col, value = $col_val ");
                                 $all_form_readonly = false;
 
                                 if (($desc['TYPE'] == 'PK') && empty($col_val)) {
@@ -259,7 +261,10 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 } elseif ($obj_errors) {
                                         //die("obj_errors = ".var_export($obj_errors,true));
                                 }
-                        } else {
+                        } 
+                        else 
+                        {
+                                // if($nom_col=="response_templates") die("case mode_field_read_only nom_col = $nom_col");
                                 $obj->showAsDataTable = $desc['DATA_TABLE'];
                                 $style_div_form_control = "";
 
@@ -298,7 +303,8 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 // if($nom_col=="applicationModelConditionList") die("ehelp=".$data[$nom_col]["ehelp"]);
                                 $data[$nom_col]["input"] = "<div class='hzm_data hzm_data_$nom_col $col_val_class $ro_classes_form' style='$style_div_form_control'>";
                                 if ((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) {
-                                        $col_val = $obj->{"val$nom_col"}();
+                                        // if($nom_col=="response_templates") die("case no-CATEGORY or FORCE-INPUT");
+                                        $col_val = $obj->getVal($nom_col);
                                         ob_start();
                                         hidden_input($nom_col, $desc, $col_val, $obj);
                                         $data[$nom_col]["input"] .= ob_get_clean();
@@ -307,15 +313,28 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                                 $data[$nom_col]["input"] .= "<!-- log : $mode_field_read_only_log -->";
                                         }
                                 }
+                                else
+                                {
+                                        // if($nom_col=="response_templates") die("case CATEGORY and no FORCE-INPUT");
+                                }
                                 if ($i_can_see_attribute) {
                                         $data[$nom_col]["trad"]  = $obj->getAttributeLabel($nom_col, $lang);  // . " :"
                                         if ($desc["EDIT-HIDE-VALUE"] or (isset($desc["DISPLAY"]) and (!$desc["DISPLAY"])))
                                                 if ($desc["EDIT-HIDE-VALUE"]) $data[$nom_col]["input"] .=  $desc["EDIT-HIDE-VALUE"];
                                                 else $data[$nom_col]["input"] .= $obj->tm("hidden") . "<!-- hidden because desc[DISPLAY] == false -->";
                                         else
-                                                $data[$nom_col]["input"] .=  $obj->showAttribute($nom_col);
+                                        {
+                                                // if($nom_col=="response_templates") $data[$nom_col]["input"] .= "obj->showAttribute($nom_col) = ";
+                                                $data[$nom_col]["input"] .= $obj->showAttribute($nom_col);
+
+                                        }
 
                                         if ($obj_errors[$nom_col]) $data[$nom_col]["error"] = $obj_errors[$nom_col];
+                                        // if($nom_col=="response_templates") die("case i can see attribute : " . $data[$nom_col]["input"]);
+                                }
+                                else
+                                {
+                                        if($nom_col=="response_templates") die("case i can not see attribute");
                                 }
                                 $data[$nom_col]["input"] .= "</div>";
                                 $data[$nom_col]["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "TOOLTIP", $lang, $desc));
@@ -966,12 +985,16 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
         $tb = $obj->getMyTable();
         $md = $obj->getMyModule();
         $file_js = "./js/edit_" . $tb . '.js';
-        $file_js_path = "$file_dir_name/../$md/js/edit_" . $tb . '.js';
+        $file_js_path = "$file_dir_name/../../../$md/js/edit_" . $tb . '.js';
 
         if (file_exists($file_js_path)) {
         ?>
                 <script src='<?php echo $file_js ?>'></script>
         <?php
+        }
+        else
+        {
+                echo "<!-- script js $md / $file_js not found in module/js path $file_js_path -->";
         }
 
 
