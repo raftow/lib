@@ -90,6 +90,19 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $data_tokens = array();
         
         $data_tokens["user_picture"] = $user_picture;
+        $enable_search_box = AfwSession::config("enable_search_box", false);
+        if($enable_search_box)
+        {
+            $data_tokens["enable_search_box_s"] = "";
+            $data_tokens["enable_search_box_e"] = "";
+        }
+        else
+        {
+            $data_tokens["enable_search_box_s"] = "<!-- ";
+            $data_tokens["enable_search_box_e"] = " -->";
+        }
+        
+        
         $data_tokens["user_bg_class"] = $user_bg_class;
         $data_tokens["user_account_page"] = $user_account_page;        
         $data_tokens["search_here"] = AfwLanguageHelper::translateKeyword("Search here", $lang);;        

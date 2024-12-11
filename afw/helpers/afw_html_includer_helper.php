@@ -63,6 +63,7 @@ class AfwHtmlIncluderHelper
 
         $header .= "
         <meta http-equiv='Content-Type' content='text/html; charset=$page_charset'>
+        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, minimum-scale=1\" />
         <link rel='stylesheet' href='../lib/css/font-awesome.min-4.3.css'>
         <link rel='stylesheet' href='../lib/css/font-awesome.min.css'>
         

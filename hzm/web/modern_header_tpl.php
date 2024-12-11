@@ -1,10 +1,11 @@
         <div class="top">
             <i class="uil uil-bars sidebar-toggle"></i>
-
+            [enable_search_box_s]
             <div class="search-box">
                 <i class="uil uil-search"></i>
                 <input type="text" placeholder="[search_here]...">
             </div>
+            [enable_search_box_e]
             <div class="header_notification_warp d-flex align-items-center">
                 <li>
                     <a href="#"> <img src="/lib/images/bell.svg" alt=""> </a>
