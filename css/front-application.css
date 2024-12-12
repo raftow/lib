@@ -4698,6 +4698,11 @@ label.mbsc-ios.mbsc-rtl.mbsc-form-control-wrapper {
     overflow: visible;
 }
 
+span.mbsc-select.mbsc-textarea {
+    height: min-content !important;
+    max-height: 15.5em;
+}
+
 .form-control-div.MFK {
     height: max-content !important;
 }
