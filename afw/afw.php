@@ -3847,10 +3847,13 @@ class AFWObject extends AFWRoot
     {
         return $nom_col;
     }
-    public function translate($nom_col, $langue = 'ar', $operator = null)
+
+    public static function t($nom_col, $langue = 'ar', $operator = null)
     {
         $nom_table = static::$TABLE;
         $module = static::$MODULE;
+
+        if(!$nom_col) $nom_col = $nom_table; // plural translation
 
         $return = AfwLanguageHelper::tarjem(
             $nom_col,
@@ -3867,6 +3870,11 @@ class AFWObject extends AFWRoot
         }*/
 
         return $return;
+    }
+
+    public function translate($nom_col, $langue = 'ar', $operator = null)
+    {
+        return self::t($nom_col, $langue, $operator);
     }
 
     public function translateText($text, $langue = 'ar')

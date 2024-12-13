@@ -79,7 +79,9 @@ html {
 
 body {
 	margin: 0;
-	line-height: 1.231;
+	line-height: 1.431;
+	font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
 }
 
 button,input,select,textarea {
@@ -5021,4 +5023,9 @@ label.error {
     border-radius: 0px;
     float: right;
     margin-top: 0px; /* -38px; */
+}
+
+span.cms-title {
+    font-size: 36px;
+    font-family: 'Roboto Slab', serif;
 }

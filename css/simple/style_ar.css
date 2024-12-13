@@ -5022,3 +5022,8 @@ label.error {
     float: left;
     margin-top: 0px; /* -38px; */
 }
+
+span.cms-title {
+    font-size: 36px;
+    font-family: 'menu', serif;
+}

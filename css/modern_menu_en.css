@@ -204,6 +204,7 @@ nav.close ~ .dashboard{
 }
 .dashboard .top{
     left: 200px;
+    border-bottom: 1px solid #cdcccce0;
 }
 nav.close ~ .dashboard .top{
     left: 73px;

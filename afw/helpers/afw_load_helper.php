@@ -1988,7 +1988,9 @@ class AfwLoadHelper extends AFWRoot
             }
 
 
-            if(!is_array($return)) throw new AfwRuntimeException("get EnumTable($answer,$table,$fattribut,obj: ".var_export($obj,true).") used case $case and returned : $return");
+            if(!is_array($return)) throw new AfwRuntimeException("get EnumTable($answer,$table,$fattribut,obj, ..) returned : [$return] <hr><br>
+            used case $case and obj = ".var_export($obj,true).") 
+            ");
 
             return $return;
     }

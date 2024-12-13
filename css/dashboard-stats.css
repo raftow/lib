@@ -12,7 +12,6 @@
 
 body {
     margin: 0;
-    font-family: var(--bs-font-sans-serif);
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -177,7 +176,6 @@ a:not([href]):not([class]),a:not([href]):not([class]):hover {
 }
 
 code,kbd,pre,samp {
-    font-family: var(--bs-font-monospace);
     font-size: 1em;
     direction: ltr;
     unicode-bidi: bidi-override
@@ -5761,7 +5759,6 @@ textarea.form-control-lg {
     z-index: 1080;
     display: block;
     margin: 0;
-    font-family: var(--bs-font-sans-serif);
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
@@ -5874,7 +5871,6 @@ textarea.form-control-lg {
     z-index: 1070;
     display: block;
     max-width: 276px;
-    font-family: var(--bs-font-sans-serif);
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
@@ -11340,7 +11336,6 @@ textarea.form-control-lg {
     font-size: 14px;
     margin-bottom: 0px;
     color: #828BB2;
-    font-family: "Poppins", sans-serif;
     font-weight: 300;
   }
   
@@ -15324,7 +15319,6 @@ textarea.form-control-lg {
     font-size: 19px;
     font-weight: 500;
     color: #047e7a;
-    font-family: menu;
     line-height: 1;
   }
   
