@@ -25,8 +25,10 @@ class AfwFrontMenu extends AFWRoot {
                 //$iamAdmin = 
                 $menu_id = $menu_folder["id"];
                 $childs_arr = $menu_folder["sub-folders"];
-                $menu_title = $menu_folder["menu_name"];
-                if(($lang=="en") and (!$menu_title)) $menu_title = "menu.arole.".$menu_folder["id"]; 
+                $menu_title = $menu_folder["menu_name_$lang"];
+                if(!$menu_title) $menu_title = $menu_folder["menu_name"];
+                if(!$menu_title) $menu_title = "menu.arole.".$menu_folder["id"]; 
+
                 $menu_title = AfwReplacement::trans_replace($menu_title, $module, $lang);
                 $tokens["menu_title"] = $menu_title;
                 $tokens["menu_page"] = $menu_folder["page"];

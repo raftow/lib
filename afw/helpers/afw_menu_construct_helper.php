@@ -50,6 +50,8 @@ class AfwMenuConstructHelper
             $active_lang_count++;
         }
 
+        // die("uri_arr = ".var_export($uri_arr,true));
+
         return [$LANG_NAMES, $uri_arr, $active_lang_count];
     }
 
@@ -139,63 +141,15 @@ class AfwMenuConstructHelper
             self::$current_arole = $_REQUEST["r"];
         }
         
-        
-        // $right_menu = array();
-        // if ($objme) $my_firstname = $objme->valFirstname();
-        // $my_account_title = AfwLanguageHelper::translateKeyword("MYACCOUNT", $lang);
-        // $my_home = AfwLanguageHelper::translateKeyword("HOME", $lang);
-        // if ($objme) $right_menu[] = array('href' => "index.php", 'css' => "home", 'title' => $my_home);
-        // if ($objme and $objme->isAdmin()) $right_menu[] = array('href' => "data_admin.php",'css' => "data", 'title' => AfwLanguageHelper::translateKeyword("DATA-ADMIN", $lang));
-        // if ($objme and $objme->isAdmin() and $PAG) $right_menu[] = array('href' => "panel_analyst.php", 'css' => "analyst", 'title' => AfwLanguageHelper::translateKeyword("ANALYST", $lang));
-
-        /*
-        if ($my_account_page) {
-            $my_account_page = str_replace("[ME]", $me, $my_account_page);
-            $my_account_page = str_replace("[module]", $module, $my_account_page);
-            // $my_account_page = str_replace("[EMPL]", $my_employee_id, $my_account_page);
-            // $my_account_page = str_replace("[SEMPL]", $sempl_id, $my_account_page);
-        }*/
-
-        // if($me) $my_account_page = "main.php?Main_Page=afw_mode_display.php&cl=Auser&id=$me&currmod=ums&no_my_account_page_in_mod=$module";
-        
-
         list($LANG_NAMES, $uri_arr, $active_lang_count) = self::getLangues($lang, $module_languages);
-        
         /*
-        $my_files = AfwLanguageHelper::translateKeyword("MY-FILES", $lang);
-        $right_menu[] = array('href' => "afw_my_files.php?x=1", 'css' => "file", 'title' => "$my_files");
-
-        $my_files = AfwLanguageHelper::translateKeyword("EDIT-MY-FILES", $lang);
-
-        $codeme = substr(md5("code" . $me), 0, 8);
-        $right_menu[] = array('href' => "afw_edit_my_files.php?x=$me&y=$codeme", 'css' => "files-o", 'title' => "$my_files");
-
-        if ($my_account_page)
-            $right_menu[] = array('href' => $my_account_page, 'css' => "user", 'title' => "$my_account_title ($my_firstname)");
-        else
-            $right_menu[] = array('href' => "#", 'css' => "myprofile", 'title' => AfwLanguageHelper::translateKeyword("SIGN-UP", $lang));
-        */
-
-        //$right_menu[] = array('href' => "#",'css' => "mobile", 'title' => AfwLanguageHelper::translateKeyword("CONTACT_US", $lang));
-
-        //$right_menu[] = array('href' => $login_out_page, 'css' => $login_out_css, 'title' => $login_out_title);
-
-        // $menu_color = "skyblue";
-        // $menu_next_color = array("skyblue" => "seeblue", "seeblue" => "skyblue");
-
-        // if we want to customize menu colors for a specific module
-        // include "$file_hzm_dir_name/../$module/menu_colors.php";
-
-
-
-        
-
-
         if ($objme) {
             include "$file_helper_dir_name/../../../ums/module_options.php";
             include "$file_helper_dir_name/../../../$module/special_module_options.php";
-        }
+        }*/
+        
         $enable_language_switch = AfwSession::config("enable_language_switch", true);
+        // die("enable_language_switch=$enable_language_switch active_lang_count=$active_lang_count uri_arr = ".var_export($uri_arr,true));
         if (($active_lang_count > 0) and $enable_language_switch) {
             foreach ($uri_arr as $lang_code => $uri_item) {
                 $menu_item_title = $LANG_NAMES[$lang][$lang_code];
@@ -245,8 +199,8 @@ class AfwMenuConstructHelper
                     $application_code = $mau_info["m$application_id"]["code"];
                     $menu_folders_arr = $menu[$application_code][$lang];
 
-                    if (!$menu_folders_arr) AfwSession::pushWarning("System cache X <!-- $file_cache --> gived application_code=[$application_code] for application id [$application_id] and and no menu for this user for this application code");
-                } elseif (!$no_cache_use_for_ums) AfwSession::pushWarning("System need cache optimisation file for user $me_id <!-- file not found $file_cache -->");
+                    if (!$menu_folders_arr) AfwSession::pushWarning("System cache X <!-- $user_cache_file_path --> gived application_code=[$application_code] for application id [$application_id] and and no menu for this user for this application code");
+                } elseif (!$no_cache_use_for_ums) AfwSession::pushWarning("System need cache optimisation file for user $me_id <!-- file not found $user_cache_file_path -->");
                 else AfwSession::pushWarning("System cache optimisation disabled");
 
                 if (!$menu_folders_arr) $menu_folders_arr = $objme->getMenuFor($application_id, $lang);
@@ -257,8 +211,8 @@ class AfwMenuConstructHelper
                 //throw new AfwRuntimeException("objme->getMenuFor($application_id,$lang) = ".var_export($menu_arr,true));
                 foreach ($menu_folders_arr as $menu_folder_id => $menu_folder_i) {
                     if (($iamAdmin) or (!$menu_folder_i["need_admin"])) {
-                        $menu_color = $menu_next_color[$menu_color];
-                        $menu_folder_i["color_class"] = $menu_color;
+                        //$menu_color = $menu_next_color[$menu_color];
+                        //$menu_folder_i["color_class"] = $menu_color;
                         $menu_folder_i_html = AfwFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder_i, $module, $lang, $r, true, $iamAdmin);
                         // if($menu_folder_id=="-1") die($menu_folder_i_html);
                         // if($menu_folder_i_html) die("menu[$menu_folder_id] => ".$menu_folder_i_html." item => ".var_export($menu_folder_i,true));

@@ -96,7 +96,7 @@ class AfwFormatHelper
                 return [false, 'TEXT-MIN-LENGTH'];
             }
             if ($length > $max_length) {
-                die("TEXT-MAX-LENGTH ERROR FOUND $length > $max_length desc=".var_export($desc,true));
+                //die("TEXT-MAX-LENGTH ERROR FOUND $length > $max_length, val_attr=[$val_attr] desc=".var_export($desc,true));
                 return [false, 'TEXT-MAX-LENGTH'];
             }
         }
