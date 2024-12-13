@@ -77,7 +77,18 @@ if($parent_module) AfwAutoLoader::addMainModule($parent_module);
 
 // As per security purposes clean data submitted by user 
 // to avoid CROSS-Site scripting injection 
-foreach($request as $key => $kval) $request[$key] = AfwStringHelper::clean_input($request[$key]);
+foreach($request as $key => $kval)
+{
+        if(is_string($request[$key]))
+        {
+                $request[$key] = AfwStringHelper::clean_input($request[$key]);
+        }
+        else
+        {
+                // die("request[$key] can't be cleaned it is not string");
+        }
+}
+
 
 include_once ("$file_dir_name/../../$MODULE/ini.php");
 include_once ("$file_dir_name/../../$MODULE/module_config.php");
