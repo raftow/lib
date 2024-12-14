@@ -25,6 +25,19 @@ $trad["*"]["valid"] = "موافقة الإدارة";
 $trad["*"]["update_groups_mfk"] = "مجموعات التعديل";
 $trad["*"]["display_groups_mfk"] = "مجموعات المشاهدة";
 $trad["*"]["delete_groups_mfk"] = "مجموعات الحذف";
+$trad["*"]["control panel"] = "لوحة التحكم";
+$trad["*"]["options"] = "الخيارات";
+$trad["*"]["upload files"] = "تحميل الملفات";
+$trad["*"]["my account"] = "حسابي";
+$trad["*"]["command-line"] = "سطر الأوامر";
+
+$trad["*"]["options"] = "الخيارات";
+$trad["*"]["options"] = "الخيارات";
+$trad["*"]["options"] = "الخيارات";
+$trad["*"]["options"] = "الخيارات";
+$trad["*"]["options"] = "الخيارات";
+
+ 
 
 $trad["*"]["unknown"] = "غير معروف";
 $trad["*"]["new"] = "جديد";

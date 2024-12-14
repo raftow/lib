@@ -4767,7 +4767,6 @@ div.content-annonce>ul {
 
 .fa-user:before {
     content: "\f007";
-    color: white;
 }
 
 @keyframes attirant {

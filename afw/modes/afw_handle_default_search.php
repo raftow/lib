@@ -146,7 +146,10 @@ if (!$liste_obj) {
                 if ($qsearch_by_text) {
                         $qsearch_by_text_where_arr = array();
                         $pk = $obj->getPKField($add_me = 'me.');
-                        if ((!$obj->PK_MULTIPLE) and is_numeric($qsearch_by_text)) $qsearch_by_text_where_arr[] = $pk."='$qsearch_by_text'";
+                        $qsearch_by_text_without_spaces_and_comma = $qsearch_by_text;
+                        $qsearch_by_text_without_spaces_and_comma = str_replace(' ', '', $qsearch_by_text_without_spaces_and_comma);
+                        $qsearch_by_text_without_spaces_and_comma = str_replace(',', '', $qsearch_by_text_without_spaces_and_comma);
+                        if ((!$obj->PK_MULTIPLE) and is_numeric($qsearch_by_text_without_spaces_and_comma)) $qsearch_by_text_where_arr[] = $pk." in ($qsearch_by_text)";
                         $qsearch_by_text_cols = $obj->getAllTextSearchableCols();
                         foreach ($qsearch_by_text_cols as $nom_col) {
                                 if ($obj->isInternalSearchableCol($nom_col)) {

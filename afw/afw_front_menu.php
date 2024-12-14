@@ -30,6 +30,10 @@ class AfwFrontMenu extends AFWRoot {
                 if(!$menu_title) $menu_title = "menu.arole.".$menu_folder["id"]; 
 
                 $menu_title = AfwReplacement::trans_replace($menu_title, $module, $lang);
+                if($lang!="ar")
+                {
+                        $menu_title = AfwStringHelper::firstCharUpper($menu_title);
+                }
                 $tokens["menu_title"] = $menu_title;
                 $tokens["menu_page"] = $menu_folder["page"];
                 $tokens["menu_item_css"] = $menu_folder["css"];

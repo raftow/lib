@@ -197,7 +197,9 @@ class AfwMenuConstructHelper
                 if (!$no_cache_use_for_ums and $cache_found) // ncu = get option to say "no cache use" to retrieve roles and menus (ums)
                 {
                     $application_code = $mau_info["m$application_id"]["code"];
-                    $menu_folders_arr = $menu[$application_code][$lang];
+                    $menu_folders_arr = $menu[$application_code]["all"];
+                    // temporary until regenrate all user cache files
+                    if(!$menu_folders_arr) $menu_folders_arr = $menu[$application_code]["ar"];
 
                     if (!$menu_folders_arr) AfwSession::pushWarning("System cache X <!-- $user_cache_file_path --> gived application_code=[$application_code] for application id [$application_id] and and no menu for this user for this application code");
                 } elseif (!$no_cache_use_for_ums) AfwSession::pushWarning("System need cache optimisation file for user $me_id <!-- file not found $user_cache_file_path -->");
