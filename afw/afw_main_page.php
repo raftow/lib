@@ -18,8 +18,8 @@ class AfwMainPage
         echo self::renderDirectPage($direct_page, $direct_page_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);
     }
 
-    private static function renderDirectPage($direct_page, $module_path, $header_template="direct", $menu_template="direct", 
-                        $body_template="direct", $footer_template="direct", $lang="ar", $current_module="", $options = [],)
+    private static function renderDirectPage($direct_page, $module_path, $header_template, $menu_template, 
+                        $body_template, $footer_template, $lang, $current_module, $options = [],)
     {
         // die("dgb::renderDirectPage($direct_page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $current_module)");
         if(!$current_module) $current_module = "ums";

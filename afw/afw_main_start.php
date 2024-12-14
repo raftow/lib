@@ -33,7 +33,8 @@ if (!$objme) $objme = AfwSession::getUserConnected();
 // $mode_analysis = (AfwSession::config("MODE_DEVELOPMENT", false) or ($objme and $objme->isAdmin() and AfwSession::config("MODE_ANALYSIS", false)));
 
 $lang = $_GET["lang"];
-if(!$lang) $lang = AfwSession::config("default_lang", "ar");
+if(!$lang) $lang = AfwSession::getSessionVar("current_lang", "ar");
+else AfwSession::setSessionVar("current_lang", $lang);
 // die("main start lang = ".$lang);
 
 $parent_module = AfwSession::config("main_module", "");
