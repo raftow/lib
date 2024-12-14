@@ -1034,14 +1034,6 @@ table.cart .item-thumb {
     border-color: green;
 }
 
-.optionenabled.hzm-custom.hzm-custom-icon-container.only-border.border-primary {
-    border-color: #ffa110;
-}
-
-.optiondisabled.hzm-custom.hzm-custom-icon-container.only-border.border-primary {
-    border-color: #b0adad;
-}
-
 .hzm-custom.hzm-custom-icon-container.only-border {
     border-color: #f5f5f6;
     border-style: solid;

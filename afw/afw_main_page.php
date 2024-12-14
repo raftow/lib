@@ -10,11 +10,11 @@ class AfwMainPage
         echo self::renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);
     }
 
-    public static function echoDirectPage($current_module, $direct_page, $direct_page_path, $header_template="direct", $menu_template="direct", $body_template="direct", $footer_template="direct", $options = [],)
+    public static function echoDirectPage($current_module, $direct_page, $direct_page_path, $options = [],)
     {
         $curr_path = dirname(__FILE__);
         include("$curr_path/afw_direct_start.php");
-        // die("echoDirectPage 20241119  : after include($curr_path/afw_main_start.php) lang = ".$lang);
+        // die("echoDirectPage 20241119  : after include($curr_path/afw_main_start.php) menu_template = ".$menu_template);
         echo self::renderDirectPage($direct_page, $direct_page_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);
     }
 

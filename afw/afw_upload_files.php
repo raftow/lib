@@ -1,9 +1,6 @@
 <link href="../lib/assets/css/style.css" rel="stylesheet" />
 <?php
-    require_once("doc_type.php");
-    
     if(!$module_config_token["file_types"]) $module_config_token["file_types"] = "1,2,3,4,5,6";
-    
     list($ext_arr, $ft_arr) = DocType::getExentionsAllowed($module_config_token["file_types"]);
     
     $ext_list = implode(", ",$ext_arr);
