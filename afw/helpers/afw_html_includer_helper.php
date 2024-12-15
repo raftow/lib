@@ -10,7 +10,10 @@ class AfwHtmlIncluderHelper
     $custom_scripts = [],
     $my_font = "front", )
     {
-      $site_name = AfwSession::getCurrentSiteName($lang);
+      if($options["front-application"])
+          $site_name = AfwSession::getCurrentFrontSiteName($options["front-application"],$lang);
+      else
+          $site_name = AfwSession::getCurrentSiteName($lang);
       $main_module = $cmodule = AfwUrlManager::currentURIModule();
       $xmodule = AfwSession::getCurrentlyExecutedModule();
       $xtemplate = AfwSession::getCurrentModuleTemplate();

@@ -35,6 +35,7 @@ if (!$objme) $objme = AfwSession::getUserConnected();
 $lang = $_GET["lang"];
 if(!$lang) $lang = AfwSession::getSessionVar("current_lang", "ar");
 else AfwSession::setSessionVar("current_lang", $lang);
+if(!$lang) $lang = "ar";
 // die("main start lang = ".$lang);
 
 $parent_module = AfwSession::config("main_module", "");

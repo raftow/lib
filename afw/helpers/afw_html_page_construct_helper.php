@@ -257,7 +257,7 @@
                 $out_scr = ob_get_clean();
                 if(!$out_scr)
                 {
-                        throw new AfwRuntimeException("file main section [$the_main_section_file] should return html");
+                        throw new AfwRuntimeException("file main section [$the_main_section_file] should return html it is called with arrRequest=<pre class='php'>".var_export($arrRequest,true)."</pre>");
                 }
                 return $out_scr;
         } 

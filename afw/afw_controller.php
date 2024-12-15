@@ -43,7 +43,7 @@ class AfwController extends AFWRoot
                 if (!file_exists($view_template_path)) {
                         throw new AfwRuntimeException("view template not found : $view_template_path");
                 } else {
-                        include_once($view_template);
+                        include_once($view_template_path);
                 }
         }
 

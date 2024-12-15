@@ -110,6 +110,11 @@ class AfwSession extends AFWRoot {
                         if($me)
                         {
                                 $this->customerConnected = $customerClass::loadById($me);
+                                if(!$this->customerConnected)
+                                {
+                                        $me = 0;
+                                        self::setSessionVar("customer_id", 0);
+                                }
                         }
                         elseif(self::config("consider_user_as_customer", false))
                         {
@@ -140,6 +145,7 @@ class AfwSession extends AFWRoot {
                                 }
                         }
                 }
+                
                 return $this->customerConnected;
         }
 
@@ -489,7 +495,11 @@ class AfwSession extends AFWRoot {
         }
 
         
-
+        public static function getCurrentFrontSiteName($frontApp, $lang)
+        {
+                $application_nameArr = self::config("$frontApp-application-name", self::config("application_name", []));
+                return $application_nameArr[$lang];
+        }
         
 
         public static function getCurrentSiteName($lang)
