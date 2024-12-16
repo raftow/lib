@@ -77,7 +77,7 @@
         $me = AfwSession::getSessionVar("user_id");
         if(!$me) $me = 0;
         if($me)
-        {       if(!$lang) $lang = AfwSession::getSessionVar("lang"); 
+        {       if(!$lang) $lang = AfwSession::getSessionVar("current_lang"); 
                 // AFWDebugg::log("user id connected : ".$me." lang $lang ");
                 if(!$objme)
                 {
@@ -125,7 +125,7 @@
                                 if($langobj)
                                 {
                                         $lang = strtolower($langobj->getVal("lookup_code"));
-                                        AfwSession::setSessionVarIfNotSet("lang", $lang);
+                                        AfwSession::setSessionVarIfNotSet("current_lang", $lang);
                                 }
                         }
 

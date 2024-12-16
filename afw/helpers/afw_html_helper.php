@@ -563,6 +563,16 @@ class AfwHtmlHelper extends AFWRoot {
                }        
         }
 
+        public static function getLightDownloadUrl($file_path, $extension)
+        {
+                return "<a target='_download' href='$file_path' class='download-icon download-$extension fright' title='[title]'>&nbsp;</a>";
+        }
+
+        public static function getTooltipDownloadUrl($file_path, $extension)
+        {
+                return "<a target='_download' href='$file_path' class='download-icon download-$extension fright' data-toggle='tooltip' data-placement='top' title='[title]'>&nbsp;</a>";
+        }
+
 
 /*
         

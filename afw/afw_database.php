@@ -10,7 +10,6 @@ class AfwDatabase extends AFWRoot
     private static $connect = false;
     private static $first_query = true;
 
-    public static $sql_picture_arr = null;
     /**
      *
      * Link of connection

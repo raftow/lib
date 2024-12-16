@@ -9,7 +9,7 @@
         {
                 /*
                 global $lang; 
-                $lang = AfwSession::getSessionVar("lang");
+                $lang = AfwSession::getSessionVar("current_lang");
                 if(!$lang) $lang = "ar";
                 $lang = strtolower($lang);
                 */

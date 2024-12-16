@@ -2761,26 +2761,26 @@ class AFWObject extends AFWRoot
     {
         $creation_date = $this->CREATION_DATE_val;
         if (!$creation_date) {
-            return 'now()';
-        } else {
-            if ($add_cote_if_needed) {
-                $creation_date = "'$creation_date'";
-            }
-            return $creation_date;
+            $creation_date = date("Y-m-d H:i:s");
         }
+
+        if ($add_cote_if_needed) {
+            $creation_date = "'$creation_date'";
+        }
+        return $creation_date;
     }
 
     public function get_UPDATE_DATE_value($add_cote_if_needed = false)
     {
         $update_date = $this->UPDATE_DATE_val;
         if (!$update_date) {
-            return 'now()';
-        } else {
-            if ($add_cote_if_needed) {
-                $update_date = "'$update_date'";
-            }
-            return $update_date;
+            $update_date = date("Y-m-d H:i:s");
+        } 
+
+        if ($add_cote_if_needed) {
+            $update_date = "'$update_date'";
         }
+        return $update_date;
     }
 
     public function insertNew()
@@ -7597,10 +7597,7 @@ $dependencies_values
         return true;
     }
 
-    public static function getLightDownloadUrl($file_path, $extension)
-    {
-        return "<a target='_download' href='$file_path' class='download-icon download-$extension fright' data-toggle='tooltip' data-placement='top' title='[title]'>&nbsp;</a>";
-    }
+    
 
     protected function getNextTabButtonCodes($step)
     {

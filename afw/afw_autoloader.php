@@ -127,7 +127,7 @@ if(!class_exists('AfwAutoLoader'))
                                                 $modules_to_fetch[] = $module_relative_path."controllers/"; 
                                         }
                                 }
-                                elseif(AfwStringHelper::stringEndsWith ($class, "Service"))
+                                elseif(AfwStringHelper::stringEndsWith ($class, "AfwService"))
                                 {
                                         foreach (self::$modules_autoload_by_prio as $module_relative_path)
                                         {
