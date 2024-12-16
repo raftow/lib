@@ -61,7 +61,8 @@ class AfwHtmlHelper extends AFWRoot {
                 $odd                = "";
                 foreach($backtrace as $entry) 
                 {
-                        $args_desc = "";
+                        $args_desc = "Disabled <!-- to enable use change config attribute advanced-back-trace to `true` value -->";
+                        $object_desc = "Disabled <!-- to enable use change config attribute advanced-back-trace to `true` value -->";
                         if($advanced)
                         {
                                 if($entry['object']) $object_desc = get_class($entry['object'])."-".$entry['object']->id;

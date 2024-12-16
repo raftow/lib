@@ -3699,7 +3699,11 @@ class AFWObject extends AFWRoot
         );
     }
 
-
+    public function myDisplayStatus()
+    {
+        // to be overrridden in sublasses it allow to show panels, or boxes or frames that show me in a spcific css look
+        return "nothing";
+    }
 
     public function showMe($style = '', $lang = 'ar')
     {

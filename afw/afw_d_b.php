@@ -109,7 +109,7 @@ class AfwDB extends AFWRoot
             $backtrace = debug_backtrace();
             if(!$MODE_BATCH)
             {
-                    $message .= AfwHtmlHelper::htmlBackTrace($backtrace);
+                    $message .= AfwHtmlHelper::htmlBackTrace($backtrace, AfwSession::config("advanced-back-trace",false));
                     $message .= "<hr>";
             }
             else
@@ -243,8 +243,8 @@ class AfwDB extends AFWRoot
         // $query_txt = str_replace('[prefix]', "xx", $query_txt);
         
         $start_q_time = date("Y-m-d H:i:s");
-        if($print_debugg) debugg("Start query : $start_q_time");  
-        if($print_debugg) debugg("Query : $query_txt");
+        // if($print_debugg) debugg("Start query : $start_q_time");  
+        // if($print_debugg) debugg("Query : $query_txt");
         //if($print_debugg) debugg("db_arr[$database] = ".var_export($db_arr[$database],true));
 
         list($res, $project_link_name) =  AfwDatabase::db_query($query_txt, true, true, $database);
@@ -285,7 +285,7 @@ class AfwDB extends AFWRoot
         $affected_rows = AfwMysql::affected_rows(AfwDatabase::getLinkByName($project_link_name));
         
         
-        if($print_debugg) debugg("End query : $end_q_time, duree : $duree_q, affected : $affected_rows row(s) \n");  
+        //if($print_debugg) debugg("End query : $end_q_time, duree : $duree_q, affected : $affected_rows row(s) \n");  
 
         if(($analyse_sql=='W') or ($analyse_sql=='Y') or ($duree_q>10))
         {

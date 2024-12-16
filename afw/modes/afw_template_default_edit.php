@@ -439,6 +439,7 @@ $str_label = ($mode_edit_id) ? $obj->translate('EDIT.CARD', $lang) : $obj->trans
 $str_new = $obj->translate(strtolower("$cl.new"), $lang);
 $str_id = ($mode_edit_id) ? $obj->id : $str_new;
 $subType = $obj->mySubType();
+$object_status = $obj->myDisplayStatus();
 if ($subType)
         $str_name = $subType;
 else
@@ -462,7 +463,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
 <?php
 }
 ?>
-<div class="<?= $file_box_css_class ?> editcard <?php echo $module_code . " " . AfwStringHelper::hzmStringOf($table_name); ?> ">
+<div class="<?= $file_box_css_class ?> editcard <?php echo $module_code . " " . AfwStringHelper::hzmStringOf($table_name) ." s" . $object_status;  ?> ">
         <div class="panel-heading">
                 <h3 class="panel-title col-xs-12"><span><?php echo "$str_name" ?></span></h3>
                 <h3 class="panel-title col-xs-0 text-left"><span class='object_id'><?php echo $str_id ?><span></h3>
