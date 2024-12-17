@@ -3,11 +3,11 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
 {
 
     /**
-     * @param Auser $objme
+     * @param AfwFrontEndUser $objme
      */
     private static function prepareTokens(
         $lang,
-        $objme,
+        $objme, // it can be any other class than Auser but it should extends AFWObject and implement interface AfwFrontEndUser
         $role,
         $selected_menu = "",
         $options = [],
@@ -37,7 +37,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $display_date_month = $hijri_date_arr[2];
         } else {
             $display_date_day = date("d");
-             $display_date_month = date("m"); 
+             $display_date_month = AfwDateHelper::getFullMonthName(date("m"), $lang); 
              $display_date_year = date("Y");
         }
         $system_date = "Date : " . date("d/m/Y");
@@ -117,6 +117,14 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         
         if ($xmodule) $data_tokens["xmodule"] = "-" . $xmodule;
         else $data_tokens["xmodule"] = "";
+
+        if ($options["no_calendar"]) {
+            $data_tokens["calendar_item_s"] = "<!---";
+            $data_tokens["calendar_item_e"] = "--->";
+        } else {
+            $data_tokens["calendar_item_s"] = "";
+            $data_tokens["calendar_item_e"] = "";
+        }
 
         $data_tokens["calendar_class"] = "calendar_bloc_g";
         $data_tokens["display_date_year"] = $display_date_year;
@@ -225,15 +233,10 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         return $data_tokens;
     }
 
-    
-
-    public static function renderMenu($menu_template,
-            $lang,
+    public static function prepareMenuAndHeaderTokens($lang,
             $role,
-            $tpl_path = "",
-            $selected_menu = "",
-            $options = [],
-    ) 
+            $selected_menu,
+            $options)
     {
         if($options["controllerObj"])
         {
@@ -248,7 +251,8 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         else
         {
             // die("DGB241210 options=".var_export($options,true));
-            $objme = AfwSession::getUserConnected();
+            if($options["user-is-customer"]) $objme = AfwSession::getCustomerConnected();
+            else $objme = AfwSession::getUserConnected();
 
             $data_tokens = self::prepareTokens(
                 $lang,
@@ -258,6 +262,23 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
                 $options
             );
         }
+
+        return $data_tokens;
+    }
+    
+
+    public static function renderMenu($menu_template,
+            $lang,
+            $role,
+            $tpl_path = "",
+            $selected_menu = "",
+            $options = [],
+    ) 
+    {
+        $data_tokens = self::prepareMenuAndHeaderTokens($lang,
+                                $role,
+                                $selected_menu,
+                                $options);
         
         if(!$tpl_path) $tpl_path = self::hzmTplPath();
         $html_template_file = "$tpl_path/$menu_template"."_menu_tpl.php";
@@ -275,15 +296,12 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $options = [],
     ) 
     {
-        $objme = AfwSession::getUserConnected();
+        $data_tokens = self::prepareMenuAndHeaderTokens($lang,
+                            $role,
+                            $selected_menu,
+                            $options);
 
-        $data_tokens = self::prepareTokens(
-            $lang,
-            $objme,
-            $role,
-            $selected_menu,
-            $options
-        );
+
         if(!$tpl_path) $tpl_path = self::hzmTplPath();
         $html_template_file = "$tpl_path/$header_template"."_header_tpl.php";
                              
