@@ -123,7 +123,16 @@ if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
                 {
         		if($after_upload)
                         {
-                             include("$file_dir_name/../$module/after_upload_$after_upload.php");      
+                             $after_upload_full_file_name = "$file_dir_name/../$module/after_upload_$after_upload.php";   
+                             if(file_exists($after_upload_full_file_name))   
+                             {
+                                include($after_upload_full_file_name);      
+                             }
+                             else
+                             {
+                                throw new AfwRuntimeException("After upload policy file name $after_upload_full_file_name not found");
+                             }
+                             
                         }
                         
                         if($error)
