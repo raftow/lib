@@ -137,7 +137,8 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["LANGUE"]	         	                = "اللغة";
         $trad["OPERATOR"]["OPTIONS"]	         	                = "خيارات";
         $trad["OPERATOR"]["NULL"]	         	                = "غير محدد";
-        $trad["OPERATOR"]["NOT YET"]	         	                = "ليس بعد";
+        $trad["OPERATOR"]["NOT YET"]	         	            = "ليس بعد";
+        $trad["OPERATOR"]["archive"]                            = "الأرشيف";
         
         $trad["OPERATOR"]["dark mode"]	         	            = "ليلي";
         $trad["OPERATOR"]["Search here"]	         	        = "ابحث هنا";

@@ -2138,12 +2138,18 @@ class AfwDateHelper
             $hr = $value;
             return $answer_list[$hr];
         } 
-        elseif ($decode_format == 'HEURE') {
+        elseif (($decode_format == 'HEURE') or  ($decode_format == 'TIME-WITHOUT-SECONDS')) {
             $hr = $value;
             $hr = explode(':', $hr);
 
-            $return = $hr[0] . 'h' . $hr[1];
+            $return = $hr[0] . ':' . $hr[1];
         } 
+        elseif ($decode_format == 'TIME') {
+            $hr = $value;
+            $hr = explode(':', $hr);
+
+            $return = $hr[0] . ':' . $hr[1].':'. $hr[2];
+        }
         elseif($decode_format == 'ARABIC-TIME') 
         {
             $hr = $value;
@@ -2154,7 +2160,15 @@ class AfwDateHelper
             if ($hr[2]) {
                 $return .= ' و' . $hr[2] . 'ث';
             }
-        } 
+        }
+        elseif($decode_format == 'ARABIC-TIME-WITHOUT-SECONDS') 
+        {
+            $hr = $value;
+            $hr = explode(':', $hr);
+
+            $return =
+                'س' . $hr[0] . ' و' . $hr[1] . 'دق';            
+        }  
         else 
         {
             $return = $value;

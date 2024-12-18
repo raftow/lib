@@ -3266,9 +3266,27 @@ class AFWObject extends AFWRoot
         return $this->getDefaultDisplay($lang);
     }
 
+    final public function initDISPLAY_FIELD($lang="")
+    {
+        if((!$this->DISPLAY_FIELD) and isset($this->DISPLAY_FIELD_BY_LANG)) 
+        {
+            if(!$lang) $lang = AfwSession::config("current_lang", "ar");
+            $this->DISPLAY_FIELD = $this->DISPLAY_FIELD_BY_LANG[$lang];
+            // die(var_export($this->DISPLAY_FIELD, true)."=this->DISPLAY_FIELD = this->DISPLAY_FIELD_BY_LANG[$lang] this->DISPLAY_FIELD_BY_LANG=" . var_export($this->DISPLAY_FIELD_BY_LANG,true));
+        }
+
+        return $this->DISPLAY_FIELD;
+    }
+
+        
+
     final public function getDefaultDisplay($lang = 'ar', $implodeChar = " ")
     {
         $return = "";
+
+        $this->initDISPLAY_FIELD($lang);
+        $sep = $this->DISPLAY_SEPARATOR;
+        if(!$sep) $sep = $implodeChar;
         //if ($this instanceof Applicant) die("df is ".var_export($this->DISPLAY_FIELD,true));
         if (!$this->id) {
             $return = $this->insertNewLabel($lang);
@@ -3284,7 +3302,7 @@ class AFWObject extends AFWRoot
             foreach ($this->DISPLAY_FIELD as $key) {
                 $disp_decoded[] = $this->decode($key);
             }
-            $return = implode($implodeChar, $disp_decoded);
+            $return = implode($sep, $disp_decoded);
             //if ($this instanceof Applicant) die("for instanceof Applicant return = $return because $disp_decoded = ".var_export($disp_decoded,true));
         } elseif ($this->DISPLAY_FIELD) {
             $return = $this->getVal($this->DISPLAY_FIELD);
@@ -3296,7 +3314,8 @@ class AFWObject extends AFWRoot
                 foreach ($this->UNIQUE_KEY as $key) {
                     $uk_decoded[] = $this->decode($key);
                 }
-                $return = implode($implodeChar, $uk_decoded);
+                $return = implode($sep, $uk_decoded);
+                //if(AfwStringHelper::stringContain($return,"sara_4238_@hotmail.com")) throw new AfwRuntimeException("This is case of stange key display");
             } else {
                 $return = $this->transClassSingle($lang) . ' ' . AfwStringHelper::arrow($lang) . ' ' . $this->id;
             }
@@ -5241,6 +5260,7 @@ class AFWObject extends AFWRoot
         } elseif ($structure['TYPE'] == 'FK') {
             if (empty($structure['CATEGORY'])) {
                 list($data_to_display, $link_to_display) = AfwShowHelper::showFK($this, $attribute, $value, $langue, $structure, $getlink);
+                // $data_to_display .= " comes from showFK";
             } else {
                 list($data_to_display, $link_to_display) = AfwShowHelper::showVirtualAttribute($this, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $langue, $structure, $getlink);
             }
@@ -8175,12 +8195,12 @@ $dependencies_values
     public function getCategorizedAttribute($attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = "")
     {
         /*
-        if(($attribute=="response_templates"))
+        if(($attribute=="customer_id"))
         {
             die("rafik shoof getCategorizedAttribute has been called for $attribute");
-        }*/
+        }
         
-        /*
+        
         if (!$structure['NO-CACHE'] and isset($this->gotItemCache[$attribute][$what])) {
 
             $return = $this->gotItemCache[$attribute][$what];
@@ -8207,69 +8227,7 @@ $dependencies_values
 
             switch ($attribute_category) {
                 case 'ITEMS':
-                    $array = [];
-                    /*
-                    if((!$structure["NO-CACHE"]) and $this->gotItems Cache[$attribute])   
-                    {
-                        $return = $this->gotItems Cache[$attribute];
-                        if($attribute=="requestList") die("return from gotItems Cache = " . var_export($return,true));
-                    }
-                    */
-                    if (!$return) {
-                        list($ansTab, $ansMod,) = static::answerTableAndModuleFor($attribute);
-                        if ($ansTab) {
-                            $className = AfwStringHelper::tableToClass($ansTab);
-                            AfwAutoLoader::addModule($ansMod);
-                            $object = new $className();
-                            // $object->setMyDebugg($this->MY_DEBUG);
-                            if ($structure['ITEM']) {
-                                $item_oper = $structure['ITEM_OPER'];
-                                $item_name = $structure['ITEM'];
-                                $this_id = $this->getAfieldValue(
-                                    $this->getPKField()
-                                );
-
-                                if ($item_oper) {
-                                    $object->where("me.$item_name $item_oper '$this_id' ");
-                                } else {
-                                    $object->where("me.$item_name = '$this_id' ");
-                                }
-                            }
-                            if ($structure['WHERE']) {
-                                $sql_where = $this->decodeText($structure['WHERE']);
-                                $object->where($sql_where);
-                            }
-                            /* obsolete since v3.0
-                            format can not be used for SQL where
-                            if($format and ($format!="IMPLODE")) {
-                                $object->where($format);
-                            }
-                            */
-
-                            if (!$structure['LOGICAL_DELETED_ITEMS_ALSO']) {
-                                $object->select($object->fld_ACTIVE(), 'Y');
-                            }
-                            $object->debugg_tech_notes = "before load Many for Items of attribute : $attribute";
-                            if ($max_items) {
-                                $limit_loadMany = $max_items;
-                            } else {
-                                $limit_loadMany = '';
-                            }
-
-                            $return = $object->loadMany($limit_loadMany, $structure['ORDER_BY']);
-                            // if($attribute=="requestList") die("sql_for_loadmany of $attribute = ".$this->debugg_sql_for_loadmany." returned list => ".var_export($return,true));
-
-                            // if(!$structure["NO-CACHE"]) $this->gotIte msCache[$attribute] = $return;
-                        } else {
-                            throw new AfwRuntimeException(
-                                'Check if ANSWER property is defined for attribute ' .
-                                    $attribute .
-                                    ' having type ITEMS in DB_STRUCTURE of table ' .
-                                    static::$TABLE,
-                                $call_method
-                            );
-                        }
-                    }
+                    $return = AfwFormatHelper::formatITEMS($this, $attribute, $structure, static::$TABLE, $call_method, $max_items);
                     break;
 
                 case 'FORMULA':
@@ -8277,7 +8235,7 @@ $dependencies_values
                     if (!$lang) $lang = 'ar';
                     $return = AfwFormulaHelper::executeFormulaAttribute($this, $attribute, NULL, $lang, $what);
                     $return_isset = isset($return);
-                    $this_debugg_formula_log = "AfwFormulaHelper::executeFormulaAttribute(this, $attribute, NULL, $lang, $what) = [return=$return/isset=$return_isset]";
+                    $this_debugg = "AfwFormulaHelper::executeFormulaAttribute(this, $attribute, NULL, $lang, $what) = [return=$return/isset=$return_isset]";
                     $attribute_value = $return;
 
                     break;
@@ -8289,212 +8247,7 @@ $dependencies_values
 
                     break;
                 case 'SHORTCUT':
-                    //if($attribute=="skill_type_id") throw new AfwRuntimeException("$attribute is SHORTCUT");
-                    //if($this->MY_DEBUG) AFWDebugg::log("Case SHORTCUT");
-                    $report_arr = [];
-                    $forced_value = $this->getAfieldValue($attribute);
-                    $report_arr[] = "forced_value=$forced_value";
-                    $default_value = $structure['DEFAULT'];
-                    if (!$default_value) {
-                        $default_value = '';
-                    }
-                    if (
-                        isset($structure['SHORTCUT']) &&
-                        $structure['SHORTCUT']
-                    ) {
-                        $attribute_shortcut = $structure['SHORTCUT'];
-                    }
-                    //die("shortcut 2 = ".$attribute_shortcut);
-
-                    // if($attribute_shortcut=="skill_type_id") throw new AfwRuntimeException("$attribute forced_value = $forced_value");
-                    if (strpos($attribute_shortcut, '.') !== false) {
-                        //if($this->MY_DEBUG) AFWDebugg::log("Object $attribute exist");
-                        $fields = explode('.', $attribute_shortcut);
-                        $sc_cat = $structure['SHORTCUT-CATEGORY'];
-                        $sc_cat_arr = explode('.', $sc_cat);
-                        $count = count($fields);
-                        if ($count > 1) {
-                            //die("shortcut 3 = ".var_export($fields,true));
-                            //if($this->MY_DEBUG) AFWDebugg::log("count field = $count");
-                            if ($sc_cat_arr[0] == "FORMULA")
-                                $object = $this->calc($fields[0], true, "object");
-                            else
-                                $object = $this->het($fields[0], '', $optim_lookup = false); // optim=false mandatory because in shortcut we need to load object to get next attribute of shortcut 
-                            // (just a decode is not enough)
-                            if ($object) {
-                                if (!is_object($object)) {
-                                    throw new AfwRuntimeException("$object returned by the shortcut[$attribute_shortcut] the shortcut item [" . $fields[0] . "] is not an object");
-                                }
-                                $report_arr[] =
-                                    'fields[0]=' .
-                                    $object->getDisplay('ar');
-                                // if($attribute_shortcut=="goal.system_id") die("shortcut($attribute_shortcut) object 0 = ".var_export($object,true));
-                                for ($i = 1; $i < $count - 1; $i++) {
-                                    if ($object === null) {
-                                        if ($integrity) {
-                                            throw new AfwRuntimeException(
-                                                'Impossible to get [' .
-                                                    $fields[$i] .
-                                                    "] à cause d'une valeur NULL of object " .
-                                                    $fields[$i - 1] .
-                                                    ", veuillez vérifier attribute " .
-                                                    $attribute .
-                                                    ' de type SHORTCUT.'
-                                            );
-                                        } else {
-                                            break;
-                                        }
-                                    } else {
-                                        if ($this->MY_DEBUG and false) {
-                                            AFWDebugg::log(
-                                                'object[' .
-                                                    ($i - 1) .
-                                                    ']'
-                                            );
-                                        }
-                                        if ($this->MY_DEBUG and false) {
-                                            AFWDebugg::log(
-                                                $object,
-                                                true
-                                            );
-                                        }
-                                        if ($this->MY_DEBUG and false) {
-                                            AFWDebugg::log(
-                                                "befor get fields[$i]=" .
-                                                    $fields[$i]
-                                            );
-                                        }
-
-                                        if ($sc_cat_arr[$i] == "FORMULA")
-                                            $object = $object->calc($fields[$i], true, "object");
-                                        else
-                                            $object = $object->het($fields[$i]);
-
-                                        if ($object) {
-                                            $report_arr[] =
-                                                "fields[$i]=" .
-                                                $object->getDisplay(
-                                                    'ar'
-                                                );
-                                        }
-                                    }
-                                }
-                                //die("short cut analyse for attribute $attribute = ".var_export($object,true));
-                                if ($object === null) {
-                                    if ($this->MY_DEBUG and false) {
-                                        AFWDebugg::log(
-                                            'Object is NULL'
-                                        );
-                                    }
-                                    if ($integrity) {
-                                        throw new AfwRuntimeException(
-                                            'Impossible to get [' .
-                                                $fields[$count - 1] .
-                                                "] à cause d'une valeur NULL of object " .
-                                                $fields[$count - 2] .
-                                                ", veuillez vérifier attribute " .
-                                                $attribute .
-                                                ' de type SHORTCUT.',
-                                            $call_method
-                                        );
-                                    } else {
-                                        switch (strtolower($what)) {
-                                            case 'object':
-                                                $return = null;
-                                                break;
-                                            case 'value':
-                                            case 'decodeme':
-                                                $return = $forced_value
-                                                    ? $forced_value
-                                                    : $default_value;
-
-                                            case 'report':
-                                                $return = implode(
-                                                    "\n<br>",
-                                                    $report_arr
-                                                );
-                                                break;
-                                                break;
-                                        }
-                                    }
-                                } else {
-                                    if ($this->MY_DEBUG and false) {
-                                        AFWDebugg::log('Object exist');
-                                    }
-
-                                    if ($what == 'report') {
-                                        $return = $object->get(
-                                            $fields[$count - 1],
-                                            'value',
-                                            $format,
-                                            $integrity
-                                        );
-                                        $report_arr[] = "last : fields[$count-1]=" .
-                                            $fields[$count - 1] .
-                                            ' => ' .
-                                            $return;
-                                        $return = implode("\n<br>", $report_arr);
-                                    } else {
-                                        $report_arr[] =
-                                            "get(fields[$count-1]=" .
-                                            $fields[$count - 1] .
-                                            " ,$what) = " .
-                                            $return;
-                                        $return = $object->get(
-                                            $fields[$count - 1],
-                                            $what,
-                                            $format,
-                                            $integrity
-                                        );
-                                    }
-
-                                    // if(($fields[0]=="course_session") and ($fields[1]=="attendanceList"))
-                                    // if(($fields[0]=="cher_id") and ($fields[1]!="emp_num") and ($fields[1]!="orgunit_name") and ($fields[1]!="orgunit_id") and ($fields[1]!="orgunit_id")) 
-                                    // throw new AfwRuntimeException("fields=".implode("|\n<br>|",$fields)."\n<br> report_arr=".implode("\n<br>",$report_arr)."\n<br> >>> rafik debugg :: get(".$fields[$count-1].", $what, $format) = $return");
-                                    if ($this->MY_DEBUG and false) {
-                                        AFWDebugg::log($return, true);
-                                    }
-                                }
-                            } else {
-                                if ($integrity) {
-                                    throw new AfwRuntimeException(
-                                        'Impossible to get [' .
-                                            $fields[1] .
-                                            "] à cause d'une valeur NULL of object " .
-                                            $fields[0] .
-                                            ", veuillez vérifier attribute " .
-                                            $attribute .
-                                            ' de type SHORTCUT. ' .
-                                            $call_method
-                                    );
-                                } else {
-                                    $return = $forced_value
-                                        ? $forced_value
-                                        : $default_value;
-                                    //if($default_value and ($default_value==$return)) die("rafik test 0013");
-                                    break;
-                                }
-                            }
-                        } else {
-                            throw new AfwRuntimeException(
-                                "Property SHORTCUT of attribute " .
-                                    $attribute .
-                                    ' de la table ' .
-                                    static::$TABLE .
-                                    " doit avoir plus d'un element.",
-                                $call_method
-                            );
-                        }
-                    } else {
-                        throw new AfwRuntimeException(
-                            "Property SHORTCUT non définie of attribute " .
-                                $attribute .
-                                ' dans DB_STRUCTURE de la table ' .
-                                static::$TABLE .
-                                '.',
-                            $call_method
-                        );
-                    }
+                    $return = AfwFormatHelper::formatSHORTCUT($this, $attribute, $what, $format, static::$TABLE, $integrity, $structure, $call_method);
                     break;
             }
             if ((!$structure['NO-CACHE']) and $return) {
@@ -8503,89 +8256,7 @@ $dependencies_values
             }
         }
 
-        $attr_sup_categ = $structure['SUPER_CATEGORY'];
-        $attr_categ = $structure['CATEGORY'];
-        $attr_scateg = $structure['SUB-CATEGORY'];
-
-        if (strtolower($what) == 'value') {
-            if ($return and $return instanceof AFWObject) {
-                $return = $return->getId();
-            }
-
-            if (
-                $attr_categ == 'ITEMS' or
-                $attr_scateg == 'ITEMS' or
-                $attr_sup_categ == 'ITEMS'
-            ) {
-                $return_arr = $return;
-                $return = '';
-                foreach ($return_arr as $return_item) {
-                    $return .= ',' . $return_item->getId();
-                }
-                if ($return) {
-                    $return .= ',';
-                }
-            }
-        } elseif (strtolower($what) == 'decodeme') {
-            if (
-                $attr_categ == 'ITEMS' or
-                $attr_scateg == 'ITEMS' or
-                $attr_sup_categ == 'ITEMS'
-            ) {
-                $format = strtolower($format);
-
-                $arr_items_decoded = [];
-                foreach ($return as $return_item) {
-                    $arr_items_decoded[] = $return_item->getDisplay($lang);
-                }
-
-
-                if ($format == 'implode') {
-                    $return = implode(',', $arr_items_decoded);
-                } else {
-                    $return = $arr_items_decoded;
-                }
-            } elseif ($return and $return instanceof AFWObject) {
-                $return = $return->getDisplay($lang);
-            } else {
-
-                if (!isset($return)) {
-                    //if(($attribute=="homework")) die("what=$what, rafik entered in non implemented zone of decode of attribute $attribute formula log = $this_debugg_formula_log  returned : [return=$return, formatted=$formatted, return_formatted=$return_formatted] ");
-                    if (($attribute == "xxxx")) throw new AfwRuntimeException("attribute-action to be not implemented this_debugg_formula_log=$this_debugg_formula_log attr_categ=$attr_categ attribut=$attribute, attribute_value=$attribute_value, format=$format, what=$what, gettype=" . $attribute_type);
-                }
-            }
-
-            $unit = $structure['UNIT'];
-            $hide_unit = $structure['DISPLAY_HIDE_UNIT'];
-            if ($unit and $return and !$hide_unit) {
-                $return .= ' ' . $unit;
-            }
-        } else {
-            if ($integrity and !isset($return)) {
-                $suggest = "";
-                if ($attr_categ == "FORMULA") $suggest = "often this happen when you dont call to return \AfwFormulaHelper::calculateFormulaResult($this,\$attribute, \$what) on your getFormuleResult method";
-                throw new AfwRuntimeException(
-                    "Erreur : no-return defined for get : what=$what,attribut=$attribute, format=$format, attr_categ=$attr_categ ($suggest), gettype=" .
-                        $attribute_type .
-                        ' STRUCTURE = ' .
-                        var_export($structure, true)
-                );
-            }
-        }
-        $link_url = $structure['LINK-URL'];
-        $link_css_class = $structure['LINK-CSS'];
-        if (!$link_css_class) {
-            $link_css_class = 'nice_link';
-        }
-
-        $target = '';
-        $popup_t = '';
-
-        $link_url = $this->decodeText($link_url, '', false);
-
-        if ($link_url and $return != '' and $format != 'NO-URL') {
-            $return = "<a class='$link_css_class' $target href='$link_url&popup=$popup_t'>$return</a>";
-        }
+        $return = AfwFormatHelper::formatReturnedValue($this, $attribute, $lang, $structure, $return, $what, $format, $attribute_type, $integrity, $this_debugg);
 
         return $return;
     }

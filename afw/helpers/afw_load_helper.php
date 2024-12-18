@@ -553,8 +553,15 @@ class AfwLoadHelper extends AFWRoot
         return self::$lookupMatrix["$ans_module.$ans_table"][$value];
     }
 
+
+    /**
+     * @param AFWObject $object
+     * */
     public static function loadAllLookupData($object, $where = "--")
     {
+        $module = $object::$MODULE;
+        $table = $object::$TABLE;
+
         if(!$where)  $where = "--";
         if($where == "--")
         {
@@ -567,14 +574,20 @@ class AfwLoadHelper extends AFWRoot
             $where =  $object->get_visibilite_horizontale();            
         }
         
+        $object->initDISPLAY_FIELD();
+        $sep = $object->DISPLAY_SEPARATOR;
+        if(!$sep) $sep = "-";
+        // if($table=="crm_customer") die("object->DISPLAY_FIELD = ".var_export($object->DISPLAY_FIELD,true));
         if(isset($object->DISPLAY_FIELD)) 
         {
+            
             if(is_array($object->DISPLAY_FIELD))
             {
-                $display_field = "concat(".implode(",'-',",$object->DISPLAY_FIELD).")";
+                $display_field = "concat(".implode(",'$sep',",$object->DISPLAY_FIELD).")";
             }
             else $display_field = trim($object->DISPLAY_FIELD);
         }
+        
 
         if (!$display_field) {
             if(isset($object->FORMULA_DISPLAY_FIELD)) $display_field = trim($object->FORMULA_DISPLAY_FIELD);
@@ -600,12 +613,12 @@ class AfwLoadHelper extends AFWRoot
 
         // $orderBy = trim($object->ORDER_BY_FIELDS);
 
-        $module = $object::$MODULE;
-        $table = $object::$TABLE;
+        
         $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
 
         $pk = $object->getPKField();
 
+        // if($table=="crm_customer") die("display_field=$display_field");
 
         return AfwDatabase::db_recup_index("select $pk, $display_field as __val from $server_db_prefix" . $module . ".$table where $where", $pk, "__val");
 
@@ -1930,7 +1943,7 @@ class AfwLoadHelper extends AFWRoot
                 // if($attribute=="updated_by") die("for : $attribute decode with format = $format, decode_format = $decode_format, gettype = $typattr, value=$valattr, str = ".var_export($structure,true));
                 if ($typattr) {
                     $return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, $structure, $object, $translate_if_needed = true);
-                    //if($attribute=="application_end_date") die("$return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, ....)");
+                    // if($attribute=="customer_id") die("$return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, ....)");
                 } else {
                     throw new AfwRuntimeException("The Attribute $attribute of table " . $object->getMyTable() . " has structure property TYPE not defined.", $call_method);
                 }

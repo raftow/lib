@@ -2384,7 +2384,12 @@ $('#$showAsDataTable').DataTable( {
         return [$data_to_display, $link_to_display];
     }
 
-    public static function showFK($object, $attribute, $value, $lang = "ar", $structure = null, $getlink = false)
+    /**
+     * @param AFWObject $object
+     * 
+     */
+
+    public static function showFK($object, $attribute, $value, $lang = "ar", $structure = null, $getlink = false, $debugg=false)
     {
         // $val_class = $object->getMyClass();
         $link_to_display = "";
@@ -2403,6 +2408,7 @@ $('#$showAsDataTable').DataTable( {
                     $data_to_display = $valObj->showMe(
                         $structure['STYLE']
                     );
+                    if($debugg) $data_to_display .= " from valObj->showMe";
                 } else {
                     $data_to_display = '';
                 }
@@ -2413,6 +2419,7 @@ $('#$showAsDataTable').DataTable( {
                     $data_to_display = $valObj->showMinibox(
                         $structure['STYLE']
                     );
+                    if($debugg) $data_to_display .= " from valObj->showMinibox";
                 } else {
                     $data_to_display = '';
                 }
@@ -2421,12 +2428,14 @@ $('#$showAsDataTable').DataTable( {
                 $valObj = $object->get($attribute);
                 if ($valObj) {
                     $data_to_display = $valObj->getShortDisplay($lang);
+                    if($debugg) $data_to_display .= " from valObj->getShortDisplay";
                 } else {
                     $data_to_display = '';
                 }
                 $link_to_display = '';
             } else {
                 $data_to_display = $object->decode($attribute);
+                if($debugg) $data_to_display .= " from object->decode";
                 // if(($attribute == "cher_id") and (!contient(trim(strtolower($data_to_display)),"<img"))) die($object->getDisplay("ar")."rafik::data_to_display=$data_to_display");
                 // if(($attribute == "cher_id") and (!trim($data_to_display))) die($object->getDisplay("ar")."->decode($attribute) empty ->getVal($attribute) = ".$object->getVal($attribute));
                 if ($getlink) {

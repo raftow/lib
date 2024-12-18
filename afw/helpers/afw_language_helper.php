@@ -79,6 +79,7 @@ class AfwLanguageHelper
         $module = ''
     ) 
     {
+        //if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("debugg $nom_table trad of $nom_col is here 1 ");
         global $lang, $trad;
         $company = AfwSession::config("main_company", "");
         $file_dir_name = dirname(__FILE__)."/..";
@@ -96,6 +97,7 @@ class AfwLanguageHelper
         }
 
         if ($trad[$nom_table][$nom_col]) {
+            // if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("debugg $nom_table trad of $nom_col = ".var_export($trad,true));
             return $trad[$nom_table][$nom_col];
         }
 
@@ -168,9 +170,11 @@ class AfwLanguageHelper
             ) 
             {
                 $general_nom_file = "$file_dir_name/tr/trad_" .$langue . '_all.php';
+                //die("tarjem with general_nom_file=$general_nom_file");
                 if (file_exists($general_nom_file)) {
+                    // die("exists general_nom_file=$general_nom_file");
                     include $general_nom_file;
-                    // if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) die("tarjem find 3 the file general_nom_file=$general_nom_file");
+                    // if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("tarjem find 3 the file general_nom_file=$general_nom_file");
                     if (isset($trad) and $trad and (!is_array($trad))) {
                         throw new AfwRuntimeException("after include_once $general_nom_file trad 3 is " . var_export($trad, true));
                     }
@@ -193,8 +197,8 @@ class AfwLanguageHelper
         else // case operator translation
         {
             $file_name = "$file_dir_name/tr/trad_" . $langue . '_afw.php';
-            
             $classTranslator = AfwStringHelper::tableToClass("afw_operator_".$langue."_translator");
+            // if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("debugg $nom_table trad of $nom_col will be with classTranslator=$classTranslator in $file_name");
             if(!class_exists($classTranslator,false))
             {
                 include $file_name;
