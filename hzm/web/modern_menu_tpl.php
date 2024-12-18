@@ -9,6 +9,16 @@
                     <span class="logo_name">[site_name]</span>
                 </div>
                 [main_menu_item_e]
+                [calendar_item_s]
+                <div class="[calendar_class]">
+                    <div id="year" class="calendar_year">[display_date_year]</div>
+                    <div class="calendar_day">
+                    <span class="dday">[display_date_day]</span>
+                    <br>
+                    [display_date_month]
+                    </div>
+                </div>
+                [calendar_item_e]
                 <div class="menu-items">
                     <ul class="nav-links">
                         [hzm_front_menu]

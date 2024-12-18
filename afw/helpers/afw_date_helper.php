@@ -79,6 +79,11 @@ class AfwDateHelper
         return $date;
     }
 
+    public static function getFullMonthName($n, $lang)
+    {
+        return self::$F[$lang][$n];
+    }
+
     public static function DateIndicDigits($format, $timestamp = 0)
     {
         return self::TransformToIndianNumbers(self::Date($format, $timestamp));

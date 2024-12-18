@@ -423,7 +423,18 @@ class AfwFormatHelper
                 } else {
                     $data_to_display = '';
                 }
-            } elseif ($structure['FORMAT'] == 'CONVERT_NASRANI_VERY_SIMPLE') {
+            } elseif ($structure['FORMAT'] == 'CONVERT_SYSTEM_FORMAT') {
+                $currSDF = strtolower(AfwSession::currentSystemDateFormat());
+                if ($data_to_display) {
+                    if ($currSDF=='greg') {
+                        $data_to_display = AfwDateHelper::hijriToGreg($old_data_to_display) . ' م';
+                    }
+                } else {
+                    $data_to_display = '';
+                }
+            }
+            elseif ($structure['FORMAT'] == 'CONVERT_NASRANI_VERY_SIMPLE') {
+
                 if ($data_to_display) {
                     if (AfwSession::hasOption('HIJRI_TO_GREG')) {
                         $data_to_display =

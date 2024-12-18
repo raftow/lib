@@ -76,6 +76,7 @@ if($controllerName)
 
         $request["controllerObj"] = $controllerObj;
         $request["methodName"] = $methodName;
+        
         $options = $controllerObj->prepareOptions($methodName);
         $options["other-js-arr"] = [];
         $options["other-css-arr"] = [];
