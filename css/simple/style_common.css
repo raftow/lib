@@ -2924,10 +2924,10 @@ span.input-group-addon i {
 .login-button {
 	margin-top: 5px
 }
-.login-register 
-{
-        font-size: 19px;
-	text-align: center
+.login-register {
+    font-size: 19px;
+    text-align: center;
+    width: 100%;
 }
 .btn span.glyphicon {
 	opacity: 0

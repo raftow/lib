@@ -746,10 +746,10 @@ a.hzm3-button.hzm3-block>.hzm4-title {
 }
 
 .hzm-custom.hzm-custom-icon-container.only-border.border-primary {
-    border-color: transparent;
+    border-color: transparent !important;
     /* border-radius: 50%; */
     border-width: 2px;
-    background-color: transparent;
+    background-color: transparent !important;
 }
 
 .hzm3-col.m3, .hzm3-quarter {
@@ -797,6 +797,12 @@ div.hzm_home_bloc>h3 {
 
 /****   login    *******/
 
+body.hzm_body.login {
+    min-height: fit-content !important;
+    max-height: fit-content !important;
+    height: fit-content !important;
+}
+
 .modal-dialog.popup-login {
     background: transparent;
     padding-left: 0px !important;
@@ -805,10 +811,10 @@ div.hzm_home_bloc>h3 {
     float: right;
     min-height: 700px;
     min-width: 300px !important;
-    width: 80% !important;
+    width: 70%;
     /* max-width: 550px; */
-    margin-right: 10% !important;
-    margin-left: 10% !important;
+    margin-right: 20%;
+    margin-left: 10%;
     margin-top: 120px !important;
 }
 

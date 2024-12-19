@@ -9,7 +9,7 @@ if (!$my_font) $my_font = "front";
   <!-- plugins -->
   <link type="text/css" rel="stylesheet" href="../lib/bmulti/css/bootstrap-multiselect.css" />
   <!-- end plugins -->
-  <link rel="stylesheet" href="../lib/css/jquery-ui-1.11.4.css">
+  <link rel="stylesheet" href="../lib/css/jquery-ui-1.14.0.css">
   <link rel="stylesheet" href="../lib/css/font-awesome.min-4.3.css">
   <link rel="stylesheet" href="../lib/css/font-awesome.min.css">
   <link rel="stylesheet" href="../lib/css/menu_<?php echo  $lang ?>.css">
@@ -40,7 +40,7 @@ if (!$my_font) $my_font = "front";
 
 
 
-  <link rel="stylesheet" href="../lib/bootstrap/bootstrap-v3.min.css">
+  <link rel="stylesheet" href="../lib/bootstrap/bootstrap-v5.3.3.min.css">
 
 
   <link rel="stylesheet" href="../lib/bsel/css/bootstrap-select.css">
@@ -59,7 +59,7 @@ if (!$my_font) $my_font = "front";
   ?>
   <link rel="stylesheet" href="../lib/css/dropdowntree.css" />
   <script src="../lib/js/qedit.js"></script>
-  <script src="../lib/js/jquery-1.12.0.min.js"></script>
+  <script src="../lib/js/jquery-3.6.0.min.js"></script>
   <?php
   if ($ivviewer_activate) {
     // <script type="text/javascript" src="../lib/iv-viewer/dist/iv-viewer.js"></script>
@@ -69,7 +69,7 @@ if (!$my_font) $my_font = "front";
   <?php
   }
   ?>
-  <script src="../lib/bootstrap/bootstrap-v3.min.js"></script>
+  <script src="../lib/bootstrap/bootstrap-v5.3.3.min.js"></script>
   <!-- plugins -->
   <script src="../lib/bmulti/js/bootstrap-multiselect.js"></script>
   <script src="../lib/js/jquery-clock-timepicker.min.js"></script>
@@ -141,7 +141,7 @@ if (!$my_font) $my_font = "front";
   ?>
 
   <!-- end datatable/css/js -->
-  <script src="../lib/js/jquery-ui-1.11.4.js"></script>
+  <script src="../lib/js/jquery-ui-1.14.0.js"></script>
   <script src="../lib/js/jquery.ui.autocomplete.html.js"></script>
 
 
@@ -223,7 +223,6 @@ if (!$my_font) $my_font = "front";
   //die(var_export($custom_scripts,true));
 
 
-  //<script type="text/javascript" src="../lib/fancy-box/jquery-migrate-1.2.1.min.js"></script>
   if ($fancybox_activate) {
   ?>
     <link rel="stylesheet" type="text/css" media="screen" href="../lib/fancy-box/jquery.fancybox-1.3.4.css" />

@@ -15,7 +15,7 @@
 <!-- plugins -->
 <link type="text/css" rel="stylesheet" href="../../bmulti/css/bootstrap-multiselect.css"/>
 <!-- end plugins -->
-<link rel="stylesheet" href="../../css/jquery-ui-1.11.4.css">
+<link rel="stylesheet" href="../../css/jquery-ui-1.14.0.css">
 <link rel="stylesheet" href="../../css/font-awesome.min.css">
 <link rel="stylesheet" href="../../css/menu_<?=$lang?>.css">
 <link rel="stylesheet" href="../../css/front-application.css">
@@ -27,7 +27,7 @@
 <link rel='stylesheet' href='../lib/css/front_mobile_thin.css?crst=<?php echo $crst ?>'>
 
 
-<link rel="stylesheet" href="../../bootstrap/bootstrap-v3.min.css">
+<link rel="stylesheet" href="../../bootstrap/bootstrap-v5.3.3.min.css">
 <link rel="stylesheet" href="../../bsel/css/bootstrap-select.css">
 <link href="./css/logo-app-icon.png" rel="shortcut icon">
 <title>Momken Framework</title>

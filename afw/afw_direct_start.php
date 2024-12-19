@@ -60,6 +60,13 @@ if (file_exists($afw_check_member_file)) {
     include($afw_check_member_file);
 }*/
 
+if(!$header_template) $header_template = AfwSession::config("$direct_page_name-header-template", ""); 
+if(!$menu_template) $menu_template = AfwSession::config("$direct_page_name-menu-template", "");
+if(!$body_template) $body_template = AfwSession::config("$direct_page_name-body-template", "");
+if(!$footer_template) $footer_template = AfwSession::config("$direct_page_name-footer-template", "");
+
+// die("direct_page_name=$direct_page_name header_template=$header_template");
+
 if(!$header_template) $header_template = AfwSession::config("header-template", "modern"); 
 if(!$menu_template) $menu_template = AfwSession::config("menu-template", "modern");
 if(!$body_template) $body_template = AfwSession::config("body-template", "modern");

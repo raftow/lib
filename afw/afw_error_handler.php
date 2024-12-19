@@ -96,7 +96,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/jquery-ui-1.11.4.css">
+<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/jquery-ui-1.14.0.css">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/font-awesome.min-4.3.css">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tajawal%3A400%2C700&ver=5.5.1">
@@ -109,21 +109,21 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_mobile.css?crst=<?php echo $crst ?>">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/front_mobile_thin.css?crst=<?php echo $crst ?>">
 <link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/material-design-iconic-font.min.css">
-<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/bootstrap/bootstrap-v3.min.css">
+<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/bootstrap/bootstrap-v5.3.3.min.css">
 <link href="<?php echo $relative_path;?>../lib/attention/attention.css" rel="stylesheet">
 
 
 
 
-<script src="<?php echo $relative_path;?>../lib/js/jquery-1.12.0.min.js"></script>
-<script src="<?php echo $relative_path;?>../lib/bootstrap/bootstrap-v3.min.js"></script>
+<script src="<?php echo $relative_path;?>../lib/js/jquery-3.6.0.min.js"></script>
+<script src="<?php echo $relative_path;?>../lib/bootstrap/bootstrap-v5.3.3.min.js"></script>
 
 <?php
   $my_font = "front";
   $my_theme = "simple";
   $lang = "ar";
 ?>
-<script src="<?php echo $relative_path;?>../lib/js/jquery-ui-1.11.4.js"></script>
+<script src="<?php echo $relative_path;?>../lib/js/jquery-ui-1.14.0.js"></script>
 <script src="<?php echo $relative_path;?>../lib/attention/attention.js"></script>
 <script src="<?php echo $relative_path;?>../lib/attention/attention_functions.js"></script>
 <link rel="stylesheet" href="../lib/hijra/jquery.calendars.picker.css"/>

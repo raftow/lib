@@ -195,6 +195,18 @@ body.dark .switch:before{
     padding: 10px 14px;
     transition: var(--tran-05);
 }
+
+.hzm_body.login>section.dashboard {
+    width: 100%;
+    right: 0;
+    padding: 0;
+}
+
+.hzm_body.login>section.dashboard .dash-content {
+    padding-top: 0px;
+    min-height: 400px;
+}
+
 nav.close ~ .dashboard{
     right: 73px;
     width: calc(100% - 73px);

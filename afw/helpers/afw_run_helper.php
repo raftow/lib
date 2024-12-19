@@ -133,7 +133,7 @@ class AfwRunHelper
                                 <link rel='stylesheet' href='../lib/css/front_mobile_thin.css?crst=$crst'>
                                 
                                 <link rel='stylesheet' href='../lib/css/material-design-iconic-font.min.css'>
-                                <link rel='stylesheet' href='../lib/bootstrap/bootstrap-v3.min.css'>
+                                <link rel='stylesheet' href='../lib/bootstrap/bootstrap-v5.3.3.min.css'>
                                 <link rel='stylesheet' href='../lib/bsel/css/bootstrap-select.css'>
                                 <link rel='stylesheet' href='../lib/css/dropdowntree.css' />
                                 <link href='../lib/css/def_ar_front.css' rel='stylesheet' type='text/css'>
@@ -145,9 +145,9 @@ class AfwRunHelper
                                 <link href='../lib/skins/square/green.css' rel='stylesheet' type='text/css'>
                                 <link href='../lib/skins/square/red.css' rel='stylesheet' type='text/css'>
 
-                                <script src='../lib/js/jquery-1.12.0.min.js'></script>
-                                <script src='../lib/bootstrap/bootstrap-v3.min.js'></script>
-                                <script src='../lib/js/jquery-ui-1.11.4.js'></script>
+                                <script src='../lib/js/jquery-3.6.0.min.js'></script>
+                                <script src='../lib/bootstrap/bootstrap-v5.3.3.min.js'></script>
+                                <script src='../lib/js/jquery-ui-1.14.0.js'></script>
 
                                 <body style='font-family: monospace;'>";
 

@@ -12,6 +12,7 @@ class AfwMainPage
 
     public static function echoDirectPage($current_module, $direct_page, $direct_page_path, $options = [],)
     {
+        $direct_page_name = str_replace(".php", "", $direct_page);
         $curr_path = dirname(__FILE__);
         include("$curr_path/afw_direct_start.php");
         // die("echoDirectPage 20241119  : after include($curr_path/afw_main_start.php) menu_template = ".$menu_template);

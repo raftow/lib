@@ -665,6 +665,9 @@ class AfwLoadHelper extends AFWRoot
         // if($value == 6082) die("load case cache_management=$cache_management loading $className[$value] result_row=".var_export($result_row));
         //$result_row_from = 'load call as result_row = ' . var_export($result_row, true);
 
+
+        $MODE_OPTIMIZE_MAX = AfwSession::config("MODE_OPTIMIZE_MAX", false);
+
         $className = $object->getMyClass();
         $classNameModule = $object->getMyModule();
         $classNameTable = $object->getMyTable();
@@ -675,7 +678,7 @@ class AfwLoadHelper extends AFWRoot
             
             if (!$load_count[$className]["any"]) $load_count[$className]["any"] = 0;
             $load_count[$className]["any"]++;
-            if ((!$MODE_BATCH_LOURD) and ($load_count[$className]["any"] > 3)) {
+            if ($MODE_OPTIMIZE_MAX and (!$MODE_BATCH_LOURD) and ($load_count[$className]["any"] > 3)) {
                 throw new AfwRuntimeException("All the lookup table $className should be loaded once, not record by record");
             }
         }

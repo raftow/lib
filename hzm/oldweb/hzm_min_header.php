@@ -16,10 +16,10 @@
 <!-- plugins -->
 <link type="text/css" rel="stylesheet" href="../lib/bmulti/css/bootstrap-multiselect.css"/>
 <!-- end plugins -->
-<link rel="stylesheet" href="../lib/css/jquery-ui-1.11.4.css">
+<link rel="stylesheet" href="../lib/css/jquery-ui-1.14.0.css">
 <link rel="stylesheet" href="../lib/css/font-awesome.min.css">
 <link rel="stylesheet" href="../lib/css/menu_<?=$lang?>.css">
-<link rel="stylesheet" href="../lib/bootstrap/bootstrap-v3.min.css">
+<link rel="stylesheet" href="../lib/bootstrap/bootstrap-v5.3.3.min.css">
 <link rel="stylesheet" href="../lib/bsel/css/bootstrap-select.css">
 <link href="./css/logo-app-icon.png" rel="shortcut icon">
 <title>Momken Framework</title>

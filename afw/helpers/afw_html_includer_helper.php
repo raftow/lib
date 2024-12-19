@@ -52,10 +52,10 @@ class AfwHtmlIncluderHelper
         }
         
         $header = "<head>
-          <script src='../lib/js/jquery-1.12.0.min.js'></script>
+          <script src='../lib/js/jquery-3.6.0.min.js'></script>
           <script src='../lib/js/jquery.validate.js'></script>
-          <link rel='stylesheet' href='../lib/css/jquery-ui-1.11.4.css'>
-          <script src='../lib/js/jquery-ui-1.11.4.js'></script>
+          <link rel='stylesheet' href='../lib/css/jquery-ui-1.14.0.css'>
+          <script src='../lib/js/jquery-ui-1.14.0.js'></script>
           <!-- script src='../lib/tree/tree.jquery.js'></script> -->
           
           ";
@@ -106,8 +106,8 @@ class AfwHtmlIncluderHelper
           ";
 
         if($options["bootstrap"]) $header .= "
-          <script src='../lib/bootstrap/bootstrap-v3.min.js'></script>
-          <link rel='stylesheet' href='../lib/bootstrap/bootstrap-v3.min.css'>
+          <script src='../lib/bootstrap/bootstrap-v5.3.3.min.js'></script>
+          <link rel='stylesheet' href='../lib/bootstrap/bootstrap-v5.3.3.min.css'>
           ";
 
         if($options["bootstrap-select"]) $header .= "

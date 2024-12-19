@@ -1134,9 +1134,9 @@ span.multiselect-selected-text {
     float: right;
     min-height: 390px;
     min-width: 300px !important;
-    width: auto !important;
+    width: 70%;
     margin-right: 20% !important;
-    margin-left: 40% !important;
+    margin-left: 10% !important;
 }
 
 .modal-dialog.popup-content {
@@ -1294,7 +1294,7 @@ span.dday {
     background-position-x: center;
     background-position-y: 0px;
     width: 100%;
-    min-height: 380px;
+    min-height: 580px !important;
     float: right;
     margin-bottom: 0px;
 }
