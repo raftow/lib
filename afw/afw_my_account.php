@@ -42,10 +42,14 @@ if($objToShow and $objToShow->isAdmin() and false)
 }
 elseif($objToShow)
 {
+        $theme_name = AfwSession::config('theme','modern'); 
+        $images = AfwThemeHelper::loadTheme();
+        //die("theme=$theme_name images=".var_export($images,true));
         $direct_dir_name = dirname(__FILE__); 
         $Direct_Page = "show_object.php";
         //die("$Direct_Page to run under$file_dir_name/../$MODULE/afw_direct_page.php");
         include("afw_direct_page.php");
+
         
 }
 else

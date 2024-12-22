@@ -101,6 +101,8 @@ class AfwDynamicPublicMethodHelper
                 );
             
         }
+
+        return $pbms;
     }
     
 }

@@ -29,6 +29,8 @@ class AfwHtmlIncluderHelper
         $options["sweetalert"] = true;
         $options["dataTables"] = true;
         $options["calendars"] = true;
+        // $options["dropdowntree"] = true;
+        // $options["bootstrap-select"] = true;
 
         if($options["edit"])
         {

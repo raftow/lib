@@ -53,7 +53,7 @@ class ImageFileHandler
     /**
      * Saves the provided image content as a file
      *
-     * @param string $contents
+     * @param GdImage $contents
      *
      * @return string
      */
@@ -73,6 +73,7 @@ class ImageFileHandler
      *
      * @return bool
      */
+    /*
     public function collectGarbage()
     {
         if (!mt_rand(1, $this->gcFreq) == 1) {
@@ -91,7 +92,7 @@ class ImageFileHandler
         }
 
         return true;
-    }
+    }*/
 
     /**
      * Creates the folder if it doesn't exist

@@ -381,7 +381,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
 
                                 // ***************************
                                 $other_links = $obj->getOtherLinksForUser($key_mod, $objme, $otherLink_genereLog);
-                                if (count($other_links) > 2) {
+                                if (count($other_links) > 12) {
                                         // use bootstrap design version if many links
                                         $data[$nom_col]["btns"] .=  "<div class='btn-group'>";
                                         $data[$nom_col]["btns"] .= "  <button type='button' class='btn btn-primary'>$key_mod_tr</button>";
@@ -411,7 +411,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                                 $o_color = $other_link["COLOR"];
                                                 if (!$o_color) $o_color = "gray";
 
-                                                $data[$nom_col]["btns"] .= "<a href='$o_url' $o_target_html><span class='${o_color}btn submit-btn fright otln $o_class'>$o_tit</span></a>\n";
+                                                $data[$nom_col]["btns"] .= "<a href='$o_url' $o_target_html><div class='${o_color}btn submit-btn fright otln $o_class'>$o_tit</div></a>\n";
 
                                                 //$col_num++;
                                         }

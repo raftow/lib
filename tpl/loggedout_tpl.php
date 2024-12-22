@@ -20,7 +20,7 @@ body{
         margin-top: 55px;
         margin-left: 20%;
         margin-right: 20%;
-        background-color: #4fab9c;
+        background-color: orange;
         color: white;
         padding: 10px;
         margin-bottom: 80px;
@@ -30,6 +30,12 @@ body{
         color: white;
 }
 
+a.error.link {
+  color: white;
+  text-decoration: none;
+  background-color: #b0690e;
+  padding: 2px 8px;
+}
 
 
 

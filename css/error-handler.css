@@ -1,0 +1,14 @@
+.component.eh {
+    float: right;
+    width: 70%;
+    margin-right: 15%;
+    margin-top: 90px;
+    padding: 15px;
+    border: solid 1px silver;
+    font-family: math;
+}
+
+.component.eh > h1 {
+    background-color: #3999f7;
+    color: white;
+}

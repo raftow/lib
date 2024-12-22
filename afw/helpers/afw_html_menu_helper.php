@@ -119,8 +119,8 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         else $data_tokens["xmodule"] = "";
 
         if ($options["no_calendar"]) {
-            $data_tokens["calendar_item_s"] = "<!---";
-            $data_tokens["calendar_item_e"] = "--->";
+            $data_tokens["calendar_item_s"] = "<!-- ";
+            $data_tokens["calendar_item_e"] = " -->";
         } else {
             $data_tokens["calendar_item_s"] = "";
             $data_tokens["calendar_item_e"] = "";
@@ -131,8 +131,8 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $data_tokens["display_date_day"] = $display_date_day;
         $data_tokens["display_date_month"] = $display_date_month;
         if ($options["no_menu"]) {
-            $data_tokens["no_menu_s"] = "<!---";
-            $data_tokens["no_menu_e"] = "--->";
+            $data_tokens["no_menu_s"] = "<!-- ";
+            $data_tokens["no_menu_e"] = " -->";
         } else {
             $data_tokens["no_menu_s"] = "";
             $data_tokens["no_menu_e"] = "";

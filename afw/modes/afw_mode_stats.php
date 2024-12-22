@@ -8,7 +8,7 @@ foreach($themeArr as $theme => $themeValue)
 {
     $$theme = $themeValue;
 }
-require_once("afw_rights.php");
+
 require_once("afw_search_motor.php");
 
 if(!$currmod)
@@ -60,6 +60,7 @@ $show_pie = $stats_config["SHOW_PIE"];
 $global_footer_sum = $stats_config["FOOTER_SUM"];
 $stats_where = $myObj->decodeText($stats_where, $prefix="", $add_cotes=true, $sepBefore="[", $sepAfter="]");
 $myObj->where($stats_where);
+// die("stats_where=$stats_where");
 if(!$stats_config["DISABLE-VH"]) $myObj->select_visibilite_horizontale();
 
 $group_sep = $stats_config["GROUP_SEP"];
@@ -81,8 +82,10 @@ $config_stats_formula_cols = $stats_config["FORMULA_COLS"];
 $config_stats_options = $stats_config["OPTIONS"];
 //die("stats_config[OPTIONS] = config_stats_options = ".var_export($config_stats_options,true));
 
+global $MAX_MEMORY_BY_REQUEST, $MODE_BATCH_LOURD;
 
-
+$MAX_MEMORY_BY_REQUEST = $config_stats_options["MAX_MEMORY_BY_REQUEST"];
+$MODE_BATCH_LOURD = $config_stats_options["MODE_BATCH_LOURD"];
 
 $config_stats_super_header = $stats_config["SUPER_HEADER"];
 
@@ -561,11 +564,16 @@ if($footer_titles)
 $out_scr .="</tfoot>";
 $out_scr .= "</table>"; 
 
-$stats_bottom_help = $myObj->translate("stats.".$stc.".help",$lang);
+$stats_bottom_help_code = "stats.".$stc.".help";
 
+$stats_bottom_help = $myObj->translate($stats_bottom_help_code, $lang);
 $stats_bottom_help = $myObj->decodeText($stats_bottom_help, $prefix="", $add_cotes=false, $sepBefore="[", $sepAfter="]");
 
-$out_scr .= "<div class='stats_bottom_help'>$stats_bottom_help</div>"; 
+if($stats_bottom_help != $stats_bottom_help_code)
+{
+    $out_scr .= "<div class='stats_bottom_help'>$stats_bottom_help</div>"; 
+}
+
 
 
 if($show_pie)

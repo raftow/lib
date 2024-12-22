@@ -38,7 +38,7 @@ class CaptchaBuilder implements CaptchaBuilderInterface
     protected $backgroundImages = array();
 
     /**
-     * @var resource
+     * @var GdImage
      */
     protected $contents = null;
 
@@ -312,6 +312,7 @@ class CaptchaBuilder implements CaptchaBuilderInterface
      */
     protected function writePhrase($image, $phrase, $font, $width, $height)
     {
+        die("phrase=$phrase");
         $length = mb_strlen($phrase);
         if ($length === 0) {
             return \imagecolorallocate($image, 0, 0, 0);
@@ -414,7 +415,7 @@ class CaptchaBuilder implements CaptchaBuilderInterface
             }
             //return "using bg color source : $bg_source ".var_export($bg,true);
             
-            $this->background = $bg;
+            $this->backgroundColor = $bg;
             imagefill($image, 0, 0, $bg);
         } else {
             //return "using bgimages : ".var_export($this->backgroundImages,true);

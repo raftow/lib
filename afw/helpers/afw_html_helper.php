@@ -470,7 +470,9 @@ class AfwHtmlHelper extends AFWRoot {
 
         public static final function showNotification($err, $war, $inf)
         {
-                $html_notification =  "<div class='notification_message_container'>";  
+                $html_notification  = "";
+
+                if($err or $war or $inf) $html_notification .=  "<div class='notification_message_container'>";  
 
                 if($err)
                 {
@@ -515,7 +517,7 @@ class AfwHtmlHelper extends AFWRoot {
 
                 }
                 
-                $html_notification .=  "</div>";
+                if($err or $war or $inf) $html_notification .=  "</div>";
 
 
                 return $html_notification;

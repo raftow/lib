@@ -280,15 +280,24 @@ $user_full
    
 ?>
         <div class="container <?php echo $MODULE." ".$page_name ?>  ">   
+<?php
+        $h_error = AfwSession::getSessionVar("error");
+        $h_warning = AfwSession::getSessionVar("warning");
+        $h_information = AfwSession::getSessionVar("information");
+        $h_success = AfwSession::getSessionVar("success");
+        $h_slog = AfwSession::getSessionVar("slog");
+        if($h_error or $h_warning or $h_information or $h_success or $h_slog)
+        {
+?>
             <div class="notification_message_container">  
 
 <?php
-   if(AfwSession::getSessionVar("error"))
+   if($h_error)
    {
 ?>
                 <div class="alert messages messages--error alert-dismissable" role="alert" ><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <?php 
-                  $cnt = count(explode("<br>",AfwSession::getSessionVar("error")));
+                  $cnt = count(explode("<br>",$h_error));
                   if ($cnt>1)
                   {
                 ?>
@@ -302,12 +311,12 @@ $user_full
 <?php
    }
 
-   if(AfwSession::getSessionVar("warning"))
+   if($h_warning)
    {
 ?>
                 <div class="alert messages messages--warning alert-dismissable" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                 <?php 
-                  $cnt = count(explode("<br>",AfwSession::getSessionVar("warning")));
+                  $cnt = count(explode("<br>",$h_warning));
                   if ($cnt>1)
                   {
                 ?>
@@ -320,7 +329,7 @@ $user_full
 <?php
    }
 
-   if(AfwSession::getSessionVar("information"))
+   if($h_information)
    {
 ?>
                 <div class="alert messages xx messages--status  alert-dismissable <?=AfwSession::getSessionVar("information-class")?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -329,7 +338,7 @@ $user_full
 <?php
    }
    
-   if(AfwSession::getSessionVar("success"))
+   if($h_success)
    {
 ?>
                 <div class="alert messages messages--success alert-dismissable  <?=AfwSession::getSessionVar("information-class")?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -338,7 +347,7 @@ $user_full
 <?php
    }
 
-   if(AfwSession::getSessionVar("slog"))
+   if($h_slog)
    {
 ?>
                 <!-- SLOG :
@@ -346,9 +355,11 @@ $user_full
                 -->
 <?php
    }
-   
 ?> 
             </div>
+<?php
+        }
+?>             
         <div class='<?=$body_css_class?> no_spaces'>
 
 <?php

@@ -53,7 +53,7 @@ class PhraseBuilder implements PhraseBuilderInterface
      */
     public function niceize($str)
     {
-        return self::doNiceisze($str);
+        return self::doNiceize($str);
     }
     
     /**

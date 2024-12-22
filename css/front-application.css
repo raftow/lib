@@ -1545,7 +1545,7 @@ div.panel_bottom>button.bf.hzm-specialmethod{
     width: 98.5% !important;
     float: right;
     margin-right: 0.5%;
-    min-width: 280px;
+    min-width: 80px;
 }
 
 .fix_pct_10
@@ -3512,7 +3512,7 @@ a>label.checkbox {
         margin-top: 55px;
         margin-left: 20%;
         margin-right: 20%;
-        background-color: red;
+        background-color: orangered;
         color: white;
         padding: 10px;
         margin-bottom: 80px;
@@ -3520,6 +3520,13 @@ a>label.checkbox {
 
 .body_front_error>p {
         color: white;
+}
+
+a.error.link {
+    color: white;
+    text-decoration: none;
+    background-color: #b0690e;
+    padding: 2px 8px;
 }
 
 p.tech {
@@ -4325,7 +4332,7 @@ th#fwa-edit {
     float: right !important;
     margin-top: 25px;
     font-size: 16px;
-    background-color: #9fe8ed70;
+    background-color: #ade3fbba;
     padding: 18px;
 }
 
@@ -4763,10 +4770,10 @@ div.content-annonce>ul {
 
 @keyframes attirant {
     0%, 33% {
-        box-shadow: 0 0 0 1px var(--ds-border-discovery, #65C054), 0 0 0 var(--ds-border-discovery, rgba(101, 192, 84, 1));
+        box-shadow: 0 0 0 1px orange, 0 0 0 0 rgba(202, 134, 6, 0.612);
     }
 
     66%, 100% {
-        box-shadow: 0 0 0 1px var(--ds-border-discovery, #65C054), 0 0 0 10px rgba(101, 192, 84, 0.01);
+        box-shadow: 0 0 0 1px orange, 0 0 0 5px rgba(250, 221, 166, 0.612);
     }
 }

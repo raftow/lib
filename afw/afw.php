@@ -5739,9 +5739,9 @@ class AFWObject extends AFWRoot
                             );
                             $displ2 = trim($displ2);
                             if (!$displ2) {
-                                $displ2 = "case 1 : this->displayAttribute($attribute,false, $lang, &currstep=$parent_step)";
+                                $displ2 = "case 1 : ".get_class($this)."->displayAttribute($attribute,false, $lang, &currstep=$parent_step)";
                             } else {
-                                $displ2 .= "<!-- case 1: this->displayAttribute($attribute,false, $lang, &currstep=$parent_step) -->";
+                                $displ2 .= "<!-- case 1: ".get_class($this)."->displayAttribute($attribute,false, $lang, &currstep=$parent_step) -->";
                             }
 
                             if (!$struct['NO-RETURNTO']) {
@@ -5759,9 +5759,9 @@ class AFWObject extends AFWRoot
                             );
                             $displ2 = trim($displ2);
                             if (!$displ2) {
-                                $displ2 = "case 2 : this->displayAttribute($attribute,false, $lang)";
+                                $displ2 = "case 2 : ".get_class($this)."->displayAttribute($attribute,false, $lang)";
                             } else {
-                                $displ2 .= "<!-- case 2 : this->displayAttribute($attribute,false, $lang) -->";
+                                $displ2 .= "<!-- case 2 : ".get_class($this)."->displayAttribute($attribute,false, $lang) -->";
                             }
                         }
 

@@ -79,6 +79,12 @@ $(document).ready(function(){
                                 $(".alert-dismissable").fadeOut().remove();            
                         }
     ); 
+
+    $("a.close").click(function()
+                        { 
+                            $(this).parent().fadeOut().remove();            
+                        }
+    ); 
     
     $("form.form_lourde" ).submit(function( event ) {
       $(".hzm-loader-div").removeClass("hide"); 

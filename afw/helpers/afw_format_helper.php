@@ -804,7 +804,7 @@ class AfwFormatHelper
                             $return = AfwLanguageHelper::translateKeyword('ALL', $lang);
                         }
                     }
-                    //if($attribute=="status_id") throw new AfwRuntimeException("this->decode($attribute) : return=$return");
+                    // if($attribute=="customer_id") throw new AfwRuntimeException("AfwFormatHelper::decode($attribute) : case ABC01 return=$return");
                 } else {
                     $items_empty_message = AfwFormatHelper::getItemsEmptyMessage($obj, $structure, $lang);
                     $items_separator = $structure['LIST_SEPARATOR'];
@@ -823,6 +823,7 @@ class AfwFormatHelper
                     $small_lookup  = $structure["SMALL-LOOKUP"];
 
                     $return = AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message, $pk, $small_lookup);
+                    // if($attribute=="customer_id") throw new AfwRuntimeException("AfwFormatHelper::decode($attribute) : case ABC02 return=AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message, $pk, $small_lookup)=$return");
                 }
                 /* rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes
                 $structure = AfwStructureHelper::getStructureOf($obj,$attribute);

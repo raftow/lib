@@ -18,7 +18,7 @@ body{
         margin-top: 55px;
         margin-left: 20%;
         margin-right: 20%;
-        background-color: red;
+        background-color: orangered;
         color: white;
         padding: 10px;
         margin-bottom: 80px;
@@ -26,6 +26,13 @@ body{
 
 .body_front_error>p {
         color: white;
+}
+
+a.error.link {
+  color: white;
+  text-decoration: none;
+  background-color: #b0690e;
+  padding: 2px 8px;
 }
 
 table.dataTable {

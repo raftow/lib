@@ -2435,7 +2435,7 @@ $('#$showAsDataTable').DataTable( {
                 $link_to_display = '';
             } else {
                 $data_to_display = $object->decode($attribute);
-                if($debugg) $data_to_display .= " from object->decode";
+                if($debugg) $data_to_display .= " from object->decode($attribute)";
                 // if(($attribute == "cher_id") and (!contient(trim(strtolower($data_to_display)),"<img"))) die($object->getDisplay("ar")."rafik::data_to_display=$data_to_display");
                 // if(($attribute == "cher_id") and (!trim($data_to_display))) die($object->getDisplay("ar")."->decode($attribute) empty ->getVal($attribute) = ".$object->getVal($attribute));
                 if ($getlink) {

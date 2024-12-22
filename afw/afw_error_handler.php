@@ -1,6 +1,7 @@
 <?php
 const _SHOW_ARGS = true;
 const _SHOW_ALL_ARGS = false;
+const _PROD = true;
 
 if(!isset($relative_path)) $relative_path = "./";
 
@@ -27,7 +28,8 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                 }*/
                 
                 ob_start();
-                dump_exception( $ex );
+                if(_PROD) prod_dump_exception($ex);
+                else dump_exception($ex);
                 $dump = ob_get_clean();
                 echo $dump;
                 exit;
@@ -239,59 +241,65 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 </html>
 <?php
 }
-}
-//set_error_handler("myAfwErrorHandler",E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
-/*
-    protected function afwError($error_title, $call_method = '')
+
+function prod_dump_exception($ex)
+{
+            global $relative_path;
+                $file = $ex->getFile();
+                $line = $ex->getLine();
+
+                if ( file_exists( $file ) )
+                {
+                        $lines = file( $file );
+                }
+                $crst = md5("crst" . date("YmdHis"));
+    
+?>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="<?php echo $relative_path;?>../lib/css/error-handler.css">
+<body>
+<div class='component eh'>
+<?php
+    $context = AfwUrlManager::getUriContext();
+    if(class_exists("AfwSession")) $crm_site = AfwSession::config("crm_site", "");
+    else $crm_site = "";
+    if(class_exists("AfwVirtualErrorHelper"))
     {
-        global $_POST, $out_scr, $lang, $the_last_sql;
-        die($error_title);
-        $file_dir_name = dirname(__FILE__);
-        // il faut un header special qui ne plante jamais ان شاء الله
-        include "$file_dir_name/../lib/hzm/web/hzm_min_header.php";
-
-        $message .= 'object error :';
-        $message .=
-            '<br> <b>TableClass :</b> ' . AfwStringHelper::tableToClass(static::$TABLE);
-        $message .= '<br> <b>ID :</b> ' . $this->getId();
-        $message .=
-            '<br> <b>LAST_ATTRIBUTE :</b> ' . $this->debugg_last_attribute;
-
-        // -- rafik : danger : no call to any overrideble method here
-        // -- to avoid infinite loop of this error method call
-        //$message .= "<br> <b>OBJ :</b> " . $this->getDisplay($lang);
-        $message .= '<br> <b>LAST SQL QUERY :</b> ' . $the_last_sql;
-
-        // -- rafik : danger : no call to any overrideble method here
-        // -- to avoid infinite loop of this error method call
-        //$message .= "<br> <b>PROPS :</b> " . $this->showMyProps();
-
-        $message .= "<br> <b>Method :</b> $call_method";
-
-        $message .= '<hr>';
-        if ($_POST) {
-            $message .= "<table dir='ltr'>";
-            foreach ($_POST as $att => $att_val) {
-                $message .= "<tr><td>posted <b>$att : </b></td><td>$att_val</td></tr>";
-            }
-            $message .= '</table><hr>';
-        }
-        if (class_exists('AfwAutoLoader') or class_exists('AfwSession')) {
-            $objme = AfwSession::getUserConnected();
-            if ($objme and $objme->isSuperAdmin()) {
-                $message .= "<div id='analysis_log'>";
-                $message .= AfwSession::getLog();
-                $message .= '</div>';
-            }
-        }
-
-        AFWDebugg::log($message);
-        $message .= $out_scr;
-
-        AfwRunHelper::safeDie($error_title, $message, true, null, false, true);
-
-        return false;
+        list($component, $version, $relc) = AfwVirtualErrorHelper::getDetails($ex);        
     }
-*/
+    else
+    {
+        $component = "AFW-V-E-H";
+        $version = "3.0";        
+        $relc = "Nothing";
+    }
+    
+?>    
+        <h1>We are upgrading the system for you ..., please wait</h1>
+        <h1>Installing :<?php echo $component ; ?></h1>
+        <h2>Version : <?php echo $version ; ?></h2>
+        <h2>Context : <?php echo $context ; ?></h2>
+        <!-- <?= $ex->getMessage(); ?> -->        
+        <h3>Please contact your administrator by sending copy-past of the text of this screen in a new ticket in customer service plateform : <?php echo $crm_site ?></h3>
+        <h1>Related components : </h1>
+        <h2><?php echo $relc; ?></h2>
+</div>
+</body>
+</html>
+<?php
+}
+
+}
+
 
 set_exception_handler("myAfwExceptionHandler");

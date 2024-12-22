@@ -1,5 +1,5 @@
 <?php
-
+const CONST_URI_ORDER = 0;
 // old require of afw_root
 
 class AfwUrlManager extends AFWRoot
@@ -46,6 +46,8 @@ class AfwUrlManager extends AFWRoot
     public static function encodeMainUrl($url)
     {
         list($script_name, $all_params) = explode('?', $url);
+
+        // die("rafik CDF 123456 = $script_name, $all_params");
 
         if(($script_name != "main.php") and ($script_name != "m.php"))
         {
@@ -189,13 +191,30 @@ class AfwUrlManager extends AFWRoot
         return [$bf_id, $params];
     }
 
-    public static function currentURIModule()
+
+    public static function getUriContext()
     {
+        $uri_items = explode("/", $_SERVER['REQUEST_URI']);
+        $url = $uri_items[count($uri_items)-1];
+        $return = strtolower(self::encodeMainUrl($url));
+        $return = str_replace(".php","",$return);
+        $return = str_replace("&popup=","+p",$return);
+        $return = str_replace("?","+",$return);
+        $return = str_replace("&","+",$return);
+
+
+        return $return;
+    }
+    
+    
+
+    public static function currentURIModule()
+    {        
         $uri_items = explode('/', $_SERVER['REQUEST_URI']);
-        if ($uri_items[0]) {
-            $uri_module = $uri_items[0];
+        if ($uri_items[CONST_URI_ORDER]) {
+            $uri_module = $uri_items[CONST_URI_ORDER];
         } else {
-            $uri_module = $uri_items[1];
+            $uri_module = $uri_items[CONST_URI_ORDER+1];
         }
 
         return $uri_module;

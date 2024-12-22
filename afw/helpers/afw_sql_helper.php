@@ -1528,6 +1528,20 @@ class AfwSqlHelper extends AFWRoot
         return $return;
     }
 
+
+    public static function concat_ifnull_implode($arr_cols, $sep)
+    {
+        $ifnull_df_arr = [];
+        foreach($arr_cols as $nom_col)
+        {
+            $nom_col = "IF(ISNULL($nom_col), '', $nom_col)";
+            $ifnull_df_arr[] = $nom_col;
+        }
+        
+        
+        return "concat(".implode(",'$sep',",$ifnull_df_arr).")";
+    }
+
     
 
 }

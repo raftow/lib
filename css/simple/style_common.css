@@ -65,6 +65,10 @@ form {
     }
 }
 
+.form-select {
+    background-position: left .75rem center;
+    background-size: 16px 12px;
+}
 
 .form-control {
     display: block;

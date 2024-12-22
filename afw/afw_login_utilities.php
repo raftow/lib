@@ -107,10 +107,19 @@ class AfwLoginUtilities extends AFWRoot
                 }
 
 
-
+                if($user_connected)
+                {
+                        self::login_done($username);
+                }
 
 
                 return array($user_connected, $user_not_connected_reason, $info[0], $ldap_dbg);
+        }
+
+        public static function login_done($username)
+        {
+                $objUser = Auser::loadByUsername($username);     
+                return $objUser->generateCacheFile("en", true);
         }
 
         public static function db_or_golden_login($username, $user_password)
@@ -135,6 +144,14 @@ class AfwLoginUtilities extends AFWRoot
                 } else {
                         $ldap_dbg = "login success to user $username id = " . $user_infos_golden["id"];
                 }
+
+                if($user_connected)
+                {
+                        list($err_ld, $inf_ld, $war_ld) = self::login_done($username);
+                        if($err_ld) $ldap_dbg .= " Error : $err_ld";
+                        if($war_ld) $ldap_dbg .= " Warning : $war_ld";
+                }
+
                 //die("return array(user_connected=$user_connected, reason=$user_not_connected_reason, $user_infos_golden, dbg=$ldap_dbg)");
                 return array($user_connected, $user_not_connected_reason, $user_infos_golden, $ldap_dbg);
         }

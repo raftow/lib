@@ -32,6 +32,8 @@ class AfwLoadHelper extends AFWRoot
             $object = new $nom_class_fk();
             $where_cleaned = str_replace("((id))",$object->getPKField(),$where);
             $dataLookup = self::loadAllLookupData($object,$where_cleaned);
+            // if($nom_table_fk=="crm_customer") throw new AfwRuntimeException("Shoof self::loadAllLookupData(object of $nom_class_fk, $where_cleaned) = ".var_export($dataLookup, true));
+
             // merge into global lookup data
             foreach($dataLookup as $lkp_id => $lkp_val)
             {
@@ -49,7 +51,7 @@ class AfwLoadHelper extends AFWRoot
         }
         else $dataLookup = self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"];
 
-        // if($nom_table_fk=="identity_type") die("getLookupData($nom_module_fk, $nom_table_fk, $where) will use self::lookupMatrix=".var_export(self::$lookupMatrix,true));
+        // if($nom_table_fk=="crm_customer") throw new AfwRuntimeException("getLookupData($nom_module_fk, $nom_table_fk, $where) will use self::lookupMatrix=".var_export(self::$lookupMatrix,true));
 
         return $dataLookup;
     } 
@@ -195,7 +197,7 @@ class AfwLoadHelper extends AFWRoot
         elseif($is_array) return "<div class='empty_message'>" . $emptyMessage .'</div>';
         else 
         {
-            //if($nom_table_fk=="country" and $val=="183") die("rafik 231214-1842 ".var_export(self::$lookupMatrix,true));
+            //if($nom_table_fk=="crm_customer") throw new AfwRuntimeException("rafik 231214-1842 ".var_export(self::$lookupMatrix,true));
             return "";
         }
     } 
@@ -550,6 +552,12 @@ class AfwLoadHelper extends AFWRoot
         if(self::$lookupMatrix["$ans_module.$ans_table.1"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.1"][$value];
         
         self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $small_lookup);
+        /*
+        if($ans_table=="crm_customer")
+        {
+            $ex_message = "Shoof : self::lookupMatrix[$ans_module.$ans_table] = " . var_export(self::$lookupMatrix["$ans_module.$ans_table"], true);
+            throw new AfwRuntimeException($ex_message);
+        }*/
         return self::$lookupMatrix["$ans_module.$ans_table"][$value];
     }
 
@@ -583,7 +591,7 @@ class AfwLoadHelper extends AFWRoot
             
             if(is_array($object->DISPLAY_FIELD))
             {
-                $display_field = "concat(".implode(",'$sep',",$object->DISPLAY_FIELD).")";
+                $display_field = AfwSqlHelper::concat_ifnull_implode($object->DISPLAY_FIELD, $sep);
             }
             else $display_field = trim($object->DISPLAY_FIELD);
         }
@@ -598,7 +606,7 @@ class AfwLoadHelper extends AFWRoot
             {
                 if(is_array($object->AUTOCOMPLETE_FIELD))
                 {
-                    $display_field = "concat(".implode(",'-',",$object->AUTOCOMPLETE_FIELD).")";
+                    $display_field = AfwSqlHelper::concat_ifnull_implode($object->AUTOCOMPLETE_FIELD, $sep);
                 }
                 else $display_field = trim($object->AUTOCOMPLETE_FIELD);
             }
@@ -618,9 +626,11 @@ class AfwLoadHelper extends AFWRoot
 
         $pk = $object->getPKField();
 
-        // if($table=="crm_customer") die("display_field=$display_field");
+        $sql_recup = "select $pk, $display_field as __val from $server_db_prefix" . $module . ".$table where $where";
 
-        return AfwDatabase::db_recup_index("select $pk, $display_field as __val from $server_db_prefix" . $module . ".$table where $where", $pk, "__val");
+        // if($table=="crm_customer") throw new AfwRuntimeException("sql_recup = $sql_recup");
+
+        return AfwDatabase::db_recup_index($sql_recup, $pk, "__val");
 
     }
 
@@ -1754,20 +1764,17 @@ class AfwLoadHelper extends AFWRoot
         $fieldReallyExists = AfwStructureHelper::fieldReallyExists($object, $attribute, $structure);
 
         $afw_getter_log[] = "attribute_category=$attribute_category, fieldReallyExists($attribute) = $fieldReallyExists";
-        if ($attribute_category or $fieldReallyExists) 
+        if ($attribute_category) 
         {
-            if ($attribute_category) 
-            {
-                if($attribute_category=="SHORTCUT") $integrity = false;
-                $case = "object[$cl00]->getCategorizedAttribute($attribute, $attribute_category, ..)"; // ($attribute, $attribute_category, $attribute_type, structure, $what, $format, $integrity, $max_items, $lang, $call_method)
-                $return = $object->getCategorizedAttribute($attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method);
-            } 
-            else 
-            {
-                $case = "AfwLoadHelper::getReallyExistsNonCategorizedAttribute"; // ($object, $attribute, $attribute_type, $optim_lookup, structure, $what, $format, $integrity, $lang, $call_method)
-                $return = AfwLoadHelper::getReallyExistsNonCategorizedAttribute($object, $attribute, $attribute_type, $optim_lookup, $structure, $what, $format, $integrity, $lang, $call_method);
-            }
+            if($attribute_category=="SHORTCUT") $integrity = false;
+            $case = "object[$cl00]->getCategorizedAttribute($attribute, $attribute_category, ..)"; // ($attribute, $attribute_category, $attribute_type, structure, $what, $format, $integrity, $max_items, $lang, $call_method)
+            $return = $object->getCategorizedAttribute($attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method);
         } 
+        elseif ($fieldReallyExists)  
+        {
+            $case = "AfwLoadHelper::getReallyExistsNonCategorizedAttribute"; // ($object, $attribute, $attribute_type, $optim_lookup, structure, $what, $format, $integrity, $lang, $call_method)
+            $return = AfwLoadHelper::getReallyExistsNonCategorizedAttribute($object, $attribute, $attribute_type, $optim_lookup, $structure, $what, $format, $integrity, $lang, $call_method);
+        }
         else 
         {
             $case = "object[$cl00]->getNonExistingAttribute($attribute, $what)";
@@ -1946,7 +1953,7 @@ class AfwLoadHelper extends AFWRoot
                 // if($attribute=="updated_by") die("for : $attribute decode with format = $format, decode_format = $decode_format, gettype = $typattr, value=$valattr, str = ".var_export($structure,true));
                 if ($typattr) {
                     $return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, $structure, $object, $translate_if_needed = true);
-                    // if($attribute=="customer_id") die("$return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, ....)");
+                    // if($attribute=="customer_id") throw new AfwRuntimeException("$return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, ....)");
                 } else {
                     throw new AfwRuntimeException("The Attribute $attribute of table " . $object->getMyTable() . " has structure property TYPE not defined.", $call_method);
                 }
