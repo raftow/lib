@@ -1,7 +1,7 @@
 <?php
 const _SHOW_ARGS = true;
 const _SHOW_ALL_ARGS = false;
-const _PROD = true;
+const _PROD = false;
 
 if(!isset($relative_path)) $relative_path = "./";
 
