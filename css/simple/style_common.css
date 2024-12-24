@@ -1,4 +1,4 @@
-/*   simple  */
+/*   CSS For forms and inputs any language */
 
 @font-face {
 	font-family: 'Material Icons';
@@ -443,6 +443,7 @@ input,select,textarea,li {
     font-size: 28px;
     width: 140px;
 }
+
 
 
 .collapsed{
@@ -6140,4 +6141,16 @@ table.trace td>span {
     position: relative;
     min-width: 340px !important;
     width: max-content !important;
+}
+
+div.group-edit {
+    display: block !important;
+    float: right;
+}
+
+.ui-menu .ui-menu-item-wrapper {
+    position: relative;
+    padding: 8px 1em 8px .4em;
+    font-size: 16px;
+    font-family: menu;
 }

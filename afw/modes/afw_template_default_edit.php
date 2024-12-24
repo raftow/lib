@@ -216,7 +216,9 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                         type_input($nom_col, $desc, $col_val, $obj, $separator, $data_loaded, "inputlong", 0, "inputlong");
                                 }
                                 $desc_export = var_export($desc, true);
-                                $data[$nom_col]["input"] = "<!-- start of input for attrib $nom_col : [$col_val] = obj->val($nom_col) desc=$desc_export-->";
+                                if (AfwSession::config('MODE_DEVELOPMENT', false)) {
+                                        $data[$nom_col]["input"] = "<!-- start of input for attrib $nom_col : [$col_val] = obj->val($nom_col) desc=$desc_export-->";
+                                }
                                 $data[$nom_col]["input"] .= ob_get_clean();
                                 $data[$nom_col]["input"] .= "<!-- end of input for attrib $nom_col -->";
                                 $data[$nom_col]["type"] = $desc["TYPE"];
@@ -301,7 +303,8 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 }
                                 $data[$nom_col]["ehelp"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "EHELP", $lang, $desc));                                
                                 // if($nom_col=="applicationModelConditionList") die("ehelp=".$data[$nom_col]["ehelp"]);
-                                $data[$nom_col]["input"] = "<div class='hzm_data hzm_data_$nom_col $col_val_class $ro_classes_form' style='$style_div_form_control'>";
+                                $id_div_input = "div_data_$nom_col";
+                                $data[$nom_col]["input"] = "<div id='$id_div_input' class='hzm_data hzm_data_$nom_col $col_val_class $ro_classes_form' style='$style_div_form_control'>";
                                 if ((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) {
                                         // if($nom_col=="response_templates") die("case no-CATEGORY or FORCE-INPUT");
                                         $col_val = $obj->getVal($nom_col);
@@ -337,6 +340,18 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                         if($nom_col=="response_templates") die("case i can not see attribute");
                                 }
                                 $data[$nom_col]["input"] .= "</div>";
+                                // if this column is to show with accordion run the js of accordion
+                                if($desc['TEMPLATE'] == 'accordion')
+                                {
+$data[$nom_col]["input"] .= "<script>
+  \$( function() {
+    \$(\"#$id_div_input\").accordion({
+      collapsible: true
+    });
+  } );
+  </script>";
+                                }
+                                
                                 $data[$nom_col]["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "TOOLTIP", $lang, $desc));
                                 if (!$data[$nom_col]["tooltip"]) {
                                         $tltp = $obj->getAttributeTooltip($nom_col, $lang);
@@ -410,8 +425,15 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                                 $o_class = $other_link["CSS-CLASS"];
                                                 $o_color = $other_link["COLOR"];
                                                 if (!$o_color) $o_color = "gray";
-
-                                                $data[$nom_col]["btns"] .= "<a href='$o_url' $o_target_html><div class='${o_color}btn submit-btn fright otln $o_class'>$o_tit</div></a>\n";
+                                                if($o_url=="@help")
+                                                {
+                                                        $data[$nom_col]["btns"] .= "<div class='tooltip otln help $o_class $o_color'>$o_tit</div>";
+                                                }
+                                                else
+                                                {
+                                                        $data[$nom_col]["btns"] .= "<a href='$o_url' $o_target_html><div class='${o_color}btn submit-btn fright otln $o_class'>$o_tit</div></a>\n";
+                                                }
+                                                
 
                                                 //$col_num++;
                                         }

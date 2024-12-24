@@ -927,6 +927,7 @@ class AFWObject extends AFWRoot
                 }
                 if (!$ex_u_i) {
                     $old_val = $this->getVal($field_name);
+                    if($old_val == "--") $old_val = "";
                     $erase_even_if_filled = (($avoid_if_filled_fields != "all") and (!$avoid_if_filled_fields[$field_name]));
 
                     if ((!$old_val) or $erase_even_if_filled) {
@@ -936,9 +937,9 @@ class AFWObject extends AFWRoot
 
 
                         $val = $obj->getVal($field_name);
-                        if ($val and ($val !== $old_val)) {
-                            $this->set($field_name, null);
-                            $this->set($field_name, $val);
+                        if (($val and ($val !== $old_val)) or (!$old_val)) {
+                            $this->setForce($field_name, null);
+                            $this->setForce($field_name, $val);
                             if (!$logHistory) $fields_updated[] = $field_name;
                             else $fields_updated[] = $field_name . " was '$old_val' become '$val' explanation : $erase_even_if_filled_log";
                         } else if ($field_name == $field_name_to_debugg) die("val=$val empty or same as old_val=$old_val ");
@@ -5559,26 +5560,36 @@ class AFWObject extends AFWRoot
                     */
                     $public = $other_link['PUBLIC'];
                     if (true) {
-                        $ican_do_bf =
+                        if(!$public)
+                        {
+                            $ican_do_bf =
                             ($other_link['BF-ID'] and
                                 $auser->iCanDoBF($other_link['BF-ID']));
-                        // not like for data records where if ugroups are not defined we authorize
-                        // here for links user group(s) or at least 1 should be defined and user should belongs to one of this user groups
-                        $belongs_to_ugroup =
-                            ($other_link['UGROUPS'] and
-                                $auser->i_belong_to_one_of_ugroups(
-                                    $other_link['UGROUPS'],
-                                    $this
-                                ));
-                        $user_is_owner =
-                            ($other_link['OWNER'] and
-                                $auser->getId() == $this->getMyOwnerId());
+                            // not like for data records where if ugroups are not defined we authorize
+                            // here for links user group(s) or at least 1 should be defined and user should belongs to one of this user groups
+                            $belongs_to_ugroup =
+                                ($other_link['UGROUPS'] and
+                                    $auser->i_belong_to_one_of_ugroups(
+                                        $other_link['UGROUPS'],
+                                        $this
+                                    ));
+                            $user_is_owner =
+                                ($other_link['OWNER'] and
+                                    $auser->getId() == $this->getMyOwnerId());
+                        }
+                        else
+                        {
+                            $ican_do_bf = null;
+                            $belongs_to_ugroup = null;
+                            $user_is_owner = null;
+                        }
+                        
 
-                        if (
+                        if ($public or
                             $ican_do_bf or
                             $belongs_to_ugroup or
                             $user_is_owner or
-                            $public
+                            
                         ) {
                             $attribute_related = $other_link['ATTRIBUTE_WRITEABLE'];
                             if ($ican_do_bf) {
@@ -5665,12 +5676,16 @@ class AFWObject extends AFWRoot
                 if (!$other_link['AUTH_TYPE']) {
                     $other_link['AUTH_TYPE'] = 'unknown-authorisation-type';
                 }
-                $other_link['URL'] = AfwUrlManager::encodeMainUrl($other_link['URL']);
-                $other_link['URL'] = $this->decodeText(
-                    $other_link['URL'],
-                    '',
-                    false
-                );
+                if($other_link['URL'] != "@help")
+                {
+                    $other_link['URL'] = AfwUrlManager::encodeMainUrl($other_link['URL']);
+                    $other_link['URL'] = $this->decodeText(
+                        $other_link['URL'],
+                        '',
+                        false
+                    );
+                }
+                
                 $final_other_links_arr[] = $other_link;
             }
         }

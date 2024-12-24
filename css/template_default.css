@@ -1102,3 +1102,6 @@ h1.modal-title {
     margin-top: 130px !important;
 }
 
+.ui-accordion .ui-accordion-header {
+    border: 1px solid #c0c0c070 !important;
+}
