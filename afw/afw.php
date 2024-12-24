@@ -5490,7 +5490,7 @@ class AFWObject extends AFWRoot
         $final_other_links_arr = [];
         if (!$auser) return $final_other_links_arr;
         $other_links_arr = $this->getOtherLinksArray($mode, $genereLog, $step);
-        //if($mode=="edit") die("getOtherLinksForUser($mode, ..) => other_links_arr = ".var_export($other_links_arr,true));
+        // if($mode=="mode_responseList") die("Maintenance is ongoing : this->getOtherLinksArray($mode, $genereLog, $step) => other_links_arr = ".var_export($other_links_arr,true));
         $count_other_links_arr = count($other_links_arr);
 
         if ($genereLog) {
@@ -5588,8 +5588,7 @@ class AFWObject extends AFWRoot
                         if ($public or
                             $ican_do_bf or
                             $belongs_to_ugroup or
-                            $user_is_owner or
-                            
+                            $user_is_owner
                         ) {
                             $attribute_related = $other_link['ATTRIBUTE_WRITEABLE'];
                             if ($ican_do_bf) {
@@ -5626,6 +5625,7 @@ class AFWObject extends AFWRoot
                                 );
                             }
                             $other_link['AUTH_TYPE'] = '';
+                            $reason = "not public and can't do bf and not belongs to ugroup and user is not owner";
                         }
                     }
 
@@ -5670,6 +5670,12 @@ class AFWObject extends AFWRoot
                 }
                 $other_link['AUTH_TYPE'] = '';
                 $other_link_authorized = false;
+                $reason = "condition $condition failed";
+            }
+            
+            if($other_link['CODE']=="stop.and.debugg")
+            {
+                // die("other_link_authorized=$other_link_authorized reason=$reason AUTH_TYPE=".$other_link['AUTH_TYPE']);
             }
 
             if ($other_link_authorized) {
@@ -5685,11 +5691,17 @@ class AFWObject extends AFWRoot
                         false
                     );
                 }
-                
+
                 $final_other_links_arr[] = $other_link;
+
+                if($other_link['CODE']=="stop.and.debugg")
+                {
+                    // die("stop.and.debugg final_other_links_arr=".var_export($final_other_links_arr,true));
+                }
+                
             }
         }
-
+        // die("final_other_links_arr=".var_export($final_other_links_arr,true));
         return $final_other_links_arr;
     }
 

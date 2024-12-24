@@ -396,6 +396,7 @@ $data[$nom_col]["input"] .= "<script>
 
                                 // ***************************
                                 $other_links = $obj->getOtherLinksForUser($key_mod, $objme, $otherLink_genereLog);
+                                // if($key_mod=="mode_responseList") die("Maintenance ongoing : obj->getOtherLinksForUser($key_mod) otherLink_genereLog=$otherLink_genereLog other_links=".var_export($other_links,true));
                                 if (count($other_links) > 12) {
                                         // use bootstrap design version if many links
                                         $data[$nom_col]["btns"] .=  "<div class='btn-group'>";
@@ -427,7 +428,7 @@ $data[$nom_col]["input"] .= "<script>
                                                 if (!$o_color) $o_color = "gray";
                                                 if($o_url=="@help")
                                                 {
-                                                        $data[$nom_col]["btns"] .= "<div class='tooltip otln help $o_class $o_color'>$o_tit</div>";
+                                                        $data[$nom_col]["btns"] .= "<div class='otln help $o_class $o_color'>$o_tit</div>";
                                                 }
                                                 else
                                                 {
