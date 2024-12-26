@@ -6167,3 +6167,12 @@ div.otln.help {
     z-index: 99999;
     position: relative !important;
 }
+
+.body_nav_hzm {
+    display: block;
+    min-height: fit-content;
+    float: right;
+    width: 100%;
+    z-index: 9999999;
+    position: absolute;
+}

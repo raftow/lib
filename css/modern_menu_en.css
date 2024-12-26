@@ -375,6 +375,7 @@ nav.close ~ .dashboard .top{
     nav ~ .dashboard{
         left: 73px;
         width: calc(100% - 73px);
+        padding: 2px;
     }
     nav.close ~ .dashboard{
         left: 200px;

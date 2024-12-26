@@ -573,7 +573,7 @@ class AfwHtmlHelper extends AFWRoot {
 
         public static function getTooltipDownloadUrl($file_path, $extension)
         {
-                return "<a target='_download' href='$file_path' class='download-icon download-$extension fright' data-toggle='tooltip' data-placement='top' title='[title]'>&nbsp;</a>";
+                return "<a target='_download' href='$file_path' class='tooltip download-icon download-$extension fright' data-toggle='tooltip' data-placement='top' title='[title]'>&nbsp;</a>";
         }
 
 

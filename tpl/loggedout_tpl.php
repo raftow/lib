@@ -6,45 +6,12 @@
         {
                 $show_technical_details = "hide";
         }
-
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $xmodule = AfwSession::getCurrentlyExecutedModule();
 ?>
-<style>
-body{
-        font-family:tahoma;
-}
-.body_front_error {
-        float: right;
-        width: 60%;
-        display: block;
-        margin-top: 55px;
-        margin-left: 20%;
-        margin-right: 20%;
-        background-color: orange;
-        color: white;
-        padding: 10px;
-        margin-bottom: 80px;
-}    
-
-.body_front_error>p {
-        color: white;
-}
-
-a.error.link {
-  color: white;
-  text-decoration: none;
-  background-color: #b0690e;
-  padding: 2px 8px;
-}
-
-
-
-</style>
-<link href="../../external/css/common-<?php echo $xmodule ?>.css" rel="stylesheet" type="text/css" type="text/css">
+<link href="/external/css/common-<?php echo $xmodule ?>.css" rel="stylesheet" type="text/css" type="text/css">
+<link href="/external/css/common-<?php echo $xmodule ?>-<?php echo $lang ?>.css" rel="stylesheet" type="text/css" type="text/css">
 <div class="body_front_error">     
-        <p>
-                انتهت الجلسة. سجل الدخول مرة أخرى
-        </p>
         <p class="message">
                 <?php echo $error_message?>
                 <br>                
