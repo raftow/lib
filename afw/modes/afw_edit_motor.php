@@ -220,9 +220,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         "tabindex" => $qedit_orderindex,
                         "style" => $input_style,
                         "empty_item" => $empty_item,
-                        "reloadfn" => $obj->getJsOfReloadOf($col_name),
-                        "onchange" => $onchange . $obj->getJsOfOnChangeOf($col_name),
-                        "onchangefn" => $obj->getJsOfOnChangeOf($col_name, $descr = "", false),
+                        "reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name),
+                        "onchange" => $onchange . AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
+                        "onchangefn" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name, $descr = "", false),
                         "required" => $is_required,
                         "disabled" => $disabled,
                     );
@@ -282,7 +282,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 else 
                 {
                     $help_atc = $auto_c["HELP"];
-                    $depend = $obj->getDependencyIdsArray($col_name, $desc);
+                    $depend = AfwJsEditHelper::getDependencyIdsArray($obj, $col_name, $desc);
                     if(!$depend) $depend = "0";
                 ?>
                     <div class='hzm_input_atc'>
