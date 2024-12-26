@@ -820,12 +820,14 @@ small.domain-title {
 
 .download-mp4 {
     background-image: url(../../lib/images/video-camera.png);
+    background-position-x: center;
 }
 
 .download-jpeg,
 .download-jpg,
 .download-png {
     background-image: url(../../lib/images/camera.png);
+    background-position-x: center;
 }
 
 

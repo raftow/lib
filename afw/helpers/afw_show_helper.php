@@ -2207,9 +2207,7 @@ $('#$showAsDataTable').DataTable( {
                             $object->translate($empty_code, $lang) .
                             '</div>';
                     }
-                } elseif (
-                    strtoupper($structure['FORMAT']) == 'CUSTOM'
-                ) {
+                } elseif (strtoupper($structure['FORMAT']) == 'CUSTOM') {
 
                     $methodCustom = $structure['CUSTOM_FORMAT'];
                     $data_to_display = '';

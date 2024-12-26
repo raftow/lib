@@ -8,10 +8,10 @@
             [enable_search_box_e]
             <div class="header_notification_warp d-flex align-items-center">
                 <li>
-                    <a href="#"> <img src="/lib/images/bell.svg" alt=""> </a>
+                    <a href="/"> <img src="/lib/images/bell.svg" alt=""> </a>
                 </li>
                 <li>
-                    <a href="#"> <img src="/lib/images/msg.svg" alt=""> </a>
+                    <a href="/"> <img src="/lib/images/msg.svg" alt=""> </a>
                 </li>
             </div>
             <div class="hzm-user-account hzm-container-center hzm-custom-icon-container [user_bg_class]">

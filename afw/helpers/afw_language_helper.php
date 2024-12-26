@@ -5,11 +5,15 @@ class AfwLanguageHelper
 {
     public static function getGlobalLanguage()
     {
-        global $lang;
-        if (!$lang) {
-            $lang = 'ar';
-        }
-        return $lang;
+        $langue = AfwSession::getSessionVar("current_lang");
+        if (!$langue) 
+        {
+            global $lang;
+            $langue = $lang;
+            if (!$langue) $langue = 'ar';
+        }    
+        
+        return $langue;
     }
 
     /**
