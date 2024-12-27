@@ -6,6 +6,12 @@ class AfwFileUploader extends AFWRoot
         public static $picture_types_arr = array('png', 'jpg', 'jpeg', 'gif');
         public static $options = array();
 
+        public static function getDocTypes($module)
+        {
+                return AfwSession::config("$module-file_types", AfwSession::config("file_types", []));
+        }
+        
+
         public static function init($load_extensions=false, $doc_types=null)
         {
                 if(!self::$options["inited"])

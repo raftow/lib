@@ -326,7 +326,7 @@ li.wizardv1_li.AlreadyStep {
     background-repeat: no-repeat !important;
     background-position-x: 3px !important;
     background-position-y: center !important;
-    background-size: 24px;
+    background-size: 24px !important;
 }
 
 .panel-heading>h3>span {

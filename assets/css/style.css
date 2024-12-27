@@ -280,3 +280,7 @@ footer h2 i{
     right: 33px;
     cursor: pointer;
 }
+
+.file_space {
+    min-height: 120px;
+}

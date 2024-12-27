@@ -15,6 +15,7 @@ require_once("afw_autoloader.php");
 AfwSession::startSession();
 $uri_module = AfwUrlManager::currentURIModule();
 if($uri_module) AfwAutoLoader::addModule($uri_module);
+
 include_once("$file_dir_name/../../external/config.php");
 include_once("$file_dir_name/../../external/db.php");
 
@@ -40,6 +41,7 @@ if(!$module)
 	echo '{"status":"error", "message":"module not defined post array count ='.$post_count.', '.$post_count_reason.'"}';
 	exit;
 }
+AfwAutoLoader::addModule($module);
 $me = $objme->id;
 $my_debug_file = "my_upload_".date("Ymd")."_$me.txt";
 // AFWDebugg::initialiser($DEBUGG_SQL_DIR,$my_debug_file);
@@ -47,7 +49,7 @@ $my_debug_file = "my_upload_".date("Ymd")."_$me.txt";
 
 
 $my_sh = $objme->getMyOrganizationId("");
-
+if(!$module) throw new AfwRuntimeException("MODULE var should be defined for `myUpload` file upload process");
 include_once ("$file_dir_name/../$module/module_config.php");
 include_once ("$file_dir_name/../$module/application_config.php");
 AfwSession::initConfig($config_arr);
@@ -59,11 +61,13 @@ AfwSession::initConfig($config_arr);
 if(!$allowed_upload_size)  $allowed_upload_size = 40;  // 40 Mo
 $MAX_ALLOWED_SIZE_FOR_UPLOAD = $allowed_upload_size * 1048576; 
 
-
+$file_types = AfwFileUploader::getDocTypes($module);
+if((!$file_types) or (count($file_types)==0)) throw new AfwRuntimeException("file_types for $module is to be defined for file uploads process : add `$module-file_types` param in $module/application_config.php file");
+$AfileClass = AfwSession::config("$module-AfileClass",AfwSession::config("AfileClass", "Afile"));
 
 if(!$allowed_exention_list)
 {
-    list($allowed, $ft_allowed) = DocType::getExentionsAllowed($module_config_token["file_types"], $upper=false);
+    list($allowed, $ft_allowed) = DocType::getExentionsAllowed($file_types, $upper=false);
 }
 else
 {
@@ -96,8 +100,21 @@ if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
         else  $afile_pic = "N";
 
         
-        
-        $af = new Afile();
+        if($AfileClass == "Afile")
+        {
+                $af = new Afile();
+                $af->set("owner_id",$me);
+                $af->set("stakeholder_id",$my_sh);
+        }
+        elseif($AfileClass == "WorkflowFile")
+        {
+                AfwAutoLoader::addModule("workflow");
+                $af = new WorkflowFile();
+        }
+        else
+        {
+                throw new AfwRuntimeException("use of AfileClass $AfileClass is not implemented in AfwMyUpload api service");
+        }
         
         $af->set("afile_name",$afile_name);
         $af->set("original_name",$afile_original_name);
@@ -106,8 +123,7 @@ if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
         $af->set("picture",$afile_pic);
         $af->set("afile_size",$afile_size);
         $af->set("doc_type_id",1);
-        $af->set("owner_id",$me);
-        $af->set("stakeholder_id",$my_sh);
+        
         
         $error = "";
         
@@ -123,7 +139,7 @@ if(isset($_FILES['upl']) && $_FILES['upl']['error'] == 0){
                 {
         		if($after_upload)
                         {
-                             $after_upload_full_file_name = "$file_dir_name/../$module/after_upload_$after_upload.php";   
+                             $after_upload_full_file_name = "$file_dir_name/../$module/afup/after_upload_$after_upload.php";   
                              if(file_exists($after_upload_full_file_name))   
                              {
                                 include($after_upload_full_file_name);      

@@ -5426,6 +5426,9 @@ class AFWObject extends AFWRoot
                 //if($mc_token=="file_types") die("arr_tokens = ".var_export($arr_tokens,true));
             }
 
+            $file_types = AfwFileUploader::getDocTypes($this->getMyModule());
+            $arr_tokens[$sepBefore ."file_types". $sepAfter] = implode(",",$file_types);
+
             // we start now the decode
             foreach ($arr_tokens as $token_item => $token_val) {
                 // if($this->MY_DEBUG) AFWDebugg::log("text_to_decode before decode of $fieldname for $token with $val_token : $text_to_decode");
