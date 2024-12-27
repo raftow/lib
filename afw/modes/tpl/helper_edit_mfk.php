@@ -6,6 +6,7 @@
         "size"  => 5,
         "multi" => true,
         "tabindex" => $qedit_orderindex,
+        "reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name),
         "onchange" => $onchange,
         "style" => $input_style,
 

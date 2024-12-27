@@ -107,10 +107,25 @@ class AfwHtmlIncluderHelper
           <link rel='stylesheet' href='../lib/css/material-design-iconic-font.min.css'>
           ";
 
-        if($options["bootstrap"]) $header .= "
-          <script src='../lib/bootstrap/bootstrap-v5.3.3.min.js'></script>
+        
+
+
+        if($options["bootstrap"]) 
+        {
+            if(AfwSession::config("bootstrap.bundle", false))
+            {
+              $bootstrap_script = "<script src='../lib/bootstrap/bootstrap.bundle.min.js'></script>";
+            }
+            else
+            {
+              $bootstrap_script = "<script src='../lib/bootstrap/bootstrap-v5.3.3.min.js'></script>";
+            }
+
+            $header .= "$bootstrap_script
           <link rel='stylesheet' href='../lib/bootstrap/bootstrap-v5.3.3.min.css'>
           ";
+        }
+        
 
         if($options["bootstrap-select"]) $header .= "
           <link rel='stylesheet' href='../lib/bsel/css/bootstrap-select.css'>

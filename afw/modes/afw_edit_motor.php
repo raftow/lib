@@ -803,6 +803,15 @@ $(function () {
 <label>
     <input mbsc-input id="<?php echo $info["id"] ?>-input" placeholder="<?php echo $info["filterPlaceholder"] ?>" data-dropdown="true" data-input-style="outline" data-label-style="stacked" data-tags="true" />
 </label>
+    <script>
+        <?php
+        if($info["reloadfn"])
+        {
+            echo "// reload function for attribute : ".$info["name"]."\n";
+            echo $info["reloadfn"] . "\n\n";
+        }
+        ?>
+    </script>
     <select class="<?php echo $info["class"] ?>" 
             name="<?php echo $info["name"] ?>" 
             id="<?php echo $info["id"] ?>" 
@@ -868,8 +877,12 @@ function select($list_id_val, $selected = array(), $info = array(), $sort_order 
 
     <script>
         <?php
-
-        echo $info["reloadfn"] . "\n\n";
+        if($info["reloadfn"])
+        {
+            echo "// reload function for attribute : ".$info["name"]."\n";
+            echo $info["reloadfn"] . "\n\n";
+        }
+        
         // rafik @todo check why I put this below I now disabled it
         // disabled :
         echo $info["onchangefn"] . "\n\n";
