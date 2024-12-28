@@ -3910,6 +3910,13 @@ class AFWObject extends AFWRoot
             $nom_table,
             $module
         );
+        
+        if(AfwStringHelper::stringStartsWith(trim($return), "??")
+           and 
+           AfwStringHelper::stringEndsWith(trim($return), "??"))
+        {
+            $return = AfwStringHelper::methodToTitle($nom_col);
+        }
         $return_before = $return;
         $return = AfwReplacement::trans_replace($return, $module, $langue);
 

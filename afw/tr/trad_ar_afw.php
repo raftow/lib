@@ -84,15 +84,17 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["STEP"]	                         	= "الخطوة";
         $trad["OPERATOR"]["NEXT"]	                         	= "حفظ ومتابعة >";
         $trad["OPERATOR"]["NEXTRO"]	                         	= "متابعة >";
-        $trad["OPERATOR"]["NEXT_TAB"]	                         	= "الخطوة التالية >";
-        $trad["OPERATOR"]["GO_TO"]	                         	= "الإنتقال إلى";
-        $trad["OPERATOR"]["VIEW"]	                         	= "مشاهدة";
         $trad["OPERATOR"]["PREVIOUS"]	                         	= "< حفظ ورجوع";
         $trad["OPERATOR"]["PREVIOUSRO"]	                         	= "< رجوع";
         $trad["OPERATOR"]["FINISH"]	                         	= "حفظ وإنهاء";
         $trad["OPERATOR"]["FINISHRO"]	                         	= "إنهاء";
         $trad["OPERATOR"]["COMPLETE_LATER"]	                        = "حفظ كمسودة وإكمال البيانات لاحقا";
         $trad["OPERATOR"]["COMPLETE_LATERRO"]	                        = "إنهاء";
+
+        $trad["OPERATOR"]["NEXT_TAB"]	                         	= "الخطوة التالية >";
+        $trad["OPERATOR"]["GO_TO"]	                         	= "الإنتقال إلى";
+        $trad["OPERATOR"]["VIEW"]	                         	= "مشاهدة";        
+        
         
         
         $trad["OPERATOR"]["FIELD"]	                                = "حقل";

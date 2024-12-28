@@ -219,12 +219,15 @@ class AfwHtmlHelper extends AFWRoot {
                         $method_log = $pbm_item["LOG"];
                         
                         if(!$method_icon) $method_icon = "run";
-                        $pbm_item_translation = $obj->translate($method_name,$lang);
+                        $pbm_item_translation = $obj->translate($method_name, $lang);
                         $pbm_item_help = $pbm_item["LABEL_".strtoupper($lang)];
                         if(($pbm_item_translation==$method_name) or (!$pbm_item_translation)) $pbm_item_translation = $pbm_item_help;
                         $method_name_help = $method_tooltip;
                         if($isAdmin) $method_name_help .= " [$method_name]";
-
+                        if(!$pbm_item_translation) 
+                        {
+                                $pbm_item_translation = AfwStringHelper::methodToTitle($method_name);
+                        }
                         $input_main_param_html = "";
                         if($pbm_item["MAIN_PARAM"])
                         {
@@ -566,9 +569,9 @@ class AfwHtmlHelper extends AFWRoot {
                }        
         }
 
-        public static function getLightDownloadUrl($file_path, $extension)
+        public static function getLightDownloadUrl($file_path, $extension, $icon_size="")
         {
-                return "<a target='_download' href='$file_path' class='download-icon download-$extension fright' title='[title]'>&nbsp;</a>";
+                return "<a target='_download' href='$file_path' class='download-icon $icon_size download-$extension fright' title='[title]'>&nbsp;</a>";
         }
 
         public static function getTooltipDownloadUrl($file_path, $extension)

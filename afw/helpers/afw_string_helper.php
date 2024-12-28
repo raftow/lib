@@ -691,6 +691,17 @@ class AfwStringHelper
                  return self::fileTotable(AfwStringHelper::classToFile($className));
         }
 
+        public static final function methodToTitle($methodName)
+        {
+                $str = strtolower(self::fileTotable(AfwStringHelper::classToFile($methodName)));
+                $str = str_replace('_', ' ', $str);
+                if(AfwStringHelper::stringEndsWith($str, " id"))
+                {
+                        $str = "The ".substr($str, 0, strlen($str)-3);   
+                }
+                return $str;
+        }
+
 
         /**
 	 * classToFile

@@ -444,13 +444,13 @@ pre {
 
 
 .fleft {
-	float: right;
-        text-align:    right;
+	float: 		   right;
+    text-align:    right;
 }
 
 .fright {
-	float: right;
-        text-align:    left;
+	float: 		left;
+    text-align: left;
 }
 
 .Aright {

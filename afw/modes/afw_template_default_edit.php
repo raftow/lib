@@ -966,13 +966,13 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                 }
                                 $html_buttons_spec_methods = trim($html_buttons_spec_methods);
                                 $html_buttons_spec_methods_bis = trim($html_buttons_spec_methods_bis);
-
+                                $orders_to_execute = $obj->translateMessage("Orders to execute", $lang);
                                 if ($html_buttons_spec_methods) {
                         ?>
                                         <!-- form_left -->
-                                        <div class="form_left form_left_buttons form_left_<?= $clStep . "_" . $obj->currentStep ?>" style="/*width: 12%;height:100%;*/">
-                                                <h5 class='greentitle'><i></i>أوامر للتنفيذ</h5>
-                                                <?
+                                        <div class="form_left form_left_buttons form_left_<?php echo $clStep . "_" . $obj->currentStep ?>" style="/*width: 12%;height:100%;*/">
+                                                <h5 class='greentitle'><i></i><?php echo $orders_to_execute ?></h5>
+                                                <?php
                                                 echo $html_buttons_spec_methods;
                                                 ?>
                                         </div>

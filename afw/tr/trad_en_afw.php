@@ -66,9 +66,16 @@ class AfwOperatorEnTranslator{
         $trad["OPERATOR"]["UPDATE_AND_RETURN"]                        	= "save changes and return";
         $trad["OPERATOR"]["STEP"]	                         	= "step";
         $trad["OPERATOR"]["NEXT"]	                         	= "next >";
-        $trad["OPERATOR"]["NEXT_TAB"]	                         	= "next step >";
+        $trad["OPERATOR"]["NEXTRO"]	                         	= "next >";
+    $trad["OPERATOR"]["PREVIOUS"]	                         	= "< Previous";
+    $trad["OPERATOR"]["PREVIOUSRO"]	                         	= "< Previous";
+        $trad["OPERATOR"]["FINISH"]	                         	= "save and finish";
+        $trad["OPERATOR"]["FINISHRO"]	                         	= "finish";
+        $trad["OPERATOR"]["COMPLETE_LATER"]	                        = "Save as draft and complete later";
+        $trad["OPERATOR"]["COMPLETE_LATERRO"]	                        = "finish";
+
         $trad["OPERATOR"]["PREVIOUS"]	                         	= "< previous";
-        $trad["OPERATOR"]["FINISH"]	                         	= "finish";
+        $trad["OPERATOR"]["NEXT_TAB"]	                         	= "next step >";
 
         $trad["OPERATOR"]["FIELD VALUE"]	                        = "field value";
 
