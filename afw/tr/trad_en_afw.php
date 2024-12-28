@@ -20,7 +20,7 @@ class AfwOperatorEnTranslator{
         $trad["OPERATOR"]["IN"]	                         		= "from this list";
         $trad["OPERATOR"]["NOT_IN"]	                         	= "not from this list";
         $trad["OPERATOR"]["BETWEEN"]	                         	= "from-to";
-        $trad["OPERATOR"]["FILE"]	                         	= "attributes of";
+        $trad["OPERATOR"]["FILE"]	                         	= " ";
         $trad["OPERATOR"]["THE-FILE"]	                         	= "attributes screen";
 
         $trad["OPERATOR"]["SEARCH"]	                         	= "search in";

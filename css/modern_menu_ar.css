@@ -101,6 +101,7 @@ nav .menu-items{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 100%;
 }
 .menu-items li{
     list-style: none;

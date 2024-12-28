@@ -2953,7 +2953,7 @@ class AFWObject extends AFWRoot
     public function singleTranslation($lang = 'ar')
     {
         // can be overrridden
-        return $this->transClassSingle($lang = 'ar');
+        return $this->transClassSingle($lang);
     }
 
 
