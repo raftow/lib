@@ -287,7 +287,9 @@ class AfwHtmlHelper extends AFWRoot {
                 }
 
         }
-
+        /**
+         * @param AFWObject $obj
+         */
 
         public static function showOtherLinkButton($obj, $other_link, $lang, $action_lourde=true, $isAdmin=false)
         {
@@ -306,8 +308,16 @@ class AfwHtmlHelper extends AFWRoot {
                         $ol_url = $other_link["URL"];
                         $ol_code = $other_link["CODE"];
                         $lang_u = strtoupper($lang);
-                        if($lang=="ar") $ol_title = $other_link["TITLE"];
-                        else $ol_title = $other_link["TITLE_$lang_u"];
+                        if($lang=="ar") 
+                        {
+                                $ol_title = $other_link["TITLE_AR"];
+                                if(!$ol_title) $ol_title = $obj->tm($other_link["TITLE"],"ar");
+                        }
+                        else 
+                        {
+                                $ol_title = $other_link["TITLE_$lang_u"];
+                                if(!$ol_title) $ol_title = $obj->tm($other_link["TITLE"],$lang);                 
+                        }
                         $ol_icon = $other_link["ICON"];
                         if(!$ol_icon) $ol_icon = "link";
                         

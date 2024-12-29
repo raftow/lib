@@ -147,7 +147,7 @@ mark {
 /* Redeclare monospace font family: h5bp.com/j */
 pre, code, kbd, samp {
     font-size: 90%;
-    text-align:    left;
+    text-align: left;
 }
 
 /* Improve readability of pre-formatted text in all browsers */
@@ -350,7 +350,7 @@ td {
 	overflow: hidden;
 	background-color: transparent;
 	background-repeat: no-repeat;
-	text-align:    right;
+	text-align: left;
 	direction: ltr;
 }
 
@@ -439,13 +439,9 @@ pre {
 
 
 /*-----------Basic css------------*/
-
-
-
-
 .fleft {
 	float: 		   right;
-    text-align:    right;
+    text-align: right;
 }
 
 .fright {
@@ -528,7 +524,7 @@ h4 {
     font-weight: normal;
     color: #1036ca !important;
     direction: ltr;
-    text-align: right !important;
+    text-align: left !important;
 }
 
 h5 {
@@ -1060,7 +1056,7 @@ input,select,textarea {
 }
 
 .greentitle {
-    text-align:    left;
+    text-align: left;
 }
 
 
@@ -1085,7 +1081,7 @@ input,select,textarea {
     font-size: 118%;
     color: #2d48ba;
     margin-bottom: 10px;
-    text-align:    left;
+    text-align: left;
     padding-top: 19px;
     padding-bottom: 10px;
 }
@@ -1253,7 +1249,7 @@ input,select,textarea {
 	font-size: 118%;
 	font-weight: normal;
 	margin-top: 25px;
-        text-align:    left;
+        text-align: left;
 }
 
 .pagetitle i {
@@ -1280,7 +1276,7 @@ input,select,textarea {
     margin-top: 8px !important;
     padding: 10px 10px !important;
     outline: 0px !important;
-    text-align: right !important;
+    text-align: left !important;
     position: relative !important;
     cursor: pointer !important;
 }
@@ -1489,7 +1485,7 @@ input,select,textarea {
 }
 
 .form input[type='number'],.form input[type='email'] {
-	text-align:    right;
+	text-align: left;
 }
 
 .form select {
@@ -1845,7 +1841,7 @@ hr.green {
 	margin-bottom: 10px;
 	background: url('../../../lib/images/contact.png') no-repeat;
 	min-height: 24px;
-	text-align:    right;
+	text-align: left;
 	direction: ltr;
 	line-height: 25px;
 	color: #fff;
@@ -1984,7 +1980,7 @@ div[class^='aler'] {
 .wizsteps .wizardUl li.step5 {
 	background-position: 0 top;
 	float: left !important;
-	text-align:    right;
+	text-align: left;
 }
 
 .wizsteps .wizardUl li.step5.current {
@@ -2687,7 +2683,7 @@ input[disabled],select[disabled] {
 /*---*/
 
 .filebox h3 {
-    text-align:    left;
+    text-align: left;
     padding-bottom: 10px;
     margin-bottom: 10px;
 }
@@ -3133,7 +3129,7 @@ input[type="file"] {
 /*TableGrid*/
 .datagrid table {
 	border-collapse: collapse !important;
-	text-align: right !important;
+	text-align: left !important;
 	width: 100% !important;
 }
 
@@ -3242,7 +3238,7 @@ input[type="file"] {
 	margin: 0 !important;
 	padding: 0 !important;
 	list-style: none !important;
-	text-align: right !important;
+	text-align: left !important;
 }
 
 .datagrid table li {
@@ -3330,7 +3326,7 @@ input[type="file"] {
 	color: #333 !important;
 	border-collapse: collapse !important;
         vertical-align: middle;
-        text-align: right !important;
+        text-align: left !important;
 }
 
 .grid td a {
@@ -3360,7 +3356,7 @@ input[type="file"] {
     border: 3px white;
     font-size: 100% !important;
     padding: 6px;
-    text-align: right !important;
+    text-align: left !important;
     vertical-align: middle;
     font-weight: bold !important;
 }
@@ -3380,7 +3376,7 @@ input[type="file"] {
     font-size: 17px !important;
     color: #363b45;
     padding: 6px;
-    text-align: right !important;
+    text-align: left !important;
     vertical-align: middle;
     border: 3px #ffffff solid !important;
 }
@@ -3393,7 +3389,7 @@ input[type="file"] {
     color: #333 !important;
     border-collapse: collapse !important;
     vertical-align: middle;
-    text-align: right !important;
+    text-align: left !important;
     border: 3px #ffffff solid !important;
 }
 
@@ -3409,7 +3405,7 @@ input[type="file"] {
 	font-size: 15px;
 	font-weight: normal !important;
 	padding-right: 5px;
-	text-align:    left;
+	text-align: left;
 	/*letter-spacing: 0.07em;*/
 	width: 290px;
 }
@@ -3456,7 +3452,7 @@ a.copy_down {
 	font-family: title;
     font-weight: normal !important;
     padding: 9px;
-    text-align:    left;
+    text-align: left;
     vertical-align: middle;
     /* box-shadow: 8px 8px 7px rgb(192 51 47 / 39%); */
     border-radius: 9px 9px 0 0;
@@ -3652,7 +3648,7 @@ a.copy_down {
         font-size: 100%;
         font-weight:normal; 
         border: none; 
-        text-align:    left; 
+        text-align: left; 
         float: right;
 } 
 
@@ -3661,7 +3657,7 @@ a.copy_down {
          color:#7201B6;
          font-weight:normal; 
          border: none; 
-         text-align:    left; 
+         text-align: left; 
          float: right;
 } 
 
@@ -3676,7 +3672,7 @@ a.copy_down {
         font-size: 130%;
         color:#0172B6; 
         border: none; 
-        text-align:    left; 
+        text-align: left; 
         float: right;
 }
 
@@ -3823,13 +3819,13 @@ span.database, span.gear {
 .search_inputtext {
      padding: 5px;
      font-size: 93%;
-     text-align:    left;
+     text-align: left;
 }
 
 .inputtext {
      padding: 5px;
      font-size: 93%;
-     text-align:    left;
+     text-align: left;
 }
 
 .inputtext_disabled {
@@ -3976,7 +3972,7 @@ span.database, span.gear {
 }
 .mobile {
     direction: ltr;
-    text-align:    left;
+    text-align: left;
     vertical-align: middle;
     height: 30px;
     background: url("../../../lib/images/mobileb.png") no-repeat 10px;
@@ -4017,7 +4013,7 @@ span.database, span.gear {
 
 .phone_call {
     direction: ltr;
-    text-align:    left;
+    text-align: left;
     vertical-align: middle;
     height: 30px;
     background: url("../../../lib/images/phoneico.png") no-repeat 10px;
@@ -4094,7 +4090,7 @@ span.database, span.gear {
     color: #333333 !important;
     border: 1px #fff solid !important;
     padding: 6px !important;
-    text-align: right !important;
+    text-align: left !important;
     vertical-align: middle !important;
     border: 1px #DDDEEA solid !important;
     min-width: 100px;
@@ -4110,7 +4106,7 @@ span.database, span.gear {
     background-color: rgb(254, 254, 232) !important;
     color: #A4351B !important;
     direction: ltr;
-    text-align: right !important;
+    text-align: left !important;
     border: 1px #7F0D1A solid !important;
     width: 88%;
 }
@@ -4125,7 +4121,7 @@ span.database, span.gear {
     background-color: rgba(210, 26, 7, 0.94) !important;
     color: #fff !important;
     direction: ltr;
-    text-align: right !important;
+    text-align: left !important;
     /* border: 1px rgba(255, 0, 0, 0.66); */
     min-width: 40%;
     /* border-radius: 8px; */
@@ -4148,7 +4144,7 @@ span.database, span.gear {
     background-color: rgb(49, 140, 232) !important;
     color: #fbfbfb !important;
     direction: ltr;
-    text-align: right !important;
+    text-align: left !important;
     border: none;
     border-radius: 6px;
     /* width: 63%; */
@@ -4165,7 +4161,7 @@ span.database, span.gear {
     font-weight: normal;
     color: #5F687F !important;
     direction: ltr;
-    text-align: right !important;
+    text-align: left !important;
     border: none;
 }
 
@@ -4204,7 +4200,7 @@ span.database, span.gear {
     padding: 0px 0;
     margin: 2px 0 0;
     font-size: 100%;
-    text-align:    left;
+    text-align: left;
     list-style: none;
     background-color: #fff;
     -webkit-background-clip: padding-box;
@@ -4250,7 +4246,7 @@ span.database, span.gear {
 
 .dropdown-menu>li>a {
     padding: 6px 20px;
-    text-align:    left;
+    text-align: left;
 }
 
 .hzm_body{
@@ -4359,7 +4355,7 @@ span.database, span.gear {
     border-top: 1px solid #427419;
     background: #e3eee8 !important;
     font-size: 13px !important;
-    text-align:    left;
+    text-align: left;
     color: #427419;
 }
 
@@ -4659,7 +4655,7 @@ span.database, span.gear {
     /* font-weight: bold !important; */
     /* font-style: italic !important; */
     padding-right: 5px !important;
-    text-align: right !important;
+    text-align: left !important;
 }
 
 .input_edited {
@@ -4670,7 +4666,7 @@ span.database, span.gear {
     color: #063054 !important;
     font-weight: normal !important;
     padding-right: 5px !important;
-    text-align: right !important;
+    text-align: left !important;
 }
 
 select.input_edited {
@@ -4698,7 +4694,7 @@ select.input_edited {
 
 .empty_message 
 {
-    text-align: right !important;
+    text-align: left !important;
 }
 
 .navbar-header, .navbar-brand {
@@ -4728,7 +4724,7 @@ select.input_edited {
 }
 
 .table_obj th {
-    text-align: right !important;
+    text-align: left !important;
 }
 
 table.dataTable {
@@ -4741,7 +4737,7 @@ table.dataTable {
     font-size: 16px;
     font-weight: normal !important;
     padding: 15px;
-    text-align:    left;
+    text-align: left;
     vertical-align: middle;
     border-radius: 0px;
     width: 1450px;
@@ -4773,7 +4769,7 @@ table.dataTable {
 }
 
 .table_minibox tbody>tr>th, .table_minibox tfoot>tr>th, .table_minibox thead>tr>th {
-    text-align:    left;
+    text-align: left;
 }
 
 
@@ -4951,7 +4947,7 @@ table.dataTable {
 }
 
 .bloc_hzm_ar {
-    text-align:    left;
+    text-align: left;
     height: 100%;
     line-height: 22px;
     float: right;
@@ -4970,7 +4966,7 @@ table.dataTable {
 .navbar-header {
     float: right;
     padding-left: 15px;
-    text-align:    left;
+    text-align: left;
     padding-top: 0px;
 }
 
@@ -5000,14 +4996,14 @@ h2.title_login {
 }
 
 .display>thead>tr>th {
-        text-align:    left;
+        text-align: left;
         padding: 6px 2px;
 }
 
 .back_tr.tech, p.tech{
 	font-family:menu !important;
 	direction: ltr;
-    text-align:    left;
+    text-align: left;
 }
 
 .swal2-hzm.swal2-icon {
@@ -5029,4 +5025,234 @@ label.error {
 span.cms-title {
     font-size: 36px;
     font-family: 'Roboto Slab', serif;
+}
+
+.width_pct_10
+{
+    width: 9% !important;
+    float: left;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 50px; 
+}
+
+.width_pct_12
+{
+    width: 11% !important;
+    float: left;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 60px; 
+}
+
+.width_pct_25
+{
+    width: 24% !important;
+    float: left;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 120px; /* do not change anymore and make more than 160px */
+}
+
+
+.width_pct_33
+{
+    width: 32.5% !important;
+    float: left;
+    margin-right: 0.5%;
+    min-width: 140px;  /* do not change anymore and make more than 180px */
+}
+
+.width_pct_50 {
+    width: 49% !important;
+    float: left;
+    margin-right: 0.5%;
+    min-width: 170px;
+}
+
+
+.width_pct_66 {
+    width: 65% !important;
+    float: left;
+    margin-right: 0.5%;
+    min-width: 190px;
+}
+
+.width_pct_75 {
+    width: 74% !important;
+    float: left;
+    margin-right: 0.5%;
+    min-width: 210px;
+}
+
+.width_pct_100 {
+    width: 98.5% !important;
+    float: left;
+    margin-right: 0.5%;
+    min-width: 80px;
+}
+
+.fix_pct_10
+{
+    width: 9% !important;
+    float: left;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 20px;
+    overflow: hidden; 
+}
+
+.fix_pct_12
+{
+    width: 11% !important;
+    float: left;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 27px; 
+    overflow: hidden; 
+}
+
+.fix_pct_25
+{
+    width: 24% !important;
+    float: left;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 50px; /* do not change anymore and make more than 160px */
+    overflow: hidden; 
+}
+
+
+.fix_pct_33
+{
+    width: 32.5% !important;
+    float: left;
+    margin-right: 0.5%;
+    min-width: 60px;  /* do not change anymore and make more than 180px */
+    overflow: hidden; 
+}
+
+.fix_pct_50 {
+    width: 49% !important;
+    float: left;
+    margin-right: 0.5%;
+    min-width: 80px;
+    overflow: hidden; 
+}
+
+
+.fix_pct_66 {
+    width: 65% !important;
+    float: left;
+    margin-right: 0.5%;
+    min-width: 190px;
+    overflow: hidden;
+}
+
+.fix_pct_75 {
+    width: 74% !important;
+    float: left;
+    margin-right: 0.5%;
+    min-width: 210px;
+    overflow: hidden;
+}
+
+
+.minibox_pct_50 {
+    border: 1px silver solid;
+    padding: 5px;
+    margin: 5px 0.5%;
+    width: 49%;
+    float: left;
+    min-height: 520px;
+    min-width: 220px;
+}
+
+
+.height_auto {
+    border: 1px silver solid;
+    padding: 15px;
+    width: 97%;
+    float: left;
+    min-height: auto !important;
+    min-width: 220px;
+}
+
+.cssgroup_pct_100 {
+    border: 1px silver solid;
+    padding: 15px;
+    margin: 0.5%;
+    width: 99%;
+    float: left;
+    /* min-height: 520px; this is because otherwise accordion is still empty when collapse */
+    min-width: 220px;
+}
+
+.cssgroup_pct_75 
+{
+    width: 74%;
+    border: 1px solid #bec8d2;
+    padding-left: 14px;
+    padding-right: 14px;
+    float: left;
+    margin: 0.5%;
+    /* margin-right: 4px; */
+    min-height: 470px;
+}
+
+.cssgroup_pct_66 
+{
+    width: 65%;
+    border: 1px solid #bec8d2;
+    padding-left: 14px;
+    padding-right: 14px;
+    float: left;
+    margin: 0.5%;
+    /* margin-right: 4px; */
+    min-height: 470px;
+}
+
+
+
+.cssgroup_pct_50 {
+    border: 1px silver solid;
+    padding: 15px;
+    margin: 0.5%;
+    width: 49%;
+    float: left;
+    min-height: 520px;
+     min-width: 220px;
+}
+
+.cssgroup_pct_33 {
+    border: 1px silver solid;
+    padding: 15px;
+    margin: 0.5%;
+    width: 32%;
+    float: left;
+    min-height: 520px;
+    min-width: 220px;
+}
+
+.cssgroup_pct_25 
+{
+    width: 24%;
+    border: 1px solid #bec8d2;
+    padding-left: 14px;
+    padding-right: 14px;
+    float: left;
+    margin: 0.5%;
+    /* margin-right: 4px; */
+    min-height: 470px;
+}
+
+
+.minibox_pct_33{
+    border: 1px silver solid;
+    padding: 5px;
+    margin: 5px 0.5%;
+    width: 32%;
+    float: left;
+    min-height: 520px;
+    min-width: 220px;
 }

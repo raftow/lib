@@ -723,15 +723,7 @@ div.qfilter>h1 {
     color: #000;
     font-size: 100%;
     font-family: menu;
-    padding-right: 18px;
     font-weight: normal;
-}
-
-li.wizardv1_li.CurrentStep {
-    /* background-color: #f4f6f7; */
-    /* border-radius: 0 0 0 0; */
-    /* color: #07457a; */
-    border-right: 5px solid #299dff !important;
 }
 
 .steps_wizardv1 li.CurrentStep a {
@@ -740,9 +732,7 @@ li.wizardv1_li.CurrentStep {
     font-size: 100%;
 }
 
-li.wizardv1_li.ErronedStep {
-    border-right: 5px solid red !important;
-}
+
 
 .steps_wizardv1 li.ErronedStep a {
     color: red !important;
@@ -927,7 +917,7 @@ input.fa.previous:before{
 }
 
 .steps_wizardv1 li.CurrentStep a:before {
-    background-color: #4396fb;
+    background-color: transparent;
 }
 
 .form-control.form-switcher {

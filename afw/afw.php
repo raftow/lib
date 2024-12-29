@@ -1825,6 +1825,12 @@ class AFWObject extends AFWRoot
         return $this->get($attribute, 'calc', $format, $integrity);
     }
 
+
+    public function v($attribute)
+    {
+        return $this->getVal($attribute);
+    }
+
     /**
      * getVal
      * Return the value of an attribute
@@ -5865,16 +5871,16 @@ class AFWObject extends AFWRoot
                         $link = [];
                         $title = '';
                         if ($struct['OTM-SHOW']) {
-                            $title .= 'عرض ';
+                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY").' ';
                         }
                         if ($struct['OTM-CARD']) {
-                            $title .= 'بطاقة ';
+                            $title .= AfwLanguageHelper::translateKeyword("PROFILE").' ';
                         }
                         if ($struct['OTM-FILE']) {
-                            $title .= 'ملف ';
+                            $title .= AfwLanguageHelper::translateKeyword("FILE").' ';
                         }
                         if ($struct['OTM-RETURNTO']) {
-                            $title .= 'إلى ';
+                            $title .= AfwLanguageHelper::translateKeyword("TO").' ';
                         }
                         if (!$struct['OTM-NO-LABEL']) {
                             $title .= $link_label . ' : ';
@@ -5920,7 +5926,7 @@ class AFWObject extends AFWRoot
                         $link = [];
                         $title = '';
                         if ($struct['OTM-SHOW']) {
-                            $title .= 'عرض ';
+                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY").' ';
                         } else {
                             $title .=
                                 $this->tf($struct['LINK_TO_MFK_ITEMS']) . ' ';
