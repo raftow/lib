@@ -61,10 +61,43 @@
                     $liste_css_text = "['" . implode("','", $liste_css) . "']";
 ?>
                     <input type='hidden' name='<?php echo $col_name ?>' id='<?php echo $col_name ?>' value='<?php echo $val ?>'>
-                    <button type="button" id="btn_<?php echo $col_name ?>" class="toggle-hzm-btn <?php echo $css_val ?>"  <?php echo $input_disabled ?> onClick="toggleHzmBtn('<?php echo $col_name ?>', <?php echo $liste_choix_text ?>, <?php echo $liste_codes_text ?>, <?php echo $listeOrdres_text ?>, <?php echo $liste_css_text ?>,<?php echo count($liste_choix) ?>)"><?php echo $display_val ?></button>
+                    <button type='button' id="btn_<?php echo $col_name ?>" 
+                                class='toggle-hzm-btn <?php echo $css_val ?>"  <?php echo $input_disabled ?> 
+                                onClick="toggleHzmBtn('<?php echo $col_name ?>', <?php echo $liste_choix_text ?>, <?php echo $liste_codes_text ?>, <?php echo $listeOrdres_text ?>, <?php echo $liste_css_text ?>,<?php echo count($liste_choix) ?>)"><?php echo $display_val ?></button>
 <?php
                 } 
-                else 
+                elseif ($desc["FORMAT-INPUT"] == "btn-bootstrap") 
+                {
+                    $arr_classes = ["primary","secondary","success","danger","warning","info","light","dark",];
+                    $js_classes = "['".implode("','", $arr_classes)."']";
+                    $nb_classes = $desc["NB-CSS"];
+                    $offset_classes = $desc["OFFSET-CSS"];
+                    if(!$offset_classes) $offset_classes = 0;
+                    if(!$nb_classes) $nb_classes = 1;//count($arr_classes)-$offset_classes;
+                    if(($nb_classes+$offset_classes)>count($arr_classes))
+                    {
+                        echo "For btn-bootstrap `NB-CSS`+`OFFSET-CSS` should be less or equal than cout of btn-bootstrap classes = ".count($arr_classes);
+                        // throw new AfwRuntimeException("For btn-bootstrap `NB-CSS`+`OFFSET-CSS` should be less or equal than cout of btn-bootstrap classes = ".count($arr_classes));
+                    }
+?>
+                    <input type='hidden' name='<?php echo $col_name ?>' id='<?php echo $col_name ?>' value='<?php echo $val ?>'>
+<?php
+                    $c=0;
+                    foreach($liste_rep as $val_i => $title_i)
+                    {
+                        $css_name = $arr_classes[$c+$offset_classes];
+                        $btn_off = ($val==$val_i) ? "" : "btn-off";
+?>
+                        <button type='button' id="btsp_btn_<?php echo $col_name."_".$val_i ?>" 
+                                 class='btn btn-enum col-<?php echo $col_name?> btn-<?php echo $css_name." ".$btn_off?>' 
+                                 <?php echo $input_disabled ?> 
+                                 onClick="bootstrapHzmBtn('<?php echo $col_name ?>', '<?php echo $val_i ?>', <?php echo $js_classes ?>)"><?php echo $title_i?></button>
+<?php
+                        $c++;
+                        $c = $c % $nb_classes;
+                    }    
+                }
+                else
                 {
                     $type_input_ret = "select";
 

@@ -6177,3 +6177,17 @@ div.otln.help {
     z-index: 9999999;
     position: absolute;
 }
+
+.btn.btn-enum {
+    border-radius: 0;
+    height: 38px !important;
+    width: 30%;
+    margin-left: 1%;
+    margin-right: 1%;
+    min-width: 50px !important;
+}
+
+.btn.btn-enum.btn-off {
+    background-color: #f0f0f0 !important;
+    color: black !important;
+}

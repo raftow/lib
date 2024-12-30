@@ -50,7 +50,7 @@ class AfwOperatorEnTranslator{
         $trad["OPERATOR"]["SEARCH_RESULT"]	                        = "search results in";
         $trad["OPERATOR"]["LOADING_PROBLEM"]	                        = "File upload failed";
         $trad["OPERATOR"]["SUBMIT"]	                        	= "submit";
-        $trad["OPERATOR"]["SUBMIT-SEARCH"]	                        = "search";
+        $trad["OPERATOR"]["SUBMIT-SEARCH"]	                        = "Search";
         $trad["OPERATOR"]["SUBMIT-SEARCH-ADVANCED"]                     = "advanced";
         $trad["OPERATOR"]["RESET_FORM"]	                        	= "reset criterea";
         $trad["OPERATOR"]["NO-RECORD"]	                                = "no record found";
@@ -62,6 +62,7 @@ class AfwOperatorEnTranslator{
         $trad["OPERATOR"]["NO"]	        	                	= "No";
         $trad["OPERATOR"]["EUH"]	                        	= "Not at yet";
 
+        $trad["OPERATOR"]["RESET-CRITEREA"]	                    = "Reset Criterea";
         $trad["OPERATOR"]["UPDATE"]	                        	= "save changes";
         $trad["OPERATOR"]["UPDATE_AND_RETURN"]                        	= "save changes and return";
         $trad["OPERATOR"]["STEP"]	                         	= "step";

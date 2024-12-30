@@ -233,16 +233,31 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 }
 
 .btn-primary {
-    color: #fff;
+    color: #fff !important;
     background-color: #0096ff;
-    border-color: #137ac3 !important;
+    border-color: #137ac3;
 }
 
 .btn-primary:hover {
-    color: #fff;
+    color: #fff !important;
     background-color: #3eaaf6;
-    border-color: #188ee1 !important;
+    border-color: #188ee1;
 }
+
+
+.btn-secondary {
+    color: #fff !important;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    color: #fff !important;
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+
 
 .closebtn {
 	color: #fff;

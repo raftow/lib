@@ -123,7 +123,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 <?php
   $my_font = "front";
   $my_theme = "simple";
-  $lang = "ar";
+  $lang = "en";
 ?>
 <script src="<?php echo $relative_path;?>../lib/js/jquery-ui-1.14.0.js"></script>
 <script src="<?php echo $relative_path;?>../lib/attention/attention.js"></script>

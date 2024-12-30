@@ -63,36 +63,44 @@
     return regex.test(email.toLowerCase());
   }
 
+  function bootstrapHzmBtn(inputname, vali, listClasses)
+  {
+    var oval = $("input#"+inputname).val();
+    $("#btsp_btn_"+inputname+"_"+oval).addClass('btn-off');
+    $("#btsp_btn_"+inputname+"_"+vali).removeClass('btn-off');
+    $("input#"+inputname).val(vali);
+  }
+
   function toggleHzmBtn(inputname,listVal, listCod, listCodOrder, listClass, nbVals)
   {
-    console.log("input name="+inputname);
+    // console.log("input name="+inputname);
     // $("input#"+inputname).val(55);
     var ival = $("input#"+inputname).val();
-    console.log("input value : ival(input#"+inputname+")="+ival);
-    console.log("listVal :: ");
-    console.log(listVal);
-    console.log("listCod :: ");
-    console.log(listCod);
-    console.log("listCodOrder :: ");
-    console.log(listCodOrder);
-    console.log("listCodOrder[ival="+ival+"]="+listCodOrder[ival]);    
+    // console.log("input value : ival(input#"+inputname+")="+ival);
+    // console.log("listVal :: ");
+    // console.log(listVal);
+    // console.log("listCod :: ");
+    // console.log(listCod);
+    // console.log("listCodOrder :: ");
+    // console.log(listCodOrder);
+    // console.log("listCodOrder[ival="+ival+"]="+listCodOrder[ival]);    
         var ord = listCodOrder[ival];
-        console.log("ord="+ord);
+        // console.log("ord="+ord);
         var neword = parseInt(ord) + 1;
         if(neword >= nbVals) neword = 0;
-        console.log("neword="+neword);
+        // console.log("neword="+neword);
         var css_class = "btn btn-secondary";
         var display = 'ord'+neword;
         display = listVal[neword];
-        console.log("display=listVal["+neword+"]="+display);
+        // console.log("display=listVal["+neword+"]="+display);
         css_class = 'toggle-hzm-btn '+listClass[neword];
-        console.log("css_class="+css_class);        
+        // console.log("css_class="+css_class);        
         $("#btn_"+inputname).text(display);
-        console.log("btn_"+inputname+" text =>"+display);        
+        // console.log("btn_"+inputname+" text =>"+display);        
         $("#btn_"+inputname).attr('class', css_class);
-        console.log("btn_"+inputname+" css =>"+css_class);
+        // console.log("btn_"+inputname+" css =>"+css_class);
         $("#"+inputname).val(listCod[neword]);
-        console.log("btn_"+inputname+" new val => listCod[neword] =>"+listCod[neword]);        
+        // console.log("btn_"+inputname+" new val => listCod[neword] =>"+listCod[neword]);        
   }
 
   function iHaveBeenEdited(input)
