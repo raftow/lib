@@ -213,6 +213,17 @@
                 $section_tokens["main-section-class"] = $main_section_class;
                 $section_tokens["header"] = $the_header;
                 $section_tokens["notifications"] = $notifications;
+                if($notifications)
+                {
+                        $section_tokens["notifications_s"] = "";
+                        $section_tokens["notifications_e"] = "";
+                }
+                else
+                {
+                        $section_tokens["notifications_s"] = "<!-- ";
+                        $section_tokens["notifications_e"] = " -->";
+                }
+                
                 $section_tokens["menu"] = $the_menu;
                 $section_tokens["main-section"] = $the_section;
                 $section_tokens["footer"] = $the_footer;

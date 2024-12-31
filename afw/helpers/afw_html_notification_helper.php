@@ -17,7 +17,9 @@ class AfwHtmlNotificationHelper {
     }
     
     public static function getSLogNotification(){
-        return "<!-- SLOG :". AfwSession::pullSessionVar("slog","header") . "-->";
+        $slog = AfwSession::pullSessionVar("slog","header");
+        if($slog) return "<!-- SLOG :" . $slog . "-->";
+        else return "";
     }
 
 
