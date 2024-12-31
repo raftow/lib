@@ -52,12 +52,16 @@ class AfwHtmlIncluderHelper
           $options["autocomplete"] = true;
           $options["calendars"] = true;
         }
+
+        $jquery_version = AfwSession::config('jquery-version', '3.6.0');
+        $jquery_ui_version = AfwSession::config('jquery-ui-version', '1.14.0');
+        $bootstrap_version = AfwSession::config('bootstrap-version', '5.3.3');
         
         $header = "<head>
-          <script src='../lib/js/jquery-3.6.0.min.js'></script>
+          <script src='../lib/js/jquery-$jquery_version.min.js'></script>
           <script src='../lib/js/jquery.validate.js'></script>
-          <link rel='stylesheet' href='../lib/css/jquery-ui-1.14.0.css'>
-          <script src='../lib/js/jquery-ui-1.14.0.js'></script>
+          <link rel='stylesheet' href='../lib/css/jquery-ui-$jquery_ui_version.css'>
+          <script src='../lib/js/jquery-ui-$jquery_ui_version.js'></script>
           <!-- script src='../lib/tree/tree.jquery.js'></script> -->
           
           ";
@@ -107,10 +111,29 @@ class AfwHtmlIncluderHelper
           <link rel='stylesheet' href='../lib/css/material-design-iconic-font.min.css'>
           ";
 
-        if($options["bootstrap"]) $header .= "
-          <script src='../lib/bootstrap/bootstrap-v5.3.3.min.js'></script>
-          <link rel='stylesheet' href='../lib/bootstrap/bootstrap-v5.3.3.min.css'>
+        
+        
+
+
+        if($options["bootstrap"]) 
+        {
+          // This is to resolve problem of : TypeError: i.createPopper is not a function
+          // found when we use bootstrap-v5.3.3 resolved in bootstrap.bundle version until will be fixed 
+          // in next bootstrap versions
+            if(AfwSession::config("bootstrap.bundle", false))
+            {
+              $bootstrap_script = "<script src='../lib/bootstrap/bootstrap.bundle.min.js'></script>";
+            }
+            else
+            {
+              $bootstrap_script = "<script src='../lib/bootstrap/bootstrap-v$bootstrap_version.min.js'></script>";
+            }
+
+            $header .= "$bootstrap_script
+          <link rel='stylesheet' href='../lib/bootstrap/bootstrap-v$bootstrap_version.min.css'>
           ";
+        }
+        
 
         if($options["bootstrap-select"]) $header .= "
           <link rel='stylesheet' href='../lib/bsel/css/bootstrap-select.css'>

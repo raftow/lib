@@ -20,7 +20,7 @@ class AfwOperatorEnTranslator{
         $trad["OPERATOR"]["IN"]	                         		= "from this list";
         $trad["OPERATOR"]["NOT_IN"]	                         	= "not from this list";
         $trad["OPERATOR"]["BETWEEN"]	                         	= "from-to";
-        $trad["OPERATOR"]["FILE"]	                         	= "attributes of";
+        $trad["OPERATOR"]["FILE"]	                         	= " ";
         $trad["OPERATOR"]["THE-FILE"]	                         	= "attributes screen";
 
         $trad["OPERATOR"]["SEARCH"]	                         	= "search in";
@@ -50,7 +50,7 @@ class AfwOperatorEnTranslator{
         $trad["OPERATOR"]["SEARCH_RESULT"]	                        = "search results in";
         $trad["OPERATOR"]["LOADING_PROBLEM"]	                        = "File upload failed";
         $trad["OPERATOR"]["SUBMIT"]	                        	= "submit";
-        $trad["OPERATOR"]["SUBMIT-SEARCH"]	                        = "search";
+        $trad["OPERATOR"]["SUBMIT-SEARCH"]	                        = "Search";
         $trad["OPERATOR"]["SUBMIT-SEARCH-ADVANCED"]                     = "advanced";
         $trad["OPERATOR"]["RESET_FORM"]	                        	= "reset criterea";
         $trad["OPERATOR"]["NO-RECORD"]	                                = "no record found";
@@ -62,13 +62,21 @@ class AfwOperatorEnTranslator{
         $trad["OPERATOR"]["NO"]	        	                	= "No";
         $trad["OPERATOR"]["EUH"]	                        	= "Not at yet";
 
+        $trad["OPERATOR"]["RESET-CRITEREA"]	                    = "Reset Criterea";
         $trad["OPERATOR"]["UPDATE"]	                        	= "save changes";
         $trad["OPERATOR"]["UPDATE_AND_RETURN"]                        	= "save changes and return";
         $trad["OPERATOR"]["STEP"]	                         	= "step";
         $trad["OPERATOR"]["NEXT"]	                         	= "next >";
-        $trad["OPERATOR"]["NEXT_TAB"]	                         	= "next step >";
+        $trad["OPERATOR"]["NEXTRO"]	                         	= "next >";
+    $trad["OPERATOR"]["PREVIOUS"]	                         	= "< Previous";
+    $trad["OPERATOR"]["PREVIOUSRO"]	                         	= "< Previous";
+        $trad["OPERATOR"]["FINISH"]	                         	= "save and finish";
+        $trad["OPERATOR"]["FINISHRO"]	                         	= "finish";
+        $trad["OPERATOR"]["COMPLETE_LATER"]	                        = "Save as draft and complete later";
+        $trad["OPERATOR"]["COMPLETE_LATERRO"]	                        = "finish";
+
         $trad["OPERATOR"]["PREVIOUS"]	                         	= "< previous";
-        $trad["OPERATOR"]["FINISH"]	                         	= "finish";
+        $trad["OPERATOR"]["NEXT_TAB"]	                         	= "next step >";
 
         $trad["OPERATOR"]["FIELD VALUE"]	                        = "field value";
 

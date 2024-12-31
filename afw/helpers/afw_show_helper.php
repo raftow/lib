@@ -134,21 +134,21 @@ class AfwShowHelper
             $show_as = 'SHOW-AS-ICON';
 
             if ($obj->viewIcon) {
-                $header['عرض'] = [
+                $header['DISPLAY'] = [
                     'CODE' => 'view',
                     'TYPE' => 'SHOW',
                     $show_as => true,
                 ];
             }
             if ($obj->editIcon) {
-                $header['تعديل'] = [
+                $header['EDIT'] = [
                     'CODE' => 'edit',
                     'TYPE' => 'EDIT',
                     $show_as => true,
                 ];
             }
             if ($obj->deleteIcon) {
-                $header['حذف'] = [
+                $header['DELETE'] = [
                     'CODE' => 'del',
                     'TYPE' => 'DEL',
                     $show_as => true,
@@ -156,7 +156,7 @@ class AfwShowHelper
                 ];
             }
             if ($obj->attachIcon) {
-                $header['مرفقات'] = [
+                $header['ATTACH'] = [
                     'CODE' => 'attach',
                     'TYPE' => 'ATTACH',
                     $show_as => true,
@@ -201,15 +201,15 @@ class AfwShowHelper
                         if (!$currstep) $currstep = 1;
                         if ($desc == 'AAA') {
                             // $tuple["description"] = $liste_obj[$id]->__toString();
-                        } elseif ($col == 'عرض') {
-                            $tuple['عرض'] = "<a $target href='main.php?Main_Page=afw_mode_display.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='../lib/images/view_ok.png' width='24' heigth='24'></a>";
-                        } elseif ($col == 'تعديل') {
+                        } elseif ($col == 'DISPLAY') {
+                            $tuple[AfwLanguageHelper::translateKeyword("DISPLAY")] = "<a $target href='main.php?Main_Page=afw_mode_display.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='../lib/images/view_ok.png' width='24' heigth='24'></a>";
+                        } elseif ($col == 'EDIT') {
                             $edit_button_path = $images['modifier'];
-                            $tuple['تعديل'] = "<a target=\"_new\" href='main.php?Main_Page=afw_mode_edit.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='$edit_button_path' width='24' heigth='24'></a>";
-                        } elseif ($col == 'مرفقات') {
+                            $tuple[AfwLanguageHelper::translateKeyword("EDIT")] = "<a target=\"_new\" href='main.php?Main_Page=afw_mode_edit.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='$edit_button_path' width='24' heigth='24'></a>";
+                        } elseif ($col == 'ATTACH') {
                             $attach_url = $liste_obj[$id]->getAttachUrl();
-                            $tuple['مرفقات'] = "<a target=\"_new\" href='$attach_url' ><img src='../lib/images/attach.png' width='24' heigth='24'></a>";
-                        } elseif ($col == 'حذف') {
+                            $tuple[AfwLanguageHelper::translateKeyword("ATTACH")] = "<a target=\"_new\" href='$attach_url' ><img src='../lib/images/attach.png' width='24' heigth='24'></a>";
+                        } elseif ($col == 'DELETE') {
                             $val_id = $liste_obj[$id]->getId();
                             $val_class = $liste_obj[$id]->getMyClass();
                             $val_currmod = $liste_obj[$id]->getMyModule();
@@ -223,7 +223,7 @@ class AfwShowHelper
                                 $delete_button_path = $images['delete'];
 
                                 // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
-                                $tuple[$col] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' div_to_del='${obj_table}${id}_minibox_container' class='trash manyminiboxes'><img src='$delete_button_path' style='height: 22px !important;'></a>";
+                                $tuple[AfwLanguageHelper::translateKeyword("DELETE")] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' div_to_del='${obj_table}${id}_minibox_container' class='trash manyminiboxes'><img src='$delete_button_path' style='height: 22px !important;'></a>";
                                 $tuple['del_status'] = 'OK';
                             } else {
                                 if ($userCanDel == -1) {
@@ -231,7 +231,7 @@ class AfwShowHelper
                                 } else {
                                     $explanation = "انك تحتاج لصلاحية خاصة لمسح هذا السجل بعينه";
                                 }
-                                $tuple[$col] =
+                                $tuple[AfwLanguageHelper::translateKeyword("DELETE")] =
                                     "<a href='#'><img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$explanation' width='24' heigth='24' ></a>";
                                 $tuple['del_status'] = 'locked';
                             }
@@ -590,7 +590,7 @@ class AfwShowHelper
         $class_tr1 = 'altitem';
         $class_tr2 = 'item';
         $class_td_off = 'off';
-        $dir = 'rtl';
+        $dir = '';
         $bigtitle = '';
         $bigtitle_tr_class = 'bigtitle';
         $width_th_arr = [];
@@ -712,13 +712,13 @@ class AfwShowHelper
         if (!$mode_force_cols) {
             $del_level = $obj->del_level;
             if ($obj->viewIcon) {
-                $header['عرض'] = ['TYPE' => 'SHOW', 'GO-TO-STEP' => $obj->viewIcon];
+                $header['DISPLAY'] = ['TYPE' => 'SHOW', 'GO-TO-STEP' => $obj->viewIcon];
             }
             if ($obj->editIcon) {
-                $header['تعديل'] = ['TYPE' => 'EDIT', 'GO-TO-STEP' => $obj->editIcon];
+                $header['EDIT'] = ['TYPE' => 'EDIT', 'GO-TO-STEP' => $obj->editIcon];
             }
             if ($obj->deleteIcon) {
-                $header['حذف'] = ['TYPE' => 'DEL', 'DEL_LEVEL' => $del_level];
+                $header['DELETE'] = ['TYPE' => 'DEL', 'DEL_LEVEL' => $del_level];
             }
         }
         //else AfwRunHelper::lightSafeDie("mode_force_cols");
@@ -1200,8 +1200,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
         $class_tr1 = 'altitem',
         $class_tr2 = 'item',
         $dataImportance = [],
-        $lang = 'ar',
-        $dir = 'rtl',
+        $lang = '',
+        $dir = '',
         $bigtitle = '',
         $bigtitle_tr_class = 'bigtitle',
         $width_th_arr = [],
@@ -1217,6 +1217,15 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             $datatable_on,
             $styled_data_arr,
             $datatables_arr;
+
+
+
+        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+        if(!$dir)
+        {
+            if($lang=="ar") $dir = "rtl";
+            else $dir = "ltr";
+        }
 
         $total_cols = [];
 
@@ -2652,3 +2661,4 @@ $('#$showAsDataTable').DataTable( {
         return [$data_to_display, $link_to_display];
     }
 }
+

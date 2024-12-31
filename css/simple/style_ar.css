@@ -5027,3 +5027,233 @@ span.cms-title {
     font-size: 36px;
     font-family: 'menu', serif;
 }
+
+.width_pct_10
+{
+    width: 9% !important;
+    float: right;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 50px; 
+}
+
+.width_pct_12
+{
+    width: 11% !important;
+    float: right;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 60px; 
+}
+
+.width_pct_25
+{
+    width: 24% !important;
+    float: right;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 120px; /* do not change anymore and make more than 160px */
+}
+
+
+.width_pct_33
+{
+    width: 32.5% !important;
+    float: right;
+    margin-right: 0.5%;
+    min-width: 140px;  /* do not change anymore and make more than 180px */
+}
+
+.width_pct_50 {
+    width: 49% !important;
+    float: right;
+    margin-right: 0.5%;
+    min-width: 170px;
+}
+
+
+.width_pct_66 {
+    width: 65% !important;
+    float: right;
+    margin-right: 0.5%;
+    min-width: 190px;
+}
+
+.width_pct_75 {
+    width: 74% !important;
+    float: right;
+    margin-right: 0.5%;
+    min-width: 210px;
+}
+
+.width_pct_100 {
+    width: 98.5% !important;
+    float: right;
+    margin-right: 0.5%;
+    min-width: 80px;
+}
+
+.fix_pct_10
+{
+    width: 9% !important;
+    float: right;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 20px;
+    overflow: hidden; 
+}
+
+.fix_pct_12
+{
+    width: 11% !important;
+    float: right;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 27px; 
+    overflow: hidden; 
+}
+
+.fix_pct_25
+{
+    width: 24% !important;
+    float: right;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 50px; /* do not change anymore and make more than 160px */
+    overflow: hidden; 
+}
+
+
+.fix_pct_33
+{
+    width: 32.5% !important;
+    float: right;
+    margin-right: 0.5%;
+    min-width: 60px;  /* do not change anymore and make more than 180px */
+    overflow: hidden; 
+}
+
+.fix_pct_50 {
+    width: 49% !important;
+    float: right;
+    margin-right: 0.5%;
+    min-width: 80px;
+    overflow: hidden; 
+}
+
+
+.fix_pct_66 {
+    width: 65% !important;
+    float: right;
+    margin-right: 0.5%;
+    min-width: 190px;
+    overflow: hidden;
+}
+
+.fix_pct_75 {
+    width: 74% !important;
+    float: right;
+    margin-right: 0.5%;
+    min-width: 210px;
+    overflow: hidden;
+}
+
+
+.minibox_pct_50 {
+    border: 1px silver solid;
+    padding: 5px;
+    margin: 5px 0.5%;
+    width: 49%;
+    float: right;
+    min-height: 520px;
+    min-width: 220px;
+}
+
+
+.height_auto {
+    border: 1px silver solid;
+    padding: 15px;
+    width: 97%;
+    float: right;
+    min-height: auto !important;
+    min-width: 220px;
+}
+
+.cssgroup_pct_100 {
+    border: 1px silver solid;
+    padding: 15px;
+    margin: 0.5%;
+    width: 99%;
+    float: right;
+    /* min-height: 520px; this is because otherwise accordion is still empty when collapse */
+    min-width: 220px;
+}
+
+.cssgroup_pct_75 
+{
+    width: 74%;
+    border: 1px solid #bec8d2;
+    padding-left: 14px;
+    padding-right: 14px;
+    float: right;
+    margin: 0.5%;
+    /* margin-right: 4px; */
+    min-height: 470px;
+}
+
+.cssgroup_pct_66 
+{
+    width: 65%;
+    border: 1px solid #bec8d2;
+    padding-left: 14px;
+    padding-right: 14px;
+    float: right;
+    margin: 0.5%;
+    /* margin-right: 4px; */
+    min-height: 470px;
+}
+
+
+
+.cssgroup_pct_50 {
+    border: 1px silver solid;
+    padding: 15px;
+    margin: 0.5%;
+    width: 49%;
+    float: right;
+    min-height: 520px;
+     min-width: 220px;
+}
+
+.cssgroup_pct_33 {
+    border: 1px silver solid;
+    padding: 15px;
+    margin: 0.5%;
+    width: 32%;
+    float: right;
+    min-height: 520px;
+    min-width: 220px;
+}
+
+.cssgroup_pct_25 
+{
+    width: 24%;
+    border: 1px solid #bec8d2;
+    padding-left: 14px;
+    padding-right: 14px;
+    float: right;
+    margin: 0.5%;
+    /* margin-right: 4px; */
+    min-height: 470px;
+}
+
+
+.minibox_pct_33{
+    border: 1px silver solid;
+    padding: 5px;
+    margin: 5px 0.5%;
+    width: 32%;
+    float: right;
+    min-height: 520px;
+    min-width: 220px;
+}

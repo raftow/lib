@@ -1,5 +1,5 @@
 <?php 
-// old require of afw_root 
+
 class AfwInputHelper extends AFWRoot 
 {
         public static function hidden_input($col_name, $desc, $val, &$obj)
@@ -145,8 +145,8 @@ class AfwInputHelper extends AFWRoot
                                                                         "tabindex" => $qedit_orderindex,
                                                                         "style" => $input_style,
                                                                         "empty_item" => $empty_item,
-                                                                        "reloadfn" => $obj->getJsOfReloadOf($col_name),
-                                                                        "onchange" => $onchange.$obj->getJsOfOnChangeOf($col_name),
+                                                                        "reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name),
+                                                                        "onchange" => $onchange.AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
                                                                         "required" => $is_required,
                                                                         );
                                                 
@@ -198,7 +198,7 @@ class AfwInputHelper extends AFWRoot
                                                 if(true)
                                                 {
                                                         $help_atc = $auto_c["HELP"];
-                                                        $depend = $obj->getDependencyIdsArray($col_name, $desc);
+                                                        $depend = AfwJsEditHelper::getDependencyIdsArray($obj, $col_name, $desc);
                                                         $html .= "
                                                         <table cellspacing='0' cellpadding='0' style='width:100%'>
                                                                 <tr style='background-color: rgba(255, 255, 255, 0);'>

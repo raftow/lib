@@ -93,7 +93,8 @@
      $messages["customers"] = "العملاء";
      $messages["Customers Login"] = "دخول العملاء";
 
-
+     $messages["Orders to execute"] = "أوامر للتنفيذ";
+     
      
      
 

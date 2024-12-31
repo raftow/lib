@@ -1825,6 +1825,12 @@ class AFWObject extends AFWRoot
         return $this->get($attribute, 'calc', $format, $integrity);
     }
 
+
+    public function v($attribute)
+    {
+        return $this->getVal($attribute);
+    }
+
     /**
      * getVal
      * Return the value of an attribute
@@ -2953,7 +2959,7 @@ class AFWObject extends AFWRoot
     public function singleTranslation($lang = 'ar')
     {
         // can be overrridden
-        return $this->transClassSingle($lang = 'ar');
+        return $this->transClassSingle($lang);
     }
 
 
@@ -3910,6 +3916,13 @@ class AFWObject extends AFWRoot
             $nom_table,
             $module
         );
+        
+        if(AfwStringHelper::stringStartsWith(trim($return), "??")
+           and 
+           AfwStringHelper::stringEndsWith(trim($return), "??"))
+        {
+            $return = AfwStringHelper::methodToTitle($nom_col);
+        }
         $return_before = $return;
         $return = AfwReplacement::trans_replace($return, $module, $langue);
 
@@ -5426,6 +5439,9 @@ class AFWObject extends AFWRoot
                 //if($mc_token=="file_types") die("arr_tokens = ".var_export($arr_tokens,true));
             }
 
+            $file_types = AfwFileUploader::getDocTypes($this->getMyModule());
+            $arr_tokens[$sepBefore ."file_types". $sepAfter] = implode(",",$file_types);
+
             // we start now the decode
             foreach ($arr_tokens as $token_item => $token_val) {
                 // if($this->MY_DEBUG) AFWDebugg::log("text_to_decode before decode of $fieldname for $token with $val_token : $text_to_decode");
@@ -5855,16 +5871,16 @@ class AFWObject extends AFWRoot
                         $link = [];
                         $title = '';
                         if ($struct['OTM-SHOW']) {
-                            $title .= 'عرض ';
+                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY").' ';
                         }
                         if ($struct['OTM-CARD']) {
-                            $title .= 'بطاقة ';
+                            $title .= AfwLanguageHelper::translateKeyword("PROFILE").' ';
                         }
                         if ($struct['OTM-FILE']) {
-                            $title .= 'ملف ';
+                            $title .= AfwLanguageHelper::translateKeyword("FILE").' ';
                         }
                         if ($struct['OTM-RETURNTO']) {
-                            $title .= 'إلى ';
+                            $title .= AfwLanguageHelper::translateKeyword("TO").' ';
                         }
                         if (!$struct['OTM-NO-LABEL']) {
                             $title .= $link_label . ' : ';
@@ -5910,7 +5926,7 @@ class AFWObject extends AFWRoot
                         $link = [];
                         $title = '';
                         if ($struct['OTM-SHOW']) {
-                            $title .= 'عرض ';
+                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY").' ';
                         } else {
                             $title .=
                                 $this->tf($struct['LINK_TO_MFK_ITEMS']) . ' ';
@@ -6339,156 +6355,11 @@ class AFWObject extends AFWRoot
             (!$desc['CATEGORY'] or $desc['ERROR-CHECK']);
     }
 
-    public function getJsOfOnChangeOf(
-        $attribute,
-        $desc = '',
-        $name_only = true,
-        $original_attribute = ''
-    ) {
-        global $lang;
-        $attribute_onchange_fn = $attribute . '_onchange';
-        if ($name_only) {
-            return "$attribute_onchange_fn()";
-        }
-        // $objme = AfwSession::getUserConnected();
-        if (!$original_attribute) {
-            $original_attribute = $attribute;
-        }
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $original_attribute);
-        }
-        $qedit_suffix = substr($attribute, strlen($original_attribute));
-        $js_source = '';
+    
 
-        $js_source .= "function $attribute_onchange_fn() { \n";
-        foreach ($desc['DEPENDENT_OFME'] as $fld) {
-            $fld_suffixed = $fld . $qedit_suffix;
-            $js_source .= "   " . $fld_suffixed . "_reload(); \n";
-            $js_source .= "   " . $fld_suffixed . "_onchange(); \n";
-        }
-        $js_source .= "\n} \n/*******************************  end of  $attribute_onchange_fn  *****************************/  ";
+    
 
-        return $js_source;
-    }
-
-    public function getDependencyIdsArray($attribute, $desc = null, $implode = true, $js = true)
-    {
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        }
-
-        if ($desc['DEPENDENCY']) {
-            $desc['DEPENDENCIES'] = [$desc['DEPENDENCY']];
-        }
-
-
-
-        if ($js) {
-            $dependencies_value_arr = [];
-            foreach ($desc['DEPENDENCIES'] as $fld) {
-                $dependencies_value_arr[] = "\$(\"#$fld\").val()";
-            }
-
-            if ($implode)  $return = implode(". ',' .", $dependencies_value_arr);
-            else  $dependencies_value_arr;
-        } else {
-            $dependencies_value_arr = [];
-            foreach ($desc['DEPENDENCIES'] as $fld) {
-                $dependencies_value_arr[] = $this->getVal($fld);
-                /*
-                if($attribute=="training_unit_id") 
-                {
-                    die(" $this => getVal($fld) = ".$this->getVal($fld));
-                }*/
-            }
-
-            if ($implode)  $return = implode(",", $dependencies_value_arr);
-            else $return = $dependencies_value_arr;
-        }
-
-
-
-        // if($attribute=="training_unit_id") die("getDependencyIdsArray($attribute) = [$return] : desc['DEPENDENCIES'] = ".var_export($desc['DEPENDENCIES'],true)." ");
-
-        return $return;
-    }
-
-    public function getJsOfReloadOf(
-        $attribute,
-        $desc = '',
-        $original_attribute = ''
-    ) {
-        global $lang;
-        // $objme = AfwSession::getUserConnected();
-        if (!$original_attribute) {
-            $original_attribute = $attribute;
-        }
-
-        $qedit_suffix = substr($attribute, strlen($original_attribute));
-
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $original_attribute);
-        }
-        if ($desc['REQUIRED'] or $desc['MANDATORY']) {
-            $option_empty_value = '';
-        } else {
-            $option_empty_value = ' value=0';
-        }
-
-        $thisid = $this->getId();
-        $className = $this->getMyClass();
-        $currmod = $this->getMyModule();
-        $js_source = '';
-        $attribute_reload_fn = $attribute . '_reload';
-
-        if ($desc['DEPENDENCY']) {
-            $desc['DEPENDENCIES'] = [$desc['DEPENDENCY']];
-        }
-
-        $dependencies_values = '';
-        $fld_deps = '';
-        $fld_deps_vals = '';
-        foreach ($desc['DEPENDENCIES'] as $fld) {
-            $fld_suffixed = $fld . $qedit_suffix;
-            //  $fld_deps .= "/".$fld;
-            //  $fld_deps_vals .= "+";
-            //  $fld_deps_vals .= "'/'+\$(\"#$fld\").val()";
-            if ($dependencies_values) {
-                $dependencies_values .= ",\n";
-            }
-            $dependencies_values .= "                    post_attr_$fld: \$(\"#$fld_suffixed\").val()";
-        }
-
-        $js_source .= "function $attribute_reload_fn() {  \n";
-        $js_source .= "     // alert(\"\"+\$(\"#$fld\").val());
-                    // fld_deps_vals = '' $fld_deps_vals ;
-                    // alert(\"$attribute_reload_fn running deps = [$fld_deps] = [\"+fld_deps_vals+\"] \");
-                    \$.getJSON(\"../lib/api/anstab.php\", 
-                    {
-                    keepCurrent: 1,
-                    cl:\"$className\",
-                    currmod:\"$currmod\",
-                    objid:\"$thisid\",
-                    attribute: \"$original_attribute\",
-                    attributeval: \$(\"#$attribute\").val(), 
-                    
-$dependencies_values
-                        
-                    },
-                    
-                    function(result)
-                    {
-                    var \$select = \$('#$attribute'); 
-                    \$select.find('option').remove();
-                    \$select.append('<option$option_empty_value></option>');
-                    \$.each(result, function(i, field) {
-                         \$select.append('<option value=' + i + '>' + field + '</option>');
-                    });
-                    });
-                   }  
-                   /*******************************  end of  $attribute_reload_fn  *****************************/  ";
-        return $js_source;
-    }
+    
 
     public function isComplete(
         $lang = 'ar',

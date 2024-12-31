@@ -146,8 +146,8 @@ function type_input($col_name, $desc, $obj, $selected = false)
                         array(
                             "class" => "form-control $class_inputSearch $class_select $inp_selected",
                             "name"  => $col_name,
-                            "reloadfn" => $obj->getJsOfReloadOf($col_name),
-                            "onchange" => $obj->getJsOfOnChangeOf($col_name),
+                            "reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj,$col_name),
+                            "onchange" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
                         ),
                         "asc",
                         true,

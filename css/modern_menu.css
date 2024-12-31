@@ -292,7 +292,6 @@ button.bf.hzm-otherlink {
 li.wizardv1_li.CurrentStep {
     background-color: #e0f5ff !important;
     border-radius: 0 0 0 0 !important;
-    border-right: 5px solid #3099db !important;
 }
 
 li.wizardv1_li.AlreadyStep {
@@ -317,17 +316,7 @@ li.wizardv1_li.AlreadyStep {
     padding-right: 15px !important;
 }
 
-.hasCalendarsPicker {
-    padding-left: 24px;
-    width: 100%;
-    border: 1px solid #dbd9d9e8;
-    font-size: 16px !important;
-    background-image: url(../../lib/images/calendar.png) !important;
-    background-repeat: no-repeat !important;
-    background-position-x: 3px !important;
-    background-position-y: center !important;
-    background-size: 24px;
-}
+
 
 .panel-heading>h3>span {
     white-space: nowrap;

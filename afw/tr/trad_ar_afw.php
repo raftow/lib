@@ -47,13 +47,19 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["_EDIT"]	                         	= "تعديل";
         $trad["OPERATOR"]["_INSERT"]	                         	= "إضافة";
         $trad["OPERATOR"]["_DISPLAY"]	                         	= "عرض";
-        $trad["OPERATOR"]["_VIEW"]	                         	= "عرض ";
+        $trad["OPERATOR"]["_VIEW"]	                         	= "عرض";
         $trad["OPERATOR"]["_DELETE"]	                         	= "مسح";
         $trad["OPERATOR"]["_CONSULT_"]	                         	= "الاستعلام عن";
         $trad["OPERATOR"]["_STAT_"]	                         	= "إحصائيات حول";
         $trad["OPERATOR"]["_REPORT_"]	                         	= "تقرير حول";
         $trad["OPERATOR"]["_WEB_SERV_LKUP_"]	                        = "جلب قائمة ثابتة : ";
         
+        $trad["OPERATOR"]["EDIT"]	                         	= "تعديل";
+        $trad["OPERATOR"]["DISPLAY"]	                         	= "عرض";
+        $trad["OPERATOR"]["DELETE"]	                         	= "مسح";
+        $trad["OPERATOR"]["PROFILE"]	                         	= "بطاقة";   
+        $trad["OPERATOR"]["FILE"]	                         	= "ملف";   
+        $trad["OPERATOR"]["TO"]	                         	= "إلى";     
         
         $trad["OPERATOR"]["NEW"]	                        	= "إضافة سجل جديد";
         $trad["OPERATOR"]["EDIT_FILE"]	                         	= "تعديل البيانات";
@@ -84,15 +90,16 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["STEP"]	                         	= "الخطوة";
         $trad["OPERATOR"]["NEXT"]	                         	= "حفظ ومتابعة >";
         $trad["OPERATOR"]["NEXTRO"]	                         	= "متابعة >";
-        $trad["OPERATOR"]["NEXT_TAB"]	                         	= "الخطوة التالية >";
-        $trad["OPERATOR"]["GO_TO"]	                         	= "الإنتقال إلى";
-        $trad["OPERATOR"]["VIEW"]	                         	= "مشاهدة";
         $trad["OPERATOR"]["PREVIOUS"]	                         	= "< حفظ ورجوع";
         $trad["OPERATOR"]["PREVIOUSRO"]	                         	= "< رجوع";
         $trad["OPERATOR"]["FINISH"]	                         	= "حفظ وإنهاء";
         $trad["OPERATOR"]["FINISHRO"]	                         	= "إنهاء";
         $trad["OPERATOR"]["COMPLETE_LATER"]	                        = "حفظ كمسودة وإكمال البيانات لاحقا";
         $trad["OPERATOR"]["COMPLETE_LATERRO"]	                        = "إنهاء";
+
+        $trad["OPERATOR"]["NEXT_TAB"]	                         	= "الخطوة التالية >";
+        $trad["OPERATOR"]["GO_TO"]	                         	= "الإنتقال إلى";
+        $trad["OPERATOR"]["VIEW"]	                         	= "مشاهدة";        
         
         
         $trad["OPERATOR"]["FIELD"]	                                = "حقل";

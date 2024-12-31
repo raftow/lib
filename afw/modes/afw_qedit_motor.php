@@ -148,9 +148,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         "name"  => $col_name,
                         "id"  => $col_name,
                         "tabindex" => $qedit_orderindex,
-                        "reloadfn" => $obj->getJsOfReloadOf($col_name, "", $orig_col_name),
-                        "onchange" => $onchange . $obj->getJsOfOnChangeOf($col_name, $desc = "", true, $orig_col_name),
-                        "onchangefn" => $obj->getJsOfOnChangeOf($col_name, $desc = "", false, $orig_col_name),
+                        "reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name, "", $orig_col_name),
+                        "onchange" => $onchange . AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name, $desc = "", true, $orig_col_name),
+                        "onchangefn" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name, $desc = "", false, $orig_col_name),
                     );
 
                 if ($obj->fixm_disable) {
@@ -206,7 +206,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 <?php 
                 } else {
                     $help_atc = $auto_c["HELP"];
-                    $depend = $obj->getDependencyIdsArray($col_name, $desc);
+                    $depend = AfwJsEditHelper::getDependencyIdsArray($obj, $col_name, $desc);
                 ?>
                     <table cellspacing='0' cellpadding='0'>
                         <tr style="background-color: rgba(255, 255, 255, 0);">

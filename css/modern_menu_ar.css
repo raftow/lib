@@ -101,6 +101,7 @@ nav .menu-items{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    width: 100%;
 }
 .menu-items li{
     list-style: none;
@@ -455,4 +456,31 @@ nav.close ~ .dashboard .top{
 .form-control.input_edited {
     border-right: 2px solid #3099db !important;
     background-color: transparent !important;
+}
+
+li.wizardv1_li.CurrentStep {
+    border-right: 5px solid #299dff !important;
+}
+
+li.wizardv1_li.ErronedStep {
+    border-right: 5px solid red !important;
+}
+
+.steps_wizardv1 li a {
+    color: #000;
+    font-size: 100%;
+    font-family: menu;
+    padding-right: 18px;
+}
+
+.hasCalendarsPicker {
+    padding-left: 24px;
+    width: 100%;
+    border: 1px solid #dbd9d9e8;
+    font-size: 16px !important;
+    background-image: url(../../lib/images/calendar.png) !important;
+    background-repeat: no-repeat !important;
+    background-position-x: 3px !important;
+    background-position-y: center !important;
+    background-size: 24px !important;
 }

@@ -1,7 +1,10 @@
 <link href="../lib/assets/css/style.css" rel="stylesheet" />
 <?php
-    if(!$module_config_token["file_types"]) $module_config_token["file_types"] = "1,2,3,4,5,6";
-    list($ext_arr, $ft_arr) = DocType::getExentionsAllowed($module_config_token["file_types"]);
+    if(!$MODULE) throw new AfwRuntimeException("MODULE var should be defined for file uploads");
+
+    $file_types = AfwSession::config("$MODULE-file_types", AfwSession::config("file_types", []));
+    if((!$file_types) or (count($file_types)==0)) throw new AfwRuntimeException("file_types for $MODULE is to be defined for file uploads process");
+    list($ext_arr, $ft_arr) = DocType::getExentionsAllowed($file_types);
     
     $ext_list = implode(", ",$ext_arr);
     $ft_list = implode(", ",$ft_arr);

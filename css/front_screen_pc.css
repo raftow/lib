@@ -788,46 +788,56 @@ small.domain-title {
     padding: 0;
 }
 
+.download-icon.small{
+    width: 32px !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.download-icon.very-small{
+    width: 24px !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.download-icon.very-very-small{
+    width: 16px !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
 .download-icon {
     background-image: url(../../lib/images/telecharger32.png);
+    background-size: cover;
     background-repeat: no-repeat;
-    background-position: 14px 8px;
+    background-position: center;
     width: 54px;
 }
 
 .download-link {
     background-image: url(../../lib/images/link32.png);
-    background-repeat: no-repeat;
-    background-position: 14px 8px;
-    width: 54px;
 }
 
 
 .download-pdf {
     background-image: url(../../lib/images/pdf-download.png);
-    background-repeat: no-repeat;
-    background-position: 14px 8px;
-    width: 54px;
 }
 
 .download-pptx {
     background-image: url(../../lib/images/pptx.png);
-    background-repeat: no-repeat;
-    background-position: 14px 8px;
-    width: 64px;
 }
 
 .download-mp4 {
     background-image: url(../../lib/images/video-camera.png);
-    background-position-x: center;
 }
 
 .download-jpeg,
 .download-jpg,
 .download-png {
     background-image: url(../../lib/images/camera.png);
-    background-position-x: center;
 }
 
 

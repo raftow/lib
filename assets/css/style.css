@@ -57,7 +57,7 @@ section, footer, header, aside{
     border-radius: 3px;
     border-image: url(../img/border-image.png) 25 repeat;
     text-align: center;
-    text-transform: uppercase;
+    /* text-transform: uppercase; rafik 2024/12/28 : Why some text inn drop div should be lower case*/ 
     color: #160F61;
     min-height: 400px;
 }
@@ -279,4 +279,8 @@ footer h2 i{
     top: 34px;
     right: 33px;
     cursor: pointer;
+}
+
+.file_space {
+    min-height: 120px;
 }

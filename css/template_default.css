@@ -233,16 +233,31 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
 }
 
 .btn-primary {
-    color: #fff;
+    color: #fff !important;
     background-color: #0096ff;
-    border-color: #137ac3 !important;
+    border-color: #137ac3;
 }
 
 .btn-primary:hover {
-    color: #fff;
+    color: #fff !important;
     background-color: #3eaaf6;
-    border-color: #188ee1 !important;
+    border-color: #188ee1;
 }
+
+
+.btn-secondary {
+    color: #fff !important;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    color: #fff !important;
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+
 
 .closebtn {
 	color: #fff;
@@ -723,15 +738,7 @@ div.qfilter>h1 {
     color: #000;
     font-size: 100%;
     font-family: menu;
-    padding-right: 18px;
     font-weight: normal;
-}
-
-li.wizardv1_li.CurrentStep {
-    /* background-color: #f4f6f7; */
-    /* border-radius: 0 0 0 0; */
-    /* color: #07457a; */
-    border-right: 5px solid #299dff !important;
 }
 
 .steps_wizardv1 li.CurrentStep a {
@@ -740,9 +747,7 @@ li.wizardv1_li.CurrentStep {
     font-size: 100%;
 }
 
-li.wizardv1_li.ErronedStep {
-    border-right: 5px solid red !important;
-}
+
 
 .steps_wizardv1 li.ErronedStep a {
     color: red !important;
@@ -927,7 +932,7 @@ input.fa.previous:before{
 }
 
 .steps_wizardv1 li.CurrentStep a:before {
-    background-color: #4396fb;
+    background-color: transparent;
 }
 
 .form-control.form-switcher {

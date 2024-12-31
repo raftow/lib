@@ -230,7 +230,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                         else
                                         {
                                            $help_atc = $auto_c["HELP"];
-                                           $depend = $obj->getDependencyIdsArray($col_name, $desc);
+                                           $depend = AfwJsEditHelper::getDependencyIdsArray($obj, $col_name, $desc);
 	?>				
                                         <table cellspacing='0' cellpadding='0' style="width:100%">
                                         <tr style="background-color: rgba(255, 255, 255, 0);">
