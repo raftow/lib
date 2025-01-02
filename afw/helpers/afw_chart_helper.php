@@ -192,6 +192,11 @@ class AfwChartHelper
             if ($c) $allzero = false;
             if ($index == 'date') $indx = $gdate;
             elseif ($index == 'year') list($indx,) = explode("-", $gdate);
+            elseif ($index == 'month') 
+            {
+                list($year,$month) = explode("-", $gdate);
+                $indx = $year.$month;
+            }
             else $indx = $i;
             $data[$indx] = $c;
         }
