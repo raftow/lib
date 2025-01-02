@@ -29,7 +29,7 @@ $mode_edit_id = $obj->getId();
 $clObj = $obj->getMyClass();
 $cl_short = strtolower(substr($clObj, 0, 10));
 
-$data_loaded = true;
+
 
 $last_edited_step = $obj->getLastEditedStep(false);
 
@@ -129,7 +129,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                         if (!$horizontal_editability_for_me) $i_can_not_edit_attribute_log .= "column $nom_col is not horizontally editable for me, ";
                 }
                 $nom_colIsApplicable = $obj->attributeIsApplicable($nom_col);
-                $data[$nom_col]["log-na"] = "$obj => attributeIsApplicable($nom_col)";
+                $data[$nom_col]["log-na"] = "obj => attributeIsApplicable($nom_col)";
                 
         } else {
                 $mode_field_read_only = true;
@@ -184,7 +184,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
         //echo "$nom_col <br>";
         
 
-        $separator = $obj->getSeparatorFor($nom_col);
+        
 
         if ($nom_colIsApplicable) {
 
@@ -193,76 +193,8 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 {
                         if (!$mode_field_read_only) 
                         {
-                                $col_val = $obj->getVal($nom_col);
-                                //if($nom_col=="response_templates") die("case not mode_field_read_only nom_col = $nom_col, value = $col_val ");
-                                $all_form_readonly = false;
-
-                                if (($desc['TYPE'] == 'PK') && empty($col_val)) {
-                                        $data[$nom_col]["trad"]  = "";
-                                } else {
-                                        $data[$nom_col]["trad"]  = $obj->getAttributeLabel($nom_col, $lang);
-                                        //$data[$nom_col]["trad"] .= " : ";
-                                }
-                                // no need with bootstrap
-                                /*if($desc['TYPE'] == 'MFK') $data[$nom_col]["trad"] .= "<div class='hint_0'>للإختيار المتعدد اضغط زر 'Ctrl' مع الضغط على الزر الأيسر للفأرة</div>";
-                                else*/
-
-
-                                ob_start();
-                                if (($desc['TYPE'] == 'PK') && empty($col_val)) {
-                                        $data_loaded = false;
-                                        type_input($nom_col, $desc, $id, $obj, $separator, $data_loaded);
-                                } else {
-                                        type_input($nom_col, $desc, $col_val, $obj, $separator, $data_loaded, "inputlong", 0, "inputlong");
-                                }
-                                $desc_export = var_export($desc, true);
-                                if (AfwSession::config('MODE_DEVELOPMENT', false)) {
-                                        $data[$nom_col]["input"] = "<!-- start of input for attrib $nom_col : [$col_val] = obj->val($nom_col) desc=$desc_export-->";
-                                }
-                                $data[$nom_col]["input"] .= ob_get_clean();
-                                $data[$nom_col]["input"] .= "<!-- end of input for attrib $nom_col -->";
-                                $data[$nom_col]["type"] = $desc["TYPE"];
-                                $col_help = $nom_col . "_help";
-                                $val_help = $obj->translate($col_help, $lang);
-                                if ($val_help != $col_help) $data[$nom_col]["help"]     = $val_help;
-
-                                $data[$nom_col]["ehelp"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "EHELP", $lang, $desc));
-                                $data[$nom_col]["hint"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "HINT", $lang, $desc));
-                                $data[$nom_col]["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "TOOLTIP", $lang, $desc));
-                                if (!$data[$nom_col]["tooltip"]) {
-                                        $tltp = $obj->getAttributeTooltip($nom_col, $lang);
-                                        if ($tltp) $data[$nom_col]["tooltip"] = $tltp;
-                                }
-
-                                $data[$nom_col]["unit"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "UNIT", $lang, $desc));
-                                $data[$nom_col]["no-hzm-unit"]  = $desc["NO-HZM-UNIT"];
-                                if ($data[$nom_col]["unit_explain"]) $data[$nom_col]["unit"]  = "الوحدة = " . $data[$nom_col]["unit"];
-
-                                $data[$nom_col]["title_after"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "TITLE_AFTER", $lang, $desc));
-
-                                //if($nom_col=="picture_height") die("data[$nom_col][unit] = ".$data[$nom_col]["unit"]);
-
-                                if ($desc['TYPE'] == 'MFK') 
-                                {
-                                        if($desc['FORMAT'] == 'dropdown')
-                                        {
-                                                $data[$nom_col]["tooltip"] .= $obj->translateMessage("MULTI CHOICE ALLOWED") . ".\n";
-                                                $data[$nom_col]["tooltip"] .= $obj->translateMessage("CURRENT CHOICES") . " : \n";
-                                                $data[$nom_col]["tooltip"] .= str_replace('<br>'," / ",$obj->showAttribute($nom_col));
-                                        }
-                                        else
-                                        {
-                                                unset($data[$nom_col]["tooltip"]);
-                                        }
-                                        
-                                }
-                                //if($nom_col=="booking_comment") die("step_show_error=$step_show_error , obj_errors[$nom_col]=".$obj_errors[$nom_col]);
-                                if ($obj_errors[$nom_col] and $step_show_error) {
-                                        $data[$nom_col]["error"] = $obj_errors[$nom_col];
-                                        //if($nom_col=="booking_comment") die("obj_errors = ".var_export($obj_errors,true));
-                                } elseif ($obj_errors) {
-                                        //die("obj_errors = ".var_export($obj_errors,true));
-                                }
+                                $colErrors = $obj_errors[$nom_col];
+                                $data[$nom_col] = prepareEditInfoForColumn($obj, $nom_col, $desc, $lang, $colErrors, $step_show_error);
                         } 
                         else 
                         {
@@ -621,198 +553,10 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                         }
                                                         elseif($info['input'])
                                                         {
-                                                                $class_db_structure[$col] = AfwStructureHelper::repareMyStructure($obj, $class_db_structure[$col], $col);
-                                                                if (($col == "id") and (!$idObj)) $class_empty_object = "empty-obj";
-                                                                else $class_empty_object = "";
-
-                                                                $colspan = "";
-                                                                $css_class = "";
-                                                                $new_fgroup = $class_db_structure[$col]["FGROUP"];
-                                                                $noheader_fgroup = $class_db_structure[$col]["FGROUP_NOHEADER"];
-                                                                $fgroup_behavior = $class_db_structure[$col]["FGROUP_BEHAVIOR"];
-                                                                if (!$new_fgroup) $new_fgroup = "default_fg";
-                                                                if (($new_fgroup) and ($fgroup != $new_fgroup)) 
-                                                                {
-                                                                        //if($new_fgroup=="prices_report") die("$fgroup != $new_fgroup : obj::DB_STRUCTURE[$col][FGROUP_BEHAVIOR] = $fgroup_behavior,  data = ".var_export($data,true));
-                                                                        $fgroup = $new_fgroup;
-                                                                        if ($fgroup_behavior) {
-                                                                                if ($fgroup_behavior == "collapsed") {
-                                                                                        $collapse_status = "collapse";
-                                                                                        $collapsed_status = "expand collapsed";
-                                                                                } else {
-                                                                                        $collapse_status = "collapse in";
-                                                                                        $collapsed_status = "expand";
-                                                                                }
-                                                                                $fgroup_toggle_html = " data-toggle='collapse' data-target='#group_$fgroup'";
-                                                                                $fgroup_expanded_area = " aria-expanded='true'";
-                                                                        } else {
-                                                                                $collapse_status = "";
-                                                                                $collapsed_status = "expanded_fixed";
-                                                                                $fgroup_toggle_html = "";
-                                                                                $fgroup_expanded_area = "";
-                                                                        }
-
-                                                                        $fgroupInfos = $obj->getFieldGroupInfos($fgroup);
-                                                                        $fgroupcss = $fgroupInfos["css"];
-                                                                        $new_fgroup_tr = $obj->getAttributeLabel($new_fgroup, $lang);
-                                                                        // close previous in-group div
-                                                                        if ($openedInGroupDiv) {
-                                                                                echo "</div>";  // internal_group_div_close
-                                                                                echo "</div>";
-                                                                                $openedInGroupDiv = false;
-                                                                        }
-                                                                        // echo "\n<tr><th class='fgroup_header' colspan='4'>$new_fgroup_tr</th></tr>\n";
-                                                                        if ($noheader_fgroup) {
-                                                                                $header_of_fgroup = "";
-                                                                        } else {
-                                                                                $header_of_fgroup = "<div class='$collapsed_status' $fgroup_toggle_html><h5 class='greentitle $new_fgroup'><i></i>$new_fgroup_tr</h5></div>";
-                                                                        }
-
-                                                                        echo "\n<div class='in-group-$new_fgroup cssgroup_$fgroupcss' >$header_of_fgroup  \n";
-                                                                        $internal_new_group_div_open = "<div id='group_$fgroup' class='$collapse_status' aria-expanded='true' style=''>\n";
-                                                                        $openedInGroupDiv = true;
-                                                                } else {
-                                                                        $internal_new_group_div_open = "";
-                                                                }
-                                                                $css_custom = $class_db_structure[$col]['CSS'];
-                                                                if (!$css_custom) {
-                                                                        if ($class_db_structure[$col]["CATEGORY"] == "ITEMS")  $css_custom = "width_pct_100";
-                                                                        elseif ($class_db_structure[$col]["TYPE"] == "MFK")  $css_custom = "width_pct_100";
-                                                                        elseif ($class_db_structure[$col]["SIZE"] == "AREA")  $css_custom = "width_pct_100";
-                                                                        elseif ($class_db_structure[$col]["TYPE"] == "DATE")  $css_custom = "width_pct_50";
-                                                                        elseif ($class_db_structure[$col]["TYPE"] == "GDAT")  $css_custom = "width_pct_50";
-                                                                        elseif ($class_db_structure[$col]["SIZE"] < 33)  $css_custom = "width_pct_25";
-                                                                        elseif ($class_db_structure[$col]["SIZE"] < 43)  $css_custom = "width_pct_33";
-                                                                        elseif ($class_db_structure[$col]["SIZE"] < 67)  $css_custom = "width_pct_50";
-                                                                        elseif ($class_db_structure[$col]["SIZE"] < 85)  $css_custom = "width_pct_66";
-                                                                        elseif ($class_db_structure[$col]["SIZE"] < 101)  $css_custom = "width_pct_75";
-                                                                        else $css_custom = "";
-                                                                }
-                                                                echo $internal_new_group_div_open;
-                                                                echo '<div id="fg-' . $col . '" class="attrib-' . $col . ' form-group ' . $css_custom . ' ' . $class_empty_object . '">';
-                                                                if ($tr_obj == $class_tr2) $tr_obj = $class_tr1;
-                                                                else $tr_obj = $class_tr2;
-
-
-                                                                if ($class_db_structure[$col]["CSS-DISPLAY"]) {
-                                                                        $css_class = " class='" . $class_db_structure[$col]["CSS-DISPLAY"] . "'";
-                                                                }
-
-                                                                if ($class_db_structure[$col]["CATEGORY"] == "ITEMS") {
-                                                                        //if(!$newTr) echo "<th></th><td></td></tr>";
-                                                                        $colspan = "colspan='3'";
-                                                                        $newTr = true;
-                                                                }
-                                                                if ($class_db_structure[$col]["COLSPAN"]) {
-                                                                        $colspan = "colspan='" . $class_db_structure[$col]["COLSPAN"] . "'";
-                                                                }
-
-                                                                //if((!$firstTr) and (($class_db_structure[$col]["NEW-TR"]) or $newTr)) echo "</tr>";
-
-                                                                if ($newTr) {
-                                                                        $firstTr = false;
-                                                                        if ($class_db_structure[$col]["CATEGORY"] == "ITEMS")
-                                                                                $newTr = true;
-                                                                        else
-                                                                                $newTr = false;
-                                                                } else {
-                                                                        $newTr = true;
-                                                                }
-                                                                $newTr = true;
-                                                                if ($class_db_structure[$col]["OTHER-LINKS-TOP"] or (!$class_db_structure[$col]["OTHER-LINKS-BOTTOM"])) {
-                                                                        echo "<!-- other links top -->\n".$info["btns"];
-                                                                }
-                                                                if (!$class_db_structure[$col]["NO-LABEL"]) 
-                                                                {
-                                                                        
-                                                                        if ($info["trad"]) {
-                                                                                $class_label0 = "hzm_label hzm_label_$col";
-                                                                                if ($class_db_structure[$col]["REQUIRED"]) $class_label = "class='$class_label0 label_required'";
-                                                                                elseif ($class_db_structure[$col]["MANDATORY"]) $class_label = "class='$class_label0 label_mandatory'";
-                                                                                else $class_label = "class='$class_label0'";
-
-
-                                                                                if ($info["warning"])  echo '<br><div class="ewarning">' . $info["warning"] . '</div>';
-                                                                                echo "<label for='$col' $class_label>" . $info["trad"] . " : \n";
-                                                                                //if($info["unit"])  echo "<div class='hunit'>".$info["unit"]."</div>";
-                                                                                //if($info["tooltip"])  echo '<img data-toggle="tooltip" data-placement="top" title="'.$info["tooltip"].'" src="../lib/images/tooltip.png" />';
-                                                                                if ($info["help"])  echo '<span class="hspan">' . $info["help"] . '</span>';
-                                                                                echo "</label>\n";
-
-                                                                                /* old code before change 004
-                                                        echo "<label for='$col' $class_label>".$info["trad"]."\n";
-                                                        if($info["tooltip"])  echo '<img data-toggle="tooltip" data-placement="top" title="'.$info["tooltip"].'" src="../lib/images/tooltip.png" />';
-                                                        if($info["unit"])  echo " (الوحدة = ".$info["unit"]." )";
-                                                        if($info["help"])  echo '<br><span class="hspan">'.$info["help"].'</span>';
-                                                        echo " : </label>\n";
-                                                        */
-                                                                        }
-                                                                        $br = false;
-                                                                        if ($info["hint"]) {
-                                                                                if (!$br) echo "<br>";
-                                                                                $br = true;
-                                                                                echo "<div class='hint_0'>" . $info["hint"] . "</div>"; //
-                                                                        }
-                                                                }
-
-                                                                
-                                                                $br_if_needed = "";
-
-                                                                if ($info["error"] and $class_db_structure[$col]["ERROR-SHOW"]) echo "$br_if_needed<div id='attr_error_$col' class='error' for='$col'>" . $info["error"] . "</div>"; //
-
-                                                                if ($info["unit"] or $info["tooltip"] or $info["error"]) 
-                                                                {
-                                                                        $css_input_width_pct = 100;
-                                                                        if ($info["tooltip"] or $info["error"]) $css_input_width_pct -= 10;
-
-
-                                                                        if ($info["unit"]) $css_input_width_pct -= 20;
-                                                                        $css_form_control_div_special = "";
-                                                                        if ($class_db_structure[$col]["ROWS"]) {
-                                                                                $rows = $class_db_structure[$col]["ROWS"];
-                                                                                if ($rows > 9) $rows = 9;
-                                                                                if ($rows < 1) $rows = 1;
-
-                                                                                $css_form_control_div_special .= " rows$rows";
-                                                                        }
-
-                                                                        $css_unit_tooltip_active = "class_input_width_$css_input_width_pct";
-                                                                        if ($info["error"]) {
-                                                                                $errors_in_data = "errors";
-                                                                                echo "<!-- $col >> err " . str_replace("-->", "", $info["error"]) . " -->";
-                                                                        } else $errors_in_data = "";
-                                                                        $col_type = $info["type"];
-                                                                        echo "<div class=\"form-control-div $col_type hzm_control_div_$col $errors_in_data $css_unit_tooltip_active $css_form_control_div_special\">";
-                                                                        if ($info["tooltip"] or $info["error"]) {
-                                                                                if ($info["error"] and (!$class_db_structure[$col]["ERROR-HIDE"])) {
-                                                                                        echo "<div id='attr_error_$col' class=\"hzm_tooltip hzm_tooltip_error\"><img data-toggle=\"tooltip-error\" data-placement=\"left\" class=\"hzm_tt\" style=\"width: 24px;height: 24px;margin-top: -8px;\" title=\"" . $info["error"] . "\" src=\"../lib/images/error.png\" /></div>" . $info["error"];
-                                                                                } elseif ($info["tooltip"]) echo "<div class=\"hzm_tooltip\"><img data-toggle=\"tooltip\" data-placement=\"left\" class=\"hzm_tt\" title=\"" . $info["tooltip"] . "\" src=\"../lib/images/information.png\" /></div>";
-                                                                        }
-
-
-
-                                                                        echo $info["input"];
-                                                                        if ($info["unit"] and (!$info["no-hzm-unit"])) echo "<div class=\"hzm_unit\">" . $info["unit"] . "</div>";
-                                                                        echo "</div>";
-                                                                } else echo $info["input"];
-                                                                // if($info["tooltip"])  echo '<a href="#" data-toggle="tooltip" data-placement="top" title="'.$info["tooltip"].'">';
-                                                                // if($info["tooltip"])  echo '</a>';
-
-                                                                //echo "BTN-BTN-BTN-BTN-BTN-BTN-BTN-BTN-";
-                                                                if ($class_db_structure[$col]["OTHER-LINKS-BOTTOM"]) {
-                                                                        echo "<!-- other links bottom -->\n".$info["btns"];
-                                                                }
-
-                                                                if ($info["title_after"]) {
-                                                                        if (!$br) echo "$br_if_needed";
-                                                                        $br = true;
-                                                                        echo "<div class='etitle_after'>" . $info["title_after"] . "</div>"; // 
-                                                                }
-                                                                if ($info["ehelp"])  echo "$br_if_needed<div class='ehelp'>" . $info["ehelp"] . "</div>"; //
-
-
-
-                                                                echo "</div><!-- fg-$col -->";
+                                                                // $class_db_structure[$col] = AfwStructureHelper::repareMyStructure($obj, $class_db_structure[$col], $col);
+                                                                list($htmlDiv, $openedInGroupDiv, $fgroup) = 
+                                                                   attributeEditDiv($obj, $col, $class_db_structure[$col], $fgroup, $lang, $openedInGroupDiv, $info);
+                                                                echo $htmlDiv;
                                                         }
                                                         elseif ($info["ehelp"])
                                                         {
