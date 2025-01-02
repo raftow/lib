@@ -17,13 +17,12 @@ function hidden_input($col_name, $desc, $val, &$obj)
 
 function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = false, $force_css = "", $qedit_orderindex = 0, $data_length_class_default_for_fk = "inputmoyen")
 {
-    global $Main_Page, $_GET, $_POST,        
+    global $Main_Page, $_GET, $_POST,
         $lang, $mode_hijri_edit,  $objme;
 
     $editor = $desc["EDITOR"];
 
-    if($editor)
-    {
+    if ($editor) {
         $this_dir_name = dirname(__FILE__);
         $buttonTitleMethod = $editor["buttonTitleMethod"];
         $paramsMethod = $editor["paramsMethod"];
@@ -31,9 +30,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
         $buttonTitle = $obj->$buttonTitleMethod($lang, $objectAttribute);
         $params = $obj->$paramsMethod($objectAttribute);
         $jsFunction = $editor["jsFunction"];
-        require($this_dir_name."/../../../".$editor["src"]);
+        require($this_dir_name . "/../../../" . $editor["src"]);
 
-        if($editor["full"]) return "custom";
+        if ($editor["full"]) return "custom";
     }
 
     $mode_qedit = false;
@@ -45,8 +44,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
         $mode_qedit = true;
     }
 
-    if ($mode_qedit) 
-    {
+    if ($mode_qedit) {
         $qeditCount = $obj->qeditCount;
         $qeditNomCol = $obj->qeditNomCol;
         if (!$qeditNomCol) $qeditNomCol = $col_name;
@@ -60,14 +58,13 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
     $placeholder_standard_code = "placeholder-$orig_col_name";
     $placeholder_code = $desc["PLACE-HOLDER"];
-    if(!$placeholder_code) $placeholder_code = $placeholder_standard_code;
+    if (!$placeholder_code) $placeholder_code = $placeholder_standard_code;
 
-    if ($placeholder_code==$placeholder_standard_code) $placeholder = $obj->getAttributeLabel($placeholder_code, $lang);
+    if ($placeholder_code == $placeholder_standard_code) $placeholder = $obj->getAttributeLabel($placeholder_code, $lang);
     elseif ($placeholder_code) $placeholder = $obj->translateMessage($placeholder_code, $lang);
     else $placeholder = "";
 
-    if ((!$placeholder) or ($placeholder == $placeholder_standard_code)) 
-    {
+    if ((!$placeholder) or ($placeholder == $placeholder_standard_code)) {
         if (($desc["MANDATORY"]) and ($desc["TYPE"] != "TEXT")) {
             $instruction_code = "INSTR-" . $desc["TYPE"];
             $instruction = $obj->translateOperator($instruction_code, $lang);
@@ -86,8 +83,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
 
     $themeArr = AfwThemeHelper::loadTheme();
-    foreach($themeArr as $theme => $themeValue)
-    {
+    foreach ($themeArr as $theme => $themeValue) {
         $$theme = $themeValue;
     }
 
@@ -110,18 +106,15 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
     //if($col_name=="id_sh_org_1") die("obj->getWhereOfAttribute($orig_col_name) = ".$desc["WHERE"]);            
     $readonly = "";
 
-    if ($desc["READONLY"]) 
-    {
+    if ($desc["READONLY"]) {
         $readonly = "readonly";
     }
 
-    if ($desc["JS-COMPUTED-READONLY"]) 
-    {
+    if ($desc["JS-COMPUTED-READONLY"]) {
         $readonly = "readonly";
     }
 
-    if (true) 
-    {
+    if (true) {
         $onchange = $desc["ON-CHANGE"];
         $onchange = str_replace("§row§", $obj->qeditNum, $onchange);
         $onchange = str_replace("§rowcount§", $qeditCount, $onchange);
@@ -137,9 +130,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
         else $onchange .= "iHaveBeenEdited('$col_name'); ";
     }
 
-    if ($desc["TITLE_BEFORE"]) 
-    {
-    ?>
+    if ($desc["TITLE_BEFORE"]) {
+?>
         <div class='title_before title_<?php echo $col_name; ?>'><?php echo $obj->tm($desc["TITLE_BEFORE"]) ?></div>
         <?php
     }
@@ -152,21 +144,17 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
     $input_disabled = $disabled = $desc["DISABLED"];
 
-    switch ($desc["TYPE"]) 
-    {
+    switch ($desc["TYPE"]) {
         case 'PK':
-            if ($val <= 0) 
-            {
+            if ($val <= 0) {
                 $descHid = array();
                 $type_input_ret = hidden_input($col_name, $descHid, $val, $obj);
                 break;
-            } 
-            else 
-            {
+            } else {
                 $type_input_ret = "text";
-            ?>
+        ?>
                 <input type="text" class="form-control form-pk" name="<?php echo $col_name ?>" value="<?php echo $val ?>" size=32 maxlength=255 readonly>
-                <?php
+    <?php
             }
             break;
         case 'FK':
@@ -182,199 +170,36 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             if ($force_css) $data_length_class = " " . $force_css;
             else $data_length_class = " " . $data_length_class_default_for_fk;
 
-            
-            $objRep  = new $nom_class_fk;
+            include("tpl/helper_edit_fk.php");
 
-            $list_count = AfwSession::config("$nom_class_fk::estimated_row_count", 0);
-
-            $auto_c = $desc["AUTOCOMPLETE"];
-
-            $LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
-            $auto_complete_default = ((!isset($desc["AUTOCOMPLETE"])) and ($list_count > $LIMIT_INPUT_SELECT));
-            if ((!$auto_c)  and (!$auto_complete_default)) 
-            {
-                // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj, true);
-                // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl", var_export($desc,true));
-                
-                $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
-                $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
-                //if(get_class($objRep)=="Module")    die("AfwLoadHelper::vhGetListe=>".var_export($l_rep,true));
-                //list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
-                // if($col_name=="data_auser_mfk") die("<b> => desc = ".var_export($desc,true));
-                // die("<b> => l_rep = ".var_export($l_rep,true)."</b><BR> liste_rep = ".var_export($liste_rep,true));
-                // $liste_rep_count = count($liste_rep);
-                $l_rep_count = count($l_rep);
-                if ($objme and $objme->isAdmin()) echo "<!-- for $col_name : $sql dropdowncount=$l_rep_count -->";
-
-                if ($placeholder != $col_title) {
-                    $empty_item = $placeholder;
-                } else {
-                    $empty_item = "";
-                }
-
-                $prop_sel =
-                    array(
-                        "class" => "form-control form-select",
-                        "name"  => $col_name,
-                        "id"  => $col_name,
-                        "tabindex" => $qedit_orderindex,
-                        "style" => $input_style,
-                        "empty_item" => $empty_item,
-                        "reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name),
-                        "onchange" => $onchange . AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
-                        "onchangefn" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name, $descr = "", false),
-                        "required" => $is_required,
-                        "disabled" => $disabled,
-                    );
-                    
-                if(!$desc["DEPENDENT_OFME"]) unset($prop_sel["onchangefn"]);
-
-                if ($obj->fixm_disable) 
-                {
-                    $descHid = array();
-                    if (!$obj->hideQeditCommonFields) $descHid["TITLE_AFTER"] = $l_rep[$val];
-                    $type_input_ret = hidden_input($col_name, $descHid, $val, $obj);
-                
-                } 
-                else 
-                {
-                    select(
-                        $l_rep,
-                        array($val),
-                        $prop_sel
-                    );
-                    $type_input_ret = "select";
-                }
-            } 
-            else 
-            {
-                $type_input_ret = "autocomplete";
-                $col_name_atc = $col_name . "_atc";
-                if (($val)) // and ((!$obj->fixm_disable) or (!$obj->fixmtit))) 
-                {
-                    $objRep->load($val);
-                    $val_display = $objRep->getDisplay($lang);
-                } else {
-                    $val_display = "";
-                }
-                //$clwhere = $desc["WHERE"];
-                $attp = $col_name;
-                $clp = $obj->getMyClass();
-                $idp = $obj->getId();
-                $modp = $obj->getMyModule();
-                $auto_c_create = $auto_c["CREATE"];
-                $atc_input_normal = $data_loaded_class . " inputlongmoyen";
-
-                if ($auto_c_create) {
-                    $class_icon = "new";
-                    $atc_input_modified_class = $data_loaded_class . $data_length_class . " new_record";
-                } else {
-                    $class_icon = "notfound";
-                    $atc_input_modified_class = $data_loaded_class . $data_length_class . " record_not_found";
-                }
-
-                if ($obj->fixm_disable) 
-                {
-                    $descHid = array();
-                    if (!$obj->hideQeditCommonFields) $descHid["TITLE_AFTER"] = "[$val_display]";
-                    $type_input_ret = hidden_input($col_name, $descHid, $val, $obj);
-                } 
-                else 
-                {
-                    $help_atc = $auto_c["HELP"];
-                    $depend = AfwJsEditHelper::getDependencyIdsArray($obj, $col_name, $desc);
-                    if(!$depend) $depend = "0";
-                ?>
-                    <div class='hzm_input_atc'>
-                        <table cellspacing='0' cellpadding='0' style="width:100%">
-                            <tr style="background-color: rgba(255, 255, 255, 0);">
-                            <?php
-                                if(!$placeholder) $placeholder = "اكتب بعض الكلمات للبحث";
-                            ?>
-                                <td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>" readonly></td>
-                              
-                                <td style="padding:0px;margin:0px;">
-                                    <input placeholder="<?php echo $placeholder ?>" type="text" id="<?php echo $col_name_atc ?>" name="<?php echo $col_name_atc ?>" class="form-control form-autoc" value="<?php echo $val_display ?>" <?php echo $input_required ?>>
-                                </td>
-                                <?
-                                if ($auto_c_create) {
-                                ?>
-                                    <th style="padding:0px;margin:0px;"><img src='../lib/images/create_new.png' data-toggle="tooltip" data-placement="top" title='لإضافة عنصر غير موجود في القائمة (بعد التثبت) انقر هنا ثم اكتب المسمى' onClick="empty_atc('<?php echo $col_name ?>');" style="width: 24px !important;height: 24px !important;" /></th>
-                                <?
-                                }
-                                ?>
-                                <td style="padding:0px;margin:0px;"><?php echo $help_atc ?></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <script>
-                        $(function() {
-                            $("#<?php echo $col_name_atc ?>").autocomplete({
-                                source: "../lib/api/autocomplete.php?cl=<?php echo $nom_class_fk ?>&currmod=<?php echo $nom_module_fk ?>&clp=<?php echo $clp ?>&idp=<?php echo $idp ?>&modp=<?php echo $modp ?>&attp=<?php echo $attp ?>&depend="+<?php echo $depend ?>,
-                                minLength: 0,
-
-                                change: function(event, ui) {
-                                    if ($("#<?php echo $col_name_atc ?>").val() == "") {
-                                        $("#<?php echo $col_name ?>").val("");
-                                    }
-                                    // $("#<?php echo $col_name_atc ?>").addClass('value_not_found');
-                                    // $("#<?php echo $col_name ?>").val("");
-                                    // $("#<?php echo $col_name ?>").attr('class', 'inputtrescourt cl_<?php echo $class_icon ?>_id');
-                                    // $("#<?php echo $col_name_atc ?>").attr('class', '<?php echo $atc_input_modified_class ?>');
-                                },
-
-
-                                select: function(event, ui) {
-                                    //alert(ui.item.id);
-                                    $("#<?php echo $col_name ?>").val(ui.item.id);
-                                    $("#<?php echo $col_name ?>").attr('class', 'inputtrescourt cl_id');
-                                    $("#<?php echo $col_name_atc ?>").attr('class', 'form-control form-autoc');
-                                    $("#<?php echo $col_name_atc ?>").addClass('input_changed');
-                                },
-
-                                html: true, // optional (jquery.ui.autocomplete.html.js required)
-
-                                // optional (if other layers overlap autocomplete list)
-                                open: function(event, ui) {
-                                    $(".ui-autocomplete").css("z-index", 1000);
-                                }
-                            });
-
-                        });
-                    </script>
-
-            <?php                    
-                }
-            }
             break;
         case 'MFK':
             $nom_table_fk   = $desc["ANSWER"];
             $nom_module_fk  = $desc["ANSMODULE"];
-            if (!$nom_module_fk) 
-            {
+            if (!$nom_module_fk) {
                 $nom_module_fk = AfwUrlManager::currentWebModule();
             }
             $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
-            
+
             $objRep  = new $nom_class_fk;
-            
+
             // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj);
             // list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
             // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl");            
             $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
-            $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+            $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action = "loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
             // if(get_class($objRep)=="Module")    die("AfwLoadHelper::vhGetListe=>".var_export($l_rep,true));
 
             $type_input_ret = "select";
 
             include("tpl/helper_edit_mfk.php");
-            
+
 
             break;
         case 'MENUM':
             $fcol_name = $desc["FUNCTION_COL_NAME"];
-            if(!$fcol_name) $fcol_name = $col_name;
-        
+            if (!$fcol_name) $fcol_name = $col_name;
+
             $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj);
             //echo "menum val $val with sep $separator : <br>";
             $val_arr = explode($separator, trim($val, $separator));
@@ -385,9 +210,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             $type_input_ret = "select";
 
             include("tpl/helper_edit_menum.php");
-            
+
             break;
-        /*case 'ANSWER': obsolete
+            /*case 'ANSWER': obsolete
             $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"]);
             if ($force_css) $data_length_class = " " . $force_css;
             else $data_length_class = " inputmoyen";
@@ -433,13 +258,13 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $objName = $obj->__toString();
                 $fieldAnsTab = $desc["ANSWER"];
                 $fcol_name = $desc["FUNCTION_COL_NAME"];
-                if(!$fcol_name) $fcol_name = $orig_col_name;
+                if (!$fcol_name) $fcol_name = $orig_col_name;
                 $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj);
                 $answer_case = "AfwLoadHelper::get EnumTable($fieldAnsTab, $objTableName, $fcol_name, obj:$objName)";
             }
             //if(!$liste_rep) 
             //throw new AfwRuntimeException("for col $orig_col_name enum liste_rep comes from $answer_case is null or empty  liste_rep = ".var_export($liste_rep,true));
-            
+
 
             // die("for enum col : $col_name, $answer_case, liste_rep = ".var_export($liste_rep,true));
 
@@ -452,8 +277,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
         case 'FLOAT':
         case 'AMNT':
             $fromListMethod = $desc["FROM_LIST"];
-            if($fromListMethod)
-            {
+            if ($fromListMethod) {
                 $fromList = $obj->$fromListMethod();
                 //echo "val=$val<br>";
                 select(
@@ -468,12 +292,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                     ),
                     ""
                 );
-            }
-            else
-            {
+            } else {
                 $input_type_html = "text";
-                if ($desc["TYPE"] == 'INT') 
-                {
+                if ($desc["TYPE"] == 'INT') {
                     $input_type_html = "number";
                     $input_options_html = "";
                     if ($desc["FORMAT"]) {
@@ -501,142 +322,126 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
                     $data_loaded_class = $class_js_computed;
                 }
-                include("tpl/helper_edit_numeric.php"); 
+                include("tpl/helper_edit_numeric.php");
             }
             break;
-            case 'TIME':
-                if ($desc["FORMAT"] == "CLOCK") 
-                {
-                    $valaff = $val;
-                    list($startHH, $increment, $endHH, $startNN, $endNN) = explode("/", $desc["ANSWER_LIST"]);
-                    if(!$startNN) $startNN = 0;
-                    if(!$endNN) $endNN = 0;
-                    $input_name = $col_name;
+        case 'TIME':
+            if ($desc["FORMAT"] == "CLOCK") {
+                $valaff = $val;
+                list($startHH, $increment, $endHH, $startNN, $endNN) = explode("/", $desc["ANSWER_LIST"]);
+                if (!$startNN) $startNN = 0;
+                if (!$endNN) $endNN = 0;
+                $input_name = $col_name;
 
-                    $minimum = AfwDateHelper::formatTimeHHNN($startHH, $startNN);
-                    $maximum = AfwDateHelper::formatTimeHHNN($endHH, $endNN);
-                    clock($col_name, $input_name, $valaff, $minimum, $maximum, $onchange, $input_style="", $increment, $is_required, $separator=':', $duration=false);
-                }
-                else
-                {
-                    if ($desc["FORMAT"] == "CLASS") 
-                    {
-                        $helpClass = $desc["ANSWER_CLASS"];
-                        $helpMethod = $desc["ANSWER_METHOD"];
-        
-                        $answer_list = $helpClass::$helpMethod();
-                    }
-                    elseif ($desc["FORMAT"] == 'OBJECT') {
-                        $helpMethod = $desc["ANSWER_METHOD"];
-                        $answer_list = $obj->$helpMethod();
-                    } 
-                    else
-                    {
-                        if ($desc["ANSWER_LIST"]) 
-                        {
-                            list($start, $increment, $end) = explode("/", $desc["ANSWER_LIST"]);
-                        }
-                        else 
-                        {
-                            $start = 6;
-                            $increment = 30;
-                            $end = 22;
-                        }
-        
-                        $answer_list = AfwDateHelper::getTimeArray($start, $increment, $end);
-                        
-                    }
-                    if (!$answer_list[$val]) $answer_list[$val] = $val;
-                    // die(var_export($answer_list,true));
-                    select(
-                        $answer_list,
-                        array($val),
-                        array(
-                            "class" => "form-control hzm_time",
-                            "name"  => $col_name,
-                            "id"  => $col_name,
-                            "tabindex" => $qedit_orderindex,
-                            "onchange" => $onchange,
-                            "style" => $input_style,
-                            "required" => $is_required,
-                        ),
-                        "asc"
-                    );
-                }
+                $minimum = AfwDateHelper::formatTimeHHNN($startHH, $startNN);
+                $maximum = AfwDateHelper::formatTimeHHNN($endHH, $endNN);
+                clock($col_name, $input_name, $valaff, $minimum, $maximum, $onchange, $input_style = "", $increment, $is_required, $separator = ':', $duration = false);
+            } else {
+                if ($desc["FORMAT"] == "CLASS") {
+                    $helpClass = $desc["ANSWER_CLASS"];
+                    $helpMethod = $desc["ANSWER_METHOD"];
 
-            
+                    $answer_list = $helpClass::$helpMethod();
+                } elseif ($desc["FORMAT"] == 'OBJECT') {
+                    $helpMethod = $desc["ANSWER_METHOD"];
+                    $answer_list = $obj->$helpMethod();
+                } else {
+                    if ($desc["ANSWER_LIST"]) {
+                        list($start, $increment, $end) = explode("/", $desc["ANSWER_LIST"]);
+                    } else {
+                        $start = 6;
+                        $increment = 30;
+                        $end = 22;
+                    }
+
+                    $answer_list = AfwDateHelper::getTimeArray($start, $increment, $end);
+                }
+                if (!$answer_list[$val]) $answer_list[$val] = $val;
+                // die(var_export($answer_list,true));
+                select(
+                    $answer_list,
+                    array($val),
+                    array(
+                        "class" => "form-control hzm_time",
+                        "name"  => $col_name,
+                        "id"  => $col_name,
+                        "tabindex" => $qedit_orderindex,
+                        "onchange" => $onchange,
+                        "style" => $input_style,
+                        "required" => $is_required,
+                    ),
+                    "asc"
+                );
+            }
+
+
             break;
 
         case 'TEXT':
-                $utf8 = $desc["UTF8"];
-                $fromListMethod = $desc["FROM_LIST"];
-                $dir = $desc["DIR"];
-                if (!$dir) ($lang != "ar") ? $dir = "ltr" : $dir = "rtl";
-                if ($dir == "auto") $dir = ($utf8 ? "rtl" : "ltr");
-                if ($desc["INPUT-FORMATTING"] == "addslashes") $val = addslashes($val);
-                $css_class = $desc["CSS"];
-                if ((isset($desc["SIZE"])) && (($desc["SIZE"] == "AREA") or ($desc["SIZE"] == "AEREA"))) 
-                {
-                    $rows = $desc["ROWS"];
-                    if (!$rows) $rows = 4;
-                    $cols = $desc["COLS"];
-                    if (!$cols) $cols = 43;
-                    $type_input_ret = "text";
-                    if ((!$desc["MANDATORY"]) and (!$desc["REQUIRED"])) {
-                        $desc["MIN-SIZE"] = 0;
-                    }
-    
-                    if ($desc["MIN-SIZE"] == 1) $desc["MIN-SIZE"] = 0;
-    
-                    if (!$desc["PLACEHOLDER-NO-CHANGE"]) {
-                        if (($desc["MIN-SIZE"]) and ($desc["MAXLENGTH"])) {
-                            if ($placeholder) $placeholder .= " : ";
-                            $placeholder .= "عدد الكلمات  بين " . $desc["MIN-SIZE"] . " و " . $desc["MAXLENGTH"] . " كلمة";
-                        } elseif ($desc["MIN-SIZE"]) {
-                            if ($placeholder) $placeholder .= " : ";
-                            $placeholder .= "عدد الكلمات  الأدنى " . $desc["MIN-SIZE"] . " كلمة";
-                        } elseif ($desc["MAXLENGTH"]) {
-                            if ($placeholder) $placeholder .= " : ";
-                            $placeholder .= "عدد الكلمات  الأقصى " . $desc["MAXLENGTH"] . " كلمة";
-                        }
-                    }
-                    include("tpl/helper_edit_textarea.php");
+            $utf8 = $desc["UTF8"];
+            $fromListMethod = $desc["FROM_LIST"];
+            $dir = $desc["DIR"];
+            if (!$dir) ($lang != "ar") ? $dir = "ltr" : $dir = "rtl";
+            if ($dir == "auto") $dir = ($utf8 ? "rtl" : "ltr");
+            if ($desc["INPUT-FORMATTING"] == "addslashes") $val = addslashes($val);
+            $css_class = $desc["CSS"];
+            if ((isset($desc["SIZE"])) && (($desc["SIZE"] == "AREA") or ($desc["SIZE"] == "AEREA"))) {
+                $rows = $desc["ROWS"];
+                if (!$rows) $rows = 4;
+                $cols = $desc["COLS"];
+                if (!$cols) $cols = 43;
+                $type_input_ret = "text";
+                if ((!$desc["MANDATORY"]) and (!$desc["REQUIRED"])) {
+                    $desc["MIN-SIZE"] = 0;
                 }
-                elseif($fromListMethod)
-                {
-                    $fromList = $obj->$fromListMethod();
-                    //echo "val=$val<br>";
-                    select(
-                        $fromList,
-                        array(trim($val)),
-                        array(
-                            "class" => "form-control form-select",
-                            "name"  => $col_name,
-                            "id"  => $col_name,
-                            "tabindex" => $qedit_orderindex,
-                            "onchange" => $onchange,
-                        ),
-                        "asc"
-                    );
-                } 
-                else 
-                {
-                    $maxlength = $desc["MAXLENGTH"];
-                    $fld_size = $desc["SIZE"];
-    
-                    if ($desc["INPUT-FORMATTING"] == "value-1-cote") $val_sentence = "value='$val'";
-                    else $val_sentence = "value=\"$val\"";
-    
-                    if (($force_css) and (!$desc["WIDTH-FROM-SIZE"])) $data_length_class = " " . $force_css;
-                    else if (isset($desc["SIZE"]) && $desc["SIZE"] <= 16)  $data_length_class = " inputcourt";
-                    else if (isset($desc["SIZE"]) && $desc["SIZE"] <= 41)  $data_length_class = " inputmoyen";
-                    else if (isset($desc["SIZE"]) && $desc["SIZE"] <= 84)  $data_length_class = " inputlong";
-                    else if (isset($desc["SIZE"]) && $desc["SIZE"] < 255)  $data_length_class = " inputtreslong";
-                    else $data_length_class = " inputultralong";
-                    $type_input_ret = "text";
-                    include("tpl/helper_edit_text.php");            
+
+                if ($desc["MIN-SIZE"] == 1) $desc["MIN-SIZE"] = 0;
+
+                if (!$desc["PLACEHOLDER-NO-CHANGE"]) {
+                    if (($desc["MIN-SIZE"]) and ($desc["MAXLENGTH"])) {
+                        if ($placeholder) $placeholder .= " : ";
+                        $placeholder .= "عدد الكلمات  بين " . $desc["MIN-SIZE"] . " و " . $desc["MAXLENGTH"] . " كلمة";
+                    } elseif ($desc["MIN-SIZE"]) {
+                        if ($placeholder) $placeholder .= " : ";
+                        $placeholder .= "عدد الكلمات  الأدنى " . $desc["MIN-SIZE"] . " كلمة";
+                    } elseif ($desc["MAXLENGTH"]) {
+                        if ($placeholder) $placeholder .= " : ";
+                        $placeholder .= "عدد الكلمات  الأقصى " . $desc["MAXLENGTH"] . " كلمة";
+                    }
                 }
-                break;
+                include("tpl/helper_edit_textarea.php");
+            } elseif ($fromListMethod) {
+                $fromList = $obj->$fromListMethod();
+                //echo "val=$val<br>";
+                select(
+                    $fromList,
+                    array(trim($val)),
+                    array(
+                        "class" => "form-control form-select",
+                        "name"  => $col_name,
+                        "id"  => $col_name,
+                        "tabindex" => $qedit_orderindex,
+                        "onchange" => $onchange,
+                    ),
+                    "asc"
+                );
+            } else {
+                $maxlength = $desc["MAXLENGTH"];
+                $fld_size = $desc["SIZE"];
+
+                if ($desc["INPUT-FORMATTING"] == "value-1-cote") $val_sentence = "value='$val'";
+                else $val_sentence = "value=\"$val\"";
+
+                if (($force_css) and (!$desc["WIDTH-FROM-SIZE"])) $data_length_class = " " . $force_css;
+                else if (isset($desc["SIZE"]) && $desc["SIZE"] <= 16)  $data_length_class = " inputcourt";
+                else if (isset($desc["SIZE"]) && $desc["SIZE"] <= 41)  $data_length_class = " inputmoyen";
+                else if (isset($desc["SIZE"]) && $desc["SIZE"] <= 84)  $data_length_class = " inputlong";
+                else if (isset($desc["SIZE"]) && $desc["SIZE"] < 255)  $data_length_class = " inputtreslong";
+                else $data_length_class = " inputultralong";
+                $type_input_ret = "text";
+                include("tpl/helper_edit_text.php");
+            }
+            break;
 
         case 'YN':
 
@@ -687,11 +492,10 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             list($val,) = explode(" ", $val);
 
             // default defined or today
-            
-            if (!$val) 
-            {
-                if(trim(strtolower($desc["DEFAULT"])) == "today") $val = date("Y-m-d");
-                if($desc["DEFAULT"]) $val = $desc["DEFAULT"];
+
+            if (!$val) {
+                if (trim(strtolower($desc["DEFAULT"])) == "today") $val = date("Y-m-d");
+                if ($desc["DEFAULT"]) $val = $desc["DEFAULT"];
             }
 
             $val_GDAT = AfwDateHelper::inputFormatDate($val);;
@@ -714,66 +518,54 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
     return $type_input_ret;
 }
 
-function clock($col_name, $input_name, $valaff, $minimum, $maximum, $onchange, $input_style="", $precision=10, $required=false, $separator=':', $duration=false, $durationNegative=true)
+function clock($col_name, $input_name, $valaff, $minimum, $maximum, $onchange, $input_style = "", $precision = 10, $required = false, $separator = ':', $duration = false, $durationNegative = true)
 {
-    if($required)
-    {
-        $required = 'true';  
+    if ($required) {
+        $required = 'true';
         $input_required = "required";
-    } 
-    else
-    {
-        $required = 'false';  
+    } else {
+        $required = 'false';
         $input_required = "";
     }
 
-    if($duration)
-    {
-        $duration = 'true';  
-    } 
-    else
-    {
-        $duration = 'false';  
+    if ($duration) {
+        $duration = 'true';
+    } else {
+        $duration = 'false';
     }
 
-    if($durationNegative)
-    {
-        $durationNegative = 'true';  
-    } 
-    else
-    {
-        $durationNegative = 'false';  
+    if ($durationNegative) {
+        $durationNegative = 'true';
+    } else {
+        $durationNegative = 'false';
     }
     ?>
-        <input type="text" id="<?php echo $input_name ?>" name="<?php echo $col_name ?>" value="<?php echo $valaff ?>" class="form-control form-time <?php echo $input_name ?>" onchange="<?php echo $onchange ?>" <?php echo $input_style ?> <?php echo $input_required ?>>
-        <script>
-            $(document).ready(function(){
-                $("#<?php echo $input_name ?>").clockTimePicker({
-                    required:<?php echo $required?>,
-                    separator:'<?php echo $separator?>',
-                    precision:<?php echo $precision?>,
-                    duration:<?php echo $duration?>, 
-                    minimum:'<?php echo $minimum?>', 
-                    maximum:'<?php echo $maximum?>',
-                    durationNegative:<?php echo $durationNegative?>
-                });
+    <input type="text" id="<?php echo $input_name ?>" name="<?php echo $col_name ?>" value="<?php echo $valaff ?>" class="form-control form-time <?php echo $input_name ?>" onchange="<?php echo $onchange ?>" <?php echo $input_style ?> <?php echo $input_required ?>>
+    <script>
+        $(document).ready(function() {
+            $("#<?php echo $input_name ?>").clockTimePicker({
+                required: <?php echo $required ?>,
+                separator: '<?php echo $separator ?>',
+                precision: <?php echo $precision ?>,
+                duration: <?php echo $duration ?>,
+                minimum: '<?php echo $minimum ?>',
+                maximum: '<?php echo $maximum ?>',
+                durationNegative: <?php echo $durationNegative ?>
             });
-        </script>
-    <?
+        });
+    </script>
+<?
 }
 
 function mobiselector($list_id_val, $selected = array(), $info = array())
 {
     global $lang;
 
-    if (count($list_id_val) > 7) 
-    {
+    if (count($list_id_val) > 7) {
         $info["enableFiltering"] = true;
         $info["numberDisplayed"] = 3;
         $info["filterPlaceholder"] = "اكتب كلمة للبحث";
-    }
-    else
-    {
+    } else {
         $info["enableFiltering"] = false;
         $info["filterPlaceholder"] = "اختيار";
     }
@@ -782,61 +574,57 @@ function mobiselector($list_id_val, $selected = array(), $info = array())
 ?>
 
 
-<script>
+    <script>
+        mobiscroll.setOptions({
+            locale: mobiscroll.localeAr,
+            theme: 'ios',
+            themeVariant: 'light'
+        });
 
-mobiscroll.setOptions({
-  locale: mobiscroll.localeAr,
-  theme: 'ios',
-  themeVariant: 'light'
-});
+        $(function() {
+            $('#<?php echo $info["id"] ?>')
+                .mobiscroll()
+                .select({
+                    inputElement: document.getElementById('<?php echo $info["id"] ?>-input'),
+                    filter: <?php echo $info["enableFiltering"] ? "true" : "false" ?>,
+                });
+        });
+    </script>
 
-$(function () {
-  $('#<?php echo $info["id"] ?>')
-    .mobiscroll()
-    .select({
-      inputElement: document.getElementById('<?php echo $info["id"] ?>-input'),
-      filter: <?php echo $info["enableFiltering"] ? "true" : "false" ?>,
-    });
-});
-</script>  
-
-<label>
-    <input mbsc-input id="<?php echo $info["id"] ?>-input" placeholder="<?php echo $info["filterPlaceholder"] ?>" data-dropdown="true" data-input-style="outline" data-label-style="stacked" data-tags="true" />
-</label>
+    <label>
+        <input mbsc-input id="<?php echo $info["id"] ?>-input" placeholder="<?php echo $info["filterPlaceholder"] ?>" data-dropdown="true" data-input-style="outline" data-label-style="stacked" data-tags="true" />
+    </label>
     <script>
         <?php
-        if($info["reloadfn"])
-        {
-            echo "// reload function for attribute : ".$info["name"]."\n";
+        if ($info["reloadfn"]) {
+            echo "// reload function for attribute : " . $info["name"] . "\n";
             echo $info["reloadfn"] . "\n\n";
         }
         ?>
     </script>
-    <select class="<?php echo $info["class"] ?>" 
-            name="<?php echo $info["name"] ?>" 
-            id="<?php echo $info["id"] ?>" 
-            tabindex="<?php echo $info["tabindex"] ?>" 
-            onchange="<?php echo $info["onchange"] ?>" 
-            <?php echo $multi ?> 
-            <?php echo $info["style"] ?> 
-            <?php if ($info["required"]) echo "required" ?>
-        >
-<?php 
-        
-        $data_content = "";
-        
+    <select class="<?php echo $info["class"] ?>"
+        name="<?php echo $info["name"] ?>"
+        id="<?php echo $info["id"] ?>"
+        tabindex="<?php echo $info["tabindex"] ?>"
+        onchange="<?php echo $info["onchange"] ?>"
+        <?php echo $multi ?>
+        <?php echo $info["style"] ?>
+        <?php if ($info["required"]) echo "required" ?>>
+        <?php
 
-        foreach ($list_id_val as $id => $val) 
-        {
+        $data_content = "";
+
+
+        foreach ($list_id_val as $id => $val) {
             if ($info["bsel_css"]) {
                 $opt_css = $info["bsel_css"][$id];
                 $data_content = "data-content=\"<span class='$opt_css'>$val</span>\"";
             }
-?> 
-    <option value="<?php echo $id ?>" <?php echo (in_array($id, $selected)) ? " selected" : ""; ?> <?php echo $data_content ?>><?php echo $val ?></option>
-<?php   
-        } 
-?>
+        ?>
+            <option value="<?php echo $id ?>" <?php echo (in_array($id, $selected)) ? " selected" : ""; ?> <?php echo $data_content ?>><?php echo $val ?></option>
+        <?php
+        }
+        ?>
     </select>
 <?php
 
@@ -873,73 +661,63 @@ function select($list_id_val, $selected = array(), $info = array(), $sort_order 
 
     if (!$info["empty_item"]) $info["empty_item"] = "&nbsp;";
 
-    ?>
+?>
 
     <script>
         <?php
-        if($info["reloadfn"])
-        {
-            echo "// reload function for attribute : ".$info["name"]."\n";
+        if ($info["reloadfn"]) {
+            echo "// reload function for attribute : " . $info["name"] . "\n";
             echo $info["reloadfn"] . "\n\n";
         }
-        
+
         // rafik @todo check why I put this below I now disabled it
         // disabled :
         echo $info["onchangefn"] . "\n\n";
         $on_change_standard = $info["name"] . "_onchange()";
         if (!$info["onchange"]) $info["onchange"] = "";
-        else 
-        {
+        else {
             $info["onchange"] = trim($info["onchange"]);
             $info["onchange"] = trim($info["onchange"], ";");
         }
-        if(!AfwStringHelper::stringContain($info["onchange"], $on_change_standard))
-        {
-            $info["onchange"] .= ";".$on_change_standard;
+        if (!AfwStringHelper::stringContain($info["onchange"], $on_change_standard)) {
+            $info["onchange"] .= ";" . $on_change_standard;
         }
-        
+
         ?>
     </script>
 
     <select class="<?php echo $info["class"] ?>" name="<?php echo $info["name"] ?>" id="<?php echo $info["id"] ?>" tabindex="<?php echo $info["tabindex"] ?>" onchange="<?php echo $info["onchange"] ?>" <?php echo $multi ?> size=<?php echo $size ?> <?php echo $info["style"] ?> <?php if ($info["disable"] or $info["disabled"]) echo "disabled" ?> <?php if ($info["required"]) echo "required" ?>>
-        <?php 
-        if ($null_val) 
-        {
-            if ($info["required"]) 
-            {
-        ?> 
-        <option></option>
         <?php
-            } 
-            else 
-            {
+        if ($null_val) {
+            if ($info["required"]) {
         ?>
+                <option></option>
+            <?php
+            } else {
+            ?>
                 <option value="0" <?php echo (in_array(0, $selected)) ? " selected" : ""; ?>><?php echo $info["empty_item"] ?></option>
-        <?php
+            <?php
             }
         }
         $data_content = "";
-        if (count($list_id_val) > 7) 
-        {
+        if (count($list_id_val) > 7) {
             $info["enableFiltering"] = true;
             $info["numberDisplayed"] = 3;
             $info["filterPlaceholder"] = "اكتب كلمة للبحث";
         }
 
-        foreach ($list_id_val as $id => $val) 
-        {
+        foreach ($list_id_val as $id => $val) {
             if ($info["bsel_css"]) {
                 $opt_css = $info["bsel_css"][$id];
                 $data_content = "data-content=\"<span class='$opt_css'>$val</span>\"";
             }
             ?> <option value="<?php echo $id ?>" <?php echo (in_array($id, $selected)) ? " selected" : ""; ?> <?php echo $data_content ?>><?php echo $val ?></option>
-        <?php   
-        } 
+        <?php
+        }
         ?>
     </select>
     <?
-    if ($multi) 
-    {
+    if ($multi) {
     ?>
         <!-- Initialize the plugin: -->
         <script type="text/javascript">
@@ -973,7 +751,281 @@ function select($list_id_val, $selected = array(), $info = array(), $sort_order 
 <?php
 }
 
+function attributeEditDiv($obj, $col, $desc, $fgroup, $lang, $openedInGroupDiv, $info=null, $colErrors=[], $step_show_error=false)
+{
+    $idObj = $obj->getId();
+    if (($col == "id") and (!$idObj)) $class_empty_object = "empty-obj";
+    else $class_empty_object = "";
 
+    if(!$info) $info = prepareEditInfoForColumn($obj, $col, $desc, $lang);
+
+    $htmlDiv = "";
+    $colspan = "";
+    $css_class = "";
+    $no_fgroup = $desc["NO-FGROUP"];
+    $new_fgroup = $desc["FGROUP"];
+    $noheader_fgroup = $desc["FGROUP_NOHEADER"];
+    $fgroup_behavior = $desc["FGROUP_BEHAVIOR"];
+    if (!$new_fgroup) $new_fgroup = "default_fg";
+    if ((!$no_fgroup) and ($new_fgroup) and ($fgroup != $new_fgroup)) {
+        //if($new_fgroup=="prices_report") die("$fgroup != $new_fgroup : obj::DB_STRUCTURE[$col][FGROUP_BEHAVIOR] = $fgroup_behavior,  data = ".var_export($data,true));
+        $fgroup = $new_fgroup;
+        if ($fgroup_behavior) {
+            if ($fgroup_behavior == "collapsed") {
+                $collapse_status = "collapse";
+                $collapsed_status = "expand collapsed";
+            } else {
+                $collapse_status = "collapse in";
+                $collapsed_status = "expand";
+            }
+            $fgroup_toggle_html = " data-toggle='collapse' data-target='#group_$fgroup'";
+            $fgroup_expanded_area = " aria-expanded='true'";
+        } else {
+            $collapse_status = "";
+            $collapsed_status = "expanded_fixed";
+            $fgroup_toggle_html = "";
+            $fgroup_expanded_area = "";
+        }
+
+        $fgroupInfos = $obj->getFieldGroupInfos($fgroup);
+        $fgroupcss = $fgroupInfos["css"];
+        $new_fgroup_tr = $obj->getAttributeLabel($new_fgroup, $lang);
+        // close previous in-group div
+        if ($openedInGroupDiv) {
+            $htmlDiv .= "</div>";  // internal_group_div_close
+            $htmlDiv .= "</div>";
+            $openedInGroupDiv = false;
+        }
+        // echo "\n<tr><th class='fgroup_header' colspan='4'>$new_fgroup_tr</th></tr>\n";
+        if ($noheader_fgroup) {
+            $header_of_fgroup = "";
+        } else {
+            $header_of_fgroup = "<div class='$collapsed_status' $fgroup_toggle_html><h5 class='greentitle $new_fgroup'><i></i>$new_fgroup_tr</h5></div>";
+        }
+
+        $htmlDiv .= "\n<div class='in-group-$new_fgroup cssgroup_$fgroupcss' >$header_of_fgroup  \n";
+        $internal_new_group_div_open = "<div id='group_$fgroup' class='$collapse_status' aria-expanded='true' style=''>\n";
+        $openedInGroupDiv = true;
+    } else {
+        $internal_new_group_div_open = "";
+    }
+    $css_custom = $desc['CSS'];
+    if (!$css_custom) {
+        if ($desc["CATEGORY"] == "ITEMS")  $css_custom = "width_pct_100";
+        elseif ($desc["TYPE"] == "MFK")  $css_custom = "width_pct_100";
+        elseif ($desc["SIZE"] == "AREA")  $css_custom = "width_pct_100";
+        elseif ($desc["TYPE"] == "DATE")  $css_custom = "width_pct_50";
+        elseif ($desc["TYPE"] == "GDAT")  $css_custom = "width_pct_50";
+        elseif ($desc["SIZE"] < 33)  $css_custom = "width_pct_25";
+        elseif ($desc["SIZE"] < 43)  $css_custom = "width_pct_33";
+        elseif ($desc["SIZE"] < 67)  $css_custom = "width_pct_50";
+        elseif ($desc["SIZE"] < 85)  $css_custom = "width_pct_66";
+        elseif ($desc["SIZE"] < 101)  $css_custom = "width_pct_75";
+        else $css_custom = "";
+    }
+    $htmlDiv .= $internal_new_group_div_open;
+    $htmlDiv .= "<!-- fg-$col start -->";
+    $htmlDiv .= '<div id="fg-' . $col . '" class="attrib-' . $col . ' form-group ' . $css_custom . ' ' . $class_empty_object . '">';
+    // if ($tr_obj == $class_tr2) $tr_obj = $class_tr1;
+    // else $tr_obj = $class_tr2;
+
+
+    if ($desc["CSS-DISPLAY"]) {
+        $css_class = " class='" . $desc["CSS-DISPLAY"] . "'";
+    }
+
+    if ($desc["CATEGORY"] == "ITEMS") {
+        //if(!$newTr) echo "<th></th><td></td></tr>";
+        $colspan = "colspan='3'";
+        $newTr = true;
+    }
+    if ($desc["COLSPAN"]) {
+        $colspan = "colspan='" . $desc["COLSPAN"] . "'";
+    }
+
+    //if((!$firstTr) and (($desc["NEW-TR"]) or $newTr)) echo "</tr>";
+
+    if ($newTr) {
+        $firstTr = false;
+        if ($desc["CATEGORY"] == "ITEMS")
+            $newTr = true;
+        else
+            $newTr = false;
+    } else {
+        $newTr = true;
+    }
+    $newTr = true;
+    if ($desc["OTHER-LINKS-TOP"] or (!$desc["OTHER-LINKS-BOTTOM"])) {
+        $htmlDiv .= "<!-- other links top -->\n" . $info["btns"];
+    }
+    if (!$desc["NO-LABEL"]) {
+
+        if ($info["trad"]) {
+            $class_label0 = "hzm_label hzm_label_$col";
+            if ($desc["REQUIRED"]) $class_label = "class='$class_label0 label_required'";
+            elseif ($desc["MANDATORY"]) $class_label = "class='$class_label0 label_mandatory'";
+            else $class_label = "class='$class_label0'";
+
+
+            if ($info["warning"])  echo '<br><div class="ewarning">' . $info["warning"] . '</div>';
+            $htmlDiv .= "<label for='$col' $class_label>" . $info["trad"] . " : \n";
+            //if($info["unit"])  echo "<div class='hunit'>".$info["unit"]."</div>";
+            //if($info["tooltip"])  echo '<img data-toggle="tooltip" data-placement="top" title="'.$info["tooltip"].'" src="../lib/images/tooltip.png" />';
+            if ($info["help"])  echo '<span class="hspan">' . $info["help"] . '</span>';
+            $htmlDiv .= "</label>\n";
+
+            /* old code before change 004
+                                                        echo "<label for='$col' $class_label>".$info["trad"]."\n";
+                                                        if($info["tooltip"])  echo '<img data-toggle="tooltip" data-placement="top" title="'.$info["tooltip"].'" src="../lib/images/tooltip.png" />';
+                                                        if($info["unit"])  echo " (الوحدة = ".$info["unit"]." )";
+                                                        if($info["help"])  echo '<br><span class="hspan">'.$info["help"].'</span>';
+                                                        echo " : </label>\n";
+                                                        */
+        }
+        $br = false;
+        if ($info["hint"]) {
+            if (!$br) $htmlDiv .= "<br>";
+            $br = true;
+            $htmlDiv .= "<div class='hint_0'>" . $info["hint"] . "</div>"; //
+        }
+    }
+
+
+    $br_if_needed = "";
+
+    if ($info["error"] and $desc["ERROR-SHOW"]) $htmlDiv .="$br_if_needed<div id='attr_error_$col' class='error' for='$col'>" . $info["error"] . "</div>"; //
+
+    if ($info["unit"] or $info["tooltip"] or $info["error"]) {
+        $css_input_width_pct = 100;
+        if ($info["tooltip"] or $info["error"]) $css_input_width_pct -= 10;
+
+
+        if ($info["unit"]) $css_input_width_pct -= 20;
+        $css_form_control_div_special = "";
+        if ($desc["ROWS"]) {
+            $rows = $desc["ROWS"];
+            if ($rows > 9) $rows = 9;
+            if ($rows < 1) $rows = 1;
+
+            $css_form_control_div_special .= " rows$rows";
+        }
+
+        $css_unit_tooltip_active = "class_input_width_$css_input_width_pct";
+        if ($info["error"]) {
+            $errors_in_data = "errors";
+            $htmlDiv .="<!-- $col >> err " . str_replace("-->", "", $info["error"]) . " -->";
+        } else $errors_in_data = "";
+        $col_type = $info["type"];
+        $htmlDiv .="<div class=\"form-control-div $col_type hzm_control_div_$col $errors_in_data $css_unit_tooltip_active $css_form_control_div_special\">";
+        if ($info["tooltip"] or $info["error"]) {
+            if ($info["error"] and (!$desc["ERROR-HIDE"])) {
+                $htmlDiv .="<div id='attr_error_$col' class=\"hzm_tooltip hzm_tooltip_error\"><img data-toggle=\"tooltip-error\" data-placement=\"left\" class=\"hzm_tt\" style=\"width: 24px;height: 24px;margin-top: -8px;\" title=\"" . $info["error"] . "\" src=\"../lib/images/error.png\" /></div>" . $info["error"];
+            } elseif ($info["tooltip"]) $htmlDiv .="<div class=\"hzm_tooltip\"><img data-toggle=\"tooltip\" data-placement=\"left\" class=\"hzm_tt\" title=\"" . $info["tooltip"] . "\" src=\"../lib/images/information.png\" /></div>";
+        }
+
+
+
+        $htmlDiv .=$info["input"];
+        if ($info["unit"] and (!$info["no-hzm-unit"])) $htmlDiv .="<div class=\"hzm_unit\">" . $info["unit"] . "</div>";
+        $htmlDiv .="</div>";
+    } else $htmlDiv .= $info["input"];
+    // if($info["tooltip"])  $htmlDiv .='<a href="#" data-toggle="tooltip" data-placement="top" title="'.$info["tooltip"].'">';
+    // if($info["tooltip"])  $htmlDiv .='</a>';
+
+    //$htmlDiv .="BTN-BTN-BTN-BTN-BTN-BTN-BTN-BTN-";
+    if ($desc["OTHER-LINKS-BOTTOM"]) {
+        $htmlDiv .="<!-- other links bottom -->\n" . $info["btns"];
+    }
+
+    if ($info["title_after"]) {
+        if (!$br) $htmlDiv .="$br_if_needed";
+        $br = true;
+        $htmlDiv .="<div class='etitle_after'>" . $info["title_after"] . "</div>"; // 
+    }
+    if ($info["ehelp"])  $htmlDiv .="$br_if_needed<div class='ehelp'>" . $info["ehelp"] . "</div>"; //
+
+
+
+    $htmlDiv .= "</div><!-- fg-$col end -->";
+
+    return [$htmlDiv, $openedInGroupDiv, $fgroup];
+}
+
+
+
+function prepareEditInfoForColumn($obj, $nom_col, $desc, $lang, $colErrors=[], $step_show_error=false)
+{
+    $id = $obj->id;
+    $separator = $obj->getSeparatorFor($nom_col);
+    $col_val = $obj->getVal($nom_col);
+    //if($nom_col=="response_templates") die("case not mode_field_read_only nom_col = $nom_col, value = $col_val ");
+    $all_form_readonly = false;
+
+    if (($desc['TYPE'] == 'PK') && empty($col_val)) {
+        $data_col["trad"]  = "";
+    } else {
+        $data_col["trad"]  = $obj->getAttributeLabel($nom_col, $lang);
+        //$data_col["trad"] .= " : ";
+    }
+    // no need with bootstrap
+    /*if($desc['TYPE'] == 'MFK') $data_col["trad"] .= "<div class='hint_0'>للإختيار المتعدد اضغط زر 'Ctrl' مع الضغط على الزر الأيسر للفأرة</div>";
+                                else*/
+    $data_loaded = true;
+
+    ob_start();
+    if (($desc['TYPE'] == 'PK') && empty($col_val)) {
+        $data_loaded = false;
+        type_input($nom_col, $desc, $id, $obj, $separator, $data_loaded);
+    } else {
+        type_input($nom_col, $desc, $col_val, $obj, $separator, $data_loaded, "inputlong", 0, "inputlong");
+    }
+    $desc_export = var_export($desc, true);
+    if (AfwSession::config('MODE_DEVELOPMENT', false)) {
+        $data_col["input"] = "<!-- start of input for attrib $nom_col : [$col_val] = obj->val($nom_col) desc=$desc_export-->";
+    }
+    $data_col["input"] .= ob_get_clean();
+    $data_col["input"] .= "<!-- end of input for attrib $nom_col -->";
+    $data_col["type"] = $desc["TYPE"];
+    $col_help = $nom_col . "_help";
+    $val_help = $obj->translate($col_help, $lang);
+    if ($val_help != $col_help) $data_col["help"]     = $val_help;
+
+    $data_col["ehelp"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "EHELP", $lang, $desc));
+    $data_col["hint"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "HINT", $lang, $desc));
+    $data_col["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "TOOLTIP", $lang, $desc));
+    if (!$data_col["tooltip"]) {
+        $tltp = $obj->getAttributeTooltip($nom_col, $lang);
+        if ($tltp) $data_col["tooltip"] = $tltp;
+    }
+
+    $data_col["unit"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "UNIT", $lang, $desc));
+    $data_col["no-hzm-unit"]  = $desc["NO-HZM-UNIT"];
+    if ($data_col["unit_explain"]) $data_col["unit"]  = "الوحدة = " . $data_col["unit"];
+
+    $data_col["title_after"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "TITLE_AFTER", $lang, $desc));
+
+    //if($nom_col=="picture_height") die("data[$nom_col][unit] = ".$data_col["unit"]);
+
+    if ($desc['TYPE'] == 'MFK') {
+        if ($desc['FORMAT'] == 'dropdown') {
+            $data_col["tooltip"] .= $obj->translateMessage("MULTI CHOICE ALLOWED") . ".\n";
+            $data_col["tooltip"] .= $obj->translateMessage("CURRENT CHOICES") . " : \n";
+            $data_col["tooltip"] .= str_replace('<br>', " / ", $obj->showAttribute($nom_col));
+        } else {
+            unset($data_col["tooltip"]);
+        }
+    }
+    //if($nom_col=="booking_comment") die("step_show_error=$step_show_error , obj_errors[$nom_col]=".$colErrors);
+    if ($colErrors and $step_show_error) {
+        $data_col["error"] = $colErrors;
+        //if($nom_col=="booking_comment") die("obj_errors = ".var_export($obj_errors,true));
+    } 
+    /*elseif ($obj_errors) {
+        //die("obj_errors = ".var_export($obj_errors,true));
+    }*/
+
+    return $data_col;
+}
 
 function subval_sort($table_a_trie, $table_ref, $ord = "desc")
 {
