@@ -6058,6 +6058,7 @@ div.afwerr table.trace {
 table.trace tr>td {
     padding-top: 9px !important;
     border-bottom: 1px #00000047 solid;
+    line-height: 36px;
 }
 
 table.trace tr {

@@ -202,13 +202,13 @@ class AfwShowHelper
                         if ($desc == 'AAA') {
                             // $tuple["description"] = $liste_obj[$id]->__toString();
                         } elseif ($col == 'DISPLAY') {
-                            $tuple[AfwLanguageHelper::translateKeyword("DISPLAY")] = "<a $target href='main.php?Main_Page=afw_mode_display.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='../lib/images/view_ok.png' width='24' heigth='24'></a>";
+                            $tuple[AfwLanguageHelper::translateKeyword("DISPLAY", $lang)] = "<a $target href='main.php?Main_Page=afw_mode_display.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='../lib/images/view_ok.png' width='24' heigth='24'></a>";
                         } elseif ($col == 'EDIT') {
                             $edit_button_path = $images['modifier'];
-                            $tuple[AfwLanguageHelper::translateKeyword("EDIT")] = "<a target=\"_new\" href='main.php?Main_Page=afw_mode_edit.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='$edit_button_path' width='24' heigth='24'></a>";
+                            $tuple[AfwLanguageHelper::translateKeyword("EDIT", $lang)] = "<a target=\"_new\" href='main.php?Main_Page=afw_mode_edit.php&popup=&cl=$obj_class&currmod=$obj_currmod&id=$id&currstep=$currstep' ><img src='$edit_button_path' width='24' heigth='24'></a>";
                         } elseif ($col == 'ATTACH') {
                             $attach_url = $liste_obj[$id]->getAttachUrl();
-                            $tuple[AfwLanguageHelper::translateKeyword("ATTACH")] = "<a target=\"_new\" href='$attach_url' ><img src='../lib/images/attach.png' width='24' heigth='24'></a>";
+                            $tuple[AfwLanguageHelper::translateKeyword("ATTACH", $lang)] = "<a target=\"_new\" href='$attach_url' ><img src='../lib/images/attach.png' width='24' heigth='24'></a>";
                         } elseif ($col == 'DELETE') {
                             $val_id = $liste_obj[$id]->getId();
                             $val_class = $liste_obj[$id]->getMyClass();
@@ -223,7 +223,7 @@ class AfwShowHelper
                                 $delete_button_path = $images['delete'];
 
                                 // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
-                                $tuple[AfwLanguageHelper::translateKeyword("DELETE")] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' div_to_del='${obj_table}${id}_minibox_container' class='trash manyminiboxes'><img src='$delete_button_path' style='height: 22px !important;'></a>";
+                                $tuple[AfwLanguageHelper::translateKeyword("DELETE", $lang)] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' div_to_del='${obj_table}${id}_minibox_container' class='trash manyminiboxes'><img src='$delete_button_path' style='height: 22px !important;'></a>";
                                 $tuple['del_status'] = 'OK';
                             } else {
                                 if ($userCanDel == -1) {
@@ -712,13 +712,16 @@ class AfwShowHelper
         if (!$mode_force_cols) {
             $del_level = $obj->del_level;
             if ($obj->viewIcon) {
-                $header['DISPLAY'] = ['TYPE' => 'SHOW', 'GO-TO-STEP' => $obj->viewIcon];
+                $col_trans = AfwLanguageHelper::translateKeyword("DISPLAY", $lang);
+                $header[$col_trans] = ['TYPE' => 'SHOW', 'GO-TO-STEP' => $obj->viewIcon];
             }
             if ($obj->editIcon) {
-                $header['EDIT'] = ['TYPE' => 'EDIT', 'GO-TO-STEP' => $obj->editIcon];
+                $col_trans = AfwLanguageHelper::translateKeyword("EDIT", $lang);
+                $header[$col_trans] = ['TYPE' => 'EDIT', 'GO-TO-STEP' => $obj->editIcon];
             }
             if ($obj->deleteIcon) {
-                $header['DELETE'] = ['TYPE' => 'DEL', 'DEL_LEVEL' => $del_level];
+                $col_trans = AfwLanguageHelper::translateKeyword("DELETE", $lang);
+                $header[$col_trans] = ['TYPE' => 'DEL', 'DEL_LEVEL' => $del_level];
             }
         }
         //else AfwRunHelper::lightSafeDie("mode_force_cols");
@@ -800,6 +803,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             $tuple[$col] = $val_id;
                                             break;
                                         case 'DEL':
+                                            $col_trans = AfwLanguageHelper::translateKeyword("DELETE", $lang);
                                             $val_id = $val->getId();
                                             $val_class = $val->getMyClass();
                                             $val_currmod = $val->getMyModule();
@@ -812,19 +816,21 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                 $delete_button_path = $images['delete'];
                                                 $lbl = $val->getShortDisplay($lang);
                                                 // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
-                                                $tuple[$col] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='$delete_button_path' style='height: 22px !important;'></a>";
+                                                $tuple[$col_trans] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='$delete_button_path' style='height: 22px !important;'></a>";
                                             } else {
                                                 if ($userCanDel == -1) {
                                                     $explanation = "لا يوجد لديك صلاحية لمسح هذا النوع من السجلات";
                                                 } else {
                                                     $explanation = "انك تحتاج لصلاحية خاصة لمسح هذا السجل بعينه";
                                                 }
-                                                $tuple[$col] =
+                                                $tuple[$col_trans] =
                                                     "<a href='#'><img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$explanation'  width='24' heigth='24'></a>";
                                             }
                                             // if($obj instanceof Atable) die("tuple = ".var_export($tuple, true));
                                             break;
                                         case 'SHOW':
+                                            $col_trans = AfwLanguageHelper::translateKeyword("DISPLAY", $lang);
+                                            // die("for col $col and lang=$lang col_trans=$col_trans");
                                             if ($val->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'))) {
                                                 if (!$val->isActive()) {
                                                     $data_errors =
@@ -871,12 +877,13 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             $val_id = $val->getId();
                                             $val_class = $val->getMyClass();
                                             $val_currmod = $val->getMyModule();
-                                            $tuple[$col] =
+                                            $tuple[$col_trans] =
                                                 "<a href='main.php?Main_Page=afw_mode_display.php&cl=$val_class&currmod=$val_currmod&id=$val_id&currstep=$currstep' ><img src='../lib/images/$viewIcon.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='" .
                                                 htmlentities($data_errors) . // var_export($desc,true).
                                                 "'></a>";
                                             break;
                                         case 'EDIT':
+                                            $col_trans = AfwLanguageHelper::translateKeyword($col, $lang);
                                             $currstep = $desc["GO-TO-STEP"];
                                             if (!$currstep) $currstep = $val->getDefaultStep();
                                             if (!$currstep) $currstep = 1;
@@ -889,10 +896,10 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                 $cantEditReason,
                                             ) = $val->userCanEditMe($objme);
                                             if ($canEdit) {
-                                                $edit_button_path = $images['modifier'];
-                                                $tuple[$col] = "<a href='m.php?mp=ed&cl=$val_class&cm=$val_currmod&id=$val_id&cs=$currstep&clp=$class_origin' class='editme showmany'><img src='$edit_button_path' width='22' heigth='22'></a>";
+                                                $edit_button_path = $images['modifier'];                                                
+                                                $tuple[$col_trans] = "<a href='m.php?mp=ed&cl=$val_class&cm=$val_currmod&id=$val_id&cs=$currstep&clp=$class_origin' class='editme showmany'><img src='$edit_button_path' width='22' heigth='22'></a>";
                                             } else {
-                                                $tuple[$col] = "<a href='#'><img src='../lib/images/lock.png'  data-toggle='tooltip' data-placement='top' title='$cantEditReason' width='24' heigth='24'></a>";
+                                                $tuple[$col_trans] = "<a href='#'><img src='../lib/images/lock.png'  data-toggle='tooltip' data-placement='top' title='$cantEditReason' width='24' heigth='24'></a>";
                                             }
 
                                             break;

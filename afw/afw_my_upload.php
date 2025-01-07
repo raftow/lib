@@ -4,6 +4,10 @@ $file_dir_name = dirname(__FILE__);
 
 try {
         $module = $_POST["module"];
+        $doc_type_id = $_POST["doc_type_id"];
+        if(!$doc_type_id) $doc_type_id = 1;
+        $doc_attach_id = $_POST["doc_attach_id"];
+        if(!$doc_attach_id) $doc_attach_id = 0;
         $after_upload = $_POST["afup"];
         $after_upload_obj_id = $_POST["afup_objid"];
         if (isset($_POST["afup_obj_categ_id"])) $after_upload_obj_categ_id = $_POST["afup_obj_categ_id"];
@@ -56,7 +60,7 @@ try {
 
         if (!$allowed_upload_size)  $allowed_upload_size = 40;  // 40 Mo
         $MAX_ALLOWED_SIZE_FOR_UPLOAD = $allowed_upload_size * 1048576;
-
+        $devMode = AfwSession::config("MODE_DEVELOPMENT", false);
         $file_types = AfwFileUploader::getDocTypes($module);
         if ((!$file_types) or (count($file_types) == 0)) throw new AfwRuntimeException("file_types for $module is to be defined for file uploads process : add `$module-file_types` param in $module/application_config.php file");
         $AfileClass = AfwSession::config("$module-AfileClass", AfwSession::config("AfileClass", "Afile"));
@@ -98,6 +102,8 @@ try {
                 } elseif ($AfileClass == "WorkflowFile") {
                         AfwAutoLoader::addModule("workflow");
                         $af = new WorkflowFile();
+                        $af->set("owner_type", $after_upload);
+                        $af->set("owner_id", $after_upload_obj_id);
                 } else {
                         throw new AfwRuntimeException("use of AfileClass $AfileClass is not implemented in AfwMyUpload api service");
                 }
@@ -108,7 +114,7 @@ try {
                 $af->set("afile_ext", strtolower($extension));
                 $af->set("picture", $afile_pic);
                 $af->set("afile_size", $afile_size);
-                $af->set("doc_type_id", 1);
+                $af->set("doc_type_id", $doc_type_id);
 
 
                 $error = "";
@@ -135,7 +141,18 @@ try {
                                         echo '{"status":"error","message":"' . $error . '"}';
                                         exit;
                                 } else {
-                                        echo '{"status":"success",' . "\n" . '"size":"' . $afile_size . '",' . "\n" . '"message":"success",' . "\n" . '"debugg": "file moved successfully from' . $mv_from_file . ' to ' . $mv_to_file . '"}';
+                                        if(!$devMode)                                         
+                                        {
+                                                $mv_from_file0 = "***";
+                                                $mv_to_file0 = "***";
+                                        }
+                                        else
+                                        {
+                                                $mv_from_file0 = str_replace('\\','/', $mv_from_file);
+                                                $mv_to_file0 = str_replace('\\','/', $mv_from_file);
+                                        }
+                                        
+                                        echo '{"status":"success",' . "\n" . '"size":"' . $afile_size . '",' . "\n" . '"message":"success",' . "\n" . '"debugg": "file moved successfully from ' . $mv_from_file0 . ' to ' . $mv_to_file0 . '"}';
                                         exit;
                                 }
                         } else {

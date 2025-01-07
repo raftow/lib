@@ -71,7 +71,17 @@ $(function(){
                 data.context.find('p').text(data.context.find('p').text())
                          .append('<i>' + obj.message + '</i>');
             }
-            
+            else
+            {
+                if($('#drop').attr('whendone')=='hide')
+                {
+                    $('#drop').addClass('hide');
+                }
+                else if($('#drop').attr('whendone')=='submit')
+                {
+                    $('#edit_form').submit();
+                }
+            }
             //console.log(obj);
             //console.log(e);
         },
