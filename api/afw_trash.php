@@ -45,6 +45,12 @@ if(!$isAjax) {
 
 // echo "here3";
 AfwAutoLoader::addMainModule($currmod);
+$required_modules = AfwSession::config("required_modules", []);
+foreach($required_modules as $required_module)
+{
+    AfwAutoLoader::addModule($required_module);
+}
+
 $myObj = new $cl();
 $myObj_loaded = $myObj->load($del_id);
 $can_delete_me = $myObj->userCanDeleteMe($objme);

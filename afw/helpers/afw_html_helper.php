@@ -500,7 +500,7 @@ class AfwHtmlHelper extends AFWRoot {
                                         </span>
                                 </div>
                                 $err
-                                </div><br>";
+                                </div>\n";
                 }
 
                 if($war)
@@ -513,7 +513,7 @@ class AfwHtmlHelper extends AFWRoot {
                                         <div class='swal2-icon-content'>!</div>
                                 </div>-->
                                 $war
-                                </div><br>";
+                                </div>\n";
 
                 }
 
@@ -526,7 +526,7 @@ class AfwHtmlHelper extends AFWRoot {
                                         <div class='swal2-icon-content'>i</div>
                                 </div>-->
                                 $inf
-                                </div><br>";
+                                </div>\n";
 
                 }
                 

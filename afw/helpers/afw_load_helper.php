@@ -481,7 +481,7 @@ class AfwLoadHelper extends AFWRoot
             {
                 $objIsActive = $objItem->isActive();
                 $tuple = [];
-                if($display_object_attrib) $tuple['display_object'] = $objItem->getDisplay($lang);
+                if($display_object_attrib) $tuple['display_object'] = $objItem->getShortDisplay($lang);
                 if (count($header) != 0) 
                 {
                     foreach ($header as $col => $titre) 

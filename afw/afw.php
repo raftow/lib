@@ -3042,10 +3042,11 @@ class AFWObject extends AFWRoot
                     static::$TABLE .
                     '.'
             );
-        } elseif ($this->userCanDeleteMe($objme) <= 0) {
+        } elseif (($delReturn=$this->userCanDeleteMe($objme)) <= 0) {
+            $delReturnDecoded = self::decodeDeleteReturn($delReturn);
             throw new AfwRuntimeException(
-                "the user [$objme] is not allowed to do delete operation on " .
-                    $this->getShortDisplay($lang)
+                "the user [$objme] is not allowed to do delete operation on [" .
+                    $this->getShortDisplay($lang)."] DEL-RETURN=$delReturnDecoded"
             );
         } else {
             $this->logicDelete();
@@ -5040,6 +5041,16 @@ class AFWObject extends AFWRoot
         return true;
     }
 
+    final private static function decodeDeleteReturn($ret)
+    {
+        if($ret==-1) return "UMS implementation does not allow this user to delete this record, see userCanDeleteMeStandard";
+        if($ret==-2) return "The business rules and conditions of this afw-sub-class does not allow this user to delete this record see userCanDeleteMeSpecial";
+        if($ret<=0) return "unknown no-delete reason $ret";
+
+        return "YOU CAN DELETE !! so why get here ?";
+        
+    }
+
     final public function userCanDeleteMe($auser, $log = true)
     {
         global $lang;
@@ -5049,16 +5060,20 @@ class AFWObject extends AFWRoot
             $return = -1;
         }
         // Business rules check
-        if ($return > 0 and !$this->userCanDeleteMeSpecial($auser)) {
+        if (($return > 0) and (!$this->userCanDeleteMeSpecial($auser))) {            
+            throw new AfwRuntimeException("return was $return and ".get_class($this)." -> userCanDeleteMeSpecial ($auser) failed ");
             $return = -2;
         }
+        
         if ($log) {
             if ($return <= 0) {
+                $returnDecoded = self::decodeDeleteReturn($return);
                 AfwSession::contextLog(
                     sprintf(
-                        $this->tm("user %d can't delete this object %s"),
+                        $this->tm("user %d can't delete this object %s => return = %s"),
                         $auser->id,
-                        $this->getShortDisplay($lang)
+                        $this->getShortDisplay($lang),
+                        $returnDecoded
                     ),
                     'iCanDo'
                 );
@@ -5066,11 +5081,10 @@ class AFWObject extends AFWRoot
                 AfwSession::contextLog(
                     sprintf(
                         $this->tm(
-                            '* success * : user %d can delete this object %s => return = %d'
+                            '* success * : user %d can delete this object %s'
                         ),
                         $auser->id,
-                        $this->getShortDisplay($lang),
-                        $return
+                        $this->getShortDisplay($lang)
                     ),
                     'iCanDo'
                 );

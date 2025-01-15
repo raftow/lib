@@ -97,29 +97,35 @@ try {
 
                 if ($AfileClass == "Afile") {
                         $af = new Afile();
-                        $af->set("owner_id", $me);
                         $af->set("stakeholder_id", $my_sh);
+                        $af->set("owner_id", $me);
+                        $af->set("original_name", $afile_original_name);
+                        $af->set("afile_size", $afile_size);
                 } elseif ($AfileClass == "WorkflowFile") {
                         AfwAutoLoader::addModule("workflow");
-                        $af = new WorkflowFile();
-                        $af->set("owner_type", $after_upload);
-                        $af->set("owner_id", $after_upload_obj_id);
+                        $owner_type = $after_upload;
+                        $owner_id = $after_upload_obj_id;
+                        $af = WorkflowFile::loadByMainIndex($afile_original_name, $owner_type, $owner_id, $afile_size,$create_obj_if_not_found=true);
+                        if(!$af->is_new)
+                        {
+                                echo '{"status":"error","message":"تم تحميل هذا الملف مسبقا يرجى استخدامه من القائمة وعدم تكرار التحميل"}';        
+                                exit;
+                        }
+                        
                 } else {
                         throw new AfwRuntimeException("use of AfileClass $AfileClass is not implemented in AfwMyUpload api service");
                 }
 
                 $af->set("afile_name", $afile_name);
-                $af->set("original_name", $afile_original_name);
                 $af->set("afile_type", $afile_type);
                 $af->set("afile_ext", strtolower($extension));
                 $af->set("picture", $afile_pic);
-                $af->set("afile_size", $afile_size);
                 $af->set("doc_type_id", $doc_type_id);
-
+                
 
                 $error = "";
 
-                if ($af->insert()) {
+                if ($af->commit()) {
                         $new_name =  $af->getNewName();
                         $mv_from_file = $_FILES['upl']['tmp_name'];
                         $uploads_root_path = AfwSession::config("uploads_root_path", "");
@@ -177,7 +183,7 @@ try {
                                 $_FILES['move_error'] = $error;
                         }
                 } else {
-                        $error = "can't insert afile error occured when inserting record in DB";
+                        $error = "error occured when committing $AfileClass record in DB";
 
                         if ($objme->isAdmin() and $af->sql_error) $error .= " : " . $af->sql_error;
                         $_FILES['insert'] = $error;
