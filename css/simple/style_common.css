@@ -6193,3 +6193,9 @@ div.otln.help {
     background-color: #f0f0f0 !important;
     color: black !important;
 }
+
+input[type=search] {
+    border: 1px solid #c0c0c08c;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
