@@ -204,14 +204,35 @@ class AfwUmsPagHelper extends AFWRoot
         if ($tbl_new) $restrictToField = "";
         $fld_u = 0; // updated
         if ($tbl_new or $updateIfExists) {
-            $tbl->set('titre_short', $obj->transClassPlural('ar'));
-            $tbl->set('titre', $obj->transClassPlural('ar'));
-            $tbl->set('titre_short_s', $obj->transClassPlural('ar', true));
-            $tbl->set('titre_u', $obj->transClassSingle('ar'));
-            $tbl->set('titre_u_s', $obj->transClassSingle('ar', true));
-            $tbl->set('titre_short_en', $obj->transClassPlural('en'));
-            $tbl->set('titre_en', $obj->transClassPlural('en'));
-            $tbl->set('titre_u_en', $obj->transClassSingle('en'));
+            $tit_single_ar = $obj->transClassSingle('ar');
+            $tit_plural_ar = $obj->transClassPlural('ar');
+            
+            $tit_single_en = $obj->transClassSingle('en');
+            $tit_plural_en = $obj->transClassPlural('en');
+            $tit_single_s_ar = $obj->transClassSingle('ar', true);
+            $tit_plural_s_ar = $obj->transClassPlural('ar', true);
+            /*die("rafik 20250119 : <br>
+            
+            tit_single_en = $tit_single_en <br> 
+            tit_plural_en = $tit_plural_en <br>
+            tit_single_ar = $tit_single_ar <br>
+            tit_plural_ar = $tit_plural_ar <br>
+            tit_single_s_ar = $tit_single_s_ar <br>
+            tit_plural_s_ar = $tit_plural_s_ar <br>
+            
+            
+            for ".$tbl);*/
+            $tbl->set('titre_short', $tit_plural_ar);
+            $tbl->set('titre', $tit_plural_ar);
+            $tbl->set('titre_u', $tit_single_ar);
+
+            $tbl->set('titre_short_s', $tit_plural_s_ar);
+            $tbl->set('titre_u_s', $tit_single_s_ar);
+
+            $tbl->set('titre_short_en', $tit_plural_en);
+            $tbl->set('titre_en', $tit_plural_en);
+            $tbl->set('titre_u_en', $tit_single_en);
+
             $tbl->set('key_field', $obj->getPKField());
 
             if ($obj->IS_LOOKUP) {

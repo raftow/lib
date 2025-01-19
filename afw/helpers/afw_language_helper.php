@@ -84,14 +84,10 @@ class AfwLanguageHelper
     ) 
     {
         //if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("debugg $nom_table trad of $nom_col is here 1 ");
-        global $lang, $trad;
         $company = AfwSession::config("main_company", "");
         $file_dir_name = dirname(__FILE__)."/..";
         if (!$langue) {
-            $langue = $lang;
-        }
-        if (!$langue) {
-            $langue = 'ar';
+            throw new AfwRuntimeException("Lang should be defined to be able to translate");
         }
 
         $langue = strtolower($langue);
@@ -141,9 +137,10 @@ class AfwLanguageHelper
                     $classTranslator = AfwStringHelper::tableToClass($nom_table."_".$langue."_translator");
                     if(!class_exists($classTranslator,false))
                     {
+                        $caseTrans = "include $nom_file";
                         include $nom_file;
                     }
-                    // if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) die(" 2. tarjem : trad[$nom_table][$nom_col] = ".$trad[$nom_table][$nom_col]);
+                    
                     // if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
@@ -151,8 +148,10 @@ class AfwLanguageHelper
                     if(class_exists($classTranslator,false))
                     {
                         $trad = $classTranslator::initData();
+                        $caseTrans = "$classTranslator::initData()";
                     }
                     
+                    // if(($langue=="en") and ($module=="adm") and ($nom_table=="program_track") and ($nom_col=="programtrack.single")) die("from caseTrans=$caseTrans / lang=$langue: trad[$nom_table][$nom_col] = ".$trad[$nom_table][$nom_col]);
 
                     if (isset($trad) and $trad and (!is_array($trad))) {
                         throw new AfwRuntimeException("after include_once $nom_file trad 1 is " . var_export($trad, true));

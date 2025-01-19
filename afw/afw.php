@@ -2981,6 +2981,7 @@ class AFWObject extends AFWRoot
         }
 
         $return = $this->translate($classSingle, $lang);
+        // if($lang=="en") die("$return = this->translate($classSingle, $lang)");
 
         if ($return == $classSingle and $short) {
             $classSingle = $classSingleOrigin;
@@ -2993,6 +2994,11 @@ class AFWObject extends AFWRoot
 
         return $return;
     }
+
+    /**
+     * $maksour = false ex المسلمون
+     * $maksour = true ex المسلمين
+     */
 
     public function transClassPlural($lang = 'ar', $short = false, $maksour = false)
     {
