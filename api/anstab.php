@@ -33,6 +33,12 @@ foreach($_POST as $col => $val)
 
 
 if($currmod) AfwAutoLoader::addModule($currmod);
+$required_modules = AfwSession::config("required_modules", []);
+foreach($required_modules as $required_module)
+{
+    AfwAutoLoader::addModule($required_module);
+}
+
 AfwSession::startSession();
 require_once("$file_dir_name/../../external/db.php");
 

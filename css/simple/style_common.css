@@ -6058,6 +6058,7 @@ div.afwerr table.trace {
 table.trace tr>td {
     padding-top: 9px !important;
     border-bottom: 1px #00000047 solid;
+    line-height: 36px;
 }
 
 table.trace tr {
@@ -6191,4 +6192,10 @@ div.otln.help {
 .btn.btn-enum.btn-off {
     background-color: #f0f0f0 !important;
     color: black !important;
+}
+
+input[type=search] {
+    border: 1px solid #c0c0c08c;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
 }

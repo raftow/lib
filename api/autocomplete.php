@@ -45,6 +45,11 @@ $debugg = trim($_GET['debugg']);
 
 if($currmod) AfwAutoLoader::addMainModule($currmod);
 if($modp and ($modp != $currmod)) AfwAutoLoader::addModule($modp);
+$required_modules = AfwSession::config("required_modules", []);
+foreach($required_modules as $required_module)
+{
+    AfwAutoLoader::addModule($required_module);
+}
 
 $myObjParent = new $clp();
 if($idp>0) $myObjParent->load($idp);

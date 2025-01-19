@@ -992,7 +992,7 @@ class AfwStructureHelper extends AFWRoot
             $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         }
         // if($attribute=="nomcomplet") die("structure of $attribute =".var_export($structure,true));
-        return $structure and !$structure['CATEGORY'];
+        return ($structure and !$structure['CATEGORY'] and !$structure['OBSOLETE']);
     }
 
     public static final function getEnumAnswerList($object, $attribute, $enum_answer_list = '')

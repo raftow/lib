@@ -22,7 +22,15 @@ class AfwStringHelper
                 return $string;
         }
 
-
+        public static function titleNotGood($title)
+        {
+                if(!$title) return true;
+                if(self::stringStartsWith($title, "??")) return true;
+                if(self::stringEndsWith($title, "????")) return true;
+                if(self::stringStartsWith($title, "xxx")) return true;
+                if(self::stringEndsWith($title, "xxx")) return true;
+                return false;
+        }
         public static function stringEndsWith($string, $endString)
         {
                 $len = strlen($endString);

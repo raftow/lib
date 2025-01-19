@@ -69,6 +69,11 @@
     $("#btsp_btn_"+inputname+"_"+oval).addClass('btn-off');
     $("#btsp_btn_"+inputname+"_"+vali).removeClass('btn-off');
     $("input#"+inputname).val(vali);
+
+    if(oval != vali)
+    {
+        bootstrapHzmBtnInputChanged(inputname, oval, vali);
+    }
   }
 
   function toggleHzmBtn(inputname,listVal, listCod, listCodOrder, listClass, nbVals)
