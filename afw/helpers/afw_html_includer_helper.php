@@ -326,6 +326,12 @@ class AfwHtmlIncluderHelper
           <script src='./js/$pagecode_js_file'></script>  
           ";  
           }
+          else
+          {
+            $header .= "
+          <!-- auto-js file '[module]/js/$pagecode_js_file' not found so skipped --> 
+          "; 
+          }
 
 
           $header .= "</head>";
