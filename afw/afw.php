@@ -49,7 +49,7 @@ class AFWObject extends AFWRoot
     public static $DATABASE = '____afw';
     public static $MODULE = 'afw';
     public static $TABLE = 'afw_object';
-
+    public static $copypast = false;
     private static $mfk_separator = ',';
 
     private static $my_debugg_db_structure = null;
@@ -2714,6 +2714,23 @@ class AFWObject extends AFWRoot
         }
     }
 
+    public function getFixmSearchCols($request=[], $qsearch=true)
+    {
+        $result = [];
+        if($qsearch) $arrCols = $this->getColsByMode("QSEARCH");
+        else $arrCols = $this->getColsByMode("SEARCH");
+
+        foreach($arrCols as $col)
+        {
+            if($request[$col])
+            {
+                $result[$col] = $request[$col];
+            }
+        }
+
+        return $result;
+    }
+
     public function fixModeSubAttributes($attribute, $value)
     {
         // should be overriden for virtual fields or category fields
@@ -3310,16 +3327,20 @@ class AFWObject extends AFWRoot
             $return = $this->transClassSingle($lang) .
                 ' ' .
                 $this->translate('NEW', $lang, true);*/
-        } elseif (is_array($this->DISPLAY_FIELD) and count($this->DISPLAY_FIELD) > 0) {
-            // if ($this instanceof Applicant) die("df is an array : ".var_export($this->DISPLAY_FIELD,true));
-            $disp_decoded = [];
-            foreach ($this->DISPLAY_FIELD as $key) {
-                $disp_decoded[] = $this->decode($key);
+        } 
+        else
+        {
+            if (is_array($this->DISPLAY_FIELD) and count($this->DISPLAY_FIELD) > 0) {
+                // if ($this instanceof Applicant) die("df is an array : ".var_export($this->DISPLAY_FIELD,true));
+                $disp_decoded = [];
+                foreach ($this->DISPLAY_FIELD as $key) {
+                    $disp_decoded[] = $this->decode($key);
+                }
+                $return = implode($sep, $disp_decoded);
+                //if ($this instanceof Applicant) die("for instanceof Applicant return = $return because $disp_decoded = ".var_export($disp_decoded,true));
+            } elseif ($this->DISPLAY_FIELD) {
+                $return = $this->getVal($this->DISPLAY_FIELD);
             }
-            $return = implode($sep, $disp_decoded);
-            //if ($this instanceof Applicant) die("for instanceof Applicant return = $return because $disp_decoded = ".var_export($disp_decoded,true));
-        } elseif ($this->DISPLAY_FIELD) {
-            $return = $this->getVal($this->DISPLAY_FIELD);
         }
 
         if (!$return) {
@@ -4046,6 +4067,10 @@ class AFWObject extends AFWRoot
             return $this->getRetrieveCols();
         }
 
+        if ($mode == 'QSEARCH') {
+            return $this->getQsearchCols();
+        }
+
         throw new AfwRuntimeException(
             "mode $mode unknown when calling afw::getColsByMode($mode)"
         );
@@ -4163,7 +4188,7 @@ class AFWObject extends AFWRoot
     public function isQSearchCol($attribute, $desc = '')
     {
         // $objme = AfwSession::getUserConnected();
-
+        if(!$this->attributeIsApplicable($attribute)) return false;
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($this, $attribute);
         } else {
@@ -4482,6 +4507,25 @@ class AFWObject extends AFWRoot
         }
         return $tableau;
     }
+
+    public function getQsearchCols()
+    {
+        $tableau = [];
+
+        $FIELDS_ALL = $this->getAllAttributes();
+
+        foreach ($FIELDS_ALL as $attribute) {
+            if ($this->isQSearchCol($attribute)) {
+                $attribute_to_exclude = false;
+                if (!$attribute_to_exclude) {
+                    $tableau[] = $attribute;
+                }
+            }
+        }
+        return $tableau;
+    }
+
+    
     /**
      * retrieve
      * for display mode get retrieve columns
@@ -7545,8 +7589,18 @@ class AFWObject extends AFWRoot
         return $arrAttributes;
     }
 
+    public final function canInsert()
+    {
+        foreach ($this->UNIQUE_KEY as $attribute) {
+            if($this->attributeIsRequired($attribute))
+            {
+                if(!$this->getVal($attribute)) return false;
+            }
+        }
+        return true;
+    }
 
-
+    
     public function canSaveOnly($current_step)
     {
         return false;

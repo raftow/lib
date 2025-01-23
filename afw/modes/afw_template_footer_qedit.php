@@ -177,15 +177,17 @@ if(!$obj->qedit_minibox)
 <?
 } 
 
-  if($obj->COPY_PAST)
+  if($obj::$copypast or AfwSession::hasOption("COPY_PAST_M"))
   {
 ?>  
 <tr>  
-<?php	foreach($qedit_trad as $col => $info)
+<?php	
+    foreach($qedit_trad as $col => $info)
+    {
+        if($col!="id")
         {
-
 ?>
-                <th align="<?=$aligntd?>">
+                <th class="<?php echo "al-".$aligntd." col-".$col?>">
 <?
                 if(false) //(($col!="id") and (($not_filled[$col]>=4) or ($diff_val[$col])) and ($first_disp[$col]))
                 {
@@ -205,7 +207,9 @@ if(!$obj->qedit_minibox)
 ?>
                </th>
 
-<?php	}
+<?php	
+      }
+    }
 ?>
 </tr>
 <? 
@@ -213,7 +217,7 @@ if(!$obj->qedit_minibox)
 ?>
 </table>
 <?
-  if($obj->COPY_PAST)
+  if($obj::$copypast or AfwSession::hasOption("COPY_PAST_M"))
   {
 ?>        
 <table cellspacing="3" cellpadding="4" style="width: 100% !important;">

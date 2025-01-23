@@ -1,6 +1,16 @@
 <?php
 class AfwMainPage
 {
+    public static function getDefaultOptions($Main_Page, $Main_Module="")
+    {
+        $options = [];
+
+        if(strpos($Main_Page,"_qedit.php")!==FALSE)
+        {
+            $options["qedit"]=true;
+        }
+        return $options;
+    }
     public static function echoMainPage($current_module, $Main_Page, $module_path, $options = [],)
     {
         $curr_path = dirname(__FILE__);

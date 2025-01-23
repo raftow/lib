@@ -685,6 +685,8 @@ input,select,textarea {
 
 .copy_paste {
 	background: url('../../../lib/images/paste.png') no-repeat scroll center;
+	width: 100%;
+    display: block;
 }
 
 

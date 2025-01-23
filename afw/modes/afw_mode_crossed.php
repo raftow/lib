@@ -75,7 +75,7 @@ ici ce n'est pas applicable car on n'as pas d'insert de new records
 //$myMainObject->fixm_disable = $fixmdisable;
 //$myMainObject->fixmtit = $fixmtit;
 //$myMainObject->commonFields = $comfld;
-//if(isset($copypast)) $myMainObject->copypast = $copypast;
+if(isset($copypast)) $myMainObject::$copypast = $copypast;
 
 $out_scr .= "<div class=\"filebox editcard\">";
 if($fixmtit) 

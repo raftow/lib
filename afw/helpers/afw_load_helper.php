@@ -28,6 +28,7 @@ class AfwLoadHelper extends AFWRoot
         
         if(!self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"])
         {
+            $case = "sql";
             $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
             $object = new $nom_class_fk();
             $where_cleaned = str_replace("((id))",$object->getPKField(),$where);
@@ -49,9 +50,13 @@ class AfwLoadHelper extends AFWRoot
             }
             
         }
-        else $dataLookup = self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"];
+        else 
+        {
+            $case = "cache";
+            $dataLookup = self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"];
+        }
 
-        // if($nom_table_fk=="crm_customer") throw new AfwRuntimeException("getLookupData($nom_module_fk, $nom_table_fk, $where) will use self::lookupMatrix=".var_export(self::$lookupMatrix,true));
+        //if(($nom_table_fk=="academic_level") and ($case!="cache")) throw new AfwRuntimeException("from $case getLookupData($nom_module_fk, $nom_table_fk, $where) will use self::lookupMatrix=".var_export(self::$lookupMatrix,true));
 
         return $dataLookup;
     } 
@@ -81,7 +86,7 @@ class AfwLoadHelper extends AFWRoot
             {
                 $val_to_keep = trim($val_to_keep);
                 $val_to_keep = trim($val_to_keep, ',');
-                if($val_to_keep)
+                if($val_to_keep and ($where!="1"))
                 {
                     $pk = $obj->getPKField();
                     $where = "($where) or ($pk in ($val_to_keep))";

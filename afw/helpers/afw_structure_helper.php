@@ -687,6 +687,8 @@ class AfwStructureHelper extends AFWRoot
         $submode = '',
         $for_this_instance = true
     ) {
+        if(!$object) return false;
+        if(!$object->attributeIsApplicable($attribute)) return false;
         global $display_in_edit_mode;
         /*
         This is not logic attributes editable or no it is not mandatory to have relation with user authenticated
@@ -750,6 +752,7 @@ class AfwStructureHelper extends AFWRoot
         $desc = '',
         $submode = ''
     ) {
+        
 
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
@@ -774,7 +777,7 @@ class AfwStructureHelper extends AFWRoot
             $submode,
             false
         ) and
-            (!isset($desc[$qedit_mode_code]) or
+            ( /* !isset($desc[$qedit_mode_code]) or // Rafik This at left is old logic should be obsolete now and QEDIT mode should be explicit */
                 $desc[$qedit_mode_code] or
                 ($desc["$qedit_mode_code-ADMIN"] and ($objme = AfwSession::getUserConnected()) and $objme->isAdmin()));
     }
@@ -784,6 +787,9 @@ class AfwStructureHelper extends AFWRoot
         $desc = '',
         $submode = ''
     ) {
+        if(!$object) return "no object to quick edit";
+        if(!$object->attributeIsApplicable($attribute)) return "attribute $attribute is not applicable";
+
         // @todo rafik according to the above method
         // $objme = AfwSession::getUserConnected();
         if (!$desc) {

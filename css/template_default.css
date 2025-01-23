@@ -120,7 +120,7 @@ table.dataTable thead th, table.dataTable tfoot th {
 }
 
 table.dataTable tbody tr {
-    background-color: rgb(233 244 255);
+    background-color: white;
 }
 
 table.dataTable thead th.xqe_hf_z, table.dataTable tfoot th.xqe_hf_z {
@@ -153,6 +153,11 @@ tr.altitem {
 }
 
 tr.item {
+    background-color: white;
+    border-top: 1px solid silver;
+}
+
+tr.off {
     background-color: white;
     border-top: 1px solid silver;
 }

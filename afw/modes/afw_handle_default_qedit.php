@@ -135,7 +135,12 @@ for($i=0;$i<$nb_objs;$i++)
                                           $obj_at->set($attr,$attr_val);
                                           
                                     }
-                                    $obj_at->insert();
+
+                                    if($obj_at->canInsert())
+                                    {
+                                        $obj_at->insert();
+                                    }
+                                    
                             }
                             
                             /*
@@ -225,22 +230,25 @@ for($i=0;$i<$nb_objs;$i++)
                         
                         } */
                         $obj->isFromUI = true;
-                        $inserted = $obj->insert();
-                        if(!$inserted)
+                        if($obj->canInsert())
                         {
-                            if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) throw new AfwRuntimeException($obj->sql_info ." insert failed : ".$obj->tech_notes, array("FIELDS_UPDATED"=>true));
-                        }
-                         
-                	$id = $obj->getId();
-                        if($inserted and $id) 
-                        {
-                                $updated_nb_objs++;
-                                if($ids!="all")
+                                $inserted = $obj->insert();
+                                if(!$inserted)
                                 {
-                                        if(!$ids) $ids = "0";
-                                        $ids .= ",$id";
+                                if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) throw new AfwRuntimeException($obj->sql_info ." insert failed : ".$obj->tech_notes, array("FIELDS_UPDATED"=>true));
                                 }
-                        }         
+                                
+                                $id = $obj->getId();
+                                if($inserted and $id) 
+                                {
+                                        $updated_nb_objs++;
+                                        if($ids!="all")
+                                        {
+                                                if(!$ids) $ids = "0";
+                                                $ids .= ",$id";
+                                        }
+                                }         
+                        }
                         //AFWDebugg::log("insert row id $id updated_nb_objs become $updated_nb_objs");
                 }
                 elseif($i==0)

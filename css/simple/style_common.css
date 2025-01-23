@@ -2139,6 +2139,13 @@ table.display.dataTable.display_ltr.back_trace {
 .grid tr th {            
     font-family: 'title' !important;
 }
+
+.grid tr.off td {            
+	background-color: rgb(228 228 228 / 30%) !important;
+    font-family: 'title' !important;
+    padding: 10px 6px !important;
+}
+
 .grid tr.item td {            
 	background-color: rgba(238, 238, 238, 0.47) !important;
     font-family: 'title' !important;

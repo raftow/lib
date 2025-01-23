@@ -73,7 +73,7 @@ $myMainObject->submode = strtoupper($submode);
 $myMainObject->fixm_disable = $fixmdisable;
 $myMainObject->fixmtit = $fixmtit;
 $myMainObject->commonFields = $comfld;
-if(isset($copypast)) $myMainObject->copypast = $copypast;
+//if(isset($copypast)) $myMainObject - >copypast = $copypast;
 if($ids)
 {
         if($ids=="all") { 

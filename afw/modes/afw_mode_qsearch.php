@@ -119,7 +119,7 @@ else $collapse_show = "show";
 
 
 $newo = $myClassInstance->QEDIT_MODE_NEW_OBJECTS_AFTER_SEARCH;
-if($newo==0) $newo = $myClassInstance->QEDIT_MODE_NEW_OBJECTS_DEFAULT_NUMBER;
+if(!$newo) $newo = $myClassInstance->QEDIT_MODE_NEW_OBJECTS_DEFAULT_NUMBER;
          
 //
 
@@ -214,6 +214,16 @@ if($datatable_on)
 
         if($btns_display["lookup"])        
         {
+                $fixm_arr=[];
+                $other_hidden_arr=[];
+                $fixmSearchColsArr = $myClassInstance->getFixmSearchCols($_POST);
+                foreach($fixmSearchColsArr as $fixmSearchCol => $fixmSearchVal)
+                {
+                        $fixm_arr[] = "$fixmSearchCol=$fixmSearchVal";
+                        $other_hidden_arr["sel_$fixmSearchCol"] = $fixmSearchVal;
+                }
+                $other_hidden_arr["fixm"] = implode(",",$fixm_arr);
+                
                 $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="">';
                 $out_scr_btns .= '<form name="qeditForm" id="qeditForm" method="post" action="'."main.php".'">';
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
@@ -221,6 +231,10 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
                 $out_scr_btns .= '<input type="submit" class="longbtn purplebtn submit-btn fright" name="submit"  id="submit-form-qedit-new" value="'.$qedit_new." ".$plural_obj_name_short.'" />';
                 $out_scr_btns .= '<input type="hidden" size="3" name="newo" value="'.$newo.'"/>';
+                foreach($other_hidden_arr as $hiddenCol => $hiddenVal)
+                {
+                        $out_scr_btns .= "<input type=\"hidden\" name=\"$hiddenCol\" value=\"$hiddenVal\"/>";
+                }
                 $out_scr_btns .= '<input type="hidden" name="limit" value=""/>';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';

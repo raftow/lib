@@ -7,6 +7,8 @@ ul.nav-links>li.active>a>span, ul.nav-links>li.active>a>i:before {
 .dashboard .dash-content{
     padding-top: 60px;
     min-height: 800px;
+    height: min-content;
+    /* display: flex; */
 }
 
 .dashboard .top .search-box {
