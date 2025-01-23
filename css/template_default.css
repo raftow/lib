@@ -1016,7 +1016,7 @@ div.body_nav_hzm>p {
     width: 80%;
     margin-right: 9%;
     margin-left: 10%;
-    margin-top: 0; /* 65px; seems no need now */
+    margin-top: 40px; /* without this the notifications will be hidden by the top header */
 }
 
 div.dash-content>div.notification_message_container {

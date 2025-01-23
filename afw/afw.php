@@ -906,7 +906,16 @@ class AFWObject extends AFWRoot
         $avoid_unique_index = true,
         $logHistory = false
     ) {
-        $field_name_to_debugg = "prof_id-xxx-rr";
+        $this_class = get_class($this);
+        if($this_class == "Student")
+        {
+            $field_name_to_debugg = "firstname";
+        }
+        else
+        {
+            $field_name_to_debugg = "xxxx";
+        }
+        
         $fields_updated = [];
         $all_real_fields = AfwStructureHelper::getAllRealFields($this);
         foreach ($all_real_fields as $field_name) {
