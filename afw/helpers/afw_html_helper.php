@@ -691,7 +691,7 @@ class AfwHtmlHelper extends AFWRoot {
                                         if($ajax_class)
                                         {
                 ?>
-                                        <td><a href="#" id="<?=$id?>" cl="<?=$cl?>" md="<?=$currmod?>" lbl="<?=$lbl?>" class="<?=$ajax_class?>">
+                                        <td><a href="#" id="<?=$id?>" cl="<?=$cl?>" md="<?=$currmod?>" lb l="<?=$lbl?>" class="<?=$ajax_class?>">
                                                 <img src="<?=$img?>" width="24" heigth="24" <?=$tooltip?>> 
                                         </a>
                                         </td>

@@ -74,6 +74,7 @@ $myMainObject->fixm_disable = $fixmdisable;
 $myMainObject->fixmtit = $fixmtit;
 $myMainObject->commonFields = $comfld;
 //if(isset($copypast)) $myMainObject - >copypast = $copypast;
+if(!$ids) $ids = "all";
 if($ids)
 {
         if($ids=="all") { 

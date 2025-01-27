@@ -1488,7 +1488,8 @@ class AFWObject extends AFWRoot
             $open_options = $struct['OPEN_OPTIONS']; // means field YN can contain other choices than Y,N,W so then all other options will be conisdered here like W
         }
         $stored_val = $this->getVal($attribute);
-        //if($attribute=="enum") die("attribute=$attribute, [$stored_val] =  this->getVal($attribute)");
+        // if($struct["CATEGORY"]) $stored_val = $this->calc($attribute);
+        // if($attribute=="refresh_needed") die("attribute=$attribute, [$stored_val] =  this->getVal($attribute) ");
         $value = $stored_val;
         if (!$value) {
             $value = $def_val;
@@ -3686,6 +3687,7 @@ class AFWObject extends AFWRoot
     ) 
     {
         $token_arr = $this->prepareAfwTokens($text_to_decode, $lang, $trad_erase, $token_arr);
+        // if(get_class($this)=="Application") die("token_arr=".var_export($token_arr,true));
         foreach ($token_arr as $token => $val_token) {
             //if($token=="[travelStationList.no_icons]") die("for the token $token value is $val_token , token_arr = ".var_export($token_arr,true)." text_to_decode=$text_to_decode");
             $text_to_decode = str_replace($token, $val_token, $text_to_decode);

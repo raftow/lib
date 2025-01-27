@@ -174,23 +174,6 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
             break;
         case 'MFK':
-            $nom_table_fk   = $desc["ANSWER"];
-            $nom_module_fk  = $desc["ANSMODULE"];
-            if (!$nom_module_fk) {
-                $nom_module_fk = AfwUrlManager::currentWebModule();
-            }
-            $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
-
-            $objRep  = new $nom_class_fk;
-
-            // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj);
-            // list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
-            // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl");            
-            $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
-            $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action = "loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
-            // if(get_class($objRep)=="Module")    die("AfwLoadHelper::vhGetListe=>".var_export($l_rep,true));
-
-            $type_input_ret = "select";
 
             include("tpl/helper_edit_mfk.php");
 

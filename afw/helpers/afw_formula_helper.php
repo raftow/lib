@@ -256,6 +256,9 @@ class AfwFormulaHelper extends AFWRoot
         }
     }
 
+    /**
+     * @param AFWObject $object
+     *  */    
 
     public static final function executeFormulaAttribute($object, $attribute, $struct=null, $lang="ar", $what="value")
     {

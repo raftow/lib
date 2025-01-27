@@ -6,14 +6,15 @@ class AfwRuntimeException extends RuntimeException
      * @param AFWObject $object 
      * @return AfwRuntimeException
      */
-    public function __construct($message, $throwed_arr = [
+    public function __construct(string $message, array $throwed_arr = [
                                                                 'FIELDS_UPDATED' => true,
                                                                 'SQL' => true,
                                                                 'DEBUGG' => true,
                                                                 'CACHE' => false,
                                                                 'ALL' => false,
+                                                                'POST' => true,
                                                             ]
-                                        , $object = null                    
+                                        , AFWObject $object = null                    
     )
     {
         $msg = "";
@@ -76,10 +77,18 @@ class AfwRuntimeException extends RuntimeException
 
 
         if($msg) $message .= "<div class='technical'>$msg</div>";
+        
+        $mess_post = "";
+
+        if($_POST and is_array($_POST) and (count($_POST)>0))
+        {
+            foreach($_POST as $psKey => $psVal) $mess_post .= "<p>$psKey => $psVal</p>";
+        }
+        
+        if($mess_post) $mess_post = "You can below un-hide <b>the POST ARRAY :</b><br><div class='technical post'><BR>$mess_post</div>";
 
 
-
-        parent::__construct($message);
+        parent::__construct($mess_post.$message);
 
 
     }

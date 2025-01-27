@@ -166,9 +166,9 @@ class AfwQueryAnalyzer
                     if ($MODE_DEVELOPMENT) {
                         throw new AfwRuntimeException(
                             "Query Analysis Crash for : $this_module / $this_table / $sql_query : has been called more than 50 times, <br>
-                            May be because the result is empty so no cache working, This the SQL analysis : <br><hr><pre class='sql'>"
+                            May be because the result is empty so no cache working, You can below un-hide <b>the TECHNICAL SQL analysis :</b> <br><hr><pre class='technical sql'>"
                             . var_export(self::$_sql_analysis, true).
-                            "</pre><br> Or if should be managed by AfwLoadHelper::getLookupMatrix() This is the content : <br><hr><pre class='php'>"
+                            "</pre><br> Or if should be managed by AfwLoadHelper::getLookupMatrix(), You can below un-hide <b>the TECHNICAL CACHE OF Lookup-Matrix :</b> : <br><hr><pre class='technical php'>"
                             . var_export(AfwLoadHelper::getLookupMatrix(), true)."</pre>"
                         );
                     }

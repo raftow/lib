@@ -222,6 +222,21 @@ class AfwLanguageHelper
             return AfwLanguageHelper::tarjem($text, $langue, true, '', '');
     }
 
+    public static function translateYesNo($what, $lang = '')
+    {
+        $yes = "Y";
+        $no = "N";
+        if($what=="decodeme")
+        {
+            if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+            $yes = AfwLanguageHelper::translateKeyword($yes, $lang);
+            $no = AfwLanguageHelper::translateKeyword($no, $lang);
+        }
+        return [$yes,$no];
+        
+    }
+
+
     public static function tarjemMessage($message, $module, $lang = 'ar')
     {
             global $messages;

@@ -1479,7 +1479,7 @@ class AfwDateHelper
 
         $mm = str_pad($hijri_month, 2, '0', STR_PAD_LEFT);
 
-        $hijri_day = diff_date($gdate, $greg_date) + 1;
+        $hijri_day = self::diff_date($gdate, $greg_date) + 1;
 
         $dd = str_pad($hijri_day, 2, '0', STR_PAD_LEFT);
 
@@ -1863,7 +1863,7 @@ class AfwDateHelper
             $new_time = substr($new_time, 0, 5);
         }
 
-        $new_day = $day + diff_date($new_date, $to_day);
+        $new_day = $day + self::diff_date($new_date, $to_day);
 
         return [$new_day, $new_time];
     }

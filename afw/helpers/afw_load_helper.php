@@ -61,7 +61,7 @@ class AfwLoadHelper extends AFWRoot
         return $dataLookup;
     } 
 
-    public static function vhGetListe($obj, $fk_attribute, $fk_table, $where, $action="default", $lang="ar", $val_to_keep=null, $order_by="", $dropdown = false, $optim = true)
+    public static function vhGetListe($obj, $fk_attribute, $fk_table, $where, $action="default", $lang="ar", $val_to_keep=null, $order_by="", $dropdown = false, $optim = true, $max_items_count=true)
     {
         $return = [];
         if(!$where) $where = "1";
@@ -124,7 +124,7 @@ class AfwLoadHelper extends AFWRoot
                     
                 }
                 
-                $return = self::constructDropDownItems($listeRep, $lang, $fk_attribute, $fk_table);
+                $return = self::constructDropDownItems($listeRep, $lang, $fk_attribute, $fk_table, '', $max_items_count);
             }
         }
         if(!isset($return)) 
@@ -134,16 +134,11 @@ class AfwLoadHelper extends AFWRoot
         return $return;
     }
 
-    public static final function constructDropDownItems($liste_rep, $lang, $col_name = '', $table_name = '', $report='')
+    public static final function constructDropDownItems($liste_rep, $lang, $col_name = '', $table_name = '', $report='', $max_items_count=true)
     {
         $objme = AfwSession::getUserConnected();
         $MAX_DROPDOWN_ITEMS = AfwSession::config('max_dropdown_items', 300);
-        $count_liste_rep = count($liste_rep);
-        if ($count_liste_rep > $MAX_DROPDOWN_ITEMS) {
-            // $first_item = current($liste_rep);
-            throw new AfwRuntimeException("Too much items to put into dropdown for field : [$table_name.$col_name] (count = $count_liste_rep), 
-                    it is recommended to use AUTOCOMPLETE and AUTOCOMPLETE-SEARCH options, report : $report");
-        }
+        
 
         $l_rep = [];
         foreach ($liste_rep as $iditem => $item) {
@@ -158,6 +153,13 @@ class AfwLoadHelper extends AFWRoot
                 $userCanNotDoOperationReason = AfwUmsPagHelper::userCanNotDoOperationOnObjectReason($item,$objme, 'display');
                 echo "<!-- drop down item-option hidden : $item reason $userCanNotDoOperationReason -->";
             }*/
+        }
+
+        $count_liste_rep = count($l_rep);
+        if ($max_items_count and ($count_liste_rep > $MAX_DROPDOWN_ITEMS)) {
+            // $first_item = current($liste_rep);
+            throw new AfwRuntimeException("Too much items to put into dropdown for field : [$table_name.$col_name] (count = $count_liste_rep), 
+                    it is recommended to use AUTOCOMPLETE and AUTOCOMPLETE-SEARCH options, report : $report");
         }
 
         return $l_rep;

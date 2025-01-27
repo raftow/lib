@@ -58,7 +58,7 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["DISPLAY"]	                         	= "عرض";
         $trad["OPERATOR"]["DELETE"]	                         	= "مسح";
         $trad["OPERATOR"]["PROFILE"]	                         	= "بطاقة";   
-        $trad["OPERATOR"]["FILE"]	                         	= "ملف";   
+        $trad["OPERATOR"]["FILE"]	                         	= " ";   
         $trad["OPERATOR"]["TO"]	                         	= "إلى";     
         
         $trad["OPERATOR"]["NEW"]	                        	= "إضافة سجل جديد";
