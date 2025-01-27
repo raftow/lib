@@ -537,7 +537,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                 <div class="hzm_form_panel hzm_step_body_<?= $clStep . " step_panel_" . $obj->currentStep ?>">
                         <div class="form_right form_wizard_body form_wizard_<?php echo $cl_short; ?> form_right_<?php echo $clStep . " step_body_" . $obj->currentStep; ?>" >
                                 <div class="form_content form_content_<?php echo $cl_short ?>">
-                                        <div class='body_form_hzm body_form_<?php echo $cl_short ?>'>
+                                        <div id='body_form_hzm' class='body_form_hzm body_form_<?php echo $cl_short ?>'>
                                                 <?
 
                                                 $firstTr = true;
@@ -575,6 +575,23 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 ?>
                                                 <br>
                                         </div>
+                                        <?php 
+                                        $step_TEMPLATE = $obj->STEP_OPTIONS[$obj->currentStep]['TEMPLATE'];
+                                        // echo "<br>get_class(obj) = ".get_class($obj);
+                                        // echo "<br>currentStep = ".$obj->currentStep;
+                                        // echo "<br>step_TEMPLATE = ".$step_TEMPLATE;
+                                        if($step_TEMPLATE == 'accordion')
+                                        {
+                                                echo "<script>
+                                                \$( function() {
+                                                \$(\"#body_form_hzm\").accordion({
+                                                collapsible: true
+                                                });
+                                                } );
+                                                </script>";
+                                        }
+                                        
+                                        ?>
                                 </div>
                                 <div class="form_buttons">
                                         <div class="panel_bottom form_bottom_buttons ">
