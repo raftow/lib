@@ -17,6 +17,9 @@ if(!$objme) $objme = AfwSession::getUserConnected();
 AfwAutoLoader::addModule($posted_currmod);
 // die("AfwAutoLoader::addModule(posted_currmod=$posted_currmod) _POST=".var_export($_POST,true));
 /////////////////////////////
+/**
+ * @var AFWObject $obj
+ */
 $obj = new $class();
 //$currmod = $obj->getMyModule();
 
@@ -126,12 +129,12 @@ foreach ($class_db_structure as $nom_col => $desc) {
             $val = $obj_at->getId();
         }
         /*
-                if(($nom_col=="homework_start_paragraph_num") and ($val=="1")) 
-                {
-                    die("before set $nom_col val = $val -> _POST : ".var_export($_POST,true));                
-                }
+        if(($nom_col=="value") and (!$val or ($val=="0"))) 
+        {
+            die("before set $nom_col val = $val -> _POST : ".var_export($_POST,true));                
+        }*/
                  
-                */
+                
         if ($nom_col != $obj->getPK()) $obj->set($nom_col, $val);
 
         //if(($nom_col=="lastname_en") and ($val!="")) die("after set $nom_col val = $val -> obj : ".var_export($obj,true));

@@ -1466,9 +1466,14 @@ class AFWObject extends AFWRoot
         return $this->is($attribute, false);
     }
 
-    public function may($attribute)
+    public function mayBe($attribute)
     {
         return $this->is($attribute);
+    }
+
+    public function may($attribute)
+    {
+        return $this->mayBe($attribute);
     }
 
     /**
@@ -2056,6 +2061,13 @@ class AFWObject extends AFWRoot
             }
         }
 
+        if ($structure['TYPE'] == 'TEXT') {
+            if((!$value) or ($value=="0"))
+            {
+                $forceSet = true; 
+            }
+        }
+
         if ($structure['TYPE'] == 'GDAT') {
             if ($value and $value != 'now()') {
                 $value = AfwDateHelper::formatGDateForDB($value);
@@ -2380,9 +2392,10 @@ class AFWObject extends AFWRoot
             case '__v':
                 return $this->getAfieldValue($attribute); // to obsolete may be
                 break;
-            case 'cal':
+            
+            /*case 'cal':
                 return $this->calc($attribute);
-                break;
+                break; never do this because if developper doesnt implement calcXXXXX method no exception is thrown*/ 
             case 'val':
                 return $this->getVal($attribute);
                 break;
@@ -6626,24 +6639,31 @@ class AFWObject extends AFWRoot
                     }
 
                     //if((static::$TABLE=="practice") and ($attribute=="explain")) throw new AfwRuntimeException("kifech val_attr($attribute) = [$val_attr] w step = $step w desc = ".var_export($desc,true));
-
+                    if($desc['TYPE']=="TEXT")
+                    {
+                        $desc['CAN_ZERO'] = true;
+                    }
                     // 1. required fields values
                     if ($desc['TYPE'] != 'MFK' and $attribute_is_required) {
-                        if ($desc['TYPE'] == 'YN' and $val_attr == 'W') {
+                        if ($desc['TYPE'] == 'YN' and $val_attr == 'W' and (!$desc['W-IS-VALUE'])) {
                             $val_attr = '';
                         }
 
                         if (
                             !$val_attr and
-                            (!$desc['CAN_ZERO'] or $val_attr === '')
+                            ((!$desc['CAN_ZERO']) or ($val_attr === ''))
                         ) {
                             $spec_field_manda_token = "$attribute.FIELD_MANDATORY";
                             $spec_field_manda_token_message = $this->translate($spec_field_manda_token, $lang);
                             if ($spec_field_manda_token_message == $spec_field_manda_token) {
                                 $tabName = $this->getMyTable();
+                                /*$log_canzero = "*************** val_attr = $val_attr *******************
+                                                *************** canzero=".$desc['CAN_ZERO'].
+                                                "*************** TYPE=".$desc['TYPE'];*/
+                                $log_canzero = "";
                                 $cm_errors[$error_attribute] .= $this->translateOperator('FIELD MANDATORY', $lang) .
                                     ' : ' .
-                                    $this->translate($attribute, $lang);
+                                    $this->translate($attribute, $lang).$log_canzero;
 
                                 // below code we can not do because the tooltip can t support html
                                 // if(AfwSession::config('MODE_DEVELOPMENT', false)) $cm_errors[$error_attribute] .= "<!-- $tabName.$attribute -->";    

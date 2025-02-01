@@ -4503,7 +4503,7 @@ span.mbsc-select.mbsc-textarea {
 span.mbsc-ios.mbsc-rtl.mbsc-textfield-inner.mbsc-textfield-inner-outline {
     border-radius: 0px;
     width: 100%;
-    min-height: 70px;
+    min-height: 170px;
 }
 
 div.mbsc-scroller-wheel-item.mbsc-ios.mbsc-rtl.mbsc-wheel-item-checkmark.mbsc-wheel-item-multi>div>div {

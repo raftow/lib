@@ -390,7 +390,7 @@ class AfwFormulaHelper extends AFWRoot
     {
         $methodFormule = 'calc' . ucfirst($attribute);
         $return = $object->$methodFormule($what);
-        // if($attribute=="school_class_id") die("rafik $this => $methodFormule($what) = [$return] ");
+        // if($attribute=="weighted_percentage") die("rafik this->$methodFormule($what) = [$return] ");
         return $return;
     }
 }

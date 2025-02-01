@@ -932,6 +932,7 @@ class AfwFormatHelper
                 // $return = trim($return);
                 break;
             case 'TEXT':
+                // if(!$attribute_value) throw new AfwRuntimeException("decode attribute `$attribute`(TEXT TYPE) value=[$attribute_value]");
             default:
                 $return = stripslashes($attribute_value);
                 switch ($decode_format) {

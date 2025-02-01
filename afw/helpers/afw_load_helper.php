@@ -1831,7 +1831,7 @@ class AfwLoadHelper extends AFWRoot
                         $attribute .
                         ' dans DB_STRUCTURE de la table ' .
                         $object->getMyTable() .
-                        '.',
+                        '.'.
                     $call_method
                 );
             } else {
@@ -1913,7 +1913,7 @@ class AfwLoadHelper extends AFWRoot
                     $attribute .
                     ' not defined in DB_STRUCTURE of table ' .
                     $object->getMyTable() .
-                    '.',
+                    '.'.
                 $call_method .
                     ' structure => ' .
                     var_export($structure, true)
@@ -1927,7 +1927,7 @@ class AfwLoadHelper extends AFWRoot
     {
         $b_abstract = false;
         $return = $attribute_value = $object->getAfieldValue($attribute);
-        // if(($attribute=="aaa") and ($what != "value")) die("no categ and what=[$what]");
+        //if(($attribute=="value") and ($attribute_type == "TEXT")) die("what=[$what] attribute_value = $attribute_value = object->getAfieldValue($attribute)");
         $afw_getter_log[] = "no categ and attribute_value=[$attribute_value], what=$what, this->getAfieldValue($attribute) = " . $attribute_value;
         switch (strtolower($what)) {
             case 'object':
@@ -1950,7 +1950,7 @@ class AfwLoadHelper extends AFWRoot
                 } elseif (isset($attribute_value)) {
                     $return = $attribute_value;
                 } else {
-                    throw new AfwRuntimeException("Attribute $attribute not defined in DB_STRUCTURE of table " . $object->getMyTable() . '.', $call_method);
+                    throw new AfwRuntimeException("Attribute $attribute not defined in DB_STRUCTURE of table " . $object->getMyTable() . '.'. $call_method);
                 }
                 break;
             case 'decodeme':
@@ -1962,7 +1962,7 @@ class AfwLoadHelper extends AFWRoot
                     $return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, $structure, $object, $translate_if_needed = true);
                     // if($attribute=="customer_id") throw new AfwRuntimeException("$return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, ....)");
                 } else {
-                    throw new AfwRuntimeException("The Attribute $attribute of table " . $object->getMyTable() . " has structure property TYPE not defined.", $call_method);
+                    throw new AfwRuntimeException("The Attribute $attribute of table " . $object->getMyTable() . " has structure property TYPE not defined.". $call_method);
                 }
                 break;
         }

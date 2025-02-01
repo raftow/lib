@@ -19,7 +19,7 @@ $trad["*"]["validation_user_id"] = $trad["*"]["validated_by"] = $trad["*"]["id_v
 $trad["*"]["validation_date"] = $trad["*"]["validated_at"] = $trad["*"]["date_valid"] = "تم إعتماده بتاريخ";
 $trad["*"]["active"] = $trad["*"]["avail"] = "نشط";
 
-
+$trad["*"]["default_fg"] = " ";
 $trad["*"]["draft"] = "مسودة ؟";
 $trad["*"]["version"] = "النسخة";
 $trad["*"]["valid"] = "موافقة الإدارة";
