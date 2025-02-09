@@ -9,6 +9,15 @@
      $messages["DELETE_HAVE_BEEN_SAFELY_CANCELLED"] = "بحمد الله تم إلغاء عملية المسح بكل أمان";
 
 
+     $messages["Move action canceled safely"] = "بحمد الله تم إلغاء عملية نقل العنصر بكل أمان";
+     $messages["This operation can affect the process work"] = "يمكن أن تؤثر هذه العملية على نجاح الإجراء";
+     $messages["Are you sure you want to move up this item ?"] = "هل أنت متأكد أنك تريد نقل هذا العنصر إلى أعلى ؟";
+     $messages["Are you sure you want to move down this item ?"] = "هل أنت متأكد أنك تريد نقل هذا العنصر إلى أسفل ؟";
+     
+     
+     
+
+
      $messages["MULTI CHOICE ALLOWED"] = "يسمح بالاختيار المتعدد";
      $messages["CURRENT CHOICES"] = "الخيارات الحالية";
      $messages["NA-HERE"] = "لا ينطبق هنا";

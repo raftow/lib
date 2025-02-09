@@ -163,6 +163,22 @@ class AfwShowHelper
                 ];
             }
 
+            if ($obj->MOVE_UP_ACTION) {
+                $header['MOVE_UP'] = [
+                    'CODE' => 'move_up',
+                    'TYPE' => 'MOVE_UP',
+                    $show_as => true,
+                ];
+            }
+
+            if ($obj->MOVE_DOWN_ACTION) {
+                $header['MOVE_DOWN'] = [
+                    'CODE' => 'move_down',
+                    'TYPE' => 'MOVE_DOWN',
+                    $show_as => true,
+                ];
+            }
+
             //die("$obj header = ".var_export($header,true));
         }
 
@@ -209,7 +225,15 @@ class AfwShowHelper
                         } elseif ($col == 'ATTACH') {
                             $attach_url = $liste_obj[$id]->getAttachUrl();
                             $tuple[AfwLanguageHelper::translateKeyword("ATTACH", $lang)] = "<a target=\"_new\" href='$attach_url' ><img src='../lib/images/attach.png' width='24' heigth='24'></a>";
-                        } elseif ($col == 'DELETE') {
+                        } elseif ($col == 'MOVE_UP') {
+                            $icon_button_path = $images['move-up'];
+                            $tuple[AfwLanguageHelper::translateKeyword("MOVE_UP", $lang)] = "<a href='#' here='afw_shwr-up' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' sens=-1 class='move-up'><img src='$icon_button_path' style='height: 22px !important;'></a>";
+
+                        } elseif ($col == 'MOVE_DOWN') {
+                            $icon_button_path = $images['move-down'];
+                            $tuple[AfwLanguageHelper::translateKeyword("MOVE_DOWN", $lang)] = "<a href='#' here='afw_shwr-down' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' sens=1 class='move-down'><img src='$icon_button_path' style='height: 22px !important;'></a>";
+
+                        }elseif ($col == 'DELETE') {
                             $val_id = $liste_obj[$id]->getId();
                             $val_class = $liste_obj[$id]->getMyClass();
                             $val_currmod = $liste_obj[$id]->getMyModule();
@@ -723,6 +747,26 @@ class AfwShowHelper
                 $col_trans = AfwLanguageHelper::translateKeyword("DELETE", $lang);
                 $header[$col_trans] = ['TYPE' => 'DEL', 'DEL_LEVEL' => $del_level];
             }
+            if ($obj->MOVE_UP_ACTION) {
+                $col_trans = AfwLanguageHelper::translateKeyword("MOVE_UP", $lang);
+                $header[$col_trans] = [
+                    'CODE' => 'move_up',
+                    'TYPE' => 'MOVE_UP',
+                    'MOVE-QUESTION' => $obj->MOVE_QUESTION,
+                    $show_as => true,
+                ];
+            }
+
+            if ($obj->MOVE_DOWN_ACTION) {
+                $col_trans = AfwLanguageHelper::translateKeyword("MOVE_DOWN", $lang);
+                $header[$col_trans] = [
+                    'CODE' => 'move_down',
+                    'TYPE' => 'MOVE_DOWN',
+                    'MOVE-QUESTION' => $obj->MOVE_QUESTION,
+                    $show_as => true,
+                ];
+            }
+            
         }
         //else AfwRunHelper::lightSafeDie("mode_force_cols");
         /*
@@ -796,10 +840,10 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                 if ($desc == 'AAA') {
                                     $tuple['description'] = $val->__toString();
                                 } else {
-
+                                    $val_id = $val->getId();
+                                    $ord = $val->getMoveOrder();
                                     switch ($desc['TYPE']) {
-                                        case 'PK':
-                                            $val_id = $val->getId();
+                                        case 'PK':                                            
                                             $tuple[$col] = $val_id;
                                             break;
                                         case 'DEL':
@@ -828,6 +872,20 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             }
                                             // if($obj instanceof Atable) die("tuple = ".var_export($tuple, true));
                                             break;
+                                        case 'MOVE_UP' :
+                                                $bswal = $desc['MOVE-QUESTION'];
+                                                $col_trans = AfwLanguageHelper::translateKeyword("MOVE_UP", $lang);
+                                                $icon_button_path = $images['move-up'];
+                                                $tuple[$col_trans] = "<a href='#' id='mover-up-$val_id' here='afw_shwr' oid='$val_id' ord='$ord' cl='$val_class' md='$val_currmod' lbl='$lbl' afworder='$afworder' bswal='$bswal' class='move-up'><img src='$icon_button_path' style='height: 22px !important;'></a>";
+                                            break;
+
+                                        case 'MOVE_DOWN' :
+                                                $bswal = $desc['MOVE-QUESTION'];
+                                                $col_trans = AfwLanguageHelper::translateKeyword("MOVE_DOWN", $lang);
+                                                $icon_button_path = $images['move-down'];
+                                                $tuple[$col_trans] = "<a href='#' id='mover-down-$val_id' here='afw_shwr' oid='$val_id' ord='$ord' cl='$val_class' md='$val_currmod' lbl='$lbl' afworder='$afworder' bswal='$bswal' class='move-down'><img src='$icon_button_path' style='height: 22px !important;'></a>";
+                                        break;
+                                             
                                         case 'SHOW':
                                             $col_trans = AfwLanguageHelper::translateKeyword("DISPLAY", $lang);
                                             // die("for col $col and lang=$lang col_trans=$col_trans");
@@ -1160,6 +1218,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             $header_trad[$nom_col] = $trad_col;
         }
 
+        $order_key = $obj->moveColumn();
+
         //die($obj->getMyClass()." >> nowrap_cols for $obj = ".var_export($obj->nowrap_cols,true));
         list($categoryAttribute, $categoryAttributeCATEGORY) = explode(":", $obj->rowCategoryAttribute());
         list($html, $ids) = self::tableToHtml(
@@ -1181,7 +1241,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             $rows_by_table,
             $obj->detailModeWidthedTable,
             $categoryAttribute,
-            $obj->getCssClassName()
+            $obj->getCssClassName(),'off', $order_key
         );
 
         if (!$mode_show_all_records) {
@@ -1217,7 +1277,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
         $showWidthedTable = '',
         $row_class_key = '',
         $css_class_name = '',
-        $class_td_off = 'off'
+        $class_td_off = 'off',
+        $order_key = ''
     ) {
         //die("dataImportance=".var_export($dataImportance,true));
         global $datatable_on_components,
@@ -1411,7 +1472,9 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                         $cl_tr = 'err';
                     }
                 }
-                $html .= "   <tr class='$cl_tr $row_class_css' alt='old_cl=$old_cl'>\n";
+                if($order_key) $order = $tuple[$order_key];
+                else $order = $tuple["id"];
+                $html .= "   <tr id='tr-object-$order' class='$cl_tr $row_class_css' alt='old_cl=$old_cl'>\n";
                 foreach ($header_trad as $nom_col => $desc) {
                     $importance = ($dataImportance and is_array($dataImportance)) ? $dataImportance[$nom_col] : "";
                     $nom_col_ltn = AfwStringHelper::arabic_to_latin_chars($nom_col);
@@ -1454,8 +1517,16 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                     } else {
                         $data_aff = $tuple[$nom_col];
                     }
+                    if($nom_col==$order_key)
+                    {
+                        $td_id = 'order-'.$id;
+                    }
+                    else
+                    {
+                        $td_id = $nom_col.'-'.$id;
+                    }
                     $html .=
-                        "         <td class='col-importance-$importance $col_class_css' $nowrap_col>" .
+                        "         <td id='$td_id' class='col-importance-$importance $col_class_css' $nowrap_col>" .
                         $data_aff .
                         "</td>\n";
                     if ($total_cols[$nom_col]) {

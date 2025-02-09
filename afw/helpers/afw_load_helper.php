@@ -219,7 +219,7 @@ class AfwLoadHelper extends AFWRoot
             $theObject->OBJECTS_CACHE[$attribute]->getId() > 0
         ) {
             $object = $theObject->OBJECTS_CACHE[$attribute];
-            // si old cache a supprimer
+            // old cache is to delete because value of id has changed
             if ($object->getId() != $object_id) {
                 unset($theObject->OBJECTS_CACHE[$attribute]);
                 $object = null;
@@ -319,7 +319,12 @@ class AfwLoadHelper extends AFWRoot
                     $return = $object;
                 }
             }
-
+       
+            // x. otherwise If the answer table is Lookup get The Object from lookup data
+            /*
+            if (!$object) {
+                $object = self::getTheObjectIfLookup($ansTab, $ansMod, $object_id);
+            }*/    
             // 3. otherwise load object
             if (!$object) {
                 $loadObjectFK_step = 3;

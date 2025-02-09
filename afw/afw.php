@@ -1116,6 +1116,13 @@ class AFWObject extends AFWRoot
         return true;
     }
 
+    public function loadBrotherWithUniqueKey($ukey_array)
+    {
+        $obj = new static();
+        if($obj->loadWithUniqueKey($ukey_array)) return $obj;
+        else return null;
+    }
+
     public function loadWithUniqueKey($ukey_array)
     {
         foreach ($ukey_array as $ukey => $ukey_value) {
@@ -1715,6 +1722,14 @@ class AFWObject extends AFWRoot
 
         return $boolIndexArr[$id_to_find];
     }
+
+    /**
+     * addRemoveInMfk add and/or remove ids in mfk attribute
+     * @param string $attribute is the mfk attribute
+     * @param array $ids_to_add_arr is the array of ids to add
+     * @param array $ids_to_remove_arr is the array of ids to remove
+     * @param array $struct is optional and if specified contain the attribute strcuture array
+     */
 
     public function addRemoveInMfk($attribute, $ids_to_add_arr, $ids_to_remove_arr, $struct = null)
     {
@@ -2953,6 +2968,135 @@ class AFWObject extends AFWRoot
         return [$switcher_authorized, $switcher_title, $switcher_text];
     }
 
+
+
+    /**
+     * moveConfig
+     * @param string $col
+     * @param Auser $auser
+     * should be overridden in subclasses 
+     * return array[$move_authorized, $move_title, $move_text]
+     * 
+     * $move_authorized : if true means object is moveable
+     * $move_title, $move_text are the title and warning that will be shown by the confirmation popup before do the move
+     */
+
+    public function moveConfig($col, $sens, $auser = null)
+    {
+        $move_authorized = false;
+        $no_move_title = "";
+        $no_move_reason = "";
+        $move_limit = $this->moveLimit($col);
+
+        if ($this->getVal($col)+$sens >= $move_limit) {
+            $move_authorized = true;
+        }
+        else {
+            $no_move_title = "limit reached";
+            $no_move_reason = "move_limit=$move_limit reached";
+        }
+
+
+
+        return [$move_authorized, $no_move_title, $no_move_reason];
+    }
+
+    public final function userCanMoveMe($auser, $sens)
+    {
+        $col = $this->moveColumn();
+        if(!$col) return [false, 'move rejected', 'no move column defined'];
+        $desc = AfwStructureHelper::getStructureOf($this, $col);
+        if (!$this->attributeCanBeEditedBy($col, $auser, $desc)) return [false, 'move rejected', 'move column is readonly for you'];
+        if ($auser->isSuperAdmin()) return [true, '', ''];
+        return $this->moveConfig($col, $sens, $auser);
+    }
+
+
+    public function getMyIndexArray()
+    {
+        if (is_array($this->UNIQUE_KEY) and count($this->UNIQUE_KEY) > 0) {
+            $uk_arr = [];
+            foreach ($this->UNIQUE_KEY as $key) {
+                $uk_arr[$key] = $this->getVal($key);
+            }
+            return $uk_arr;
+        }
+        else throw new AfwRuntimeException("No UNIQUE_KEY index defined");
+    }
+
+    public function moveColumn()
+    {
+        return null; // to be overridden
+    }
+
+    public function moveLimit($col)
+    {
+        return 0;
+    }
+
+    public final function getMoveOrder()
+    {
+        $col = $this->moveColumn();
+        if(!$col) return $this->id;
+        return $this->getVal($col);
+    }
+
+    public final function moveMe($sens)
+    {
+        try
+        {
+            
+            $secondObjSwitched = null;
+            $newId = 0;
+            $col = $this->moveColumn();
+            $limitDown = $this->moveLimit($col);
+            if(!$col) return [false, "No move column defined", null];
+            $isInIndex = $this->isIndexAttribute($col);
+            if($isInIndex)
+            {
+                $colVal = $this->getVal($col);
+                $newVal = $this->getVal($col) + $sens;
+                if($newVal<$limitDown) 
+                {
+                    return [false, "LIMIT-REACHED", null];
+                }
+                $newArrIndex = $this->getMyIndexArray();
+                $newArrIndex[$col] = $newVal;
+                $secondObjSwitched = $this->loadBrotherWithUniqueKey($newArrIndex);
+            }
+
+            if($secondObjSwitched)
+            {
+                $secondObjSwitched->set($col, -1);
+                $secondObjSwitched->commit();
+            }
+
+            $this->set($col, $newVal);
+            $this->commit();
+
+            if($secondObjSwitched)
+            {
+                $secondObjSwitched->set($col, $colVal);
+                $secondObjSwitched->commit();
+                $newId = $secondObjSwitched->id;
+            }
+            $status = "NOTHING-DONE";
+            if($sens<0) $status = "MOVED-UP-$newId-$limitDown";
+            elseif($sens>0) $status = "MOVED-DOWN-$newId-$limitDown";
+
+            return [true, $status, $secondObjSwitched];
+        }
+        catch(Exception $e)
+        {
+            return [false, $e->getMessage(), null];
+        }
+
+        
+
+    }
+    
+    
+
     /**
      * @param Auser $auser
      * @param string $col
@@ -3075,7 +3219,9 @@ class AFWObject extends AFWRoot
 
     /**
      * delete
-     * Delete row
+     * Delete row if beforeDelete event give authorization
+     * @param int $id_replace is the ID of the replacement object if the delete is because of duplicated object
+     * @return boolean true if the delete is done and false if not authorized
      */
     public function delete($id_replace = 0)
     {
@@ -3095,10 +3241,16 @@ class AFWObject extends AFWRoot
                     $this->getShortDisplay($lang)."] DEL-RETURN=$delReturnDecoded"
             );
         } else {
-            $this->logicDelete();
+            
 
             $return = false;
             if ($this->beforeDelete($this->id, $id_replace)) {
+                $AUDIT_DISABLED = AfwSession::config("AUDIT_DISABLED", false);
+                // for audit 
+                if($this->AUDIT_DATA and !$AUDIT_DISABLED)
+                {
+                    $this->logicDelete();        
+                }
                 $query =
                     'DELETE FROM ' .
                     self::_prefix_table(static::$TABLE) .

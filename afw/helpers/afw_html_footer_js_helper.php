@@ -7,10 +7,14 @@ class AfwHtmlFooterJsHelper
       {
         $are_you_sure = $objme->translateMessage("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECORD",$lang);
         $once_deleted = $objme->translateMessage("ONCE_DELETED_YOU_WILL_NOT_BE_ABLE_TO_GO_BACK",$lang);
+        $once_moved = $objme->translateMessage("This operation can affect the process work",$lang);        
+        $are_you_sure_move_up = $objme->translateMessage("Are you sure you want to move up this item ?",$lang);
+        $are_you_sure_move_down = $objme->translateMessage("Are you sure you want to move down this item ?",$lang);
         $has_been_deleted = $objme->translateMessage("THE_FOLLOWING_RECORD_HAS_BEEN_DELETED",$lang);
         $you_dont_have_rights_todelete = $objme->translateMessage("CANT_DELETE_THE_ROW",$lang);
         $you_dont_have_rights = $objme->translateMessage("CANT_DO_THIS",$lang);
         $safely_cancelled = $objme->translateMessage("DELETE_HAVE_BEEN_SAFELY_CANCELLED",$lang);
+        $move_safely_cancelled = $objme->translateMessage("Move action canceled safely",$lang);
       }
 
       if((!$objme) or (!$objme->isAdmin())) $response_data_format = "data = '';\n";
@@ -19,6 +23,106 @@ class AfwHtmlFooterJsHelper
       ob_start();
 ?>
 <script>
+
+function moveRun(cl, md, mv_id, mv_ord, mv_sens,limitd)
+{
+  console.log('move running before ajax action on md='+md+' cl='+cl+' id='+mv_id+' ord='+mv_ord+' sens='+mv_sens+' limitd='+limitd);
+  $.ajax({
+            type:'POST',
+            url:'../lib/api/afw_mover.php',
+            data:{cl:cl, currmod:md, mv_id:mv_id, mv_sens:mv_sens, limitd:limitd},
+            success: function(data)
+            {
+                data = data.trimLeft();
+                data = data.trimRight();
+
+                console.log('#md='+md+' cl='+cl+' id='+mv_id+' sens='+mv_sens+' afw_mover res = '+data);
+                arr_data = data.split("-");
+                status = arr_data[0];
+                msens = arr_data[1];
+                switched_id = arr_data[2];
+                if((status=="MOVED") && (msens=="UP"))
+                {
+                    ord_moved = mv_ord; 
+                    ord_switched = parseInt(mv_ord)-1;
+
+                    console.log('mover-up-'+mv_id+' attr ord was '+$("#mover-up-"+mv_id).attr("ord"));
+                    $("#mover-up-"+mv_id).attr("ord",ord_switched);
+                    console.log('mover-up-'+mv_id+' attr ord setted to '+$("#mover-up-"+mv_id).attr("ord"));
+                    
+                    console.log('mover-up-'+switched_id+' attr ord was '+$("#mover-up-"+switched_id).attr("ord"));
+                    $("#mover-up-"+switched_id).attr("ord",ord_moved);
+                    console.log('mover-up-'+switched_id+' attr ord setted to '+$("#mover-up-"+switched_id).attr("ord"));
+                    
+                    $("#mover-down-"+mv_id).attr("ord",ord_switched);
+                    $("#mover-down-"+switched_id).attr("ord",ord_moved);
+                    //
+                    
+                    tr_moved = 'tr-object-'+ord_moved;
+                    tr_switched = 'tr-object-'+ord_switched;
+                    
+                    
+                    
+
+                    console.log('order-id-'+mv_id+' was '+$('#order-'+mv_id).html());
+                    $('#order-'+mv_id).html(ord_switched+' ');
+                    console.log('order-id-'+mv_id+' setted to '+$('#order-'+mv_id).html());
+                    
+                    console.log('order-id-'+switched_id+' was '+$('#order-'+switched_id).html());
+                    $('#order-'+switched_id).html(ord_moved+' ');
+                    console.log('order-id-'+switched_id+' setted to '+$('#order-'+switched_id).html());
+
+                    html_moved = $("#"+tr_moved).html();
+                    html_switched = $("#"+tr_switched).html();
+
+                    $("#"+tr_moved).html(html_switched);
+                    $("#"+tr_switched).html(html_moved);
+                    // location.reload();
+                    move_triggers();
+                }
+                else if((status=="MOVED") && (msens=="DOWN"))
+                {
+                  ord_moved = mv_ord; 
+                  ord_switched = parseInt(mv_ord)+1;
+
+                    $("#mover-up-"+mv_id).attr("ord",ord_switched);
+                    $("#mover-up-"+switched_id).attr("ord",ord_moved);
+                    $("#mover-down-"+mv_id).attr("ord",ord_switched);
+                    $("#mover-down-"+switched_id).attr("ord",ord_moved);
+                    
+                    //
+                   
+                    tr_moved = 'tr-object-'+ord_moved;
+                    tr_switched = 'tr-object-'+ord_switched;
+                    
+
+                    
+                    console.log('order-'+mv_id+' was '+$('#order-'+mv_id).html());
+                    $('#order-'+mv_id).html(ord_switched+' ');
+                    console.log('order-'+mv_id+' setted to '+$('#order-'+mv_id).html());
+
+                    console.log('order-'+switched_id+' was '+$('#order-'+switched_id).html());
+                    $('#order-'+switched_id).html(ord_moved+' ');
+                    console.log('order-'+switched_id+' setted to '+$('#order-'+switched_id).html());
+                    
+                    html_moved = $("#"+tr_moved).html();
+                    html_switched = $("#"+tr_switched).html();
+
+                    $("#"+tr_moved).html(html_switched);
+                    $("#"+tr_switched).html(html_moved);
+                    // location.reload();
+                    move_triggers();
+
+                }
+                else
+                {
+                    <?php echo $response_data_format ?>
+                    swal("<?php echo $you_dont_have_rights?>["+data+"]"); // 
+                }
+            }
+
+    });
+}
 
 function switchRun(cl, md, swc_id, swc_col)
 {
@@ -45,11 +149,93 @@ function switchRun(cl, md, swc_id, swc_col)
                 else
                 {
                     <?php echo $response_data_format ?>
-                    swal("<?php echo $you_dont_have_rights?>["+data+"]");
+                    swal("<?php echo $you_dont_have_rights?>["+data+"]"); // 
                 }
             }
 
     });
+}
+
+function move_triggers()
+{
+            $(".move-up").unbind('click');
+            $(".move-up").click(function()
+                          {
+                            var mv_id= $(this).attr("oid");
+                            var mv_ord= $(this).attr("ord");
+                            var mv_sens=-1;
+                            var cl= $(this).attr("cl");
+                            var md= $(this).attr("md");
+                            var lbl = $(this).attr("lbl");
+                            var bswal = $(this).attr("bswal");                            
+                            var limitd = $(this).attr("limitd"); 
+                            $(".alert.messages").fadeOut().remove();
+                            if(bswal==1)
+                            {
+                                swal({
+                                  title: "<?=$are_you_sure_move_up?> : "+lbl,
+                                  text: "<?=$once_moved?>", // +div_to_del+" / "+$ele.id,
+                                  icon: "warning",
+                                  buttons: true,
+                                  dangerMode: true,
+                                })
+                                .then((willMove) => {
+                                  if (willMove) 
+                                  {
+                                    moveRun(cl,md,mv_id,mv_ord,mv_sens,limitd);
+                                  } 
+                                  else 
+                                  {
+                                    swal("<?php echo $move_safely_cancelled?>");
+                                  }
+                                });
+                            }
+                            else
+                            {
+                                moveRun(cl,md,mv_id,mv_ord,mv_sens,limitd);
+                            }
+                            
+                          }
+            );
+
+            $(".move-down").unbind('click');
+            $(".move-down").click(function()
+                          {
+                            var mv_id= $(this).attr("oid");
+                            var mv_ord= $(this).attr("ord");
+                            var mv_sens=+1;
+                            var cl= $(this).attr("cl");
+                            var md= $(this).attr("md");
+                            var lbl = $(this).attr("lbl");
+                            var bswal = $(this).attr("bswal");                            
+                            var limitd = $(this).attr("limitd");                            
+                            $(".alert.messages").fadeOut().remove();
+                            if(bswal==1)
+                            {
+                                swal({
+                                      title: "<?=$are_you_sure_move_down?> : "+lbl,
+                                      text: "<?=$once_moved?>", // +div_to_del+" / "+$ele.id,
+                                      icon: "warning",
+                                      buttons: true,
+                                      dangerMode: true,
+                                    })
+                                    .then((willMove) => {
+                                      if (willMove) 
+                                      {
+                                        moveRun(cl,md,mv_id,mv_ord,mv_sens,limitd);
+                                      } 
+                                      else 
+                                      {
+                                        swal("<?php echo $move_safely_cancelled?>");
+                                      }
+                                    });
+                            }
+                            else
+                            {
+                                moveRun(cl,md,mv_id,mv_ord,mv_sens,limitd);
+                            }
+                          }
+            );
 }
 
 $(document).ready(function(){
@@ -181,6 +367,8 @@ $(document).ready(function(){
                 });
        }
        );
+
+       move_triggers();
 
        $(".switcher").click(function()
         {

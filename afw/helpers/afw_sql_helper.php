@@ -1099,7 +1099,9 @@ class AfwSqlHelper extends AFWRoot
     {
         if($object->IS_COMMITING) throw new AfwRuntimeException("To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods");
         $object->IS_COMMITING = true;
-        global $AUDIT_DISABLED, $the_last_update_sql;
+        global $the_last_update_sql;
+
+        $AUDIT_DISABLED = AfwSession::config("AUDIT_DISABLED", false);
 
         $user_id = AfwSession::getUserIdActing();
 
@@ -1232,7 +1234,7 @@ class AfwSqlHelper extends AFWRoot
                     }
                     if ($only_me and $return > 1) {
                         throw new AfwRuntimeException(
-                            "MOMKEN error affected rows = $return, strang for query : ",
+                            "MOMKEN error affected rows = $return, strang for query : ".
                             $query .
                                 '///' .
                                 AfwMysql::get_error(
@@ -1286,6 +1288,7 @@ class AfwSqlHelper extends AFWRoot
      */
     public static function hideObject($object)
     {
+        $AUDIT_DISABLED = AfwSession::config("AUDIT_DISABLED", false);
         $me = AfwSession::getUserIdActing();
         if ($object->IS_VIRTUAL) {
             throw new AfwRuntimeException(
@@ -1294,7 +1297,7 @@ class AfwSqlHelper extends AFWRoot
                     '.'
             );
         } else {
-            if ($object->AUDIT_DATA and !$object->AUDIT_DISABLED) {
+            if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
                 $object->audit_before_update([$object->fld_ACTIVE() => 'N']);
             }
 
