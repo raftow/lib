@@ -9,6 +9,7 @@ $LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
 $auto_complete_default = ((!isset($desc["AUTOCOMPLETE"])) and ($list_count > $LIMIT_INPUT_SELECT));
 if ((!$auto_c)  and (!$auto_complete_default)) 
 {
+    if(!$desc['ORDERBY']) $desc['ORDERBY'] = $objRep->ORDER_BY_FIELDS;
     $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
     if ($desc["FORMAT-INPUT"] == "btn-bootstrap") 
     {

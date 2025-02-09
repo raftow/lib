@@ -21,7 +21,7 @@ class AfwLoadHelper extends AFWRoot
         return self::$lookupProps["$nom_module_fk-$nom_table_fk"];
     }
 
-    public static function getLookupData($nom_module_fk, $nom_table_fk, $where="--")
+    public static function getLookupData($nom_module_fk, $nom_table_fk, $where="--", $order_by="")
     {
         if(!$nom_module_fk) throw new AfwRuntimeException("nom_module_fk is mandatory attribute for AfwLoadHelper::getLookupData");
         if(!$where) $where="--"; // `1` means all, `--` means all active and `++` means all after HV
@@ -32,7 +32,7 @@ class AfwLoadHelper extends AFWRoot
             $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
             $object = new $nom_class_fk();
             $where_cleaned = str_replace("((id))",$object->getPKField(),$where);
-            $dataLookup = self::loadAllLookupData($object,$where_cleaned);
+            $dataLookup = self::loadAllLookupData($object,$where_cleaned, $order_by);
             // if($nom_table_fk=="crm_customer") throw new AfwRuntimeException("Shoof self::loadAllLookupData(object of $nom_class_fk, $where_cleaned) = ".var_export($dataLookup, true));
 
             // merge into global lookup data
@@ -94,8 +94,8 @@ class AfwLoadHelper extends AFWRoot
             }
             $module_code = $obj->getMyModule();
             $table_name = $obj->getMyTable();
-            $return = self::getLookupData($module_code, $table_name, $where, $val_to_keep);
-            $case = "self::getLookupData($module_code, $table_name, $where, $val_to_keep)";
+            $return = self::getLookupData($module_code, $table_name, $where, $order_by);
+            $case = "self::getLookupData($module_code, $table_name, $where, $order_by)";
         }
         else
         {
@@ -577,7 +577,7 @@ class AfwLoadHelper extends AFWRoot
     /**
      * @param AFWObject $object
      * */
-    public static function loadAllLookupData($object, $where = "--")
+    public static function loadAllLookupData($object, $where = "--", $order_by="")
     {
         $module = $object::$MODULE;
         $table = $object::$TABLE;
@@ -639,6 +639,7 @@ class AfwLoadHelper extends AFWRoot
         $pk = $object->getPKField();
 
         $sql_recup = "select $pk, $display_field as __val from $server_db_prefix" . $module . ".$table where $where";
+        if($order_by) $sql_recup .= " order by $order_by";
 
         // if($table=="crm_customer") throw new AfwRuntimeException("sql_recup = $sql_recup");
 
