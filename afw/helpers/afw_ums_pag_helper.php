@@ -15,7 +15,7 @@ class AfwUmsPagHelper extends AFWRoot
 
     // 	2	تاريخ
     public static $afield_type_date = 2;
-    // 	9	تاريخ نصراني
+    // 	9	تاريخ ميلادي
     public static $afield_type_Gdat = 9;
     // 	4	وقت
     public static $afield_type_time = 4;

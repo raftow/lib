@@ -251,7 +251,7 @@ $slang_syntax_fld_type_method_arr[$special_lang][5]="getAnswerClass";
 // 	2	تاريخ
 $slang_syntax_fld_type_arr[$special_lang][2]        = "String [is-en:mandatory] maxlength(8)";
     
-// 	9	تاريخ نصراني
+// 	9	تاريخ ميلادي
 $slang_syntax_fld_type_arr[$special_lang][9]        = "ZonedDateTime";
     
 // 	12	إختيار من قائمة قصيرة

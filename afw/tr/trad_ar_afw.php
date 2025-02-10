@@ -121,7 +121,7 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["TYPE-PCTG-FORMAT"]	        	                = "خطأ في قيمة النسبة المائوية"; 
         $trad["OPERATOR"]["FORMAT-TIME"]	        	                = "قيمة وقتية غير صحيحة"; 
         $trad["OPERATOR"]["FORMAT-DATE"]	        	                = "تاريخ هجري غير صحيح"; 
-        $trad["OPERATOR"]["FORMAT-GDAT"]	        	                = "تاريخ نصراني غير صحيح";
+        $trad["OPERATOR"]["FORMAT-GDAT"]	        	                = "تاريخ ميلادي غير صحيح";
         $trad["OPERATOR"]["TEXT-MAX-LENGTH"]	        	                = "جملة أو فقرة تجاوز طولها المسموح به";
         $trad["OPERATOR"]["TEXT-MIN-LENGTH"]	        	                = "هذا النص لم يحقق الطول الأدنى المطلوب";
         

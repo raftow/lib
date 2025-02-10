@@ -176,7 +176,7 @@ class AfwMomkenObject extends AFWObject {
                 $arr_list_of_afield_type["code"][7] = "pctg";
                 $arr_list_of_afield_type["numeric"][7] = true;
 
-                // GDAT - تاريخ نصراني  
+                // GDAT - تاريخ ميلادي  
                 // AFIELD_TYPE_GDAT = 9; 
                 $arr_list_of_afield_type["en"]  [9] = "G. Date";
                 $arr_list_of_afield_type["ar"]  [9] = "تاريخ ميلادي";
