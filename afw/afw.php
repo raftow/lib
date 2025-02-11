@@ -5401,6 +5401,7 @@ class AFWObject extends AFWRoot
 
     public function showYNValueForAttribute($ynCode, $key, $langue = '')
     {
+        if(!$ynCode) return "";
         global $lang;
         // $objme = AfwSession::getUserConnected();
         if (!$langue) {
@@ -5411,13 +5412,15 @@ class AFWObject extends AFWRoot
         }
         $ynCodeForThis = "$key.$ynCode";
         $ynTranslationForThis = $this->translate($ynCodeForThis, $langue);
-        //return $ynTranslationForThis;
-        //if($key=="auto_approved") throw new AfwRuntimeException("showYNValueForAttribute($ynCode, $key, $langue) : $ynTranslationForThis = this->translate($ynCodeForThis,$langue)");
+        
+        // if($key=="attribute_1" and (!$ynCode)) throw new AfwRuntimeException("showYNValueForAttribute($ynCode, $key, $langue) : $ynTranslationForThis = this->translate($ynCodeForThis,$langue)");
         if ($ynTranslationForThis and $ynTranslationForThis != $ynCodeForThis) {
             return $ynTranslationForThis;
         }
 
-        return $this->translateOperator($ynCode, $langue); // ." translation [$key][$lang][".$this->decode($key)."]"
+        $return = $this->translateOperator($ynCode, $langue); // ." translation [$key][$lang][".$this->decode($key)."]"
+        if($key=="attribute_1" and (!$ynCode)) throw new AfwRuntimeException("showYNValueForAttribute($ynCode, $key, $langue) : $return = this->translateOperator($ynCode,$langue)");
+        return $return;
     }
 
 
@@ -6649,6 +6652,7 @@ class AFWObject extends AFWRoot
 
     final public function stepContainAttribute($step, $attribute, $desc = null)
     {
+        if($step=='all') return true; // optimisation
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($this, $attribute);
         } else {
@@ -6726,7 +6730,7 @@ class AFWObject extends AFWRoot
             //die("static::getDbStructure($return_type, $attrib) = ".var_export($this_db_structure,true));
         }
 
-
+        if((get_class($this)=="Applicant") and (!$erroned_attribute) and ($step=="all") and !$this_db_structure["passeport_num"]) die("dbg 2025/02 this_db_structure = ".var_export($this_db_structure,true));
 
 
         foreach ($this_db_structure as $attribute => $desc) {
@@ -6753,8 +6757,18 @@ class AFWObject extends AFWRoot
             if ($attr_sup_categ == 'ITEMS') {
                 $desc['TYPE'] = 'MFK';
             }
+            /*
+            if($attribute=="passeport_num" and $step=='all') 
+            {
+                die("debugg-2025-02-10 : Test if attribute $attribute step $step contain attribute $attribute");
+            }*/
 
             if ($this->stepContainAttribute($step, $attribute, $desc)) {
+                /*
+                if($attribute=="passeport_num" and $step=='all') 
+                {
+                    die("debugg-2025-02-11 : attribute $attribute step $step contain attribute $attribute");
+                }*/
                 /*
                 if(($step==1) and ($attribute=="first_name_ar"))
                 {
@@ -6765,7 +6779,8 @@ class AFWObject extends AFWRoot
                 if (
                     self::structureCheckable($desc) and
                     !$cm_errors[$desc['DEPENDENCY']]
-                ) {
+                ) 
+                {
                     /*
                     if($attribute=="concernedGoalList")
                     {
@@ -6830,11 +6845,20 @@ class AFWObject extends AFWRoot
                     }
 
                     // 2. Format of formatted fields
-                    if (AfwFormatHelper::isFormatted($desc)) {
+                    if (AfwFormatHelper::isFormatted($desc)) 
+                    {
                         list(
                             $correctFormat,
                             $correctFormatMess,
                         ) = AfwFormatHelper::isCorrectFormat($val_attr, $desc);
+                        
+                        
+                        if($attribute=="passeport_num" and $step=='all') 
+                        {
+                            die("attribute $attribute list(correctFormat=$correctFormat,correctFormatMess=$correctFormatMess,) = AfwFormatHelper::isCorrectFormat(value of attribute=[$val_attr], desc of attribute = ".var_export($desc, true).")");
+                        }
+                        /* */
+
                         if (!$correctFormat) {
                             if (!$desc['RESUME_TEXT_ERROR']) {
                                 $cm_errors[$error_attribute] .=
@@ -6855,6 +6879,8 @@ class AFWObject extends AFWRoot
 
                             if ($stop_on_first_error) break;
                         }
+
+                        // if($attribute=="passeport_num") die("attribute $attribute, errors = ". $cm_errors[$error_attribute]);
                     }
 
                     // 3. Constraints on values for Constrainted fields
@@ -6878,7 +6904,7 @@ class AFWObject extends AFWRoot
                             if ($stop_on_first_error) break;
                         }
                     }
-
+                    // if($attribute=="passeport_num") die("attribute $attribute, errors is ". $cm_errors[$error_attribute]);
                     // 4. Errors eventually in pillar or 'pillar-part' fields
                     //   pole or     is same as pillar but only if applicable
                     //   pillar-part   is same as pillar if attribute Is Required
@@ -7034,6 +7060,8 @@ class AFWObject extends AFWRoot
                         }
                     }
 
+                    // if($attribute=="passeport_num") die("attribute $attribute, errors is = ". $cm_errors[$error_attribute]);
+
                     if ($desc['TYPE'] == 'MFK') {
                         $attribute_val0 = $this->calc($attribute);
                         if (!is_array($attribute_val0)) {
@@ -7094,6 +7122,8 @@ class AFWObject extends AFWRoot
                         $cm_errors[$attribute] = mas_complete_len($cm_errors[$attribute], 36," ");
                         */
                     }
+
+                    // if($attribute=="passeport_num") die("attribute $attribute, errors equal to ". $cm_errors[$error_attribute]);
                 }
             }
         }
@@ -7108,6 +7138,8 @@ class AFWObject extends AFWRoot
         {
             throw new AfwRuntimeException("There are errors : step==$step : cm_errors = ".var_export($cm_errors,true));
         }*/
+
+        // if($this->id==1056365305) echo ("all step $step errors = ". var_export($cm_errors, true));
 
         return $cm_errors;
     }
@@ -7151,7 +7183,7 @@ class AFWObject extends AFWRoot
 
         if (!isset($this->arr_erros[$step]) or $recheck) {
             $common_e_arr   =   $this->getCommonDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step);
-            // die("showErrorsAsSessionWarnings::getCommonDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step) => ".var_export($common_e_arr,true));
+            // if($step==2) die("showErrorsAsSessionWarnings::getCommonDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step) => ".var_export($common_e_arr,true));
             if (!$attribute or $this->stepContainAttribute($step, $attribute)) {
                 $specific_e_arr = $this->getSpecificDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step);
             } else {
@@ -7161,6 +7193,8 @@ class AFWObject extends AFWRoot
                 $common_e_arr,
                 $specific_e_arr
             );
+
+            if($step==2) die("debugg rafik this->arr_erros = ".var_export($this->arr_erros,true));
         }
 
         $err_arr = $this->arr_erros[$step];
@@ -7168,8 +7202,6 @@ class AFWObject extends AFWRoot
         foreach ($ignore_fields_arr as $ignore_field) {
             unset($err_arr[$ignore_field]);
         }
-
-        // die(var_export($this->arr_erros,true));
 
         return $err_arr;
     }

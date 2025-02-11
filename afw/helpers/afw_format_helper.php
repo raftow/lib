@@ -79,7 +79,7 @@ class AfwFormatHelper
                     $length = strlen($val_attr);
                 }
             }
-            if (!$desc['MANDATORY'] and !$desc['REQUIRED']) {
+            if (!$desc['MANDATORY'] and !$desc['REQUIRED'] and !$desc['FORMAT']['STRING-LENGTH']) {
                 $desc['MIN-SIZE'] = 0;
             }
             $min_size = $desc['MIN-SIZE'];
@@ -650,6 +650,11 @@ class AfwFormatHelper
 
         return $return;
     }
+
+    /**
+     * 
+     * @param AFWObject $obj
+     */
 
     public static final function decode($attribute, $typattr, $decode_format, $attribute_value, $integrity = true, $lang = "ar", $structure = null, $obj = null, $translate_if_needed = true)
     {
