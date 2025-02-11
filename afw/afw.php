@@ -6730,7 +6730,7 @@ class AFWObject extends AFWRoot
             //die("static::getDbStructure($return_type, $attrib) = ".var_export($this_db_structure,true));
         }
 
-        if((get_class($this)=="Applicant") and (!$erroned_attribute) and ($step=="all") and !$this_db_structure["passeport_num"]) die("dbg 2025/02 this_db_structure = ".var_export($this_db_structure,true));
+        // if((get_class($this)=="Applicant") and (!$erroned_attribute) and ($step=="all") and !$this_db_structure["passeport_num"]) die("dbg 2025/02 this_db_structure = ".var_export($this_db_structure,true));
 
 
         foreach ($this_db_structure as $attribute => $desc) {
@@ -7194,7 +7194,7 @@ class AFWObject extends AFWRoot
                 $specific_e_arr
             );
 
-            if($step==2) die("debugg rafik this->arr_erros = ".var_export($this->arr_erros,true));
+            // if($step==2) die("debugg rafik this->arr_erros = ".var_export($this->arr_erros,true));
         }
 
         $err_arr = $this->arr_erros[$step];
