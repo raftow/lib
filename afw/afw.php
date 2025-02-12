@@ -6720,13 +6720,15 @@ class AFWObject extends AFWRoot
                 $start_step,
                 $end_step
             );
+            // if((get_class($this)=="Applicant") and ($step==2)) throw new AfwRuntimeException(get_class($this).":: dbg : this_db_structure for step=$step and start_step=$start_step, end_step=$end_step => ".var_export($this_db_structure,true));
             // die("showErrorsAsSessionWarnings::getDbStructure($return_type, $attrib, $step, $start_step, $end_step) = ".var_export($this_db_structure,true));
             // if($step!="all") die("static::getDbStructure($return_type, $attrib, $step) = ".var_export($this_db_structure,true));
         } else {
-            $this_db_structure = static::getDbStructure(
+            $attrib_structure = static::getDbStructure(
                 $return_type = 'structure',
                 $attrib = $erroned_attribute
             );
+            $this_db_structure[$attrib] = $attrib_structure;
             //die("static::getDbStructure($return_type, $attrib) = ".var_export($this_db_structure,true));
         }
 
@@ -6734,6 +6736,7 @@ class AFWObject extends AFWRoot
 
 
         foreach ($this_db_structure as $attribute => $desc) {
+            // if(!is_array($desc)) die(get_class($this).":: dbg : desc of $attribute = ".var_export($desc,true)." this_db_structure = ".var_export($this_db_structure,true));
             $error_attribute = $desc['ERROR_ATTRIBUTE'];
             if (!$error_attribute) {
                 $error_attribute = $attribute;
@@ -6853,11 +6856,11 @@ class AFWObject extends AFWRoot
                         ) = AfwFormatHelper::isCorrectFormat($val_attr, $desc);
                         
                         
-                        if($attribute=="passeport_num" and $step=='all') 
+                        /*if($attribute=="passeport_num" and $step=='all') 
                         {
                             die("attribute $attribute list(correctFormat=$correctFormat,correctFormatMess=$correctFormatMess,) = AfwFormatHelper::isCorrectFormat(value of attribute=[$val_attr], desc of attribute = ".var_export($desc, true).")");
                         }
-                        /* */
+                        */
 
                         if (!$correctFormat) {
                             if (!$desc['RESUME_TEXT_ERROR']) {
@@ -7166,26 +7169,52 @@ class AFWObject extends AFWRoot
         $recheck = false,
         $step = 'all',
         $ignore_fields_arr = null,
-        $attribute = null,
+        $attribute = null, // if $attribute is set means we ignore all attributes except $attribute
         $stop_on_first_error = false,
         $start_step = null,
         $end_step = null
     ) {
-        global $errors_check_count;
+        // global $errors_check_count;
         //, $errors_ check_count _max;
         //if($errors_ check_count>$errors_ check_count _max) throw new AfwRuntimeException("too mauch errors found by getDataErrors (nb=$errors _check_count)");
-        if ($attribute) $errors_check_count[$attribute]++;
-
-        // throw new AfwRuntimeException("what you do here");
+        // if ($attribute) $errors_check_count[$attribute]++;
+        /*
+        if((get_class($this)=="Applicant") and ($step==2) and !$start_step and !$end_step)
+        {
+            $ignore_fields_arr_export = var_export($ignore_fields_arr,true);        
+            throw new AfwRuntimeException("what you do here ? entering getDataErrors(
+                $lang = lang,
+                $show_val = show_val,
+                $recheck = recheck,
+                $step = step,
+                $ignore_fields_arr_export = ignore_fields_arr,
+                $attribute = attribute,
+                $stop_on_first_error = stop_on_first_error,
+                $start_step = start_step,
+                $end_step = end_step
+            )");
+        }
+         */
 
         //rafik this line below is commented since 17/5/2022 because very strange why not saved objects can not be checked if contains errors before save
         //if($this->getId()<=0) return array();
-
+        /*
+        if((get_class($this)=="Applicant") and ($step==2) and ($attribute=="passeport_num")) // and !$start_step and !$end_step
+        {            
+            die(get_class($this)." : dbg before enter getCommonDataErrors : this->arr_erros = ".var_export($this->arr_erros,true));
+        }*/
         if (!isset($this->arr_erros[$step]) or $recheck) {
-            $common_e_arr   =   $this->getCommonDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step);
-            // if($step==2) die("showErrorsAsSessionWarnings::getCommonDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step) => ".var_export($common_e_arr,true));
+            // we should pass $erroned_attribute = null to get all step attributes for cache and after we we will
+            // return only for the attribute requested
+            $erroned_attribute = null; 
+            $common_e_arr   =   $this->getCommonDataErrors($lang, $show_val, $step, $erroned_attribute, $stop_on_first_error, $start_step, $end_step);
+            if((get_class($this)=="Applicant") and ($step==2) and ($attribute=="passeport_num")) // and !$start_step and !$end_step
+            {            
+                die(get_class($this)." : dbg getCommonDataErrors(lang=$lang, show_val=$show_val, step=$step, attribute=$attribute, stop_on_first_error=$stop_on_first_error, start_step=$start_step, end_step=$end_step) => ".var_export($common_e_arr,true));
+            }
+
             if (!$attribute or $this->stepContainAttribute($step, $attribute)) {
-                $specific_e_arr = $this->getSpecificDataErrors($lang, $show_val, $step, $attribute, $stop_on_first_error, $start_step, $end_step);
+                $specific_e_arr = $this->getSpecificDataErrors($lang, $show_val, $step, $erroned_attribute, $stop_on_first_error, $start_step, $end_step);
             } else {
                 $specific_e_arr = [];
             }
@@ -7199,9 +7228,42 @@ class AFWObject extends AFWRoot
 
         $err_arr = $this->arr_erros[$step];
 
-        foreach ($ignore_fields_arr as $ignore_field) {
-            unset($err_arr[$ignore_field]);
+        
+
+        if($attribute)
+        {
+            // return only for the attribute requested
+            foreach ($err_arr as $field_name) {
+                if($field_name != $attribute) unset($err_arr[$field_name]);
+            }
         }
+        else
+        {
+            foreach ($ignore_fields_arr as $ignore_field) {
+                unset($err_arr[$ignore_field]);
+            }
+        }
+
+        
+        // debugg
+        /*
+        if((get_class($this)=="Applicant") and ($step==2) and !$start_step and !$end_step)
+        {
+            $ignore_fields_arr_export = var_export($ignore_fields_arr,true);
+            $err_arr_export = var_export($err_arr,true);
+            throw new AfwRuntimeException(get_class($this)." : what you do here ? exiting getDataErrors(
+                $lang = lang,
+                $show_val = show_val,
+                $recheck = recheck,
+                $step = step,
+                $ignore_fields_arr_export = ignore_fields_arr,
+                $attribute = attribute,
+                $stop_on_first_error = stop_on_first_error,
+                $start_step = start_step,
+                $end_step = end_step
+            ) => $err_arr_export");
+        } */
+        
 
         return $err_arr;
     }
@@ -7439,13 +7501,8 @@ class AFWObject extends AFWRoot
         // code a revoir
         // if($this->isDraft()) return 1;
 
-        $sci = null;
         if ($this->getVal('sci_id') > 0) {
-            $sci = $this->get('sci_id');
-        }
-        //die("Sim=$simulation Sci =".var_export($sci,true));
-        if ($sci) {
-            return $sci->getVal('step_num');
+            return $this->getVal('sci_id');
         } elseif ($simulation) {
             // die("table=static::$TABLE  editByStep=$this->editByStep ");
             return $this->getDoneSteps();
@@ -7459,14 +7516,14 @@ class AFWObject extends AFWRoot
      *  */
     public function getScenarioItemId($currstep)
     {
-        return 0;
+        return $currstep; // obsolete 
     }
 
 
     public function setLastEditedStep($currstep)
     {
-        $sci_id = $this->getScenarioItemId($currstep);
-        $this->set('sci_id', $sci_id);
+        //$sci_id = $this->getScenarioItemId($currstep);
+        $this->set('sci_id', $currstep);
     }
 
     public function getDoneSteps($error_offset = 0)
@@ -7502,7 +7559,9 @@ class AFWObject extends AFWRoot
         $ignore_fields_arr = null,
         $attribute = null
     ) {
-        return $this->getDataErrors($lang, $show_val, $recheck, $kstep, $ignore_fields_arr, $attribute);
+        $return = $this->getDataErrors($lang, $show_val, $recheck, $kstep, $ignore_fields_arr, $attribute, false, );
+        // if($attribute=="passeport_num") die("dbg inside getStepErrors ".get_class($this)."->getDataErrors(lang=$lang, show_val=$show_val, recheck=$recheck, kstep=$kstep, ignore_fields_arr=$ignore_fields_arr, attribute=$attribute, false, ) => ".var_export($return,true));
+        return $return;
     }
 
     public function getAttributeError($attribute)
@@ -7515,7 +7574,7 @@ class AFWObject extends AFWRoot
         }
 
         $stepErrors_arr = $this->getStepErrors($step, $lang, true, false, [], $attribute);
-
+        // if($attribute=="passeport_num") die("dbg :: this->getStepErrors($step, $lang, true, false, [], $attribute) = ".var_export($stepErrors_arr,true));
         return $stepErrors_arr[$attribute];
     }
 

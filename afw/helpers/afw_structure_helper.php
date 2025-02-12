@@ -222,6 +222,17 @@ class AfwStructureHelper extends AFWRoot
             $struct['ALL-RETRIEVE'] = true;
         }
 
+        if ($struct['SHOW-ADMIN']) {
+            $struct['EDIT-ADMIN'] = true;
+            if(!$struct['DISPLAY'])
+            {
+                $struct['DISPLAY'] = true;
+                $struct['READONLY'] = true;                
+            }
+        }
+
+        
+
         if (!isset($struct['SEARCH-BY-ONE'])) {
             $struct['SEARCH-BY-ONE'] = $struct['QSEARCH'];
         }
@@ -316,7 +327,7 @@ class AfwStructureHelper extends AFWRoot
                 $object->isTechField($field_name))
         ) {
             $struct['SHOW'] = true;
-            if(!$struct['STEP-CUSTOMIZED']) $struct['STEP'] = 999;
+            if(!$struct['STEP-CUSTOMIZED']) $struct['STEP'] = 99;
             $struct['EDIT'] = true;
             $struct['READONLY'] = true;
         }

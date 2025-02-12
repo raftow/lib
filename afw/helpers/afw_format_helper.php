@@ -103,7 +103,7 @@ class AfwFormatHelper
 
         if (strtoupper($desc['TYPE']) == 'GDAT') {
             $val_GDAT = substr($val_attr, 0, 10);
-            if (!AfwDateHelper::isCorrectGregDate($val_GDAT)) {
+            if (($val_GDAT != '0000-00-00') and (!AfwDateHelper::isCorrectGregDate($val_GDAT))) {
                 return [false, 'FORMAT-GDAT'];
             }
         }

@@ -41,9 +41,10 @@ if ($obj->editByStep) {
         if (!AfwFrameworkHelper::stepIsEditable($obj, $obj->currentStep)) $obj->currentStep = 1;
 }
 
-$step_show_error = ((!$obj->isDraft()) or
-        ($obj->currentStep < $last_edited_step) or
-        $obj->show_draft_errors);
+$isdraft = $obj->isDraft();
+
+$step_show_error = ((!$isdraft) or ($obj->currentStep < $last_edited_step) or $obj->show_draft_errors);
+// die("dbg step_show_error=$step_show_error = ((!isdraft=$isdraft) or (currentStep=$obj->currentStep < last_edited_step=$last_edited_step) or show_draft_errors=$obj->show_draft_errors)");        
 // or (!$last_edited_step) rafik 5/6/2022 I removed this because new object editing have $last_edited_step = 0 and no sens to show errors
 
 // rafik : for debugg :
@@ -76,6 +77,7 @@ $inited_cols = $data_template["inited_cols"];
 // die("inited_cols = ".var_export($inited_cols,true));
 
 foreach ($class_db_structure as $nom_col => $desc) {
+        // if($nom_col=="updated_at") die("class_db_structure = ".var_export($class_db_structure, true));
         $descOld = $desc;
         $desc = AfwStructureHelper::repareMyStructure($obj, $desc, $nom_col);
         // if($nom_col=="attribute_11") throw new AfwRuntimeException(" Old Struct = ".var_export($descOld,true)." New Struct = ".var_export($desc,true));
@@ -107,7 +109,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                         and ((!$obj->isEmpty()) or (!$desc["HIDE_IF_NEW"])));
                 $mode_field_edit_log = "";
                 if ($mode_field_edit) $mode_field_edit_log .= "$nom_col is editable";
-                // if(($nom_col=="sci_id") and $mode_field_edit) die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) ".var_export($obj_errors,true));
+                // if(($nom_col=="sci _id") and $mode_field_edit) die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) ".var_export($obj_errors,true));
                 //**
                 $nom_col_to_see = $desc["EDIT-FOR"];
                 if (!$nom_col_to_see) $nom_col_to_see = $nom_col;
@@ -194,7 +196,11 @@ foreach ($class_db_structure as $nom_col => $desc) {
                         if (!$mode_field_read_only) 
                         {
                                 $colErrors = $obj_errors[$nom_col];
+                                // if($nom_col=="passeport_num") die("colErrors = ".var_export($colErrors,true));
+                                
                                 $data[$nom_col] = prepareEditInfoForColumn($obj, $nom_col, $desc, $lang, $colErrors, $step_show_error);
+                                $colErrors_export = var_export($colErrors,true);
+                                // if($nom_col=="passeport_num") die("dbg of prepareEditInfoForColumn : data[$nom_col] = ".var_export($data[$nom_col],true)." = prepareEditInfoForColumn(obj, $nom_col, desc, lang=$lang, colErrors=$colErrors_export, step_show_error=$step_show_error)");
                         } 
                         else 
                         {
@@ -553,7 +559,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                         }
                                                         elseif($info['input'])
                                                         {
-                                                                // $class_db_structure[$col] = AfwStructureHelper::repareMyStructure($obj, $class_db_structure[$col], $col);
+                                                                $class_db_structure[$col] = AfwStructureHelper::repareMyStructure($obj, $class_db_structure[$col], $col);
                                                                 list($htmlDiv, $openedInGroupDiv, $fgroup) = 
                                                                    attributeEditDiv($obj, $col, $class_db_structure[$col], $fgroup, $lang, $openedInGroupDiv, $info);
                                                                 echo $htmlDiv;

@@ -197,10 +197,16 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
     max-width: none !important;
     float: right;
     margin: 1% !important;
-      margin-top: 1%;
-      margin-right: 1%;
-      margin-bottom: 1%;
-      margin-left: 1%;
+    margin-top: 1%;
+    margin-right: 1%;
+    margin-bottom: 1%;
+    margin-left: 1%;
+    padding: 7px 15px !important;
+    word-wrap: break-word;
+    text-overflow: revert !important;
+    height: 80px;
+    line-height: 32px;
+    white-space: pre-wrap;
 }
 
 .submit-btn {
