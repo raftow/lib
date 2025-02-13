@@ -85,7 +85,8 @@ class AfwDateHelper
 
     public static function getFullMonthName($n, $lang)
     {
-        return self::$F[$lang][$n];
+        $nn = $n + 0;
+        return self::$F[$lang][$nn]; // . " = self::F[$lang][$n]"
     }
 
     public static function DateIndicDigits($format, $timestamp = 0)

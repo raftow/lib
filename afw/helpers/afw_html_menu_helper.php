@@ -28,7 +28,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
 
         if (!$options["system_date_format"]) $options["system_date_format"] = AfwSession::currentSystemDateFormat();
 
-        if (($options["system_date_format"] != "greg") and ($lang == "ar")) {
+        if ($options["system_date_format"] != "greg")  {
             $hijri_date = AfwDateHelper::currentHijriDate("hdate_long", $DateSeparator = "/");
             // die("hijri_date=$hijri_date");
             $hijri_date_arr = explode($DateSeparator, $hijri_date);
