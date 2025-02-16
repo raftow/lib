@@ -649,6 +649,7 @@ class AfwStringHelper
             $name_arr = explode(" ", $string);
 
             $first_name = $name_arr[0];
+            // die("intelligentDecodeName 00 ($string) = [$first_name]"); 
             unset($name_arr[0]);
 
             if(($name_arr[1]=="بن") or ($name_arr[1]=="بنت") or ($name_arr[1]=="ابن"))
@@ -658,12 +659,25 @@ class AfwStringHelper
                 unset($name_arr[2]);
             }
             elseif(self::isNameOfAllah($name_arr[1]))
-            {
+            {                
                 $first_name = trim($first_name, " ");
-                $first_name = ltrim($first_name,$name_arr[1]);
+                //$first_name = ltrim($first_name,$name_arr[1]);
+                // die("intelligentDecodeName 11 ($string) = [$first_name]");
                 $first_name .= " ".$name_arr[1];
                 $father_name = "";
                 unset($name_arr[1]);
+                if(($name_arr[2]=="بن") or ($name_arr[2]=="بنت") or ($name_arr[2]=="ابن"))
+                {
+                        $father_name = $name_arr[2]." ".$name_arr[3];
+                        unset($name_arr[2]);
+                        unset($name_arr[3]);
+                }
+                else
+                {
+                        $father_name = $name_arr[2];
+                        unset($name_arr[2]);
+                }
+                
             }
             else
             {
@@ -672,7 +686,7 @@ class AfwStringHelper
             }
 
             $last_name = implode(" ", $name_arr);
-
+            // die("intelligentDecodeName($string) = [$first_name-$father_name-$last_name]");
             return [$first_name, $father_name, $last_name];
 
         }

@@ -86,7 +86,7 @@ class AfwDateHelper
     public static function getFullMonthName($n, $lang)
     {
         $nn = $n + 0;
-        return self::$F[$lang][$nn]; // . " = self::F[$lang][$n]"
+        return self::$F[$lang][$nn]; // . " = self::F[$lang][$nn]"
     }
 
     public static function DateIndicDigits($format, $timestamp = 0)
@@ -1528,8 +1528,14 @@ class AfwDateHelper
                 if ($mm < 10) $mm = "0" . $mm;
 
                 $hdate = $yyyy . $mm . $dd;
+                if($yyyy!=$hijri_year)
+                {
+                    $hijri_to_greg_file = dirname(__FILE__) . "/../../../external/chsys/dates/hijri_" . $yyyy . "_to_greg.php";
+                    $hijri_to_greg_arr = include($hijri_to_greg_file);
+                }
             }
         }
+        
         if (!$hijri_to_greg_arr[$hdate]) {
             AfwSession::hzmLog("failed to find hijri_to_greg[$hdate] ($original_hdate) in file $hijri_to_greg_file ", "fail"); // ."hijri_to_greg = ".var_export($hijri_to_greg_arr,true)
             if ($hijri_year > 1430) throw new RuntimeException("kifech ma convertech hijri_to_greg[$hdate] ($original_hdate) chouf $hdate in file $hijri_to_greg_file");
