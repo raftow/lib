@@ -2485,7 +2485,7 @@ $('#$showAsDataTable').DataTable( {
                 $structure['DISPLAY'] = $structure['FORMAT'];
             }
             if (
-                strtoupper($structure['DISPLAY']) == 'SHOW' and
+                strtoupper($structure['DISPLAY']) === 'SHOW' and
                 $value > 0
             ) {
                 $valObj = $object->get($attribute);
@@ -2498,13 +2498,23 @@ $('#$showAsDataTable').DataTable( {
                     $data_to_display = '';
                 }
                 $link_to_display = '';
-            } elseif (strtoupper($structure['DISPLAY']) == 'MINIBOX') {
+            } elseif (strtoupper($structure['DISPLAY']) === 'MINIBOX') {
                 $valObj = $object->get($attribute);
                 if ($valObj) {
                     $data_to_display = $valObj->showMinibox(
                         $structure['STYLE']
                     );
                     if($debugg) $data_to_display .= " from valObj->showMinibox";
+                } else {
+                    $data_to_display = '';
+                }
+                $link_to_display = '';
+            } elseif ((strtoupper($structure['DISPLAY']) === 'DISPLAY') or 
+                      (strtoupper($structure['DISPLAY']) === true)) {
+                $valObj = $object->get($attribute);
+                if ($valObj) {
+                    $data_to_display = $valObj->getDisplay($lang);
+                    if($debugg) $data_to_display .= " from valObj->getDisplay";
                 } else {
                     $data_to_display = '';
                 }

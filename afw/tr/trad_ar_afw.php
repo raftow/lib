@@ -61,7 +61,9 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["MOVE_DOWN"]	                         	= "تأخير";
         $trad["OPERATOR"]["PROFILE"]	                         	= "بطاقة";   
         $trad["OPERATOR"]["FILE"]	                         	= " ";   
-        $trad["OPERATOR"]["TO"]	                         	= "إلى";     
+        $trad["OPERATOR"]["TO"]	                         	= "الانتقال إلى معلومات"; 
+        $trad["OPERATOR"]["DATA-OF"]	                         	= "معلومات"; 
+            
         
         $trad["OPERATOR"]["NEW"]	                        	= "إضافة سجل جديد";
         $trad["OPERATOR"]["EDIT_FILE"]	                         	= "تعديل البيانات";

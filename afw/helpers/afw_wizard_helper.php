@@ -51,25 +51,30 @@ class AfwWizardHelper extends AFWRoot
         }
     }
 
-    final public function standardEnabledIcon(
+    /**
+     * @param AFWObject $object
+     */
+
+    final public static function standardEnabledIcon(
+        $object,
         $attribute,
         $icon,
         $structure = null
     ) {
-        if(!$this->afwObject)
+        if(!$object)
         {
             throw new AfwRuntimeException('AfwWizardHelper methods need the afwObject to be setted');
         }
 
         if (!$structure) {
-            $structure = AfwStructureHelper::getStructureOf($this->afwObject,$attribute);
+            $structure = AfwStructureHelper::getStructureOf($object,$attribute);
         } else {
-            $structure = AfwStructureHelper::repareMyStructure($this->afwObject, $structure, $attribute);
+            $structure = AfwStructureHelper::repareMyStructure($object, $structure, $attribute);
         }
         if (!isset($structure['ICONS']) or $structure['ICONS']) {
             if ($icon == 'EDIT' or $icon == 'DELETE') {
                 if ($structure['EDIT_DELETE_IF_WRITEABLE']) {
-                    list($writeable, $reason) = AfwStructureHelper::attributeIsWriteableBy($this->afwObject,
+                    list($writeable, $reason) = AfwStructureHelper::attributeIsWriteableBy($object,
                         $attribute,
                         null,
                         $structure
@@ -158,4 +163,260 @@ class AfwWizardHelper extends AFWRoot
 
         return $arrResult;
     }
+
+    /**
+     * @param AFWObject $object
+     */
+
+    public static final function getOtherLinksArrayStandard($object, $mode, $genereLog = false, $step = "all")
+    {
+        global $lang;
+        $objme = AfwSession::getUserConnected();
+        // $me = $objme ? $objme->id : 0;
+        // $genereLog = true;
+
+        $otherLinksArray = [];
+        $my_id = $object->getId();
+        $object_otherLinkLog = [];
+        if ($mode == 'display' or $mode == 'edit') {
+            $FIELDS_ALL = $object->getAllMyDbStructure();
+            $log = "mode=$mode, FIELDS_ALL=" . var_export($FIELDS_ALL, true);
+            if ($genereLog) {
+                $object_otherLinkLog[] = $log;
+            }
+
+            foreach ($FIELDS_ALL as $attribute => $struct) {
+                $link_label = null;
+                // rafik optimization : 23/12/2023
+                // Momken V3.0 the getAllMyDbStructure method now return the structure repared 
+                // no need below to re-call getStructureOf 
+                // $struct = AfwStructureHelper::getStructureOf($object, $attribute);
+
+                // $isAdminField = $object->isAdminField($attribute);
+                // $isTechField = $object->isTechField($attribute);
+
+                //if($attribute=="mainwork_start_paragraph_num") die("strange case, step = $step struct = ".var_export($struct,true));
+                //if($attribute=="previous_paragraph_id") die("strange case, step = $step struct = ".var_export($struct,true)." struct['STEPS'][$step] = ".$struct['STEPS'][$step]);
+                if (
+                    $struct['TYPE'] == 'FK' and
+                    ($struct['RELATION'] == 'OneToMany' or $struct['RELATION'] == 'OneToOneB' or $struct['RELATION'] == 'OneToOneU' or $struct['RELATION-SUPER'] == 'IMPORTANT') and
+                    ($step == "all" or $struct['STEP'] == "all" or $struct['STEP'] == $step or $struct['STEPS'][$step])
+                ) {
+                    // if($attribute=="previous_paragraph_id") die("case of OneToXX or RELATION-SUPER is IMPORTANT, struct of $attribute = ".var_export($struct,true));
+                    $log = "$attribute attribute is FK RELATION is OneToXX or RELATION-SUPER is IMPORTANT: " . $struct['RELATION'];
+                    if ($struct['RELATION'] == 'OneToMany') {
+                        $parent_struct = AfwStructureHelper::getParentStruct($object, $attribute, $struct);
+                        $parent_step = $parent_struct['STEP'];
+                        if ($parent_step) {
+                            $log =
+                                "$attribute attribute has parent step : " .
+                                $parent_step;
+                            if ($genereLog) {
+                                $object_otherLinkLog[] = $log;
+                            }
+                            list($displ2, $link_url2) = $object->displayAttribute(
+                                $attribute,
+                                false,
+                                $lang,
+                                "&currstep=$parent_step"
+                            );
+                            $displ2 = trim($displ2);
+                            if (!$displ2) {
+                                $displ2 = "case 1 : ".get_class($object)."->displayAttribute($attribute,false, $lang, &currstep=$parent_step)";
+                            } else {
+                                $displ2 .= "<!-- case 1: ".get_class($object)."->displayAttribute($attribute,false, $lang, &currstep=$parent_step) -->";
+                            }
+
+                            if (!$struct['NO-RETURNTO']) {
+                                $struct['OTM-RETURNTO'] = true;
+                            }
+                        } else {
+                            $log = "$attribute attribute has no parent step ";
+                            if ($genereLog) {
+                                $object_otherLinkLog[] = $log;
+                            }
+                            list($displ2, $link_url2) = $object->displayAttribute(
+                                $attribute,
+                                false,
+                                $lang
+                            );
+                            $displ2 = trim($displ2);
+                            if (!$displ2) {
+                                $displ2 = "case 2 : ".get_class($object)."->displayAttribute($attribute,false, $lang)";
+                            } else {
+                                $displ2 .= "<!-- case 2 : ".get_class($object)."->displayAttribute($attribute,false, $lang) -->";
+                            }
+                        }
+
+                        if (!isset($struct['OTM-TITLE'])) {
+                            $struct['OTM-TITLE'] = true;
+                        }
+
+                        if (!isset($struct['OTM-NO-LABEL'])) {
+                            if (!isset($struct['OTM-REMOVE-AUTO-LABEL'])) {
+                                $struct['OTM-NO-LABEL'] = false;
+                            } elseif ($struct['OTM-LABEL']) {
+                                $link_label = $struct['OTM-LABEL'];
+                            } else {
+                                $struct['OTM-NO-LABEL'] = true;
+                            }
+                        }
+
+                        if (!$struct['OTM-NO-LABEL'] and !$link_label) {
+                            $link_label = $object->getAttributeLabel(
+                                $attribute,
+                                $lang,
+                                $short = true
+                            );
+                        }
+                    } else {
+                        if (!isset($struct['OTM-TITLE'])) {
+                            $struct['OTM-TITLE'] = true;
+                        }
+                        list($displ2, $link_url2) = $object->displayAttribute(
+                            $attribute,
+                            false,
+                            $lang
+                        );
+                        $displ2 = trim($displ2);
+                        if (!$displ2) {
+                            $displ2 = "case 3 : this->displayAttribute($attribute,false, $lang)";
+                        } else {
+                            $displ2 .= "<!-- case 3 : this->displayAttribute($attribute,false, $lang) -->";
+                        }
+                        if (!isset($struct['OTM-NO-LABEL'])) {
+                            if (!isset($struct['OTM-REMOVE-AUTO-LABEL'])) {
+                                $struct['OTM-NO-LABEL'] = false;
+                            } elseif ($struct['OTM-LABEL']) {
+                                $link_label = $struct['OTM-LABEL'];
+                            } else {
+                                $struct['OTM-NO-LABEL'] = true;
+                            }
+                        }
+
+                        if (!$struct['OTM-NO-LABEL'] and !$link_label) {
+                            $link_label = $object->getAttributeLabel(
+                                $attribute,
+                                $lang,
+                                $short = true
+                            );
+                        }
+                    }
+
+                    $displ2 = trim($displ2);
+
+                    if ($displ2 and $link_url2) {
+                        // if((!$struct["OTM-NO-LABEL"]) and (!$link_label)) $link_label = $object->getAttributeLabel($attribute, $lang, $short=true);
+                        unset($link);
+                        $link = [];
+                        $title = '';
+                        if ($struct['OTM-SHOW']) {
+                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY").' ';
+                        }
+                        elseif ($struct['OTM-CARD']) {
+                            $title .= AfwLanguageHelper::translateKeyword("PROFILE").' ';
+                        }
+                        elseif ($struct['OTM-FILE']) {
+                            $title .= AfwLanguageHelper::translateKeyword("FILE").' ';
+                        }
+                        elseif ($struct['OTM-RETURNTO']) {
+                            $title .= AfwLanguageHelper::translateKeyword("TO").' ';
+                        }
+                        else{
+                            $title .= AfwLanguageHelper::translateKeyword("DATA-OF").' ';
+                        }
+
+                        if (!$struct['OTM-NO-LABEL']) {
+                            $title .= $link_label . ' : ';
+                        }
+                        // else $title .= "debugg_rafik : ".var_export($struct,true);
+                        if ($struct['OTM-TITLE']) {
+                            $title .= $displ2;
+                        }
+                        $title = trim($title);
+
+                        $title_detailed = $title . ' : ' . $displ2;
+                        $link['URL'] = $link_url2;
+                        $link['TITLE'] = $title;
+                        if ($struct["STEP"] or $struct["STEPS"]) {
+                            // rafik 28/9/2022
+                            // if the field cause of this OTM relation that has generated this other link standard
+                            // is in a defined step the other link standard also should be related to this step
+                            $link['STEP'] = $struct["STEP"];
+                            $link['STEPS'] = $struct["STEPS"];
+                        }
+                        // no public opened like this in new UMS
+                        // $link["PUBLIC"] = true;
+                        $otherLinksArray[] = $link;
+                        // if($attribute=="mainwork_start_paragraph_num") die("otherLinksArray = ".var_export($otherLinksArray,true));
+                    } else {
+                        $log = "for $attribute attribute display-title or link is missed ($displ2,$link_url2)";
+                        // if($attribute=="mainwork_start_paragraph_num") die($log);
+                        if ($genereLog) {
+                            $object_otherLinkLog[] = $log;
+                        }
+                    }
+                } elseif (
+                    $struct['TYPE'] == 'MFK' and
+                    $struct['LINK_TO_MFK_ITEMS']
+                ) {
+                    list($displ_arr, $link_url_arr) = $object->displayAttribute(
+                        $attribute,
+                        false,
+                        $lang
+                    );
+                    foreach ($displ_arr as $displ_id => $displ2) {
+                        unset($link);
+                        $link = [];
+                        $title = '';
+                        if ($struct['OTM-SHOW']) {
+                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY").' ';
+                        } else {
+                            $title .=
+                                $object->tf($struct['LINK_TO_MFK_ITEMS']) . ' ';
+                        }
+                        $title .= $displ2;
+                        $title = trim($title);
+
+                        $title_detailed = $title . ' : ' . $displ2;
+                        $link['URL'] = $link_url_arr[$displ_id];
+                        $link['TITLE'] = $title;
+
+                        // no public opened like this in new UMS
+                        // $link["PUBLIC"] = true;
+                        $otherLinksArray[] = $link;
+                    }
+                } else {
+                    if ($genereLog) {
+
+                        $object_otherLinkLog[] = "Attribute $attribute has not been selected as OneToXXX relation because ";
+                        $object_otherLinkLog[] = "TYPE = " . $struct['TYPE'];
+                        $object_otherLinkLog[] = "RELATION = " . $struct['RELATION'];
+                        $object_otherLinkLog[] = "STEP = " . $struct['STEP'];
+                        $object_otherLinkLog[] = "step = " . $step;
+                    }
+                    //if($attribute=="courses_template_id") AfwStructureHelper::dd(var_export($object_otherLinkLog,true));
+                }
+            }
+        } else {
+            $log = "mode is not edit or display : mode=$mode";
+            if ($genereLog) {
+                $object_otherLinkLog[] = $log;
+            }
+        }
+        /*
+        foreach ($object_otherLinkLog as $object_otherLinkLogItem) {
+            AfwSession::contextLog($object_otherLinkLogItem, 'otherLink');
+        }
+        if(($mode == 'display' or $mode == 'edit') and ($object->getMyClass()=="CpcBookParagraph"))
+        {
+            die("otherLinksArray = ".var_export($otherLinksArray,true)." this_otherLinkLog : ".implode("<br>",$object_otherLinkLog));
+        }
+        */
+
+        return $otherLinksArray;
+    }
+
+
+
 }

@@ -106,6 +106,7 @@ button.bf.hzm-specialmethod {
     max-width: 450px;
     margin-right: 1%;
     margin-left: 1%;
+    min-height: 120px;
 }
 
 .bf {
@@ -226,6 +227,7 @@ button.bf.hzm-otherlink {
     margin-bottom: 10px;
     float: right;
     margin-left: 1%;
+    min-height: 120px;
     height: auto;
     margin-right: 1%;
     overflow: hidden;
