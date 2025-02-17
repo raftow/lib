@@ -79,7 +79,7 @@ class AfwFormatHelper
                     $length = strlen($val_attr);
                 }
             }
-            if (!$desc['MANDATORY'] and !$desc['REQUIRED'] and !$desc['FORMAT']['STRING-LENGTH']) {
+            if (!$desc['MANDATORY'] and !$desc['REQUIRED'] and (!is_array($desc['FORMAT']) or !$desc['FORMAT']['STRING-LENGTH'])) {
                 $desc['MIN-SIZE'] = 0;
             }
             $min_size = $desc['MIN-SIZE'];

@@ -3305,6 +3305,63 @@ rafik : please do not remove comment it is not ok css for my fixed tabs (job-eli
         }
 }
 
+.width_pct_10
+{
+    width: 9% !important;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 50px; 
+}
+
+.width_pct_12
+{
+    width: 11% !important;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 60px; 
+}
+
+.width_pct_25
+{
+    width: 24% !important;
+    margin-right: 0.5%;
+    margin-left: 0.5%;
+    min-width: 120px; /* do not change anymore and make more than 160px */
+}
+
+
+.width_pct_33
+{
+    width: 32.5% !important;
+    margin-right: 0.5%;
+    min-width: 140px;  /* do not change anymore and make more than 180px */
+}
+
+.width_pct_50 {
+    width: 49% !important;
+    margin-right: 0.5%;
+    min-width: 170px;
+}
+
+
+.width_pct_66 {
+    width: 65% !important;
+    margin-right: 0.5%;
+    min-width: 190px;
+}
+
+.width_pct_75 {
+    width: 74% !important;
+    margin-right: 0.5%;
+    min-width: 210px;
+}
+
+.width_pct_100 {
+    width: 98.5% !important;
+    margin-right: 0.5%;
+    min-width: 80px;
+}
+
 @media screen and (max-width: 780px) {
     .width_pct_25{
         width: 48% !important;

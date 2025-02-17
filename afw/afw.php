@@ -2503,12 +2503,47 @@ class AFWObject extends AFWRoot
     }
 
     /**
+     * select1OrSelect2
+     * Set attribute's value in the Search criteria
+     * @param string $attribute
+     * @param string $value
+     */
+    public function select1OrSelect2($attribute1, $value1, $attribute2, $value2)
+    {
+        $sql_select1 = $this->select($attribute1, $value1, true);
+        $sql_select2 = $this->select($attribute2, $value2, true);
+
+        $this->SEARCH .= " and (($sql_select1) or ($sql_select2))";                
+        return true;
+    }
+
+    /**
+     * selectOneOfListOfCritirea
+     * Set attribute's value in the Search criteria
+     * @param string $attribute
+     * @param string $value
+     */
+    public function selectOneOfListOfCritirea($arrSelects)
+    {
+        $sql_select_arr = [];
+        foreach($arrSelects as $attribute => $value)
+        {
+            $sql_select_arr[] =  $this->select($attribute, $value, true);
+        }
+        
+        
+
+        $this->SEARCH .= " and ((".implode(") or (",$sql_select_arr)."))";                
+        return true;
+    }
+
+    /**
      * select
      * Set attribute's value in the Search criteria
      * @param string $attribute
      * @param string $value
      */
-    public function select($attribute, $value)
+    public function select($attribute, $value, $returnSQLOnly=false)
     {
         if ((self::$TABLE == "acondition_origin") and ($attribute == "cvalid")) {
             throw new AfwRuntimeException(self::$TABLE . "->select($attribute, $value) ya rafik !!!!");
@@ -2528,8 +2563,12 @@ class AFWObject extends AFWRoot
             } else {
                 $_utf8 = '';
             }
-            $this->SEARCH_TAB[$attribute] = AfwStringHelper::_real_escape_string($value);
-            $this->afterSelect($attribute, $value);
+            
+            if(!$returnSQLOnly)
+            {
+                $this->SEARCH_TAB[$attribute] = AfwStringHelper::_real_escape_string($value);
+                $this->afterSelect($attribute, $value);
+            }    
 
             if ($structure['FIELD-FORMULA']) {
                 $attribute_sql = $structure['FIELD-FORMULA'];
@@ -2537,14 +2576,18 @@ class AFWObject extends AFWRoot
                 $attribute_sql = 'me.' . $attribute;
             }
 
-            $this->SEARCH .=
-                ' and ' .
-                $attribute_sql .
-                " = $_utf8'" .
-                AfwStringHelper::_real_escape_string($value) .
-                "'";
-            // if($attribute=="cvalid") throw new AfwRuntimeException("this->SEARCH = ".$this->SEARCH." because structure=".var_export($structure,true));
-            return true;
+            $sql_select = $attribute_sql . " = $_utf8'" . AfwStringHelper::_real_escape_string($value) . "'";
+
+            if($returnSQLOnly)
+            {
+                return $sql_select;
+            }
+            else
+            {
+                $this->SEARCH .= ' and ' . $sql_select;
+                // if($attribute=="cvalid") throw new AfwRuntimeException("this->SEARCH = ".$this->SEARCH." because structure=".var_export($structure,true));
+                return true;
+            }
         }
     }
 
@@ -5172,7 +5215,7 @@ class AFWObject extends AFWRoot
 
 
         if ($dropdown or $this->hideDisactiveRowsFor($objme = AfwSession::getUserConnected())) {
-            $selects[$this->fld_ACTIVE()] = 'Y';
+            $selects[$this->fld_ACTIVE()] = 'Y'; // get_class($this).".".
         }
         /*
         if(static::$TABLE == "school_employee")
@@ -5186,7 +5229,7 @@ class AFWObject extends AFWRoot
                 //if($colselect == "employee_id") die("$this this->select($colselect,$valselect);");
                 $this->select($colselect, $valselect);
             } else {
-                throw new AfwRuntimeException("trying to sql-select the field '$colselect' but does not exist, selects =" . var_export($selects, true));
+                throw new AfwRuntimeException(get_class($this)." : trying to sql-select the field '$colselect' but does not exist, selects =" . var_export($selects, true));
             }
         }
         /*

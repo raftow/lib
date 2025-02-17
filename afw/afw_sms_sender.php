@@ -35,11 +35,12 @@ class AfwSmsSender extends AFWRoot {
                         if($mobile_error) return array(false, "mobile format error : ".$mobile_error.$error_details_if_failed);
                         
                         $res = self::hzmSMS($mobile, $body, $username, $application_id);
+                        $the_username = $res->SmsUser;
                         $error_details_if_failed .= " result of hzmSMS : " . var_export($res,true);
                         
                         if($res->SendSMSResult=='TRUE')
                         {
-                                $info = "SMS sent successfully to $mobile with reponsible user name [$username] ".date("Y-m-d H:i:s");
+                                $info = "SMS sent successfully to $mobile with reponsible user name [$the_username] ".date("Y-m-d H:i:s");
                                 
                                 return array(true, $info);
                         }
@@ -49,7 +50,7 @@ class AfwSmsSender extends AFWRoot {
                         }
                         else
                         {
-                                return array(false, "failed to send SMS to $mobile with reponsible user name [$username] ".date("Y-m-d H:i:s")." sms server api response : [" . $res->SendSMSResult."]".$error_details_if_failed);
+                                return array(false, "failed to send SMS to $mobile with reponsible user name [$the_username] ".date("Y-m-d H:i:s")." sms server api response : [" . $res->SendSMSResult."]".$error_details_if_failed);
                         }
                         
                         
@@ -61,7 +62,10 @@ class AfwSmsSender extends AFWRoot {
         {
                 global $smsSender_wsdlUrl;
                 $file_dir_hzm = dirname(__FILE__);
-                include("$file_dir_hzm/../../external/sms_config.php");
+                $sms_config_config_file = "$file_dir_hzm/../../external/sms_config.php";
+                include($sms_config_config_file);
+                if($user_name == "company-crm-2factor") $user_name = $sms_username; 
+                                  
                 // die("smsSender_wsdlUrl = ".$smsSender_wsdlUrl." from $file_dir_hzm/../../../../external/sms_config.php");
                 try 
                 { 
@@ -107,6 +111,9 @@ class AfwSmsSender extends AFWRoot {
                 
                 if ($error == 0) 
                 {        
+                        //$info->Params = $params;
+                        //$info->Config = $sms_config_config_file;
+                        $info->SmsUser = $sms_username;
                         return $info;
                 }
                 else
