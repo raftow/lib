@@ -2,6 +2,7 @@
 const _SHOW_ARGS = true;
 const _SHOW_ALL_ARGS = false;
 const _PROD = false;
+const _UPGRADING = false;
 
 if(!isset($relative_path)) $relative_path = "./";
 
@@ -75,6 +76,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 
         function dump_exception($ex)
         {
+            if($ex instanceof AfwBusinessException) return dump_business_exception($ex);
             global $relative_path;
                 $file = $ex->getFile();
                 $line = $ex->getLine();
@@ -242,8 +244,41 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
 <?php
 }
 
+function dump_business_exception($ex)
+{
+    ?>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </body>
+    </html>
+    <html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="../lib/css/error-handler.css">
+    <link rel="stylesheet" type="text/css" href="../lib/css/def_ar_front.css">
+    <body>
+    <div class='business-exception'>    
+    <?php 
+        $main_title = $ex->getMessage();
+        $return_message = $ex->return_message; 
+        $return_page = $ex->return_page; 
+    ?>    
+        <img class='bex' src='../lib/images/<?php echo $ex->picture ?>' width='128' height='128'/>
+        <h1><?php echo $main_title ?></h1>
+        <a class='btn btn-blue' href='<?php echo $return_page ?>'><?php echo $return_message ?></a>
+    </div>
+    </body>
+    </html>
+    <?php       
+}
+
 function prod_dump_exception($ex)
 {
+    if($ex instanceof AfwBusinessException) return dump_business_exception($ex);
             global $relative_path;
                 $file = $ex->getFile();
                 $line = $ex->getLine();
@@ -283,15 +318,18 @@ function prod_dump_exception($ex)
         $version = "3.0";        
         $relc = "Nothing";
     }
+
+    if(_UPGRADING) $main_title = "We are upgrading the system for you ..., please wait";
+    else $main_title = "The following components need upgrade, please contact administrator";
     
 ?>    
-        <h1>We are upgrading the system for you ..., please wait</h1>
-        <h1>Installing :<?php echo $component ; ?></h1>
+        <h1><?php echo $main_title ?></h1>
+        <h1>Component :<?php echo $component ; ?></h1>
         <h2>Version : <?php echo $version ; ?></h2>
         <h2>Context : <?php echo $context ; ?></h2>
         <!-- <?= $ex->getMessage(); ?> -->        
         <h3>Please contact your administrator by sending copy-past of the text of this screen in a new ticket in customer service plateform : <?php echo $crm_site ?></h3>
-        <h1>Related components : </h1>
+        <h1>Other Related Librairies : </h1>
         <h2><?php echo $relc; ?></h2>
 </div>
 </body>

@@ -12,3 +12,39 @@
     background-color: #3999f7;
     color: white;
 }
+
+.business-exception {
+    margin: 100px 30%;
+    float: right;
+    width: 30%;
+    border: solid 8px #91a6bf;
+    padding: 80px;
+    font-family: menu;
+}
+
+img.bex {
+    margin: 20px calc(50% - 64px);
+}
+
+.technical {
+    display: none;
+}
+
+.business-exception>h1 {
+    font-family: menu;
+    font-size: 24px;
+    text-align: center;
+    font-weight: normal;
+}
+
+a.btn.btn-blue {
+    display: block;
+    background-color: rgb(48 143 255);
+    color: rgb(255 255 255);
+    --webkit-appearance: button;
+    padding: 9px 18px;
+    margin-left: 0;
+    width: auto;
+    text-decoration: none;
+    text-align: center;
+}

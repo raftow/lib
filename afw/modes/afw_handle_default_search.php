@@ -177,7 +177,7 @@ if (!$liste_obj) {
                                 $qsearch_by_text_where_arr[] = $where_col;
                         }
 
-                        //throw new AfwRuntimeException("qsearch_by_text_cols = ".var_export($qsearch_by_text_cols,true)." where_arr = ".var_export($qsearch_by_text_where_arr,true));
+                        //throw new AfwRun timeException("qsearch_by_text_cols = ".var_export($qsearch_by_text_cols,true)." where_arr = ".var_export($qsearch_by_text_where_arr,true));
                         if (count($qsearch_by_text_where_arr) > 0) {
                                 $where_qsearch_by = "((" . implode(") or (", $qsearch_by_text_where_arr) . "))";
 
@@ -406,11 +406,11 @@ if (true) {
                                 if(($cl=="Module"))
                                 {
                                         $message .= "<br>header = ".var_export($header,true);
-                                        throw new AfwRuntimeException($message);
+                                        throw new AfwRun timeException($message);
                                 }*/
 
                                                                 foreach ($header as $nom_col => $tr_col) {
-                                                                        // if(!is_array($desc)) throw new AfwRuntimeException("desc is not an array : ".var_export($desc,true));
+                                                                        // if(!is_array($desc)) throw new AfwRun timeException("desc is not an array : ".var_export($desc,true));
                                                                         $nom_col_short = "$nom_col.short";
                                                                         $trad_col_short  = $obj->translate($nom_col_short, $lang);
                                                                         if ($trad_col_short == $nom_col_short) $col_trad = $obj->translate($nom_col, $lang);

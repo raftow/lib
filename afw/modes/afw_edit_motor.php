@@ -246,7 +246,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $answer_case = "AfwLoadHelper::get EnumTable($fieldAnsTab, $objTableName, $fcol_name, obj:$objName)";
             }
             //if(!$liste_rep) 
-            //throw new AfwRuntimeException("for col $orig_col_name enum liste_rep comes from $answer_case is null or empty  liste_rep = ".var_export($liste_rep,true));
+            //throw new AfwRuntimeE xception("for col $orig_col_name enum liste_rep comes from $answer_case is null or empty  liste_rep = ".var_export($liste_rep,true));
 
 
             // die("for enum col : $col_name, $answer_case, liste_rep = ".var_export($liste_rep,true));
@@ -899,10 +899,10 @@ function attributeEditDiv($obj, $col, $desc, $fgroup, $lang, $openedInGroupDiv, 
             $htmlDiv .="<!-- $col >> err " . str_replace("-->", "", $info["error"]) . " -->";
         } else $errors_in_data = "";
         $col_type = $info["type"];
-        $htmlDiv .="<div class=\"form-control-div $col_type hzm_control_div_$col $errors_in_data $css_unit_tooltip_active $css_form_control_div_special\">";
+        $htmlDiv .="<div id=\"form-control-div-$col\" class=\"form-control-div $col_type hzm_control_div_$col $errors_in_data $css_unit_tooltip_active $css_form_control_div_special\">";
         if ($info["tooltip"] or $info["error"]) {
             if ($info["error"] and (!$desc["ERROR-HIDE"])) {
-                $htmlDiv .="<div id='attr_error_$col' class=\"hzm_tooltip hzm_tooltip_error\"><img data-toggle=\"tooltip-error\" data-placement=\"left\" class=\"hzm_tt\" style=\"width: 24px;height: 24px;margin-top: -8px;\" title=\"" . $info["error"] . "\" src=\"../lib/images/error.png\" /></div>" . $info["error"];
+                $htmlDiv .="<div id='attr_error_$col' class=\"hzm_tooltip_error\">" . $info["error"]."</div>";
             } elseif ($info["tooltip"]) $htmlDiv .="<div class=\"hzm_tooltip\"><img data-toggle=\"tooltip\" data-placement=\"left\" class=\"hzm_tt\" title=\"" . $info["tooltip"] . "\" src=\"../lib/images/information.png\" /></div>";
         }
 

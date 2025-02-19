@@ -77,7 +77,7 @@
                     if(($nb_classes+$offset_classes)>count($arr_classes))
                     {
                         echo "For btn-bootstrap `NB-CSS`+`OFFSET-CSS` should be less or equal than cout of btn-bootstrap classes = ".count($arr_classes);
-                        // throw new AfwRuntimeException("For btn-bootstrap `NB-CSS`+`OFFSET-CSS` should be less or equal than cout of btn-bootstrap classes = ".count($arr_classes));
+                        // throw new AfwRuntim eException("For btn-bootstrap `NB-CSS`+`OFFSET-CSS` should be less or equal than cout of btn-bootstrap classes = ".count($arr_classes));
                     }
 ?>
                     <input type='hidden' name='<?php echo $col_name ?>' id='<?php echo $col_name ?>' value='<?php echo $val ?>'>

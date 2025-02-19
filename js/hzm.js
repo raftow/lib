@@ -112,6 +112,7 @@
   {
       $('#'+input).addClass('input_edited');
       $('#attr_error_'+input).remove();
+      $('#form-control-div-'+input).removeClass('errors');
   }
 
   function open_loading()

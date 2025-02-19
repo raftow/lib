@@ -74,7 +74,7 @@ foreach($class_db_structure as $key => $structure)
                list($data_to_display, $link_to_display) = $obj->displayAttribute($key);
                if(is_array($data_to_display) and (!is_array($link_to_display)) and $objme->isSuperAdmin())
                {
-                     throw new AfwRuntimeException("displayAttribute($key) should return both elements same type array or not array : data_to_display = ".var_export($data_to_display,true)." link_to_display=$link_to_display");
+                     throw new AfwModeException("displayAttribute($key) should return both elements same type array or not array : data_to_display = ".var_export($data_to_display,true)." link_to_display=$link_to_display");
                }
                
 	       $data[$key] = $data_to_display;
@@ -298,7 +298,7 @@ if($styleStepWidth) $style = " style='width: ${styleStepWidth} !important;'";
                     if($help==$trans_code) $help  = trim($obj->translate($trans_code,$lang));
                     if($help==$trans_code)
                     {
-                        //if($key=="categ") throw new AfwRuntimeException("can not translate $trans_code");
+                        //if($key=="categ") throw new AfwRuntime Exception("can not translate $trans_code");
                         $help = "";
                     } 
             }

@@ -49,7 +49,15 @@ for($i=0;$i<$nb_objs;$i++)
                 // if($id == 6082) die("obj $i of $class class, id ='$id' will be loaded just now");
                 
                 if($obj->load($id) and ($obj->id == $id)) $is_load = true;
-                else throw new AfwRuntimeException("can't load obj with id = $id, obj = ".var_export($obj,true));
+                else 
+                {
+                        $return_message = $myObj->tm("Return back", $lang);    
+                        $return_page = "main.php?Main_Page=afw_mode_qsearch.php&cl=$class&currmod=$currmod";
+                        $die_message = $myObj->tm("Object can not be loaded, seems has been deleted !", $lang);            
+                        $technical = "mode edit load by id failed : >> $class load by [id=$id]";
+                        throw new AfwBusinessException($die_message, $lang, "be-record-not-found.png", $return_message,$return_page, $technical);                        
+                }
+                
                 // if($id == 6082) die("obj $i of $class class, id ='$id' has been loaded obj = ".var_export($obj,true));
         }
         else
@@ -101,7 +109,7 @@ for($i=0;$i<$nb_objs;$i++)
                         {
                             if($desc["TYPE"] != "FK") 
                             {
-                                throw new AfwRuntimeException("auto create should be only on FK attributes $attribute is ".$desc["TYPE"]);
+                                throw new AfwModeException("auto create should be only on FK attributes $attribute is ".$desc["TYPE"]);
                             }
                             
                             $obj_at = AfwStructureHelper::getEmptyObject($obj, $nom_col);
@@ -218,7 +226,7 @@ for($i=0;$i<$nb_objs;$i++)
                         }*/
 
                         // if((!$is_load)) die("i=$i pki=$pki id=$id => is_load = $is_load, obj = ".var_export($obj,true));
-                        if(($obj->getMyClass()=="Afield") and (!$obj->getVal("field_name"))) throw new AfwRuntimeException("afield insert with field_name empty : ".var_export($obj,true));
+                        // if(($obj->getMyClass()=="Afield") and (!$obj->getVal("field_name"))) throw new AfwRun timeException("afield insert with field_name empty : ".var_export($obj,true));
                         
                         
                         $obj->sql_action = "insert";
@@ -235,7 +243,7 @@ for($i=0;$i<$nb_objs;$i++)
                                 $inserted = $obj->insert();
                                 if(!$inserted)
                                 {
-                                if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) throw new AfwRuntimeException($obj->sql_info ." insert failed : ".$obj->tech_notes, array("FIELDS_UPDATED"=>true));
+                                        if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) throw new AfwModeException($obj->sql_info ." insert failed : ".$obj->tech_notes, array("FIELDS_UPDATED"=>true));
                                 }
                                 
                                 $id = $obj->getId();

@@ -6267,3 +6267,9 @@ input[type=search] {
 .expanded_fixed.ui-accordion-header.ui-state-active {
     background-color: inherit !important;
 }
+
+.errors>input.form-control, .errors>select.form-control {
+    max-width: 100% !important;
+    width: 100% !important;
+    border: 1px solid red !important;
+}

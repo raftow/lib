@@ -80,7 +80,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
         // if($nom_col=="updated_at") die("class_db_structure = ".var_export($class_db_structure, true));
         $descOld = $desc;
         $desc = AfwStructureHelper::repareMyStructure($obj, $desc, $nom_col);
-        // if($nom_col=="attribute_11") throw new AfwRuntimeException(" Old Struct = ".var_export($descOld,true)." New Struct = ".var_export($desc,true));
+        // if($nom_col=="attribute_11") throw new AfwRunti meException(" Old Struct = ".var_export($descOld,true)." New Struct = ".var_export($desc,true));
         $mode_field_read_only = false;
         $mode_field_read_only_log = "";
         if (!$desc["STEP"]) $desc["STEP"] = 1;

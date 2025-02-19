@@ -133,7 +133,7 @@ for($i=0;$i<$nb_objs;$i++)
         {
                 if($obj->isChanged())
                 {
-                        // if(($obj->getMyClass()=="Afield") and (!$obj->getVal("field_name"))) throw new AfwRuntimeException("afield insert with field_name empty : ".var_export($obj,true));
+                        // if(($obj->getMyClass()=="Afield") and (!$obj->getVal("field_name"))) throw new AfwRuntimeE xception("afield insert with field_name empty : ".var_export($obj,true));
                         
                         
                         $obj->sql_action = "insert";
@@ -143,7 +143,7 @@ for($i=0;$i<$nb_objs;$i++)
                         $inserted = $obj->insert();
                         if(!$inserted)
                         {
-                            if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) throw new AfwRuntimeException($obj->sql_info ." insert failed : ".$obj->tech_notes, array("FIELDS_UPDATED"=>true));
+                            if(($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) throw new AfwRuntimeEx ception($obj->sql_info ." insert failed : ".$obj->tech_notes, array("FIELDS_UPDATED"=>true));
                         }
                          
                 	$id = $obj->getId();
@@ -183,7 +183,7 @@ for($i=0;$i<$nb_objs;$i++)
         }
         else
         {
-               // @todo here exception
+               // @todo here ex-ception
         }
         	
         

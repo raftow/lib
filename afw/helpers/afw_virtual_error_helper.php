@@ -12,8 +12,14 @@ class AfwVirtualErrorHelper extends AFWRoot
         if(count($file_arr)>1) $file .= $file_arr[count($file_arr)-1]."-";
         $file = trim($file, "-");
         $component = strtoupper($file);
-        $component = str_replace("AFW_", "", $component);
-        $component = str_replace("HZM_", "", $component);
+        $component = str_replace("HTML-", "H-", $component);
+        $component = str_replace("PAGE-", "PG-", $component);
+        
+        $component = str_replace("LIB-", "LB-", $component);
+        $component = str_replace("AFW-", "FW-", $component);
+        $component = str_replace("HZM-", "ZM-", $component);
+        $component = str_replace("HELPERS-", "HLPS-", $component);
+        $component = str_replace("HELPER-", "HLP-", $component);
         $component = str_replace(".PHP", "", $component);
         $component = str_replace(".", "-", $component);
         $component = str_replace("_", "-", $component);
@@ -43,12 +49,12 @@ class AfwVirtualErrorHelper extends AFWRoot
         $relc = "";
         foreach ($traces as $i => $trace)
         {
-            $file_c = isset($trace[ 'file' ]) ? basename($trace[ 'file' ]) : '';
+            $file_c = isset($trace[ 'file' ]) ? $trace[ 'file' ] : '';
             $line_c = isset($trace[ 'line' ]) ? $trace[ 'line' ] : '';
             if($file_c) 
             {
                 list($c_component, $c_version) = self::prepareComponentNameAndVersion($file_c, $line_c);
-                $relc .= "RC $c_component V$c_version\n<br>";
+                $relc .= "DLL : $c_component-$c_version\n<br>";
             }
         }
             

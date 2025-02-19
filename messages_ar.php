@@ -15,7 +15,7 @@
      $messages["Are you sure you want to move down this item ?"] = "هل أنت متأكد أنك تريد نقل هذا العنصر إلى أسفل ؟";
      
      
-     
+     $messages["Object can not be loaded, seems has been deleted !"] = "هذا السجل مفقود، يبدوا أنه تم حذفه";
 
 
      $messages["MULTI CHOICE ALLOWED"] = "يسمح بالاختيار المتعدد";
@@ -59,6 +59,8 @@
      $messages["the control option"] = "خيار التحكم";
      $messages["has been enabled"] = "تم تفعيله";
      $messages["has been disabled"] = "تم تعطيله";
+     $messages["Return to main page"] = "العودة إلى الصفحة الرئيسية";
+     $messages["Return back"] = "العودة إلى الخلف";
      
      $messages["There are more technical details with administrator"] = "يوجد المزيد من التفاصيل الفنية مع المشرف";
 

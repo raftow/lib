@@ -446,11 +446,11 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj);
                 $answer_case = "AfwLoadHelper::get EnumTable($fieldAnsTab, $objTableName, $fcol_name, obj:$objName)";
             }
-            if(!$liste_rep) throw new AfwRuntimeException("for col $orig_col_name enum liste_rep comes from $answer_case is null or empty  liste_rep = ".var_export($liste_rep,true));
+            if(!$liste_rep) throw new AfwModeException("for col $orig_col_name enum liste_rep comes from $answer_case is null or empty  liste_rep = ".var_export($liste_rep,true));
             
 
-            // if($orig_col_name=="level_enum") throw new AfwRuntimeException("for col $orig_col_name enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
-            // if($desc["FORMAT-INPUT"]=="hzmtoggle") throw new AfwRuntimeException("for enum col $orig_col_name liste_rep comes from $answer_case : ".var_export($liste_rep,true));
+            // if($orig_col_name=="level_enum") throw new AfwRuntime Exception("for col $orig_col_name enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
+            // if($desc["FORMAT-INPUT"]=="hzmtoggle") throw new AfwRuntime Exception("for enum col $orig_col_name liste_rep comes from $answer_case : ".var_export($liste_rep,true));
 
             if ($obj->fixm_disable) {
 
@@ -505,7 +505,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                         else $listeOrdres[$rep_i] = $liste_codeOrdres[$rep_i];
                     }
 
-                    //if($col_name=="coming_status_id_0") throw new AfwRuntimeException($log_echo);
+                    //if($col_name=="coming_status_id_0") throw new AfwRuntime Exception($log_echo);
                     if (!$css_val) $css_val = $desc["DEFAULT-CSS"];
                     if (!$css_val) $css_val = $liste_css[0];
 
@@ -900,7 +900,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
     // @todo not all time should be well studied
     // if(count($list_id_val)==0) return;
 
-    if(!is_array($list_id_val)) throw new AfwRuntimeException("qedit motor select method should receive as first parameter an array of id => value but got `$list_id_val` value");
+    if(!is_array($list_id_val)) throw new AfwModeException("qedit motor select method should receive as first parameter an array of id => value but got `$list_id_val` value");
 
     switch (strtolower($ordre)) {
         case 'asc':

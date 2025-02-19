@@ -50,7 +50,14 @@ for($i=0;$i<$nb_objs;$i++)
         {
         	//AFWDebugg::log("try to load $class row $id");
                 if($obj->load($id)) $is_load = true;
-                else throw new AfwRuntimeException("can't load obj with id = $id");
+                else 
+                {
+                        $return_message = $myObj->tm("Return back", $lang);    
+                        $return_page = "main.php?Main_Page=afw_mode_qsearch.php&cl=$class&currmod=$currmod";
+                        $die_message = $myObj->tm("Object can not be loaded, seems has been deleted !", $lang);            
+                        $technical = "mode edit load by id failed : >> $class load by [id=$id]";
+                        throw new AfwBusinessException($die_message, $lang, "be-record-not-found.png", $return_message,$return_page, $technical);                        
+                }
         
         }
         else
