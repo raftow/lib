@@ -194,7 +194,8 @@ else
                     $ddb_obj_id = $objects_ids_arr[$i]; 
                     $ddb_obj =&  $ddb_objs[$ddb_obj_id];
                     $separator = $ddb_obj->getSeparatorFor($nom_col);
-                    $col_val = $ddb_obj->{"val$nom_col"}();
+                    $col_val = $ddb_obj->getVal($nom_col);
+                    
                     if(($i>0) and ($old_col_val != $col_val))
                     {
                         $diff_css = "ddb_different ddb_${old_col_val}_different_${col_val}";
@@ -208,6 +209,7 @@ else
                     {   
                             ob_start();
                             if(($nom_col=="id_sh_org") and (!$desc["WHERE"])) die("$nom_col => desc = ".var_export($desc, true));
+                            $ddb_obj->qeditNomCol = $nom_col;
                  	        type_input($nom_col."_$i", $desc, $col_val, $ddb_obj, $separator, $data_loaded,"inputlong",0,"inputlong");
                             $input_html = ob_get_clean();
                     }

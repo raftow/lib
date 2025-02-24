@@ -40,7 +40,8 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
     if (!$Main_Page) $Main_Page = $_GET["Main_Page"];
     if (!$Main_Page) $Main_Page = $_POST["Main_Page"];
 
-    if (($Main_Page == "afw_mode_ddb.php") or ($Main_Page == "afw_mode_qedit.php") or ($Main_Page == "afw_handle_default_qedit.php")) {
+    if (($Main_Page == "afw_mode_ddb.php") or ($Main_Page == "afw_mode_qedit.php") or
+        ($Main_Page == "afw_handle_default_ddb.php") or ($Main_Page == "afw_handle_default_qedit.php")) {
         $mode_qedit = true;
     }
 
@@ -49,8 +50,10 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
         $qeditNomCol = $obj->qeditNomCol;
         if (!$qeditNomCol) $qeditNomCol = $col_name;
         $orig_col_name = $qeditNomCol;
+        if(AfwStringHelper::stringEndsWith($orig_col_name, "_0")) die("dbg orig_col_name=$fcol_name case 10");
     } else {
         $orig_col_name = $col_name;
+        if(AfwStringHelper::stringEndsWith($orig_col_name, "_0")) die("dbg orig_col_name=$fcol_name case 11 [Main_Page=$Main_Page]");
     }
 
     //$col_title = $obj->getKeyLabel($orig_col_name,$lang);
@@ -181,7 +184,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
             break;
         case 'MENUM':
             $fcol_name = $desc["FUNCTION_COL_NAME"];
+            if(AfwStringHelper::stringEndsWith($fcol_name, "_0")) die("dbg fcol_name=$fcol_name case -1");
             if (!$fcol_name) $fcol_name = $col_name;
+            if(AfwStringHelper::stringEndsWith($fcol_name, "_0")) die("dbg fcol_name=$fcol_name case 0");
 
             $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj);
             //echo "menum val $val with sep $separator : <br>";
@@ -241,7 +246,9 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 $objName = $obj->__toString();
                 $fieldAnsTab = $desc["ANSWER"];
                 $fcol_name = $desc["FUNCTION_COL_NAME"];
+                if(AfwStringHelper::stringEndsWith($fcol_name, "_0")) die("dbg fcol_name=$fcol_name case 1");
                 if (!$fcol_name) $fcol_name = $orig_col_name;
+                if(AfwStringHelper::stringEndsWith($fcol_name, "_0")) die("dbg fcol_name=$fcol_name case 2");
                 $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj);
                 $answer_case = "AfwLoadHelper::get EnumTable($fieldAnsTab, $objTableName, $fcol_name, obj:$objName)";
             }
