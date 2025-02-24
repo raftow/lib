@@ -2385,12 +2385,21 @@ $('#$showAsDataTable').DataTable( {
                                 " cannot get link for attribute $attribute , ANSWER table and ANSMODULE should be specified"
                             );
                         }
+                        $ans = $structure['ANSWER'];
+                        $ansmod = $structure['ANSMODULE'];
                         $link_to_display = $object->getLinkForAttribute(
-                            $structure['ANSWER'],
+                            $ans,
                             $value,
                             'display',
-                            $structure['ANSMODULE']
+                            $ansmod
                         );
+                        /*
+                        die("dbg 985545556 rafik : link_to_display= $link_to_display = $object => getLinkForAttribute(
+                            $ans,
+                            $value,
+                            'display',
+                            $ansmod
+                        ) ");*/
                     }
                 }
                 break;
@@ -2452,13 +2461,14 @@ $('#$showAsDataTable').DataTable( {
         if ($structure['LABEL']) {
             $my_label = $structure['LABEL'];
         }
-        if ($structure['ICON']) {
-            $my_icon = $structure['ICON'];
-        }
-        if (!$my_icon) {
-            $my_icon = 'view_ok';
-        }
+        
         if (!$my_label) {
+            if ($structure['ICON']) {
+                $my_icon = $structure['ICON'];
+            }
+            if (!$my_icon) {
+                $my_icon = 'view_ok';
+            }
             $my_label = "<img src='../lib/images/$my_icon.png' width='24' heigth='24'>";
         }
         if ($structure['TARGET']) {

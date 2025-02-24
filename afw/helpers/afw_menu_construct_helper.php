@@ -177,7 +177,7 @@ class AfwMenuConstructHelper
         {
             $iamAdmin = $objme->isAdmin();
 
-            $application_id = AfwSession::config("application_id", 0);
+            $application_id = AfwSession::config($module."_application_id", 0);
             $no_cache_use_for_ums = AfwSession::config("no-cache-use-for-ums", false);
             if (!$application_id) {
                 throw new AfwRuntimeException("HZM Error : application_id should be defined in application_config.php file");

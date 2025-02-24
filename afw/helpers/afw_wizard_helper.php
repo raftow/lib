@@ -197,9 +197,10 @@ class AfwWizardHelper extends AFWRoot
 
                 //if($attribute=="mainwork_start_paragraph_num") die("strange case, step = $step struct = ".var_export($struct,true));
                 //if($attribute=="previous_paragraph_id") die("strange case, step = $step struct = ".var_export($struct,true)." struct['STEPS'][$step] = ".$struct['STEPS'][$step]);
+                $relation_is_super = ($struct['RELATION'] == 'OneToMany' or $struct['RELATION'] == 'OneToOneB' or $struct['RELATION'] == 'OneToOneU' or $struct['RELATION-SUPER'] == 'IMPORTANT');
                 if (
                     $struct['TYPE'] == 'FK' and
-                    ($struct['RELATION'] == 'OneToMany' or $struct['RELATION'] == 'OneToOneB' or $struct['RELATION'] == 'OneToOneU' or $struct['RELATION-SUPER'] == 'IMPORTANT') and
+                    $relation_is_super and
                     ($step == "all" or $struct['STEP'] == "all" or $struct['STEP'] == $step or $struct['STEPS'][$step])
                 ) {
                     // if($attribute=="previous_paragraph_id") die("case of OneToXX or RELATION-SUPER is IMPORTANT, struct of $attribute = ".var_export($struct,true));
@@ -280,7 +281,7 @@ class AfwWizardHelper extends AFWRoot
                         );
                         $displ2 = trim($displ2);
                         if (!$displ2) {
-                            $displ2 = "case 3 : this->displayAttribute($attribute,false, $lang)";
+                            $displ2 = "case 3 : this->displayAttribute($attribute,false, $lang) return nothing";
                         } else {
                             $displ2 .= "<!-- case 3 : this->displayAttribute($attribute,false, $lang) -->";
                         }
@@ -404,15 +405,19 @@ class AfwWizardHelper extends AFWRoot
                 $object_otherLinkLog[] = $log;
             }
         }
-        /*
-        foreach ($object_otherLinkLog as $object_otherLinkLogItem) {
-            AfwSession::contextLog($object_otherLinkLogItem, 'otherLink');
+        if ($genereLog) {
+            /*
+            foreach ($object_otherLinkLog as $object_otherLinkLogItem) {
+                AfwSession::contextLog($object_otherLinkLogItem, 'otherLink');
+            }
+            */
+            /*
+            if(($mode == 'display' or $mode == 'edit') and ($object->getMyClass()=="TrainingUnit"))
+            {
+                die("otherLinksArray = ".var_export($otherLinksArray,true)." this_otherLinkLog : ".implode("<br>",$object_otherLinkLog));
+            }
+            */
         }
-        if(($mode == 'display' or $mode == 'edit') and ($object->getMyClass()=="CpcBookParagraph"))
-        {
-            die("otherLinksArray = ".var_export($otherLinksArray,true)." this_otherLinkLog : ".implode("<br>",$object_otherLinkLog));
-        }
-        */
 
         return $otherLinksArray;
     }

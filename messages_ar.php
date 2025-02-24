@@ -105,8 +105,14 @@
      $messages["Customers Login"] = "دخول العملاء";
 
      $messages["Orders to execute"] = "أوامر للتنفيذ";
-     
-     
+     $messages["There are errors in data, process can not be completed"] = "يوجد أخطاء في البيانات لا يمكن استكمال الاجراء";   
+     $messages["The empolyee account creation has been failed, contact your administrator"] = "فشلت عملية انشاء حساب الموظف، من فضلك تواصل مع المشرف";
+     $messages["The user account creation has been failed, contact your administrator"] = "فشلت عملية انشاء حساب المستخدم، من فضلك تواصل مع المشرف";
+     $messages["Are you sure you want to reset the password ?"] = "هل أنت متأكد أنك ترغب في تصفير كلمة المرور؟";
+     $messages["This action can not be canceled !"] = "هذا الاجراء غير قابل للتراجع !";
+     $messages["Password has been resetted. The new password has been sent by"] = "تمت إعادة تعيين كلمة المرور. تم إرسال كلمة المرور الجديدة بواسطة";
+     $messages["to"] = "إلى";
+     // $messages[""] = "";
      
 
 ?>

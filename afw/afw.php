@@ -326,6 +326,13 @@ class AFWObject extends AFWRoot
         return self::getDbStructure($return_type = 'shortcuts');
     }
 
+    public static function getFormulaFields()
+    {
+        return self::getDbStructure($return_type = 'formulas');
+    }
+
+    
+
     public function getMyDbStructure(
         $return_type = 'structure',
         $attribute = 'all'
@@ -352,6 +359,13 @@ class AFWObject extends AFWRoot
             $this_shortcuts = [];
         }
 
+        if ($return_type == 'formulas') {
+            $attribute = 'all';
+            $this_formulas = [];
+        }
+
+        
+
         $got_first_time = false;
         $class_name = static::class;
         $module_code = static::$MODULE;
@@ -372,6 +386,12 @@ class AFWObject extends AFWRoot
                 if ($value['SHORTCUT'] and $return_type == 'shortcuts') {
                     $this_shortcuts[$key] = true;
                 }
+
+                if (($value['CATEGORY']=="FORMULA") and $return_type == 'formulas') {
+                    if($key!="tech_notes") $this_formulas[$key] = true;
+                }
+
+                
 
                 if ($value['SHORTNAME'] and $return_type == 'shortnames') {
                     // first be sure the this short name is not already used as attribute
@@ -416,7 +436,10 @@ class AFWObject extends AFWRoot
             return $this_short_names;
         } elseif ($return_type == 'shortcuts') {
             return $this_shortcuts;
+        } elseif ($return_type == 'formulas') {
+            return $this_formulas;
         }
+        
 
         return ["momken" => "unknown-requested-return_type $return_type"];
     }
@@ -5544,13 +5567,20 @@ class AFWObject extends AFWRoot
 
         if (($intelligent_category == 'ITEMS') or ($intelligent_category == 'FORMULA')) {
             $value = '';
+            if($intelligent_category == 'FORMULA') $value = $this->calc($key);
             $formatted = false;
         } else {
             // in case of we use shortname
-            $value = $this->getVal($key);
-            //if($key == "session_status_id") die("$value = this->getVal($key)");
+            // ?? be more clear in your comments please, what means above (RB 21/02/2025)
+
+            // in case of we use calcuated field
+            if($this->shouldBeCalculatedField($key))
+                $value = $this->calc($key);
+            else
+                $value = $this->getVal($key);
+            // if($key == "adm_orgunit_id") die("$value = this->getVal($key)");
             list($formatted, $data_to_display, $link_to_display,) = AfwFormatHelper::formatValue($value, $key, $structure, $getFormatLink, $this);
-            // if($key == "session_status_id") die("list($formatted, $data_to_display, $link_to_display,) = AfwFormatHelper::formatValue($value, $key, ..)");
+            // if($key == "adm_orgunit_id") die("dbg 55477 rafik : list($formatted, $data_to_display, $link_to_display,) = AfwFormatHelper::formatValue($value, $key, ..)");
         }
 
 
@@ -5563,7 +5593,12 @@ class AFWObject extends AFWRoot
                 // $data_to_display .= " comes from showFK";
             } else {
                 list($data_to_display, $link_to_display) = AfwShowHelper::showVirtualAttribute($this, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $langue, $structure, $getlink);
+                /*
+                if($key == "adm_orgunit_id" and $getlink) throw new AfwRuntimeException("dbg 44599925 rafik : list($data_to_display, $link_to_display) = AfwShowHelper::showVirtualAttribute($this, attribute=$attribute, <br>
+                                 intelligent_category=$intelligent_category, value=$value, id_origin=$id_origin, class_origin=$class_origin, module_origin=$module_origin, <br>
+                                 langue=$langue, structure=$structure, getlink=$getlink)");*/
             }
+            
         } elseif ($structure['TYPE'] == 'MFK') {
             list($data_to_display, $link_to_display) = AfwShowHelper::showMFK($this, $attribute, $langue, $structure, $getlink);
         } elseif ($structure['TYPE'] == 'YN') {
@@ -8357,6 +8392,11 @@ class AFWObject extends AFWRoot
         return AfwSqlHelper::aggregFunction($this, $function, $group_by, $throw_error, $throw_analysis_crash);
     }
 
+
+    public function getTechnicalNotes()
+    {
+            return $this->debugg_tech_notes;
+    }
 
     /*********************************XXXXXXXXXXXXXXXXXXXXXXXX**************************** */
 

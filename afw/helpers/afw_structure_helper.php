@@ -39,7 +39,7 @@ class AfwStructureHelper extends AFWRoot
                 $struct = AfwStructureHelper::repareMyStructure($object, $struct, $field_name);
             }
 
-            if($struct["CATEGORY"]=="SHORTCUT")
+            if(($struct["CATEGORY"]=="SHORTCUT") /* or (($struct["CATEGORY"]=="FORMULA") and ($field_name != "tech_notes"))*/)
             {
                 if(!$object->shouldBeCalculatedField($field_name))
                 {
@@ -1098,12 +1098,17 @@ class AfwStructureHelper extends AFWRoot
 
     public static function suggestAllCalcFields($object)
     {
-        $shortcuts = $object::getShortcutFields();
         $result = "public function shouldBeCalculatedField(\$attribute){\n";
 
+        $shortcuts = $object::getShortcutFields();
         foreach($shortcuts as $attribute => $is_shortcut)
         {
             if($is_shortcut) $result .= "   if(\$attribute==\"$attribute\") return true;\n";
+        }
+        $formulas = $object::getFormulaFields();
+        foreach($formulas as $attribute => $is_formula)
+        {
+            if($is_formula) $result .= "   if(\$attribute==\"$attribute\") return true;\n";
         }
         $result .= "   return false;\n";
         $result .= "}";

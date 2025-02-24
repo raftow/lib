@@ -13,6 +13,7 @@ class AfwMainPage
     }
     public static function echoMainPage($current_module, $Main_Page, $module_path, $options = [],)
     {
+        if(count($options)==0) $options = AfwMainPage::getDefaultOptions($Main_Page);
         $curr_path = dirname(__FILE__);
         include("$curr_path/afw_main_start.php");
         // die("echoMainPage($current_module, $Main_Page, $module_path) after afw_main_start lang=$lang");
