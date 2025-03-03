@@ -607,7 +607,6 @@ input.longbtn.yellowbtn:hover {
 
 
 .footer_bg {
-    /* background-image: url(../../external/pic/bg-footer.jpg); */
     background-color: var(--panel-color) !important;
     background-size: contain;
     float: right;

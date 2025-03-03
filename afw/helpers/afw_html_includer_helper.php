@@ -252,7 +252,7 @@ class AfwHtmlIncluderHelper
           
           
           <link href='../$main_module/css/module.css?crst=$crst' rel='stylesheet' type='text/css'>
-          <link href='../external/css/common-$company.css?crst=$crst' rel='stylesheet' type='text/css'>
+          <link href='../client-$company/css/common-$company.css?crst=$crst' rel='stylesheet' type='text/css'>
 
           <script src='../lib/js/$menu_template"."_menu.js'></script>
           <script src='../lib/js/$menu_template"."_menu_$lang.js'></script>

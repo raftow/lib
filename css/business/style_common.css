@@ -2222,7 +2222,7 @@ table.dataTable, table.dataTable th, table.dataTable td {
     /* margin: 10px;*/
     width: 100%;
     height: 60px;
-    background: url(../../external/powered_by_logo.png) no-repeat;
+    background: url(../../lib/images/powered_by_logo.png) no-repeat;
     background-size: 240px;
     background-position: center;
 }

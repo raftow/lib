@@ -17,7 +17,7 @@
         
         include("afw_error_handler.php");
         
-        require_once("$module_dir_name/../../external/db.php");
+        require_once("$module_dir_name/../../config/global_config.php");
         // 
         
         $only_members = true;

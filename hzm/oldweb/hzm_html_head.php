@@ -189,7 +189,7 @@ if (!$my_font) $my_font = "front";
 
   if (!$no_common_css) {
   ?>
-    <link href="../external/css/common.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
+    <link href="../exte-rnal/css/common.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
   }
   ?>

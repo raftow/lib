@@ -40,7 +40,7 @@ foreach($required_modules as $required_module)
 }
 
 AfwSession::startSession();
-require_once("$file_dir_name/../../external/db.php");
+require_once("$file_dir_name/../../config/global_config.php");
 
 // die(var_export($attr_arr,true));
 

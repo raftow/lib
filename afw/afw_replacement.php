@@ -22,7 +22,7 @@ class AfwReplacement {
             throw new AfwRuntimeException("module code required to do AfwReplacement::trans_replace");
         }
 
-        $replace_file = dirname(__FILE__)."/../../external/translate-$company/$module_code/replaces_$lang.php";
+        $replace_file = dirname(__FILE__)."/../../client-$company/translate/$module_code/replaces_$lang.php";
         $arr_str = include($replace_file);
         if($arr_str)
         {

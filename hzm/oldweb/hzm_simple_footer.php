@@ -38,8 +38,8 @@
     {
 ?>
         <div class="copyright simple_footer">
-                <div class="simple_copyright"><img src="../external/pic/copyright.png"></div>
-                <div class="powered_by"><img src="../external/pic/powered_by_logo.png"></div>
+                <div class="simple_copyright"><img src="../lib/images/copyright.png"></div>
+                <div class="powered_by"><img src="../lib/images/powered_by_logo.png"></div>
         </div>
 <?php
     }

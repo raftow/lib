@@ -114,6 +114,7 @@ class AfwRunHelper
                 $mode_dev = AfwSession::config("MODE_DEVELOPMENT", false);
                 $mode_batch = AfwSession::config("MODE_BATCH", false);
                 $xmodule = AfwSession::getCurrentlyExecutedModule();
+                $company = AfwSession::currentCompany();
                 $open_mode = ($force_mode_dev or $mode_dev or $mode_batch);
 
                 if (!$message) {
@@ -140,7 +141,7 @@ class AfwRunHelper
                                 <link href='../lib/css/simple/style_common.css?crst=$crst' rel='stylesheet' type='text/css'>
                                 <link href='../lib/css/simple/style_ar.css?crst=$crst' rel='stylesheet' type='text/css'>
                                 <link href='../lib/css/simple/front_menu.css?crst=$crst' rel='stylesheet' type='text/css'>
-                                <link href='../../external/css/common-$xmodule.css' rel='stylesheet' type='text/css' type='text/css'>
+                                <link href='../../client-$company/css/common-$xmodule.css' rel='stylesheet' type='text/css' type='text/css'>
                                 <link href='./css/module.css?crst=$crst' rel='stylesheet' type='text/css' type='text/css'>
                                 <link href='../lib/skins/square/green.css' rel='stylesheet' type='text/css'>
                                 <link href='../lib/skins/square/red.css' rel='stylesheet' type='text/css'>
@@ -152,19 +153,19 @@ class AfwRunHelper
                                 <body style='font-family: monospace;'>";
 
                         if ($open_mode)  $application_info = "<div class='logo_application'>
-                        <img src='../../external/pic/logo-application.png' alt='' style='margin-top:5px;float: left;height: 90px'>
+                        <img src='../../client-$company/pic/logo-application.png' alt='' style='margin-top:5px;float: left;height: 90px'>
                         </div>
                         <div class='title_application'>
-                        <img src='../../external/pic/title-application.png' alt='' style='margin-top:5px;float: left;height: 90px'>
+                        <img src='../../client-$company/pic/title-application.png' alt='' style='margin-top:5px;float: left;height: 90px'>
                         </div>";
                         else $application_info = "";
 
                         $message .= "<div class='medium-12 large-12 columns text-center large-text-right'>
                                 <div class='logo_company'>  
-                                <img src='../../external/pic/logo-company.png' alt='' style='margin-top:5px;height: px;'> 
+                                <img src='../../client-$company/pic/logo-company.png' alt='' style='margin-top:5px;height: px;'> 
                                 </div>  
                                 <div class='title_company'>  
-                                <img src='../../external/pic/title-company.png' alt='' style='margin-top:-10px;height: px;'> 
+                                <img src='../../client-$company/pic/title-company.png' alt='' style='margin-top:-10px;height: px;'> 
                                 </div>
                                 $application_info     
                                 </div>";

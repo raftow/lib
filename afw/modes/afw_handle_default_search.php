@@ -1,6 +1,6 @@
 <?php
 // die("DBG-mode handle search");
-require_once(dirname(__FILE__) . "/../../../external/db.php");
+require_once(dirname(__FILE__) . "/../../../config/global_config.php");
 require_once('afw_rights.php');
 
 $themeArr = AfwThemeHelper::loadTheme();

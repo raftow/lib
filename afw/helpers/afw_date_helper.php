@@ -1448,7 +1448,7 @@ class AfwDateHelper
 
         // try to use cache greg_to_hijri files
         list($greg_year,) = explode("-", $gdate);
-        $hg_cache_file = dirname(__FILE__) . "/../../../external/chsys/dates/greg_$greg_year" . "_to_hijri.php";
+        $hg_cache_file = dirname(__FILE__) . "/../../../cache/chsys/dates/greg_$greg_year" . "_to_hijri.php";
         $greg_to_hijri_arr = include($hg_cache_file);
 
         if ($greg_to_hijri_arr) {
@@ -1504,7 +1504,7 @@ class AfwDateHelper
     {
         // try to use cache hijri_to_greg files
         if (!$hijri_year) $hijri_year = substr($original_hdate, 0, 4);
-        $hijri_to_greg_file = dirname(__FILE__) . "/../../../external/chsys/dates/hijri_" . $hijri_year . "_to_greg.php";
+        $hijri_to_greg_file = dirname(__FILE__) . "/../../../cache/chsys/dates/hijri_" . $hijri_year . "_to_greg.php";
         $hijri_to_greg_arr = include($hijri_to_greg_file);
         /*
         if(($original_hdate=="14350101") and (!$hijri_to_greg_arr[$original_hdate]))
@@ -1530,7 +1530,7 @@ class AfwDateHelper
                 $hdate = $yyyy . $mm . $dd;
                 if($yyyy!=$hijri_year)
                 {
-                    $hijri_to_greg_file = dirname(__FILE__) . "/../../../external/chsys/dates/hijri_" . $yyyy . "_to_greg.php";
+                    $hijri_to_greg_file = dirname(__FILE__) . "/../../../cache/chsys/dates/hijri_" . $yyyy . "_to_greg.php";
                     $hijri_to_greg_arr = include($hijri_to_greg_file);
                 }
             }

@@ -9,7 +9,7 @@ $lang = "en";
 AfwSession::startSession();
 $update_context = "YN Fields switcher with afw switcher network api";
 // echo "here5"; 
-require_once("$file_dir_name/../../external/db.php");
+require_once("$file_dir_name/../../config/global_config.php");
 // echo "here6";
 // old include of afw.php
 $only_members = true;

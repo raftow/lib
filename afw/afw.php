@@ -4264,7 +4264,7 @@ class AFWObject extends AFWRoot
 
         include "$file_dir_name/../../$module/messages_$lang.php";
         if ($company) {
-            include "$file_dir_name/../../external/translate/messages_$module" . "_$company" . "_$lang.php";
+            include "$file_dir_name/../../client-$company/translate/$module/messages_$company" . "_$lang.php";
         }
 
         if ($messages[$message]) {

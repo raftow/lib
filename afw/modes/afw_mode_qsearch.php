@@ -1,6 +1,6 @@
 <?php
 // die("DBG-mode qsearch");
-require_once(dirname(__FILE__)."/../../../external/db.php");
+require_once(dirname(__FILE__)."/../../../config/global_config.php");
 
 
 $themeArr = AfwThemeHelper::loadTheme();

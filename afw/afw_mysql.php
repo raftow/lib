@@ -81,7 +81,7 @@ class AfwMysql
         } 
     }
 
-    public static function connection($hostname, $username, $password, $database)
+    public static function connection($hostname, $username, $password, $database, $port=null)
     {
         if(self::php_is_old()) 
         {
@@ -91,7 +91,7 @@ class AfwMysql
         {
             try{
                 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-                return mysqli_connect($hostname, $username, $password, $database);
+                return mysqli_connect($hostname, $username, $password, $database, $port);
             }
             catch(Exception $e)
             {

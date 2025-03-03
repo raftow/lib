@@ -534,7 +534,7 @@ tbody tr.even {
 
 
 .footer_bg {
-    /* background-image: url(../../external/pic/bg-footer.jpg); */
+    /* background-image: url(../../lib/images/pic/bg-footer.jpg); */
     background-color: #d1edfb;
     background-size: contain;
     float: right;

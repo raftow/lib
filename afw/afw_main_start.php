@@ -11,7 +11,7 @@ $file_dir_name = dirname(__FILE__);
 $module_path = "$file_dir_name/../../$MODULE";
 
 require_once("afw_autoloader.php");
-include(dirname(__FILE__) . "/../../external/db.php");
+include(dirname(__FILE__) . "/../../config/global_config.php");
 // 
 
 

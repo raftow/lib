@@ -42,7 +42,7 @@ include("afw_error_handler.php");
 
 //setcookie(session_name(), session_id(), NULL, NULL, NULL, 0);
 // if($Direct_Page == "main_page.php") die("rafik 3002 session table : ".var_export($_SESS ION,true));
-require_once(dirname(__FILE__)."/../../external/db.php");
+require_once(dirname(__FILE__)."/../../config/global_config.php");
 // 
 
 /*

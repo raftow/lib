@@ -21,7 +21,7 @@ AfwSession::initConfig($config_arr);
 AfwSession::startSession();
 //setcookie(session_name(), session_id(), NULL, NULL, NULL, 0);
 //die("rafik 3002 session table : ".var_export($_SES SION,true));
-require_once("$direct_dir_name/../external/db.php");
+require_once("$direct_dir_name/../config/global_config.php");
 // 
 
 $only_members = false;

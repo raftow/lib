@@ -2357,7 +2357,6 @@ select.hzm_time {
 }
 
 .footer_bg {
-    /*background-image: url(../../external/pic/bg-footer.jpg);*/
     background-color: black;
     background-size: contain;
     float: right;

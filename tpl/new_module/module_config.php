@@ -14,7 +14,7 @@
     $module_config_token["file_types"] = $file_type_ids;
     
     // $config["img-path"] = "pic/";
-    // $config["img-company-path"] = "../external/pic/";
+    // $config["img-company-path"] = "../exte-rnal/pic/";
     
     $display_in_edit_mode["*"] = true;
 

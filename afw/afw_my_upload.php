@@ -19,8 +19,8 @@ try {
         $uri_module = AfwUrlManager::currentURIModule();
         if ($uri_module) AfwAutoLoader::addModule($uri_module);
 
-        include_once("$file_dir_name/../../external/config.php");
-        include_once("$file_dir_name/../../external/db.php");
+        // include_once("$file_dir_name/../../exte rnal/co nfig.php");
+        // include_once("$file_dir_name/../../exte rnal/d b.php");
 
 
 

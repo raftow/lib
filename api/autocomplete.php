@@ -10,7 +10,7 @@ $lang = "en";
         
 AfwSession::startSession();
 
-require_once("$file_dir_name/../../external/db.php");
+require_once("$file_dir_name/../../config/global_config.php");
 // old include of afw.php
 $only_members = true;
 $debug_name = "autocomplete";

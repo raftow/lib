@@ -9,14 +9,14 @@ $SPECIALITY_EXPERT_ID = 162;
 //// 
 /*
 require_once("$file_dir_name/../cms/menu_functions.php");
-require_once("$file_dir_name/../../external/db.php");  
+require_once("$file_dir_name/../../config/global_config.php");  
 
 
 
 
 */
 require_once("afw_autoloader.php");
-require_once("$file_dir_name/../../external/db.php");  
+require_once("$file_dir_name/../../config/global_config.php");  
 
 
 

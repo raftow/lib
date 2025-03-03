@@ -9,7 +9,7 @@ $lang = "en";
 AfwSession::startSession();
 $update_context = "main order field can be moved up or down with afw mover network api";
 // echo "here5"; 
-require_once("$file_dir_name/../../external/db.php");
+require_once("$file_dir_name/../../config/global_config.php");
 // echo "here6";
 // old include of afw.php
 $only_members = true;

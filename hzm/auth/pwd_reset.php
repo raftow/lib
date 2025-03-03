@@ -23,7 +23,7 @@ $lang = AfwSession::getSessionVar("lang");
 if(!$lang) $lang = "ar";
 
 
-require_once ("$module_auth_dir_name/../../../external/db.php");
+require_once ("$module_auth_dir_name/../../../config/global_config.php");
 // 
 
 $file_dir_name = dirname(__FILE__);

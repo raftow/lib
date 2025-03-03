@@ -37,7 +37,7 @@
 
 .calendar_bloc_g {
     height: 96px;
-    background-image: url(../../external/calendar.png);
+    background-image: url(../../lib/images/calendar.png);
     background-repeat: no-repeat;
     /* background-size: 84px; */
     background-position: 0px 0px;

@@ -23,14 +23,14 @@ class AfwDbOci
 
     public function connectFromAfwSessionConfig($module_server, string $encoding = "", int $session_mode = OCI_DEFAULT)
     {
-        $this->connection_string = AfwSession::config($module_server."connection_string", '');
-        $this->username = AfwSession::config($module_server."user", '');
-        $this->password = AfwSession::config($module_server."password", '');
+        $this->connection_string = AfwSession::config($module_server."connection_string", '', "the_database", 'yes');
+        $this->username = AfwSession::config($module_server."user", '', "the_database", 'yes');
+        $this->password = AfwSession::config($module_server."password", '', "the_database", 'yes');
         
         // if($module_server=="nartaqi") throw new AfwRuntimeException("params of connection to server [$module_server] are [$hostname, $username, $password, $database] from : ".AfwSession::log_config());
         if (!$this->connection_string or !$this->username) {
             throw new AfwRuntimeException(
-                "host or user name param not found in the external config file for server [$module_server]" .
+                "host or user name param not found in the database config file for server [$module_server]" .
                     AfwSession::log_config()
             );
         }

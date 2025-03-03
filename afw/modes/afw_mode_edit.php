@@ -1,6 +1,6 @@
 <?php
 //die("rafik before anything $currstep = $currstep");
-require_once(dirname(__FILE__)."/../../../external/db.php");
+require_once(dirname(__FILE__)."/../../../config/global_config.php");
 // here was old const php
 
 $themeArr = AfwThemeHelper::loadTheme();

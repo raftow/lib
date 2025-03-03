@@ -108,7 +108,7 @@ class AfwLanguageHelper
             if ($nom_table) 
             {
                 $nom_file  = "$file_dir_name/../../$module/tr/trad_" . $langue . "_$nom_table.php";
-                $nom_file2 = "$file_dir_name/../../external/translate-$company/$module/trad_" . $langue . "_$nom_table.php";
+                $nom_file2 = "$file_dir_name/../../client-$company/translate/$module/trad_" . $langue . "_$nom_table.php";
                 //if($object->MY_DEBUG)
                 //        AFWDebugg::log("traduire from file $nom_file ");
 
@@ -217,7 +217,7 @@ class AfwLanguageHelper
         }
     }
 
-    public static function translateKeyword($text, $langue = 'ar', $external = 'obsolete')
+    public static function translateKeyword($text, $langue = 'ar')
     {
             return AfwLanguageHelper::tarjem($text, $langue, true, '', '');
     }

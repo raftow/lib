@@ -4,7 +4,7 @@
     {
         public static function loadAllServerModules()
         {
-            $file_modules_all = dirname(__FILE__)."/../../external/chsys/modules_all.php"; 
+            $file_modules_all = dirname(__FILE__)."/../../cache/chsys/modules_all.php"; 
             if(file_exists($file_modules_all))
             {
                 include($file_modules_all);

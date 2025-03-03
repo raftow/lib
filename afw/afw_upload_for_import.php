@@ -1,7 +1,7 @@
 <?php
 $file_dir_name = dirname(__FILE__); 
-include_once("$file_dir_name/../../external/config.php");
-include_once("$file_dir_name/../../external/db.php");
+// include_once("$file_dir_name/../../ext ernal/con fig.php");
+// include_once("$file_dir_name/../../ext ernal/d b.php");
 // 
 AfwSession::startSession();
 $me = AfwSession::getSessionVar("user_id");

@@ -8,9 +8,10 @@
         }
         $lang = AfwLanguageHelper::getGlobalLanguage();
         $xmodule = AfwSession::getCurrentlyExecutedModule();
+        $company = AfwSession::currentCompany();
 ?>
-<link href="/external/css/common-<?php echo $xmodule ?>.css" rel="stylesheet" type="text/css" type="text/css">
-<link href="/external/css/common-<?php echo $xmodule ?>-<?php echo $lang ?>.css" rel="stylesheet" type="text/css" type="text/css">
+<link href="/client-<?php echo $company ?>/css/common-<?php echo $xmodule ?>.css" rel="stylesheet" type="text/css" type="text/css">
+<link href="/client-<?php echo $company ?>/css/common-<?php echo $xmodule ?>-<?php echo $lang ?>.css" rel="stylesheet" type="text/css" type="text/css">
 <div class="body_front_error">     
         <p class="message">
                 <?php echo $error_message?>

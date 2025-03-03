@@ -58,15 +58,29 @@ class AfwSmsSender extends AFWRoot {
         }
 
 
-        public static function hzmSMS($mobile_number, $message, $user_name, $application_id, $process_id=1, $encoding="utf-8", $method = 'SendSMS')
+        public static function hzmSMS($mobile_number, $message, $encoding="utf-8")
         {
                 global $smsSender_wsdlUrl;
                 $file_dir_hzm = dirname(__FILE__);
-                $sms_config_config_file = "$file_dir_hzm/../../external/sms_config.php";
-                include($sms_config_config_file);
-                if($user_name == "company-crm-2factor") $user_name = $sms_username; 
+                $sms_config_config_file = "$file_dir_hzm/../../config/sms_config.php";
+                $arrConfig = include($sms_config_config_file);
+                if(!$arrConfig["type"]) $arrConfig["type"]="soap";
+                if($arrConfig["type"]=="soap")
+                {
+                        return self::soapSMS($mobile_number, $message, $arrConfig, $encoding);
+                }
+
+                throw new AfwRuntimeException("sms api type ".$arrConfig["type"]." not implemented !");
+        }
+
+
+        public static function soapSMS($mobile_number, $message, $arrConfig, $encoding="utf-8")
+        {        
+                // 
+                // obso : if($user_name == "company-crm-2factor") $user_name = $sms_username; 
                                   
-                // die("smsSender_wsdlUrl = ".$smsSender_wsdlUrl." from $file_dir_hzm/../../../../external/sms_config.php");
+                
+                foreach($arrConfig as $key => $val) $$key = $val;
                 try 
                 { 
                         $opts = array(
@@ -83,14 +97,20 @@ class AfwSmsSender extends AFWRoot {
                                 'encoding' => $encoding
                         );
                         
+                        $NumberCol = $params['MOBILE-NUMBER-PARAM'];
+                        if(!$NumberCol) $NumberCol = "Number";
+
+                        $MessageCol = $params['MESSAGE-BODY-PARAM'];
+                        if(!$MessageCol) $MessageCol = "Message";
                         
-                        $params = array('Number'=>$mobile_number, 'Message'=>$message, 'APPLICATION_ID'=>$application_id, 'PROCESS_ID'=>$process_id, 'USER_NAME'=>$user_name);
+                        foreach($hard_params as $key => $val) $soapParams[$key] = $val;
+                        $soapParams = array($NumberCol=>$mobile_number, $MessageCol=>$message, );
                 
                         $soapClient = new SoapClient($smsSender_wsdlUrl, $soapClientOptions);  // ' UTF-8'
                         $error = 0;    
                         
                         //$info = $soapClient->__call($method, array($params));
-                        $info = $soapClient->$method($params);
+                        $info = $soapClient->$method($soapParams);
                 } 
                 catch (SoapFault $fault) 
                 { 
@@ -111,9 +131,7 @@ class AfwSmsSender extends AFWRoot {
                 
                 if ($error == 0) 
                 {        
-                        //$info->Params = $params;
-                        //$info->Config = $sms_config_config_file;
-                        $info->SmsUser = $sms_username;
+                        //$info->Params = $soapParams;
                         return $info;
                 }
                 else

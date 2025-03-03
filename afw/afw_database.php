@@ -30,14 +30,16 @@ class AfwDatabase extends AFWRoot
     {
         $project_link_name = 'server' . $module_server;
         if (!self::$link[$project_link_name] or !self::$connect) {
-            $hostname = AfwSession::config($module_server . "host", '');
-            $username = AfwSession::config($module_server . "user", '');
-            $password = AfwSession::config($module_server . "password", '');
-            $database = AfwSession::config($module_server . "database", '');
+            $hostname = AfwSession::config($module_server . "host", '', "the_database", 'yes');
+            $username = AfwSession::config($module_server . "user", '', "the_database", 'yes');
+            $password = AfwSession::config($module_server . "password", '', "the_database", 'yes');
+            $database = AfwSession::config($module_server . "database", '', "the_database", 'yes');
+            $port = AfwSession::config($module_server . "port", '', "the_database", 'yes');
+            if(!$port) $port = null;
             // if($module_server=="nartaqi") throw new AfwRuntimeException("params of connection to server [$module_server] are [$hostname, $username, $password, $database] from : ".AfwSession::log_config());
             if (!$hostname or !$username) {
                 throw new AfwRuntimeException(
-                    "host or user name param not found in the external config file for server [$module_server]" .
+                    "host or user name param not found in the database_config.php file for server [$module_server]" .
                         AfwSession::log_config()
                 );
             }
@@ -46,7 +48,8 @@ class AfwDatabase extends AFWRoot
                 $hostname,
                 $username,
                 $password,
-                $database
+                $database,
+                $port
             );
             if (!self::$link[$project_link_name]) {
                 if (AfwSession::config('MODE_DEVELOPMENT', false)) {

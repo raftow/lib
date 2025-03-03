@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__)."/../../../external/db.php");
+require_once(dirname(__FILE__)."/../../../config/global_config.php");
 $class = $_POST["class_obj"];
 $file  = $_POST["file_obj"];
 $currmod  = $_POST["currmod"];

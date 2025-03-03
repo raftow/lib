@@ -292,9 +292,18 @@ class AfwSession extends AFWRoot {
                 self::getSingleton()->setData($var, $value);
         }
 
-        public static function config($var, $default)
-        {
-                return self::getSingleton()->isSetData("config-register-".$var) ? self::getSingleton()->getData("config-register-".$var) : $default;
+        public static function config($key, $default, $configContext="system", $loadContextConfig='no')
+        {                
+                $doLoadContextConfig = ($loadContextConfig!='no');
+                if($doLoadContextConfig) 
+                {
+                        $loadClientConfig = (($loadContextConfig == "client") or ($loadContextConfig == "force-client")); 
+                        $reload = (($loadContextConfig == "force") or ($loadContextConfig == "force-client")); 
+                        self::loadContextConfig($configContext, $loadClientConfig, $reload);
+                }
+                
+                $var = $configContext."|".$key;
+                return self::getSingleton()->isSetData("creg-".$var) ? self::getSingleton()->getData("creg-".$var) : $default;
         }
 
         public static function log_config($lineSep="<br>")
@@ -303,9 +312,9 @@ class AfwSession extends AFWRoot {
              $all_data = self::getSingleton()->getAllData();
              foreach($all_data as $var_0 => $val)
              {
-                if(AfwStringHelper::stringStartsWith($var_0, "config-register-"))
+                if(AfwStringHelper::stringStartsWith($var_0, "creg-"))
                 {
-                        $var = substr($var_0,16);
+                        $var = substr($var_0,5);
                         $return .= "$var = $val \n $lineSep";
                 }
              }
@@ -330,14 +339,22 @@ class AfwSession extends AFWRoot {
                 return self::config("${classe}_$param", $default);
         }
 
-        public static function setConfig($var, $value)
-        {
-                self::getSingleton()->setData("config-register-".$var, $value);
+        public static function setConfig($key, $value, $configContext="system")
+        {                
+                $var = $configContext."|".$key;
+                self::getSingleton()->setData("creg-".$var, $value);
         }
 
-        public static function initConfig($config_arr)
+        public static function initConfig($config_arr, $configContext="system")
         {
-                foreach($config_arr as $key => $value) self::setConfig($key, $value);
+                foreach($config_arr as $key => $value) 
+                {
+                        if(AfwStringHelper::stringContain($key,"|"))
+                        {
+                                die("the config parameters names should never contain prohibted `|` charachter, parameter $key in context $configContext doesn't respect this rule");
+                        }
+                        self::setConfig($key, $value, $configContext);
+                }
         }
 
         public static function contextLog($string, $context)
@@ -701,12 +718,41 @@ class AfwSession extends AFWRoot {
         }
 
 
+        public static function loadContextConfig($configContext, $loadClientConfig=false, $reload=false)
+        {
+                $contextAlreadyLoaded = self::config("$configContext-config-already-loaded",false, $configContext);
+                if($reload or !$contextAlreadyLoaded)
+                {
+                        $this_dir_name = dirname(__FILE__); 
+                        $context_config_file = "$this_dir_name/../../config/".$configContext."_config.php";
+                        $the_config_arr = include($context_config_file);
+                        if(!$the_config_arr or (!is_array($the_config_arr)) or (count($the_config_arr)==0)) die("$context_config_file file should return a correct config array");
+                        $the_config_arr["$configContext-config-already-loaded"] = true;
+                        AfwSession::initConfig($the_config_arr, $configContext);
+                        
+                        if($loadClientConfig)
+                        {
+                                if(!$the_config_arr["main_company"]) die($configContext."_config.php file should define the main_company param to be able to load $configContext config for client");
+                                $main_company = $the_config_arr["main_company"];
+                                $contextClientAlreadyLoaded = self::config("$configContext-client-$main_company-config-already-loaded",false, $configContext);
+                                if($reload or !$contextClientAlreadyLoaded)
+                                {               
+                                        $client_config_arr = include("$this_dir_name/../../client-$main_company/".$configContext."_config.php");
+                                        if(!$client_config_arr or (!is_array($client_config_arr)) or (count($client_config_arr)==0)) die($configContext."_config.php file of client $main_company should return a correct config array");
+                                        if($main_company != $client_config_arr["main_company"]) die($configContext."_config.php file should define the same main_company param, avoid bad copy-past in config files");
+                                        $client_config_arr["$configContext-client-$main_company-config-already-loaded"] = true;
+                                        AfwSession::initConfig($client_config_arr, $configContext);
+                                }
+                        }
+                }
+                
+                
+        }
+
+
 }
 
-$this_dir_name = dirname(__FILE__); 
-include("$this_dir_name/../../external/system_config.php");
-if(!isset($system_config_arr)) die("system_config_arr variable is not defined in file $this_dir_name/../../external/system_config.php");
-AfwSession::initConfig($system_config_arr);
+AfwSession::loadContextConfig("system", true);
 global $global_need_utf8;
 $global_need_utf8 = AfwSession::config('global_need_utf8',true);
-//die("first initConfig ".AfwSession::log_config());
+// die("first initConfig ".AfwSession::log_config());
