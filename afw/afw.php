@@ -3412,7 +3412,7 @@ class AFWObject extends AFWRoot
     {
 
         if (!static::$TABLE) {
-            throw new AfwRuntimeException('Impossible to call deleteWhere() with virtual entity');
+            throw new AfwRuntimeException('Impossible to call deleteWhere() with virtual entity for class '.get_called_class());
         } else {
             if ($where) {
                 if (static::beforeDeleteWhere($where)) {

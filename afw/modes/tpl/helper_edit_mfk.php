@@ -26,6 +26,8 @@
         "reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name),
         "onchange" => $onchange,
         "style" => $input_style,
+        "required" => $is_required,
+        "disabled" => $disabled,
 
     );
     if ($desc["SEL_OPTIONS"]) $infos_arr = array_merge($infos_arr, $desc["SEL_OPTIONS"]);

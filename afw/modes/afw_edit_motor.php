@@ -417,6 +417,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
                 );
             } else {
                 $maxlength = $desc["MAXLENGTH"];
+                if(!$maxlength) $maxlength = 9999;
                 $fld_size = $desc["SIZE"];
 
                 if ($desc["INPUT-FORMATTING"] == "value-1-cote") $val_sentence = "value='$val'";

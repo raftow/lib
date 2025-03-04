@@ -6,8 +6,9 @@ class AfwFrontMenu extends AFWRoot {
 
         public static function loadUmsCacheForUser($userId, $lang)
         {
+                $company = AfwSession::currentCompany();
                 $file_afw_dir_name = dirname(__FILE__); 
-                $user_cache_file_path = "$file_afw_dir_name/../../cache/chusers/user_$userId"."_data.php";
+                $user_cache_file_path = "$file_afw_dir_name/../../cache/chusers/$company"."_user_$userId"."_data.php";
                 if(file_exists($user_cache_file_path))
                 {
                         include($user_cache_file_path);
