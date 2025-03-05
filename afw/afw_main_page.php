@@ -11,7 +11,7 @@ class AfwMainPage
         }
         return $options;
     }
-    public static function echoMainPage($current_module, $Main_Page, $module_path, $options = [],)
+    public static function echoMainPage($current_module, $Main_Page, $module_path, $options = [])
     {
         if(count($options)==0) $options = AfwMainPage::getDefaultOptions($Main_Page);
         $curr_path = dirname(__FILE__);
@@ -21,7 +21,7 @@ class AfwMainPage
         echo self::renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);
     }
 
-    public static function echoDirectPage($current_module, $direct_page, $direct_page_path, $options = [],)
+    public static function echoDirectPage($current_module, $direct_page, $direct_page_path, $options = [])
     {
         $direct_page_name = str_replace(".php", "", $direct_page);
         $curr_path = dirname(__FILE__);
@@ -31,7 +31,7 @@ class AfwMainPage
     }
 
     private static function renderDirectPage($direct_page, $module_path, $header_template, $menu_template, 
-                        $body_template, $footer_template, $lang, $current_module, $options = [],)
+                        $body_template, $footer_template, $lang, $current_module, $options = [])
     {
         // die("dgb::renderDirectPage($direct_page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $current_module)");
         if(!$current_module) $current_module = "ums";
@@ -43,7 +43,7 @@ class AfwMainPage
                         $_REQUEST, 
                         $the_main_section_file,
                         $need_ob=true,        
-                        $options,
+                        $options
                     );
 
         return $out_scr;  
@@ -51,7 +51,7 @@ class AfwMainPage
     }
 
 
-    private static function renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options = [],)
+    private static function renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options = [])
     {
         if(!$Main_Page) throw new AfwRuntimeException("Main Page not defined in renderMainPage");;
         if(!$module_path) throw new AfwRuntimeException("Module path not defined in renderMainPage");;

@@ -8,7 +8,7 @@ class AfwHtmlIncluderHelper
     $my_afw_theme,
     $options = [],
     $custom_scripts = [],
-    $my_font = "front", )
+    $my_font = "front")
     {
       if($options["front-application"])
           $site_name = AfwSession::getCurrentFrontSiteName($options["front-application"],$lang);

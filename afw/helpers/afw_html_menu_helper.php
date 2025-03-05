@@ -10,7 +10,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $objme, // it can be any other class than Auser but it should extends AFWObject and implement interface AfwFrontEndUser
         $role,
         $selected_menu = "",
-        $options = [],
+        $options = []
     ) {
         $login_template = AfwSession::currentLoginTemplate();
         $xmodule = AfwSession::getCurrentlyExecutedModule();
@@ -273,7 +273,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $role,
             $tpl_path = "",
             $selected_menu = "",
-            $options = [],
+            $options = []
     ) 
     {
         $data_tokens = self::prepareMenuAndHeaderTokens($lang,
