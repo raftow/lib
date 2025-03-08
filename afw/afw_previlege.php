@@ -4,7 +4,8 @@
     {
         public static function loadAllServerModules()
         {
-            $file_modules_all = dirname(__FILE__)."/../../cache/chsys/modules_all.php"; 
+            $company = AfwSession::config("main_company", "");
+            $file_modules_all = dirname(__FILE__)."/../../client-$company/modules_all.php"; 
             if(file_exists($file_modules_all))
             {
                 include($file_modules_all);
@@ -12,7 +13,7 @@
             }
             else $found = false;
 
-            return [$found, $mod_info];
+            return [$found, $mod_info, $file_modules_all];
         }
 
         public static function moduleIdOfModuleCode($module_code)
@@ -24,7 +25,7 @@
 
         public static function moduleCodeOfModuleId($module_id)
         {
-            list($found, $mod_info) = self::loadAllServerModules();
+            list($found, $mod_info, $file_modules_all) = self::loadAllServerModules();
             if($found) return $mod_info['m'.$module_id]["code"];
             else return "";
         }
