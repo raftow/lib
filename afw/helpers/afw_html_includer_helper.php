@@ -29,6 +29,7 @@ class AfwHtmlIncluderHelper
         $options["sweetalert"] = true;
         $options["dataTables"] = true;
         $options["calendars"] = true;
+        if(!isset($options["menu"])) $options["menu"] = true;
         // $options["dropdowntree"] = true;
         // $options["bootstrap-select"] = true;
 
@@ -254,11 +255,17 @@ class AfwHtmlIncluderHelper
           <link href='../$main_module/css/module.css?crst=$crst' rel='stylesheet' type='text/css'>
           <link href='../client-$company/css/common-$company.css?crst=$crst' rel='stylesheet' type='text/css'>
 
-          <script src='../lib/js/$menu_template"."_menu.js'></script>
-          <script src='../lib/js/$menu_template"."_menu_$lang.js'></script>
+          
 
           
           ";
+          
+          if($options["menu"])
+          {
+              throw new AfwRuntimeException("menu here why ?");
+              $header .= " <script src='../lib/js/$menu_template"."_menu.js'></script>
+                           <script src='../lib/js/$menu_template"."_menu_$lang.js'></script>";
+          }
 
           if($xmodule != $main_module) {
               /* $header .= "  

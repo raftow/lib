@@ -9,6 +9,11 @@ class AfwMainPage
         {
             $options["qedit"]=true;
         }
+
+        if(strpos($Main_Page,"login")!==FALSE)
+        {
+            $options["menu"]=false;
+        }
         return $options;
     }
     public static function echoMainPage($current_module, $Main_Page, $module_path, $options = [])
@@ -23,6 +28,7 @@ class AfwMainPage
 
     public static function echoDirectPage($current_module, $direct_page, $direct_page_path, $options = [])
     {
+        if(count($options)==0) $options = AfwMainPage::getDefaultOptions($direct_page);
         $direct_page_name = str_replace(".php", "", $direct_page);
         $curr_path = dirname(__FILE__);
         include("$curr_path/afw_direct_start.php");

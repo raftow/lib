@@ -1300,7 +1300,6 @@ span.dday {
 
 /* nothing !important in this class here but override it in sub modules css*/
 .home_banner.login_banner {
-    background-image: url(../pic/home_login_bg.jpg);
     background-size: 100%;
     background-repeat: no-repeat;
     background-position-x: center;
