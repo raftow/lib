@@ -67,6 +67,7 @@
                 $my_afw_theme = "simple"
              )
         {
+                // throw new AfwRuntimeException("why use page constructor ?");
                 $role = $arrRequest["r"];
                 //self::initLanguage();
                 // die("dbg-002 rafik 20241119 lang = ".$lang);

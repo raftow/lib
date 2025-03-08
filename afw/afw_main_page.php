@@ -26,7 +26,7 @@ class AfwMainPage
         $direct_page_name = str_replace(".php", "", $direct_page);
         $curr_path = dirname(__FILE__);
         include("$curr_path/afw_direct_start.php");
-        // die("echoDirectPage 20241119  : after include($curr_path/afw_main_start.php) menu_template = ".$menu_template);
+        // die("echoDirectPage 20241119  : after include($curr_path/afw_direct_start.php) header_template=$header_template, menu_template = $menu_template");
         echo self::renderDirectPage($direct_page, $direct_page_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);
     }
 
