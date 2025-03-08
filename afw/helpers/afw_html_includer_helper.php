@@ -262,7 +262,7 @@ class AfwHtmlIncluderHelper
           
           if($options["menu"])
           {
-              throw new AfwRuntimeException("menu here why ?");
+              // throw new AfwRuntimeException("menu here why ?");
               $header .= " <script src='../lib/js/$menu_template"."_menu.js'></script>
                            <script src='../lib/js/$menu_template"."_menu_$lang.js'></script>";
           }
