@@ -185,6 +185,15 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $data_tokens["main_menu_item_e"] = "";
         }
 
+        $no_orgunit = AfwSession::config("disable-orgunit-name-showing", false);
+        if($no_orgunit)  {
+            $data_tokens["orgunit_name_s"] = "<!--";
+            $data_tokens["orgunit_name_e"] = "-->";
+        } else {
+            $data_tokens["orgunit_name_s"] = "";
+            $data_tokens["orgunit_name_e"] = "";
+        }
+
 
         if ($selected_menu) $data_tokens["main_item_css_class"] = "class='home_page'";
         else $data_tokens["main_item_css_class"] = "class='home_page active'";
@@ -226,6 +235,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $data_tokens["dark_mode"] = AfwLanguageHelper::translateKeyword("dark mode", $lang);
 
         $data_tokens["site_name"] = AfwSession::getCurrentSiteName($lang);
+        $data_tokens["orgunit_name"] = $user_dep;
         if (!$options["bg_height"]) $options["bg_height"] = 400;
         $data_tokens["bg_height"] = $options["bg_height"];
         if (!$options["out_index_page"]) $options["out_index_page"] = "#";

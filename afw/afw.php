@@ -2522,7 +2522,12 @@ class AFWObject extends AFWRoot
      */
     public function afterSelect($attribute, $value)
     {
+        // NOTICE : qsearch mode use ->where() and not ->select() so doesn't come here
         // overridde your code here
+        /*if((get_class($this)=="Application") and ($attribute=="idn"))
+        {
+            die("after select $attribute getSQL() = ".$this->getSQL());
+        }*/
     }
 
     /**

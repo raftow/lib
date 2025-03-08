@@ -2,7 +2,6 @@
 
 //die("this page is obsolete to reimplement using MVC");
 $file_dir_name = dirname(__FILE__);
-$SPECIALITY_EXPERT_ID = 162;
 // set_time_limit(8400);
 // ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 
@@ -17,9 +16,6 @@ require_once("$file_dir_name/../../config/global_config.php");
 */
 require_once("afw_autoloader.php");
 require_once("$file_dir_name/../../config/global_config.php");  
-
-
-
 require_once("afw_session.php");
 AfwSession::startSession();
 // $home_path_browser = $menu_title." ".AfwStringHelper::arrow($lang)." ".$path_title;
@@ -30,7 +26,8 @@ $check_depending_user_type="NO-CHECK";
 $r = "control";
 // die("here rafik 20210321 - 0");
 $objToShow = AfwSession::getUserConnected();
-if($objToShow and $objToShow->isAdmin() and false)
+//die("rafik dbg 11122244 ".var_export($objToShow,true));
+/*if($objToShow and $objToShow->isAdmin() and false)
 {
         die("here rafik 20210321");
         $_GET["Main_Page"] = "afw_mode_edit.php";
@@ -40,7 +37,8 @@ if($objToShow and $objToShow->isAdmin() and false)
         $_GET["id"] = $objToShow->getId();
         include("main.php");        
 }
-elseif($objToShow)
+else*/
+if($objToShow)
 {
         $theme_name = AfwSession::config('theme','modern'); 
         $images = AfwThemeHelper::loadTheme();

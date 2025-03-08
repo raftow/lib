@@ -125,16 +125,16 @@ if(!$newo) $newo = $myClassInstance->QEDIT_MODE_NEW_OBJECTS_DEFAULT_NUMBER;
 
 if($objme)
 {                      
-        // $report_can_qsearch = AfwSession::getLog("iCanDo");
+        $report_can_qsearch = AfwSession::getLog("iCanDo");
         $can = $objme->iCanDoOperationOnObjClass($myClassInstance,"qsearch");
-        // $report_can_qsearch = AfwSession::getLog("iCanDo");
+        $report_can_qsearch = AfwSession::getLog("iCanDo");
         $canEdit = $objme->iCanDoOperationOnObjClass($myClassInstance,"edit");
         // $report_can_edit = AfwSession::getLog("iCanDo");
         // if(($cl == "CrmOrgunit") and $canEdit)  die("report_can_edit=$report_can_edit");
 }
 else
 {
-        $can = $myClassInstance->public_display; 
+        $can = $myClassInstance->public_search; 
         $canEdit = $myClassInstance->public_edit;
 }
 // $objme->showICanDoLog();

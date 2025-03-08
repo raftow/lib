@@ -55,17 +55,14 @@ Please contact administrator.<br>
 </table> 
 </div>
 <?php
-if($MODE_DEVELOPMENT)
+if($MODE_DEVELOPMENT or AfwSession::getSessionVar("user_golden"))
 {
 ?>
 <table  cellspacing="8px" cellpadding="10px" class="grid" style="background-color: #0f0f0f;color:white;border: 1px #000;border-style: solid;padding: 10px;">
-<tr><th>بيانات فنية أخرى </th><td><?php echo AfwSession::pullSessionVar("other_log")?></td></tr>
-</table> 
-
-<br>
-
-</div>
-<?
+<tr><th>بيانات فنية أخرى </th></tr>
+<tr><td>
+<?php 
+        echo AfwSession::pullSessionVar("other_log");
         echo "<br>session context Ican do LOG : <br>";
         echo AfwSession::getLog("iCanDo");
         echo "<br>userCan table <br>";
@@ -87,7 +84,14 @@ if($MODE_DEVELOPMENT)
         echo AfwSession::logSessionData(true);
         echo "<br>\n".AfwShowHelper::showObject($objme,"html");
 }
+?>
+</td></tr>
+</table> 
 
+<br>
+
+</div>
+<?php
 include("$module_dir_name/../../hzm/web/hzm_basic_footer.php");
 
 ?>

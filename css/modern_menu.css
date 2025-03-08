@@ -376,3 +376,9 @@ i.uil.uil-moon {
     margin: 0 auto;
     width: 100% !important;
 }
+
+nav span.orgunit {
+    font-size: 13px;
+    font-weight: bold;
+    color: #0670bb;
+}

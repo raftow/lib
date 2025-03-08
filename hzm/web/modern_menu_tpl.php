@@ -6,7 +6,9 @@
                         <img src="[img-path]/logo-application.png" alt="" style="margin-top:5px;float: left;height: 48px"/>
                     </div>
 
-                    <span class="logo_name">[site_name]</span>
+                    <span class="logo_name">[site_name]
+                    [orgunit_name_s]<span class="orgunit">[orgunit_name]</span>[orgunit_name_e]
+                    </span>
                 </div>
                 [main_menu_item_e]
                 [calendar_item_s]

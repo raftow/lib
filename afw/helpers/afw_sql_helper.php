@@ -334,11 +334,28 @@ class AfwSqlHelper extends AFWRoot
         $mode_clause_where_col = false;
         if($desc["CLAUSE-WHERE-COL"])
         {
-            $mode_clause_where_col = true;
-            $nom_col = $desc["CLAUSE-WHERE-COL"];
-            // die("CLAUSE-WHERE-COL : $original_nom_col => $nom_col");
-            $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
-            $original_nom_col = $nom_col;
+            $can_switch = true;
+            if($desc["CLAUSE-WHERE-COL-VALUE-CONVERT-CLASS"] and $desc["CLAUSE-WHERE-COL-VALUE-CONVERT-METHOD"])
+            {
+                $theConvertClass = $desc["CLAUSE-WHERE-COL-VALUE-CONVERT-CLASS"];
+                $theConvertMethod = $desc["CLAUSE-WHERE-COL-VALUE-CONVERT-METHOD"];
+                $old_val_col = $val_col;
+                $val_col = $theConvertClass::$theConvertMethod($old_val_col);
+                if($val_col===null)
+                {
+                    $val_col = $old_val_col;
+                    $can_switch = false;
+                }
+            }
+            if($can_switch)
+            {
+                $mode_clause_where_col = true;
+                $nom_col = $desc["CLAUSE-WHERE-COL"];
+                // die("CLAUSE-WHERE-COL : $original_nom_col => $nom_col");
+                $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
+                $original_nom_col = $nom_col;
+            }
+            
         }
         $desc["FIELD-FORMULA"] = $object->decodeText($desc["FIELD-FORMULA"]);
         if (!$desc) {

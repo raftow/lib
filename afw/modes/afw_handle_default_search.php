@@ -3,12 +3,12 @@
 require_once(dirname(__FILE__) . "/../../../config/global_config.php");
 require_once('afw_rights.php');
 
-$themeArr = AfwThemeHelper::loadTheme();
+$themeArr = AfwThemeHelper::loadTheme("handle-qsearch");
 foreach($themeArr as $theme => $themeValue)
 {
-    $$theme = $themeValue;
+    $$theme = $themeValue;    
 }
-
+$images = AfwThemeHelper::loadTheme();
 
 if (!$objme) $objme = AfwSession::getUserConnected();
 
@@ -458,7 +458,7 @@ if (true) {
                                                                         else 
                                                                         {
                                                                                 $can_action_arr[$action_item] = ($objme and $objme->iCanDoOperationOnObjClass($obj, $frameworkAction));
-                                                                                if ($objme and (!$can_action_arr[$action_item])) $cant_do_action_log_arr[$action_item] = $objme->getICanDoLog();
+                                                                                if ($objme and (!$can_action_arr[$action_item])) $cant_do_action_log_arr[$action_item] = $objme->getICantDoReason();
                                                                         }
                                                                 }
                                                         }
@@ -567,9 +567,13 @@ if (true) {
 
                                                                                                         $can = $can_action_arr[$action_item];
 
-                                                                                                        $cant_do_action_log = "XX";
+                                                                                                        $cant_do_action_log = "action $action_item not allowed ";
 
-                                                                                                        if (!$can) $cant_do_action_log .= $cant_do_action_log_arr[$action_item]." ";
+                                                                                                        if (!$can) 
+                                                                                                        {
+                                                                                                                if(!$cant_do_action_log_arr[$action_item]) $cant_do_action_log_arr[$action_item] = "but reason not explained";
+                                                                                                                $cant_do_action_log .= $cant_do_action_log_arr[$action_item]." ";
+                                                                                                        }
 
                                                                                                         if(($frameworkAction == "display") and AfwFrameworkHelper::displayInEditMode($cl)) $frameworkConsideredAction = "edit";
                                                                                                         else $frameworkConsideredAction = $frameworkAction;
@@ -587,7 +591,11 @@ if (true) {
                                                                                                                         {
                                                                                                                                 //die("frameworkConsideredAction=$frameworkConsideredAction");
                                                                                                                                 list($canOnMe, $edit_not_allowed_reason) = $liste_obj[$id]->userCanEditMe($objme);
-                                                                                                                                if(!$canOnMe) $cant_do_action_log .= $edit_not_allowed_reason." ";
+                                                                                                                                if(!$canOnMe) 
+                                                                                                                                {
+                                                                                                                                        if(!$edit_not_allowed_reason) $edit_not_allowed_reason = "userCanEditMe has not returned reason";
+                                                                                                                                        $cant_do_action_log .= $edit_not_allowed_reason." ";
+                                                                                                                                }
                                                                                                                         } 
                                                                                                                         elseif (($frameworkConsideredAction == "delete")) 
                                                                                                                         {
