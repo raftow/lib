@@ -2,6 +2,35 @@
 
 class AfwStringHelper 
 {
+        public static function duplicateName($the_name, $prefix="_", $the_name2, $prefix2=" ", $the_name3, $prefix3=" ", $maxK=20)
+        {
+                for($k=1; $k<=$maxK; $k++)
+                {
+                        $tok = $prefix.$k;
+                        $kk = $k+1;
+                        $newTok = $prefix.$kk;
+                        $new_name = str_replace($tok, $newTok, $the_name);
+                        if($new_name!=$the_name) 
+                        {
+                                $tok2 = $prefix2.$k;
+                                $newTok2 = $prefix2.$kk;
+                                $new_name2 = str_replace($tok2, $newTok2, $the_name2);
+                                $tok3 = $prefix3.$k;
+                                $newTok3 = $prefix3.$kk;
+                                $new_name3 = str_replace($tok3, $newTok3, $the_name3);
+                                break;
+                        }
+                }
+                if($new_name==$the_name) 
+                {
+                        $new_name = "cp".$prefix.$the_name;
+                        $new_name2 = "cp".$prefix2.$the_name2;
+                        $new_name3 = "cp".$prefix3.$the_name3;
+                }
+                return [$new_name, $new_name2, $new_name3];
+        }
+        
+
         public static function stringStartsWith($stringbody, $string_start)
         {
                 if(!$stringbody) $stringbody = "";
