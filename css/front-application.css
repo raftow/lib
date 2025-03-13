@@ -1706,12 +1706,16 @@ li.wizard1.ErronedStep {
 }
 
 .steps_wizardv1 li {
-    margin-bottom: 16px;
-    display: flex;
+    margin-bottom: 2px;
+    display: flex
+;
     align-items: center;
-    height: 31px;
+    height: 34px;
     position: relative;
-    border: none !important;
+    border-left: none !important;
+    border-bottom: none !important;
+    border-right: 1px solid silver !important;
+    border-top: 1px solid silver !important;
 }
 
 .steps_wizardv1 li a {
@@ -1802,7 +1806,7 @@ li.wizardv1_li.CurrentStep {
 .in-group-default_fg{
     border: 1px #c0c0c04a solid;
     background-color: white;
-    padding: 15px;
+    padding: 3px;
     margin: 10px;
     float: right;
     width: 99%;

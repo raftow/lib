@@ -753,6 +753,7 @@ function attributeEditDiv($obj, $col, $desc, $fgroup, $lang, $openedInGroupDiv, 
     $htmlDiv = "";
     $colspan = "";
     $css_class = "";
+    $step_curr = $desc["STEP"];
     $no_fgroup = $desc["NO-FGROUP"];
     $new_fgroup = $desc["FGROUP"];
     $noheader_fgroup = $desc["FGROUP_NOHEADER"];
@@ -781,6 +782,7 @@ function attributeEditDiv($obj, $col, $desc, $fgroup, $lang, $openedInGroupDiv, 
         $fgroupInfos = $obj->getFieldGroupInfos($fgroup);
         $fgroupcss = $fgroupInfos["css"];
         $new_fgroup_tr = $obj->getAttributeLabel($new_fgroup, $lang);
+        if(!trim($new_fgroup_tr)) $new_fgroup_tr = $obj->getAttributeLabel("step".$step_curr, $lang);
         // close previous in-group div
         if ($openedInGroupDiv) {
             $htmlDiv .= "</div>";  // internal_group_div_close

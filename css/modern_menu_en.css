@@ -456,8 +456,15 @@ nav.close ~ .dashboard .top{
 }
 
 li.wizardv1_li.CurrentStep {
-    border-left: 5px solid #299dff !important;
+    border-left: 2px solid #299dff !important;
+    border-top: 2px solid #299dff !important;
 }
+
+li.wizardv1_li.AlreadyStep {
+    border-left: 1px solid silver !important;
+    border-top: 1px solid silver !important;
+}
+
 
 li.wizardv1_li.ErronedStep {
     border-left: 5px solid red !important;
