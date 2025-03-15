@@ -28,7 +28,7 @@ class AfwFormulaHelper extends AFWRoot
                     $obj->getId() > 0 and
                     AfwSession::hasOption('CHECK_ERRORS')
                 ) {
-                    $obj_errors = $obj->getDataErrors();
+                    $obj_errors = AfwDataQualityHelper::getDataErrors($obj, );
                     $obj_errors_txt = implode(",\n", $obj_errors);
                     if (count($obj_errors) > 0) {
                         $img = 'error';

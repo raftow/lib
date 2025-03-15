@@ -64,9 +64,9 @@ elseif (AfwSession::hasOption("CHECK_ERRORS")) $check_error_activated = "has opt
 elseif (AfwSession::hasOption("GENERAL_CHECK_ERRORS")) $check_error_activated = "has option GENERAL_CHECK_ERRORS";
 
 if (!$obj->editByStep) {
-        if ($check_error_activated) $obj_errors = $obj->getDataErrors($lang);
+        if ($check_error_activated) $obj_errors = AfwDataQualityHelper::getDataErrors($obj, $lang);
 } else {
-        if ($check_error_activated) $obj_errors = $obj->getStepErrors($obj->currentStep, $lang);
+        if ($check_error_activated) $obj_errors = AfwDataQualityHelper::getStepErrors($obj, $obj->currentStep, $lang);
         // die("step=".$obj->currentStep." obj_errors=".var_export($obj_errors,true));
 }
 
@@ -113,16 +113,16 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 //**
                 $nom_col_to_see = $desc["EDIT-FOR"];
                 if (!$nom_col_to_see) $nom_col_to_see = $nom_col;
-                $ican_display_key = $obj->keyIsToDisplayForUser($nom_col_to_see, $objme, "DISPLAY");
-                $ican_display_data = $obj->dataAttributeCanBeDisplayedForUser($nom_col_to_see, $objme, "DISPLAY", $desc);
+                $ican_display_key = AfwPrevilegeHelper::keyIsToDisplayForUser($obj, $nom_col_to_see, $objme, "DISPLAY");
+                $ican_display_data = AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($obj, $nom_col_to_see, $objme, "DISPLAY", $desc);
                 $i_can_see_attribute = ($ican_display_key and $ican_display_data);
                 if (!$i_can_see_attribute) {
                         $i_can_not_see_attribute_reason = "ican_display_key = " . var_export($ican_display_key,true) . " ican_display_data = " . var_export($ican_display_data,true);
                 }
                 //**
-                $column_is_authorised_to_be_edited_by_me = $obj->keyIsToDisplayForUser($nom_col, $objme, "EDIT");
+                $column_is_authorised_to_be_edited_by_me = AfwPrevilegeHelper::keyIsToDisplayForUser($obj, $nom_col, $objme, "EDIT");
 
-                $horizontal_editability_for_me = $obj->dataAttributeCanBeDisplayedForUser($nom_col, $objme, "EDIT", $desc);
+                $horizontal_editability_for_me = AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($obj, $nom_col, $objme, "EDIT", $desc);
                 //**
                 $i_can_edit_attribute = ($column_is_authorised_to_be_edited_by_me and $horizontal_editability_for_me);
                 $i_can_not_edit_attribute_log = "";
@@ -292,7 +292,7 @@ $data[$nom_col]["input"] .= "<script>
                                 
                                 $data[$nom_col]["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "TOOLTIP", $lang, $desc));
                                 if (!$data[$nom_col]["tooltip"]) {
-                                        $tltp = $obj->getAttributeTooltip($nom_col, $lang);
+                                        $tltp = AfwInputHelper::getAttributeTooltip($obj,$nom_col, $lang);
                                         if ($tltp) $data[$nom_col]["tooltip"] = $tltp;
                                 }
                                 $data[$nom_col]["unit"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "UNIT", $lang, $desc));
@@ -463,7 +463,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                         for ($kstep = 1; $kstep <= $obj->editNbSteps; $kstep++) {
                                                 if (AfwFrameworkHelper::stepIsEditable($obj, $kstep)) {
                                                         $step_knum++;
-                                                        // $stepErrorsList = $obj->getStepErrors($kstep);
+                                                        // $stepErrorsList = AfwDataQualityHelper::getStepErrors($obj, $kstep);
                                                         // $step_errors_list = implode("\n",$stepErrorsList);
 
                                                         $step_show_error = ((!$obj->isDraft()) or ($kstep < $obj->currentStep) or $obj->show_draft_errors);
@@ -474,7 +474,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 if ($obj->show_draft_errors) $step_show_error_why = "show_draft_errors is active for this class $cl";
                                                         }
                                                         if ($check_error_activated  and $step_show_error) {
-                                                                $stepErrorsList = $obj->getStepErrors($kstep);                                                                
+                                                                $stepErrorsList = AfwDataQualityHelper::getStepErrors($obj, $kstep);                                                                
                                                                 $step_errors_list = implode("\n", $stepErrorsList);
                                                                 /*if($kstep==1 and $step_errors_list)
                                                                 {

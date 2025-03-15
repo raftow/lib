@@ -507,7 +507,8 @@ class AfwLoadHelper extends AFWRoot
                             if (!$hg) $hg = 20;
                             $tuple[$col] = "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>";
                         } 
-                        elseif ($objItem->umsCheckDisabledInRetrieveMode() or $objItem->dataAttributeCanBeDisplayedForUser($col, AfwSession::getUserConnected(), 'DISPLAY',$desc)) 
+                        elseif ($objItem->umsCheckDisabledInRetrieveMode() or 
+                                AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($objItem, $col, AfwSession::getUserConnected(), 'DISPLAY',$desc)) 
                         {
                             // $htr_s = hrtime()[1];
                             $qrm = $objItem->quickRetrieveMethod();
@@ -1538,7 +1539,7 @@ class AfwLoadHelper extends AFWRoot
         //global $lang;
         // load objects from added left joins for all retrieved fields with type = FK and category empty (real fields)
         if (!$colsRet) {
-            $colsRet = $object->getRetrieveCols(
+            $colsRet = AfwPrevilegeHelper::getRetrieveCols($object,
                 $mode = 'display',
                 '',
                 $all = false,

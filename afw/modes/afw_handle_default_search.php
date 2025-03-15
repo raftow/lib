@@ -150,13 +150,13 @@ if (!$liste_obj) {
                         $qsearch_by_text_without_spaces_and_comma = str_replace(' ', '', $qsearch_by_text_without_spaces_and_comma);
                         $qsearch_by_text_without_spaces_and_comma = str_replace(',', '', $qsearch_by_text_without_spaces_and_comma);
                         if ((!$obj->PK_MULTIPLE) and is_numeric($qsearch_by_text_without_spaces_and_comma)) $qsearch_by_text_where_arr[] = $pk." in ($qsearch_by_text)";
-                        $qsearch_by_text_cols = $obj->getAllTextSearchableCols();
+                        $qsearch_by_text_cols = AfwPrevilegeHelper::getAllTextSearchableCols($obj);
                         foreach ($qsearch_by_text_cols as $nom_col) {
-                                if ($obj->isInternalSearchableCol($nom_col)) {
+                                if (AfwPrevilegeHelper::isInternalSearchableCol($obj, $nom_col)) {
 
                                         $internal_where_arr = array();
                                         $objTempForInternalSearch = AfwStructureHelper::getEmptyObject($obj, $nom_col);
-                                        $internal_qsearch_by_text_cols = $objTempForInternalSearch->getAllTextSearchableCols();
+                                        $internal_qsearch_by_text_cols = AfwPrevilegeHelper::getAllTextSearchableCols($objTempForInternalSearch);
                                         foreach ($internal_qsearch_by_text_cols as $nom_col_internal) {
                                                 // die("DBG-qsearch_by_text::getClauseWhere for isInternalSearchableCol $nom_col_internal [$my_oper] (qsearch_by_text=$qsearch_by_text)");
                                                 list($internal_where_col, $internal_fixm_col, $internal_cond_phrase) = AfwSqlHelper::getClauseWhere($objTempForInternalSearch, $nom_col_internal, $my_oper,  $qsearch_by_text, "", $lang);
@@ -427,7 +427,7 @@ if (true) {
                                                                         }
 
 
-                                                                        $importance = $obj->importanceCss($nom_col, $desc);
+                                                                        $importance = AfwHtmlHelper::importanceCss($obj, $nom_col, $desc);
 
                                                                         if ($unit and (!$hide_unit)) $col_trad .= " ($unit)";
                                                                         $datatable_header .= "<th class='col-importance-$importance srch-result-col-$nom_col'>" . $col_trad . "</th>";

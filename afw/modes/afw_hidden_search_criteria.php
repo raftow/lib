@@ -5,7 +5,7 @@ $class_db_structure = $obj::getDbStructure($return_type="structure", $attribute 
 
 foreach($class_db_structure as $nom_col => $desc)
 {
-	if($obj->isQSearchCol($nom_col, $desc))
+	if(AfwPrevilegeHelper::isQSearchCol($obj, $nom_col, $desc))
         {
 		ob_start();
                 hidden_input($nom_col, $desc, $_POST[$nom_col], $obj);

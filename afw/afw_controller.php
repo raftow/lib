@@ -73,7 +73,7 @@ class AfwController extends AFWRoot
         {
                 foreach ($data as $key => $value) $token_arr["[$key]"] = $value;
                 global $lang;
-                if ($view_name == "minibox") echo $object->showMinibox($structure, $lang, $token_arr, $objme, $public_show);
+                if ($view_name == "minibox") echo AfwShowHelper::showMinibox($object, $structure, $lang, $token_arr, $objme, $public_show);
                 else $this->renderError("hzm view unknown  : $view_name");
         }
 

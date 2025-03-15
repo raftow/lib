@@ -987,7 +987,7 @@ function prepareEditInfoForColumn($obj, $nom_col, $desc, $lang, $colErrors=[], $
     $data_col["hint"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "HINT", $lang, $desc));
     $data_col["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "TOOLTIP", $lang, $desc));
     if (!$data_col["tooltip"]) {
-        $tltp = $obj->getAttributeTooltip($nom_col, $lang);
+        $tltp = AfwInputHelper::getAttributeTooltip($obj, $nom_col, $lang);
         if ($tltp) $data_col["tooltip"] = $tltp;
     }
 

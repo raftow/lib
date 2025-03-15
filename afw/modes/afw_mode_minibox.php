@@ -49,7 +49,7 @@ if($myObj->load($id))
         
 	if(AfwUmsPagHelper::userCanDoOperationOnObject($myObj,$objme,'display'))
         {
-		$out_scr .= $myObj->showMinibox();
+		$out_scr .= AfwShowHelper::showMinibox($myObj);
 	}
 	else
 		$out_scr .= "لا يوجد عندك صلاحية لعرض هذا السجل";

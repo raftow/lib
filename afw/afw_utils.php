@@ -57,7 +57,7 @@
               return $return;
         }
         
-        function hzm_format_command_line($type, $string, $lang="en", $pre=false, $coding=false)
+        function hzm_format_command_line($type, $string, $lang="en", $pre=false, $coding=false, $kord=0, $categ="std")
         {
             global $immediate_output;    
             if($type=="php") $coding=true;   
@@ -68,7 +68,7 @@
             if($pre) $type_css .= " ".$pre;
             if(!trim($string)) $string = "[EMPTY]";
 
-            if(!$pre) $return = "<span class=\"cline-$lang cline-message cline-$type\">$string</span>";
+            if(!$pre) $return = "<span id='cline-$categ-$kord' class=\"cline-$lang cline-message cline-$type\">$string</span>";
             else $return = "<span class=\"cline-$lang cline-message cline-$type\"><textarea class='$type_css'>$string</textarea></span>";
             
             hzm_output($return);

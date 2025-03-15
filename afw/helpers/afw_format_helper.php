@@ -1717,4 +1717,64 @@ class AfwFormatHelper
 
         return array($err, $info, $warn, $tech);
     }
+
+
+    public static function getCategorizedAttribute($object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = "")
+    {
+        /*
+        if(($attribute=="customer_id"))
+        {
+            die("rafik shoof getCategorizedAttribute has been called for $attribute");
+        }
+        
+        
+        if (!$structure['NO-CACHE'] and isset($object->gotItemCache[$attribute][$what])) {
+
+            $return = $object->gotItemCache[$attribute][$what];
+            $log_getter = 'return from gotItemCache = ' . var_export($return, true);
+            if ($attribute == 'requestList0000') {
+                die($log_getter);
+            } else $afw_getter_log[] = "$log_getter";
+        }*/
+        $return = null;
+        if (!$return) {
+            $this_id = $object->getId();
+
+            $b_abstract = false;
+            
+            switch ($attribute_category) {
+                case 'ITEMS':
+                    $return = AfwFormatHelper::formatITEMS($object, $attribute, $structure, $object->getMyTable(), $call_method, $max_items);
+                    break;
+
+                case 'FORMULA':
+                    global $lang;
+                    if (!$lang) $lang = 'ar';
+                    $return = AfwFormulaHelper::executeFormulaAttribute($object, $attribute, NULL, $lang, $what);
+                    $return_isset = isset($return);
+                    $this_debugg = "AfwFormulaHelper::executeFormulaAttribute(this, $attribute, NULL, $lang, $what) = [return=$return/isset=$return_isset]";
+                    $attribute_value = $return;
+
+                    break;
+                case 'VIRTUAL':
+                    $b_abstract = true;
+                    if (AfwLoadHelper::cacheManagement($object)) {
+                        $object->OBJECTS_CACHE[$attribute] = $object->getVirtual($attribute, $what, $format);
+                    }
+
+                    break;
+                case 'SHORTCUT':
+                    $return = AfwFormatHelper::formatSHORTCUT($object, $attribute, $what, $format, $object->getMyTable(), $integrity, $structure, $call_method);
+                    break;
+            }
+            if ((!$structure['NO-CACHE']) and $return) {
+                // $object->gotItemCache[$attribute][$what] = $return;
+                // die("attribute=$attribute, attribute_category=$attribute_category set in gotItemCache = " . var_export($object->gotItemCache,true));
+            }
+        }
+
+        $return = AfwFormatHelper::formatReturnedValue($object, $attribute, $lang, $structure, $return, $what, $format, $attribute_type, $integrity, $this_debugg);
+
+        return $return;
+    }
 }

@@ -12,7 +12,7 @@
                   if($objToShow) 
                   {
                         $structure["MINIBOX-TEMPLATE"] = "AUTO";
-                        echo $objToShow->showMinibox($structure, $lang);
+                        echo AfwShowHelper::showMinibox($objToShow, $structure, $lang);
                   }
                   ?>
               </div>

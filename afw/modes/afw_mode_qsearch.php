@@ -349,7 +349,7 @@ $class_db_structure = $myClassInstance->getMyDbStructure();
 
 foreach($class_db_structure as $nom_col => $desc)
 {
-    if($myClassInstance->keyIsToDisplayForUser($nom_col, $objme))
+    if(AfwPrevilegeHelper::keyIsToDisplayForUser($myClassInstance, $nom_col, $objme))
     {
 	if(!$desc["NO-RETRIEVE"])
         {

@@ -36,7 +36,7 @@ foreach($class_db_structure as $nom_col => $desc)
 foreach($class_db_structure as $nom_col => $desc)
 {
 	
-   if($obj->isSearchCol($nom_col, $desc))
+   if(AfwPrevilegeHelper::isSearchCol($obj, $nom_col, $desc))
    {
       $filled_val = $_POST[$nom_col];
       $filled_val2 = $_POST[$nom_col."_2"];
@@ -84,7 +84,7 @@ foreach($class_db_structure as $nom_col => $desc)
    $trad_qsearch_by_text = $obj->translate("qsearch_by_text",$lang);
    $trad_qsearch_by_help = $obj->translate("qsearch_by_help",$lang);
    
-   $translated_text_searchable_cols_arr = $obj->translateCols($obj->getAllTextSearchableCols(),$lang); 
+   $translated_text_searchable_cols_arr = AfwLanguageHelper::translateCols($obj, AfwPrevilegeHelper::getAllTextSearchableCols($obj),$lang); 
    
    $translated_text_searchable_cols_txt = $trad_qsearch_by_help." : ".implode("? ", $translated_text_searchable_cols_arr);
    

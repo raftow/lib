@@ -65,7 +65,7 @@ class AFWObject extends AFWRoot
 
     protected $AUDIT_DATA = false;
 
-    private $arr_erros = null;
+    public $arr_erros = null;
 
     private $PK_FIELD = '';
 
@@ -349,99 +349,20 @@ class AFWObject extends AFWRoot
         $start_step = null,
         $end_step = null
     ) {
-        if ($return_type == 'shortnames') {
-            $attribute = 'all';
-            $this_short_names = [];
-        }
-
-        if ($return_type == 'shortcuts') {
-            $attribute = 'all';
-            $this_shortcuts = [];
-        }
-
-        if ($return_type == 'formulas') {
-            $attribute = 'all';
-            $this_formulas = [];
-        }
-
-        
-
-        $got_first_time = false;
         $class_name = static::class;
         $module_code = static::$MODULE;
-        if (!$module_code) {
-            $module_code = AfwUrlManager::currentURIModule();
-        }
         $table_name = static::$TABLE;
+        //static::$DB_STRUCTURE
 
-        $debugg_db_structure = AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute, $step, $start_step, $end_step);
-        //if(($table_name=="invester") and ($attribute=="city_id")) die($table_name." AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute) returned debugg_db_structure = ".var_export($debugg_db_structure,true));
-        if (isset($debugg_db_structure)) {
-            foreach ($debugg_db_structure as $key => $value) {
-                if ($value['ANSWER'] and $value['TYPE'] != 'ANSWER') {
-                    if (!$value['ANSMODULE']) {
-                        $debugg_db_structure[$key]['ANSMODULE'] = $value['ANSMODULE'] = static::$MODULE;
-                    }
-                }
-                if ($value['SHORTCUT'] and $return_type == 'shortcuts') {
-                    $this_shortcuts[$key] = true;
-                }
-
-                if (($value['CATEGORY']=="FORMULA") and $return_type == 'formulas') {
-                    if($key!="tech_notes") $this_formulas[$key] = true;
-                }
-
-                
-
-                if ($value['SHORTNAME'] and $return_type == 'shortnames') {
-                    // first be sure the this short name is not already used as attribute
-                    if ($debugg_db_structure[$value['SHORTNAME']]) {
-                        AfwRunHelper::simpleError(
-                            "the short name '" .
-                                $value['SHORTNAME'] .
-                                "' for attribute $key already used in the same class as attribute name."
-                        );
-                    }
-                    $this_short_names[$value['SHORTNAME']] = $key;
-                }
-            }
-        } else {
-            AfwRunHelper::simpleError(
-                "Check if DB_STRUCTURE is defined for $attribute attribute(s) for class " .
-                    static::$TABLE .
-                    '. static::DB_STRUCTURE = ' .
-                    var_export(static::$DB_STRUCTURE, true)
-            );
-        }
-        // if(($table_name=="invester") and ($attribute=="city_id")) die($table_name." AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute) returned debugg_db_structure = ".var_export($debugg_db_structure,true));
-        if ($return_type == 'structure') {
-            if ($attribute != 'all') {
-                $struct = $debugg_db_structure[$attribute];
-                // if(($table_name=="school") and ($attribute=="roomList")) die(static::$TABLE.", struct of $attribute (before repare) = ".var_export($struct,true)." debugg_db_structure = ".var_export($debugg_db_structure, true));
-                if ($struct) {
-                    $struct = AfwStructureHelper::repareStructure($struct);
-                }
-                // if(($table_name=="school") and ($attribute=="roomList")) die(static::$TABLE.", struct of $attribute (after repare) = ".var_export($struct,true)." debugg_db_structure = ".var_export($debugg_db_structure, true));
-                return $struct;
-            } else {
-                foreach ($debugg_db_structure as $key => $struct) {
-                    if ($key != 'all') {
-                        $debugg_db_structure[$key] = AfwStructureHelper::repareStructure($struct);
-                    }
-                }
-
-                return $debugg_db_structure;
-            }
-        } elseif ($return_type == 'shortnames') {
-            return $this_short_names;
-        } elseif ($return_type == 'shortcuts') {
-            return $this_shortcuts;
-        } elseif ($return_type == 'formulas') {
-            return $this_formulas;
-        }
-        
-
-        return ["momken" => "unknown-requested-return_type $return_type"];
+        return AfwStructureHelper::getDbStructure($module_code,
+                $class_name,
+                $table_name,
+                $return_type,
+                $attribute,
+                $step,
+                $start_step = null,
+                $end_step = null
+            );  
     }
 
     public function getMyOwnerId()
@@ -1697,8 +1618,8 @@ class AFWObject extends AFWRoot
 
 
 
-        $dataErr = $this->getDataErrors($langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step);
-        // die("showErrorsAsSessionWarnings::getDataErrors($langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step) => ".var_export($dataErr,true));
+        $dataErr = AfwDataQualityHelper::getDataErrors($this, $langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step);
+        // die("showErrorsAsSessionWarnings:: getDataErrors($langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step) => ".var_export($dataErr,true));
         $is_ok = count($dataErr) == 0;
         if (!$returnErrors) return $is_ok;
         else return [$is_ok, $dataErr];
@@ -2826,8 +2747,8 @@ class AFWObject extends AFWRoot
     public function getFixmSearchCols($request=[], $qsearch=true)
     {
         $result = [];
-        if($qsearch) $arrCols = $this->getColsByMode("QSEARCH");
-        else $arrCols = $this->getColsByMode("SEARCH");
+        if($qsearch) $arrCols = AfwFrameworkHelper::getColsByMode($this, "QSEARCH");
+        else $arrCols = AfwFrameworkHelper::getColsByMode($this, "SEARCH");
 
         foreach($arrCols as $col)
         {
@@ -3339,61 +3260,7 @@ class AFWObject extends AFWRoot
                 );
             }
 
-            /*
-            rafik : @todo all this should be generated in beforeDelete
-            $can_delete_or_hide = false;
-            if($id_replace)
-            {
-                   $this->affected_rows = $this->replaceAllObjUsingMeBy($id_replace);
-                   $can_delete_or_hide = true;
-            }
-            else
-            {
-                list($not_allow_objs, $not_allow_objs_nb) = $this-> getAllObjUsingMe("DEL-ACTION","not-allow");
-                if($not_allow_objs_nb>0)
-                {
-                       $html_error = "";
-                       foreach($not_allow_objs as $fk_on_me_table => $not_allow_objs_arr)
-                       {
-                         
-                         foreach($not_allow_objs_arr as $fk_on_me_col => $not_allow_obj_list)
-                         {
-                            foreach($not_allow_obj_list as $fk_obj_id => $fk_obj)
-                            {
-                                $html_error .= "<br>".$fk_obj->transClassSingle() . " : " . $fk_obj->__toString(). " (" . $fk_obj->getId() . ") <br>";                        
-                            }
-                         }
-                       }
-                       throw new AfwRuntimeException("used_record_error",$html_error);
-                       $can_delete_or_hide = false;                
-                }
-                else $can_delete_or_hide = true;
-            }      
             
-            if($can_delete_or_hide)
-            {
-                list($not_avail_objs, $not_avail_objs_nb) =  $this-> getAllObjUsingMe("DEL-ACTION","not-avail",1);
-                if($not_avail_objs_nb>0)
-                {
-                    return $this->hide(); 
-                }
-                else
-                {
-                    $return = false;
-        			if($this->beforeDelete($this->getAfieldValue($this->getPKField()))) 
-                    {
-        				$query = "DELETE FROM " . self::_prefix_table(static::$TABLE) . " 
-                               WHERE " . $this->getPKField() . " = '" . $this->getAfieldValue($this->getPKField()) . "'";
-                        $return = $this->execQuery($query);
-                        //die("query : $query");
-                        $this->afterDelete($this->getAfieldValue($this->getPKField()));
-        			}
-        			
-        			return $return;
-                }
-			}
-            else return false;
-            */
         }
         return $return;
     }
@@ -3433,111 +3300,9 @@ class AFWObject extends AFWRoot
         }
     }
 
-    public function inModeDev()
-    {
-        $var1 = 'development_mode';
-        $var2 = 'development_mode_' . static::$TABLE;
+    
 
-        // mode dev general or for this table (for temporary debugg in prod)
-        return AfwSession::config($var1, false) or
-            AfwSession::config($var2, false);
-    }
-
-    /**
-     * audit_before_update
-     * Insert into _audit table before execute Update Query
-     */
-    public function audit_before_update($arr_fields_updated)
-    {
-        if ($this->IS_VIRTUAL) {
-            throw new AfwRuntimeException(
-                'Impossible to do call to the method audit_before_update() with the virtual table ' .
-                    static::$TABLE .
-                    '.'
-            );
-        } else {
-            global $update_context;
-
-            $table_name = self::_prefix_table(static::$TABLE);
-
-            if (!$update_context) {
-                $objme = AfwSession::getUserConnected();
-                if (
-                    $objme and
-                    $objme->isAdmin() and
-                    true /*$MODE_DEVELOPMENT*/
-                ) {
-                    throw new AfwRuntimeException(
-                        "update context not specified when auditing table $table_name"
-                    );
-                }
-            }
-
-            $rowsCount = 0;
-
-            foreach ($arr_fields_updated as $key => $new_value) {
-                if ($this->keyIsAuditable($key)) {
-                    $table_audit = $table_name . '_' . $key . '_haudit';
-                    $id = $this->getId();
-                    $version = $this->getVersion();
-                    $old_value = $this->getVal($key);
-                    $update_date = $this->getUpdateDate();
-                    $update_auser_id = $this->getUpdateUserId();
-
-                    $update_date_col = $this->fld_UPDATE_DATE();
-                    $update_auser_id_col = $this->fld_UPDATE_USER_ID();
-
-                    $rowsAffected = $this->execQuery("INSERT INTO $table_audit(id, version, val, update_date, update_auser_id, update_context)
-        					     select $id, version, $key, $update_date_col, $update_auser_id_col, _utf8'$update_context' from $table_name where id = $id");
-
-                    $rowsCount += $rowsAffected;
-                } else {
-                    // if($key=="subject") die("$table_name -> $key : not auditable");
-                }
-            }
-        }
-
-        return $rowsCount;
-    }
-
-    public function getTransDisplayField($lang = 'ar')
-    {
-        if ($lang == 'fr') {
-            $lang = 'en';
-        }
-
-        if (!$this->DISPLAY_FIELD) {
-            $all_real_fields = AfwStructureHelper::getAllRealFields($this);
-            $this->DISPLAY_FIELD = $all_real_fields[1];
-        }
-
-        if (!$this->DISPLAY_FIELD) {
-            $this->DISPLAY_FIELD = $this->getPKField();
-        }
-
-        if (
-            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_ar') or
-            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_fr') or
-            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_en')
-        ) {
-            $disp_fld_std = substr(
-                $this->DISPLAY_FIELD,
-                0,
-                strlen($this->DISPLAY_FIELD) - 3
-            );
-        } else {
-            $disp_fld_std = $this->DISPLAY_FIELD;
-        }
-
-        $display_field_trad = $disp_fld_std . '_' . $lang;
-
-        if (AfwStructureHelper::fieldExists($this, $display_field_trad)) {
-            return $display_field_trad;
-        }
-
-        return $this->DISPLAY_FIELD;
-    }
-
+    
     public function getDisplay($lang = 'ar')
     {
         return $this->getDefaultDisplay($lang);
@@ -3675,244 +3440,7 @@ class AFWObject extends AFWRoot
         return $debug;
     }
 
-    public function prepareAfwTokens(
-        $text_to_decode,
-        $lang = 'ar',
-        $trad_erase = [],
-        $token_arr = [],
-        $toLower=false,
-        $fieldsTokenAlways=false,
-    ) {
-
-        //throw new AfwRuntimeException("token_arr = ".var_export($token_arr,true)." text_to_decode=$text_to_decode");
-        if (is_array($this->otherTokens)) {
-            foreach ($this->otherTokens as $tok => $tok_val) {
-                $token_arr["[$tok]"] = $tok_val;
-            }
-        }
-        $token_arr['[LANG]'] = $lang;
-        $token_arr['[OBJECT_ID]'] = $this->getId();
-        $token_arr['[OBJECT_DISPLAY]'] = $this->getDisplay($lang);
-        $token_arr['[OBJECT_WIDE_DISPLAY]'] = $this->getWideDisplay($lang);
-        $token_arr['[OBJECT_SHORT_DISPLAY]'] = $this->getShortDisplay($lang);
-        $token_arr['[OBJECT_NODE_DISPLAY]'] = $this->getNodeDisplay($lang);
-        $token_arr['[OBJECT_RETRIEVE_DISPLAY]'] = $this->getRetrieveDisplay(
-            $lang
-        );
-        if (strpos($text_to_decode, '[ADMIN_START]') !== false) {
-            $objme = AfwSession::getUserConnected();
-            if ($objme and $objme->isAdmin()) {
-                $token_arr['[ADMIN_START]'] = '';
-                $token_arr['[ADMIN_END]'] = '';
-            } else {
-                $token_arr['[ADMIN_START]'] = '<!-- ';
-                // if($objme) $token_arr["[ADMIN_START]"] .= "because ".$objme->getDisplay($lang)." id = " .$objme->getId()." is not admin";
-                $token_arr['[ADMIN_END]'] = ' -->';
-            }
-        }
-
-        if (strpos($text_to_decode, '[OBJECT_ERRORS]') !== false) {
-            list($is_ok, $dataErr) = $this->isOk($force = true, true);
-            if ($is_ok) {
-                $token_arr['[ERROR_STATUS]'] = 'ok';
-                $token_arr['[OBJECT_ERRORS]'] = '';
-                $token_arr['[OBJECT_ERRORS_START]'] = '<!-- ';
-                $token_arr['[OBJECT_ERRORS_END]'] = ' -->';
-            } else {
-                $errors_html = implode("<br>\n", $dataErr);
-                $errors_html = trim($errors_html, "<br>\n");
-                $token_arr['[ERROR_STATUS]'] = 'err';
-                $token_arr['[OBJECT_ERRORS]'] = $errors_html;
-                $token_arr['[OBJECT_ERRORS_START]'] = '';
-                $token_arr['[OBJECT_ERRORS_END]'] = '';
-            }
-        } elseif (strpos($text_to_decode, '[ERROR_STATUS]') !== false) {
-            if ($this->isOk($force = true)) {
-                $token_arr['[ERROR_STATUS]'] = 'ok';
-            } else {
-                $token_arr['[ERROR_STATUS]'] = 'err';
-            }
-        }
-
-        $this_db_structure = static::getDbStructure(
-            $return_type = 'structure',
-            $attribute = 'all'
-        );
-
-        foreach ($this_db_structure as $fieldname => $struct_item) {
-            $token_fcl = '[fcl:' . $fieldname . ']';
-
-            $token_is = '[is:' . $fieldname . ']';
-            $token_is_en = '[is-en:' . $fieldname . ']';
-            $token_value = '[value:' . $fieldname . ']';
-            $token_data = '[' . $fieldname . ']';
-            $token_label = '[' . $fieldname . '_label]';
-            $token_showme = '[' . $fieldname . '_showme]';
-
-            if ($struct_item['TYPE'] == 'DATE') {
-                $token_full_date = '[' . $fieldname . '.full]';
-                $token_medium_date = '[' . $fieldname . '.medium]';
-            }
-
-            if ($struct_item['CATEGORY'] == 'ITEMS') {
-                $token_data_no_icons = '[' . $fieldname . '.no_icons]';
-            }
-
-            if ($struct_item['TO_TRANSLATE']) {
-                $token_to_translate = '[' . $fieldname . '.translate]';
-            }
-
-            if (($struct_item['TYPE'] == 'TEXT') and strpos($text_to_decode, $token_fcl) !== false) {
-                $token_fcl_val = AfwStringHelper::firstCharLower(
-                    $this->getVal($fieldname)
-                );
-                $token_arr[$token_fcl] = $token_fcl_val;
-            }
-
-            if($struct_item['TYPE'] == 'YN')
-            {
-                if (($fieldsTokenAlways or (strpos($text_to_decode, $token_is) !== false))) {
-                    $this_token_is_arr = $this->token_is_arr;
-                    $this_token_not_is_arr = $this->token_not_is_arr;
-                    $this_token_null_is_arr = $this->token_null_is_arr;
     
-                    if (!$this_token_is_arr[$fieldname]) {
-                        $this_token_is_arr[$fieldname] = 'YES';
-                    }
-                    if (!$this_token_not_is_arr[$fieldname]) {
-                        $this_token_not_is_arr[$fieldname] = 'NO';
-                    }
-                    if (!$this_token_null_is_arr[$fieldname]) {
-                        $this_token_null_is_arr[$fieldname] = 'NOT YET';
-                    }
-    
-                    $field_val = $this->getVal($fieldname);
-                    if ($field_val == 'Y') {
-                        $token_is_val = $this->translateOperator(
-                            $this_token_is_arr[$fieldname],
-                            $lang
-                        );
-                    } elseif ($field_val == 'N') {
-                        $token_is_val = $this->translateOperator(
-                            $this_token_not_is_arr[$fieldname],
-                            $lang
-                        );
-                    } else {
-                        $token_is_val = $this->translateOperator(
-                            $this_token_null_is_arr[$fieldname],
-                            $lang
-                        );
-                    }
-    
-                    $token_arr[$token_is] = $token_is_val;
-                }
-    
-                if ($fieldsTokenAlways or (strpos($text_to_decode, $token_is_en) !== false)) {
-                    $this_token_is_en_arr = $this->token_is_en_arr;
-                    $this_token_not_is_en_arr = $this->token_not_is_en_arr;
-                    $this_token_null_is_en_arr = $this->token_null_is_en_arr;
-    
-                    if (!$this_token_is_en_arr[$fieldname]) {
-                        $this_token_is_en_arr[$fieldname] = 'required'; // YES
-                    }
-                    if (!$this_token_not_is_en_arr[$fieldname]) {
-                        $this_token_not_is_en_arr[$fieldname] = ''; // NO
-                    }
-                    if (!$this_token_null_is_en_arr[$fieldname]) {
-                        $this_token_null_is_en_arr[$fieldname] = ''; // NOT-YET
-                    }
-    
-                    $field_val = $this->getVal($fieldname);
-                    if ($field_val == 'Y') {
-                        $token_is_en_val = $this_token_is_en_arr[$fieldname];
-                    } elseif ($field_val == 'N') {
-                        $token_is_en_val = $this_token_not_is_en_arr[$fieldname];
-                    } else {
-                        $token_is_en_val = $this_token_null_is_en_arr[$fieldname];
-                    }
-    
-                    $token_arr[$token_is_en] = $token_is_en_val;
-                }
-            }
-            
-
-            if ($fieldsTokenAlways or (strpos($text_to_decode, $token_data) !== false)) {
-                // if($fieldname=="prices_buttons") AfwRunHelper::safeDie("this->tokens = ".var_export($this->tokens,true));
-                $struct_item['IN_TEMPLATE'] = true;
-                $token_arr[$token_data] = $this->showAttribute(
-                    $fieldname,
-                    $struct_item
-                );
-                // if($fieldname=="prices_buttons") AfwRunHelper::safeDie("token value of token $token_data = ".var_export($token_arr[$token_data],true));
-            }
-
-            if ($fieldsTokenAlways or (strpos($text_to_decode, $token_value) !== false)) {
-                $token_arr[$token_value] = $this->getVal($fieldname);
-            }
-
-            if ($struct_item['CATEGORY'] == 'ITEMS' and
-                ($fieldsTokenAlways or strpos($text_to_decode, $token_data_no_icons) !== false)
-            ) {
-                $struct_item['ICONS'] = false;
-                $token_arr[$token_data_no_icons] = $this->showAttribute(
-                    $fieldname,
-                    $struct_item
-                );
-                //die("token_arr[$token_data_no_icons] = this->showAttribute($fieldname, struct_item) with struct_item = ".var_export($struct_item,true)." = ".var_export($token_arr[$token_data_no_icons],true));
-            }
-
-            if ((strpos($text_to_decode, $token_showme) !== false)) {
-                $token_arr[$token_showme] = '';
-                $objToShowIt = $this->het($fieldname);
-                if ($objToShowIt) {
-                    $token_arr[$token_showme] = $objToShowIt->showMe('', $lang);
-                }
-            }
-
-            if ($fieldsTokenAlways or (strpos($text_to_decode, $token_label) !== false)) {
-                $trad_col = $trad_erase[$fieldname];
-                if (!$trad_col) {
-                    $trad_col = $this->getAttributeLabel($fieldname, $lang);
-                }
-
-                $token_arr[$token_label] = $trad_col;
-            }
-
-            if ($struct_item['TYPE'] == 'DATE' and
-                ($fieldsTokenAlways or (strpos($text_to_decode, $token_full_date) !== false))
-            ) {
-                $token_arr[$token_full_date] = $this->fullHijriDate($fieldname);
-            }
-
-            if (
-                $struct_item['TYPE'] == 'DATE' and
-                ($fieldsTokenAlways or (strpos($text_to_decode, $token_medium_date) !== false))
-            ) {
-                $token_arr[$token_medium_date] = $this->mediumHijriDate(
-                    $fieldname
-                );
-            }
-
-            if ($struct_item['TO_TRANSLATE'] and
-                ($fieldsTokenAlways or (strpos($text_to_decode, $token_to_translate) !== false))
-            ) {
-                $token_arr[$token_to_translate] = $this->translateValue(
-                    $fieldname
-                );
-            }
-        }
-        if($toLower)
-        {
-            foreach($token_arr as $token => $token_value)
-            {
-                unset($token_arr[$token]);
-                $token_arr[strtolower($token)] = $token_value;
-            }
-        }
-        
-
-        return $token_arr;
-    }
 
 
     public function decodeTpl(
@@ -3922,7 +3450,7 @@ class AFWObject extends AFWRoot
             $token_arr = []
     ) 
     {
-        $token_arr = $this->prepareAfwTokens($text_to_decode, $lang, $trad_erase, $token_arr);
+        $token_arr = AfwPrevilegeHelper::prepareAfwTokens($this, $text_to_decode, $lang, $trad_erase, $token_arr);
         // if(get_class($this)=="Application") die("token_arr=".var_export($token_arr,true));
         foreach ($token_arr as $token => $val_token) {
             //if($token=="[travelStationList.no_icons]") die("for the token $token value is $val_token , token_arr = ".var_export($token_arr,true)." text_to_decode=$text_to_decode");
@@ -4068,85 +3596,10 @@ class AFWObject extends AFWRoot
         if ($loop_counter > 10) {
             throw new AfwRuntimeException('seems infinite loop');
         }
-        return $this->showMinibox('', $lang);
+        return AfwShowHelper::showMinibox($this, '', $lang);
     }
 
-    public function showMinibox(
-        $structure = '',
-        $lang = 'ar',
-        $token_arr = null,
-        $objme = null,
-        $public_show = false
-    ) {
-        //
-
-        $obj_table = $this->getTableName();
-        if ($structure) {
-            $file_tpl = $structure['MINIBOX-TEMPLATE'];
-        } else {
-            $file_tpl = 'AUTO';
-        }
-        // die($this->getDisplay($lang)." minibox tpl : ".$file_tpl);
-        if ($file_tpl != 'AUTO') {
-            if (!$token_arr) {
-                $token_arr = $this->prepareTokensArrayFromRequestParams(
-                    'minibox'
-                );
-            }
-            if ((!$file_tpl) or (strtoupper($file_tpl) == "DEFAULT")) {
-                $file_tpl = "tpl/tpl_mb_$obj_table.php";
-            }
-
-            $this->tokens = $token_arr;
-            //die("this->tokens = ".var_export($this->tokens,true));
-
-            if ($structure['MINIBOX-TEMPLATE-PHP']) {
-                $objKey = $structure['MINIBOX-OBJECT-KEY'];
-                $data = [];
-                $data[$objKey] = $this;
-                $data_to_display = $this->showUsingPhpTemplate($file_tpl, $data);
-            } else {
-                $data_to_display = $this->showUsingTpl(
-                    $file_tpl,
-                    [],
-                    $lang,
-                    $token_arr
-                );
-            }
-        } else {
-            $items_objs = [];
-
-            $first_item = $this;
-            $items_objs[$first_item->getId()] = $first_item;
-
-            if (!$this->mb_context) {
-                $this->mb_context = 'mb_auto';
-            }
-            //die($this->getDisplay($lang)." manyMiniBoxes show for : ".var_export($items_objs,true));
-            if (!$objme) $objme = AfwSession::getUserConnected();
-            list(
-                $data_to_display,
-                $items_objs,
-                $ids,
-                $report
-            ) = AfwShowHelper::manyMiniBoxes(
-                $items_objs,
-                $first_item,
-                $objme,
-                null,
-                array(),
-                $public_show
-            );
-
-            //die($this->getDisplay($lang)." AfwShowHelper::manyMiniBoxes showed [for $ids, public_show=$public_show] : ".$data_to_display." report=$report");
-        }
-
-        if ($data_to_display == '') {
-            $data_to_display = AfwFormatHelper::getItemsEmptyMessage($this, $structure, $lang);
-        }
-
-        return $data_to_display;
-    }
+    
 
     public function tr($message, $lang = '')
     {
@@ -4223,10 +3676,6 @@ class AFWObject extends AFWRoot
         return $this->translate($text, $langue, true);
     }
 
-
-
-
-
     public function tm($message, $langue = '', $company = "")
     {
         global $lang;
@@ -4258,34 +3707,10 @@ class AFWObject extends AFWRoot
     {
         $module = static::$MODULE;
         if (!$module) throw new AfwRuntimeException("static::\$MODULE should be defined in class : " . get_class($this));
-        return self::translateCompanyMessage($message, $module, $lang, $company);
+        return AfwLanguageHelper::translateCompanyMessage($message, $module, $lang, $company);
     }
 
-    public static function translateCompanyMessage($message, $module, $lang = 'ar', $company = "")
-    {
-        if (!$module) throw new AfwRuntimeException("\$module param should be defined for translateCompanyMessage method");
-        $return = $message;
-        $file_dir_name = dirname(__FILE__);
-
-        include "$file_dir_name/../../$module/messages_$lang.php";
-        if ($company) {
-            include "$file_dir_name/../../client-$company/translate/$module/messages_$company" . "_$lang.php";
-        }
-
-        if ($messages[$message]) {
-            $return = $messages[$message];
-        } else {
-            include "$file_dir_name/../../lib/messages_$lang.php";
-
-            if ($messages[$message]) {
-                $return = $messages[$message];
-            }
-        }
-
-        $return = AfwReplacement::trans_replace($return, $module, $langue);
-
-        return $return;
-    }
+    
 
     public function getAllMyDbStructure()
     {
@@ -4301,296 +3726,12 @@ class AFWObject extends AFWRoot
         return array_keys($this_db_structure);
     }
 
-    public function getColsByMode($mode)
-    {
-        $mode = strtoupper($mode);
-        if ($mode == 'SHOW') {
-            return $this->getToShowCols();
-        }
-        if ($mode == 'MINIBOX') {
-            return $this->getMiniBoxCols();
-        }
-        if ($mode == 'RETRIEVE') {
-            return $this->getRetrieveCols();
-        }
-
-        if ($mode == 'QSEARCH') {
-            return $this->getQsearchCols();
-        }
-
-        throw new AfwRuntimeException(
-            "mode $mode unknown when calling afw::getColsByMode($mode)"
-        );
-    }
-
-    public function isToShowCol($attribute, $desc = '')
-    {
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-
-        return !isset($desc['SHOW']) and $desc['EDIT'] or $desc['SHOW'];
-    }
-
-    public function getToShowCols()
-    {
-        $tableau = [];
-
-        $all_FIELDS = $this->getAllAttributes();
-
-        foreach ($all_FIELDS as $attribute) {
-            if ($this->isToShowCol($attribute)) {
-                $tableau[] = $attribute;
-            }
-        }
-        return $tableau;
-    }
-
-    public function isMiniBoxCol($attribute, $desc = '')
-    {
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-
-        return (!isset($desc['MINIBOX']) and $desc['RETRIEVE'] and !$desc['MINIBOX-PREVENT']) or $desc['MINIBOX'];
-    }
-
-    public function getMiniBoxCols()
-    {
-        $tableau = [];
-
-        $FIELDS_ALL = $this->getAllAttributes();
-
-        foreach ($FIELDS_ALL as $attribute) {
-            if ($this->isMiniBoxCol($attribute)) {
-                $tableau[] = $attribute;
-            }
-        }
-        if (count($tableau) == 0) die("no MiniBoxCols => FIELDS_ALL = " . var_export($FIELDS_ALL, true));
-        if (self::$TABLE == "school") die(self::$TABLE . " => FIELDS_ALL = " . var_export($FIELDS_ALL, true));
-        return $tableau;
-    }
-
-    public function isSearchCol($attribute, $desc = '')
-    {
-        global $lang;
-
-
-
-        $SEARCH_LANG = 'SEARCH-' . strtoupper($lang);
-
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-
-        $is_searchable =
-            ($desc['TYPE'] == 'PK' or
-                $desc['SEARCH'] or
-                $desc['SEARCH-BY-ONE'] or
-                $desc[$SEARCH_LANG] or
-                $attribute == $this->fld_ACTIVE() and ($objme = AfwSession::getUserConnected()) and $objme->isAdmin());
-
-        //@todo : rafik implemeter cas d'un shortcut et le parent du shortcut est un PART-JOIN
-        //    "SHORTCUT-PART-JOIN" est un attribue temporaire n'as aucun sens sauf activer le QSearch pour un shortcut
-        //    pour mes print screen pour ecriture des specifications
-        $can_be_searched_technically =
-            ($desc['CATEGORY'] == '' or
-                $desc['FIELD-FORMULA'] or
-                $desc['SHORTCUT'] and $desc['SHORTCUT-PART-JOIN']);
-
-        $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = $this->keyIsToDisplayForUser(
-            $attribute,
-            null
-        );
-
-        if (!$attributeIsToDisplayForMe) {
-            if (!$objme) $objme = AfwSession::getUserConnected();
-            $attributeIsToDisplayForMe = $this->keyIsToDisplayForUser(
-                $attribute,
-                $objme
-            );
-        }
-
-
-
-        $return =
-            ($attributeIsToDisplayForMe and
-                $can_be_searched_technically and
-                $is_searchable);
-        //die("$attribute : return=$return = $attributeIsToDisplayForMe and $can_be_searched_technically and $is_searchable ".var_export($desc,true));
-        return $return;
-    }
-
     public function qsearchByTextEnabled()
     {
         return true;
     }
 
-    public function isQSearchCol($attribute, $desc = '')
-    {
-        // $objme = AfwSession::getUserConnected();
-        if(!$this->attributeIsApplicable($attribute)) return false;
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-        $is_searchable = $this->isSearchCol($attribute, $desc);
-        $can_qsearch =
-            ($desc['QSEARCH'] or
-                !isset($desc['QSEARCH']) and $desc['SEARCH-BY-ONE']);
-        $is_qsearchable =
-            ($can_qsearch and
-                (($desc['TYPE'] == 'PK' or
-                    $desc['TYPE'] == 'FK' or
-                    $desc['TYPE'] == 'ENUM' or
-                    $desc['TYPE'] == 'YN' or
-                    $desc['TYPE'] == 'DATE' // or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
-                )
-                    or
-                    $desc['TEXT-SEARCHABLE-SEPARATED']));
-        // if($attribute=="academic_program_id") die("attribute $attribute is_searchable=$is_searchable, can_qsearch=$can_qsearch, is_qsearchable=$is_qsearchable, desc=".var_export($desc,true));
-        $return = ($is_searchable and $is_qsearchable);
-
-        return $return;
-    }
-
-    public function isInternalSearchableCol($attribute, $desc = '')
-    {
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-        return $desc['TYPE'] == 'FK' and $desc['INTERNAL_QSEARCH'];
-    }
-
-    public function isTextSearchableCol($attribute, $desc = '')
-    {
-        //$objme = AfwSession::getUserConnected();
-
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-
-        // INTERNAL-QSEARCH means we search inside Text Searchable Cols inside the FK object
-        return ($desc['TYPE'] == 'TEXT' or
-            $this->isInternalSearchableCol($attribute, $desc)) and
-            !$desc['TEXT-SEARCHABLE-SEPARATED'] and
-            $this->isSearchCol($attribute, $desc);
-    }
-
-    public function getTextSearchableCols()
-    {
-        return AfwFrameworkHelper::getAllAttributesInMode($this, 'text-searchable');
-    }
-
-    public function getAllTextSearchableCols()
-    {
-        return AfwFrameworkHelper::getAllAttributesInMode(
-            $this,
-            'text-searchable',
-            $step = 'all',
-            $typeArr = ['ALL' => true],
-            $submode = '',
-            $for_this_instance = true,
-            $translate = false,
-            $translate_to_lang = 'ar',
-            $implode_char = '',
-            $elekh_nb_cols = 9999,
-            $alsoAdminFields = false,
-            $alsoTechFields = false,
-            $alsoNAFields = true,
-            $max_elekh_nb_chars = 9999,
-            $alsoVirtualFields = true
-        );
-    }
-
-    public function translateCols($cols, $lang = 'ar', $short = false)
-    {
-        $tableau = [];
-
-        foreach ($cols as $attribute) {
-            if ($short) {
-                $tableau[$attribute] = $this->translate(
-                    $attribute . '.short',
-                    $lang
-                );
-            }
-
-            if (
-                !$tableau[$attribute] or
-                $tableau[$attribute] == $attribute . '.short'
-            ) {
-                $tableau[$attribute] = $this->translate($attribute, $lang);
-            }
-        }
-        return $tableau;
-    }
-
-    // return Y : yes,
-    //    N: no,
-    //    W: undefined
-    public function isRetrieveColForMode(
-        $attribute,
-        $mode,
-        $lang = 'ar',
-        $all = false,
-        $desc = null
-    ) {
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-
-        if ($desc['ALL-RETRIEVE']) {
-            return true;
-        }
-        $mode_up = strtoupper($mode);
-
-        // @doc : to make the id or any other attribute is shown for qsearch with view TECH_FIELDS, just put "TECH_FIELDS-RETRIEVE" => true in structure of attribute
-        //
-        //if($mode_up=="TECH_FIELDS") echo("mode TECH_FIELDS : $attribute desc = ".var_export($desc,true)."<br><br><br>");
-        if (
-            $all and
-            $desc['SHOW'] and
-            !$desc['NO-RETRIEVE'] and
-            strtoupper($desc['FGROUP']) == $mode_up
-        ) {
-            return true;
-        }
-
-        $retrieve_att = "$mode_up-RETRIEVE";
-        if ($retrieve_att == 'DISPLAY-RETRIEVE') {
-            $retrieve_att = 'RETRIEVE';
-        }
-        if ($retrieve_att == 'SEARCH-RETRIEVE') {
-            $retrieve_att = 'RETRIEVE';
-        }
-        if ($retrieve_att == '-RETRIEVE') {
-            $retrieve_att = 'RETRIEVE';
-        }
-        $retrieve_lang = "$retrieve_att-" . strtoupper($lang);
-
-        if (!isset($desc[$retrieve_att]) and !isset($desc[$retrieve_lang])) {
-            return 'W';
-        }
-        if (!$desc[$retrieve_att] and !$desc[$retrieve_lang]) {
-            return 'N';
-        }
-        return 'Y';
-    }
-
-    protected function setSpecialRetrieveCols()
+    public function setSpecialRetrieveCols()
     {
         // to be overriden in sub classes and define :
         $force_retrieve_cols = [];
@@ -4601,268 +3742,7 @@ class AFWObject extends AFWRoot
             'hide_retrieve_cols' => $hide_retrieve_cols,
         ];
     }
-
-    public function isRetrieveCol(
-        $attribute,
-        $mode = 'display',
-        $lang = 'ar',
-        $all = false,
-        $desc = null
-    ) {
-
-        $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = $this->keyIsToDisplayForUser(
-            $attribute,
-            null
-        );
-
-        if (!$attributeIsToDisplayForMe) {
-            $objme = AfwSession::getUserConnected();
-            $attributeIsToDisplayForMe = $this->keyIsToDisplayForUser(
-                $attribute,
-                $objme
-            );
-        }
-
-        if (!$attributeIsToDisplayForMe) {
-            return false;
-        }
-        if (!$lang) throw new AfwRuntimeException("lang param is required for isRetrieveCol method");
-        $RETRIEVE_LANG = 'RETRIEVE-' . strtoupper($lang);
-
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-
-        $is_force_retrieve =
-            ($this->force_retrieve_cols and
-                is_array($this->force_retrieve_cols) and
-                in_array($attribute, $this->force_retrieve_cols));
-
-        $is_general_retrieve =
-            (isset($desc['RETRIEVE']) and $desc['RETRIEVE'] or
-                isset($desc[$RETRIEVE_LANG]) and $desc[$RETRIEVE_LANG]);
-
-        $retForMode = $this->isRetrieveColForMode(
-            $attribute,
-            $mode,
-            $lang,
-            $all,
-            $desc
-        );
-        // if($is_general_retrieve) die("attribute=$attribute, retForMode=$retForMode, mode=$mode, is_force_retrieve=$is_force_retrieve");
-        // if($attribute == "ongoing_requests_count") die("attribute=$attribute, retForMode=$retForMode, mode=$mode, is_force_retrieve=$is_force_retrieve, is_general_retrieve=$is_general_retrieve, this->force_retrieve_cols=".var_export($this->force_retrieve_cols,true));
-
-        // rafik : @todo need more explanation
-        $generalRetrieveModeAllowed =
-            ($retForMode == 'W' and
-                (($mode == 'display' or !$mode) and $is_general_retrieve));
-        $return =
-            ($retForMode == 'Y' or
-                $generalRetrieveModeAllowed or
-                $is_force_retrieve);
-
-        /*
-         if((static::$TABLE=="practice_vote") and ($attribute=="id"))
-         {
-        $message = "return = $return";
-        $message .= "<br>desc[RETRIEVE] = ".$desc["RETRIEVE"];
-        $message .= "<br>desc[$RETRIEVE_LANG] = $desc[$RETRIEVE_LANG]";
-        $message .= "<br>retForMode = $retForMode";
-        $message .= "<br>is_general_retrieve = $is_general_retrieve";
-        throw new AfwRuntimeException("isRetrieveCol : debugg : $message");
-         }
-         */
-
-        return $return;
-    }
-
-    public function getReasonAttributeNotRetrievableOrRetrievable(
-        $attribute,
-        $mode = 'display',
-        $lang = 'ar',
-        $all = false,
-        $desc = null
-    ) {
-        $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = $this->keyIsToDisplayForUser(
-            $attribute,
-            null
-        );
-
-        if (!$attributeIsToDisplayForMe) {
-            $objme = AfwSession::getUserConnected();
-            $attributeIsToDisplayForMe = $this->keyIsToDisplayForUser(
-                $attribute,
-                $objme
-            );
-        }
-        if (!$attributeIsToDisplayForMe) {
-            return "when I can't see attribute $attribute how can I retrieve it";
-        }
-
-        $RETRIEVE_LANG = 'RETRIEVE-' . strtoupper($lang);
-
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-
-        $is_force_retrieve =
-            ($this->force_retrieve_cols and
-                is_array($this->force_retrieve_cols) and
-                in_array($attribute, $this->force_retrieve_cols));
-
-        $is_general_retrieve =
-            (isset($desc['RETRIEVE']) and $desc['RETRIEVE'] or
-                isset($desc[$RETRIEVE_LANG]) and $desc[$RETRIEVE_LANG]);
-
-        $retForMode = $this->isRetrieveColForMode(
-            $attribute,
-            $mode,
-            $lang,
-            $all,
-            $desc
-        );
-
-        ($generalRetrieveModeAllowed = $retForMode == 'W') and
-            (($mode == 'display' or !$mode) and $is_general_retrieve);
-
-        $reason =
-            "retForMode($attribute, $mode)=[$retForMode] generalRetrieveModeAllowed = ($generalRetrieveModeAllowed) is_force_retrieve=($is_force_retrieve) this->force_retrieve_cols = " .
-            var_export($this->force_retrieve_cols, true);
-
-        return [$reason, $desc];
-    }
-
-    /** audit columns ***/
-
-    public function getAuditableCols()
-    {
-        $tableau = [];
-
-        $FIELDS_ALL = $this->getAllAttributes();
-
-        foreach ($FIELDS_ALL as $attribute) {
-            if ($this->keyIsAuditable($attribute)) {
-                $attribute_to_remove_from_audit = false;
-                if (!$attribute_to_remove_from_audit) {
-                    $tableau[] = $attribute;
-                }
-            }
-        }
-        return $tableau;
-    }
-
-    public function getQsearchCols()
-    {
-        $tableau = [];
-
-        $FIELDS_ALL = $this->getAllAttributes();
-
-        foreach ($FIELDS_ALL as $attribute) {
-            if ($this->isQSearchCol($attribute)) {
-                $attribute_to_exclude = false;
-                if (!$attribute_to_exclude) {
-                    $tableau[] = $attribute;
-                }
-            }
-        }
-        return $tableau;
-    }
-
     
-    /**
-     * retrieve
-     * for display mode get retrieve columns
-     * @param array $array
-     */
-
-    public function getRetrieveCols(
-        $mode = 'display',
-        $lang = 'ar',
-        $all = false,
-        $type = 'all',
-        $debugg = false,
-        $hide_retrieve_cols = null,
-        $force_retrieve_cols = null,
-        $category = 'all'
-    ) {
-        if (!$hide_retrieve_cols and !$force_retrieve_cols) {
-            list(
-                $hide_retrieve_cols,
-                $force_retrieve_cols,
-            ) = $this->setSpecialRetrieveCols();
-        }
-
-        // die("setSpecialRetrieveCols returned hide_retrieve_cols = ".var_export($hide_retrieve_cols,true).", force_retrieve_cols = ".var_export($force_retrieve_cols,true));
-        $tableau = [];
-
-        $db_struct_all = $this->getAllMyDbStructure();
-
-        foreach ($db_struct_all as $attribute => $descAttr) {
-            if (
-                $this->isRetrieveCol($attribute, $mode, $lang, $all, $descAttr)
-            ) {
-                if (
-                    !$hide_retrieve_cols or
-                    !is_array($hide_retrieve_cols) or
-                    !count($hide_retrieve_cols) or
-                    !in_array($attribute, $hide_retrieve_cols)
-                ) {
-                    // debugg why $attribute is shown when it should be hidden
-                    // if($attribute=="man" and $hide_retrieve_cols) throw new AfwRuntimeException("$attribute is not in hide_retrieve_cols = ".var_export($hide_retrieve_cols,true));
-                    $take = false;
-                    if ($type == 'all') {
-                        $take = true;
-                    } else {
-                        // if(!$descAttr) $descAttr = AfwStructureHelper::getStructureOf($this,$attribute);
-                        if ($descAttr['TYPE'] == $type) {
-                            $take = true;
-                        }
-                    }
-
-                    $takeCateg = false;
-                    if ($category == 'all') {
-                        $takeCateg = true;
-                    } else {
-                        // if(!$descAttr) $descAttr = AfwStructureHelper::getStructureOf($this,$attribute);
-                        if ($descAttr['CATEGORY'] == $category) {
-                            $takeCateg = true;
-                        } elseif ((!$descAttr['CATEGORY']) and ($category == "empty")) {
-                            $takeCateg = true;
-                        }
-                    }
-
-                    if ($take and $takeCateg) {
-                        $tableau[] = $attribute;
-                    }
-                }
-                if ($debugg) {
-                    // list($AttributeRetrievableWhy, $descAttr2)  = $this->getReasonAttributeNotRetrievableOrRetrievable($attribute);
-                    // if($attribute == "currentRequests") die("$attribute is RetrieveCol in mode $mode reason=$AttributeRetrievableWhy descAttr2=".var_export($descAttr2,true));
-                }
-            } elseif ($debugg) {
-                // list($AttributeNotRetrievableWhy, $descAttr2)  = $this->getReasonAttributeNotRetrievableOrRetrievable($attribute);
-                // if($attribute == "ongoing_requests_count") die("$attribute is not RetrieveCol in mode $mode reason=$AttributeNotRetrievableWhy descAttr2=".var_export($descAttr2,true));
-            }
-        }
-        /*
-        if(static::$TABLE=="practice")
-        {
-            $message = "tableau = ".var_export($tableau,true);
-            throw new AfwRuntimeException("get RetrieveCols : debugg : $message");
-        }
-        */
-        return $tableau;
-    }
-
-
-
-
-
-
 
     /**
      * beforeDeleteWhere
@@ -4881,65 +3761,7 @@ class AFWObject extends AFWRoot
      */
     protected static function afterDeleteWhere($where) {}
 
-    public function deleteOneByOneWhere($where, $simul = false)
-    {
-        global $lang;
-
-        $this->where($where);
-
-        $ObjectsToDeleteList = $this->loadMany();
-        $ObjectsToDeleteListCount = count($ObjectsToDeleteList);
-
-        $delete_blocked_reasons = [];
-
-        foreach ($ObjectsToDeleteList as $ObjectsToDeleteItem) {
-            list($can, $reason) = $ObjectsToDeleteItem->canBeDeleted();
-            if (!$can) {
-                $delete_blocked_reasons[] =
-                    $ObjectsToDeleteItem->getShortDisplay($lang) .
-                    ' : ' .
-                    $reason;
-            }
-        }
-
-        if (count($delete_blocked_reasons) > 0) {
-            return [
-                false,
-                $delete_blocked_reasons,
-                $ObjectsToDeleteListCount,
-                $ObjectsToDeleteList,
-            ];
-        }
-
-        if (!$simul) {
-            // بسم الله توكلت على الله
-            foreach ($ObjectsToDeleteList as $obj_id => $ObjectsToDeleteItem) {
-                $success = $ObjectsToDeleteItem->delete();
-                if (!$success) {
-                    $delete_blocked_reasons[] =
-                        $ObjectsToDeleteItem->getShortDisplay($lang) .
-                        ' : فشلت عملية المسح';
-                    return [
-                        false,
-                        $delete_blocked_reasons,
-                        $ObjectsToDeleteListCount,
-                        $ObjectsToDeleteList,
-                    ];
-                }
-
-                unset($ObjectsToDeleteList[$obj_id]);
-            }
-        }
-        // $ObjectsToDeleteList below should be empty but I put it in case of ....
-        // لن يحصل هذا إلا أن يشاء الله
-        // إلا في حالة المحادات simul=true
-        return [
-            true,
-            $delete_blocked_reasons,
-            $ObjectsToDeleteListCount,
-            $ObjectsToDeleteList,
-        ];
-    }
+    
 
     final public function canBeDeleted()
     {
@@ -5052,135 +3874,6 @@ class AFWObject extends AFWRoot
         $this->afterMaj($id, $fields_updated);
     }
 
-    /**
-     * getLink
-     * get into array objects from LINK_TABLE
-     * @param string $tbl : table name
-     */
-    public function getLink($index)
-    {
-        if ($index) {
-            if (
-                is_array($this->DB_LINK[$index]) &&
-                $this->DB_LINK[$index]['TARGET_TABLE'] &&
-                $this->DB_LINK[$index]['LINK_TABLE'] &&
-                $this->DB_LINK[$index]['MY_KEY'] &&
-                $this->DB_LINK[$index]['HIS_KEY']
-            ) {
-                if ($this->getId()) {
-                    $module_server = $this->getModuleServer();
-                    $result_rows = AfwDatabase::db_recup_rows(
-                        'select ' .
-                            $this->DB_LINK[$index]['HIS_KEY'] .
-                            ' as PK from ' .
-                            $this->DB_LINK[$index]['LINK_TABLE'] .
-                            ' where ' .
-                            $this->DB_LINK[$index]['MY_KEY'] .
-                            ' = ' .
-                            $this->getId(),
-                        true,
-                        true,
-                        $module_server
-                    );
-                    if (count($result_rows) > 0) {
-                        $array = [];
-                        $className = AfwStringHelper::tableToClass(
-                            $this->DB_LINK[$index]['TARGET_TABLE']
-                        );
-                        $fileName = AfwStringHelper::tableToFile(
-                            $this->DB_LINK[$index]['TARGET_TABLE']
-                        );
-                        if ($this->MY_DEBUG and false) {
-                            AFWDebugg::log("require_once $fileName");
-                        }
-                        require_once $fileName;
-                        foreach ($result_rows as $result_row) {
-                            $object = new $className();
-                            // $object->setMyDebugg($this->MY_DEBUG);
-                            $object->load($result_row['PK']);
-                            $array[$result_row['PK']] = $object;
-                        }
-                        return $array;
-                    } else {
-                        return [];
-                    }
-                } else {
-                    throw new AfwRuntimeException(
-                        "L'id of current object est vide dans the method getLink()."
-                    );
-                }
-            } else {
-                if (AfwSession::config('LOG_SQL', true)) {
-                    AFWDebugg::log($this->DB_LINK, true);
-                }
-                throw new AfwRuntimeException(
-                    "attribute DB_LINK not defined pour la clé " .
-                        $index .
-                        ' dans the method getLink().'
-                );
-            }
-        } else {
-            throw new AfwRuntimeException(
-                'the method getLink() nécessite le paramètre $index qui semble vide.'
-            );
-        }
-    }
-
-    /**
-     * setLink
-     * insert values into LINK_TABLE
-     * @param string $tbl : table name
-     * @param string $id : HIS_KEY
-     */
-    public function setLink($index, $id)
-    {
-        if ($index && $id) {
-            if (
-                is_array($this->DB_LINK[$index]) &&
-                $this->DB_LINK[$index]['LINK_TABLE'] &&
-                $this->DB_LINK[$index]['MY_KEY'] &&
-                $this->DB_LINK[$index]['HIS_KEY']
-            ) {
-                if ($this->getId()) {
-                    $query =
-                        'insert into ' .
-                        $this->DB_LINK[$index]['LINK_TABLE'] .
-                        ' set ' .
-                        $this->DB_LINK[$index]['MY_KEY'] .
-                        " = '" .
-                        $this->getId() .
-                        "', " .
-                        $this->DB_LINK[$index]['HIS_KEY'] .
-                        " = '" .
-                        $id .
-                        "'";
-                    return $this->execQuery($query);
-                } else {
-                    throw new AfwRuntimeException(
-                        "L'id of current object est vide dans the method setLink()."
-                    );
-                }
-            } else {
-                if (AfwSession::config('LOG_SQL', true)) {
-                    AFWDebugg::log($this->DB_LINK, true);
-                }
-                throw new AfwRuntimeException(
-                    "attribute DB_LINK not defined pour la clé " .
-                        $index .
-                        ' dans the method setLink().'
-                );
-            }
-        } else {
-            throw new AfwRuntimeException(
-                'the method getLink() nécessite les deux paramètres $index ' .
-                    $index .
-                    ' et $id ' .
-                    $id .
-                    'qui semblent vides.'
-            );
-        }
-    }
-
     public function getTypeOf($attribute)
     {
         $structure = AfwStructureHelper::getStructureOf($this, $attribute);
@@ -5193,25 +3886,6 @@ class AFWObject extends AFWRoot
         return $structure['CATEGORY'];
     }
 
-    /*obso
-	public function getClass FilePackage($table="")
-	{
-		if(!$table) $table = static::$TABLE;
-		return AFWI NI::getClass FilePackage($table);
-	} 
-    
-
-	public function getMyFilePrefix()
-	{
-		$array=$this->getClass FilePackage();
-		$str_prefix = "";
-		if($array['pk'])  $str_prefix .=  $array['pk']."_";
-		if($array['spk'])  $str_prefix .=  $array['spk']."_";
-
-		return $str_prefix;
-
-	}
-	*/
     public function getStyle($table = '')
     {
         return 'afw_style.css';
@@ -6435,12 +5109,6 @@ class AFWObject extends AFWRoot
 
     // NO-ERROR-CHECK : option to disable error check on attribute
 
-    private static function structureCheckable($desc)
-    {
-        return !$desc['NO-ERROR-CHECK'] and
-            (!$desc['CATEGORY'] or $desc['ERROR-CHECK']);
-    }
-
     
 
     
@@ -6518,477 +5186,24 @@ class AFWObject extends AFWRoot
             return $desc['STEP'];
         }
     }
-    /*
-     rafik : obsolete replaced by attributeIsRequired better done;
-     
-     protected final function isMandatoryAttributeStandard($attribute, $desc="")
-     {
-           if(!$desc) $desc = AfwStructureHelper::getStructureOf($this,$attribute);
-           else $desc = AfwStructureHelper::repareMyStructure($this,$desc, $attribute); 
-           return (($desc["MANDATORY"] and $this->attributeIsApplicable($attribute)) or ($desc["REQUIRED"]));
-     }
-     
-     
-     public function isMandatoryAttribute($attribute, $desc="")
-     {
-           return $this->isMandatoryAttributeStandard($attribute, $desc);
-     }
-     */
 
-    // Action :
-    // Check common known errors
-    // 1. Mandatory fields values
-    // 2. Format of formatted fields
-    // 3. Constraints on values for Constrainted fields
-    // 4. Errors eventually in 'pillar-part' fields
-    // return array of errors
-    private function getCommonDataErrors(
-        $lang = 'ar',
+    public function getMySpecificDataErrors($lang = 'ar',
         $show_val = true,
         $step = 'all',
         $erroned_attribute = null,
         $stop_on_first_error = false,
         $start_step = null,
-        $end_step = null
-    ) {
-        global $errors_check_count;
-
-        $cm_errors = [];
-
-        if (!$erroned_attribute) {
-            $this_db_structure = static::getDbStructure(
-                $return_type = 'structure',
-                $attrib = 'all',
-                $step,
-                $start_step,
-                $end_step
-            );
-            // if((get_class($this)=="Applicant") and ($step==2)) throw new AfwRuntimeException(get_class($this).":: dbg : this_db_structure for step=$step and start_step=$start_step, end_step=$end_step => ".var_export($this_db_structure,true));
-            // die("showErrorsAsSessionWarnings::getDbStructure($return_type, $attrib, $step, $start_step, $end_step) = ".var_export($this_db_structure,true));
-            // if($step!="all") die("static::getDbStructure($return_type, $attrib, $step) = ".var_export($this_db_structure,true));
-        } else {
-            $attrib_structure = static::getDbStructure(
-                $return_type = 'structure',
-                $attrib = $erroned_attribute
-            );
-            $this_db_structure[$attrib] = $attrib_structure;
-            //die("static::getDbStructure($return_type, $attrib) = ".var_export($this_db_structure,true));
-        }
-
-        // if((get_class($this)=="Applicant") and (!$erroned_attribute) and ($step=="all") and !$this_db_structure["passeport_num"]) die("dbg 2025/02 this_db_structure = ".var_export($this_db_structure,true));
-
-
-        foreach ($this_db_structure as $attribute => $desc) {
-            // if(!is_array($desc)) die(get_class($this).":: dbg : desc of $attribute = ".var_export($desc,true)." this_db_structure = ".var_export($this_db_structure,true));
-            $error_attribute = $desc['ERROR_ATTRIBUTE'];
-            if (!$error_attribute) {
-                $error_attribute = $attribute;
-            }
-
-            $attribute_is_required = $this->attributeIsRequired(
-                $attribute,
-                $desc
-            );
-
-            $attr_sup_categ = $desc['SUPER_CATEGORY'];
-            $attr_categ = $desc['CATEGORY'];
-            $attr_scateg = $desc['SUB-CATEGORY'];
-
-            if ($attr_categ == 'ITEMS') {
-                $desc['TYPE'] = 'MFK';
-            }
-            if ($attr_scateg == 'ITEMS') {
-                $desc['TYPE'] = 'MFK';
-            }
-            if ($attr_sup_categ == 'ITEMS') {
-                $desc['TYPE'] = 'MFK';
-            }
-            /*
-            if($attribute=="passeport_num" and $step=='all') 
-            {
-                die("debugg-2025-02-10 : Test if attribute $attribute step $step contain attribute $attribute");
-            }*/
-
-            if ($this->stepContainAttribute($step, $attribute, $desc)) {
-                /*
-                if($attribute=="passeport_num" and $step=='all') 
-                {
-                    die("debugg-2025-02-11 : attribute $attribute step $step contain attribute $attribute");
-                }*/
-                /*
-                if(($step==1) and ($attribute=="first_name_ar"))
-                {
-                    throw new AfwRuntimeException("step==$step : desc = ".var_export($desc,true));
-                }*/
-                // DEPENDENCY : for formula fields that are checkable (default not), we can define dependency field
-                // so that no error check is performed until DEPENDENCY field has no errors
-                if (
-                    self::structureCheckable($desc) and
-                    !$cm_errors[$desc['DEPENDENCY']]
-                ) 
-                {
-                    /*
-                    if($attribute=="concernedGoalList")
-                    {
-                        throw new AfwRuntimeException("getCommonDataErrors for $attribute is reached at step $step");
-                    }
-                    */
-
-                    if (!isset($cm_errors[$error_attribute])) {
-                        $cm_errors[$error_attribute] = '';
-                    }
-                    //if($attribute=="tome") throw new AfwRuntimeException("kifech w step = $step w desc = ".var_export($desc,true));
-                    $val_attr = $this->getVal($attribute);
-
-                    //if($attribute=="monitoring") throw new AfwRuntimeException("rafik : this->getVal($attribute)=$val_attr", array("FIELDS_UPDATED"=>true, "AFIELD_ VALUE"=>true));
-                    if ($show_val) {
-                        $showed_val = " = $val_attr";
-                    } else {
-                        $showed_val = '';
-                    }
-
-                    if ($desc['TYPE'] == 'TEXT' or $desc['TYPE'] == 'MTEXT') {
-                        $showed_val = '';
-                    }
-
-                    //if((static::$TABLE=="practice") and ($attribute=="explain")) throw new AfwRuntimeException("kifech val_attr($attribute) = [$val_attr] w step = $step w desc = ".var_export($desc,true));
-                    if($desc['TYPE']=="TEXT")
-                    {
-                        $desc['CAN_ZERO'] = true;
-                    }
-                    // 1. required fields values
-                    if ($desc['TYPE'] != 'MFK' and $attribute_is_required) {
-                        if ($desc['TYPE'] == 'YN' and $val_attr == 'W' and (!$desc['W-IS-VALUE'])) {
-                            $val_attr = '';
-                        }
-
-                        if (
-                            !$val_attr and
-                            ((!$desc['CAN_ZERO']) or ($val_attr === ''))
-                        ) {
-                            $spec_field_manda_token = "$attribute.FIELD_MANDATORY";
-                            $spec_field_manda_token_message = $this->translate($spec_field_manda_token, $lang);
-                            if ($spec_field_manda_token_message == $spec_field_manda_token) {
-                                $tabName = $this->getMyTable();
-                                /*$log_canzero = "*************** val_attr = $val_attr *******************
-                                                *************** canzero=".$desc['CAN_ZERO'].
-                                                "*************** TYPE=".$desc['TYPE'];*/
-                                $log_canzero = "";
-                                $cm_errors[$error_attribute] .= $this->translateOperator('FIELD MANDATORY', $lang) .
-                                    ' : ' .
-                                    $this->translate($attribute, $lang).$log_canzero;
-
-                                // below code we can not do because the tooltip can t support html
-                                // if(AfwSession::config('MODE_DEVELOPMENT', false)) $cm_errors[$error_attribute] .= "<!-- $tabName.$attribute -->";    
-                            } else {
-                                $cm_errors[$error_attribute] .=
-                                    $spec_field_manda_token_message . ", \n";
-                            }
-
-                            if ($stop_on_first_error) break;
-                        }
-                        //if((static::$TABLE=="practice") and ($attribute=="explain")) throw new AfwRuntimeException("$attribute : kifech val_attr=[$val_attr] w step = $step w cm_errors = ".var_export($cm_errors,true));
-                    }
-
-                    // 2. Format of formatted fields
-                    if (AfwFormatHelper::isFormatted($desc)) 
-                    {
-                        list(
-                            $correctFormat,
-                            $correctFormatMess,
-                        ) = AfwFormatHelper::isCorrectFormat($val_attr, $desc);
-                        
-                        
-                        /*if($attribute=="passeport_num" and $step=='all') 
-                        {
-                            die("attribute $attribute list(correctFormat=$correctFormat,correctFormatMess=$correctFormatMess,) = AfwFormatHelper::isCorrectFormat(value of attribute=[$val_attr], desc of attribute = ".var_export($desc, true).")");
-                        }
-                        */
-
-                        if (!$correctFormat) {
-                            if (!$desc['RESUME_TEXT_ERROR']) {
-                                $cm_errors[$error_attribute] .=
-                                    $this->translateOperator(
-                                        'FIELD VALUE',
-                                        $lang
-                                    ) .
-                                    ' ' .
-                                    $this->translate($attribute, $lang) .
-                                    $showed_val .
-                                    ' : ';
-                            }
-                            $cm_errors[$error_attribute] .=
-                                $this->translateOperator(
-                                    $correctFormatMess,
-                                    $lang
-                                ) . ", \n";
-
-                            if ($stop_on_first_error) break;
-                        }
-
-                        // if($attribute=="passeport_num") die("attribute $attribute, errors = ". $cm_errors[$error_attribute]);
-                    }
-
-                    // 3. Constraints on values for Constrainted fields
-                    if ($desc['CONSTRAINTS']) {
-                        // and ($val_attr != "")
-                        $halted_constraint = $this->dataFollowConstraints(
-                            $val_attr,
-                            $desc['CONSTRAINTS']
-                        );
-                        if ($halted_constraint) {
-                            $cm_errors[$error_attribute] .=
-                                $this->translateOperator(
-                                    'WRONG DATA FOR FIELD',
-                                    $lang
-                                ) .
-                                ' : ' .
-                                $this->translate($attribute, $lang) .
-                                $showed_val .
-                                ", \n <!--" .
-                                var_export($halted_constraint, true) . " -->";
-                            if ($stop_on_first_error) break;
-                        }
-                    }
-                    // if($attribute=="passeport_num") die("attribute $attribute, errors is ". $cm_errors[$error_attribute]);
-                    // 4. Errors eventually in pillar or 'pillar-part' fields
-                    //   pole or     is same as pillar but only if applicable
-                    //   pillar-part   is same as pillar if attribute Is Required
-                    if (
-                        $desc['PILLAR'] or
-                        $desc['POLE'] and
-                        $this->attributeIsApplicable($attribute) or
-                        $desc['PILLAR-PART'] and
-                        $this->attributeIsRequired($attribute)
-                    ) {
-                        // only for FK or MFK Fields
-                        if ($desc['TYPE'] == 'FK') {
-                            if (intval($val_attr) > 0) {
-                                $objVal = $this->get(
-                                    $attribute,
-                                    'object',
-                                    '',
-                                    false
-                                );
-                                if (
-                                    !$objVal or
-                                    !is_object($objVal) or
-                                    $objVal->getId() != $val_attr or
-                                    $attribute_is_required and !$objVal->getId()
-                                ) {
-                                    $cm_errors[$error_attribute] .=
-                                        $this->translateOperator(
-                                            'DELETED OR WRONG MANDATORY OBJECT',
-                                            $lang
-                                        ) .
-                                        ' : ' .
-                                        $this->translate($attribute, $lang) .
-                                        $showed_val .
-                                        ", \n";
-
-                                    if ($stop_on_first_error) break;
-                                }
-
-                                if (is_object($objVal)) {
-                                    $err_obj_arr = $objVal->getDataErrors(
-                                        $lang,
-                                        $show_val
-                                    );
-                                    $objVal_disp = $objVal->getShortDisplay();
-                                    $err_count = count($err_obj_arr);
-                                    if ($err_count > 0) {
-                                        $cm_errors[$error_attribute] .=
-                                            $this->translateOperator(
-                                                'PILLAR OBJECT',
-                                                $lang
-                                            ) .
-                                            ' ' .
-                                            $this->translate(
-                                                $attribute,
-                                                $lang
-                                            ) .
-                                            " = $objVal_disp " .
-                                            $this->translateOperator(
-                                                'CONTAIN',
-                                                $lang
-                                            ) .
-                                            " $err_count " .
-                                            $this->translateOperator(
-                                                'ERRORS',
-                                                $lang
-                                            ) .
-                                            ' :';
-                                        foreach ($err_obj_arr as $err_text) {
-                                            $cm_errors[$error_attribute] .=
-                                                $err_text . "\n";
-                                        }
-                                        $cm_errors[$error_attribute] .=
-                                            "______________________\n";
-
-                                        if ($stop_on_first_error) break;
-                                    }
-                                }
-                            }
-                        }
-
-                        if ($desc['TYPE'] == 'MFK') {
-                            $obj_arr = $this->get($attribute);
-                            $errors_html = '';
-                            $errors_max = 10;
-                            $errors_i = 0;
-
-                            foreach ($obj_arr as $obj_id => $objVal) {
-                                if (
-                                    is_object($objVal) and
-                                    $errors_i < $errors_max
-                                ) {
-                                    if ($errors_check_count[$attribute] > 30) {
-                                        $errors_check_count_attr = $errors_check_count[$attribute];
-                                        throw new AfwRuntimeException("too mauch error checks called for attribute $attribute (nb=$errors_check_count_attr), be carefull on infinite loops");
-                                    }
-                                    $err_obj_arr = $objVal->getDataErrors(
-                                        $lang,
-                                        $show_val
-                                    );
-                                    $err_count = count($err_obj_arr);
-                                    if (
-                                        $err_count > 0 and
-                                        $errors_i < $errors_max
-                                    ) {
-                                        $errors_html .=
-                                            "\n" .
-                                            'السجل : ' .
-                                            $objVal->getDisplay($lang);
-                                        if ($err_count > 1) {
-                                            $errors_html .=
-                                                ' ' .
-                                                $this->translateOperator(
-                                                    'CONTAIN',
-                                                    $lang
-                                                ) .
-                                                " $err_count " .
-                                                $this->translateOperator(
-                                                    'ERRORS',
-                                                    $lang
-                                                ) .
-                                                ' : ';
-                                            foreach (
-                                                $err_obj_arr
-                                                as $err_text
-                                            ) {
-                                                $errors_html .=
-                                                    "\n       " . $err_text;
-                                                $errors_i++;
-                                            }
-                                        } else {
-                                            $errors_html .=
-                                                ' : ' .
-                                                implode(' ', $err_obj_arr);
-                                        }
-                                    }
-                                }
-                            }
-                            if ($errors_html) {
-                                $fld_desc =
-                                    $this->translateOperator(
-                                        'PILLAR OBJECT',
-                                        $lang
-                                    ) .
-                                    ' ' .
-                                    $this->translate($attribute, $lang);
-                                $cm_errors[$error_attribute] .=
-                                    "يوجد أخطاء في $fld_desc : \n" .
-                                    $errors_html .
-                                    ", \n";
-
-                                if ($stop_on_first_error) break;
-                            }
-                        }
-                    }
-
-                    // if($attribute=="passeport_num") die("attribute $attribute, errors is = ". $cm_errors[$error_attribute]);
-
-                    if ($desc['TYPE'] == 'MFK') {
-                        $attribute_val0 = $this->calc($attribute);
-                        if (!is_array($attribute_val0)) {
-                            $attribute_val = trim($attribute_val0, ',');
-                        } else {
-                            $attribute_val = count($attribute_val0);
-                        }
-
-                        if ($attribute_is_required and !$attribute_val) {
-                            $cm_errors[$error_attribute] .=
-                                $this->translateOperator(
-                                    'EMPTY LIST FOR REQUIRED FIELD',
-                                    $lang
-                                ) .
-                                ' : ' .
-                                $this->translate($attribute, $lang) .
-                                ", \n";
-
-                            if ($stop_on_first_error) break;
-                        }
-                    }
-
-                    if (!$cm_errors[$error_attribute]) {
-                        unset($cm_errors[$error_attribute]);
-                    } else {
-                        $cm_errors[$error_attribute] = str_replace(
-                            "\n",
-                            '<br>',
-                            $cm_errors[$error_attribute]
-                        );
-                        $cm_errors[$error_attribute] = str_replace(
-                            ',',
-                            '،',
-                            $cm_errors[$error_attribute]
-                        );
-                        $cm_errors[$error_attribute] = trim(
-                            $cm_errors[$error_attribute],
-                            "\n"
-                        );
-                        $cm_errors[$error_attribute] = trim(
-                            $cm_errors[$error_attribute],
-                            ' '
-                        );
-                        $cm_errors[$error_attribute] = trim(
-                            $cm_errors[$error_attribute],
-                            ','
-                        );
-                        $cm_errors[$error_attribute] = trim(
-                            $cm_errors[$error_attribute],
-                            '/'
-                        );
-                        /*
-                        $cm_errors[$attribute] = trim($cm_errors[$attribute],"\n");
-                        $cm_errors[$attribute] = trim($cm_errors[$attribute]," ");
-                        $cm_errors[$attribute] = trim($cm_errors[$attribute],",");
-                        $cm_errors[$attribute] = trim($cm_errors[$attribute],"/");
-                        
-                        $cm_errors[$attribute] = mas_complete_len($cm_errors[$attribute], 36," ");
-                        */
-                    }
-
-                    // if($attribute=="passeport_num") die("attribute $attribute, errors equal to ". $cm_errors[$error_attribute]);
-                }
-            }
-        }
-        /*
-        if($step==1)
-        {
-            throw new AfwRuntimeException("step==$step : cm_errors = ".var_export($cm_errors,true));
-        }
-
-
-        if(count($cm_errors)>0)
-        {
-            throw new AfwRuntimeException("There are errors : step==$step : cm_errors = ".var_export($cm_errors,true));
-        }*/
-
-        // if($this->id==1056365305) echo ("all step $step errors = ". var_export($cm_errors, true));
-
-        return $cm_errors;
+        $end_step = null)
+    {
+        return $this->getSpecificDataErrors($lang,
+            $show_val,
+            $step,
+            $erroned_attribute,
+            $stop_on_first_error,
+            $start_step,
+            $end_step);
     }
+    
 
     // Action :
     // Check specific not known errors
@@ -7005,111 +5220,7 @@ class AFWObject extends AFWRoot
         return [];
     }
 
-    // final because Should never been overwritten
-    final public function getDataErrors(
-        $lang = 'ar',
-        $show_val = true,
-        $recheck = false,
-        $step = 'all',
-        $ignore_fields_arr = null,
-        $attribute = null, // if $attribute is set means we ignore all attributes except $attribute
-        $stop_on_first_error = false,
-        $start_step = null,
-        $end_step = null
-    ) {
-        // global $errors_check_count;
-        //, $errors_ check_count _max;
-        //if($errors_ check_count>$errors_ check_count _max) throw new AfwRuntimeException("too mauch errors found by getDataErrors (nb=$errors _check_count)");
-        // if ($attribute) $errors_check_count[$attribute]++;
-        /*
-        if((get_class($this)=="Applicant") and ($step==2) and !$start_step and !$end_step)
-        {
-            $ignore_fields_arr_export = var_export($ignore_fields_arr,true);        
-            throw new AfwRuntimeException("what you do here ? entering getDataErrors(
-                $lang = lang,
-                $show_val = show_val,
-                $recheck = recheck,
-                $step = step,
-                $ignore_fields_arr_export = ignore_fields_arr,
-                $attribute = attribute,
-                $stop_on_first_error = stop_on_first_error,
-                $start_step = start_step,
-                $end_step = end_step
-            )");
-        }
-         */
-
-        //rafik this line below is commented since 17/5/2022 because very strange why not saved objects can not be checked if contains errors before save
-        //if($this->getId()<=0) return array();
-        /*
-        if((get_class($this)=="Applicant") and ($step==2) and ($attribute=="passeport_num")) // and !$start_step and !$end_step
-        {            
-            die(get_class($this)." : dbg before enter getCommonDataErrors : this->arr_erros = ".var_export($this->arr_erros,true));
-        }*/
-        if (!isset($this->arr_erros[$step]) or $recheck) {
-            // we should pass $erroned_attribute = null to get all step attributes for cache and after we we will
-            // return only for the attribute requested
-            $erroned_attribute = null; 
-            $common_e_arr   =   $this->getCommonDataErrors($lang, $show_val, $step, $erroned_attribute, $stop_on_first_error, $start_step, $end_step);
-            if((get_class($this)=="Applicant") and ($step==2) and ($attribute=="passeport_num")) // and !$start_step and !$end_step
-            {            
-                die(get_class($this)." : dbg getCommonDataErrors(lang=$lang, show_val=$show_val, step=$step, attribute=$attribute, stop_on_first_error=$stop_on_first_error, start_step=$start_step, end_step=$end_step) => ".var_export($common_e_arr,true));
-            }
-
-            if (!$attribute or $this->stepContainAttribute($step, $attribute)) {
-                $specific_e_arr = $this->getSpecificDataErrors($lang, $show_val, $step, $erroned_attribute, $stop_on_first_error, $start_step, $end_step);
-            } else {
-                $specific_e_arr = [];
-            }
-            $this->arr_erros[$step] = array_merge(
-                $common_e_arr,
-                $specific_e_arr
-            );
-
-            // if($step==2) die("debugg rafik this->arr_erros = ".var_export($this->arr_erros,true));
-        }
-
-        $err_arr = $this->arr_erros[$step];
-
-        
-
-        if($attribute)
-        {
-            // return only for the attribute requested
-            foreach ($err_arr as $field_name) {
-                if($field_name != $attribute) unset($err_arr[$field_name]);
-            }
-        }
-        else
-        {
-            foreach ($ignore_fields_arr as $ignore_field) {
-                unset($err_arr[$ignore_field]);
-            }
-        }
-
-        
-        // debugg
-        /*
-        if((get_class($this)=="Applicant") and ($step==2) and !$start_step and !$end_step)
-        {
-            $ignore_fields_arr_export = var_export($ignore_fields_arr,true);
-            $err_arr_export = var_export($err_arr,true);
-            throw new AfwRuntimeException(get_class($this)." : what you do here ? exiting getDataErrors(
-                $lang = lang,
-                $show_val = show_val,
-                $recheck = recheck,
-                $step = step,
-                $ignore_fields_arr_export = ignore_fields_arr,
-                $attribute = attribute,
-                $stop_on_first_error = stop_on_first_error,
-                $start_step = start_step,
-                $end_step = end_step
-            ) => $err_arr_export");
-        } */
-        
-
-        return $err_arr;
-    }
+    
 
     public function getDataErrorForAttribute($attribute)
     {
@@ -7222,51 +5333,7 @@ class AFWObject extends AFWRoot
         return !$auser or !$auser->isAdmin();
     }
 
-    // هنا نتكلم عن العمود ككل وليس البيانات في العمود بحسب السجل
-    final public function keyIsToDisplayForUser($key, $auser, $mode = 'DISPLAY')
-    {
-        $mode = strtoupper($mode);
-        $mode_code = $mode;
-        if ($mode == 'DISPLAY') {
-            $mode_code = 'SHOW';
-        }
-        $structure = AfwStructureHelper::getStructureOf($this, $key);
-
-        if ($structure['MINIBOX']) {
-            $structure['SHOW'] = true;
-        }
-
-        global $display_in_edit_mode;
-        if ($display_in_edit_mode['*'] and $structure['SHOW']) {
-            if (
-                !$structure['EDIT'] and
-                $structure['CATEGORY'] != 'FORMULA' and
-                $structure['TYPE'] != 'PK'
-            ) {
-                $structure['EDIT'] = true;
-                $structure['READONLY'] = true;
-            }
-        }
-        $user_can_see_attribute =
-            ((!$structure["$mode-BFS"] or
-                $auser and
-                $auser->i_have_one_of_bfs($structure["$mode-BFS"])) and
-                (!$structure["$mode-ROLES"] or
-                    $auser and
-                    $auser->i_have_one_of_roles($structure["$mode-ROLES"])));
-
-        return ($user_can_see_attribute and
-            ($structure["$mode-BFS"] or
-                $structure["$mode_code-BFS"] or
-                $structure["$mode-ROLES"] or
-                $structure["$mode_code-ROLES"] or
-                $structure[$mode] or
-                $structure[$mode_code] or
-                ($structure["$mode_code-ADMIN"] and $auser and $auser->isAdmin()) or
-                ($this->arr_erros['all'][$key] and $structure["$mode_code-ERROR"])))
-            ? $structure
-            : false;
-    }
+    
 
     // هنا نتكلم  عن البيانات في العمود بحسب السجل
     final public function answerTableForAttributeIsPublic(
@@ -7294,39 +5361,7 @@ class AFWObject extends AFWRoot
         else return null;
     }
 
-    // هنا نتكلم  عن البيانات في العمود بحسب السجل
-    final public function dataAttributeCanBeDisplayedForUser(
-        $attribute,
-        $auser,
-        $mode = 'DISPLAY',
-        $structure
-    ) {
-        // until we develop an optimized use of $mode-UGROUPS 
-        // we will always authorize 
-        return $structure;
-
-        $mode = strtoupper($mode);
-
-        if (!$structure) {
-            $structure = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $structure = AfwStructureHelper::repareMyStructure($this, $structure, $attribute);
-        }
-
-        $ugroups = $structure["$mode-UGROUPS"];
-
-        if ($auser and $ugroups) {
-            $auser_belong_to_ugroups = $auser->i_belong_to_one_of_ugroups(
-                $ugroups,
-                $this
-            );
-        }
-
-        // if(($attribute=="idn") and ($auser->getId()==621)) die("this=$this, mode=$mode, auser=$auser, ugroups = ".var_export($ugroups,true)." -> auser_belong_to_ugroups=$auser_belong_to_ugroups");
-        ($canDisplay = !$ugroups) or $auser_belong_to_ugroups;
-
-        return $canDisplay ? $structure : false;
-    }
+    
 
     public function quickRetrieveMethod()
     {
@@ -7376,7 +5411,7 @@ class AFWObject extends AFWRoot
         if ($this->editByStep) {
             for ($istep = 1; $istep <= $this->editNbSteps; $istep++) {
                 // die("istep=$istep before getStepErrors ");
-                $err_arr = $this->getStepErrors(
+                $err_arr = AfwDataQualityHelper::getStepErrors($this, 
                     $istep,
                     $lang,
                     $show_val = true,
@@ -7394,41 +5429,11 @@ class AFWObject extends AFWRoot
         }
     }
 
-    public function getStepErrors(
-        $kstep,
-        $lang = 'ar',
-        $show_val = true,
-        $recheck = false,
-        $ignore_fields_arr = null,
-        $attribute = null
-    ) {
-        $return = $this->getDataErrors($lang, $show_val, $recheck, $kstep, $ignore_fields_arr, $attribute, false, );
-        // if($attribute=="passeport_num") die("dbg inside getStepErrors ".get_class($this)."->getDataErrors(lang=$lang, show_val=$show_val, recheck=$recheck, kstep=$kstep, ignore_fields_arr=$ignore_fields_arr, attribute=$attribute, false, ) => ".var_export($return,true));
-        return $return;
-    }
+    
 
-    public function getAttributeError($attribute)
-    {
-        global $lang;
-        $struct = AfwStructureHelper::getStructureOf($this, $attribute);
-        $step = $struct['STEP'];
-        if (!$step) {
-            $step = 1;
-        }
+    
 
-        $stepErrors_arr = $this->getStepErrors($step, $lang, true, false, [], $attribute);
-        // if($attribute=="passeport_num") die("dbg :: this->getStepErrors($step, $lang, true, false, [], $attribute) = ".var_export($stepErrors_arr,true));
-        return $stepErrors_arr[$attribute];
-    }
-
-    public function getNbErrors($step = 'all', $force = false, $ignore_fields_arr = null)
-    {
-        if (!isset($this->arr_erros) or $force) {
-            $this->getDataErrors('ar', true, $force, $step, $ignore_fields_arr);
-        }
-
-        return count($this->arr_erros[$step]);
-    }
+    
 
     public function getHLClass()
     {
@@ -7584,51 +5589,7 @@ class AFWObject extends AFWRoot
         $this->unOptimizeMyMemory();
     }
 
-    protected function simpleImportRecord(
-        $item_field,
-        $item_val,
-        $dataRecord,
-        $overwrite_data,
-        $options,
-        $check_data_ok,
-        $lang
-    ) {
-        $errors = [
-            'simpleImportRecord for this class is not already implemented',
-        ];
-
-        return [$this, $errors, [], []];
-    }
-
-    // the implementation of a new import process is just to override in the afw sub class
-    // these 3 methods
-    // 1. importRecord
-    // 2. namingImportRecord
-    // 3. getRelatedClassesForImport()
-    // and write the [sub_class_name]_import_config.php see example : employee_import_config.php
-
-    protected function importRecord(
-        $dataRecord,
-        $orgunit_id,
-        $overwrite_data,
-        $options,
-        $lang,
-        $dont_check_error
-    ) {
-        $errors = ['importRecord for this class is not already implemented'];
-
-        return [$this, $errors, [], []];
-    }
-
-    protected function namingImportRecord($dataRecord, $lang)
-    {
-        throw new AfwRuntimeException('not implemented namingImportRecord method');
-    }
-
-    protected function getRelatedClassesForImport($options = null)
-    {
-        throw new AfwRuntimeException('not implemented getRelatedClassesForImport method');
-    }
+    
 
     public function createCopy($lang = 'ar', $field_vals = [])
     {
@@ -7771,7 +5732,7 @@ class AFWObject extends AFWRoot
         $nextStep,
         $form_readonly = 'RO'
     ) {
-        return $this->getFinishButtonLabelDefault(
+        return AfwWizardHelper::getFinishButtonLabelDefault($this,
             $lang,
             $nextStep,
             $form_readonly
@@ -7788,53 +5749,21 @@ class AFWObject extends AFWRoot
     public function canFinishAsSaveAndRemainInCurrentStep()
     {
         $className = $this->getMyClass();
-        return self::classIsDisplayedInEditMode($className);
+        return AfwWizardHelper::classIsDisplayedInEditMode($className);
     }
 
-    public static function classIsDisplayedInEditMode($className)
-    {
-        global $display_in_edit_mode, $display_in_display_mode;
-        return $display_in_edit_mode[$className] or
-            $display_in_edit_mode['*'] and
-            !$display_in_display_mode[$className];
-    }
+    
 
     protected function getReadOnlyFormFinishButtonLabel()
     {
         return '';
     }
 
-    final public function getFinishButtonLabelDefault(
-        $lang,
-        $nextStep,
-        $form_readonly = 'RO'
-    ) {
-        $className = $this->getMyClass();
-        if (self::classIsDisplayedInEditMode($className) and (!$this->after_save_edit)) {
-            if ($form_readonly != 'RO') {
-                return $this->translate('SAVE', $lang, true);
-            } else {
-                $ret = $this->getReadOnlyFormFinishButtonLabel();
-                if ($ret) return $this->translate($ret, $lang, true);
-                return '';
-            }
-        }
-
-        if ($this->editByStep and $nextStep > 0 and $this->isDraft()) {
-            return $this->translate(
-                'COMPLETE_LATER' . $form_readonly,
-                $lang,
-                true
-            );
-        }
-        //$this->editNbSteps
-
-        return $this->translate('FINISH' . $form_readonly, $lang, true);
-    }
+    
 
     public function getNextStepAfterFinish($current_step)
     {
-        // shoulbe keep same current step if we have no display mode (only edit mode)
+        // should keep same current step if we have no display mode (only edit mode)
         return $current_step;
     }
 
@@ -7855,37 +5784,10 @@ class AFWObject extends AFWRoot
 
     public function getFieldGroupInfos($fgroup)
     {
-        return $this->getFieldGroupDefaultInfos($fgroup);
+        return AfwWizardHelper::getFieldGroupDefaultInfos($fgroup);
     }
 
-    final public function getFieldGroupDefaultInfos($fgroup)
-    {
-        $css_fg = 'none';
-        if (AfwStringHelper::stringStartsWith($fgroup, 'List')) {
-            $css_fg = 'pct_100';
-        }
-
-        if (
-            AfwStringHelper::stringStartsWith($fgroup, 'Group') or
-            AfwStringHelper::stringStartsWith($fgroup, 'Group50')
-        ) {
-            $css_fg = 'pct_50';
-        }
-
-        if (AfwStringHelper::stringStartsWith($fgroup, 'Group66')) {
-            $css_fg = 'pct_66';
-        }
-
-        if (AfwStringHelper::stringStartsWith($fgroup, 'Group33')) {
-            $css_fg = 'pct_33';
-        }
-
-        if (AfwStringHelper::stringStartsWith($fgroup, 'Group25')) {
-            $css_fg = 'pct_25';
-        }
-
-        return ['name' => $fgroup, 'css' => $css_fg];
-    }
+    
 
     public function getMyTheme()
     {
@@ -7969,63 +5871,11 @@ class AFWObject extends AFWRoot
         }
     }
 
-    public function isMultipleObjectsAttribute($attribute, $desc = '')
-    {
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-
-        $attr_sup_categ = $desc['SUPER_CATEGORY'];
-        $attr_categ = $desc['CATEGORY'];
-        $attr_scateg = $desc['SUB-CATEGORY'];
-
-        if ($attr_categ == 'ITEMS') {
-            return true;
-        }
-        if ($attr_scateg == 'ITEMS') {
-            return true;
-        }
-        if ($attr_sup_categ == 'ITEMS') {
-            return true;
-        }
-        if ($desc['TYPE'] == 'MFK') {
-            return true;
-        }
-
-        return false;
-    }
+    
 
     public function previewAttribute($attribute, $desc = '', $max_length = 56)
     {
-        global $lang;
-        if (!$desc) {
-            $desc = AfwStructureHelper::getStructureOf($this, $attribute);
-        } else {
-            $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
-        }
-        if (!$this->isMultipleObjectsAttribute($attribute, $desc)) {
-            $return = $this->showAttribute($attribute);
-        } else {
-            $objects = $this->get($attribute);
-            $array = [];
-            foreach ($objects as $object) {
-                $array[] = $object->getDisplay($lang);
-            }
-            $mfk_show_sep = $desc['LIST_SEPARATOR'];
-            if (!$mfk_show_sep) {
-                $mfk_show_sep = $desc['MFK-SHOW-SEPARATOR'];
-            }
-            if (!$mfk_show_sep) {
-                $mfk_show_sep = '، ';
-            }
-            $return = implode($mfk_show_sep, $array);
-            $etc = '.. (' . count($array) . ' item(s))';
-            $return = AfwStringHelper::truncateArabicJomla($return, $max_length, $etc);
-        }
-
-        return $return;
+        return AfwShowHelper::previewAttribute($this, $attribute, $desc, $max_length);
     }
 
     public function showAttributeAsLinkMode($attribute, $mode = 'EDIT', $icon = '')
@@ -8056,34 +5906,7 @@ class AFWObject extends AFWRoot
         return '';
     }
 
-    public function getAttributeTooltip($attribute, $lang = 'ar')
-    {
-        $col_tooltip = $attribute . '.tooltip';
-        $val_tooltip = $this->tm($col_tooltip, $lang);
-        if ($val_tooltip != $col_tooltip) {
-            return $val_tooltip;
-        } else {
-            $col_tooltip = $attribute . '_tooltip';
-            $val_tooltip = $this->tm($col_tooltip, $lang);
-            if ($val_tooltip != $col_tooltip) {
-                return $val_tooltip;
-            } else {
-                $col_tooltip = $attribute . '.tooltip';
-                $val_tooltip = $this->tf($col_tooltip, $lang);
-                if ($val_tooltip != $col_tooltip) {
-                    return $val_tooltip;
-                } else {
-                    $col_tooltip = $attribute . '_tooltip';
-                    $val_tooltip = $this->tf($col_tooltip, $lang);
-                    if ($val_tooltip != $col_tooltip) {
-                        return $val_tooltip;
-                    }
-                }
-            }
-        }
-
-        return '';
-    }
+    
 
     /**
      * This function should be overridden in sub classes if needed
@@ -8111,61 +5934,6 @@ class AFWObject extends AFWRoot
     public function forceMode()
     {
         $this->force_mode = true;
-    }
-
-    public function isImportantField($fieldname, $desc)
-    {
-        if (($desc['IMPORTANT'] == "HIGH") or ($desc['IMPORTANT'] == "NORMAL")) return true;
-        if ((!$desc['IMPORTANT']) or ($desc['IMPORTANT'] == "IN") or ($desc['IMPORTANT'] == "MEDIUM")) {
-            $uk_arr = $this->UNIQUE_KEY ? $this->UNIQUE_KEY : [];
-            return ($desc['TYPE'] == 'PK' or $desc['PILLAR'] or $desc['POLE'] or in_array($fieldname, $uk_arr));
-        }
-        return false;
-    }
-
-    public function importanceCss($fieldname, $desc)
-    {
-        $importance = strtolower($desc["IMPORTANT"]);
-        if (!$importance) $importance = "in";
-        $uk_arr = $this->UNIQUE_KEY ? $this->UNIQUE_KEY : [];
-        if (($importance == "in") and in_array($fieldname, $uk_arr)) $importance = "high";
-        elseif (($importance == "in") and ($desc['TYPE'] == 'PK' or $desc['PILLAR'] or $desc['POLE'])) $importance = "normal";
-        elseif ($importance == "in") $importance = "small";
-        if (($fieldname == "عرض") or ($fieldname == "view") or ($fieldname == "display")) $importance = "small";
-        if (($fieldname == "تعديل") or ($fieldname == "edit") or ($fieldname == "update")) $importance = "high";
-
-        return $importance;
-    }
-
-    public function getAfwImportantFields()
-    {
-        $this_db_structure = static::getDbStructure(
-            $return_type = 'structure',
-            $attribute = 'all'
-        );
-
-        $data = [];
-
-        foreach ($this_db_structure as $fieldname => $struct_item) {
-            if ($this->isImportantField($fieldname, $struct_item)) {
-                $data[] = $fieldname;
-            }
-        }
-
-        return $data;
-    }
-
-    // returns array key value containing list of important fields of
-    // this object
-    public function importants()
-    {
-        $ifields = $this->getAfwImportantFields();
-        $result = [];
-        foreach ($ifields as $ifield) {
-            $result[$ifield] = $this->getVal($ifield);
-        }
-
-        return $result;
     }
 
     public function getFloatVal($attribute)
@@ -8278,75 +6046,9 @@ class AFWObject extends AFWRoot
     /****************************************************************************/
 
 
-
-
     public function getCategorizedAttribute($attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = "")
     {
-        /*
-        if(($attribute=="customer_id"))
-        {
-            die("rafik shoof getCategorizedAttribute has been called for $attribute");
-        }
-        
-        
-        if (!$structure['NO-CACHE'] and isset($this->gotItemCache[$attribute][$what])) {
-
-            $return = $this->gotItemCache[$attribute][$what];
-            $log_getter = 'return from gotItemCache = ' . var_export($return, true);
-            if ($attribute == 'requestList0000') {
-                die($log_getter);
-            } else $afw_getter_log[] = "$log_getter";
-        }*/
-        $return = null;
-        if (!$return) {
-            $this_TABLE = static::$TABLE;
-            $this_id = $this->getId();
-
-            /* obsolete in v3.0
-            if($not_ allowed_get[$this_TABLE][$attribute])
-            {
-                    throw new AfwRuntimeException("FOR TABLE $this_TABLE (record id = $this_id) ->get($attribute,$what) is not allowed here");
-            }
-            */
-
-
-            $b_abstract = false;
-            //if($this->MY_DEBUG) AFWDebugg::log("category of $attribute = ".$structure["CATEGORY"]);
-
-            switch ($attribute_category) {
-                case 'ITEMS':
-                    $return = AfwFormatHelper::formatITEMS($this, $attribute, $structure, static::$TABLE, $call_method, $max_items);
-                    break;
-
-                case 'FORMULA':
-                    global $lang;
-                    if (!$lang) $lang = 'ar';
-                    $return = AfwFormulaHelper::executeFormulaAttribute($this, $attribute, NULL, $lang, $what);
-                    $return_isset = isset($return);
-                    $this_debugg = "AfwFormulaHelper::executeFormulaAttribute(this, $attribute, NULL, $lang, $what) = [return=$return/isset=$return_isset]";
-                    $attribute_value = $return;
-
-                    break;
-                case 'VIRTUAL':
-                    $b_abstract = true;
-                    if (AfwLoadHelper::cacheManagement($this)) {
-                        $this->OBJECTS_CACHE[$attribute] = $this->getVirtual($attribute, $what, $format);
-                    }
-
-                    break;
-                case 'SHORTCUT':
-                    $return = AfwFormatHelper::formatSHORTCUT($this, $attribute, $what, $format, static::$TABLE, $integrity, $structure, $call_method);
-                    break;
-            }
-            if ((!$structure['NO-CACHE']) and $return) {
-                // $this->gotItemCache[$attribute][$what] = $return;
-                // die("attribute=$attribute, attribute_category=$attribute_category set in gotItemCache = " . var_export($this->gotItemCache,true));
-            }
-        }
-
-        $return = AfwFormatHelper::formatReturnedValue($this, $attribute, $lang, $structure, $return, $what, $format, $attribute_type, $integrity, $this_debugg);
-
-        return $return;
+        return AfwFormatHelper::getCategorizedAttribute($this, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method);
     }
 
     public function getNonExistingAttribute($attribute, $what)
@@ -8405,38 +6107,4 @@ class AFWObject extends AFWRoot
 
     /*********************************XXXXXXXXXXXXXXXXXXXXXXXX**************************** */
 
-
-    
-
-
-
-
-
-    /*
-    private function getTheResultRowId($result_row=null)
-    {
-    }
-
-    private function getTheResultRowIndex($result_row=null)
-    {
-        $loadByIndex = null; 
-        if (is_array($this->UNIQUE_KEY) and count($this->UNIQUE_KEY) > 0) {
-            $uk_val_arr = [];
-            $isLoadByIndex = true;
-            foreach ($this->UNIQUE_KEY as $key_item) {
-                if (!isset($result_row[$key_item])) {
-                    $isLoadByIndex = false;
-                } else {
-                    $uk_val_arr[] = $result_row[$key_item];
-                }
-            }
-
-            if ($isLoadByIndex) {
-                $loadByIndex = implode('-/-', $uk_val_arr);
-            }
-            // if(($className=="TravelHotel") and (!$value)) throw new AfwRuntimeException("loadByIndex=$loadByIndex this->SEARCH_TAB = ".var_export($this->SEARCH_TAB,true));
-        }
-
-        return $loadByIndex;
-    }*/
 }

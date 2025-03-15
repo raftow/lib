@@ -704,7 +704,7 @@ class AfwSqlHelper extends AFWRoot
         $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
 
         // add left joins for all retrieved fields with type = FK and category empty (real fields)
-        $colsRet = $object->getRetrieveCols(
+        $colsRet = AfwPrevilegeHelper::getRetrieveCols($object,
             $mode = 'display',
             $lang,
             $all = false,
@@ -1179,10 +1179,10 @@ class AfwSqlHelper extends AFWRoot
 
             if ($can_update) {
                 if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
-                    //die("call to $object ->audit_before_update(..) : ".var_export($object-> FIELDS_UPDATED,true));
-                    $object->audit_before_update($object->fieldsHasChanged());
+                    //die("call to AfwAuditHelper::audit_before_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                    AfwAuditHelper::audit_before_update($object, $object->fieldsHasChanged());
                 } else {
-                    // if(....) die("no call to $object ->audit_before_update(..) : ".var_export($object-> FIELDS_UPDATED,true));
+                    // if(....) die("no call to AfwAuditHelper::audit_before_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
                 }
 
                 //if((!$arr_tables_without_technical_fields) or (array_search(static::$TABLE, $arr_tables_without_technical_fields) === false)) {
@@ -1315,7 +1315,7 @@ class AfwSqlHelper extends AFWRoot
             );
         } else {
             if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
-                $object->audit_before_update([$object->fld_ACTIVE() => 'N']);
+                AfwAuditHelper::audit_before_update($object, [$object->fld_ACTIVE() => 'N']);
             }
 
             $user_id = $me;
@@ -1360,6 +1360,66 @@ class AfwSqlHelper extends AFWRoot
         }
     }
 
+
+    public static function deleteOneByOneWhere($object, $where, $simul = false)
+    {
+        global $lang;
+
+        $object->where($where);
+
+        $ObjectsToDeleteList = $object->loadMany();
+        $ObjectsToDeleteListCount = count($ObjectsToDeleteList);
+
+        $delete_blocked_reasons = [];
+
+        foreach ($ObjectsToDeleteList as $ObjectsToDeleteItem) {
+            list($can, $reason) = $ObjectsToDeleteItem->canBeDeleted();
+            if (!$can) {
+                $delete_blocked_reasons[] =
+                    $ObjectsToDeleteItem->getShortDisplay($lang) .
+                    ' : ' .
+                    $reason;
+            }
+        }
+
+        if (count($delete_blocked_reasons) > 0) {
+            return [
+                false,
+                $delete_blocked_reasons,
+                $ObjectsToDeleteListCount,
+                $ObjectsToDeleteList,
+            ];
+        }
+
+        if (!$simul) {
+            // بسم الله توكلت على الله
+            foreach ($ObjectsToDeleteList as $obj_id => $ObjectsToDeleteItem) {
+                $success = $ObjectsToDeleteItem->delete();
+                if (!$success) {
+                    $delete_blocked_reasons[] =
+                        $ObjectsToDeleteItem->getShortDisplay($lang) .
+                        ' : فشلت عملية المسح';
+                    return [
+                        false,
+                        $delete_blocked_reasons,
+                        $ObjectsToDeleteListCount,
+                        $ObjectsToDeleteList,
+                    ];
+                }
+
+                unset($ObjectsToDeleteList[$obj_id]);
+            }
+        }
+        // $ObjectsToDeleteList below should be empty but I put it in case of ....
+        // لن يحصل هذا إلا أن يشاء الله
+        // إلا في حالة المحادات simul=true
+        return [
+            true,
+            $delete_blocked_reasons,
+            $ObjectsToDeleteListCount,
+            $ObjectsToDeleteList,
+        ];
+    }
 
     public static function force_update_date($object, $update_datetime_greg)
     {
@@ -1562,6 +1622,152 @@ class AfwSqlHelper extends AFWRoot
         return "concat(".implode(",'$sep',",$ifnull_df_arr).")";
     }
 
-    
+
+    /* obso
+
+    public function getLink($index)
+    {
+        if ($index) {
+            if (
+                is_array($object->DB_LINK[$index]) &&
+                $object->DB_LINK[$index]['TARGET_TABLE'] &&
+                $object->DB_LINK[$index]['LINK_TABLE'] &&
+                $object->DB_LINK[$index]['MY_KEY'] &&
+                $object->DB_LINK[$index]['HIS_KEY']
+            ) {
+                if ($object->getId()) {
+                    $module_server = $object->getModuleServer();
+                    $result_rows = AfwDatabase::db_recup_rows(
+                        'select ' .
+                            $object->DB_LINK[$index]['HIS_KEY'] .
+                            ' as PK from ' .
+                            $object->DB_LINK[$index]['LINK_TABLE'] .
+                            ' where ' .
+                            $object->DB_LINK[$index]['MY_KEY'] .
+                            ' = ' .
+                            $object->getId(),
+                        true,
+                        true,
+                        $module_server
+                    );
+                    if (count($result_rows) > 0) {
+                        $array = [];
+                        $className = AfwStringHelper::tableToClass(
+                            $object->DB_LINK[$index]['TARGET_TABLE']
+                        );
+                        $fileName = AfwStringHelper::tableToFile(
+                            $object->DB_LINK[$index]['TARGET_TABLE']
+                        );
+                        if ($object->MY_DEBUG and false) {
+                            AFWDebugg::log("require_once $fileName");
+                        }
+                        require_once $fileName;
+                        foreach ($result_rows as $result_row) {
+                            $object = new $className();
+                            // $object->setMyDebugg($object->MY_DEBUG);
+                            $object->load($result_row['PK']);
+                            $array[$result_row['PK']] = $object;
+                        }
+                        return $array;
+                    } else {
+                        return [];
+                    }
+                } else {
+                    throw new AfwRuntimeException(
+                        "L'id of current object est vide dans the method getLink()."
+                    );
+                }
+            } else {
+                if (AfwSession::config('LOG_SQL', true)) {
+                    AFWDebugg::log($object->DB_LINK, true);
+                }
+                throw new AfwRuntimeException(
+                    "attribute DB_LINK not defined pour la clé " .
+                        $index .
+                        ' dans the method getLink().'
+                );
+            }
+        } else {
+            throw new AfwRuntimeException(
+                'the method getLink() nécessite le paramètre $index qui semble vide.'
+            );
+        }
+    }
+
+    public function setLink($index, $id)
+    {
+        if ($index && $id) {
+            if (
+                is_array($object->DB_LINK[$index]) &&
+                $object->DB_LINK[$index]['LINK_TABLE'] &&
+                $object->DB_LINK[$index]['MY_KEY'] &&
+                $object->DB_LINK[$index]['HIS_KEY']
+            ) {
+                if ($object->getId()) {
+                    $query =
+                        'insert into ' .
+                        $object->DB_LINK[$index]['LINK_TABLE'] .
+                        ' set ' .
+                        $object->DB_LINK[$index]['MY_KEY'] .
+                        " = '" .
+                        $object->getId() .
+                        "', " .
+                        $object->DB_LINK[$index]['HIS_KEY'] .
+                        " = '" .
+                        $id .
+                        "'";
+                    return $object->execQuery($query);
+                } else {
+                    throw new AfwRuntimeException(
+                        "L'id of current object est vide dans the method setLink()."
+                    );
+                }
+            } else {
+                if (AfwSession::config('LOG_SQL', true)) {
+                    AFWDebugg::log($object->DB_LINK, true);
+                }
+                throw new AfwRuntimeException(
+                    "attribute DB_LINK not defined pour la clé " .
+                        $index .
+                        ' dans the method setLink().'
+                );
+            }
+        } else {
+            throw new AfwRuntimeException(
+                'the method getLink() nécessite les deux paramètres $index ' .
+                    $index .
+                    ' et $id ' .
+                    $id .
+                    'qui semblent vides.'
+            );
+        }
+    }
+
+    private function getTheResultRowId($result_row=null)
+    {
+    }
+
+    private function getTheResultRowIndex($result_row=null)
+    {
+        $loadByIndex = null; 
+        if (is_array($this->UNIQUE_KEY) and count($this->UNIQUE_KEY) > 0) {
+            $uk_val_arr = [];
+            $isLoadByIndex = true;
+            foreach ($this->UNIQUE_KEY as $key_item) {
+                if (!isset($result_row[$key_item])) {
+                    $isLoadByIndex = false;
+                } else {
+                    $uk_val_arr[] = $result_row[$key_item];
+                }
+            }
+
+            if ($isLoadByIndex) {
+                $loadByIndex = implode('-/-', $uk_val_arr);
+            }
+            // if(($className=="TravelHotel") and (!$value)) throw new AfwRuntimeException("loadByIndex=$loadByIndex this->SEARCH_TAB = ".var_export($this->SEARCH_TAB,true));
+        }
+
+        return $loadByIndex;
+    }*/
 
 }

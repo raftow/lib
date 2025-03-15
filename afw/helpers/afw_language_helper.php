@@ -311,4 +311,91 @@ class AfwLanguageHelper
 
         return $attribute_property_trans;
     }
+
+    public static function translateCompanyMessage($message, $module, $lang = 'ar', $company = "")
+    {
+        if (!$module) throw new AfwRuntimeException("\$module param should be defined for translateCompanyMessage method");
+        $return = $message;
+        $file_dir_name = dirname(__FILE__)."/..";
+
+        include "$file_dir_name/../../$module/messages_$lang.php";
+        if ($company) {
+            include "$file_dir_name/../../client-$company/translate/$module/messages_$company" . "_$lang.php";
+        }
+
+        if ($messages[$message]) {
+            $return = $messages[$message];
+        } else {
+            include "$file_dir_name/../../lib/messages_$lang.php";
+
+            if ($messages[$message]) {
+                $return = $messages[$message];
+            }
+        }
+
+        $return = AfwReplacement::trans_replace($return, $module, $langue);
+
+        return $return;
+    }
+
+
+    public static function translateCols($object, $cols, $lang = 'ar', $short = false)
+    {
+        $tableau = [];
+
+        foreach ($cols as $attribute) {
+            if ($short) {
+                $tableau[$attribute] = $object->translate(
+                    $attribute . '.short',
+                    $lang
+                );
+            }
+
+            if (
+                !$tableau[$attribute] or
+                $tableau[$attribute] == $attribute . '.short'
+            ) {
+                $tableau[$attribute] = $object->translate($attribute, $lang);
+            }
+        }
+        return $tableau;
+    }
+
+    public function getTransDisplayField($object, $lang = 'ar')
+    {
+        if ($lang == 'fr') {
+            $lang = 'en';
+        }
+
+        if (!$this->DISPLAY_FIELD) {
+            $all_real_fields = AfwStructureHelper::getAllRealFields($this);
+            $this->DISPLAY_FIELD = $all_real_fields[1];
+        }
+
+        if (!$this->DISPLAY_FIELD) {
+            $this->DISPLAY_FIELD = $this->getPKField();
+        }
+
+        if (
+            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_ar') or
+            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_fr') or
+            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_en')
+        ) {
+            $disp_fld_std = substr(
+                $this->DISPLAY_FIELD,
+                0,
+                strlen($this->DISPLAY_FIELD) - 3
+            );
+        } else {
+            $disp_fld_std = $this->DISPLAY_FIELD;
+        }
+
+        $display_field_trad = $disp_fld_std . '_' . $lang;
+
+        if (AfwStructureHelper::fieldExists($this, $display_field_trad)) {
+            return $display_field_trad;
+        }
+
+        return $this->DISPLAY_FIELD;
+    }
 }

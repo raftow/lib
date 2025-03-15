@@ -840,7 +840,7 @@ class AfwUmsPagHelper extends AFWRoot
         ) {
             if (!$object->isOk()) {
                 $viewIcon = 'view_err';
-                $arr_dataErrors = $object->getDataErrors($lang);
+                $arr_dataErrors = AfwDataQualityHelper::getDataErrors($object, $lang);
                 $data_errors = implode(' / ', $arr_dataErrors);
                 if (strlen($data_errors) > 596 or count($arr_dataErrors) > 18) {
                     $data_errors = 'أخطاء كثيرة';
@@ -906,7 +906,7 @@ class AfwUmsPagHelper extends AFWRoot
         ) {
             if (!$object->isOk()) {
                 $viewIcon = 'view_err';
-                $arr_dataErrors = $object->getDataErrors($lang);
+                $arr_dataErrors = AfwDataQualityHelper::getDataErrors($object, $lang);
                 $data_errors = implode(' / ', $arr_dataErrors);
                 if (strlen($data_errors) > 596 or count($arr_dataErrors) > 18) {
                     $data_errors = 'أخطاء كثيرة';
@@ -977,7 +977,7 @@ class AfwUmsPagHelper extends AFWRoot
         $lang = 'ar',
         $all = false
     ) {
-        $cols = $object->getRetrieveCols($mode, $lang, $all);
+        $cols = AfwPrevilegeHelper::getRetrieveCols($object, $mode, $lang, $all);
 
         $cols_retrieve = [];
 
@@ -998,7 +998,7 @@ class AfwUmsPagHelper extends AFWRoot
         foreach ($all_nom_cols as $nom_col) {
             $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
 
-            if ($object->keyIsToDisplayForUser($nom_col, $objme)) {
+            if (AfwPrevilegeHelper::keyIsToDisplayForUser($object, $nom_col, $objme)) {
                 if (
                     $desc['TYPE'] == 'PK' and
                     (!isset($desc['EXCEL']) or $desc['EXCEL'])

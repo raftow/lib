@@ -422,6 +422,66 @@ class AfwWizardHelper extends AFWRoot
         return $otherLinksArray;
     }
 
+    public final static function getFieldGroupDefaultInfos($fgroup)
+    {
+        $css_fg = 'none';
+        if (AfwStringHelper::stringEndsWith($fgroup, 'List')) {
+            $css_fg = 'pct_100';
+        }
+        /* bizarre below
+        if (
+            AfwStringHelper::stringStartsWith($fgroup, 'Group') or
+            AfwStringHelper::stringStartsWith($fgroup, 'Group50')
+        ) {
+            $css_fg = 'pct_50';
+        }
+
+        if (AfwStringHelper::stringStartsWith($fgroup, 'Group66')) {
+            $css_fg = 'pct_66';
+        }
+
+        if (AfwStringHelper::stringStartsWith($fgroup, 'Group33')) {
+            $css_fg = 'pct_33';
+        }
+
+        if (AfwStringHelper::stringStartsWith($fgroup, 'Group25')) {
+            $css_fg = 'pct_25';
+        }*/
+
+        return ['name' => $fgroup, 'css' => $css_fg];
+    }
+
+    public static function classIsDisplayedInEditMode($className)
+    {
+        global $display_in_edit_mode, $display_in_display_mode;
+        return $display_in_edit_mode[$className] or
+            $display_in_edit_mode['*'] and
+            !$display_in_display_mode[$className];
+    }
+
+    public final static function getFinishButtonLabelDefault($object,
+        $lang,
+        $nextStep,
+        $form_readonly = 'RO'
+    ) {
+        $className = $object->getMyClass();
+        if (self::classIsDisplayedInEditMode($className) and (!$object->after_save_edit)) {
+            if ($form_readonly != 'RO') {
+                return $object->translate('SAVE', $lang, true);
+            } else {
+                $ret = $object->getReadOnlyFormFinishButtonLabel();
+                if ($ret) return $object->translate($ret, $lang, true);
+                return '';
+            }
+        }
+
+        if ($object->editByStep and $nextStep > 0 and $object->isDraft()) {
+            return $object->translate('COMPLETE_LATER' . $form_readonly,$lang,true);
+        }
+        //$this->editNbSteps
+
+        return $object->translate('FINISH' . $form_readonly, $lang, true);
+    }
 
 
 }

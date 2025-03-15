@@ -36,7 +36,7 @@ if($cl and $id and $k)
         }
         
         if($k=="all")
-             $attribute_arr = $myObj->getAuditableCols(); 
+             $attribute_arr = AfwAuditHelper::getAuditableCols($myObj); 
         else
              $attribute_arr = explode(",",$k);
         
@@ -95,9 +95,9 @@ foreach($attribute_arr as $attribute)
         
         $audit_data1[$attribute][$pk_audit_obj][$attribute] = $myObj->getVal($attribute);
         
-        $requete = "select $id10000+version as pk, version, val as $attribute, update_date, update_auser_id, update_context from ${table_name_with_prefix}_${attribute}_haudit where id = '$id' order by version desc, update_date desc";
+        $requete = "select $id10000+version as pk, version, val as $attribute, update_date, update_auser_id, update_context from ".$table_name_with_prefix."_".$attribute."_haudit where id = '$id' order by version desc, update_date desc";
         
-        $audit_data2[$attribute] = get_tableau_byid(recup_data($requete),"pk");
+        $audit_data2[$attribute] = AfwDatabase::data_by_id(AfwDatabase::db_recup_rows($requete),"pk");
         
         // echo "before merge : audit_data=".var_export($audit_data,true)." audit_data2=".var_export($audit_data2,true);
         

@@ -30,7 +30,7 @@ if($obj->general_check_errors) $check_error_activated = "general_check_errors";
 elseif(AfwSession::hasOption("CHECK_ERRORS")) $check_error_activated = "has option CHECK_ERRORS";
 elseif(AfwSession::hasOption("GENERAL_CHECK_ERRORS")) $check_error_activated = "has option GENERAL_CHECK_ERRORS";
 
-if($check_error_activated) $obj_errors = $obj->getDataErrors($lang);
+if($check_error_activated) $obj_errors = AfwDataQualityHelper::getDataErrors($obj, $lang);
 
 $col_count = 1;
 
@@ -148,7 +148,7 @@ if(!$obj->qedit_minibox)
           } 
           
           $desc = $class_db_structure[$col];
-          $importance = $obj->importanceCss($col, $desc);
+          $importance = AfwHtmlHelper::importanceCss($obj, $col, $desc);
           
           if($class_xqe_col) {
             $class_xqe = "xqe_hf_${class_xqe_col}";

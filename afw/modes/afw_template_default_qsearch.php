@@ -44,7 +44,7 @@ if(!$max_total_qsize) $max_total_qsize = 10;
 
 foreach($class_db_structure as $nom_col => $desc)
 {
-        if($obj->isQSearchCol($nom_col, $desc))
+        if(AfwPrevilegeHelper::isQSearchCol($obj, $nom_col, $desc))
         {
 		if($total_qsize<$max_total_qsize)
                 {
@@ -102,8 +102,8 @@ foreach($class_db_structure as $nom_col => $desc)
                  
                 $trad_qsearch_by_text = $obj->translate("qsearch_by_text",$lang);
                 $trad_qsearch_by_help = $obj->translate("qsearch_by_help",$lang);
-                $qsearch_by_text_cols = $obj->getAllTextSearchableCols();
-                $translated_text_searchable_cols_arr = $obj->translateCols($qsearch_by_text_cols,$lang, true); 
+                $qsearch_by_text_cols = AfwPrevilegeHelper::getAllTextSearchableCols($obj);
+                $translated_text_searchable_cols_arr = AfwLanguageHelper::translateCols($obj, $qsearch_by_text_cols,$lang, true); 
                 
                 $translated_text_searchable_cols_txt = $trad_qsearch_by_help." : ".implode("، ", $translated_text_searchable_cols_arr);
         }

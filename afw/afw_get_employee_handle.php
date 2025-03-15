@@ -32,11 +32,11 @@ if($employee_info)
     $employee_info_cols = ["mobile","idn","username","email","emp_num"];
     foreach($employee_info_cols as $nom_col)
     {
-            if($obj->isInternalSearchableCol($nom_col))
+            if(AfwPrevilegeHelper::isInternalSearchableCol($obj, $nom_col))
             {
                     $internal_where_arr = array();
                     $objTempForInternalSearch = AfwStructureHelper::getEmptyObject($obj, $nom_col);
-                    $internal_employee_info_cols = $objTempForInternalSearch->getAllTextSearchableCols();
+                    $internal_employee_info_cols = AfwPrevilegeHelper::getAllTextSearchableCols($objTempForInternalSearch);
                     foreach($internal_employee_info_cols as $nom_col_internal)
                     {
                             list($internal_where_col,$internal_fixm_col,$internal_cond_phrase) = AfwSqlHelper::getClauseWhere($objTempForInternalSearch,$nom_col_internal, $my_oper,  $employee_info, "", $lang);
@@ -220,7 +220,7 @@ else
         }
 
 
-        $search_result_html = $obj->showMinibox($structure="",$lang);
+        $search_result_html = AfwShowHelper::showMinibox($obj, $structure="",$lang);
 
         $search_result_html .= "<div dir=\"rtl\" class=\"table_rtv mb_employee mb_methods\">$methods_html</div>";
     }

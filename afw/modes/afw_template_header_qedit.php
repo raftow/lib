@@ -259,7 +259,7 @@ else
                    else $class_xqe_col = "x";
              } 
              $desc = $class_db_structure[$col];
-             $importance = $obj->importanceCss($col, $desc);
+             $importance = AfwHtmlHelper::importanceCss($obj, $col, $desc);
              
              if($class_xqe_col) {
                $class_xqe = "xqe_hf_${class_xqe_col}";

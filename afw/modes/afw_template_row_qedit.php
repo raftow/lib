@@ -311,7 +311,7 @@ if(!$obj->HIDE_DISPLAY_MODE)
                 { 
                         if(!$obj->isOk(true))
                         {
-                                $data_errors_arr = $obj->getDataErrors($lang);
+                                $data_errors_arr = AfwDataQualityHelper::getDataErrors($obj, $lang);
                                 $viewIcon = "view_error";
                                 $data_errors = implode(' / ', $data_errors_arr);
                                 if((strlen($data_errors)>596) or (count($data_errors_arr)>18)) 
@@ -398,7 +398,7 @@ if(!$obj->qedit_minibox)
                                                 $total_sahm += $input_html_row["cols"];
                                                 $desc = $class_db_structure[$orig_nom_col];
                                                 $qe_css = $desc['QEDIT-CSS'];
-                                                $importance = $obj->importanceCss($orig_nom_col, $desc);                                        
+                                                $importance = AfwHtmlHelper::importanceCss($obj, $orig_nom_col, $desc);                                        
                                                 $class_xqe_prop = "class='col-importance-$importance $qe_css col-qe-$qerow_num col-qe header-qe-$orig_nom_col'";
                                                 $col_translated = $qedit_trad_arr[$orig_nom_col];
                                                 if(false)
@@ -467,7 +467,7 @@ if(!$obj->qedit_minibox)
              if($obj->showQeditErrors)
              {
                    $myCategory = $obj->myCategory();
-                   //if($obj->getId()==106897) die("obj->getDataErrors() = ".var_export($obj->getDataErrors(),true));
+                   //if($obj->getId()==106897) die("obj :: getDataErrors() = ".var_export(AfwDataQualityHelper::getDataErrors($obj, ),true));
                    
                    if(!$obj->isActive())
                    {
@@ -506,7 +506,7 @@ if(!$obj->qedit_minibox)
                 die("desc of $orig_nom_col = ".var_export($desc,true));
              }*/
              $qe_css = $desc['QEDIT-CSS'];
-             $importance = $obj->importanceCss($orig_nom_col, $desc);
+             $importance = AfwHtmlHelper::importanceCss($obj, $orig_nom_col, $desc);
              
              if($class_xqe_col) {
                $class_xqe = "xqe_${odd_even}_${class_xqe_col}";               

@@ -216,7 +216,7 @@ class AfwImportHelper extends AFWRoot
                         $importOk = false;
                         $error_record = implode(
                             ' / ',
-                            $importedObj->getDataErrors($lang)
+                            AfwDataQualityHelper::getDataErrors($importedObj, $lang)
                         );
                         $importedObject_desc = $importedObj->getDisplay($lang);
                         $my_errors_arr[] = "$importedObject_desc : $error_record";
@@ -395,7 +395,7 @@ class AfwImportHelper extends AFWRoot
                         }
                         $error_record = implode(
                             ' / ',
-                            $importedObj->getDataErrors($lang)
+                            AfwDataQualityHelper::getDataErrors($importedObj, $lang)
                         );
                         $importedObject_desc = $importedObj->getDisplay($lang);
                         $my_errors_arr[] = "$importedObject_desc : $error_record";

@@ -41,18 +41,18 @@ else
 
 if(!$obj->editByStep)
 {
-    if(AfwSession::hasOption("CHECK_ERRORS")) $obj_errors = $obj->getDataErrors($lang);
+    if(AfwSession::hasOption("CHECK_ERRORS")) $obj_errors = AfwDataQualityHelper::getDataErrors($obj, $lang);
 }
 else
 {
-    if(AfwSession::hasOption("CHECK_ERRORS")) $obj_errors = $obj->getStepErrors($obj->currentStep, $lang);
+    if(AfwSession::hasOption("CHECK_ERRORS")) $obj_errors = AfwDataQualityHelper::getStepErrors($obj, $obj->currentStep, $lang);
 }    
 
 $class_db_structure = $obj->getMyDbStructure();
 
 foreach($class_db_structure as $key => $structure)
 {	
-        $mode_display = $obj->keyIsToDisplayForUser($key, $objme);
+        $mode_display = AfwPrevilegeHelper::keyIsToDisplayForUser($obj, $key, $objme);
         $key_is_applicable = $obj->attributeIsApplicable($key);
         if($obj->editByStep)
         {

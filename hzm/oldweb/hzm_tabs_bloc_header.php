@@ -54,7 +54,7 @@ else
              {
                   if(($obj->general_check_errors or AfwSession::hasOption("GENERAL_CHECK_ERRORS"))  and ((!$obj->isDraft()) or ($kstep < $obj->currentStep) or $obj->show_draft_errors))
                   {
-                          $stepErrorsList = $obj->getStepErrors($kstep);
+                          $stepErrorsList = AfwDataQualityHelper::getStepErrors($obj, $kstep);
                           $step_errors_list = implode("\n",$stepErrorsList);
                           $step_show_error = (count($stepErrorsList)>0);
                   
@@ -128,7 +128,7 @@ else
                 {
                       if(AfwFrameworkHelper::stepIsApplicable($obj, $kstep))
                       {
-                          $arrStepErrors = $obj->getStepErrors($kstep);
+                          $arrStepErrors = AfwDataQualityHelper::getStepErrors($obj, $kstep);
                           /*
                           if($kstep==3)
                           {

@@ -53,6 +53,102 @@ class AfwStructureHelper extends AFWRoot
         return $struct;
     }
 
+
+    public static function getDbStructure(
+        $module_code,
+        $class_name,
+        $table_name,
+        $return_type = 'structure',
+        $attribute = 'all',
+        $step = 'all',
+        $start_step = null,
+        $end_step = null
+    ) {
+        if ($return_type == 'shortnames') {
+            $attribute = 'all';
+            $this_short_names = [];
+        }
+
+        if ($return_type == 'shortcuts') {
+            $attribute = 'all';
+            $this_shortcuts = [];
+        }
+
+        if ($return_type == 'formulas') {
+            $attribute = 'all';
+            $this_formulas = [];
+        }
+
+        
+
+        $got_first_time = false;
+        
+        if (!$module_code) {
+            $module_code = AfwUrlManager::currentURIModule();
+        }
+        
+
+        $debugg_db_structure = AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute, $step, $start_step, $end_step);
+        //if(($table_name=="invester") and ($attribute=="city_id")) die($table_name." AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute) returned debugg_db_structure = ".var_export($debugg_db_structure,true));
+        if (isset($debugg_db_structure)) {
+            foreach ($debugg_db_structure as $key => $value) {
+                if ($value['ANSWER'] and $value['TYPE'] != 'ANSWER') {
+                    if (!$value['ANSMODULE']) {
+                        $debugg_db_structure[$key]['ANSMODULE'] = $value['ANSMODULE'] = $module_code;
+                    }
+                }
+                if ($value['SHORTCUT'] and $return_type == 'shortcuts') {
+                    $this_shortcuts[$key] = true;
+                }
+
+                if (($value['CATEGORY']=="FORMULA") and $return_type == 'formulas') {
+                    if($key!="tech_notes") $this_formulas[$key] = true;
+                }
+
+                
+
+                if ($value['SHORTNAME'] and $return_type == 'shortnames') {
+                    // first be sure the this short name is not already used as attribute
+                    if ($debugg_db_structure[$value['SHORTNAME']]) {
+                        throw new AfwRuntimeException("the short name '" .$value['SHORTNAME'] ."' for attribute $key already used in the same class as attribute name.");
+                    }
+                    $this_short_names[$value['SHORTNAME']] = $key;
+                }
+            }
+        } else {
+            throw new AfwRuntimeException("Check if DB_STRUCTURE is defined for $attribute attribute(s) for class " .$table_name );
+        }
+        // if(($table_name=="invester") and ($attribute=="city_id")) die($table_name." AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute) returned debugg_db_structure = ".var_export($debugg_db_structure,true));
+        if ($return_type == 'structure') {
+            if ($attribute != 'all') {
+                $struct = $debugg_db_structure[$attribute];
+                // if(($table_name=="school") and ($attribute=="roomList")) die($table_name.", struct of $attribute (before repare) = ".var_export($struct,true)." debugg_db_structure = ".var_export($debugg_db_structure, true));
+                if ($struct) {
+                    $struct = AfwStructureHelper::repareStructure($struct);
+                }
+                // if(($table_name=="school") and ($attribute=="roomList")) die($table_name.", struct of $attribute (after repare) = ".var_export($struct,true)." debugg_db_structure = ".var_export($debugg_db_structure, true));
+                return $struct;
+            } else {
+                foreach ($debugg_db_structure as $key => $struct) {
+                    if ($key != 'all') {
+                        $debugg_db_structure[$key] = AfwStructureHelper::repareStructure($struct);
+                    }
+                }
+
+                return $debugg_db_structure;
+            }
+        } elseif ($return_type == 'shortnames') {
+            return $this_short_names;
+        } elseif ($return_type == 'shortcuts') {
+            return $this_shortcuts;
+        } elseif ($return_type == 'formulas') {
+            return $this_formulas;
+        }
+        
+
+        return ["momken" => "unknown-requested-return_type $return_type"];
+    }
+
     public static final function attributeBelongToStep($attribute, $desc, $step)
     {
         if (
@@ -1242,6 +1338,34 @@ class AfwStructureHelper extends AFWRoot
         } else {
             return AfwStructureHelper::isListObjectEasyAttributeNotOptim($object, $attribute);
         }
+    }
+
+    public static function isMultipleObjectsAttribute($object, $attribute, $desc = '')
+    {
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+
+        $attr_sup_categ = $desc['SUPER_CATEGORY'];
+        $attr_categ = $desc['CATEGORY'];
+        $attr_scateg = $desc['SUB-CATEGORY'];
+
+        if ($attr_categ == 'ITEMS') {
+            return true;
+        }
+        if ($attr_scateg == 'ITEMS') {
+            return true;
+        }
+        if ($attr_sup_categ == 'ITEMS') {
+            return true;
+        }
+        if ($desc['TYPE'] == 'MFK') {
+            return true;
+        }
+
+        return false;
     }
 
 

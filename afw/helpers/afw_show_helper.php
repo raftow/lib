@@ -81,7 +81,7 @@ class AfwShowHelper
         }
 
         if (!$arr_col) {
-            $arr_col = $obj->getMiniBoxCols();
+            $arr_col = AfwPrevilegeHelper::getMiniBoxCols($obj, );
             $mode_force_cols = false;
         } else {
             $mode_force_cols = true;
@@ -105,7 +105,7 @@ class AfwShowHelper
             if ($public_show) {
                 $desc = AfwStructureHelper::getStructureOf($obj, $nom_col);
             } else {
-                $desc = $obj->keyIsToDisplayForUser($nom_col, $objme);
+                $desc = AfwPrevilegeHelper::keyIsToDisplayForUser($obj, $nom_col, $objme);
             }
             if ($desc) {
                 if ($nom_col != $obj->getPKField() or $obj->showId) {
@@ -659,7 +659,7 @@ class AfwShowHelper
         }
 
         if (!$arr_col) {
-            $arr_col = $obj->getRetrieveCols(
+            $arr_col = AfwPrevilegeHelper::getRetrieveCols($obj,
                 $mode,
                 $lang,
                 $all = false,
@@ -696,7 +696,7 @@ class AfwShowHelper
         }
 
         foreach ($arr_col as $cc => $nom_col) {
-            $desc = $obj->keyIsToDisplayForUser($nom_col, $objme);
+            $desc = AfwPrevilegeHelper::keyIsToDisplayForUser($obj, $nom_col, $objme);
             if ($desc) {
                 if (
                     $nom_col != $obj->getPKField() or
@@ -836,7 +836,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                     "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='" .
                                     htmlentities($textReason) .
                                     "'  width='$wd' heigth='$hg'>";
-                            } elseif ($val->dataAttributeCanBeDisplayedForUser($col, $objme, 'DISPLAY', $desc)) {
+                            } elseif (AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($val, $col, $objme, 'DISPLAY', $desc)) {
                                 if ($desc == 'AAA') {
                                     $tuple['description'] = $val->__toString();
                                 } else {
@@ -898,7 +898,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                         $force_check = true
                                                     )
                                                 ) {
-                                                    $data_errors_arr = $val->getDataErrors(
+                                                    $data_errors_arr = AfwDataQualityHelper::getDataErrors($val, 
                                                         $lang
                                                     );
                                                     $data_errors = implode(
@@ -1179,7 +1179,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                 }
                             }
                             $dataValue[$id][$col] = $val->getVal($col);
-                            $dataImportance[$col] = $obj->importanceCss($col, $desc);
+                            $dataImportance[$col] = AfwHtmlHelper::importanceCss($obj, $col, $desc);
                         }
                     }
                     if ($val->rowCategoryAttribute()) {
@@ -2021,7 +2021,7 @@ $('#$showAsDataTable').DataTable( {
                     $first_item = current($items_objs);
                     $data_to_display = '';
                     if ($first_item) {
-                        // $ret_cols_arr = $first_item->getRetrieveCols($mode);
+                        // $ret_cols_arr = AfwPrevilegeHelper::getRetrieveCols($first_item,$mode);
 
                         $cross_col = $structure['CROSS_COL'];
                         $crossed_field_col =
@@ -2369,7 +2369,7 @@ $('#$showAsDataTable').DataTable( {
                     $structure['DISPLAY'] = $structure['FORMAT'];
                 }
                 if (strtoupper($structure['DISPLAY']) == 'MINIBOX') {
-                    $data_to_display = $object->get($attribute)->showMinibox(
+                    $data_to_display = AfwShowHelper::showMinibox($object->get($attribute), 
                         $structure['STYLE']
                     );
                     $link_to_display = '';
@@ -2511,10 +2511,10 @@ $('#$showAsDataTable').DataTable( {
             } elseif (strtoupper($structure['DISPLAY']) === 'MINIBOX') {
                 $valObj = $object->get($attribute);
                 if ($valObj) {
-                    $data_to_display = $valObj->showMinibox(
+                    $data_to_display = AfwShowHelper::showMinibox($valObj,
                         $structure['STYLE']
                     );
-                    if($debugg) $data_to_display .= " from valObj->showMinibox";
+                    if($debugg) $data_to_display .= " from valObj::showMinibox";
                 } else {
                     $data_to_display = '';
                 }
@@ -2757,6 +2757,115 @@ $('#$showAsDataTable').DataTable( {
         }
 
         return [$data_to_display, $link_to_display];
+    }
+
+    public static function previewAttribute($object, $attribute, $desc = '', $max_length = 56)
+    {
+        global $lang;
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+        if (!AfwStructureHelper::isMultipleObjectsAttribute($object, $attribute, $desc)) {
+            $return = $object->showAttribute($attribute);
+        } else {
+            $objects = $object->get($attribute);
+            $array = [];
+            foreach ($objects as $object) {
+                $array[] = $object->getDisplay($lang);
+            }
+            $mfk_show_sep = $desc['LIST_SEPARATOR'];
+            if (!$mfk_show_sep) {
+                $mfk_show_sep = $desc['MFK-SHOW-SEPARATOR'];
+            }
+            if (!$mfk_show_sep) {
+                $mfk_show_sep = '، ';
+            }
+            $return = implode($mfk_show_sep, $array);
+            $etc = '.. (' . count($array) . ' item(s))';
+            $return = AfwStringHelper::truncateArabicJomla($return, $max_length, $etc);
+        }
+
+        return $return;
+    }
+
+
+    public static function showMinibox($object, 
+        $structure = '',
+        $lang = 'ar',
+        $token_arr = null,
+        $objme = null,
+        $public_show = false
+    ) {
+        //
+
+        $obj_table = $object->getTableName();
+        if ($structure) {
+            $file_tpl = $structure['MINIBOX-TEMPLATE'];
+        } else {
+            $file_tpl = 'AUTO';
+        }
+        // die($this->getDisplay($lang)." minibox tpl : ".$file_tpl);
+        if ($file_tpl != 'AUTO') {
+            if (!$token_arr) {
+                $token_arr = $object->prepareTokensArrayFromRequestParams(
+                    'minibox'
+                );
+            }
+            if ((!$file_tpl) or (strtoupper($file_tpl) == "DEFAULT")) {
+                $file_tpl = "tpl/tpl_mb_$obj_table.php";
+            }
+
+            // $object->tokens = $token_arr;
+            // die("object->tokens = ".var_export($object->tokens,true));
+
+            if ($structure['MINIBOX-TEMPLATE-PHP']) {
+                $objKey = $structure['MINIBOX-OBJECT-KEY'];
+                $data = [];
+                $data[$objKey] = $object;
+                $data_to_display = $object->showUsingPhpTemplate($file_tpl, $data);
+            } else {
+                $data_to_display = $object->showUsingTpl(
+                    $file_tpl,
+                    [],
+                    $lang,
+                    $token_arr
+                );
+            }
+        } else {
+            $items_objs = [];
+
+            $first_item = $object;
+            $items_objs[$first_item->getId()] = $first_item;
+
+            if (!$object->mb_context) {
+                $object->mb_context = 'mb_auto';
+            }
+            //die($this->getDisplay($lang)." manyMiniBoxes show for : ".var_export($items_objs,true));
+            if (!$objme) $objme = AfwSession::getUserConnected();
+            list(
+                $data_to_display,
+                $items_objs,
+                $ids,
+                $report
+            ) = AfwShowHelper::manyMiniBoxes(
+                $items_objs,
+                $first_item,
+                $objme,
+                null,
+                array(),
+                $public_show
+            );
+
+            //die($this->getDisplay($lang)." AfwShowHelper::manyMiniBoxes showed [for $ids, public_show=$public_show] : ".$data_to_display." report=$report");
+        }
+
+        if ($data_to_display == '') {
+            $data_to_display = AfwFormatHelper::getItemsEmptyMessage($object, $structure, $lang);
+        }
+
+        return $data_to_display;
     }
 }
 

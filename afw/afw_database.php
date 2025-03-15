@@ -203,6 +203,18 @@ class AfwDatabase extends AFWRoot
         return $new_data;
     }
 
+    public static function data_by_id($data, $keyCol)
+    {
+        $new_data = [];
+
+        foreach ($data as $ir => $row) {
+            $key = $row[$keyCol];
+            $new_data[$key] = $row;
+        }
+
+        return $new_data;
+    }
+
 
 
     /**

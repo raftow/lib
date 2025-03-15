@@ -908,4 +908,33 @@ $(\"#$id_input\").data(\"dd\");
 
                 return "";
         }
+
+        public static function getAttributeTooltip($object, $attribute, $lang = 'ar')
+        {
+                $col_tooltip = $attribute . '.tooltip';
+                $val_tooltip = $object->tm($col_tooltip, $lang);
+                if ($val_tooltip != $col_tooltip) {
+                return $val_tooltip;
+                } else {
+                $col_tooltip = $attribute . '_tooltip';
+                $val_tooltip = $object->tm($col_tooltip, $lang);
+                if ($val_tooltip != $col_tooltip) {
+                        return $val_tooltip;
+                } else {
+                        $col_tooltip = $attribute . '.tooltip';
+                        $val_tooltip = $object->tf($col_tooltip, $lang);
+                        if ($val_tooltip != $col_tooltip) {
+                        return $val_tooltip;
+                        } else {
+                        $col_tooltip = $attribute . '_tooltip';
+                        $val_tooltip = $object->tf($col_tooltip, $lang);
+                        if ($val_tooltip != $col_tooltip) {
+                                return $val_tooltip;
+                        }
+                        }
+                }
+                }
+
+                return '';
+        }
 }

@@ -4,6 +4,15 @@
 
 class AfwFrameworkHelper extends AFWRoot
 {
+    public static function inModeDev($table_name="test")
+    {
+        $var0 = 'MODE_DEVELOPMENT';
+        $var1 = 'development_mode';
+        $var2 = $table_name.'_mode';
+
+        // mode dev general or for this table (for temporary debugg in prod)
+        return AfwSession::config($var0, false) or AfwSession::config($var1, false) or AfwSession::config($var2, false);
+    }
 
     public static function displayInEditMode($cl)
     {
@@ -31,20 +40,20 @@ class AfwFrameworkHelper extends AFWRoot
             );
         }
         if ($mode == 'retrieve') {
-            return $obj->isRetrieveCol($attribute, $mode);
+            return AfwPrevilegeHelper::isRetrieveCol($obj, $attribute, $mode);
         }
 
         if ($mode == 'search') {
-            return $obj->isSearchCol($attribute);
+            return AfwPrevilegeHelper::isSearchCol($obj, $attribute);
         }
         if ($mode == 'minibox') {
-            return $obj->isMiniBoxCol($attribute);
+            return AfwPrevilegeHelper::isMiniBoxCol($obj, $attribute);
         }
         if ($mode == 'qsearch') {
-            return $obj->isQSearchCol($attribute);
+            return AfwPrevilegeHelper::isQSearchCol($obj, $attribute);
         }
         if ($mode == 'text-searchable') {
-            return $obj->isTextSearchableCol($attribute);
+            return AfwPrevilegeHelper::isTextSearchableCol($obj, $attribute);
         }
 
         throw new AfwRuntimeException("unknown mode : $mode may be not implemented !");
@@ -78,7 +87,7 @@ class AfwFrameworkHelper extends AFWRoot
 
         foreach ($FIELDS_ALL as $attribute => $struct) {
             // no need it is already repared (Momken 3.0)
-            // $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+            // $struct = AfwStructureHelper::getStructureOf($object, $attribute);
 
             $isAdminField = $obj->isAdminField($attribute);
             $isTechField = $obj->isTechField($attribute);
@@ -105,7 +114,7 @@ class AfwFrameworkHelper extends AFWRoot
         $result = $tableau;
 
         if ($translate) {
-            $result = $obj->translateCols($result, $translate_to_lang);
+            $result = AfwLanguageHelper::translateCols($obj, $result, $translate_to_lang);
         }
 
         if ($implode_char) {
@@ -355,7 +364,7 @@ class AfwFrameworkHelper extends AFWRoot
                 $currstep = -1;
             }
         }
-        // if($reason=="show btn ?") die("log of findNextEditableStep($old_current_step,$reason) current_step=$current_step, currstep=$currstep, isEd=".$this->step IsEditable($currstep));
+        // if($reason=="show btn ?") die("log of findNextEditableStep($old_current_step,$reason) current_step=$current_step, currstep=$currstep, isEd=".$object->step IsEditable($currstep));
         return $currstep;
     }
 
@@ -379,7 +388,7 @@ class AfwFrameworkHelper extends AFWRoot
                 }
             }
         }
-        // if($reason=="show btn ?") die("log of findNextEditableStep($old_current_step,$reason) current_step=$current_step, currstep=$currstep, isEd=".$this->stepIs Editable($currstep));
+        // if($reason=="show btn ?") die("log of findNextEditableStep($old_current_step,$reason) current_step=$current_step, currstep=$currstep, isEd=".$object->stepIs Editable($currstep));
         return $currstep;
     }
 
@@ -404,6 +413,29 @@ class AfwFrameworkHelper extends AFWRoot
         }
 
         return $currstep;
+    }
+
+
+    public static final function getColsByMode($object, $mode)
+    {
+        $mode = strtoupper($mode);
+        if ($mode == 'SHOW') {
+            return AfwPrevilegeHelper::getToShowCols($object, );
+        }
+        if ($mode == 'MINIBOX') {
+            return AfwPrevilegeHelper::getMiniBoxCols($object, );
+        }
+        if ($mode == 'RETRIEVE') {
+            return AfwPrevilegeHelper::getRetrieveCols($object);
+        }
+
+        if ($mode == 'QSEARCH') {
+            return AfwPrevilegeHelper::getQsearchCols($object);
+        }
+
+        throw new AfwRuntimeException(
+            "mode $mode unknown when calling afw::getColsByMode($mode)"
+        );
     }
 
     
