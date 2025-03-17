@@ -5754,7 +5754,7 @@ class AFWObject extends AFWRoot
 
     
 
-    protected function getReadOnlyFormFinishButtonLabel()
+    public function getReadOnlyFormFinishButtonLabel()
     {
         return '';
     }

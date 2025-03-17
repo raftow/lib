@@ -54,8 +54,14 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
                 $user_dep = $user_info["user_department"][$lang];
                 $user_job = $user_info["user_job"][$lang];
                 if (!$user_full) AfwSession::pushWarning("System cache $user_cache_file_path gived user_full_name=[$user_full] for uid=$me_id");
-            } else {
-                AfwSession::pushWarning("System need cache optimisation file for user $me_id <!-- file not found $user_cache_file_path -->");
+            } 
+            else 
+            {
+                if(AfwSession::config('cache-auto-update',true))
+                {
+                    $objme->generateCacheFile($lang, $onlyIfNotDone=true, $throwError=true);
+                }
+                else AfwSession::pushWarning("System need cache optimisation file for user $me_id <!-- file not found $user_cache_file_path -->");
 
                 $user_full = $objme->getShortDisplay($lang);
                 $user_dep = $objme->getMyDepartmentName($lang);
