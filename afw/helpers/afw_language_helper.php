@@ -16,6 +16,30 @@ class AfwLanguageHelper
         return $langue;
     }
 
+    public static function getLanguageDir($lang)
+    {
+        if ($lang == "ar") {
+            $dir = 'rtl';
+        } else {
+            $dir = 'ltr';
+        }
+
+        return $dir;
+    }
+
+    public static function getLanguageAlign($lang)
+    {
+        if ($lang == "ar") {
+            $dir = 'right';
+        } else {
+            $dir = 'left';
+        }
+
+        return $dir;
+    }
+
+    
+
     /**
      * @param AFWObject $object
      * 
@@ -367,35 +391,35 @@ class AfwLanguageHelper
             $lang = 'en';
         }
 
-        if (!$this->DISPLAY_FIELD) {
-            $all_real_fields = AfwStructureHelper::getAllRealFields($this);
-            $this->DISPLAY_FIELD = $all_real_fields[1];
+        if (!$object->DISPLAY_FIELD) {
+            $all_real_fields = AfwStructureHelper::getAllRealFields($object);
+            $object->DISPLAY_FIELD = $all_real_fields[1];
         }
 
-        if (!$this->DISPLAY_FIELD) {
-            $this->DISPLAY_FIELD = $this->getPKField();
+        if (!$object->DISPLAY_FIELD) {
+            $object->DISPLAY_FIELD = $object->getPKField();
         }
 
         if (
-            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_ar') or
-            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_fr') or
-            AfwStringHelper::stringStartsWith($this->DISPLAY_FIELD, '_en')
+            AfwStringHelper::stringStartsWith($object->DISPLAY_FIELD, '_ar') or
+            AfwStringHelper::stringStartsWith($object->DISPLAY_FIELD, '_fr') or
+            AfwStringHelper::stringStartsWith($object->DISPLAY_FIELD, '_en')
         ) {
             $disp_fld_std = substr(
-                $this->DISPLAY_FIELD,
+                $object->DISPLAY_FIELD,
                 0,
-                strlen($this->DISPLAY_FIELD) - 3
+                strlen($object->DISPLAY_FIELD) - 3
             );
         } else {
-            $disp_fld_std = $this->DISPLAY_FIELD;
+            $disp_fld_std = $object->DISPLAY_FIELD;
         }
 
         $display_field_trad = $disp_fld_std . '_' . $lang;
 
-        if (AfwStructureHelper::fieldExists($this, $display_field_trad)) {
+        if (AfwStructureHelper::fieldExists($object, $display_field_trad)) {
             return $display_field_trad;
         }
 
-        return $this->DISPLAY_FIELD;
+        return $object->DISPLAY_FIELD;
     }
 }

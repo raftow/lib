@@ -2105,6 +2105,23 @@ $('#$showAsDataTable').DataTable( {
                             'ATTACH',
                             $structure
                         );
+
+                        if($first_item->MOVE_UP_ACTION)
+                        {
+                            if(!$object->enabledIcon($attribute,'MOVE_UP',$structure))
+                            {
+                                $first_item->MOVE_UP_ACTION = false;
+                            }
+                        }
+
+                        if($first_item->MOVE_DOWN_ACTION)
+                        {
+                            if(!$object->enabledIcon($attribute,'MOVE_DOWN',$structure))
+                            {
+                                $first_item->MOVE_DOWN_ACTION = false;
+                            }
+                        }
+
                         $first_item->showId = $structure['SHOW-ID'];
                         //if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("first_item = ".var_export($first_item,true));
 

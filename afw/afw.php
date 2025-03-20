@@ -3671,9 +3671,14 @@ class AFWObject extends AFWRoot
         return $this->translate($text, $langue, false);
     }
 
-    public function translateOperator($text, $langue = 'ar')
+    public function translateOperator($operator, $langue = 'ar')
     {
-        return $this->translate($text, $langue, true);
+        $return = $this->translate($operator, $langue, true);
+        if($return==$operator)
+        {
+            $return = $this->translate(strtoupper($operator), $langue, true);
+        }
+        return $return;
     }
 
     public function tm($message, $langue = '', $company = "")

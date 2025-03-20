@@ -22,10 +22,14 @@ class AfwFileSystem {
     }
 
     // @todo rewrite from scratch
-    public static function write($file_target, $content = '', $append = 'erase') 
+    public static function write($file_target, $content = '', $append = 'erase', $create_folder=false) 
     {
         $file = self::path($file_target);
         $folder = self::folderOf($file_target); 
+        if(!self::folderExists($folder) and $create_folder)
+        {
+            self::createDir($folder, "0777");
+        }
         if((!self::exists($file)) and (!self::hasPermission($folder, $permission = array('read', 'write'))))
         {
             throw new AfwRuntimeException("the file $file doesn't exist and we haven't permission to create it in folder : $folder");
@@ -117,7 +121,7 @@ class AfwFileSystem {
 
     public static function createDir($dir, $mode = 0644) {
         $dir = self::path($dir);
-
+        
         if (!self::exists($dir)) {
             return mkdir($dir, $mode, true);
         }
@@ -135,6 +139,11 @@ class AfwFileSystem {
 
     public static function exists($file) {
         return file_exists(self::path($file));
+    }
+
+    public static function folderExists($folder) {
+        $folder = self::path($folder);
+        return (file_exists($folder) and is_dir($folder));
     }
 
     public static function hasPermission($file, $permission = array('execute', 'read', 'write')) {
@@ -197,6 +206,14 @@ class AfwFileSystem {
         $file = self::path($file);
         $fname = self::complete_filename($file);
         return str_replace($fname, '', $file);
+    }
+
+    public static function parentFolderOf($folder, $sep="/") 
+    {
+        $folder = trim($folder,$sep);
+        $folder_arr = explode($sep, $folder);
+        unset($folder_arr[count($folder_arr)-1]);
+        return implode($sep, $folder_arr);
     }
 
 }

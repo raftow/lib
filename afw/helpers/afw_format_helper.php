@@ -206,7 +206,7 @@ class AfwFormatHelper
         $getFormatLink = true,
         $obj = null
     ) {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$structure) {
             if ($obj) $structure = AfwStructureHelper::getStructureOf($obj, $key);
         }
@@ -526,7 +526,12 @@ class AfwFormatHelper
                         $pre_class = " class='$pre_class' ";
                     }
                     if ($structure['TEXT-ALIGN']) {
-                        $text_align = 'text-align:' . $structure['TEXT-ALIGN'];
+                        if ($structure['TEXT-ALIGN']=='BYLANG') {
+                            $text_algn = AfwLanguageHelper::getLanguageAlign($lang);
+                        }
+                        else $text_algn = $structure['TEXT-ALIGN'];
+
+                        $text_align = 'text-align:' . $text_algn;
                     } elseif ($structure['UTF8']) {
                         $text_align = 'text-align:right';
                     } else {
@@ -534,7 +539,10 @@ class AfwFormatHelper
                     }
 
                     if ($structure['DIR']) {
-                        $dir = $structure['DIR'];
+                        if ($structure['DIR']=='BYLANG') {
+                            $dir = AfwLanguageHelper::getLanguageDir($lang);
+                        }   
+                        else $dir = $structure['DIR'];
                     } elseif ($structure['UTF8']) {
                         $dir = 'rtl';
                     } else {

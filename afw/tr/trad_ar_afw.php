@@ -85,7 +85,14 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["NO"]	        	                	= "لا";
         $trad["OPERATOR"]["EUH"]	                        	= "غير محدد";
         $trad["OPERATOR"]["FOR"]	        	                = "لـ";
-        
+        $trad["OPERATOR"]["ERROR"]	        	                = "خطأ";
+        $trad["OPERATOR"]["INFORMATION"]	        	        = "معلومة";
+        $trad["OPERATOR"]["WARNING"]	        	            = "تنبيه";
+        $trad["OPERATOR"]["DEBUGG"]	        	                = "تقصي أثر";
+
+
+
+                        
         $trad["OPERATOR"]["save"]	                        	= "حفظ";
         $trad["OPERATOR"]["SAVE"]	                        	= "حفظ فقط";
         $trad["OPERATOR"]["UPDATE"]	                        	= "حفظ التعديلات";
@@ -151,6 +158,7 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["NOT YET"]	         	            = "ليس بعد";
         $trad["OPERATOR"]["archive"]                            = "الأرشيف";
         
+        $trad["OPERATOR"]["on"]	         	                    = "على";
         $trad["OPERATOR"]["dark mode"]	         	            = "ليلي";
         $trad["OPERATOR"]["Search here"]	         	        = "ابحث هنا";
         $trad["OPERATOR"]["page"]	         	                = "صفحة";
