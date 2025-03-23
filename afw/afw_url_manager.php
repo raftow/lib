@@ -232,7 +232,8 @@ class AfwUrlManager extends AFWRoot
     public static function currentPageCode()
     {
         $currentPageCodeArr = [];
-        $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
+        // $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
+        $serv_uri = trim($_SERVER['REQUEST_URI']);
         $serv_uri = str_replace('.php','',$serv_uri);
         $serv_uri = str_replace('?','/', $serv_uri);
         $serv_uri = str_replace('\\','/', $serv_uri);
@@ -255,9 +256,15 @@ class AfwUrlManager extends AFWRoot
                 and (!AfwStringHelper::stringStartsWith($var,'cur'))
                 and (!AfwStringHelper::stringEndsWith($var,'go'))
                 and ($var != "currmod")
+                and ($var != "pbmon")
+                and ($var != "file_obj")
+                and ($var != "class_parent")
+                and ($var != "class_obj")
+                and ($var != "id_obj")
                 and ($var != "php")
                 and ($var != "submit")
                 and ($var != "newo")
+                and ($var != "popup")
                 and ($var != "limit")
                 and ($var != "main_page")
                 and (!AfwStringHelper::is_arabic($var,0.4))
@@ -276,6 +283,11 @@ class AfwUrlManager extends AFWRoot
         $previous_item = "";
         foreach($uri_items as $uri_item) 
         {
+            if(!AfwStringHelper::stringContain($uri_item,'_'))
+            {
+                $uri_item = AfwStringHelper::classToTable($uri_item); 
+            }
+            $uri_item = strtolower($uri_item);
             if(AfwStringHelper::stringStartsWith($uri_item,'afw_mode_'))
             {
                 $uri_item = str_replace('afw_mode_','',$uri_item);
@@ -290,6 +302,7 @@ class AfwUrlManager extends AFWRoot
                 and (!is_numeric($uri_item)) 
                 and (!AfwStringHelper::stringStartsWith($uri_item,'sel_'))
                 and ($uri_item != "currmod")
+                and ($uri_item != "currstep")
                 and ($uri_item != "php")
                 and ($uri_item != "submit")
                 and ($uri_item != "newo")
@@ -298,7 +311,7 @@ class AfwUrlManager extends AFWRoot
                 and (!AfwStringHelper::is_arabic($uri_item,0.4))
             )
             {
-                $currentPageCodeArr[] = strtolower($uri_item);
+                $currentPageCodeArr[] = $uri_item;
             }
             $previous_item = $uri_item;
         }

@@ -263,6 +263,7 @@ class AfwLoadHelper extends AFWRoot
 
         $this_getId = $myObject->getId();
         $this_table = $myObject->getTableName();
+        $object_id = $myObject->getAfieldValue($attribute);
         $call_method = "loadObjectFKFor(object[$this_getId], attribute = $attribute, integrity = $integrity)";
         if (!$MODE_BATCH_LOURD) 
         {
@@ -270,12 +271,16 @@ class AfwLoadHelper extends AFWRoot
                 $boucle_loadObjectFK = 0;
                 $boucle_loadObjectFK_arr = [];
             }
-            $boucle_loadObjectFK_arr[$boucle_loadObjectFK] = "loadObjectFK of attribute $attribute from [$this_table,$this_getId] object";
+            if(!$boucle_loadObjectFK_arr["TBL-$this_table-ID-$this_getId-ATT-$attribute-OBJ-$object_id"])
+            {
+                $boucle_loadObjectFK_arr["TBL-$this_table-ID-$this_getId-ATT-$attribute-OBJ-$object_id"] = 0;
+            }
+            $boucle_loadObjectFK_arr["TBL-$this_table-ID-$this_getId-ATT-$attribute-OBJ-$object_id"]++;
             $boucle_loadObjectFK++;
 
-            if ($boucle_loadObjectFK > 20000) {
+            if ($boucle_loadObjectFK > 200000) {
                 // 20000 because many calls are just to get data from cache so very quick
-                throw new AfwRuntimeException("heavy page halted after $boucle_loadObjectFK enter to method $call_method in one request, " .var_export($boucle_loadObjectFK_arr, true));
+                throw new AfwRuntimeException("heavy process without setting MODE_BATCH_LOURD, so halted after $boucle_loadObjectFK enter to method $call_method in one request, " .var_export($boucle_loadObjectFK_arr, true));
             }
         }
         
@@ -288,7 +293,7 @@ class AfwLoadHelper extends AFWRoot
              die("degugg 1 rafik3 attribute=$attribute ansTab=$ansTab ansMod=$ansMod ");
          }*/
         
-        $object_id = $myObject->getAfieldValue($attribute);
+        
 
         if (isset($ansTab) && intval($object_id) > 0) {
             $object = null;
@@ -542,7 +547,7 @@ class AfwLoadHelper extends AFWRoot
      * 
      */
     
-    public static function decodeFkAttribute($object, $attribute, $value, $separator = ",", $emptyMessage = "no-data-decoded")
+    public static function decodeFkAttribute(&$object, $attribute, $value, $separator = ",", $emptyMessage = "no-data-decoded")
     {
         if(!$object) throw new AfwRuntimeException("decodeFkAttribute function : \$object attribute should not be null");
         if(!($object instanceof AFWObject)) throw new AfwRuntimeException("decodeFkAttribute function : \$object attribute should be subclass of AFWObject");
@@ -578,7 +583,7 @@ class AfwLoadHelper extends AFWRoot
     /**
      * @param AFWObject $object
      * */
-    public static function loadAllLookupData($object, $where = "--", $order_by="")
+    public static function loadAllLookupData(&$object, $where = "--", $order_by="")
     {
         $module = $object::$MODULE;
         $table = $object::$TABLE;
@@ -658,7 +663,7 @@ class AfwLoadHelper extends AFWRoot
      * @param string $order_by : Optional add order by to query
      * @param bool $distinct : Make the select distinct to avoid duplicated records (same value for all columns)
      */
-    public static function loadData($object, $attribute_arr, $limit = '', $order_by = '', $distinct=false)
+    public static function loadData(&$object, $attribute_arr, $limit = '', $order_by = '', $distinct=false)
     {
         if(!$order_by) $order_by = $object->ORDER_BY_FIELDS;
         $query =
@@ -680,7 +685,7 @@ class AfwLoadHelper extends AFWRoot
      * @param AFWObject $object
      * @param string $value : Optional, specify the value of primary key
      */
-    public static function loadAfwObject($object, $value = '', $result_row = '', $order_by_sentence = '', $optim_lookup=true) 
+    public static function loadAfwObject(&$object, $value = '', $result_row = '', $order_by_sentence = '', $optim_lookup=true) 
     {
         global $MODE_BATCH_LOURD;
         // $time_start = microtime(true);
@@ -1301,7 +1306,7 @@ class AfwLoadHelper extends AFWRoot
      * @param string $limit : Optional add limit to query
      * @param string $order_by : Optional add order by to query
      */
-    public static function loadListe($object, $limit = '', $order_by = '')
+    public static function loadListe(&$object, $limit = '', $order_by = '')
     {
         $call_method = "loadListe(limit = $limit, order_by = $order_by)";
         if ($object->MY_DEBUG and false) {
@@ -1367,7 +1372,7 @@ class AfwLoadHelper extends AFWRoot
      * @param string  $limit : Optional add limit to query
      * @param string  $order_by : Optional add order by to query
      */
-    public static function loadCol($object, 
+    public static function loadCol(&$object, 
         $col_name,
         $distinct = false,
         $limit = '',
@@ -1432,7 +1437,7 @@ class AfwLoadHelper extends AFWRoot
      * @param boolean $return_sql_only
      */
 
-    public static function findExact($object, $term, $return_sql_only = false)
+    public static function findExact(&$object, $term, $return_sql_only = false)
     {
         if (!$term) {
             return null;
@@ -1467,7 +1472,7 @@ class AfwLoadHelper extends AFWRoot
     }
 
 
-    public static function loadManyIds($object)
+    public static function loadManyIds(&$object)
     {
         $query = $object->getSQLMany('', '', '', false);
         $module_server = $object->getModuleServer();
@@ -1488,7 +1493,7 @@ class AfwLoadHelper extends AFWRoot
         return $res_arr;
     }
 
-    public function getItemsIds($object, $attribute)
+    public function getItemsIds(&$object, $attribute)
     {
         list($ansTab, $ansMod) = $object::answerTableAndModuleFor($attribute);
         if ($ansTab and $ansMod) {
@@ -1534,7 +1539,7 @@ class AfwLoadHelper extends AFWRoot
      * 
      */
 
-    public static final function loadAllFkRetrieve($object, $row, $colsRet = null)
+    public static final function loadAllFkRetrieve(&$object, $row, $colsRet = null)
     {
         //global $lang;
         // load objects from added left joins for all retrieved fields with type = FK and category empty (real fields)
@@ -1558,7 +1563,7 @@ class AfwLoadHelper extends AFWRoot
 
 
 
-    public static final function loadObjectFKFromRow($object, $attribute, $row)
+    public static final function loadObjectFKFromRow(&$object, $attribute, $row)
     {
         $cache_management = AfwLoadHelper::cacheManagement($object);
 
@@ -1674,7 +1679,7 @@ class AfwLoadHelper extends AFWRoot
         return $return;
     }
 
-    public static function loadList($object, $attribute)
+    public static function loadList(&$object, $attribute)
     {
         $listObj = $object->loadMany();
 
@@ -1704,7 +1709,7 @@ class AfwLoadHelper extends AFWRoot
      * @param bool $optim_lookup
      */
 
-    public static function getAttributeData($object,
+    public static function getAttributeData(&$object,
         $attribute,
         $what = 'object',
         $format = '',
@@ -1827,7 +1832,7 @@ class AfwLoadHelper extends AFWRoot
         return $return;
     }
 
-    public static function getAnObject($object, $attribute, $integrity, $optim_lookup, $structure = null, $attribute_type = null, $call_method = "", $b_abstract = false)
+    public static function getAnObject(&$object, $attribute, $integrity, $optim_lookup, $structure = null, $attribute_type = null, $call_method = "", $b_abstract = false)
     {
         $cache_management = AfwLoadHelper::cacheManagement($object);
 
@@ -1932,7 +1937,7 @@ class AfwLoadHelper extends AFWRoot
         return $return;
     }
 
-    public static function getReallyExistsNonCategorizedAttribute($object, $attribute, $attribute_type, $optim_lookup, $structure, $what, $format, $integrity, $lang, $call_method="")
+    public static function getReallyExistsNonCategorizedAttribute(&$object, $attribute, $attribute_type, $optim_lookup, $structure, $what, $format, $integrity, $lang, $call_method="")
     {
         $b_abstract = false;
         $return = $attribute_value = $object->getAfieldValue($attribute);
@@ -2035,7 +2040,7 @@ class AfwLoadHelper extends AFWRoot
     }
 
     
-    public static final function getEnumTotalAnswerList($object, $attribute, $enum_answer_list = '')
+    public static final function getEnumTotalAnswerList(&$object, $attribute, $enum_answer_list = '')
     {
         $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         if (!$enum_answer_list) {

@@ -243,7 +243,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 // if($nom_col=="applicationModelConditionList") die("ehelp=".$data[$nom_col]["ehelp"]);
                                 $id_div_input = "div_data_$nom_col";
                                 $data[$nom_col]["input"] = "<div id='$id_div_input' class='hzm_data hzm_data_$nom_col $col_val_class $ro_classes_form' style='$style_div_form_control'>";
-                                if ((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) {
+                                if (((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) and (!$desc['NO-INPUT'])) {
                                         // if($nom_col=="response_templates") die("case no-CATEGORY or FORCE-INPUT");
                                         $col_val = $obj->getVal($nom_col);
                                         ob_start();

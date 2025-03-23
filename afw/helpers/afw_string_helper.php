@@ -739,7 +739,12 @@ class AfwStringHelper
 
         public static final function classToTable($className) 
         {
-                 return self::fileTotable(AfwStringHelper::classToFile($className));
+                $critere = 'A-Z';
+                ini_set("pcre.jit", 0);
+                $cl_chaines = preg_split('/(?=['.$critere.'])/', $className, -1, PREG_SPLIT_NO_EMPTY);
+		$table       = strtolower(implode('_',$cl_chaines));
+                
+                return $table;
         }
 
         public static final function methodToTitle($methodName)

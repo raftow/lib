@@ -605,7 +605,7 @@ class AfwFormatHelper
     }
 
 
-    public static final function getItemsEmptyMessage($object, $structure, $lang = "ar")
+    public static final function getItemsEmptyMessage(&$object, $structure, $lang = "ar")
     {
         if ($structure['EMPTY-ITEMS-MESSAGE']) {
             $empty_code = $structure['EMPTY-ITEMS-MESSAGE'];
@@ -616,7 +616,7 @@ class AfwFormatHelper
     }
 
 
-    public static function getEnumVal($object, $attribute, $field_value)
+    public static function getEnumVal(&$object, $attribute, $field_value)
     {
         global $lang;
 
@@ -648,7 +648,7 @@ class AfwFormatHelper
         return $return;
     }
 
-    public static final function decodeSimulatedFieldValue($object, $attribute, $field_value)
+    public static final function decodeSimulatedFieldValue(&$object, $attribute, $field_value)
     {
         $oldval = $object->getVal($attribute);
         $object->simulSet($attribute, $field_value);
@@ -1259,7 +1259,7 @@ class AfwFormatHelper
      * @param AFWObject $object
      */
 
-    public static final function formatITEMS($object, $attribute, $structure, $table_name, $call_method, $max_items)
+    public static final function formatITEMS(&$object, $attribute, $structure, $table_name, $call_method, $max_items)
     {
         /*
         if((!$structure["NO-CACHE"]) and $object->gotItems Cache[$attribute])   
@@ -1329,7 +1329,7 @@ class AfwFormatHelper
     }
 
 
-    public static final function formatSHORTCUT($object, $attribute, $what, $format, $table_name, $integrity, $structure, $call_method)
+    public static final function formatSHORTCUT(&$object, $attribute, $what, $format, $table_name, $integrity, $structure, $call_method)
     {
         //if($attribute=="skill_type_id") throw new AfwRuntimeException("$attribute is SHORTCUT");
         //if($object->MY_DEBUG) AFWDebugg::log("Case SHORTCUT");
@@ -1542,7 +1542,7 @@ class AfwFormatHelper
         return $return;
     }
 
-    public static final function formatReturnedValue($object, $attribute, $lang, $structure, $return, $what, $format, $attribute_type, $integrity, $this_debugg)
+    public static final function formatReturnedValue(&$object, $attribute, $lang, $structure, $return, $what, $format, $attribute_type, $integrity, $this_debugg)
     {
         //if($attribute=="customer_id") throw new AfwRuntimeException("formatting Returned Value $return");
         $attr_sup_categ = $structure['SUPER_CATEGORY'];
@@ -1654,7 +1654,7 @@ class AfwFormatHelper
      * @param string $attribute
      * @param string $field_value
      */
-    public static final function decodeAnswerOfAttribute($object, $attribute, $field_value)
+    public static final function decodeAnswerOfAttribute(&$object, $attribute, $field_value)
     {
         if (!$field_value) return $field_value;
         $object->debugg_last_attribute = $attribute;
@@ -1727,7 +1727,7 @@ class AfwFormatHelper
     }
 
 
-    public static function getCategorizedAttribute($object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = "")
+    public static function getCategorizedAttribute(&$object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = "")
     {
         /*
         if(($attribute=="customer_id"))

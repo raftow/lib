@@ -260,7 +260,7 @@ class AfwFormulaHelper extends AFWRoot
      * @param AFWObject $object
      *  */    
 
-    public static final function executeFormulaAttribute($object, $attribute, $struct=null, $lang="ar", $what="value")
+    public static final function executeFormulaAttribute(&$object, $attribute, $struct=null, $lang="ar", $what="value")
     {
         /*
         if(($attribute=="response_templates"))
@@ -386,7 +386,7 @@ class AfwFormulaHelper extends AFWRoot
         return $return;
     }
 
-    public static final function calculateFormulaResult($object, $attribute, $what = "value")
+    public static final function calculateFormulaResult(&$object, $attribute, $what = "value")
     {
         $methodFormule = 'calc' . ucfirst($attribute);
         $return = $object->$methodFormule($what);

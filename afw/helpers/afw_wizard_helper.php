@@ -332,7 +332,7 @@ class AfwWizardHelper extends AFWRoot
                         }
                         // else $title .= "debugg_rafik : ".var_export($struct,true);
                         if ($struct['OTM-TITLE']) {
-                            $title .= $displ2;
+                            $title .= "<br>".$displ2;
                         }
                         $title = trim($title);
 

@@ -68,13 +68,18 @@ class AfwMysql
             }
             try{
                 $return = mysqli_query($link, $sql);
+                $sql_html = strip_tags($sql);
+                if(strlen($sql_html)>1000)
+                {
+                    $sql_html = substr($sql_html, 0, 997). "...";
+                }
                 $aff_rows = mysqli_affected_rows($link);
             }
             catch(Exception $e)
-            {
-                throw new AfwRuntimeException("Exception happened when query : $sql : ".$e->getMessage());
+            {                
+                throw new AfwRuntimeException("Exception happened when query : $sql_html : ".$e->getMessage());
             }
-            $log = date("H:i:s")." > ".$sql." > $aff_rows affected rows";
+            $log = date("H:i:s")." > ".$sql_html." > $aff_rows affected rows";
             if($is_update) AfwBatch::print_hard_sql($log);
             else AfwBatch::print_sql($log);
             return $return;
