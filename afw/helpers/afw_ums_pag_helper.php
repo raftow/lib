@@ -882,6 +882,10 @@ class AfwUmsPagHelper extends AFWRoot
         return $actions_tpl_arr;
     }*/
 
+
+    /**
+     * @param AFWObject $object 
+     */
     public static final function getAllActions($object, $step = 0, $takeViewIcon = true)
     {
         global $lang;
@@ -895,7 +899,7 @@ class AfwUmsPagHelper extends AFWRoot
         // die("$object : getSpecificActions = ".var_export($actions_tpl_arr,true));
         list($editAction, $editFilename) = $object->editAction($step);
         list($displayAction, $displayFilename) = $object->displayAction($step);
-        list($deleteAction, $deleteFilename) = $object->deleteAction($step);
+        list($deleteAction, $deleteFilename) = $object->deleteAction();
 
         if (!$object->isActive()) {
             $viewIcon = 'view_off';
@@ -938,12 +942,24 @@ class AfwUmsPagHelper extends AFWRoot
             'framework_action' => $editAction,
         ];
         //$actions_tpl_arr["delete"] = array("link"=>"Main_Page=$deleteFilename&cl=$cl&currmod=$currmod&id=[id]&popup=", "img"=>$images['delete'],"target"=>"_del_popup","framework_action"=>$deleteAction);
-        $actions_tpl_arr['delete'] = [
-            'link' => '#todo',
-            'img' => $images['delete'],
-            'framework_action' => $deleteAction,
-            'ajax_class' => 'trash',
-        ];
+        if($deleteAction)
+        {
+            $actions_tpl_arr['delete'] = [
+                'link' => '#todo',
+                'img' => $images['delete'],
+                'framework_action' => $deleteAction,
+                'ajax_class' => 'trash',
+            ];
+        }
+        else
+        {
+            $actions_tpl_arr['delete'] = [
+                'link' => '',
+                'img' => $images['locked'],
+                'framework_action' => '',
+                'ajax_class' => '',
+            ];
+        }
 
         return $actions_tpl_arr;
     }

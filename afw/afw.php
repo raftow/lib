@@ -4037,7 +4037,7 @@ class AFWObject extends AFWRoot
         }
         // Business rules check
         if (($return > 0) and (!$this->userCanDeleteMeSpecial($auser))) {            
-            throw new AfwRuntimeException("return was $return and ".get_class($this)." -> userCanDeleteMeSpecial ($auser) failed ");
+            // throw new AfwRuntimeException("return was $return and ".get_class($this)." -> userCanDeleteMeSpecial ($auser) failed ");
             $return = -2;
         }
         
@@ -5459,7 +5459,7 @@ class AFWObject extends AFWRoot
 
     public function deleteAction()
     {
-        return ['delete', 'afw_mode_delete.php'];
+        return ['delete', ''];
     }
 
     public function getSpecificActions($step)

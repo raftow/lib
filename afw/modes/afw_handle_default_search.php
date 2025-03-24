@@ -650,8 +650,10 @@ if (true) {
                                                                                                                                         </td>
                                                                                                                                 <?
                                                                                                                                 } else {
+                                                                                                                                        if($link) $the_action_link = "main.php" . "?" . $link;
+                                                                                                                                        else $the_action_link = "#";
                                                                                                                                 ?>
-                                                                                                                                        <td class='col-importance-<?= $importance ?> <?= $frameworkAction ?>'><a <?= $target_action ?> href="<?= "main.php" . "?" . $link ?>">
+                                                                                                                                        <td class='col-importance-<?= $importance ?> <?= $frameworkAction ?>'><a <?= $target_action ?> href="<?php echo $the_action_link; ?>">
                                                                                                                                                         <img lbl='no-ajax' src="<?= $img ?>" width="24" heigth="24" <?= $tooltip ?>>
                                                                                                                                                 </a>
                                                                                                                                         </td>

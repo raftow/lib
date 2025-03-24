@@ -487,7 +487,7 @@ class AfwFormatHelper
             } elseif ($structure['TYPE'] == 'PCTG') {
                 // $a = "*";
                 $b = 1;
-                $data_to_display = number_format(
+                if($data_to_display) $data_to_display = number_format(
                     $data_to_display,
                     intval($b),
                     '.',

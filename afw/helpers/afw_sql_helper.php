@@ -130,7 +130,10 @@ class AfwSqlHelper extends AFWRoot
                 ) 
                 {
                     $value_desc = implode('>>', explode("\n", $value));
+                    if(strlen($value_desc)>100) $value_desc = substr($value_desc,0,97)."...";
                     $old_value_desc = implode('>>', explode("\n", $old_value));
+                    if(strlen($old_value_desc)>100) $old_value_desc = substr($old_value_desc,0,97)."...";
+
                     $isNum = is_numeric($value);
                     $isGDate = (($structure['TYPE']=='GDAT') or ($structure['TYPE']=='GDATE'));
                     $isSameDate = false;
