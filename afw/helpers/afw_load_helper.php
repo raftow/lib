@@ -613,7 +613,7 @@ class AfwLoadHelper extends AFWRoot
             }
             else $display_field = trim($object->DISPLAY_FIELD);
         }
-        
+        //if($table=="application_field") die("display_field = $display_field");
 
         if (!$display_field) {
             if(isset($object->FORMULA_DISPLAY_FIELD)) $display_field = trim($object->FORMULA_DISPLAY_FIELD);
@@ -649,7 +649,11 @@ class AfwLoadHelper extends AFWRoot
 
         // if($table=="crm_customer") throw new AfwRuntimeException("sql_recup = $sql_recup");
 
-        return AfwDatabase::db_recup_index($sql_recup, $pk, "__val");
+        $return = AfwDatabase::db_recup_index($sql_recup, $pk, "__val");
+
+        if(($table=="application_field") and ($where == "--")) die("sql_recup = $sql_recup return = ".var_export($return,true));
+
+        return $return;
 
     }
 

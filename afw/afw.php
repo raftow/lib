@@ -3313,7 +3313,7 @@ class AFWObject extends AFWRoot
     {
         if((!$this->DISPLAY_FIELD) and isset($this->DISPLAY_FIELD_BY_LANG)) 
         {
-            if(!$lang) $lang = AfwSession::config("current_lang", "ar");
+            if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
             $this->DISPLAY_FIELD = $this->DISPLAY_FIELD_BY_LANG[$lang];
             // die(var_export($this->DISPLAY_FIELD, true)."=this->DISPLAY_FIELD = this->DISPLAY_FIELD_BY_LANG[$lang] this->DISPLAY_FIELD_BY_LANG=" . var_export($this->DISPLAY_FIELD_BY_LANG,true));
         }
