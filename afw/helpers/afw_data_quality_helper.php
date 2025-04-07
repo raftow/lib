@@ -188,7 +188,10 @@ class AfwDataQualityHelper
                 die("debugg-2025-02-10 : Test if attribute $attribute step $step contain attribute $attribute");
             }*/
 
-            if ($object->stepContainAttribute($step, $attribute, $desc)) {
+            if (
+                $object->stepContainAttribute($step, $attribute, $desc) and
+                $object->attributeIsApplicable($attribute)
+                ) {
                 /*
                 if($attribute=="passeport_num" and $step=='all') 
                 {
