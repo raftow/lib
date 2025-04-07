@@ -63,7 +63,7 @@ try {
         $devMode = AfwSession::config("MODE_DEVELOPMENT", false);
         $file_types = AfwFileUploader::getDocTypes($module);
         if ((!$file_types) or (count($file_types) == 0)) throw new AfwRuntimeException("file_types for $module is to be defined for file uploads process : add `$module-file_types` param in $module/application_config.php file");
-        $AfileClass = AfwSession::config("$module-AfileClass", AfwSession::config("AfileClass", "Afile"));
+        $AfileClass = AfwSession::config("$module-AfileClass", AfwSession::config("AfileClass", "WorkflowFile"));
 
         if (!$allowed_exention_list) {
                 list($allowed, $ft_allowed) = DocType::getExentionsAllowed($file_types, $upper = false);
