@@ -2,6 +2,7 @@
 // die("DBG-mode main page");
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
+ini_set('zend.exception_ignore_args', 0);
 global $loops;
 if(!$loops) $loops = 1;
 else $loops++;
