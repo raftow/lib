@@ -982,9 +982,9 @@ class AFWObject extends AFWRoot
     private function setAfieldDefaultValue($field_name, $value, $reset = false)
     {
 
-        if (static::$TABLE == "period") {
+        /* if (static::$TABLE == "period") {
             if (($field_name == "validated_at") and (!$value)) throw new AfwRuntimeException("rafik dbg : $field_name inited as = [$value] into " . static::$TABLE);
-        }
+        }*/
 
         $this->FIELDS_INITED[$field_name] = $value;
         $this->setAfieldValue($field_name, $value);
