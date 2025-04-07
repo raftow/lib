@@ -67,12 +67,12 @@ class AfwMysql
                 throw new AfwRuntimeException("queryToCapture : $sql");
             }
             try{
-                $return = mysqli_query($link, $sql);
                 $sql_html = strip_tags($sql);
                 if(strlen($sql_html)>1000)
                 {
                     $sql_html = substr($sql_html, 0, 997). "...";
                 }
+                $return = mysqli_query($link, $sql);
                 $aff_rows = mysqli_affected_rows($link);
             }
             catch(Exception $e)
