@@ -49,7 +49,7 @@ class AfwHtmlHelper extends AFWRoot {
 
         public static function htmlBackTrace($backtrace, $advanced = true)
         {
-                $message = "<table dir='ltr'>
+                $message = "<table dir='ltr' class='hide'>
                                 <tr class='btrace header'>
                                         <th><b>Function </b></th>
                                         <th><b>File </b></th>

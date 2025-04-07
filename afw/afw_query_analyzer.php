@@ -157,7 +157,7 @@ class AfwQueryAnalyzer
         
         $title_duration = '';
 
-        if ((!$MODE_BATCH_LOURD) and (!$MODE_SQL_PROCESS_LOURD) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
+        if ($MODE_DEVELOPMENT and (!$MODE_BATCH_LOURD) and (!$MODE_SQL_PROCESS_LOURD) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
             if (!self::$_sql_analysis[$this_module][$this_table][$sql_query]) {
                 self::$_sql_analysis[$this_module][$this_table][$sql_query] = 1;
             } else {
@@ -185,16 +185,17 @@ class AfwQueryAnalyzer
             } else {
                 self::$sql_picture_arr[$this_module][$this_table]++;
             }
-
+            $this_table_lower = strtolower($this_table);
             $_sql_analysis_seuil_calls_by_table = AfwSession::config(
-                '_sql_analysis_seuil_calls_by_table',
-                600
+                "$this_table_lower-sql-analysis-max-calls", AfwSession::config(
+                                                                    '_sql_analysis_seuil_calls_by_table',
+                                                                    600)
             );
 
             if (self::$sql_picture_arr[$this_module][$this_table] > $_sql_analysis_seuil_calls_by_table) {
                 if ($MODE_DEVELOPMENT) {
                     throw new AfwRuntimeException(
-                        "<p>static analysis crash : The table $this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times</p>
+                        "<p>static analysis crash : The table $this_module-$this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times ($this_table_lower-sql-analysis-max-calls)</p>
                              <h5>$sql_query</h5><br> 
                              <div class='technical'>
                              So it is to be optimized sql_picture => " . var_export(self::$sql_picture_arr, true) .

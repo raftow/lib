@@ -21,12 +21,12 @@ class AfwLoadHelper extends AFWRoot
         return self::$lookupProps["$nom_module_fk-$nom_table_fk"];
     }
 
-    public static function getLookupData($nom_module_fk, $nom_table_fk, $where="--", $order_by="")
+    public static function getLookupData($nom_module_fk, $nom_table_fk, $where="--", $order_by="", $oneId=false)
     {
         if(!$nom_module_fk) throw new AfwRuntimeException("nom_module_fk is mandatory attribute for AfwLoadHelper::getLookupData");
         if(!$where) $where="--"; // `1` means all, `--` means all active and `++` means all after HV
         
-        if(!self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"])
+        if((!($oneId and self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$oneId])) and (!self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"]))
         {
             $case = "sql";
             $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
@@ -50,9 +50,14 @@ class AfwLoadHelper extends AFWRoot
             }
             
         }
+        elseif($oneId and self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$oneId])
+        {
+            $case = "cache-oneId-$oneId";
+            $dataLookup = self::$lookupMatrix["$nom_module_fk.$nom_table_fk"];
+        }
         else 
         {
-            $case = "cache";
+            $case = "cache-where-$where";
             $dataLookup = self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"];
         }
 
@@ -172,13 +177,15 @@ class AfwLoadHelper extends AFWRoot
         if(is_string($val) and AfwStringHelper::stringContain($val,",")) // it is mfk
         {
             $val_0 = trim($val,",");
-            $val_arr = explode(",", $val);
+            $val_arr = explode(",", $val_0);
             $is_array = true;
+            $oneId = false;
         }
         else
         {
             $val_arr = [];
             $val_arr[] = $val;
+            $oneId = $val;
             $is_array = false;
         }
 
@@ -189,7 +196,7 @@ class AfwLoadHelper extends AFWRoot
 
         if((!$small_lookup) and (count($val_arr)>0)) $where="$pk in (".implode(",",$val_arr).")";
         else $where="1";
-        self::getLookupData($nom_module_fk, $nom_table_fk, $where);
+        self::getLookupData($nom_module_fk, $nom_table_fk, $where, "", $oneId);
 
         if(count($val_arr)>0)
         {
@@ -848,8 +855,9 @@ class AfwLoadHelper extends AFWRoot
                 }
                 // $time_end4_4 = microtime(true);
                 $the_pk = $object->getPK();
+                $the_pk_is_multiple = $object->getPKIsMultiple();
                 //if($object->id==30000 00002) throw new AfwRuntimeException("here 2 the (the_pk=$the_pk) = 3000000 002 result_row = ".var_export($result_row,true));
-                if ((count($result_row) > 1) and ($result_row[$the_pk])) {
+                if ((count($result_row) > 1) and ($the_pk_is_multiple or $result_row[$the_pk])) {
                     //if($object->id==3000 000002) throw new AfwRuntimeException("here the id = 300000 0002 result_row = ".var_export($result_row,true));
                     $debugg_res_row = '';
                     foreach ($result_row as $attribute => $attribute_value) {
@@ -897,7 +905,7 @@ class AfwLoadHelper extends AFWRoot
                     $return_true =  "result_row=".var_export($result_row, true);
                     $return = $object->id > 0 ? $return_true : false;
                 } else {
-                    // die("test_rafik 1003 : count(result_row) = ".count($result_row));
+                    // die("test_rafik 1003 : count(result_row) = ".count($result_row)." result_row[$the_pk]=".$result_row[$the_pk]);
                     $return = false;
                 }
             }

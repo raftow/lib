@@ -638,6 +638,7 @@ class AfwSqlHelper extends AFWRoot
         if (!$pk_field) {
             $pk_field = $object->getPKField();
         }
+        
         if (!$order_by) {
             $order_by = $object->getOrderByFields();
         }

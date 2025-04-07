@@ -150,14 +150,14 @@ class AfwSession extends AFWRoot {
         }
 
 
-        private function getStudent($throwError=true)
+        private function getStudent($throwError=true, $studentClass="Student")
         {
                 if(!$this->studentConnected)
                 {
                         $me = self::getSessionVar("student_id");
                         if($me)
                         {
-                                $this->studentConnected = Student::loadById($me);
+                                $this->studentConnected = $studentClass::loadById($me);
                         }                        
                 }
                 return $this->studentConnected;
@@ -378,9 +378,22 @@ class AfwSession extends AFWRoot {
                 global $log_counter, $MODE_BATCH_LOURD;
                 if(!$log_counter) $log_counter = 0;
                 $log_counter++;
-                if($log_counter>50000 and (!$MODE_BATCH_LOURD))
+
+                $MODE_DEVELOPMENT = self::config("MODE_DEVELOPMENT", false);
+
+                if($log_counter>1000 and (!$MODE_BATCH_LOURD) and (!$MODE_DEVELOPMENT))
                 {
                         throw new AfwRuntimeException("too much log ".self::getLog($context));
+                }
+
+                if($log_counter>500 and (!$MODE_BATCH_LOURD))
+                {
+                        return;
+                }
+
+                if($log_counter>10000)
+                {
+                        return;
                 }
                 AfwBatch::print_debugg($string);
                 if($context == "log")

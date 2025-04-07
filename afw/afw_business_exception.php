@@ -11,10 +11,13 @@ class AfwBusinessException extends RuntimeException
     public $return_page = null;
 
     public function __construct(string $message, $lang="ar", string $picture="", 
-                       string $return_message="", string $return_page="index.php", string $technical="")
+                       string $return_message="", string $return_page="index.php", string $technical="", string $module="ums", mixed $param1=null, mixed $param2=null, mixed $param3=null)
     {
+        $message = AfwLanguageHelper::tarjemMessage($message, $module, $lang);
+        $message = sprintf($message, $param1, $param2, $param3);
         if($picture) $this->picture = $picture;
-        if($return_message) $this->return_message = $return_message;
+        if($return_message) $this->return_message = AfwLanguageHelper::tarjemMessage($return_message, $module, $lang);
+        $this->return_message = sprintf($this->return_message, $param1, $param2, $param3);
         if($return_page) $this->return_page = $return_page;
         if(!$this->return_message)
         {

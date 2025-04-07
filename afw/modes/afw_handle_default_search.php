@@ -595,6 +595,11 @@ if (true) {
                                                                                                                                 {
                                                                                                                                         if(!$edit_not_allowed_reason) $edit_not_allowed_reason = "userCanEditMe has not returned reason";
                                                                                                                                         $cant_do_action_log .= $edit_not_allowed_reason." ";
+                                                                                                                                        // die("DBG-2 202504061900 - ".$liste_obj[$id]->getDisplay("ar")." canOnMe=$canOnMe, edit_not_allowed_reason=$edit_not_allowed_reason");
+                                                                                                                                }
+                                                                                                                                else
+                                                                                                                                {
+                                                                                                                                        // die("DBG-1 202504061900 - ".$liste_obj[$id]->getDisplay("ar")." canOnMe=$canOnMe, edit_not_allowed_reason=$edit_not_allowed_reason");
                                                                                                                                 }
                                                                                                                         } 
                                                                                                                         elseif (($frameworkConsideredAction == "delete")) 

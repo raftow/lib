@@ -179,7 +179,8 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                 </thead>
                 <tbody>
                 <? foreach ( $ex->getTrace() as $i => $trace ) : ?>
-                    <tr class="<?= $i % 2 == 0 ? 'even' : 'odd'; ?>">
+                    <? if($i<50) : ?>
+                    <tr class="bt<?=$i?> <?= $i % 2 == 0 ? 'even' : 'odd'; ?>">
                         <td><?= isset($trace[ 'file' ]) ? basename($trace[ 'file' ]) : ''; ?></td>
                         <td><?= isset($trace[ 'line' ]) ? $trace[ 'line' ] : ''; ?></td>
                         <td><?= isset($trace[ 'class' ]) ? $trace[ 'class' ] : ''; ?></td>
@@ -215,6 +216,8 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                            <div class='php code zone'> <?php showCodeLines($trace['file'], $trace['line']);   ?></div>
                         </td>
                     </tr>
+                    <? else : break;?>
+                    <? endif; ?>
                 <? endforeach;?>
                 </tbody>
             </table>

@@ -1263,12 +1263,17 @@ class AFWObject extends AFWRoot
         }
     }
 
+    public function getPKIsMultiple()
+    {
+        return $this->PK_MULTIPLE;
+    }
+
     public function getPKField($add_me = '')
     {
         if (!$this->PK_FIELD and !$this->PK_MULTIPLE) {
-            return $add_me . "id";
-        } elseif ($this->PK_FIELD) {
-            return $add_me . $this->PK_FIELD;
+            $return = $add_me . "id";
+        } elseif ($this->PK_FIELD and !$this->PK_MULTIPLE) {
+            $return = $add_me . $this->PK_FIELD;
         } elseif ($this->PK_MULTIPLE) {
             if ($this->PK_MULTIPLE === true) {
                 $sep = '-';
@@ -1280,8 +1285,15 @@ class AFWObject extends AFWRoot
                 $pk_arr[$pki] = $add_me . $pk_arr[$pki];
             }
 
-            return 'concat(' . implode(",'$sep',", $pk_arr) . ')';
+            $return = 'concat(' . implode(",'$sep',", $pk_arr) . ')';
         }
+
+        /*if(static::$TABLE=="application_desire")
+        {
+            die("For This debugged table pk_field=$return this=".var_export($this, true));
+        }*/
+
+        return $return;
     }
 
     public function getOrderByFields($join = true)
@@ -4086,12 +4098,19 @@ class AFWObject extends AFWRoot
         return true;
     }
 
+    protected function adminCanEditMe()
+    {
+        return [true, ''];
+    }
+
+
     final public function userCanEditMe($auser)
     {
         global $lang;
         if ($auser and $auser->isAdmin()) {
-            return [true, ''];
+            return $this->adminCanEditMe();
         }
+        
         list(
             $editWithoutRole,
             $editWithoutRoleReason,

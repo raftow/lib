@@ -44,7 +44,7 @@ class AfwMemoryHelper extends AFWRoot
 
     public static final function checkMemoryBeforeInstanciating($objInstanciating)
     {
-        global $nb_instances_total, $nb_instances,$tab_instances, $MODE_DEVELOPMENT, $MODE_BATCH_LOURD, $MAX_MEMORY_BY_REQUEST;
+        global $nb_instances_total, $nb_instances,$tab_instances, $MODE_DEVELOPMENT, $MODE_BATCH_LOURD;
         if (!$tab_instances) {
             $tab_instances = [];
         }
@@ -65,7 +65,7 @@ class AfwMemoryHelper extends AFWRoot
         } else {
             $nb_instances_total++;
         }
-        if(!$MAX_MEMORY_BY_REQUEST) $MAX_MEMORY_BY_REQUEST = 100000000;
+        $MAX_MEMORY_BY_REQUEST = AfwSession::config('MAX_MEMORY_BY_REQUEST',1000000000);
         $mm = memory_get_usage(true);
         if (($mm > $MAX_MEMORY_BY_REQUEST) and $MODE_DEVELOPMENT) 
         {
@@ -74,7 +74,7 @@ class AfwMemoryHelper extends AFWRoot
             $mm = memory_get_usage(true);
             
             if ($mm > $MAX_MEMORY_BY_REQUEST) {
-                throw new AfwRuntimeException("MOMKEN OUT OF MEMORY ($mm > $MAX_MEMORY_BY_REQUEST)".var_export($tab_instances,true));
+                throw new AfwRuntimeException("PHP OUT OF MEMORY ($mm > $MAX_MEMORY_BY_REQUEST)".var_export($tab_instances,true));
                 //throw new AfwRuntimeException("MOMKEN OUT OF MEMORY", $throwed_arr=array("ALL"=>true, "FIELDS_UPDATED"=>true, "SQL"=>true, "DEBUGG"=>true, "CACHE"=>true));
             }
         }
