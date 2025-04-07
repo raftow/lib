@@ -7,7 +7,7 @@ class AfwHtmlFooterHelper extends AfwHtmlHelper
         $objme,
         $module,
         $tpl_path = "",
-        $options = [],
+        $options = []
     ) {
 
         $data_tokens = [];
@@ -57,7 +57,7 @@ class AfwHtmlFooterHelper extends AfwHtmlHelper
             $lang,
             $module,
             $tpl_path = "",
-            $options = [],
+            $options = []
     ) 
     {
         $objme = AfwSession::getUserConnected();

@@ -119,7 +119,7 @@ class AfwLoginUtilities extends AFWRoot
         public static function login_done($username)
         {
                 $objUser = Auser::loadByUsername($username);     
-                return $objUser->generateCacheFile("en", true);
+                if($objUser) return $objUser->generateCacheFile("en", true);
         }
 
         public static function db_or_golden_login($username, $user_password)

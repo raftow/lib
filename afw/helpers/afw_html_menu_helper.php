@@ -310,7 +310,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $role,
             $tpl_path = "",
             $selected_menu = "",
-            $options = [],
+            $options = []
     ) 
     {
         $data_tokens = self::prepareMenuAndHeaderTokens($lang,
