@@ -192,7 +192,11 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                                         <? if(!is_object($arg) and !is_array($arg)) : ?> 
                                             <span><?= gettype($arg); ?> : <?= var_export( $arg, true ); ?></span>
                                         <? else : ?>
-                                            <span>Array or Object</span>
+                                            <? if(is_object($arg)) : ?> 
+                                                <span>Object</span>
+                                            <? else : ?>    
+                                                <span>Array</span>
+                                            <? endif; ?>
                                         <? endif; ?>
                                         <?= $i < count( $trace['args'] ) -1 ? ',' : ''; ?> 
                                     <? endforeach; ?>
