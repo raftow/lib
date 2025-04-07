@@ -239,7 +239,11 @@ class AFWObject extends AFWRoot
         if (self::$attributeDefaultsArr[$table_name][$field_name]) return self::$attributeDefaultsArr[$table_name][$field_name];
         $struct = AfwStructureHelper::getStructureOf($this, $field_name);
         $def_type = $struct['TYPE'];
-        if ($def_type == 'FK') {
+        if ($def_type == 'MFK') {
+            if(!$struct['DEFAUT']) $struct['DEFAUT'] = ',';
+            $def_val = $struct['DEFAUT'];
+            $def_val_force = true;
+        } elseif ($def_type == 'FK') {
             if(!$struct['DEFAUT']) $struct['DEFAUT'] = 0;
             $def_val = $struct['DEFAUT'];
             $def_val_force = true;
