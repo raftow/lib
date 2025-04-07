@@ -2,7 +2,7 @@
 <?php
     if(!$MODULE) throw new AfwRuntimeException("MODULE var should be defined for file uploads");
 
-    $file_types = AfwSession::config("$MODULE-file_types", AfwSession::config("file_types", [1,2,3,4,5,6,14]));
+    $file_types = AfwSession::config("$MODULE-file_types", AfwSession::config("file_types", [10,13]));
     if((!$file_types) or (count($file_types)==0)) throw new AfwRuntimeException("file_types for $MODULE is to be defined for file uploads process");
     list($ext_arr, $ft_arr) = DocType::getExentionsAllowed($file_types);
     
