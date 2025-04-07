@@ -996,6 +996,14 @@ class AfwSqlHelper extends AFWRoot
                             $value = '0';
                         }
                         $query .= " $key = $value,";
+                    }
+                    elseif (
+                        $structure['TYPE'] == 'MFK'
+                    ) {
+                        if (!$value) {
+                            $value = ',';
+                        }
+                        $query .= " $key = $value,";
                     } else {
                         if (($structure['TYPE'] == 'GDAT') or ($structure['TYPE'] == 'GDATE')) 
                         {
