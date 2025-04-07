@@ -988,22 +988,17 @@ class AfwSqlHelper extends AFWRoot
                         if ($value) {
                             $query .= " $key = $value,";
                         }
-                    } elseif (
-                        $structure['TYPE'] == 'FK' or
-                        $structure['TYPE'] == 'INT'
-                    ) {
+                    } elseif ($structure['TYPE'] == 'FK' or $structure['TYPE'] == 'INT') {
                         if (!$value) {
                             $value = '0';
                         }
                         $query .= " $key = $value,";
                     }
-                    elseif (
-                        $structure['TYPE'] == 'MFK'
-                    ) {
+                    elseif ($structure['TYPE'] == 'MFK') {
                         if (!$value) {
                             $value = ',';
                         }
-                        $query .= " $key = $value,";
+                        $query .= " $key = '$value',";
                     } else {
                         if (($structure['TYPE'] == 'GDAT') or ($structure['TYPE'] == 'GDATE')) 
                         {
