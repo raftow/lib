@@ -39,15 +39,12 @@ if($correct_codeme==$codeme)
         
         $allowed_extensions = isset($module_config_token["file_exts"])? $module_config_token["file_exts"] : "";
         
-        
-        
-        
-                
-        
+        $AfileClass = AfwSession::config("$MODULE-AfileClass", AfwSession::config("AfileClass", "WorkflowFile"));
         
         $Main_Page="afw_mode_qedit.php";
-        $cl = "Afile";
-        $currmod="ums";
+        $cl = $AfileClass;
+        if($AfileClass=="Afile") $currmod="ums";
+        else $currmod="workflow";
         $limit="200";
         $popup="";
         $ids="cond";
@@ -72,7 +69,7 @@ if($correct_codeme==$codeme)
                            
         
         
-        
+        die("will include $file_dir_name/../$MODULE/main.php");
         
         include("$file_dir_name/../$MODULE/main.php");           
 }
