@@ -2,8 +2,9 @@
 
 require_once ("afw_autoloader.php");
 // die("afw_autoloader loaded");
+AfwSession::startSession();
 $objme = AfwSession::getUserConnected();
-die("getUserConnected found = [$objme]");
+// die("getUserConnected found = [$objme]");
 if(!$objme) 
 {
     AfwSession::pushError("الرجاء تسجيل الدخول أولا");
@@ -24,7 +25,7 @@ $me = $_REQUEST["x"];
 $codeme = $_REQUEST["y"];
 $display_deleted = isset($_REQUEST["dd"]) ? $_REQUEST["dd"] : false;
 $correct_codeme = substr(md5("code".$me),0,8);
-die("$correct_codeme==$codeme , correct_codeme==codeme ?");
+// die("$correct_codeme==$codeme , correct_codeme==codeme ?");
 if($correct_codeme==$codeme)
 {
         // 
