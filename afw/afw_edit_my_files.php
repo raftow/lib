@@ -1,7 +1,7 @@
 <?php
 
 require_once ("afw_autoloader.php");
-die("afw_autoloader loaded");
+// die("afw_autoloader loaded");
 $objme = AfwSession::getUserConnected();
 if(!$objme) 
 {
