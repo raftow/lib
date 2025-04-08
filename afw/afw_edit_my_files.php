@@ -26,6 +26,7 @@ $correct_codeme = substr(md5("code".$me),0,8);
 
 if($correct_codeme==$codeme)
 {
+        die("$correct_codeme==$codeme");
         if(!isset($file_dir_name)) $file_dir_name = dirname(__FILE__);
         
         require_once("$file_dir_name/../$MODULE/application_config.php");
