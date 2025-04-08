@@ -1,7 +1,7 @@
 <?php
 
 require_once ("afw_autoloader.php");
-
+die("afw_autoloader loaded");
 $objme = AfwSession::getUserConnected();
 if(!$objme) 
 {
@@ -9,7 +9,7 @@ if(!$objme)
     header("Location: login.php");
     exit();
 }
-
+die("getUserConnected found = $objme");
 
 if(!isset($MODULE) or (!$MODULE)) 
 {
@@ -18,15 +18,15 @@ if(!isset($MODULE) or (!$MODULE))
         require_once("$file_dir_name/../$MODULE/module_config.php"); 
 
 }
-
+if(!$_REQUEST["x"]) $_REQUEST["x"] = "u".$objme->id;
 $me = $_REQUEST["x"];
 $codeme = $_REQUEST["y"];
-$display_deleted = isset($_REQUEST["dd"])?$_REQUEST["dd"] : false;
+$display_deleted = isset($_REQUEST["dd"]) ? $_REQUEST["dd"] : false;
 $correct_codeme = substr(md5("code".$me),0,8);
-
+die("$correct_codeme==$codeme , correct_codeme==codeme ?");
 if($correct_codeme==$codeme)
 {
-        die("$correct_codeme==$codeme");
+        // 
         if(!isset($file_dir_name)) $file_dir_name = dirname(__FILE__);
         
         require_once("$file_dir_name/../$MODULE/application_config.php");
