@@ -3,13 +3,14 @@
 require_once ("afw_autoloader.php");
 // die("afw_autoloader loaded");
 $objme = AfwSession::getUserConnected();
+die("getUserConnected found = [$objme]");
 if(!$objme) 
 {
     AfwSession::pushError("الرجاء تسجيل الدخول أولا");
     header("Location: login.php");
     exit();
 }
-die("getUserConnected found = $objme");
+
 
 if(!isset($MODULE) or (!$MODULE)) 
 {
