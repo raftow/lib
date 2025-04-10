@@ -194,7 +194,7 @@ class AfwStructureHelper extends AFWRoot
             // $my_db_structure = $GLOBAL_DB_STRUCTURE[$table_name];
             $moduleDomain = ucfirst($module_code);
             $class_name_strcucture = self::getStructureClassName($moduleDomain, $class_name);
-            if (PHP_VERSION_ID < 80000) {
+            if ((PHP_VERSION_ID < 80000) or true) {
                 if (!$my_db_structure) {
                     $my_db_structure = $class_name::$DB_STRUCTURE;
                     $origin = " < 8.0 from $class_name::DB_STRUCTURE";
