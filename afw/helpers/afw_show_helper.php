@@ -1278,7 +1278,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
         $row_class_key = '',
         $css_class_name = '',
         $class_td_off = 'off',
-        $order_key = ''
+        $order_key = '',
+        $decoderArr=null
     ) {
         //die("dataImportance=".var_export($dataImportance,true));
         global $datatable_on_components,
@@ -1405,10 +1406,18 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                     } else {
                         $nowrap_col = '';
                     }
+
+                    $val_col = $tuple[$nom_col];
+                    $val_col_disp = "";
+                    if($decoderArr) 
+                    {
+                        $val_col_disp = $decoderArr[$nom_col][$val_col];
+                    }
+                    if(!$val_col_disp) $val_col_disp = $val_col;
+
+
                     $html .=
-                        "         <td class='col-importance-$importance $col_class_css' $nowrap_col>" .
-                        $tuple[$nom_col] .
-                        "</td>\n";
+                        "         <td class='col-importance-$importance $col_class_css' $nowrap_col>" . $val_col_disp ."</td>\n";
                 }
                 $html .= "   </tr>\n";
 
@@ -1515,7 +1524,15 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                             $data_aff
                         );
                     } else {
-                        $data_aff = $tuple[$nom_col];
+                        $val_col = $tuple[$nom_col];
+                        $val_col_disp = "";
+                        if($decoderArr) 
+                        {
+                            $val_col_disp = $decoderArr[$nom_col][$val_col];
+                        }
+                        if(!$val_col_disp) $val_col_disp = $val_col;
+
+                        $data_aff = $val_col_disp;
                     }
                     if($nom_col==$order_key)
                     {

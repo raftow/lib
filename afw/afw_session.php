@@ -381,20 +381,22 @@ class AfwSession extends AFWRoot {
 
                 $MODE_DEVELOPMENT = self::config("MODE_DEVELOPMENT", false);
 
-                if($log_counter>1000 and (!$MODE_BATCH_LOURD) and (!$MODE_DEVELOPMENT))
+                if($MODE_DEVELOPMENT)
                 {
-                        throw new AfwRuntimeException("too much log ".self::getLog($context));
+                        $log_counter_limit = 100;
+                }
+                else
+                {
+                        $log_counter_limit = 300;
                 }
 
-                if($log_counter>500 and (!$MODE_BATCH_LOURD))
+                if($MODE_BATCH_LOURD) $log_counter_limit = 5*$log_counter_limit;
+
+                if($log_counter > $log_counter_limit)
                 {
                         return;
                 }
-
-                if($log_counter>10000)
-                {
-                        return;
-                }
+                
                 AfwBatch::print_debugg($string);
                 if($context == "log")
                 {
