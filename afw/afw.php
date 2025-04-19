@@ -936,6 +936,7 @@ class AFWObject extends AFWRoot
         $this->set($this->fld_VERSION(), 1);
     }
 
+    // to be overridden if need to init some fields after instanciation
     protected function initObject()
     {
         return true;

@@ -66,6 +66,7 @@ class AfwMemoryHelper extends AFWRoot
             $nb_instances_total++;
         }
         $MAX_MEMORY_BY_REQUEST = AfwSession::config('MAX_MEMORY_BY_REQUEST',1000000000);
+        $MAX_INSTANCES_BY_REQUEST = AfwSession::config('MAX_INSTANCES_BY_REQUEST',10000);
         $mm = memory_get_usage(true);
         if (($mm > $MAX_MEMORY_BY_REQUEST) and $MODE_DEVELOPMENT) 
         {
@@ -78,7 +79,7 @@ class AfwMemoryHelper extends AFWRoot
                 //throw new AfwRuntimeException("MOMKEN OUT OF MEMORY", $throwed_arr=array("ALL"=>true, "FIELDS_UPDATED"=>true, "SQL"=>true, "DEBUGG"=>true, "CACHE"=>true));
             }
         }
-        if ($nb_instances > 10000 and (!$MODE_BATCH_LOURD)) 
+        if ($nb_instances > $MAX_INSTANCES_BY_REQUEST and (!$MODE_BATCH_LOURD)) 
         {
             throw new AfwRuntimeException("too much objects created : $nb_instances : " .var_export($tab_instances, true));
         }
