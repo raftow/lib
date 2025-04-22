@@ -1833,6 +1833,16 @@ class AFWObject extends AFWRoot
         return $this->get($attribute, 'value', '', $integrity);
     }
 
+    public function translateMyYesNo($attribute, $format, $lang)
+    {
+        if($format=="value") return ["Y","N","W"];
+        $yes = $this->translate($attribute.".YES", $lang);
+        $no = $this->translate($attribute.".NO", $lang);
+        $euh = $this->translate($attribute.".EUH", $lang);
+
+        return [$yes,$no,$euh];
+    }
+
     /**
      * decode
      * Decode an attribute switch his type and display it through a specified format
