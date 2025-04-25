@@ -1952,7 +1952,7 @@ $('#$showAsDataTable').DataTable( {
                 break;
 
             case 'ITEMS':
-                if ($structure['SHOW_DATA'] != 'EXAMPLE') {
+                if (($structure['SHOW_DATA'] != 'EXAMPLE') and (!$structure['SHOW_MAX_DATA'])) {
                     $items_objs = $object->get($attribute, 'object', '', false);
                     // if($attribute=="attendanceList") throw new AfwRuntimeException("$object - > get($attribute) = ".var_export($items_objs,true));
                 } else {
