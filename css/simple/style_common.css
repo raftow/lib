@@ -6273,3 +6273,8 @@ input[type=search] {
     width: 100% !important;
     border: 1px solid red !important;
 }
+
+.cols3.odd {
+    background-color: #89d2f5;
+    padding: 6px;
+}

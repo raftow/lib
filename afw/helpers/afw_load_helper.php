@@ -590,7 +590,7 @@ class AfwLoadHelper extends AFWRoot
     /**
      * @param AFWObject $object
      * */
-    public static function loadAllLookupData(&$object, $where = "--", $order_by="")
+    public static function loadAllLookupData(&$object, $where = "--", $order_by="", $pk="")
     {
         $module = $object::$MODULE;
         $table = $object::$TABLE;
@@ -649,7 +649,7 @@ class AfwLoadHelper extends AFWRoot
         
         $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
 
-        $pk = $object->getPKField();
+        if(!$pk) $pk = $object->getPKField();
 
         $sql_recup = "select $pk, $display_field as __val from $server_db_prefix" . $module . ".$table where $where";
         if($order_by) $sql_recup .= " order by $order_by";
@@ -1069,6 +1069,7 @@ class AfwLoadHelper extends AFWRoot
         $loadMany_max = AfwSession::config("load_many_max", 1000);
         $modeDev = AfwSession::config('MODE_DEVELOPMENT', false);
         $memCacheOptim = AfwSession::config('MODE_MEMORY_OPTIMIZE', true);
+        $memFullCacheOptim = AfwSession::config('MODE_MEMORY_FULL_OPTIMIZE', false);
         $cache_management = AfwLoadHelper::cacheManagement($object);
 
         $this_cl = get_class($object);
@@ -1180,7 +1181,7 @@ class AfwLoadHelper extends AFWRoot
                     $objectCache = new $className();
                     $newObject_time_end = hrtime(true);
                     $time_newObject = round(($newObject_time_end - $newObject_time_start)/1000000);
-                    if(($time_newObject>10) and $modeDev)
+                    if(($time_newObject>10) and $modeDev and $memFullCacheOptim)
                     {
                         throw new RuntimeException("$className class have heavy time to create new instance = $time_newObject milli sec = $newObject_time_end - $newObject_time_start");
                     } 

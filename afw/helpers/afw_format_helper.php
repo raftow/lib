@@ -1713,7 +1713,7 @@ class AfwFormatHelper
         return $return;
     }
 
-    public static function pbm_result($err, $info, $warn = null, $sep = "<br>\n", $tech = "")
+    public static function pbm_result($err, $info, $warn = null, $sep = "<br>\n", $tech = "", $result_arr=[])
     {
         // die(" 1 ==> pbm_result($err, $info, $warn) warn = ".var_export($warn,true));
         if (is_array($err)) $err = implode($sep, $err);
@@ -1723,7 +1723,7 @@ class AfwFormatHelper
 
         // die(" 2 ==> pbm_result($err, $info, $warn)");
 
-        return array($err, $info, $warn, $tech);
+        return array($err, $info, $warn, $tech, $result_arr);
     }
 
 

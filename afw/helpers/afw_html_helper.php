@@ -9,12 +9,20 @@ class AfwHtmlHelper extends AFWRoot {
                 return dirname(__FILE__)."/../../hzm/web"; 
         }
 
-        public static function arrayToHtml($arr_key_vals)
+        public static function arrayToHtml($arr_key_vals, $keyDecodeArr=null, $wdKey="1", $wdVal="3", $odd="odd", $even="even")
         {
                 $html_rows = '';
-
-                foreach ($arr_key_vals as $key => $val) {
-                $html_rows .= "   <div class='cols3_title hzm_wd4 fright'><b>$key</b> :</div> <div class='cols3_value hzm_wd4 fright'>$val</div>\n";
+                $cls = $odd;
+                foreach ($arr_key_vals as $key => $val) 
+                {
+                        if($keyDecodeArr)
+                        {
+                                $key_disp = $keyDecodeArr[$key];
+                        }
+                        else $key_disp = $key;
+                        $html_rows .= "   <div class='cols3 cols3_title hzm_wd$wdKey $cls fright'><b>$key_disp</b> :</div> <div class='cols3 cols3_value hzm_wd$wdVal $cls fright'>$val</div>\n";
+                        if($cls == $odd) $cls = $even;
+                        else $cls = $odd;
                 }
 
                 return "<div class='hzm_attribute hzm_wd4'>
@@ -39,11 +47,11 @@ class AfwHtmlHelper extends AFWRoot {
                 return $header_trad;
         }
 
-        public static function tableToHtml($data, $header_trad=null)
+        public static function tableToHtml($data, $header_trad=null, $decoderArr=null)
         {
                 $data = self::resetIndexesToDataArray($data);
                 if(!$header_trad) $header_trad = self::array_keysToHeader($data[0]);
-                list($html, $ids) = AfwShowHelper::tableToHtml($data, $header_trad, $showAsDataTable=false, $isAvail=null, $nowrap_cols=null, $class_table="grid", $class_tr1="altitem", $class_tr2="item", $class_td_off="asttdoff", $lang="ar", $dir="rtl", $bigtitle="", $bigtitle_tr_class="bigtitle", $width_th_arr=array(),$img_width="", $rows_by_table=0, $showWidthedTable="",$row_class_key="",$col_class_key="");
+                list($html, $ids) = AfwShowHelper::tableToHtml($data, $header_trad, $showAsDataTable=false, $isAvail=null, $nowrap_cols=null, $class_table="grid", $class_tr1="altitem", $class_tr2="item", $class_td_off="asttdoff", $lang="ar", $dir="rtl", $bigtitle="", $bigtitle_tr_class="bigtitle", $width_th_arr=array(),$img_width="", $rows_by_table=0, $showWidthedTable="",$row_class_key="",$col_class_key="",$class_td_off = 'off', $order_key = '', $decoderArr);
                 return $html;
         }
 

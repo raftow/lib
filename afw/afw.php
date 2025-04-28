@@ -936,6 +936,7 @@ class AFWObject extends AFWRoot
         $this->set($this->fld_VERSION(), 1);
     }
 
+    // to be overridden if need to init some fields after instanciation
     protected function initObject()
     {
         return true;
@@ -1830,6 +1831,16 @@ class AFWObject extends AFWRoot
     public function getVal($attribute, $integrity = false)
     {
         return $this->get($attribute, 'value', '', $integrity);
+    }
+
+    public function translateMyYesNo($attribute, $format, $lang)
+    {
+        if($format=="value") return ["Y","N","W"];
+        $yes = $this->translate($attribute.".YES", $lang);
+        $no = $this->translate($attribute.".NO", $lang);
+        $euh = $this->translate($attribute.".EUH", $lang);
+
+        return [$yes,$no,$euh];
     }
 
     /**
