@@ -20,10 +20,16 @@ class AfwMysql
     }
 
 
-    public static function rows_count($result)
+    public static function rows_count($mysqli_result)
     {
-        if(self::php_is_old()) return null; // mysql_num_rows($link);    
-        else return $result->num_rows;
+        if(self::php_is_old()) return null;   
+        else 
+        {
+            if(is_bool($mysqli_result)) $row_count = 0;
+            else $row_count = mysqli_num_rows($mysqli_result);
+
+            return $row_count;
+        }
     }
 
     public static function fetch_array($result)
@@ -100,7 +106,7 @@ class AfwMysql
             }
             catch(Exception $e)
             {
-                die("failed to do connection($hostname, $username, *****, $database)");
+                die("failed to do connection($hostname, $username, *****, $database) : ".$e->getMessage());
                 // if you do throw new AfwRuntimeException it will show stack trace containing password
             }
             catch(Error $e)

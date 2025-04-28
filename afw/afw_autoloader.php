@@ -7,7 +7,7 @@ if(!class_exists('AfwAutoLoader'))
         
         class AfwAutoLoader extends AFWRoot 
         {
-                private static $MAX_MODULES = 30;
+                private static $MAX_MODULES = 80;
 
                 private static $modules_autoload_by_prio = ["/","/../ums/", "/../hrm/", ];            // "/../crm/","/../p-ag/", "/../b-au/",
 
@@ -34,7 +34,7 @@ if(!class_exists('AfwAutoLoader'))
                                 self::$modules_autoload_by_prio = array();
                                 self::$modules_autoload_by_prio[] = $to_add;
                                 self::$modules_autoload_by_prio = array_unique(array_merge(self::$modules_autoload_by_prio, $tmp_modules_arr));
-                                if(count(self::$modules_autoload_by_prio)>20) 
+                                if(count(self::$modules_autoload_by_prio)>self::$MAX_MODULES) 
                                         throw new AfwRuntimeException("adding Main module($module) : too much modules, self::modules_autoload_by_prio=".var_export(self::$modules_autoload_by_prio,true));
                         }
                         
@@ -187,7 +187,7 @@ if(!class_exists('AfwAutoLoader'))
 
                                 if (!$found)
                                 {
-                                        throw new RuntimeException('Unable to locate the class ['.$class.'] in configured paths : <!-- failed_loadings_arr = '.var_export($failed_loadings_log_arr,true). " -->");
+                                        throw new RuntimeException('Unable to locate the class ['.$class.'] in configured paths : <!-- failed_loadings_arr = '.var_export($failed_loadings_log_arr,true). " modules_autoload_by_prio = ".var_export(self::$modules_autoload_by_prio,true). " -->");
                                         // rafik : I commented this below because not clear for me what other possible autoloaders ?
                                         // should not throw exception but give the hand to other possible autoloaders ...
                                         // return FALSE;

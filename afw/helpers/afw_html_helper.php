@@ -611,7 +611,7 @@ class AfwHtmlHelper extends AFWRoot {
         {
                 // action columns is based on all actions
                 $actions_tpl_arr = AfwUmsPagHelper::getAllActions($obj);
-                // but each row can have different privileges on actions object why we retrieve the matrix
+                // but each row can have different previleges on actions object why we retrieve the matrix
                 $actions_tpl_matrix = AfwUmsPagHelper::getActionsMatrix($liste_obj);
                 
                 foreach($actions_tpl_arr as $action_item => $action_item_props)

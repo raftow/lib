@@ -146,7 +146,7 @@ class AfwUrlManager extends AFWRoot
                             $bf_id = $tbf_info[$object_table][$afw_action]["id"];
                             if(!$bf_id) AfwSession::pushWarning("The previlege file of module $module_code does not contain a definition for BF[$object_table][$afw_action]");
                         }
-                        else AfwSession::pushWarning("System need cache optimisation by creating previleges file for module $module_code <!-- file not found $module_sys_file -->");    
+                        else AfwSession::pushWarning("System need cache optimisation by creating previleges.php file for module $module_code <!-- file not found $module_sys_file -->");    
 
                         
                         if((!$bf_id) and AfwSession::config("MODE_DEVELOPMENT",false))

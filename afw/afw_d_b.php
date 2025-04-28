@@ -90,7 +90,7 @@ class AfwDB extends AFWRoot
                 $res = AfwBatch::emailError($project_code, $project, $msg);
                 if(!$res["result"]) $msg .= ", can't send email for this error : ".$res["error"];
         }
-        return showError($msg, $call_method = "");
+        return self::showError($msg, $call_method = "");
     }
 
     public static function showError($msg, $call_method = "") 
@@ -138,13 +138,13 @@ class AfwDB extends AFWRoot
 
     public static function getValueFromSQL($database, $sql, $key, $trans_data=array(), $break_if_error=true)
     {
-        $row = getRowFromSQL($database, $sql, $trans_data, $break_if_error);
+        $row = self::getRowFromSQL($database, $sql, $trans_data, $break_if_error);
         return $row[$key];
     }
 
     public static function getRowFromSQL($database, $sql, $trans_data=array(), $break_if_error=true)
     {
-        $data = AfwDB::getDataFromSQL($database, $sql, $trans_data, $break_if_error);
+        $data = self::getDataFromSQL($database, $sql, $trans_data, $break_if_error);
         return $data[0];
     }
 
@@ -275,7 +275,7 @@ class AfwDB extends AFWRoot
                 }
                 else
                 {
-                        raiseError($alerte);
+                        self::raiseError($alerte);
                 }  
         }
 
