@@ -6278,3 +6278,8 @@ input[type=search] {
     background-color: #89d2f5;
     padding: 6px;
 }
+
+.cols3.even {
+    background-color: white;
+    padding: 6px;
+}
