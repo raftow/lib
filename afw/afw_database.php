@@ -190,6 +190,26 @@ class AfwDatabase extends AFWRoot
         return self::data_to_index($data, $keyCol, $valueCol);
     }
 
+    public static function db_recup_bi_index($query, $key1Col, $key2Col, $valueCol)
+    {
+        $data = self::db_recup_rows($query);
+        return self::data_to_bi_index($data, $key1Col, $key2Col, $valueCol);
+    }
+
+    public static function data_to_bi_index($data, $key1Col, $key2Col, $valueCol)
+    {
+        $new_data = [];
+
+        foreach ($data as $ir => $row) {
+            $key1 = $row[$key1Col];
+            $key2 = $row[$key2Col];
+            $value = $row[$valueCol];
+            $new_data[$key1][$key2] = $value;
+        }
+
+        return $new_data;
+    }
+
     public static function data_to_index($data, $keyCol, $valueCol)
     {
         $new_data = [];

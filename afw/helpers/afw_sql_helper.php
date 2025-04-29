@@ -869,6 +869,7 @@ class AfwSqlHelper extends AFWRoot
                 $object->getAfieldValue($object->getPKField()),
                 $fields_to_insert
             );
+            $object->majTriggered();
             $can_insert = $object->beforeInsert(
                 $object->getAfieldValue($object->getPKField()),
                 $fields_to_insert
@@ -1082,8 +1083,9 @@ class AfwSqlHelper extends AFWRoot
                 }
 
                 $object->debugg_tech_notes .= " value setted for PK($my_pk) = $my_setted_id ";
+                $object->majTriggered();
                 $object->afterInsert($my_setted_id, $fields_updated);
-
+                $object->majTriggerReset();
                 if ($print_debugg and $print_sql) {
                     echo "<br>\n ############################################################################# <br>\n";
                     echo "<br>\n record inserted by query : $query id = $my_setted_id <br>\n";
@@ -1123,7 +1125,9 @@ class AfwSqlHelper extends AFWRoot
     {
         if($object->IS_COMMITING) throw new AfwRuntimeException("To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods");
         $object->IS_COMMITING = true;
-        global $the_last_update_sql;
+        
+        // avoid these global variables
+        // global $the_last_update_sql;
 
         $AUDIT_DISABLED = AfwSession::config("AUDIT_DISABLED", false);
 
@@ -1163,6 +1167,7 @@ class AfwSqlHelper extends AFWRoot
                         $id_updated,
                         $object->fieldsHasChanged()
                     );
+                    $object->majTriggered();
                     $can_update = $object->beforeUpdate(
                         $id_updated,
                         $object->fieldsHasChanged()
@@ -1232,7 +1237,9 @@ class AfwSqlHelper extends AFWRoot
 
                 $return = 0;
                 if ($can_update) {
-                    $the_last_update_sql .= " --> " . var_export($fields_updated, true) . " SQL = $query";
+
+                    // if we concatenate sql like this it cause memory exhausted error we should find other way to do
+                    // $the_last_update_sql .= " --> " . var_export($fields_updated, true) . " SQL = $query";
                     if ($object->showQueryAndHalt) {
                         throw new AfwRuntimeException(
                             'showQueryAndHalt : updated fields = ' .
@@ -1254,7 +1261,10 @@ class AfwSqlHelper extends AFWRoot
 
                     if ($only_me and (count($fields_updated) > 0)) {
                         $object->IS_COMMITING = false;
+                        $object->majTriggered();
+                        $object->resetChangedFields();
                         $object->afterUpdate($id_updated, $fields_updated);
+                        $object->majTriggerReset();
                     }
                     if ($only_me and $return > 1) {
                         throw new AfwRuntimeException(
@@ -1295,7 +1305,8 @@ class AfwSqlHelper extends AFWRoot
                 }
                 */
                 //throw new AfwRuntimeException();
-                $the_last_update_sql .= " --> can not update : " . $object->debugg_reason_non_update;
+                // if we concatenate sql like this it cause memory exhausted error we should find other way to do
+                // $the_last_update_sql .= " --> can not update : " . $object->debugg_reason_non_update;
                 $object->IS_COMMITING = false;
                 return 0;
             }

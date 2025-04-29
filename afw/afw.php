@@ -169,9 +169,23 @@ class AFWObject extends AFWRoot
 
     public static $all_data;
 
-    private $force_mode = false;
+    //private $force_mode = false;
 
+    private $maj_trig_count = 0;
 
+    public function majTriggerReset()
+    {
+        $this->maj_trig_count=0;
+    }
+
+    public function majTriggered()
+    {
+        $this->maj_trig_count++;
+        if($this->maj_trig_count>50)
+        {
+            throw new AfwRuntimeException("Too much Update event triggered");
+        }
+    }
     /**
      * __construct
      * Constructor
@@ -1670,6 +1684,19 @@ class AFWObject extends AFWRoot
         return $bool_index_arr;
     }
 
+    public final function countMfkItems($attribute)
+    {
+        $old_val = trim($this->getVal($attribute));
+        $old_val = trim($old_val, ',');
+        if ($old_val) {
+            $old_val_arr = explode(',', $old_val);
+        } else {
+            $old_val_arr = [];
+        }
+
+        return count($old_val_arr);
+    }
+
     public final function findInMfk($attribute, $id_to_find, $mfk_empty_so_found = false, $struct = null)
     {
         if (!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
@@ -2185,6 +2212,11 @@ class AFWObject extends AFWRoot
     public function fieldsHasChanged()
     {
         return $this->FIELDS_UPDATED;
+    }
+
+    public function resetChangedFields()
+    {
+        $this->FIELDS_UPDATED = [];
     }
 
     public function myShortNameToAttributeName($attribute)
@@ -3264,6 +3296,7 @@ class AFWObject extends AFWRoot
             
 
             $return = false;
+            $this->majTriggered();
             if ($this->beforeDelete($this->id, $id_replace)) {
                 $AUDIT_DISABLED = AfwSession::config("AUDIT_DISABLED", false);
                 // for audit 
@@ -3281,6 +3314,7 @@ class AFWObject extends AFWRoot
                     $this->getAfieldValue($this->getPKField()) .
                     "'";
                 $return = $this->execQuery($query);
+                $this->majTriggered();
                 //die("query : $query");
                 $this->afterDelete(
                     $this->getAfieldValue($this->getPKField()),
@@ -3799,6 +3833,7 @@ class AFWObject extends AFWRoot
     final public function canBeDeleted()
     {
         // 0,0 below to simulate delete not really delete (beforeDelete should be regenerated for old classes (before 13/3/2020) to generate simul param inside beforeDelete
+        $this->majTriggered();
         $can = $this->beforeDelete(0, 0);
         if (
             !$can and

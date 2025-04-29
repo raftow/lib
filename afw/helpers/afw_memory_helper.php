@@ -75,13 +75,13 @@ class AfwMemoryHelper extends AFWRoot
             $mm = memory_get_usage(true);
             
             if ($mm > $MAX_MEMORY_BY_REQUEST) {
-                throw new AfwRuntimeException("PHP OUT OF MEMORY ($mm > $MAX_MEMORY_BY_REQUEST)".var_export($tab_instances,true));
+                die("PHP OUT OF MEMORY ($mm > $MAX_MEMORY_BY_REQUEST)".var_export($tab_instances,true));
                 //throw new AfwRuntimeException("MOMKEN OUT OF MEMORY", $throwed_arr=array("ALL"=>true, "FIELDS_UPDATED"=>true, "SQL"=>true, "DEBUGG"=>true, "CACHE"=>true));
             }
         }
         if ($nb_instances > $MAX_INSTANCES_BY_REQUEST and (!$MODE_BATCH_LOURD)) 
         {
-            throw new AfwRuntimeException("too much objects created : $nb_instances : " .var_export($tab_instances, true));
+            die("too much objects created : $nb_instances : " .var_export($tab_instances, true));
         }
     }
 }
