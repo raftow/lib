@@ -57,7 +57,7 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["EDIT"]	                         	= "تعديل";
         $trad["OPERATOR"]["DISPLAY"]	                         	= "عرض";
         $trad["OPERATOR"]["DELETE"]	                         	= "مسح";
-        $trad["OPERATOR"]["MOVE_UP"]	                         	= "تقديم";
+        $trad["OPERATOR"]["MOVE_UP"]	                         	= "ترقية";
         $trad["OPERATOR"]["MOVE_DOWN"]	                         	= "تأخير";
         $trad["OPERATOR"]["PROFILE"]	                         	= "بطاقة";   
         $trad["OPERATOR"]["FILE"]	                         	= " ";   
