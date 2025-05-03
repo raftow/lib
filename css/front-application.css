@@ -1298,9 +1298,9 @@ a.hzm3-button.hzm3-block {
 }
 
 .bf.bf-red {
-        border: 2px red solid !important;
-        color: white !important;
-        background-color: red !important;
+    border: 2px red solid !important;
+    color: white !important;
+    background-color: red !important;
 }
 
 .bf-red .hzm-otherlink.hzm-otherlink-icon-container.only-border.border-primary {

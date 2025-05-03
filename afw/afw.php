@@ -379,8 +379,8 @@ class AFWObject extends AFWRoot
                 $return_type,
                 $attribute,
                 $step,
-                $start_step = null,
-                $end_step = null
+                $start_step,
+                $end_step
             );  
     }
 
@@ -5460,7 +5460,7 @@ class AFWObject extends AFWRoot
             // die("table=static::$TABLE  editByStep=$this->editByStep ");
             return $this->getDoneSteps();
         } else {
-            return 0;
+            return ($this->id > 0) ? 1 : 0;
         }
     }
 

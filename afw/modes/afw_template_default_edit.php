@@ -62,7 +62,7 @@ $check_error_activated = "";
 if ($obj->general_check_errors) $check_error_activated = "general_check_errors";
 elseif (AfwSession::hasOption("CHECK_ERRORS")) $check_error_activated = "has option CHECK_ERRORS";
 elseif (AfwSession::hasOption("GENERAL_CHECK_ERRORS")) $check_error_activated = "has option GENERAL_CHECK_ERRORS";
-
+//die("check_error_activated=$check_error_activated");
 if (!$obj->editByStep) {
         if ($check_error_activated) $obj_errors = AfwDataQualityHelper::getDataErrors($obj, $lang);
 } else {
@@ -495,9 +495,11 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 $link = "#";
                                                         } elseif (($kstep <= $last_edited_step) or (!$obj->stepsAreOrdered()) or ($obj->stepsAreOrdered()<=$obj->currentStep)) {
                                                                 if ($step_erroned)
-                                                                        $class_step = "AlreadyStep ErronedStep ZZO";
+                                                                        $class_step = "AlreadyStep ErronedStep ZZO LES$last_edited_step";
+                                                                elseif($kstep <= $last_edited_step)
+                                                                        $class_step = "AlreadyStep LES$last_edited_step";
                                                                 else
-                                                                        $class_step = "AlreadyStep";
+                                                                        $class_step = "GoingStep LES$last_edited_step";
 
                                                                 $link = "main.php?Main_Page=afw_mode_edit.php&cl=$clObj&id=$idObj&currmod=$moduleObj&currstep=$kstep";
                                                         } else {
@@ -542,6 +544,77 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
 
                 <div class="hzm_form_panel hzm_step_body_<?= $clStep . " step_panel_" . $obj->currentStep ?>">
                         <div class="form_right form_wizard_body form_wizard_<?php echo $cl_short; ?> form_right_<?php echo $clStep . " step_body_" . $obj->currentStep; ?>" >
+                                <div class="wizard_buttons">
+                                <div class='body_nav_hzm'>
+                                                <p>
+                                                        <?php
+                                                        if ($obj->editByStep) {
+                                                                $currStep = $obj->currentStep;
+
+                                                                if ($all_form_readonly) $form_readonly = "RO";
+                                                                else $form_readonly = "";
+
+                                                                $disabled_prev = "";
+                                                                $class_btn_prev = "blightbtn";
+
+                                                                if (AfwFrameworkHelper::findPreviousEditableStep($obj, $currStep, "enable/disable previous btn") <= 0) {
+                                                                        $disabled_prev = "disabled";
+                                                                        $class_btn_prev = "graybtn";
+                                                                }
+                                                        ?>
+                                                                <input type="submit" name="save_previous" id="save_previous" class="fa previous <?= $class_btn_prev ?> wizardbtn fright" value="&nbsp;<?= $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?= $disabled_prev ?>></input>
+                                                                <?
+                                                                // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
+                                                                if ($obj->canSaveOnly($obj->currentStep)) {
+                                                                ?>
+                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                <?
+                                                                }
+                                                                // $nextStep will be = -1 if all next steps are R/O not editable, so no next editable step
+                                                                $nextStep = AfwFrameworkHelper::findNextEditableStep($obj, $currStep, "show btn ?");
+                                                                // no next editable step
+                                                                $no_next_editable_step = ($nextStep < 0);
+
+                                                                // all steps are edited before and completed without errors
+                                                                $all_steps_are_edited_and_ok = (($last_edited_step == $obj->editNbSteps)  and $obj->isOk());
+                                                                // we authorize finish button on any step
+                                                                $authorize_finish_button_on_any_step = ($obj->canFinishOnAnyStep);
+
+                                                                $finish_label = $obj->getFinishButtonLabel($lang, $nextStep, $form_readonly);
+
+                                                                if ($nextStep > 0) {
+                                                                        // ." ($currStep -> $nextStep)"
+                                                                ?>
+                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                <?
+                                                                }
+
+                                                                if (
+                                                                        $finish_label and ($obj->canFinishOnCurrentStep()  or
+                                                                                $obj->canFinishAsSaveAndRemainInCurrentStep()  or
+                                                                                $no_next_editable_step or
+                                                                                ($all_steps_are_edited_and_ok and $authorize_finish_button_on_any_step)
+                                                                        )
+                                                                ) {
+                                                                ?>
+                                                                        <input type="submit" name="save_update" id="save_update" hint="<?= "NextStep:" . $nextStep ?>" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $finish_label ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                <?
+                                                                } else {
+                                                                ?>
+                                                                        <!-- <?= "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
+                                                                <?
+                                                                }
+                                                        } else  // not edit by step
+                                                        {
+                                                                ?>
+                                                                <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                        <?
+                                                        }
+                                                        ?>
+                                                </p>
+                                        </div>
+                                </div>
                                 <div class="form_content form_content_<?php echo $cl_short ?>">
                                         <div id='body_form_hzm' class='body_form_hzm body_form_<?php echo $cl_short ?>'>
                                                 <?

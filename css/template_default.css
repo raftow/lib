@@ -555,6 +555,40 @@ input.longbtn.yellowbtn:hover {
     line-height: 2;
 }
 
+input.fa.previous.wizardbtn {
+    background-color: rgb(235, 195, 63) !important;
+    border: none !important;
+    color: black !important;
+    /* width: 100px !important; */
+    max-width: 70px !important;
+    /* --webkit-appearance: butt; */
+    min-width: 70px !important;
+    font-size: 14px !important;
+}
+
+input.fa.next.wizardbtn.fleft {
+    background-color: black !important;
+    border: none !important;
+    color: rgb(255 253 248) !important;
+    /* width: 100px !important; */
+    max-width: 70px !important;
+    /* --webkit-appearance: butt; */
+    min-width: 70px !important;
+    font-size: 14px !important;
+}
+
+input.fa.finish.wizardbtn {
+    background-color: #549115 !important;
+    border: none !important;
+    color: rgb(255 253 248) !important;
+    /* width: 100px !important; */
+    max-width: 70px !important;
+    /* --webkit-appearance: butt; */
+    min-width: 70px !important;
+    font-size: 14px !important;
+    margin: 0;
+}
+
 .togglebtn {
     color: #3463d0;
     border-style: none;
@@ -1014,6 +1048,19 @@ div.body_nav_hzm>p {
     background-color: #ffffff;
     border-bottom: none;
     border-top: none;
+    width: auto;
+    margin: 5px;
+    padding: 12px 0px 0px;
+}
+
+.wizard_buttons {
+    width: -webkit-fill-available;
+    height: 8%;
+    float: right;
+    width: 100%;
+    min-height: 30px;
+    margin: 0;
+    padding: 0 !important;
 }
 
 .notification_message_container {

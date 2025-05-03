@@ -299,8 +299,13 @@ li.wizardv1_li.CurrentStep {
 }
 
 li.wizardv1_li.AlreadyStep {
-    background-color: transparent;
+    border-right: 1px solid silver !important;
+    border-top: 1px solid silver !important;
+    border-right: 1px solid #96ccfaa6 !important;
+    border-top: 1px solid #96ccfaa6 !important;
+    background-color: #d6f2ff52 !important;
 }
+
 
 .rea_filebox {
     padding: 0;

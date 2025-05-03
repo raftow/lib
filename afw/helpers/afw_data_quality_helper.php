@@ -142,7 +142,7 @@ class AfwDataQualityHelper
                 $start_step,
                 $end_step
             );
-            // if((get_class($object)=="Applicant") and ($step==2)) throw new AfwRuntimeException(get_class($object).":: dbg : this_db_structure for step=$step and start_step=$start_step, end_step=$end_step => ".var_export($object_db_structure,true));
+            // if((get_class($object)=="Applicant") and ($step)) throw new AfwRuntimeException(get_class($object).":: dbg : this_db_structure for step=$step and start_step=$start_step, end_step=$end_step => ".var_export($object_db_structure,true));
             // die("showErrorsAsSessionWarnings::getDbStructure($return_type, $attrib, $step, $start_step, $end_step) = ".var_export($object_db_structure,true));
             // if($step!="all") die("static::getDbStructure($return_type, $attrib, $step) = ".var_export($object_db_structure,true));
         } else {

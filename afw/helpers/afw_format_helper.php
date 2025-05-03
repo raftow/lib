@@ -1221,16 +1221,16 @@ class AfwFormatHelper
         return $idn_correct;
     }
 
-    public static function getIdnTypeId($id_number, $authorize_other_sa_idns = false, $authorize_nid = true)
+    public static function getIdnTypeId($id_number, $authorize_other_sa_idns = false, $authorize_nid = false)
     {
         try {
             $id = trim($id_number);
             $type3 = substr($id, 0, 3);
             $type = substr($id, 0, 1);
-            if ($type3 == "NID") return array($authorize_nid, 99);
+            if ($authorize_nid and ($type3 == "NID")) return array($authorize_nid, 99);
             if ((strlen($id) !== 10) or (($type != 2) and ($type != 1))) {
                 if (!$authorize_other_sa_idns) return array(false, 0);
-                else return array(true, 3);
+                else return array(true, 99);
             }
 
             if (!is_numeric($id)) return array(false, 0);

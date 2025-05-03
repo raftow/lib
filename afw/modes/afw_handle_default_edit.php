@@ -43,6 +43,9 @@ if (!$is_loaded_from_db) {
             //if((!$id) and $objme and $objme->isSuperAdmin()) die("rafik loadWithUniqueKey failed object still without ID ".var_export($obj,true));
             $is_loaded_from_db = true;
         }
+        else{
+            // die("loadWithUniqueKey failed to found record and has used ukey_array = ".var_export($ukey_array,true)." obj=".var_export($obj,true));
+        }
     }
 }
 
@@ -160,7 +163,14 @@ if ($obj->editByStep) {
         if ($currstep < 0) $currstep = $old_currstep;
     }
 
-    if ($obj->stepsAreOrdered() and ($currstep > $obj->getLastEditedStep(false))) $obj->setLastEditedStep($currstep);
+    $les = $obj->getLastEditedStep(false);
+    if($obj->id and !$les) $les = 1;
+
+    if (($obj->stepsAreOrdered() and ($currstep > $les)) or
+        ($currstep == $les+1)) // if steps aren't ordered we should enter steps by order to update sci_id
+    {
+        $obj->setLastEditedStep($currstep);
+    } 
 }
 $new_label = $obj->insertNewLabel("ar");
 $successful_save = AfwLanguageHelper::translateKeyword("save_with_sucess", $lang) . " " . AfwLanguageHelper::translateKeyword("changes", $lang);
