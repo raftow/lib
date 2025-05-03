@@ -173,51 +173,7 @@ button.bf.hzm-specialmethod {
 }
 
 
-.greentitle i {
-    background: #d0f2ff;
-    border-color: #4dc6ff;
-    display: inline-block;
-    width: 9px;
-    height: 9px;
-    margin-right: 2px;
-    margin-left: 12px;
-    border-width: 2px;
-    border-style: solid;
-}
 
-.greentitle {
-    color: #1591cc;
-    font-size: 16px;
-    padding-bottom: 3px;
-    font-weight: normal !important;
-    text-shadow: none; /* #c6f7f4 1px 2px;*/
-    background-color: transparent  !important;
-    max-width: 1500px;
-    width: 100% !important;
-    border-bottom: 1px solid #bec8d2 !important;
-}
-
-.bluetitle i {
-    background: #a3c5e7;
-    border-color: #3a86d3;
-    width: 9px;
-    height: 9px;
-    margin-right: 2px;
-    margin-left: 12px;
-    border-width: 2px;
-    border-style: solid;
-}
-
-.bluetitle {
-    color: #2e75bf;
-    padding-bottom: 3px;
-    font-weight: normal !important;
-    text-shadow: #c6f7f4 1px 2px;
-    background-color: transparent  !important;
-    max-width: 1500px;
-    width: 100% !important;
-    border-bottom: 1px solid #bec8d2 !important;
-}
 
 button.bf.hzm-otherlink {
     width: 23%;
@@ -278,7 +234,7 @@ button.bf.hzm-otherlink {
     margin-left: 0px;
     padding-right: 0px;
     background-color: white;
-    padding-top: 15px;
+    padding-top: 58px;
     border-width: 1px 1px 1px 0;
     border-color: white;
     border-style: solid;
