@@ -453,7 +453,7 @@ nav.close ~ .dashboard .top{
     float: left;
 }
 
-.form-control.input_edited {
+.form-control.input_edited, .form-control.input_changed {
     border-right: 2px solid #3099db !important;
     background-color: transparent !important;
 }

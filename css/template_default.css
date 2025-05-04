@@ -589,6 +589,20 @@ input.fa.finish.wizardbtn {
     margin: 0;
 }
 
+input.fa.save.wizardbtn {
+    background-color: #3463d0 !important;
+    border: none !important;
+    color: rgb(255 253 248) !important;
+    /* width: 100px !important; */
+    max-width: 110px !important;
+    /* --webkit-appearance: butt; */
+    min-width: 110px !important;
+    font-size: 14px !important;
+    margin: 0;
+}
+
+ 
+
 .togglebtn {
     color: #3463d0;
     border-style: none;

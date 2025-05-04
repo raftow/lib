@@ -4649,14 +4649,13 @@ span.database, span.gear {
         font-family: maghreb, rgt, gess !important;
 }
 
+/*
 .input_changed {
     border: 1px !important;
     border-color: #1f7c23 !important;
     background: #dff8a3 !important;
     border-style: solid !important;
     color: #1f7c23 !important;
-    /* font-weight: bold !important; */
-    /* font-style: italic !important; */
     padding-right: 5px !important;
     text-align: right !important;
 }
@@ -4670,7 +4669,7 @@ span.database, span.gear {
     font-weight: normal !important;
     padding-right: 5px !important;
     text-align: right !important;
-}
+}*/
 
 select.input_edited {
     padding-right: 15px !important;

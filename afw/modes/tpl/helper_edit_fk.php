@@ -192,6 +192,19 @@ else
                 });
 
             });
+
+            $("#<?php echo $col_name_atc ?>").keypress(function(){
+                $("#<?php echo $col_name ?>").val("");
+            });
+
+            $("#<?php echo $col_name_atc ?>").blur(function(){
+                if($("#<?php echo $col_name ?>").val()=="")
+                {
+                    $("#<?php echo $col_name_atc ?>").val("");
+                }
+            });
+
+            
         </script>
 
 <?php                    

@@ -103,7 +103,7 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["NEXTRO"]	                         	= "متابعة >";
         $trad["OPERATOR"]["PREVIOUS"]	                         	= "< حفظ ورجوع";
         $trad["OPERATOR"]["PREVIOUSRO"]	                         	= "< رجوع";
-        $trad["OPERATOR"]["FINISH"]	                         	= "حفظ وإنهاء";
+        $trad["OPERATOR"]["FINISH"]	                         	= "إنهاء";
         $trad["OPERATOR"]["FINISHRO"]	                         	= "إنهاء";
         $trad["OPERATOR"]["COMPLETE_LATER"]	                        = "حفظ كمسودة وإكمال البيانات لاحقا";
         $trad["OPERATOR"]["COMPLETE_LATERRO"]	                        = "إنهاء";
