@@ -656,6 +656,12 @@ function select($list_id_val, $selected = array(), $info = array(), $sort_order 
 
     <script>
         <?php
+        
+        if ($info["loadmyprops"]) {
+            echo "// loadmyprops function for attribute : " . $info["name"] . "\n";
+            echo $info["loadmyprops"] . "\n\n";
+        }
+
         if ($info["reloadfn"]) {
             echo "// reload function for attribute : " . $info["name"] . "\n";
             echo $info["reloadfn"] . "\n\n";

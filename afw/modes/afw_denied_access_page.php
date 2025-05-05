@@ -18,7 +18,7 @@ $objme = AfwSession::getUserConnected();
 $uri_module = AfwUrlManager::currentURIModule();
 
 include_once("$file_dir_name/../../../$uri_module/application_config.php");
-AfwSession::initConfig($config_arr);
+AfwSession::initConfig($config_arr, "system", "$file_dir_name/../../../$uri_module/application_config.php");
 $NOM_SITE = AfwSession::config("application_name","This Application");
 $MODE_DEVELOPMENT = AfwSession::config("MODE_DEVELOPMENT",true);
 
