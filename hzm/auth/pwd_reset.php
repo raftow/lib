@@ -17,7 +17,7 @@ require_once("$module_auth_dir_name/../../../$uri_module/ini.php");
 require_once("$module_auth_dir_name/../../../$uri_module/module_config.php");
 
 include_once ("$module_auth_dir_name/../../../$uri_module/application_config.php");
-AfwSession::initConfig($config_arr);
+AfwSession::initConfig($config_arr, "system", "$module_auth_dir_name/../../../$uri_module/application_config.php");
 AfwSession::startSession();
 $lang = AfwSession::getSessionVar("lang");
 if(!$lang) $lang = "ar";

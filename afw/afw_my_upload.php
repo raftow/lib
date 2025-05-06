@@ -52,7 +52,7 @@ try {
         if (!$module) throw new AfwRuntimeException("MODULE var should be defined for `myUpload` file upload process");
         include_once("$file_dir_name/../$module/module_config.php");
         include_once("$file_dir_name/../$module/application_config.php");
-        AfwSession::initConfig($config_arr);
+        AfwSession::initConfig($config_arr, "system", "$file_dir_name/../$module/application_config.php");
 
 
         // max allowwed size for upload

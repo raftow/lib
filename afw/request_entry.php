@@ -92,9 +92,10 @@ foreach($request as $key => $kval)
 
 include_once ("$file_dir_name/../../$MODULE/ini.php");
 include_once ("$file_dir_name/../../$MODULE/module_config.php");
-//die("rafik see this : will include_once ($file_dir_name/../../$MODULE/module_config.php)");
-require_once ("$file_dir_name/../../$MODULE/application_config.php");
-AfwSession::initConfig($config_arr);
+if($MODULE!="store") throw new AfwRuntimeException("rafik see this bad module config has been included : $file_dir_name/../../$MODULE/module_config.php");
+$application_config_file = "$file_dir_name/../../$MODULE/application_config.php";
+require_once ($application_config_file);
+AfwSession::initConfig($config_arr,"system",$application_config_file);
 // die("second initConfig ".AfwSession::log_config());
 
 $parent_module = AfwSession::config("main_module", "");

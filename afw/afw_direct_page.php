@@ -29,7 +29,7 @@ $direct_dir_name = dirname(__FILE__)."/../../$uri_module";
 include_once ("$direct_dir_name/ini.php");
 //die("$direct_dir_name/application_config.php");
 include_once ("$direct_dir_name/application_config.php");
-AfwSession::initConfig($config_arr);
+AfwSession::initConfig($config_arr, "system", "$direct_dir_name/application_config.php");
 $parent_module = AfwSession::config("main_module", "");
 if($parent_module) AfwAutoLoader::addMainModule($parent_module);
 

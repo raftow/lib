@@ -71,6 +71,7 @@ if ((!$auto_c)  and (!$auto_complete_default))
                 "style" => $input_style,
                 "empty_item" => $empty_item,
                 "reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name),
+                "loadmyprops" => AfwJsEditHelper::getJsOfLoadMyProps($obj, $col_name),
                 "onchange" => $onchange . AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
                 "onchangefn" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name, $descr = "", false),
                 "required" => $is_required,

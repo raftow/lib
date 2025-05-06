@@ -12,7 +12,7 @@ $uri_module = AfwUrlManager::currentURIModule();
 include_once ("$direct_dir_name/ini.php");
 include_once ("$direct_dir_name/module_config.php");
 include_once ("$direct_dir_name/application_config.php");
-AfwSession::initConfig($config_arr);
+AfwSession::initConfig($config_arr,.....);
 
 
 

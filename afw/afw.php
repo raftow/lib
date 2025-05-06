@@ -443,6 +443,11 @@ class AFWObject extends AFWRoot
         return 'avail';
     }
 
+    public function loadablePropsBy($user)
+    {
+        return [];
+    }
+
     protected function attributeCanBeEditedBy($attribute, $user, $desc)
     {
         // this method can be orverriden in sub-classes

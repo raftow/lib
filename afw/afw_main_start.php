@@ -25,7 +25,7 @@ require_once("$module_path/ini.php");
 require_once("$module_path/module_config.php");
 require_once("$module_path/application_config.php");
 // die("DBG-begin of session start");
-AfwSession::initConfig($config_arr);
+AfwSession::initConfig($config_arr,"system", "$module_path/application_config.php");
 AfwSession::startSession();
 // die("DBG-session started");
 if (!$objme) $objme = AfwSession::getUserConnected();

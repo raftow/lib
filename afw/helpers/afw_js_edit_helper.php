@@ -2,7 +2,56 @@
 
 class AfwJsEditHelper extends AFWRoot 
 {
+    /**
+     * @var AFWObject $object
+     */
+    public static function getJsOfLoadMyProps($object,    
+        $attribute,
+        $desc = '',
+        $original_attribute = ''
+    )     
+    {
+        if (!$original_attribute) {
+            $original_attribute = $attribute;
+        }
 
+        $qedit_suffix = substr($attribute, strlen($original_attribute));
+
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $original_attribute);
+        }
+
+        $objectid = $object->getId();
+        $className = $object->getMyClass();
+        $currmod = $object->getMyModule();
+        $js_source = '';
+        $attribute_loadMyProps_fn = $attribute . '_loadMyProps';
+
+        $props_dependencies_setting = "";
+
+        $js_source .= "function $attribute_loadMyProps_fn() {  \n";
+        $js_source .= "     
+                    \$.getJSON(\"../lib/api/loadmyprops.php\", 
+                    {
+                    cl:\"$className\",
+                    currmod:\"$currmod\",
+                    objid:\"$objectid\",
+                    attribute: \"$original_attribute\",
+                    attributeval: \$(\"#$attribute\").val(), 
+                    },
+                    
+                    function(result)
+                    {
+                        // var \$select = \$('#$attribute'); 
+                        \$.each(result, function(prop, value) {
+                            \$(\"#\"+prop).val(value);
+                        });
+                    });
+                   }  
+                   /*******************************  end of  $attribute_loadMyProps_fn  *****************************/  ";
+        return $js_source;
+    }
+        
 
     
     /**
@@ -12,7 +61,8 @@ class AfwJsEditHelper extends AFWRoot
         $attribute,
         $desc = '',
         $original_attribute = ''
-    ) {
+    ) 
+    {
         // global $lang;
         // $objme = AfwSession::getUserConnected();
         if (!$original_attribute) {
@@ -86,6 +136,47 @@ $dependencies_values
     }
 
 
+    public static function isLoadMyPropsField($fld)
+    {
+        $fld_items = explode("/", $fld);
+        $isLoadMyPropsField = ((count($fld_items)>1) and ($fld_items[0]=="LOAD-MY-PROPS"));
+        return $isLoadMyPropsField;
+    }
+
+    public static function getLoadMyPropsItems($fld)
+    {
+        $fld_items = explode("/", $fld);
+        $isLoadMyPropsField = ((count($fld_items)>1) and ($fld_items[0]=="LOAD-MY-PROPS"));
+        if(!$isLoadMyPropsField) $fld_items = [];
+        else unset($fld_items[0]);
+
+        $items = [];
+
+        foreach($fld_items as $fld_item)
+        {
+            list($source_item, $dest_item) = explode(":",$fld_item);
+            if(!$dest_item) $dest_item = $source_item;
+            $items[$source_item] = $dest_item;
+        }
+
+        return $items;
+    }
+
+/**
+     * @var AFWObject $object
+     */
+    public static function getAttributeLoadMyPropsItems($desc) 
+    {
+        foreach ($desc['DEPENDENT_OFME'] as $fld) 
+        {
+            
+            if(self::isLoadMyPropsField($fld))
+            {
+                return self::getLoadMyPropsItems($fld);
+            }
+        }
+    }
+
     /**
      * @var AFWObject $object
      */
@@ -111,10 +202,22 @@ $dependencies_values
         $js_source = '';
 
         $js_source .= "function $attribute_onchange_fn() { \n";
-        foreach ($desc['DEPENDENT_OFME'] as $fld) {
-            $fld_suffixed = $fld . $qedit_suffix;
-            $js_source .= "   " . $fld_suffixed . "_reload(); \n";
-            $js_source .= "   " . $fld_suffixed . "_onchange(); \n";
+        foreach ($desc['DEPENDENT_OFME'] as $fld) 
+        {
+            
+            if(self::isLoadMyPropsField($fld))
+            {
+                $attribute_load_my_props_fn = $attribute . '_loadMyProps';
+                $js_source .= "   $attribute_load_my_props_fn(); \n";
+            }
+            else
+            {
+                $fld_suffixed = $fld . $qedit_suffix;
+
+                $js_source .= "   " . $fld_suffixed . "_reload(); \n";
+                $js_source .= "   " . $fld_suffixed . "_onchange(); \n";
+            }
+            
         }
         $js_source .= "\n} \n/*******************************  end of  $attribute_onchange_fn  *****************************/  ";
 

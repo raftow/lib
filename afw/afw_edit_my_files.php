@@ -32,7 +32,7 @@ if($correct_codeme==$codeme)
         if(!isset($file_dir_name)) $file_dir_name = dirname(__FILE__);
         
         require_once("$file_dir_name/../$MODULE/application_config.php");
-        AfwSession::initConfig($config_arr);
+        AfwSession::initConfig($config_arr, "system", "$file_dir_name/../$MODULE/application_config.php");
         
         $doc_types = $module_config_token["file_types"];
         if(!$doc_types) $doc_types = "'define them in module_config.php'";

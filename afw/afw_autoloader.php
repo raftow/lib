@@ -110,7 +110,7 @@ if(!class_exists('AfwAutoLoader'))
                                         $file_path_to_load = $autol_file_dir_name."/../../".$moduleCurr."/struct"."/".$cleaned_file_name;
                                         if(!file_exists($file_path_to_load))
                                         {
-                                                throw new AfwRuntimeException("when loading $class from $file_path_to_load it failed because file does not exists");
+                                                throw new AfwRuntimeException("when loading $class from $file_path_to_load it failed because file does not exists, if $moduleCurr is not the correct module where we should find this structure class lease check the constructor of the model class it seams mistake of copy paste");
                                         }
                                         require_once($file_path_to_load);
                                         if(class_exists($class, FALSE)) return array(true, $file_path_to_load, $failed_loadings_arr);
