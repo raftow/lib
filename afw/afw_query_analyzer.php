@@ -10,6 +10,11 @@ class AfwQueryAnalyzer
     public static $duree_sql_total;
     public static $sql_picture_arr;
 
+    public static function resetQueriesExecuted()
+    {
+        self::$nb_queries_executed = 1;
+    }
+
     public static function preAnalyseQuery($sql_query, $is_update)
     {
         global $MODE_BATCH_LOURD,
