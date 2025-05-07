@@ -4575,3 +4575,9 @@ div.content-annonce>ul {
     }
 }
 
+.expanded_fixed {
+    padding-bottom: 10px;
+    padding-top: 5px;
+    float: right;
+    width: 100%;
+}

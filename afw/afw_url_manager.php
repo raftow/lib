@@ -232,7 +232,7 @@ class AfwUrlManager extends AFWRoot
     public static function currentPageCode()
     {
         $currentPageCodeArr = [];
-        // $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
+        $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
         $serv_uri = trim($_SERVER['REQUEST_URI']);
         $serv_uri = str_replace('.php','',$serv_uri);
         $serv_uri = str_replace('?','/', $serv_uri);
@@ -245,10 +245,15 @@ class AfwUrlManager extends AFWRoot
         unset($uri_items[1]);
         $post_i = 0;
         $POST_MAX = 3;
+        $ignored_vars = "";
         foreach($_POST as $var => $varval)
         {
+            $var = trim(strtolower($var));
+            $varval = str_replace('afw_mode_','',$varval);
+            $varval = str_replace('.php','',$varval);
+
             if(
-                (strlen($var)>=3) 
+                ((strlen($var)>=3) or (strlen($varval)>=3))
                 and (!is_numeric($var)) 
                 and (is_string($varval))
                 and (!AfwStringHelper::stringStartsWith($varval,'['))
@@ -266,20 +271,22 @@ class AfwUrlManager extends AFWRoot
                 and ($var != "newo")
                 and ($var != "popup")
                 and ($var != "limit")
-                and ($var != "main_page")
                 and (!AfwStringHelper::is_arabic($var,0.4))
             )
             {
                 if(is_string($varval) and (strlen($varval)<= 8) and ($post_i < $POST_MAX))
                 {
-                    $uri_items[] = trim(strtolower($var));  
-                    $varval = str_replace('.php','',$varval);          
+                    if($var != "main_page") $uri_items[] = $var;
                     $uri_items[] = $varval;            
                     $post_i++;
                 }
+                else $ignored_vars .= "  ($var/$varval/$post_i)  ,";
             }
-            
+            else $ignored_vars .= "  [$var/$varval]  ,";
         }
+
+        // die("curr page code => ignored_vars = $ignored_vars uri_items = ".var_export($uri_items,true));
+
         $previous_item = "";
         foreach($uri_items as $uri_item) 
         {
