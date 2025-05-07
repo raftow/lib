@@ -37,6 +37,7 @@ if(!$objme)
 
 
 if($xls_on) $datatable_on = true;
+if($migration_on) $datatable_on = true;
 if(!$action) $action = "retrieve";
 if(!$action_params) $action_params = "";
 
@@ -177,8 +178,21 @@ if($datatable_on)
         $btns_display["lookup"] = (($newo>0) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin()) ? 1 : 0;
         $btns_total += $btns_display["lookup"];
 
-        $btns_display["excel"] = (($ids_count>0) and $objme) ? 1 : 0;
-        $btns_total += $btns_display["excel"];
+
+        if((!AfwSession::config('MODE_DEVELOPMENT', false)) or (AfwSession::config('MODE_EXCEL_EXPORT', false)))
+        {
+                $btns_display["excel"] = (($ids_count>0) and $objme) ? 1 : 0;
+                $btns_total += $btns_display["excel"];
+        }
+        else
+        {
+                $btns_display["migration"] = (($ids_count>0) and $objme) ? 1 : 0;
+                $btns_total += $btns_display["migration"];
+        }
+        
+
+        
+
 
         $btns_display["ddb"] = ($ids and ($ids_count>1) and ($ids_count<8) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin()) ? 1 : 0;
         $btns_total += $btns_display["ddb"];
@@ -257,6 +271,24 @@ if($datatable_on)
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qsearch.php"/>';
                 $out_scr_btns .= AfwShowHelper::showObject($myClassInstance,"HTML", "afw_hidden_search_criteria.php");
                 $out_scr_btns .= '<input type="submit" class="longbtn greenbtn submit-btn fright" name="submit_xls"  id="submit_xls" value="'.$xls_export.'" />';
+                $out_scr_btns .= '</form>';
+                $out_scr_btns .= '</div>';
+                $btn_num++;
+        }
+
+        if($btns_display["migration"])
+        {
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="">';
+                $migration_export = $myClassInstance->translate('MIGRATION-EXPORT',$lang,true);
+                
+                $out_scr_btns .= '<form name="migrationForm" id="migrationForm" method="post" action="'."main.php".'">';
+                $out_scr_btns .= '<input type="hidden" name="migration_on"  value="1"/>';
+                $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
+                $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
+                $out_scr_btns .= '<input type="hidden" name="limite"    value="0"/>' ;
+                $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qsearch.php"/>';
+                $out_scr_btns .= AfwShowHelper::showObject($myClassInstance,"HTML", "afw_hidden_search_criteria.php");
+                $out_scr_btns .= '<input type="submit" class="longbtn greenbtn submit-btn fright" name="submit_migration"  id="submit_migration" value="'.$migration_export.'" />';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
                 $btn_num++;

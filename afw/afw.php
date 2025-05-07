@@ -1085,7 +1085,7 @@ class AFWObject extends AFWRoot
         return true;
     }
 
-    public function loadBrotherWithUniqueKey($ukey_array)
+    public static function loadBrotherWithUniqueKey($ukey_array)
     {
         $obj = new static();
         if($obj->loadWithUniqueKey($ukey_array)) return $obj;
@@ -2048,6 +2048,16 @@ class AFWObject extends AFWRoot
         // if(($attribute=="email")) die("value_doesnt_exist_and_set_to_empty_and_no_force=$value_doesnt_exist_and_set_to_empty_and_no_force, value_exists_and_same_and_no_force=$value_exists_and_same_and_no_force return =$return, nothing_updated = $nothing_updated, simul_do_not_save = $simul_do_not_save id=".$this->getId().", attribute=$attribute, value = $value, this->FIELDS_UPDATED=".var_export($this->FIELDS_UPDATED,true));
 
         return $return;
+    }
+
+    public function multipleSet($rowAttributeValues, $commit=false)
+    {
+        foreach($rowAttributeValues as $attribute => $value)
+        {
+            $this->set($attribute, $value);
+        }
+
+        if($commit) $this->commit(); 
     }
 
     /**
@@ -3078,7 +3088,7 @@ class AFWObject extends AFWRoot
             }
             return $uk_arr;
         }
-        else throw new AfwRuntimeException("No UNIQUE_KEY index defined");
+        else throw new AfwRuntimeException("No UNIQUE_KEY index defined for ".get_class($this));
     }
 
     public function moveColumn()

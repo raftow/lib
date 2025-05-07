@@ -20,6 +20,8 @@ if (!$objme->isAdmin()) $MAX_ROW = AfwSession::config("MAX_ROW-$cl-not-admin", $
 //$genere_xls = $_REQUEST["genere_xls"];
 
 if ($_REQUEST["xls_on"]) $genere_xls = true;
+if ($_REQUEST["migration_on"]) $genere_migration = true;
+//if($genere_migration) die("genere_migration ...");
 if (!$action) $action = "retrieve";
 if (!$action_params) $action_params = "";
 // die("DBG-User Connected Got");
@@ -247,7 +249,7 @@ if (!$liste_obj) {
                 $limite = 0;
         }
         if (!isset($sql_order_by)) $sql_order_by = "";
-        if (!$genere_xls) {
+        if ((!$genere_xls) and (!$genere_migration)) {
                 $the_limit = $limite . ", " . $MAX_ROW;
                 // $liste_obj       = $obj->loadMany($limite . ", " . $MAX_ROW, $sql_order_by);
                 // die("DBG-loadManyEager normal limited load : liste_obj = obj->loadManyEager($limite, $MAX_ROW, $sql_order_by) = ".var_export($liste_obj,true));
@@ -723,6 +725,13 @@ if ($genere_xls) {
 
         $link = AfwExcel::genereExcel($header_excel, $data_excel,$xls_page_title = 'نتائج البحث', "search-result-".date("YmdHis"));
         echo $link;
+}
+
+
+if ($genere_migration) {
+        // if($genere_migration) die("genere_migration ... for ".var_export($liste_obj,true));
+        $phpCode = Migration::genereUpdateDataMigration($liste_obj);
+        die ("<pre class='technical php'>$phpCode</pre>");
 }
 
 $search_result_html = ob_get_clean();

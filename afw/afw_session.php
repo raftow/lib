@@ -515,7 +515,7 @@ class AfwSession extends AFWRoot {
 
         public static function getCurrentModuleTemplate()
         {
-                return self::config("module-template", "default");
+                return self::config("module-template", "new");
         }
 
         public static function currentMenuTemplate()
