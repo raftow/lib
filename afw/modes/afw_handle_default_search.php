@@ -363,6 +363,12 @@ if ($action and ($action != "retrieve") and ($qsearchview == "exec"))
         AfwSession::log("After execute action $action in afw_handle_default_search");
 }
 
+if ($genere_migration) {
+        // if($genere_migration) die("genere_migration ... for ".var_export($liste_obj,true));
+        $phpCode = Migration::genereUpdateDataMigration($liste_obj);
+        die("<textarea class='technical php'>$phpCode</textarea>");
+}
+
 
 //AFWDebugg::log("**************************************\n");
 //AFWDebugg::log($cols_retrieve,true);
@@ -728,11 +734,7 @@ if ($genere_xls) {
 }
 
 
-if ($genere_migration) {
-        // if($genere_migration) die("genere_migration ... for ".var_export($liste_obj,true));
-        $phpCode = Migration::genereUpdateDataMigration($liste_obj);
-        die ("<pre class='technical php'>$phpCode</pre>");
-}
+
 
 $search_result_html = ob_get_clean();
 ?>
