@@ -113,6 +113,15 @@ class AfwMomkenObject extends AFWObject {
             return self::afield_type()[$lang];
         }
 
+        public static function field_type_code($fieldTypeId)        
+        {
+            return self::afield_type()["code"][$fieldTypeId];
+        }
+
+        public static function need_decode($fieldTypeId)        
+        {
+            return self::afield_type()["need_decode"][$fieldTypeId];
+        }
         
         public static function afield_type()
         {
@@ -124,6 +133,7 @@ class AfwMomkenObject extends AFWObject {
                 $arr_list_of_afield_type["en"]  [2] = "Date hijri";
                 $arr_list_of_afield_type["ar"]  [2] = "تاريخ هجري";
                 $arr_list_of_afield_type["code"][2] = "date";
+                
                 
 
                 // AMNT - مبلغ من المال  
@@ -162,12 +172,14 @@ class AfwMomkenObject extends AFWObject {
                 $arr_list_of_afield_type["en"]  [5] = "Choose from list";
                 $arr_list_of_afield_type["ar"]  [5] = "اختيار من قائمة";
                 $arr_list_of_afield_type["code"][5] = "list";
+                $arr_list_of_afield_type["need_decode"][5] = true;
 
                 // MFK - اختيار متعدد من قائمة  
                 // AFIELD_TYPE_MLST = 6;                 
                 $arr_list_of_afield_type["en"]  [6] = "multiple choice from list";
                 $arr_list_of_afield_type["ar"]  [6] = "اختيار متعدد من قائمة";
                 $arr_list_of_afield_type["code"][6] = "mfk";
+                $arr_list_of_afield_type["need_decode"][6] = true;
                 
                 // PCTG - نسبة مائوية  
                 // AFIELD_TYPE_PCTG = 7; 
@@ -193,12 +205,14 @@ class AfwMomkenObject extends AFWObject {
                 $arr_list_of_afield_type["en"]  [12] = "Short list - one choice";
                 $arr_list_of_afield_type["ar"]  [12] = "إختيار من قائمة قصيرة";
                 $arr_list_of_afield_type["code"][12] = "enum";
+                $arr_list_of_afield_type["need_decode"][12] = true;
 
                 // MENUM - إختيار متعدد من قائمة قصيرة  
                 // AFIELD_TYPE_MENUM = 15; 
                 $arr_list_of_afield_type["en"]  [15] = "Short list - multiple choice";
                 $arr_list_of_afield_type["ar"]  [15] = "إختيار متعدد من قائمة قصيرة";
                 $arr_list_of_afield_type["code"][15] = "menum";
+                $arr_list_of_afield_type["need_decode"][15] = true;
 
                 // FLOAT - قيمة عددية كسرية  
                 // AFIELD_TYPE_FLOAT = 16;
