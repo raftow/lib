@@ -1534,6 +1534,48 @@ class AFWObject extends AFWRoot
     }
 
 
+    public function getJsonMe()
+    {
+        $impFields = AfwPrevilegeHelper::getAfwImportantFields($this);
+
+        $result = [];
+
+        foreach($impFields as $attribute)
+        {
+            $result[$attribute] = $this->getVal($attribute);
+        }
+
+        return $result;
+    }
+
+    public function getJsonArray($attribute)
+    {
+        $hetted = $this->het($attribute);
+        if(!$hetted) return null;
+        
+        if(is_array($hetted))
+        {
+            $result = [];
+            foreach($hetted as $hettedItem)
+            {
+                if(is_object($hettedItem) and ($hettedItem instanceof AFWObject))
+                {
+                    $result[$hettedItem->id] = $hettedItem->getJsonMe();
+        
+                } 
+            }
+
+        }
+        elseif(is_object($hetted) and ($hetted instanceof AFWObject))
+        {
+            $result = $hetted->getJsonMe();
+
+        }
+
+        return $result;
+    }
+
+
     public function het($attribute, $format = '', $optim_lookup = true)
     {
         $what = 'object';
