@@ -241,7 +241,19 @@ class AfwUmsPagHelper extends AFWRoot
                 $tbl->set('is_lookup', 'N');
             }
 
-            $tbl->set('display_field', $obj->DISPLAY_FIELD);
+            if(is_array($obj->DISPLAY_FIELD))
+            {
+                $display_field = implode("|", $obj->DISPLAY_FIELD);
+            }
+            if(is_array($obj->DISPLAY_FIELD_BY_LANG))
+            {
+                $display_field = "[".$obj->DISPLAY_FIELD_BY_LANG["ar"]."]:ByLang";
+            }
+            else
+            {
+                $display_field = $obj->DISPLAY_FIELD;
+            }
+            $tbl->set('display_field', $display_field);
             if ($obj->VIEW or $obj->IS_VIEW) {
                 $tbl->set('real_table', 'N');
             }
