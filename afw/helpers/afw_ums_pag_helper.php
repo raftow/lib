@@ -245,7 +245,7 @@ class AfwUmsPagHelper extends AFWRoot
             {
                 $display_field = implode("|", $obj->DISPLAY_FIELD);
             }
-            if(is_array($obj->DISPLAY_FIELD_BY_LANG))
+            elseif(is_array($obj->DISPLAY_FIELD_BY_LANG))
             {
                 $display_field = "[".$obj->DISPLAY_FIELD_BY_LANG["ar"]."]:ByLang";
             }
