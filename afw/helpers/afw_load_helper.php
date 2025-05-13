@@ -1314,7 +1314,7 @@ class AfwLoadHelper extends AFWRoot
 
     /**
      * loadListe
-     * Load into an array of values returned rows
+     * Load the array of Id with search criterea setted by select and where etc ... search methods
      * @param AFWObject $object
      * @param string $limit : Optional add limit to query
      * @param string $order_by : Optional add order by to query
