@@ -420,7 +420,7 @@ class AfwDateHelper
 
     public static function nameDayTranslate($day_en_mame, $translate_lang = '')
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$translate_lang) $translate_lang = $lang;
         if (!$translate_lang) $translate_lang = "ar";
         $php_day_of_week = self::weekDayNum($day_en_mame);
@@ -429,7 +429,7 @@ class AfwDateHelper
 
     public static function nameMonthTranslate($month_en_mame, $translate_lang = '')
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$translate_lang) $translate_lang = $lang;
         if (!$translate_lang) $translate_lang = "ar";
         if ($translate_lang != "ar") return $month_en_mame;

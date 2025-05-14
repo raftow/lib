@@ -618,7 +618,7 @@ class AfwFormatHelper
 
     public static function getEnumVal(&$object, $attribute, $field_value)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
 
         $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         if (!$field_value and $structure['EMPTY_IS_ALL']) {
@@ -1756,7 +1756,7 @@ class AfwFormatHelper
                     break;
 
                 case 'FORMULA':
-                    global $lang;
+                    $lang = AfwLanguageHelper::getGlobalLanguage();
                     if (!$lang) $lang = 'ar';
                     $return = AfwFormulaHelper::executeFormulaAttribute($object, $attribute, NULL, $lang, $what);
                     $return_isset = isset($return);

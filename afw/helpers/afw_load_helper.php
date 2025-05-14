@@ -1554,7 +1554,7 @@ class AfwLoadHelper extends AFWRoot
 
     public static final function loadAllFkRetrieve(&$object, $row, $colsRet = null)
     {
-        //global $lang;
+        //$lang = AfwLanguageHelper::getGlobalLanguage();
         // load objects from added left joins for all retrieved fields with type = FK and category empty (real fields)
         if (!$colsRet) {
             $colsRet = AfwPrevilegeHelper::getRetrieveCols($object,
@@ -1650,7 +1650,7 @@ class AfwLoadHelper extends AFWRoot
         $langue = ''
     ) 
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$langue) { $langue = $lang; }
         $call_method = "getIndex(tableName = $tableName, format = $format, filtre = " . print_r($filtre, true) .')';
         

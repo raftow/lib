@@ -35,7 +35,7 @@ class AfwController extends AFWRoot
 
         public function render($view_module, $view_name, $data)
         {
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 foreach ($data as $key => $value) $$key = $value;
                 $file_dir_name = dirname(__FILE__);
                 $view_name_tpl = $view_name . "_tpl";
@@ -50,7 +50,7 @@ class AfwController extends AFWRoot
 
         public function renderPage($view_module, $view_page, $data, $error = null, $warning = null, $info = null, $success = null)
         {
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 foreach ($data as $key => $value) $$key = $value;
                 $file_dir_name = dirname(__FILE__);
                 if ($error) AfwSession::pushError($error);
@@ -72,7 +72,7 @@ class AfwController extends AFWRoot
         public function renderHzm($view_name, $object, $data, $structure = "", $objme = null, $public_show = false)
         {
                 foreach ($data as $key => $value) $token_arr["[$key]"] = $value;
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 if ($view_name == "minibox") echo AfwShowHelper::showMinibox($object, $structure, $lang, $token_arr, $objme, $public_show);
                 else $this->renderError("hzm view unknown  : $view_name");
         }
@@ -93,7 +93,7 @@ class AfwController extends AFWRoot
         public function renderErrorAndLogOut($error_message, $suggested_login_page = "", $suggested_login_phrase = "login", $click_here_phrase = "click here")
         {
                 AfwSession::logout();
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 $error_message = AfwLanguageHelper::tt($error_message, $lang);
                 $suggested_login_phrase = AfwLanguageHelper::tt($suggested_login_phrase, $lang);
                 $click_here_phrase = AfwLanguageHelper::tt($click_here_phrase, $lang);
@@ -105,7 +105,7 @@ class AfwController extends AFWRoot
         public function renderLogOutMessage($logout_message, $suggested_login_page = "", $suggested_login_phrase = "login", $click_here_phrase = "click here")
         {
                 AfwSession::logout();
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 $error_message = AfwLanguageHelper::tt($logout_message, $lang);
                 $suggested_login_phrase = AfwLanguageHelper::tt($suggested_login_phrase, $lang);
                 $click_here_phrase = AfwLanguageHelper::tt($click_here_phrase, $lang);

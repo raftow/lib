@@ -11,7 +11,7 @@ class AfwInputHelper extends AFWRoot
 
         public static function text_input($col_name, $desc, $val, &$obj, $separator, $data_loaded=false, $force_css="",$qedit_orderindex=0,$data_length_class_default_for_fk = "inputmoyen", $debugg=false)
         {
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 $html = "";
                 $orig_col_name = $col_name;
                 $dir = "ltr";
@@ -723,7 +723,7 @@ class AfwInputHelper extends AFWRoot
         // list id val can be afw objects or strings
         public static function drop_down($list_id_val, $selected = array(), $info = array(), $sort_order = "", $null_val = true, $langue="", $data_images=null)
         {
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 if(!$langue) $langue = $lang;
 
 

@@ -1,5 +1,5 @@
 <?php
-global $lang;
+$lang = AfwLanguageHelper::getGlobalLanguage();
 if(!$lang) $lang = 'ar';
 
 $themeArr = AfwThemeHelper::loadTheme();

@@ -77,7 +77,7 @@
         
         function decodeHzmTemplate($tpl_content, $data_tokens)
         {
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 
                 $token_arr = $data_tokens;
                 

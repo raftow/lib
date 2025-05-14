@@ -987,7 +987,7 @@ class AfwStructureHelper extends AFWRoot
 
     public static function getEmptyObject(&$object, $attribute)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
 
         list($fileName, $className, $ansTab, $ansModule,) = AfwStructureHelper::getFactoryForFk($object, $attribute);
         if (!$className) {

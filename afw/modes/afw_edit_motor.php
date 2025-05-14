@@ -550,7 +550,7 @@ function clock($col_name, $input_name, $valaff, $minimum, $maximum, $onchange, $
 
 function mobiselector($list_id_val, $selected = array(), $info = array())
 {
-    global $lang;
+    $lang = AfwLanguageHelper::getGlobalLanguage();
 
     if (count($list_id_val) > 7) {
         $info["enableFiltering"] = true;
@@ -623,7 +623,7 @@ function mobiselector($list_id_val, $selected = array(), $info = array())
 
 function select($list_id_val, $selected = array(), $info = array(), $sort_order = "", $null_val = true, $langue = "")
 {
-    global $lang;
+    $lang = AfwLanguageHelper::getGlobalLanguage();
     if (!$langue) $langue = $lang;
     // @todo not all time should be well studied
     // if(count($list_id_val)==0) return;

@@ -1683,7 +1683,7 @@ class AFWObject extends AFWRoot
 
     public final function isOk($force = false, $returnErrors = false, $langue = null, $ignore_fields_arr = null, $start_step = null, $end_step = null)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$langue) $langue = $lang;
         // $objme = AfwSession::getUserConnected();
         if (!$force and !AfwSession::hasOption('CHECK_ERRORS') and !$this->forceCheckErrors) {
@@ -3336,7 +3336,7 @@ class AFWObject extends AFWRoot
      */
     public function delete($id_replace = 0)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $objme = AfwSession::getUserConnected();
 
         if ($this->IS_VIRTUAL) {
@@ -3526,7 +3526,7 @@ class AFWObject extends AFWRoot
      */
     public function __toString()
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
 
         return $this->getDefaultDisplay($lang);
     }
@@ -3804,7 +3804,7 @@ class AFWObject extends AFWRoot
 
     public function tm($message, $langue = '', $company = "")
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$langue) {
             $langue = $lang;
         }
@@ -3817,7 +3817,7 @@ class AFWObject extends AFWRoot
 
     public function tf($message, $langue = '')
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$langue) {
             $langue = $lang;
         }
@@ -4156,7 +4156,7 @@ class AFWObject extends AFWRoot
 
     final public function userCanDeleteMe($auser, $log = true)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $return = 1;
         // User roles check
         if (!$this->userCanDeleteMeStandard($auser)) {
@@ -4220,7 +4220,7 @@ class AFWObject extends AFWRoot
 
     final public function userCanEditMe($auser)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         if ($auser and $auser->isAdmin()) {
             return $this->adminCanEditMe();
         }
@@ -4286,7 +4286,7 @@ class AFWObject extends AFWRoot
     public function showYNValueForAttribute($ynCode, $key, $langue = '')
     {
         if(!$ynCode) return "";
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         // $objme = AfwSession::getUserConnected();
         if (!$langue) {
             $langue = $lang;
@@ -4315,7 +4315,7 @@ class AFWObject extends AFWRoot
 
     public function showMyLink($step = 0, $target = '', $what = "icon", $whatis = "view_ok", $mode = "edit")
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $val_id = $this->getId();
         $val_class = $this->getMyClass();
         $currmod = $this->getMyModule();
@@ -4346,7 +4346,7 @@ class AFWObject extends AFWRoot
         $getFormatLink = true
     ) {
         $val_class = $this->getMyClass();
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         //$objme = AfwSession::getUserConnected();
         if (!$langue) {
             $langue = $lang;
@@ -4978,7 +4978,7 @@ class AFWObject extends AFWRoot
 
     public function userCan($auser, $from_module, $operation)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
 
         $from_module = ''; // car obsolete
 
@@ -5153,7 +5153,7 @@ class AFWObject extends AFWRoot
 
     public function debuggObjList($objList, $attr = '', $show_array = true)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $arr = [];
 
         foreach ($objList as $id => $obj) {
@@ -5545,7 +5545,7 @@ class AFWObject extends AFWRoot
 
     public function getDoneSteps($error_offset = 0)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         //die("getDoneSteps for static::$TABLE ");
         if ($this->editByStep) {
             for ($istep = 1; $istep <= $this->editNbSteps; $istep++) {

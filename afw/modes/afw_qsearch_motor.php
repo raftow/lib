@@ -589,7 +589,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
 
 function subval_sort($table_a_trie, $table_ref, $ord = "desc")
 {
-	global $lang;
+	$lang = AfwLanguageHelper::getGlobalLanguage();
 
 	$res = array();
 	if ($ord == "asc")

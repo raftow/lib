@@ -671,7 +671,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
 
 function select($list_id_val, $selected = array(), $info = array(), $ordre = "", $null_val = true)
 {
-	global $lang;
+	$lang = AfwLanguageHelper::getGlobalLanguage();
         
         // @todo not all time should be well studied
         // if(count($list_id_val)==0) return;

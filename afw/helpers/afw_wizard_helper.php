@@ -170,7 +170,7 @@ class AfwWizardHelper extends AFWRoot
 
     public static final function getOtherLinksArrayStandard($object, $mode, $genereLog = false, $step = "all")
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $objme = AfwSession::getUserConnected();
         // $me = $objme ? $objme->id : 0;
         // $genereLog = true;

@@ -13,7 +13,7 @@ class AfwSmsSender extends AFWRoot {
 
         public static function sendSMS($mobile, $message, $username = "company-crm-2factor", $application_id = 40)
         {
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 if(AfwSession::config("sms_simulation_mode", false))
                 {
                         AfwSession::pushInformation("SMS simuation to $mobile :<br>".$message); 

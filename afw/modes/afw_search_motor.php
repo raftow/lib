@@ -503,7 +503,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
 
 function select($list_id_val, $selected = array(), $info = array(), $ordre = "", $null_val = true, $null_val_display = "غير محدد")
 {
-    global $lang;
+    $lang = AfwLanguageHelper::getGlobalLanguage();
     $null_val_value = 0;
     $null_val_display = AfwLanguageHelper::translateKeyword('NULL', $lang);
 
@@ -568,7 +568,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
 
 function subval_sort($table_a_trie, $table_ref, $ord = "desc")
 {
-    global $lang;
+    $lang = AfwLanguageHelper::getGlobalLanguage();
 
     $res = array();
     if ($ord == "asc")

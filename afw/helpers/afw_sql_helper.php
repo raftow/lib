@@ -1381,7 +1381,7 @@ class AfwSqlHelper extends AFWRoot
 
     public static function deleteOneByOneWhere($object, $where, $simul = false)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
 
         $object->where($where);
 

@@ -829,7 +829,7 @@ class AfwUmsPagHelper extends AFWRoot
     /* @todo later if needed 
     public static final function getAllActionsFromRow($row, $cl, $currmod, $colActive="active", $step=0, $takeViewIcon = true)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         // $objme = AfwSession::getUserConnected();
 
         
@@ -900,7 +900,7 @@ class AfwUmsPagHelper extends AFWRoot
      */
     public static final function getAllActions($object, $step = 0, $takeViewIcon = true)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $images = AfwThemeHelper::loadTheme();
         // $objme = AfwSession::getUserConnected();
 
@@ -1125,7 +1125,7 @@ class AfwUmsPagHelper extends AFWRoot
 
     public function statAllObjUsingMe($object)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $objme = AfwSession::getUserConnected();
         $myAtable_id = 0;
         list($myModule, $myAtable) = $object->getThisModuleAndAtable();

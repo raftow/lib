@@ -895,7 +895,7 @@ function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = fa
 
 function select($list_id_val, $selected = array(), $info = array(), $ordre = "", $null_val = true)
 {
-    global $lang;
+    $lang = AfwLanguageHelper::getGlobalLanguage();
 
     // @todo not all time should be well studied
     // if(count($list_id_val)==0) return;

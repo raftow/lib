@@ -8,7 +8,7 @@ class AfwLanguageHelper
         $langue = AfwSession::getSessionVar("current_lang");
         if (!$langue) 
         {
-            global $lang;
+            $lang = AfwLanguageHelper::getGlobalLanguage();
             $langue = $lang;
             if (!$langue) $langue = 'ar';
         }    

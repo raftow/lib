@@ -3,7 +3,7 @@ class AfwRunHelper
 {
         public static function show_back_trace($light = false)
         {
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 // $light=true; // otherwise sometime loop infite
                 if ($light) $max_trace = 20;
                 else $max_trace = 50;

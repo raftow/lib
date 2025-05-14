@@ -1642,7 +1642,7 @@ $('#$showAsDataTable').DataTable( {
         $data_template = null,
         $class_db_structure = null
     ) {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         //if($object->test_rafik) die("test_rafik 5 start of show ($mode_affichage ...) for : " . $object->getDisplay($lang));
         $mode = strtoupper($mode_affichage);
         if ($mode == 'TPL') {
@@ -2795,7 +2795,7 @@ $('#$showAsDataTable').DataTable( {
 
     public static function previewAttribute($object, $attribute, $desc = '', $max_length = 56)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {

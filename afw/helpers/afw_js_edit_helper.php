@@ -63,7 +63,7 @@ class AfwJsEditHelper extends AFWRoot
         $original_attribute = ''
     ) 
     {
-        // global $lang;
+        // $lang = AfwLanguageHelper::getGlobalLanguage();
         // $objme = AfwSession::getUserConnected();
         if (!$original_attribute) {
             $original_attribute = $attribute;
@@ -186,7 +186,7 @@ $dependencies_values
         $name_only = true,
         $original_attribute = ''
     ) {
-        // global $lang;
+        // $lang = AfwLanguageHelper::getGlobalLanguage();
         $attribute_onchange_fn = $attribute . '_onchange';
         if ($name_only) {
             return "$attribute_onchange_fn()";

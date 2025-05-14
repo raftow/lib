@@ -589,7 +589,7 @@ class AfwDataQualityHelper
 
     public static final function getAttributeError($object, $attribute)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $struct = AfwStructureHelper::getStructureOf($object, $attribute);
         $step = $struct['STEP'];
         if (!$step) {

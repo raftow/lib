@@ -8,7 +8,7 @@
         private static function initLanguage()
         {
                 /*
-                global $lang; 
+                $lang = AfwLanguageHelper::getGlobalLanguage(); 
                 $lang = AfwSession::getSessionVar("current_lang");
                 if(!$lang) $lang = "ar";
                 $lang = strtolower($lang);
