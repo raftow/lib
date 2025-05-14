@@ -3834,7 +3834,12 @@ class AFWObject extends AFWRoot
         return AfwLanguageHelper::translateCompanyMessage($message, $module, $lang, $company);
     }
 
-    
+    public static function transMess($message, $lang = 'ar', $company = "")
+    {
+        $module = static::$MODULE;
+        if (!$module) throw new AfwRuntimeException("static::\$MODULE should be defined in class : " . static::class);
+        return AfwLanguageHelper::translateCompanyMessage($message, $module, $lang, $company);
+    }
 
     public function getAllMyDbStructure()
     {
