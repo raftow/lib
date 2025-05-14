@@ -519,7 +519,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
 
 function select($list_id_val, $selected = array(), $info = array(), $ordre = "", $null_val = true, $null_val_display = "??? ????")
 {
-	global $lang;
+	$lang = AfwLanguageHelper::getGlobalLanguage();
 	$null_val_value = 0;
 	$null_val_display = AfwLanguageHelper::translateKeyword('NULL', $lang);
 
