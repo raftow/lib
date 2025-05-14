@@ -1622,7 +1622,8 @@ class AFWObject extends AFWRoot
         $format = '',
         $integrity = true,
         $max_items = false,
-        $optim_lookup = true
+        $optim_lookup = true,
+        $lang = "ar"
     ) {
         return AfwLoadHelper::getAttributeData(
             $this,
@@ -1631,7 +1632,8 @@ class AFWObject extends AFWRoot
             $format,
             $integrity,
             $max_items,
-            $optim_lookup
+            $optim_lookup,
+            $lang
         );
     }
 
@@ -1923,13 +1925,13 @@ class AFWObject extends AFWRoot
      * @param string $attribute
      * @param string $format
      */
-    public function decode($attribute, $format = '', $integrity = false)
+    public function decode($attribute, $format = '', $integrity = false, $lang="ar")
     {
         // if($attribute == "session_status_id") die("decode($attribute, $format, $integrity)");
         if (strtolower($format) == 'value') {
             return $this->getVal($attribute);
         } else {
-            return $this->get($attribute, 'decodeme', $format, $integrity);
+            return $this->get($attribute, 'decodeme', $format, $integrity, false, true, $lang);
         }
     }
 

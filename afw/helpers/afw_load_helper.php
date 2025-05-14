@@ -1728,11 +1728,12 @@ class AfwLoadHelper extends AFWRoot
         $format = '',
         $integrity = true,
         $max_items = false,
-        $optim_lookup = true
+        $optim_lookup = true,
+        $lang = null
     ) 
     {
-        global $lang, $get_stats_analysis, $MODE_BATCH_LOURD, $MODE_SQL_PROCESS_LOURD;
-
+        global $get_stats_analysis, $MODE_BATCH_LOURD, $MODE_SQL_PROCESS_LOURD;
+        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
         // $cache_management = AfwLoadHelper::cacheManagement($object);
         // $target = '';
         // $popup_t = '';
