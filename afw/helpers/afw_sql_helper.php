@@ -700,7 +700,7 @@ class AfwSqlHelper extends AFWRoot
 
     public static function getOptimizedJoin($object)
     {
-        global $lang;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
 
         $join_sentence_arr = [];
         $join_retrieve_fields = [];
