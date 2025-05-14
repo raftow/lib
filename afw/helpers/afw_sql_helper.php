@@ -666,9 +666,7 @@ class AfwSqlHelper extends AFWRoot
                 $join_sentence = '';
             }
 
-            $query =
-                "SELECT $pk_field as PK, me." .
-                implode(', me.', $all_real_fields);
+            $query = "SELECT $pk_field as PK, me.*"; // . implode(', me.', $all_real_fields);
             if ($list_from_join_cols) {
                 $query .= ",\n" . $list_from_join_cols;
             }
