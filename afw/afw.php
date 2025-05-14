@@ -1448,20 +1448,20 @@ class AFWObject extends AFWRoot
         return $value == 'N';
     }
 
-    public function sureIs($attribute)
+    public function sureIs($attribute, $struct = null)
     {
         // work with shortcuts
-        return $this->is($attribute, false);
+        return $this->is($attribute, false, $struct);
     }
 
-    public function mayBe($attribute)
+    public function mayBe($attribute, $struct = null)
     {
-        return $this->is($attribute);
+        return $this->is($attribute,true, $struct);
     }
 
-    public function may($attribute)
+    public function may($attribute, $struct = null)
     {
-        return $this->mayBe($attribute);
+        return $this->mayBe($attribute, $struct);
     }
 
     /**
