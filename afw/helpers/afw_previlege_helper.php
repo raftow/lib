@@ -743,8 +743,7 @@ class AfwPrevilegeHelper
 
     public static final function isSearchCol($object, $attribute, $desc = '')
     {
-        global $lang;
-
+        $lang = AfwLanguageHelper::getGlobalLanguage();
 
 
         $SEARCH_LANG = 'SEARCH-' . strtoupper($lang);

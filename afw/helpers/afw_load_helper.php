@@ -1739,11 +1739,7 @@ class AfwLoadHelper extends AFWRoot
         // $popup_t = '';
 
         $cl00 = get_class($object);
-
-        $lang = strtolower(trim($lang));
-        if (!$lang) {
-            $lang = AfwLanguageHelper::getGlobalLanguage();
-        }
+        
         $object->debugg_last_attribute = $attribute;
         $call_method = "get(attribute = $attribute, what = $what, format = $format, integrity = $integrity)";
         if (!$attribute) {
