@@ -78,6 +78,7 @@ class AfwLoadHelper extends AFWRoot
         if(!$nom_table_fk) throw new AfwRuntimeException("desc of $attribute is ".var_export($desc,true));
         $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
         $objRep  = new $nom_class_fk;
+        $desc["WHERE"] = $object->decodeText($desc["WHERE"]);
         return AfwLoadHelper::vhGetListe($objRep, $attribute, $object->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, null, $desc['ORDERBY'], $dropdown = true, $optim = true);
     }
 
