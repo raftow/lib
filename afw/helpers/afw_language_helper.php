@@ -3,12 +3,18 @@
 
 class AfwLanguageHelper
 {
+
+    public static function setGlobalLanguage($lang)
+    {
+        AfwSession::setSessionVar("current_lang", $lang);        
+    }
+
     public static function getGlobalLanguage()
     {
         $langue = AfwSession::getSessionVar("current_lang");
         if (!$langue) 
         {
-            $lang = AfwLanguageHelper::getGlobalLanguage();
+            global $lang;
             $langue = $lang;
             if (!$langue) $langue = 'ar';
         }    
