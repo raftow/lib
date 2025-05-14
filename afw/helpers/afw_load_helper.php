@@ -66,6 +66,21 @@ class AfwLoadHelper extends AFWRoot
         return $dataLookup;
     } 
 
+
+    public static function getAnswerTableJsonArray(&$object, $attribute, $lang)
+    {
+        $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        $nom_table_fk   = $desc["ANSWER"];
+        $nom_module_fk  = $desc["ANSMODULE"];
+        if (!$nom_module_fk) {
+            $nom_module_fk = AfwUrlManager::currentWebModule();
+        }
+
+        $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
+        $objRep  = new $nom_class_fk;
+        return AfwLoadHelper::vhGetListe($objRep, $attribute, $object->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, null, $desc['ORDERBY'], $dropdown = true, $optim = true);
+    }
+
     public static function vhGetListe($obj, $fk_attribute, $fk_table, $where, $action="default", $lang="ar", $val_to_keep=null, $order_by="", $dropdown = false, $optim = true, $max_items_count=true)
     {
         $return = [];
