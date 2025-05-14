@@ -1551,7 +1551,7 @@ class AFWObject extends AFWRoot
     public function getJsonArray($attribute)
     {
         $hetted = $this->het($attribute);
-        if(!$hetted) return null;
+        if(!$hetted) return $hetted;
         
         if(is_array($hetted))
         {
