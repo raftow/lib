@@ -74,9 +74,9 @@ class AfwMysql
             }
             try{
                 $sql_html = strip_tags($sql);
-                if(strlen($sql_html)>1203)
+                if(strlen($sql_html)>1207)
                 {
-                    $sql_html = substr($sql_html, 0, 1200). "...";
+                    $sql_html = "[[".substr($sql_html, 0, 1200). "...]]";
                 }
                 $return = mysqli_query($link, $sql);
                 $aff_rows = mysqli_affected_rows($link);
