@@ -3,7 +3,7 @@ class AfwMomkenObject extends AFWObject {
    
         public static function code_of_language_enum($lkp_id=null)
         {
-            global $lang;
+            $lang = AfwLanguageHelper::getGlobalLanguage();
             if($lkp_id) return self::language()['code'][$lkp_id];
             else return self::language()['code'];
         }
@@ -61,7 +61,7 @@ class AfwMomkenObject extends AFWObject {
 
         public static function list_of_language_enum()
         {
-            global $lang;
+            $lang = AfwLanguageHelper::getGlobalLanguage();
             return self::language()[$lang];
         }
         
@@ -86,7 +86,7 @@ class AfwMomkenObject extends AFWObject {
 
         public static function list_of_genre_enum()
         {
-            global $lang;
+            $lang = AfwLanguageHelper::getGlobalLanguage();
             return self::genre()[$lang];
         }
         
@@ -109,7 +109,7 @@ class AfwMomkenObject extends AFWObject {
 
         public static function list_of_afield_type_enum()
         {
-            global $lang;
+            $lang = AfwLanguageHelper::getGlobalLanguage();
             return self::afield_type()[$lang];
         }
 
@@ -232,7 +232,7 @@ class AfwMomkenObject extends AFWObject {
 
         public static function list_of_answer_table_id()
         {
-            global $lang;
+            $lang = AfwLanguageHelper::getGlobalLanguage();
             return self::answer_table()[$lang];
         }
         
