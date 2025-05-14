@@ -184,6 +184,12 @@ class AfwDatabase extends AFWRoot
         }
     }
 
+    public static function db_recup_liste($query, $listeCol)
+    {
+        $data = self::db_recup_rows($query);
+        return self::data_to_liste($data, $listeCol);
+    }
+
     public static function db_recup_index($query, $keyCol, $valueCol)
     {
         $data = self::db_recup_rows($query);
@@ -222,6 +228,19 @@ class AfwDatabase extends AFWRoot
 
         return $new_data;
     }
+
+    public static function data_to_liste($data, $listeCol)
+    {
+        $new_data = [];
+
+        foreach ($data as $ir => $row) {
+            $value = $row[$listeCol];
+            $new_data[] = $value;
+        }
+
+        return $new_data;
+    }
+    
 
     public static function data_by_id($data, $keyCol)
     {
