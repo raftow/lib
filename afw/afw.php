@@ -1534,7 +1534,7 @@ class AFWObject extends AFWRoot
     }
 
 
-    public function getJsonMe()
+    public function getJsonMe($options=[])
     {
         $impFields = AfwPrevilegeHelper::getAfwImportantFields($this);
 
@@ -1542,7 +1542,7 @@ class AFWObject extends AFWRoot
 
         foreach($impFields as $attribute)
         {
-            $result[$attribute] = $this->getVal($attribute);
+            if(!$options["except-$attribute"]) $result[$attribute] = $this->getVal($attribute);
         }
 
         return $result;
@@ -1554,7 +1554,7 @@ class AFWObject extends AFWRoot
         return AfwLoadHelper::getAnswerTableJsonArray($this, $attribute, $lang);
     }
 
-    public function getJsonArray($attribute)
+    public function getJsonArray($attribute, $options=[])
     {
         $hetted = $this->het($attribute);
         if(!$hetted) return $hetted;
@@ -1562,11 +1562,14 @@ class AFWObject extends AFWRoot
         if(is_array($hetted))
         {
             $result = [];
+            $k=-1;
             foreach($hetted as $hettedItem)
             {
                 if(is_object($hettedItem) and ($hettedItem instanceof AFWObject))
                 {
-                    $result[$hettedItem->id] = $hettedItem->getJsonMe();
+                    if($options["index-by-id"]) $k = $hettedItem->id;
+                    else $k++;
+                    $result[$k] = $hettedItem->getJsonMe($options);
         
                 } 
             }
@@ -1574,7 +1577,7 @@ class AFWObject extends AFWRoot
         }
         elseif(is_object($hetted) and ($hetted instanceof AFWObject))
         {
-            $result = $hetted->getJsonMe();
+            $result = $hetted->getJsonMe($options);
 
         }
 
