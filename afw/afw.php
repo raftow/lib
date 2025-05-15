@@ -1554,8 +1554,15 @@ class AFWObject extends AFWRoot
         return AfwLoadHelper::getAnswerTableJsonArray($this, $attribute, $lang);
     }
 
-    public function getJsonArray($attribute, $options=[])
+    public function getJsonArray($attribute, $options=null)
     {
+        if(!$options) 
+        {
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+            $options = $struct["JSON-OPTIONS"];
+        }
+        
+        if(!$options) $options = [];
         $hetted = $this->het($attribute);
         if(!$hetted) return $hetted;
         
