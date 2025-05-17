@@ -1828,6 +1828,10 @@ li.wizardv1_li.CurrentStep {
     border: 1px #b2aeae61 solid;
 }
 
+div.class_input_width_90>div.form-control {
+    width: 85% !important;
+}
+
 .form-control-div.errors {
     border-color: #df806f;
     padding-top: 8px !important;
