@@ -2,7 +2,7 @@
 
 class AfwImportHelper extends AFWRoot
 {
-    public function executeSimpleImport(
+    public static function executeSimpleImport(
         $object,
         $afileObj,
         $attribute_target,
