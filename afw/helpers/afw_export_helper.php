@@ -16,7 +16,7 @@ class AfwExportHelper
             foreach($var as $ky => $varItem)
             {
                 if($recursive) $result[$ky] = self::afwExport($varItem);
-                elseif(is_object($var) and ($var instanceof AFWObject)) $result[$ky] = $varItem->getDisplay($lang);
+                elseif(is_object($varItem) and ($varItem instanceof AFWObject)) $result[$ky] = $varItem->getDisplay($lang);
                 else $result[$ky] = $varItem;
             }
         }
