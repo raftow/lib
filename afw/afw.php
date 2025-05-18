@@ -3485,7 +3485,7 @@ class AFWObject extends AFWRoot
                     $disp_decoded[] = $this->decode($key);
                 }
                 $return = implode($sep, $disp_decoded);
-                if ($this instanceof Application) die("for instanceof Application return = $return because disp_decoded = ".var_export($disp_decoded,true)." from decode of this->DISPLAY_FIELD = ".var_export($this->DISPLAY_FIELD,true));
+                //if ($this instanceof Application) die("for instanceof Application return = $return because disp_decoded = ".var_export($disp_decoded,true)." from decode of this->DISPLAY_FIELD = ".var_export($this->DISPLAY_FIELD,true));
             } elseif ($this->DISPLAY_FIELD) {
                 $return = $this->getVal($this->DISPLAY_FIELD);
             }
