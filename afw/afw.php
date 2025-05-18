@@ -3393,7 +3393,7 @@ class AFWObject extends AFWRoot
                        
                 $return = $this->execQuery($query);
                 $this->majTriggered();
-                die("query : $query");
+                // die("query : $query");
                 $this->afterDelete(
                     $this->getAfieldValue($this->getPKField()),
                     $id_replace
