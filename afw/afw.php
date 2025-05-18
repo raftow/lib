@@ -3379,15 +3379,18 @@ class AFWObject extends AFWRoot
                 {
                     $this->logicDelete();        
                 }
-                $query =
-                    'DELETE FROM ' .
-                    self::_prefix_table(static::$TABLE) .
-                    " 
-                       WHERE " .
-                    $this->getPKField() .
-                    " = '" .
-                    $this->getAfieldValue($this->getPKField()) .
-                    "'";
+                $query = 'DELETE FROM ' . self::_prefix_table(static::$TABLE) . " WHERE 1 ";
+                if($this->getPKIsMultiple())       
+                {
+                    foreach ($this->PK_MULTIPLE_ARR as $pk_field) {
+                        $query .= "and $pk_field = '" . $this->getAfieldValue($pk_field) ."'";    
+                    }
+                }
+                else
+                {
+                    $query .= "and " . $this->getPKField() . " = '" . $this->getAfieldValue($this->getPKField()) ."'";
+                }
+                       
                 $return = $this->execQuery($query);
                 $this->majTriggered();
                 die("query : $query");
