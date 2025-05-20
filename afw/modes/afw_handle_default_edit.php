@@ -44,7 +44,7 @@ if (!$is_loaded_from_db) {
             $is_loaded_from_db = true;
         }
         else{
-            die("loadWithUniqueKey failed to found record and has used ukey_array = ".var_export($ukey_array,true)." obj=".var_export($obj,true));
+            // die("loadWithUniqueKey failed to found record and has used ukey_array = ".var_export($ukey_array,true)." obj=".var_export($obj,true));
         }
     }
 }
