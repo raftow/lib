@@ -66,7 +66,7 @@ class AFWObject extends AFWRoot
     protected $AUDIT_DATA = false;
 
     public $arr_erros = null;
-
+    private $tech_notes = "";
     private $PK_FIELD = '';
 
     // since v 3.0 merged with gotItemCache it is same purpose
@@ -6260,7 +6260,13 @@ class AFWObject extends AFWRoot
 
     public function getTechnicalNotes()
     {
-            return $this->debugg_tech_notes;
+            return $this->tech_notes;
+    }
+
+
+    public function setTechnicalNotes($notes)
+    {
+            $this->tech_notes = $notes;
     }
 
     /*********************************XXXXXXXXXXXXXXXXXXXXXXXX**************************** */
