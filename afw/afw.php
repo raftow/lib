@@ -3036,7 +3036,7 @@ class AFWObject extends AFWRoot
         return false;
     }
 
-    public static final function updateWhere($sets_arr, $where_clause)
+    public static final function updateWhere($sets_arr, $where_clause, $nocote=false)
     {
         $obj = new static();
         foreach ($sets_arr as $col_name => $col_value) {
@@ -3044,8 +3044,8 @@ class AFWObject extends AFWRoot
         }
 
         $obj->where($where_clause);
-
-        return $obj->update(false);
+        $nocote_fields = $nocote ? array_keys($sets_arr) : [];
+        return $obj->update(false, $nocote_fields);
     }
 
 
@@ -3053,10 +3053,10 @@ class AFWObject extends AFWRoot
      * update
      * Update row
      */
-    public function update($only_me = true)
+    public function update($only_me = true, $nocote_fields=null)
     {
 
-        return AfwSqlHelper::updateObject($this, $only_me);
+        return AfwSqlHelper::updateObject($this, $only_me, $nocote_fields);
     }
 
     /**

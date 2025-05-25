@@ -86,7 +86,7 @@ class AfwSqlHelper extends AFWRoot
         }
     }*/
 
-    public static final function getSQLUpdate($obj, $user_id = 0, $ver = 0, $id_updated = '')
+    public static final function getSQLUpdate($obj, $user_id = 0, $ver = 0, $id_updated = '', $nocote_fields=null)
     {
         $report = "";
         $table_prefixed = $obj->getTableName($with_prefix = true);
@@ -159,7 +159,7 @@ class AfwSqlHelper extends AFWRoot
                                 if (!$value) $value = "0000-00-00";
                             }
                             $value_up = strtoupper($value);
-                            if (AfwStringHelper::stringStartsWith($value_up, 'REPLACE(')) {
+                            if ((AfwStringHelper::stringStartsWith($value_up, 'REPLACE(')) or ($nocote_fields and in_array($key, $nocote_fields))) {
                                 $query .= " $key = $value ,";
                             } else {
                                 if ($structure['UTF8']) {
@@ -1119,7 +1119,7 @@ class AfwSqlHelper extends AFWRoot
      * update
      * Update row
      */
-    public static function updateObject($object, $only_me = true)
+    public static function updateObject($object, $only_me = true, $nocote_fields=null)
     {
         if($object->IS_COMMITING) throw new AfwRuntimeException("To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods");
         $object->IS_COMMITING = true;
@@ -1223,7 +1223,7 @@ class AfwSqlHelper extends AFWRoot
                 
         
 
-                list($query, $fields_updated, $report) = AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated);
+                list($query, $fields_updated, $report) = AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated, $nocote_fields);
 
                 /*
                 if(static::$TABLE == "student_session") 
