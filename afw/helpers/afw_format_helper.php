@@ -219,7 +219,8 @@ class AfwFormatHelper
 
         $formatted = true;
 
-        if ($structure['TYPE'] == 'GDAT') {
+        if (($structure['TYPE'] == 'GDAT') or
+            ($structure['TYPE'] == 'GDATE')) {
             //list($data_to_display,) = explode(" ",$value);
             $data_to_display = $value;
             // $data_to_display = AfwDateHelper::justDecodeValue($value, $structure);

@@ -169,7 +169,7 @@ class AfwPrevilegeHelper
         $db_struct_all = $object->getAllMyDbStructure();
 
         foreach ($db_struct_all as $attribute => $descAttr) {
-            if (AfwPrevilegeHelper::isRetrieveCol($object, $attribute, $mode, $lang, $all, $descAttr)) 
+            if (AfwPrevilegeHelper::isRetrieveCol($object, $attribute, $mode, $lang, $all, $descAttr, $force_retrieve_cols)) 
             {
                 if (
                     !$hide_retrieve_cols or
@@ -470,7 +470,8 @@ class AfwPrevilegeHelper
         $mode = 'display',
         $lang = 'ar',
         $all = false,
-        $desc = null
+        $desc = null,
+        $force_retrieve_cols = null
     ) {
 
         $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = AfwPrevilegeHelper::keyIsToDisplayForUser($object,
@@ -498,10 +499,12 @@ class AfwPrevilegeHelper
             $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
         }
 
+        if(!$force_retrieve_cols) $force_retrieve_cols = $object->force_retrieve_cols;
+
         $is_force_retrieve =
-            ($object->force_retrieve_cols and
-                is_array($object->force_retrieve_cols) and
-                in_array($attribute, $object->force_retrieve_cols));
+            ($force_retrieve_cols and
+                is_array($force_retrieve_cols) and
+                in_array($attribute, $force_retrieve_cols));
 
         $is_general_retrieve =
             (isset($desc['RETRIEVE']) and $desc['RETRIEVE'] or

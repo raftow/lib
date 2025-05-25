@@ -123,15 +123,17 @@ button.bf.hzm-specialmethod {
 }
 
 .bf.bf-red {
-    border: 1px #f50000 solid !important;
-    color: #f50000 !important;
-    background-color: #ffd39a2b !important;
+    border: 1px #d61212 solid !important;
+    color: #ed0d0d !important;
+    background-color: #fbf0e12e !important;
+    text-shadow: 1px 1px 1px #c46734;
 }
 
 .bf.bf-blue {
     border: 1px #2059bd solid !important;
     color: #2059bd !important;
     background-color: #fafaff !important;
+    text-shadow: 1px 1px 1px #1795c3;
 }
 
 .bf.bf-yellow {

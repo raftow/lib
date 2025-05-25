@@ -1415,7 +1415,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                     }
                     if(!$val_col_disp) $val_col_disp = $val_col;
 
-
+                    
                     $html .=
                         "         <td class='col-importance-$importance $col_class_css' $nowrap_col>" . $val_col_disp ."</td>\n";
                 }
@@ -1542,6 +1542,12 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                     {
                         $td_id = $nom_col.'-'.$id;
                     }
+
+                    if(true) 
+                    {
+                        $data_aff = "<span>$data_aff</span>";
+                    }
+
                     $html .=
                         "         <td id='$td_id' class='col-importance-$importance $col_class_css' $nowrap_col>" .
                         $data_aff .

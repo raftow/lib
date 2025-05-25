@@ -14,7 +14,9 @@ function hidden_input($col_name, $desc, $val, &$obj)
 
 function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = false, $force_css = "", $qedit_orderindex = 0, $data_length_class_default_for_fk = "inputmoyen")
 {
-    global $Main_Page, $_GET, $_POST, $lang, $mode_hijri_edit, $objme;
+    global $Main_Page, $_GET, $_POST, $mode_hijri_edit, $objme;
+
+    $lang = AfwLanguageHelper::getGlobalLanguage();
 
     $development_mode = AfwSession::config("MODE_DEVELOPMENT", false);
 

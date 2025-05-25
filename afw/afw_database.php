@@ -202,6 +202,8 @@ class AfwDatabase extends AFWRoot
         return self::data_to_bi_index($data, $key1Col, $key2Col, $valueCol);
     }
 
+    
+
     public static function data_to_bi_index($data, $key1Col, $key2Col, $valueCol)
     {
         $new_data = [];
@@ -254,6 +256,31 @@ class AfwDatabase extends AFWRoot
         return $new_data;
     }
 
+
+    
+
+/**
+     * db_recup_rows_by_id
+     * Return an array containing fetched rows indexed by specific column
+     * @param string $query
+     */
+    public static function db_recup_rows_by_id(
+        $query,
+        $keyCol,
+        $throw_error = true,
+        $throw_analysis_crash = true,
+        $module_server = ''
+    ) {
+        $data = self::db_recup_rows(
+            $query,
+            $throw_error,
+            $throw_analysis_crash,
+            $module_server);
+
+
+        return self::data_by_id($data, $keyCol);    
+        
+    }
 
 
     /**
