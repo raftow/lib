@@ -1086,7 +1086,7 @@ class AfwSqlHelper extends AFWRoot
                 $object->majTriggerReset();
                 if ($print_debugg and $print_sql) {
                     echo "<br>\n ############################################################################# <br>\n";
-                    echo "<br>\n record inserted by query : $query id = $my_setted_id <br>\n";
+                    echo "<br>\n record inserted by query : $query ;;; id = $my_setted_id <br>\n";
                     echo "<br>\n ############################################################################# <br>\n";
                 }
 
