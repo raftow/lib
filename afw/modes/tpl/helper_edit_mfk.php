@@ -37,7 +37,7 @@
     if ($desc["FORMAT"]=="dropdown")
     {
         $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action = "loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);            
-        select(
+        AfwEditMotor::select(
             $l_rep,
             explode($separator, trim($val, $separator)),
             $infos_arr,
@@ -48,7 +48,7 @@
     else
     {
         $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action = "loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true, $max_items_count=false);            
-        mobiselector(
+        AfwEditMotor::mobiselector(
             $l_rep,
             explode($separator, trim($val, $separator)),
             $infos_arr

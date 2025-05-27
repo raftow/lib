@@ -383,17 +383,17 @@ input.longbtn.yellowbtn:hover {
 }
 
 .redbtn {
-    color: rgb(201,32,29);
-    background-color: rgb(252,234,234);
+    background-color: rgb(201,32,29);
+    color: rgb(255,255,255);
 }
 
 .redbtn:hover {
-    background-color: rgb(201,32,29);
+    background-color: rgb(129, 9, 7);
     color: rgb(252,234,234);
 }
 
 .redbtn:active {
-    background-color: rgb(201,32,29);
+    background-color: rgb(129, 9, 7);
     color: rgb(252,234,234);
 }
 
@@ -432,17 +432,17 @@ input.longbtn.yellowbtn:hover {
 }
 
 .bluebtn {
-    color: rgb(37,98,178);
-    background-color: rgb(233,241,254);
+    background-color: rgb(37,98,178);
+    color: rgb(255 255 255);
 }
 
 .bluebtn:hover {
-    background-color: rgb(37,98,178);
+    background-color: rgb(12, 64, 133);
     color: rgb(233,241,254);
 }
 
 .bluebtn:active {
-    background-color: rgb(37,98,178);
+    background-color: rgb(12, 64, 133);
     color: rgb(233,241,254);
 }
 
@@ -1046,7 +1046,7 @@ input:-internal-autofill-selected {
 }
 
 div.body_nav_hzm>p {
-    background-color: #ffffff;
+    background-color: transparent;
     border-bottom: none;
     border-top: none;
     width: auto;

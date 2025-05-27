@@ -35,7 +35,7 @@ else
 
     if ($desc["FORMAT"]=="dropdown")
     {
-        select(
+        AfwEditMotor::select(
             $liste_rep,
             $val_arr,
             $infos_arr,
@@ -45,7 +45,7 @@ else
     }
     else
     {
-        mobiselector(
+        AfwEditMotor::mobiselector(
             $liste_rep,
             $val_arr,
             $infos_arr

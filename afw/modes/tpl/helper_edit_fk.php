@@ -84,12 +84,12 @@ if ((!$auto_c)  and (!$auto_complete_default))
         {
             $descHid = array();
             if (!$obj->hideQeditCommonFields) $descHid["TITLE_AFTER"] = $l_rep[$val];
-            $type_input_ret = hidden_input($col_name, $descHid, $val, $obj);
+            $type_input_ret = AfwEditMotor::hidden_input($col_name, $descHid, $val, $obj);
         
         } 
         else 
         {
-            select(
+            AfwEditMotor::select(
                 $l_rep,
                 array($val),
                 $prop_sel
@@ -129,7 +129,7 @@ else
     {
         $descHid = array();
         if (!$obj->hideQeditCommonFields) $descHid["TITLE_AFTER"] = "[$val_display]";
-        $type_input_ret = hidden_input($col_name, $descHid, $val, $obj);
+        $type_input_ret = AfwEditMotor::hidden_input($col_name, $descHid, $val, $obj);
     } 
     else 
     {

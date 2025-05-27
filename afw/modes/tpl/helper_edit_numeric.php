@@ -23,7 +23,7 @@
                             $answer_list[$k] = $k;
                         }
 
-                        select(
+                        AfwEditMotor::select(
                             $answer_list,
                             array($val),
                             array(

@@ -256,13 +256,15 @@ class AfwLanguageHelper
     {
         $yes = "Y";
         $no = "N";
+        $euh = "W";
         if($what=="decodeme")
         {
             if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
             $yes = AfwLanguageHelper::translateKeyword($yes, $lang);
             $no = AfwLanguageHelper::translateKeyword($no, $lang);
+            $euh = AfwLanguageHelper::translateKeyword($euh, $lang);
         }
-        return [$yes,$no];
+        return [$yes,$no,$euh];
         
     }
 

@@ -1,8 +1,6 @@
 <?php
-#####################################################################################
-####################################  FONCTIONS  ####################################
-#####################################################################################
-function hidden_input($col_name, $desc, $val, $obj = null)
+/*
+public static function hidden_input($col_name, $desc, $val, $obj = null)
 {
     $type_input_ret = "hidden";
 ?>
@@ -12,7 +10,7 @@ function hidden_input($col_name, $desc, $val, $obj = null)
 }
 
 
-function type_input($col_name, $desc, $obj, $selected = false)
+public static function type_input($col_name, $desc, $obj, $selected = false)
 {
     global $lang, $class_inputSelect_multi_big, $class_inputInt, $class_inputText, $class_inputSelected;
     $objme = AfwSession::getUserConnected();
@@ -41,7 +39,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
 
             if ($desc["SEARCH-BY-ONE"] and ($desc["TYPE"] == "ENUM")) {
                 //if($col_name) die("_POST[$col_name] = ".$_POST[$col_name]." liste_rep = ".var_export($liste_rep,true));
-                select(
+                self::select(
                     $liste_rep,
                     array($_POST[$col_name]),
                     array(
@@ -53,7 +51,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
                     ""
                 );
             } else {
-                select(
+                self::select(
                     $liste_rep,
                     ((isset($_POST[$col_name])) ? $_POST[$col_name] : array()),
                     array(
@@ -80,25 +78,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
 
             if (!isset($desc["WHERE-SEARCH"])) $ans_tab_where = $desc["WHERE"];
             else $ans_tab_where = $desc["WHERE-SEARCH"];
-            /*
-                                $file_dir_name = dirname(__FILE__); 
-                                if($nom_module_fk)
-                                {
-                                     $full_file_path = $file_dir_name."/../$nom_module_fk/".$nom_fichier_fk;
-                                     
-                                }
-                                else
-                                {
-                                     $full_file_path = $file_dir_name."/".$nom_fichier_fk;
-                                }
-                                
-                                if(!file_exists($full_file_path))
-                                {
-                                     $obj->_error("Impossible de charger $full_file_path in type_input($col_name) for $obj");
-                                }
-                                
-                                require_once $full_file_path;
-                                */
+            
 
             $liste_rep      = new $nom_class_fk();
 
@@ -129,7 +109,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
                 $liste_rep = $liste_rep->loadMany();
                 $l_rep = array();
                 foreach ($liste_rep as $iditem => $item) {
-                    /* if(AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme,'display'))*/
+                    // if(AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme,'display'))
                     $l_rep[$iditem] = $item->getDisplay($lang);
                 }
 
@@ -140,7 +120,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
                 }
 
                 if ($desc["SEARCH-BY-ONE"] and ($desc["TYPE"] == "FK")) {
-                    select(
+                    self::select(
                         $l_rep,
                         isset($_POST[$col_name]) ? array($_POST[$col_name]) : $searchDefaultValue,
                         array(
@@ -154,7 +134,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
                         ""
                     );
                 } else {
-                    select(
+                    self::select(
                         $l_rep,
                         ((isset($_POST[$col_name])) ? $_POST[$col_name] : $searchDefaultValue),
                         array(
@@ -242,21 +222,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
             }
             break;
 
-        /* case 'ANSWER': obsolete
-            $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"], $ans_tab_where);
-            select(
-                $liste_rep,
-                ((isset($_POST[$col_name])) ? $_POST[$col_name] : array()),
-                array(
-                    "class" => "form-control $class_inputSearch $class_inputSelect_multi_big $inp_selected",
-                    "name"  => $col_name . "[]",
-                    "size"  => 5,
-                    "multi" => true
-                ),
-                "asc",
-                false
-            );
-            break;*/
+        
         case 'PK':
         case 'TEXT':
         case 'PCTG':
@@ -284,7 +250,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
                 "N" => ((empty($desc['ANSWER'])) ? $obj->translate('N', $lang, true) : $responses[1]),
                 "W" => ((empty($desc['ANSWER'])) ? $obj->translate('W', $lang, true) : $responses[2])
             );
-            select(
+            self::select(
                 $liste_rep,
                 ((isset($_POST[$col_name])) ? $_POST[$col_name] : array()),
                 array(
@@ -330,7 +296,7 @@ function type_input($col_name, $desc, $obj, $selected = false)
             break;
     }
 }
-function type_oper($col_name, $desc, $obj, $selected = false)
+public static function type_oper($col_name, $desc, $obj, $selected = false)
 {
     global $lang, $class_inputOper, $class_inputSelected;
 
@@ -343,7 +309,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
 
     switch ($desc["TYPE"]) {
         case 'PK':
-            select(
+            self::select(
                 array(
                     "in (.)"     => $obj->translate('IN', $lang, true),
                     "="  => $obj->translate('EQUAL', $lang, true),
@@ -366,7 +332,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
         case 'INT':
         case 'AMNT':
 
-            select(
+            self::select(
                 array(
                     "="  => $obj->translate('EQUAL', $lang, true),
                     "<"  => $obj->translate('LESS_THAN', $lang, true),
@@ -385,7 +351,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
             );
             break;
         case 'DATE':
-            select(
+            self::select(
                 array(
                     "between"    => $obj->translate('BETWEEN', $lang, true)
                 ),
@@ -400,7 +366,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
             break;
         case 'TEXT':
             if ($operSelected == "=") $operSelected = "like X'.'";
-            select(
+            self::select(
                 array(
                     "like X'%.%'"     => $obj->translate('CONTAIN', $lang, true),
                     "like X'.%'"      => $obj->translate('BEGINS_WITH', $lang, true),
@@ -422,7 +388,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
             break;
         case 'MENUM':
         case 'MFK':
-            select(
+            self::select(
                 array(
                     "like '%.%'"     => $obj->translate('CONTAIN', $lang, true),
                     "not like '%.%'" => $obj->translate('NOT_CONTAIN', $lang, true),
@@ -440,7 +406,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
         case 'FK':
         case 'ENUM':
             if ($desc["SEARCH-BY-ONE"]) {
-                select(
+                self::select(
                     array(
                         "="  => $obj->translate('EQUAL', $lang, true),
                     ),
@@ -453,7 +419,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
                     false
                 );
             } else {
-                select(
+                self::select(
                     array(
                         "in"     => $obj->translate('IN', $lang, true),
                         "not in" => $obj->translate('NOT_IN', $lang, true),
@@ -469,7 +435,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
             }
             break;
         case 'YN':
-            select(
+            self::select(
                 array(
                     "in"     => $obj->translate('IN', $lang, true),
                     "not in" => $obj->translate('NOT_IN', $lang, true),
@@ -484,7 +450,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
             );
             break;
         default:
-            select(
+            self::select(
                 array(
                     "in"     => $obj->translate('IN', $lang, true),
                     "not in" => $obj->translate('NOT_IN', $lang, true),
@@ -501,7 +467,7 @@ function type_oper($col_name, $desc, $obj, $selected = false)
     }
 }
 
-function select($list_id_val, $selected = array(), $info = array(), $ordre = "", $null_val = true, $null_val_display = "غير محدد")
+public static function self::select($list_id_val, $selected = array(), $info = array(), $ordre = "", $null_val = true, $null_val_display = "غير محدد")
 {
     $lang = AfwLanguageHelper::getGlobalLanguage();
     $null_val_value = 0;
@@ -566,7 +532,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
 <?php
 }
 
-function subval_sort($table_a_trie, $table_ref, $ord = "desc")
+public static function subval_sort($table_a_trie, $table_ref, $ord = "desc")
 {
     $lang = AfwLanguageHelper::getGlobalLanguage();
 
@@ -579,6 +545,6 @@ function subval_sort($table_a_trie, $table_ref, $ord = "desc")
         $res[$key] = $table_a_trie[$key];
     return $res;
 }
-
+*/
 
 ?>

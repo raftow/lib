@@ -6286,3 +6286,54 @@ input[type=search] {
     background-color: #ceefff;
     padding: 6px;
 }
+
+.body_form_hzm.popup {
+    min-height : 30px !important;
+}
+
+.form_content.popup {
+    min-height: 30px !important;
+}
+
+
+
+img.popup-edit {
+    margin: 5px 8px;
+    border: solid 1px #c0c0c07a;
+    padding: 2px;
+    float: left;
+    cursor: pointer;
+}
+
+div.popup-editor {
+    position: absolute;
+    left: 0;
+    top: 30%;
+    margin-left: 20%;
+    width: 80% !important;
+    height: auto;
+    float: left;
+    max-width: 400px;
+    background-color: white !important;
+}
+
+h5.popup{
+    width: 100%;
+    background-color: gray;
+    color: white;
+    padding: 0px 6px 4px 0px;
+}
+
+h5.popup>p{
+    color: white;
+}
+
+.popup-editor-panel {
+    border: solid 11px #80808017;
+    float: left;
+}
+
+.popup-editing {
+    border: dashed 1px silver;
+    padding: 2px 2px;
+}

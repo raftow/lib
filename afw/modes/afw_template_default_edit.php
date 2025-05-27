@@ -198,9 +198,9 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 $colErrors = $obj_errors[$nom_col];
                                 // if($nom_col=="passeport_num") die("colErrors = ".var_export($colErrors,true));
                                 
-                                $data[$nom_col] = prepareEditInfoForColumn($obj, $nom_col, $desc, $lang, $colErrors, $step_show_error);
+                                $data[$nom_col] = AfwEditMotor::prepareEditInfoForColumn($obj, $nom_col, $desc, $lang, $colErrors, $step_show_error);
                                 $colErrors_export = var_export($colErrors,true);
-                                // if($nom_col=="passeport_num") die("dbg of prepareEditInfoForColumn : data[$nom_col] = ".var_export($data[$nom_col],true)." = prepareEditInfoForColumn(obj, $nom_col, desc, lang=$lang, colErrors=$colErrors_export, step_show_error=$step_show_error)");
+                                // if($nom_col=="passeport_num") die("dbg of prepareEdit InfoForColumn : data[$nom_col] = ".var_export($data[$nom_col],true)." = prepare EditInfoForColumn(obj, $nom_col, desc, lang=$lang, colErrors=$colErrors_export, step_show_error=$step_show_error)");
                         } 
                         else 
                         {
@@ -233,6 +233,16 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 if (($desc['TYPE'] == 'YN') or ($desc['TYPE'] == 'INT') or ($desc['TYPE'] == 'ENUM') or ($desc['TYPE'] == 'FK')) {
                                         if ($desc['CATEGORY']) $col_val_0 = $obj->calc($nom_col);
                                         else $col_val_0 = $obj->getVal($nom_col);
+                                        if(strlen($col_val_0)>30) $col_val_0 = "";
+                                        else
+                                        {
+                                                $col_val_0 = str_replace(",","_",$col_val_0);
+                                                $col_val_0 = str_replace("/","_",$col_val_0);
+                                                $col_val_0 = str_replace(" ","_",$col_val_0);
+                                                $col_val_0 = str_replace(":","_",$col_val_0);
+                                                $col_val_0 = str_replace("-","_",$col_val_0);
+                                        }
+                                        
                                         $col_val_class = "hzm_value_" . $nom_col . "_" . $col_val_0;
                                 }
 
@@ -247,7 +257,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                         // if($nom_col=="response_templates") die("case no-CATEGORY or FORCE-INPUT");
                                         $col_val = $obj->getVal($nom_col);
                                         ob_start();
-                                        hidden_input($nom_col, $desc, $col_val, $obj);
+                                        AfwEditMotor::hidden_input($nom_col, $desc, $col_val, $obj);
                                         $data[$nom_col]["input"] .= ob_get_clean();
                                         if (true) // ($objme->isSuperAdmin())
                                         {
@@ -634,7 +644,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                         {
                                                                 $class_db_structure[$col] = AfwStructureHelper::repareMyStructure($obj, $class_db_structure[$col], $col);
                                                                 list($htmlDiv, $openedInGroupDiv, $fgroup) = 
-                                                                   attributeEditDiv($obj, $col, $class_db_structure[$col], $fgroup, $lang, $openedInGroupDiv, $info);
+                                                                   AfwEditMotor::attributeEditDiv($obj, $col, $class_db_structure[$col], $fgroup, $lang, $openedInGroupDiv, $info);
                                                                 echo $htmlDiv;
                                                         }
                                                         elseif ($info["ehelp"])

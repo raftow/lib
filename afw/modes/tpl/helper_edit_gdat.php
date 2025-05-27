@@ -10,7 +10,7 @@ if(!$col_name) $col_name = "XXX";
                 changeMonth: true,
                 changeYear: true,
                 minDate: $min_date,
-        " . calendar_translations($lang) . "
+        " . AfwEditMotor::calendar_translations($lang) . "
                 });
         });
 </script>

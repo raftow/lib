@@ -3071,6 +3071,28 @@ class AFWObject extends AFWRoot
     }
 
 
+
+
+    /**
+     * popupEditConfig
+     * @param string $col
+     * @param Auser $auser
+     * should be overridden in subclasses if more columns should be switchable
+     * return array[$switcher_authorized, $switcher_title, $switcher_text]
+     * 
+     * $switcher_authorized : if true means the column $col should be switchable
+     * $switcher_title, $switcher_text are the title and warning that will be shown by the confirmation popup before do the switch
+     */
+
+    public function popupEditConfig($col, $auser = null)
+    {
+        $authorized = false;
+        $title = "";
+        $text = "";
+
+        return [$authorized, $title, $text];
+    }
+
     /**
      * switcherConfig
      * @param string $col
@@ -3222,6 +3244,24 @@ class AFWObject extends AFWRoot
 
     }
     
+
+
+    /**
+     * @param Auser $auser
+     * @param string $col
+     * 
+     */
+
+    public final function userCanPopupEditCol($auser, $col)
+    {
+        if ($auser->isSuperAdmin()) return true;
+        $desc = AfwStructureHelper::getStructureOf($this, $col);
+        if (!$this->attributeCanBeEditedBy($col, $auser, $desc)) return false;
+        
+        list($popup_edit_authorized,) = $this->popupEditConfig($col, $auser);
+
+        return $popup_edit_authorized;
+    }
     
 
     /**
@@ -3232,9 +3272,10 @@ class AFWObject extends AFWRoot
 
     public final function userCanSwitchCol($auser, $col)
     {
+        if ($auser->isSuperAdmin()) return true;
         $desc = AfwStructureHelper::getStructureOf($this, $col);
         if (!$this->attributeCanBeEditedBy($col, $auser, $desc)) return false;
-        if ($auser->isSuperAdmin()) return true;
+        
         list($switcher_authorized,) = $this->switcherConfig($col, $auser);
 
         return $switcher_authorized;

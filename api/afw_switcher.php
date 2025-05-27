@@ -61,14 +61,14 @@ $myObj_loaded = $myObj->load($swc_id);
 
 if(!$myObj_loaded)
 {
-   $return_message = $myObj->tm("OBJECT_NOT_FOUND");
+   $return_message = $myObj->tm("OBJECT_NOT_FOUND",$lang);
    die($return_message);
 }
 
 $can_switch_me = $myObj->userCanSwitchCol($objme, $swc_col);
 if(!$can_switch_me)
 {
-	$return_message = "المعذرة هذه عملية تقليب  هذا الحقل تحتاج صلاحية ! ";
+	$return_message = "المعذرة عملية تقليب  هذا الحقل تحتاج صلاحية ! ";
    die($return_message);
    // die(AfwSession::getLog("iCanDo")."<br>$return_message<br>can_delete_me = $can_delete_me");
 }

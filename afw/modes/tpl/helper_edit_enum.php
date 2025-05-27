@@ -130,7 +130,7 @@
                     // to be shown it is not in list add it (and after see what's the problem) 
                     if (($val) and (!$liste_rep[$val])) $liste_rep[$val] = $val;
 
-                    select(
+                    AfwEditMotor::select(
                         $liste_rep,
                         array($val),
                         $info,

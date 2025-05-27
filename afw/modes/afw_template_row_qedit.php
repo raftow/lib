@@ -111,7 +111,7 @@ foreach($class_db_structure as $nom_col => $desc)
         {
                 $qedit_orig_nom_col["id_" . $obj_qeditNum] = "id";
                 ob_start();
-                $type_input_ret = hidden_input("id_" . $obj_qeditNum, [], $obj->id, $obj);
+                $type_input_ret = AfwQeditMotor::hidden_input("id_" . $obj_qeditNum, [], $obj->id, $obj);
                 $qedit_hidden_pk_input = ob_get_clean();
                 if($obj->isConsideredEmpty()) $obj_id_display = "☆";
                 else $obj_id_display = "★";
@@ -122,7 +122,7 @@ foreach($class_db_structure as $nom_col => $desc)
         {
             
                 ob_start();
-                $type_input_ret = hidden_input($qedit_nom_col, $desc, $obj->getId(), $obj);
+                $type_input_ret = AfwQeditMotor::hidden_input($qedit_nom_col, $desc, $obj->getId(), $obj);
                 $qedit_hidden_pk_input = ob_get_clean();
                 //die($qedit_hidden_pk_input);
                 if(!$obj->PK_MULTIPLE)
@@ -178,11 +178,11 @@ foreach($class_db_structure as $nom_col => $desc)
                                                 $col_val = $obj->getVal($nom_col);
                                                 if(($desc['TYPE'] == 'PK') && empty($col_val))
                                                 {
-                                                        $type_input_ret = type_input($qedit_nom_col, $desc, $id, $obj, $separator, $data_loaded, "", $qedit_orderindex);
+                                                        $type_input_ret = AfwQeditMotor::type_input($qedit_nom_col, $desc, $id, $obj, $separator, $data_loaded, "", $qedit_orderindex);
                                                 }
                                                 else
                                                 {
-                                                        $type_input_ret = type_input($qedit_nom_col, $desc, $col_val, $obj, $separator, $data_loaded, $desc["FORCE_CSS"], $qedit_orderindex);
+                                                        $type_input_ret = AfwQeditMotor::type_input($qedit_nom_col, $desc, $col_val, $obj, $separator, $data_loaded, $desc["FORCE_CSS"], $qedit_orderindex);
                                                 }
                                                 
                                                 
@@ -217,7 +217,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                                 {
                                                         ob_start();
                                                         $col_val = $obj->getVal($nom_col);
-                                                        $type_input_ret = hidden_input($qedit_nom_col, $desc, $col_val, $obj);
+                                                        $type_input_ret = AfwQeditMotor::hidden_input($qedit_nom_col, $desc, $col_val, $obj);
                                                         $qedit_hidden_input = ob_get_clean();
                                                 }
                                                 else $qedit_hidden_input = "";

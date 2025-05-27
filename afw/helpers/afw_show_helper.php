@@ -1192,6 +1192,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                             $tuple["ca-".$categoryAttribute] = $val->getVal($categoryAttribute);
                     }
                     $data[$id] = $tuple;
+                    $recordArr[$id] = $val->getShortDisplay($lang);
                     $isAvail[$id] = $objIsActive;
                     // $count_liste_obj++;
                 }
@@ -1200,6 +1201,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
 
         $header_trad = [];
 
+        $popupEditSettings = $options["POPUP-EDIT-SETTINGS"];
+        $popupEditSettings["record"] = $recordArr;
         foreach ($header as $nom_col => $desc) {
             $trad_col = $trad_erase[$nom_col];
             if (!$trad_col) {
@@ -1219,6 +1222,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
         }
 
         $order_key = $obj->moveColumn();
+        
+        
 
         //die($obj->getMyClass()." >> nowrap_cols for $obj = ".var_export($obj->nowrap_cols,true));
         list($categoryAttribute, $categoryAttributeCATEGORY) = explode(":", $obj->rowCategoryAttribute());
@@ -1241,7 +1246,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             $rows_by_table,
             $obj->detailModeWidthedTable,
             $categoryAttribute,
-            $obj->getCssClassName(),'off', $order_key
+            $obj->getCssClassName(),'off', $order_key, null, $popupEditSettings
         );
 
         if (!$mode_show_all_records) {
@@ -1279,7 +1284,8 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
         $css_class_name = '',
         $class_td_off = 'off',
         $order_key = '',
-        $decoderArr=null
+        $decoderArr=null,
+        $popupEditSettings=[]
     ) {
         //die("dataImportance=".var_export($dataImportance,true));
         global $datatable_on_components,
@@ -1308,6 +1314,11 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             $class_table = 'display';
             $tab_style = 'width: 100%;';
             //if(!$showWidthedTable) $showWidthedTable = "85%";
+        }
+        else
+        {
+            $idTable = $popupEditSettings["parent"];
+            $id_prop = "id='$idTable'";
         }
 
         if ($showWidthedTable) {
@@ -1482,8 +1493,9 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                     }
                 }
                 if($order_key) $order = $tuple[$order_key];
-                else $order = $tuple["id"];
-                $html .= "   <tr id='tr-object-$order' class='$cl_tr $row_class_css' alt='old_cl=$old_cl'>\n";
+                elseif($tuple["id"]) $order = $tuple["id"];
+                else $order = $id;
+                $html .= "   <tr id='tr-object-$order' class='ky$order_key $cl_tr $row_class_css' alt='old_cl=$old_cl'>\n";
                 foreach ($header_trad as $nom_col => $desc) {
                     $importance = ($dataImportance and is_array($dataImportance)) ? $dataImportance[$nom_col] : "";
                     $nom_col_ltn = AfwStringHelper::arabic_to_latin_chars($nom_col);
@@ -1543,7 +1555,22 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                         $td_id = $nom_col.'-'.$id;
                     }
 
-                    if(true) 
+                    
+                    
+
+                    if($popupEditSettings[$nom_col])
+                    {
+                        $cutitle = $popupEditSettings[$nom_col];
+                        $cumodule = $popupEditSettings["module"];
+                        $cuclass = $popupEditSettings["class"];
+                        $curecord = $popupEditSettings["record"][$id];
+                        $data_aff_old = $data_aff;
+                        $data_aff = "<div class='popup-editing'>";
+                        $data_aff .= "<span id='span-$cumodule-$cuclass-$id-$nom_col'>$data_aff_old</span>";
+                        $data_aff .= "<img class='popup-edit' idobj='$id' mod='$cumodule' cls='$cuclass' col='$nom_col' val='$val_col' tit='$cutitle' record='$curecord' parent_container='$idTable' src=\"../lib/images/pen.png\" width=\"16\" heigth=\"16\">";
+                        $data_aff .= "</div>";
+                    }
+                    else
                     {
                         $data_aff = "<span>$data_aff</span>";
                     }
@@ -2181,7 +2208,7 @@ $('#$showAsDataTable').DataTable( {
                         foreach ($group_retieve_arr as $group_retieve) {
                             $first_item->mode_retieve = $group_retieve;
                             $first_item->showAsDataTable =
-                                count($items_objs) > 20 ? ($structure['DATA_TABLE'] ? $structure['DATA_TABLE'] : "dtb_$attribute") : '';
+                                ((!$structure['DISABLE_DATA_TABLE']) and (count($items_objs) > 20)) ? ($structure['DATA_TABLE'] ? $structure['DATA_TABLE'] : "dtb_$attribute") : '';
                             if ($first_item->showAsDataTable) {
                                 $first_item->showAsDataTable .= '_' . $group_retieve;
                             }
@@ -2189,6 +2216,18 @@ $('#$showAsDataTable').DataTable( {
                             $options['hide_retrieve_cols'] = $hide_retrieve_cols;
                             $options['force_retrieve_cols'] = $force_retrieve_cols;
                             $options['nowrap_cols'] = $nowrap_cols;
+                            //popup-edit
+                            if($structure["RETRIEVE-POPUP-EDITOR"])
+                            {
+                                $options["POPUP-EDIT-SETTINGS"]["module"] = $first_item->getMyModule();
+                                $options["POPUP-EDIT-SETTINGS"]["class"] = $first_item->getMyClass();
+                                $options["POPUP-EDIT-SETTINGS"]["parent"] = "tbl_items_$attribute";
+                                foreach($structure["RETRIEVE-POPUP-EDITOR"] as $colpopup)
+                                {
+                                    $options["POPUP-EDIT-SETTINGS"][$colpopup] = $first_item->translate($colpopup, $lang);;                                    
+                                }
+                            }
+                            
                             list(
                                 $html_display[$group_retieve],
                                 $items_objs,
@@ -2228,21 +2267,14 @@ $('#$showAsDataTable').DataTable( {
                             $div_tabs = "<div class='tab-content'>\n";
 
                             $itab = 0;
-                            foreach (
-                                $html_display
-                                as $group_retieve =>
-                                $html_group_retrieve
-                            ) {
-                                if ($first_item) {
-                                    $group_retieve_label = $first_item->translate(
-                                        $group_retieve,
-                                        $lang
-                                    );
-                                } else {
-                                    $group_retieve_label = $object->translate(
-                                        $group_retieve,
-                                        $lang
-                                    );
+                            foreach ($html_display as $group_retieve => $html_group_retrieve) {
+                                if ($first_item) 
+                                {
+                                    $group_retieve_label = $first_item->translate($group_retieve,$lang);
+                                } 
+                                else 
+                                {
+                                    $group_retieve_label = $object->translate($group_retieve,$lang);
                                 }
                                 if ($itab == 0) {
                                     $tab_active =
@@ -2269,9 +2301,7 @@ $('#$showAsDataTable').DataTable( {
                         }
                         // if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("data_to_display : <br> ".var_export($data_to_display,true));
                     }
-                } elseif (
-                    strtoupper($structure['FORMAT']) == 'MINIBOX'
-                ) {
+                } elseif (strtoupper($structure['FORMAT']) == 'MINIBOX') {
                     reset($items_objs);
                     $first_item = current($items_objs);
                     $data_to_display = '';
@@ -2398,6 +2428,16 @@ $('#$showAsDataTable').DataTable( {
                         if ($getlink) {
                             $data_to_display .= '</a><br/>';
                         }
+                    }
+                }
+                //popup-edit
+                if($structure["RETRIEVE-POPUP-EDITOR"])
+                {
+                    $modulepopup = $options["POPUP-EDIT-SETTINGS"]["module"] = $first_item->getMyModule();
+                    $classpopup = $options["POPUP-EDIT-SETTINGS"]["class"];
+                    foreach($structure["RETRIEVE-POPUP-EDITOR"] as $colpopup)
+                    {
+                        $data_to_display .= AfwInputHelper::popupEditor($modulepopup, $classpopup, $colpopup, $lang);
                     }
                 }
                 break;

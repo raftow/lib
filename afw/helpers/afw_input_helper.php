@@ -937,4 +937,69 @@ $(\"#$id_input\").data(\"dd\");
 
                 return '';
         }
+
+
+        public static function simpleEditInputForAttribute($nom_col, $col_val, $desc, $obj = null, $separator=':')
+        {
+                ob_start();
+                $data_loaded = false;
+                if (($desc['TYPE'] == 'PK') && empty($col_val)) 
+                {                
+                        AfwEditMotor::type_input($nom_col, $desc, $col_val, $obj, $separator, $data_loaded);
+                } 
+                else 
+                {
+                        AfwEditMotor::type_input($nom_col, $desc, $col_val, $obj, $separator, $data_loaded, "inputlong", 0, "inputlong");
+                }
+                return ob_get_clean();
+        }
+
+
+        public static function popupEditor($module, $classe, $attribute, $lang)
+        {
+                $desc = AfwStructureHelper::getDbStructure($module, $classe, '', 'structure', $attribute);
+                $desc["READONLY"] = false;
+                $input_html = self::simpleEditInputForAttribute($attribute, "", $desc);
+                $input_old_name = "\"$attribute\"";
+                $input_new_name = "\"popup_edit_$attribute\"";
+                $input_html = str_replace($input_old_name, $input_new_name, $input_html);
+                
+
+                $cancel_title = AfwLanguageHelper::translateKeyword("cancel", $lang);
+                $save_title = AfwLanguageHelper::translateKeyword("save", $lang);
+                $html = "<div id='hzm-popup-edit-$attribute' class='popup-editor hide'>";
+                $html .= "
+                        <div class='popup-editor-panel'>
+                                <div class='form_content popup'>
+                                        <div id='body-form-popup-$attribute' class='body_form_hzm popup'>
+                                                <div id='header-group-$attribute' class='expanded_fixed'>
+                                                        <h5 class='popup'><i></i><p id='popup-edit-$attribute-title'>عنوان الاستمارة</p></h5>
+                                                </div>                                        
+                                        </div> 
+                                        <div id='pp-$attribute' class='attrib-$attribute form-group width_pct_100'>
+                                                <label id='popup-edit-$attribute-sub-title' for='pp-$attribute' class='hzm_label label-$attribute'>مسمى الحقل</label>  
+                                                <input type='hidden' name='popup_edit_parent_$attribute' id='popup_edit_parent_$attribute'>
+                                                <input type='hidden' name='popup_edit_idobj_$attribute' id='popup_edit_idobj_$attribute'>
+                                                <input type='hidden' name='popup_edit_idobj_$attribute' id='popup_edit_mod_$attribute'>
+                                                <input type='hidden' name='popup_edit_idobj_$attribute' id='popup_edit_cls_$attribute'>
+                                                $input_html
+                                                <!-- end of input for : $attribute -->
+                                        </div> 
+
+                                        <div class='wizard_buttons'>                                
+                                                <div class='body_nav_hzm'>                                                
+                                                <p>                                                                                                                        
+                                                        <input type='button' name='cancel' id='popup-$attribute-cancel' class='popup-cancel fa redbtn wizardbtn fright' value='&nbsp;$cancel_title&nbsp;' style='margin-right: 5px;'>
+                                                        <input type='button' name='save' id='popup-$attribute-save' col='$attribute' class='popup-save fa bluebtn wizardbtn fleft' value='&nbsp;$save_title&nbsp;' style='margin-right: 5px;'>
+                                                </p>                                        
+                                                </div>                                
+                                        </div>
+                                </div>
+                                
+                        </div>
+                        
+                        ";
+                $html .= "</div> <!-- hzm-popup-edit-$attribute -->";
+                return $html;
+        }
 }

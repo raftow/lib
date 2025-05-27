@@ -33,7 +33,7 @@ elseif ($desc["CHECKBOX"])
 } 
 else 
 {
-    select(
+    AfwEditMotor::select(
         $answer_list,
         array($val),
         array(

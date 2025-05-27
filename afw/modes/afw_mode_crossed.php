@@ -236,9 +236,9 @@ if($nb_objs>0)
               	$data_loaded=($objI->getId()>0);
                 $tab_index = 0;
                 
-                $type_pkinput_ret = hidden_input($pk_col_i, $pk_desc, $objI->getId(), $objI); 
+                $type_pkinput_ret = AfwEditMotor::hidden_input($pk_col_i, $pk_desc, $objI->getId(), $objI); 
                 
-                $type_input_ret = type_input($crossed_value_col_i, $crossed_value_col_desc, $col_val, $objI, $crossed_value_col_mfk_separator, $data_loaded, "", $tab_index);
+                $type_input_ret = AfwEditMotor::type_input($crossed_value_col_i, $crossed_value_col_desc, $col_val, $objI, $crossed_value_col_mfk_separator, $data_loaded, "", $tab_index);
                 
                 $data[$index_cross[$cross_val]-1][$objI->calc($crossed_field_col)] .= ob_get_clean();
                 $data[$index_cross[$cross_val]-1][$objI->calc($crossed_field_col)] .= $html_after;

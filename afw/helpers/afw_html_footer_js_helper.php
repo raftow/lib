@@ -24,6 +24,31 @@ class AfwHtmlFooterJsHelper
 ?>
 <script>
 
+function save_popup(mod, cls, idobj, col, val)
+{
+    $.ajax({
+            type:'POST',
+            url:'../lib/api/afw_col_saver.php',
+            data:{cls:cls, currmod:mod, idobj:idobj, col:col, val:val},
+            dataType: 'json',
+            success: function(data)
+            {
+                console.log('currmod='+mod+' cls='+cls+' idobj='+idobj+' col='+col+' val='+val+' afw_col_saver res = ', data);
+                if(data.status=="success")
+                {
+                    $("#span-"+mod+"-"+cls+"-"+idobj+"-"+col).text(data.aff);                    
+                }
+                else
+                {
+                    <?php echo $response_data_format ?>
+                    swal("<?php echo $you_dont_have_rights?>["+data.message+"]"); // 
+                    return [false, null];
+                }
+            }
+
+    });
+}
+
 function moveRun(cl, md, mv_id, mv_ord, mv_sens,limitd)
 {
   console.log('move running before ajax action on md='+md+' cl='+cl+' id='+mv_id+' ord='+mv_ord+' sens='+mv_sens+' limitd='+limitd);
@@ -261,8 +286,8 @@ $(document).ready(function(){
 
     $(".action_lourde").click(function()
                         { 
-                                $(".hzm-loader-div").removeClass("hide");            
-                                $(".alert-dismissable").fadeOut().remove();            
+                              $(".hzm-loader-div").removeClass("hide");            
+                              $(".alert-dismissable").fadeOut().remove();            
                         }
     ); 
 
@@ -270,7 +295,62 @@ $(document).ready(function(){
                         { 
                             $(this).parent().fadeOut().remove();            
                         }
+    );
+
+    $("img.popup-edit").click(function()
+                        { 
+                            var pos = $(this).position();
+                            // console.log('pos = ', pos);
+                            // console.log('pos.top = '+pos.top);
+                            pos_top = pos.top - 140;
+                            var cls= $(this).attr("cls");
+                            var mod= $(this).attr("mod");
+                            var idobj= $(this).attr("idobj");
+                            var col = $(this).attr("col");
+                            var val = $(this).attr("val");
+                            var tit = $(this).attr("tit");
+                            var parent_container = $(this).attr("parent_container");
+                            var record = $(this).attr("record");
+                            
+                            $("#hzm-popup-edit-"+col).removeClass("hide");              
+                            $("#hzm-popup-edit-"+col).css({top: pos_top, position:'absolute'});
+                            $("#popup-edit-"+col+"-title").html(record);
+                            $("#popup-edit-"+col+"-sub-title").html(tit);
+                             
+                            $("#popup_edit_cls_"+col).val(cls);
+                            $("#popup_edit_mod_"+col).val(mod);
+                            $("#popup_edit_parent_"+col).val(parent_container);                            
+                            $("#popup_edit_idobj_"+col).val(idobj);
+                            $("#popup_edit_"+col).val(val);
+                            
+                        }
     ); 
+
+
+     $(".popup-save").click(function()
+                        {                            
+                            var col = $(this).attr("col");
+                            var parent_container = $("#popup_edit_parent_"+col).val();
+                            var cls = $("#popup_edit_cls_"+col).val();
+                            var mod = $("#popup_edit_mod_"+col).val();
+                            var idobj = $("#popup_edit_idobj_"+col).val();
+                            var val = $("#popup_edit_"+col).val();
+                            save_popup(mod, cls, idobj, col, val);
+                            $("#"+parent_container).addClass("obsolete"); 
+                            $("#tr-object-"+idobj).removeClass("hzm_row_Y"); 
+                            $("#tr-object-"+idobj).removeClass("hzm_row_N"); 
+                            $("#tr-object-"+idobj).removeClass("hzm_row_W"); 
+                            $("#tr-object-"+idobj).addClass("hzm_row_0"); 
+                            
+                            $(".popup-editor").addClass("hide");  
+                        }
+      );
+
+    $(".popup-cancel").click(function()
+                        {
+                            $(".popup-editor").addClass("hide");  
+                        }
+      );  
     
     $("form.form_lourde" ).submit(function( event ) {
       $(".hzm-loader-div").removeClass("hide"); 

@@ -1,9 +1,10 @@
 <?php 
+/*
 #####################################################################################
 ####################################  FONCTIONS  ####################################
 #####################################################################################
 
-function hidden_input($col_name, $desc, $val, &$obj)
+public static function hidden_input($col_name, $desc, $val, &$obj)
 {
         $type_input_ret = "hidden";
 	?>
@@ -12,7 +13,7 @@ function hidden_input($col_name, $desc, $val, &$obj)
         return $type_input_ret;
 }
 
-function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $desc = "", $val = null)
+public static function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $desc = "", $val = null)
 {
 	$objme = AfwSession::getUserConnected();
         
@@ -29,9 +30,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
         
         $suffix = trim($suffix);
         $attribute_error = $obj->getDataErrorForAttribute($col_name);
-        /*
-        if($attribute_error) echo "<div class='form-group error'>";
-        else */ 
+        
         
         echo "<div class='form-group'>";
         
@@ -146,15 +145,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 $LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
 				if((!$auto_c) and ($list_count <= $LIMIT_INPUT_SELECT))
                                 {
-                                        /*
-                                        list($sql, $liste_rep) = AfwLoadHelper::load ManyFollowing StructureAndValue($objRep, $desc,$val, $obj);                                        
-                                        $l_rep=array();
-					foreach ($liste_rep as $iditem => $item) 
-                                        {
-                                                if(AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme,'display'))
-							$l_rep[$iditem]=$item->getDisplay($lang);
-					}
-                                        */
+                                        
                                         $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
                                         $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="load ManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                                                 
@@ -295,15 +286,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 
                                 
                                 $objRep  = new $nom_class_fk;
-                                /*
-                                list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc,$val,$obj);                                
-                                $l_rep=array();
-				foreach ($liste_rep as $iditem => $item) 
-                                {
-                                        if(AfwUmsPagHelper::userCanDoOperationOnObject($item,$objme,'display'))
-						$l_rep[$iditem]=$item->getDisplay($lang);
-				}
-                                */
+                                
                                 $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
                                 $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                                                 
@@ -361,7 +344,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 if($desc["SEL_OPTIONS"]) $infos_arr = array_merge($infos_arr,$desc["SEL_OPTIONS"]);
                                 
                                 
-                                select(
+                                self::select(
 					$liste_rep,
 					$val_arr,
 					$infos_arr,
@@ -369,41 +352,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
 				);
                                 break;		
 		
-                /* case 'ANSWER' : obsolete
-                                $liste_rep = AFWObject::getAnswerTable($desc["ANSWER"], $desc["MY_PK"], $desc["MY_VAL"]);
-                                if($force_css) $data_length_class = " ".$force_css;
-                                else $data_length_class = " inputmoyen";
-                                $LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
-				if(count($liste_rep) <= $LIMIT_INPUT_SELECT)
-                                {
-                                        $type_input_ret = "select";
-					select(
-						$liste_rep,
-						array($val),
-						array(
-							"class" => "form-control",
-							"name"  => $formInputName,
-                                                        "id"  => $formInputName,
-                                                        "tabindex" =>$qedit_orderindex,
-                                                        "onchange" => $onchange,
-                                                        "style" => $input_style,
-                                                        "mandatory" => $desc["MANDATORY"],
-						),
-						"asc"
-					);
-				}
-                                else{
-                                        $type_input_ret = "text";
-	?>				<input placeholder="<?=$placeholder?>"  type="text" tabindex="<?=$qedit_orderindex?>" class="form-control" name="<?php echo $formInputName ?>" id="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=33 maxlength=255>
-					<input type="button"   class="<?=$class _inputButton?>" name="" value="<?=$obj->translate('SEARCH',$lang,true)?>" onclick="popup('<?php echo "main.php"?>?Main_Page=afw_mode_search.php&cl=<?php echo $desc["ANSWER"]?>')">
-					<script language="javascript">
-						function popup(page) 
-                                                {
-							window.open(page, "<?=$obj->translate('SEARCH',$lang,true)?>", "fullscreen='yes',menubar='no',toolbar='no',location='no',status='no'");
-						}
-					</script>
-	<?php			}
-				break;*/
+                
 		case 'ENUM'   : if($force_css) $data_length_class = " ".$force_css;
                                 else $data_length_class = " inputmoyen";
                                 
@@ -516,7 +465,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                                 
                                                 
                                                 
-                                                select(
+                                                self::select(
         						$liste_rep,
         						array($val),
         						$info,
@@ -609,7 +558,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
                                 }
                                 else 
                                 {
-                                                select(
+                                                self::select(
                 						$answer_list,
                 						array($val),
                 						array(
@@ -669,7 +618,7 @@ function genereInputForAttribute($col_name, &$obj, $lang, $formInputName="", $de
 
 
 
-function select($list_id_val, $selected = array(), $info = array(), $ordre = "", $null_val = true)
+public static function select($list_id_val, $selected = array(), $info = array(), $ordre = "", $null_val = true)
 {
 	$lang = AfwLanguageHelper::getGlobalLanguage();
         
@@ -756,7 +705,7 @@ function select($list_id_val, $selected = array(), $info = array(), $ordre = "",
         ?>
 <?php
 }
-function subval_sort($table_a_trie, $table_ref, $ord = "desc"){
+public static function subval_sort($table_a_trie, $table_ref, $ord = "desc"){
 	$res = array();
 	if($ord == "asc")
 		asort($table_ref);
@@ -766,4 +715,4 @@ function subval_sort($table_a_trie, $table_ref, $ord = "desc"){
 		$res[$key] = $table_a_trie[$key];
 	return $res;
 }
-?>
+?>*/

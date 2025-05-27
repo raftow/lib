@@ -1059,7 +1059,7 @@ input:-internal-autofill-selected {
 }
 
 div.body_nav_hzm>p {
-    background-color: #ffffff;
+    background-color: transparent;
     border-bottom: none;
     border-top: none;
     width: auto;

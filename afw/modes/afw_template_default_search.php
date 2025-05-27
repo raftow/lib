@@ -52,11 +52,11 @@ foreach($class_db_structure as $nom_col => $desc)
       } 
 
       ob_start();
-      type_input($nom_col, $desc, $obj,$data[$nom_col]["filled_criteria"]);
+      AfwQsearchMotor::type_input($nom_col, $desc, $obj,$data[$nom_col]["filled_criteria"]);
 
       $data[$nom_col]["input"] = ob_get_clean();
       ob_start();
-      type_oper($nom_col, $desc,$obj,$data[$nom_col]["filled_criteria"]);
+      AfwQsearchMotor::type_oper($nom_col, $desc,$obj,$data[$nom_col]["filled_criteria"]);
 
       $data[$nom_col]["oper"] = ob_get_clean();
                 
@@ -78,7 +78,7 @@ foreach($class_db_structure as $nom_col => $desc)
    $qsearch_by_text = $_POST["qsearch_by_text"];
    $desc_qsearch_by_text = array('TYPE'=>'TEXT', 'SIZE'=>64, 'UTF8'=>true);
    ob_start();
-   type_input("qsearch_by_text", $desc_qsearch_by_text, $obj, $qsearch_by_text);
+   AfwQsearchMotor::type_input("qsearch_by_text", $desc_qsearch_by_text, $obj, $qsearch_by_text);
    $trad_qsearch_by_text_input = ob_get_clean();
     
    $trad_qsearch_by_text = $obj->translate("qsearch_by_text",$lang);

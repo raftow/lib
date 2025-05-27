@@ -94,8 +94,10 @@ class AfwOperatorArTranslator{
 
 
 
-                        
+   
+        $trad["OPERATOR"]["cancel"]	                        	= "إلغاء";                     
         $trad["OPERATOR"]["save"]	                        	= "حفظ";
+        
         $trad["OPERATOR"]["SAVE"]	                        	= "حفظ فقط";
         $trad["OPERATOR"]["UPDATE"]	                        	= "حفظ التعديلات";
         $trad["OPERATOR"]["UPDATE_AND_RETURN"]                        	= "حفظ التعديلات ورجوع";

@@ -57,7 +57,7 @@ class AfwStructureHelper extends AFWRoot
     public static function getDbStructure(
         $module_code,
         $class_name,
-        $table_name,
+        $table_name = 'obsolete',
         $return_type = 'structure',
         $attribute = 'all',
         $step = 'all',
@@ -116,7 +116,7 @@ class AfwStructureHelper extends AFWRoot
                 }
             }
         } else {
-            throw new AfwRuntimeException("Check if DB_STRUCTURE is defined for $attribute attribute(s) for class " .$table_name );
+            throw new AfwRuntimeException("Check if DB_STRUCTURE is defined for $attribute attribute(s) for class " .$class_name );
         }
         // if(($table_name=="invester") and ($attribute=="city_id")) die($table_name." AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute) returned debugg_db_structure = ".var_export($debugg_db_structure,true));
         if ($return_type == 'structure') {
