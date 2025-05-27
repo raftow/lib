@@ -329,7 +329,7 @@ if(!$obj->HIDE_DISPLAY_MODE)
                 }
                 else
                 {
-                        $viewIcon = "view_me";
+                        $viewIcon = "detail64";
                         if(!$header_imbedded) $data_errors = "لم يتم تفعيل التثبت من الأخطاء في التعديل السريع"; 
                 }
 

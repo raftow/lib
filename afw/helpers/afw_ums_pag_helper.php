@@ -863,7 +863,7 @@ class AfwUmsPagHelper extends AFWRoot
                 $data_errors = 'لا يوجد أخطاء';
             }
         } else {
-            $viewIcon = 'view_me';
+            $viewIcon = 'detail64';
             $data_errors = 'لم يتم تفعيل التثبت من الأخطاء';
             if (!$object->showRetrieveErrors) {
                 $data_errors .= ' في العرض الاستردادي (retrieve mode)';
@@ -933,7 +933,7 @@ class AfwUmsPagHelper extends AFWRoot
                 $data_errors = 'لا يوجد أخطاء';
             }
         } else {
-            $viewIcon = 'view_me';
+            $viewIcon = 'detail64';
             $data_errors = 'لم يتم تفعيل التثبت من الأخطاء';
             if (!$object->showRetrieveErrors) {
                 $data_errors .= ' في العرض الاستردادي (retrieve mode)';

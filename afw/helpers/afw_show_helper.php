@@ -799,7 +799,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
 
                 if ($mode_show_all_records or !$val_isOk) {
                     $objIsActive = $val->isActive() ? 'active' : 'inactive';
-                    $viewIcon = $val->isActive() ? 'view_me' : 'view_off';
+                    $viewIcon = $val->isActive() ? 'detail64' : 'view_off';
                     // die("show ManyObj, val = ".var_export($val,true));
                     if ($val->isActive()) {
                         if ($check_errors_needed_in_object) {
