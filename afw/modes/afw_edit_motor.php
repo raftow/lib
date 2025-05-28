@@ -14,7 +14,7 @@ class AfwEditMotor {
 
     public static function type_input($col_name, $desc, $val, &$obj, $separator = ':', $data_loaded = false, $force_css = "", $qedit_orderindex = 0, $data_length_class_default_for_fk = "inputmoyen")
     {
-        global $Main_Page, $_GET, $_POST,
+        global $_GET, $_POST,
             $lang, $mode_hijri_edit,  $objme;
 
         $editor = $desc["EDITOR"];
@@ -57,6 +57,8 @@ class AfwEditMotor {
             if(AfwStringHelper::stringEndsWith($orig_col_name, "_0")) die("dbg orig_col_name=$fcol_name case 11 [Main_Page=$Main_Page]");
         }
         */
+
+        $orig_col_name = $col_name;
 
         //$col_title = $o bj->getKeyLabel($orig_col_name,$lang);
         if($obj) $col_title = $obj->translate($orig_col_name, $lang);

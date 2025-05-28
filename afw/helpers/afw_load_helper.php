@@ -2016,6 +2016,8 @@ class AfwLoadHelper extends AFWRoot
     {
         return AfwStringHelper::afw_explode($answer);
     }
+
+    
     public static final function getEnumTable(
         $answer,
         $table = '',
