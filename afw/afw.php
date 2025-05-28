@@ -2276,7 +2276,7 @@ class AFWObject extends AFWRoot
 
     public function hasChanged()
     {
-        $debugg_has_changed = implode(',', $this->FIELDS_UPDATED);
+        $debugg_has_changed = implode(',', array_keys($this->FIELDS_UPDATED))." " .var_export($this->FIELDS_UPDATED, true);
         // $this->debugg_has_changed = $debugg_has_changed;
         return $debugg_has_changed;
     }
