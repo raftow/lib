@@ -1116,8 +1116,9 @@ class AfwSqlHelper extends AFWRoot
 
 
     /**
+     * @var AFWObject $object
      * update
-     * Update row
+     * commit attributes update to DB
      */
     public static function updateObject($object, $only_me = true, $nocote_fields=null)
     {
@@ -1166,21 +1167,17 @@ class AfwSqlHelper extends AFWRoot
                         $object->fieldsHasChanged()
                     );
                     $object->majTriggered();
-                    $can_update = $object->beforeUpdate(
-                        $id_updated,
-                        $object->fieldsHasChanged()
-                    );
+                    $can_update = $object->beforeUpdate($id_updated,$object->fieldsHasChanged());
                     /*
                     if(static::$TABLE == "student_session") 
                     {
                         throw new AfwRuntimeException(static::$TABLE." updating ... fields updated count = ".count($object-> FIELDS_UPDATED)." / beforeUpdate accepted update ? = $can_update / FIELDS_UPDATED = " . var_export($object-> FIELDS_UPDATED,true));
                     }*/
                     if (!$can_update) {
-                        $object->debugg_reason_non_update =
-                            'beforeUpdate refused update';
+                        $object->setTechnicalNotes('beforeUpdate refused update');
                     }
                 } else {
-                    $object->debugg_reason_non_update = ' no fields updated';
+                    $object->setTechnicalNotes('no fields updated');
                     $can_update = false;
                 }
             } else {
@@ -1249,11 +1246,10 @@ class AfwSqlHelper extends AFWRoot
                     if (count($fields_updated) > 0) {
 
                         $object->execQuery($query);
-                        $return = $object->_affected_rows(
-                            $object->getProjectLinkName()
-                        );
+                        $return = $object->_affected_rows($object->getProjectLinkName());
+                        if(!$return) $object->setTechnicalNotes('no affected rows for : '+$query);
                     } else {
-                        $object->debugg_reason_non_update = 'nothing updated';
+                        $object->setTechnicalNotes('no columns updated');
                         $return = 0;
                     }
 
@@ -1306,9 +1302,12 @@ class AfwSqlHelper extends AFWRoot
                 // if we concatenate sql like this it cause memory exhausted error we should find other way to do
                 // $the_last_update_sql .= " --> can not update : " . $object->debugg_reason_non_update;
                 $object->IS_COMMITING = false;
+                // see Technical Notes for reason
                 return 0;
             }
         }
+        // should neve go here
+        return null;
         $object->IS_COMMITING = false;
     }
 
