@@ -79,7 +79,7 @@
         else
         {
                
-                $error_msg = "Error while doing curl_init : " . curl_error($curl);
+                $error_msg = "Error while doing curl_init";
                 return array('url' => null, 'success' => false, 'message' => $error_msg, 'result' => null);
         }
         
