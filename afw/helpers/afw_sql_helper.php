@@ -1116,7 +1116,7 @@ class AfwSqlHelper extends AFWRoot
 
 
     /**
-     * @var AFWObject $object
+     * @param AFWObject $object
      * update
      * commit attributes update to DB
      */
@@ -1249,7 +1249,7 @@ class AfwSqlHelper extends AFWRoot
                         $return = $object->_affected_rows($object->getProjectLinkName());
                         if(!$return) $object->setTechnicalNotes('no affected rows for : '.$query);
                     } else {
-                        $object->setTechnicalNotes('no columns updated');
+                        $object->setTechnicalNotes('no columns updated : '.$query);
                         $return = 0;
                     }
 
