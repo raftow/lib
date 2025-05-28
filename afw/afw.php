@@ -1501,6 +1501,16 @@ class AFWObject extends AFWRoot
     }
 
     /**
+     * reloadMe
+     * reload object from DB
+     */
+    public function reloadMe()
+    {
+        if($this->id) return $this->load($this->id);
+        return null;        
+    }
+
+    /**
      * load
      * Load into object a specified row
      * @param string $value : Optional, specify the value of primary key
@@ -3015,10 +3025,12 @@ class AFWObject extends AFWRoot
         return $this->getVal($this->fld_CREATION_USER_ID());
     }
 
-    public function commit()
+    public function commit($reload_if_failed=false)
     {
         if ($this->getId() > 0) {
-            return $this->update();
+            $return = $this->update();
+            if($reload_if_failed and (!$return)) $this->reloadMe();
+            return $return;
         } else {
             return $this->insert();
         }
