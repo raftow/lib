@@ -1247,7 +1247,7 @@ class AfwSqlHelper extends AFWRoot
 
                         $object->execQuery($query);
                         $return = $object->_affected_rows($object->getProjectLinkName());
-                        if(!$return) $object->setTechnicalNotes('no affected rows for : '+$query);
+                        if(!$return) $object->setTechnicalNotes('no affected rows for : '.$query);
                     } else {
                         $object->setTechnicalNotes('no columns updated');
                         $return = 0;
