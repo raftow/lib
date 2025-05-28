@@ -2057,10 +2057,10 @@ class AFWObject extends AFWRoot
             !$old_value && (!$value and !$forceSet); // obsolete kharabit and (!$value_zero_int)
 
         if ($value_exists_and_same_and_no_force) {
-            $this->debugg_value_exists_and_same_and_no_force = true;
+            //$this->debugg_value_exists_and_same_and_no_force = true;
             $return = false;
         } elseif ($value_doesnt_exist_and_set_to_empty_and_no_force) {
-            $this->debugg_value_doesnt_exist_and_set_to_empty_and_no_force = true;
+            //$this->debugg_value_doesnt_exist_and_set_to_empty_and_no_force = true;
             $return = false;
         } else {
             // rafik : for qedit '' != 0 and we dont want record to be inserted
@@ -2074,7 +2074,7 @@ class AFWObject extends AFWRoot
                 $this->afterSetOfAttribute($attribute, $value);
                 $this->UPDATE_DATE_val = null; // then it will take now when the commit is performed
             } else {
-                $this->debugg_before_set_attrib_rejected_the_set = true;
+                // $this->debugg_before_set_attrib_rejected_the_set = true;
             }
             /*
             if(($attribute=="email")) 
@@ -2880,10 +2880,7 @@ class AFWObject extends AFWRoot
     final public function silentField($attribute)
     {
         if (isset($this->FIELDS_UPDATED[$attribute])) {
-            $this->setAfieldDefaultValue(
-                $attribute,
-                $this->FIELDS_UPDATED[$attribute]
-            );
+            $this->setAfieldDefaultValue($attribute, $this->FIELDS_UPDATED[$attribute]);
             unset($this->FIELDS_UPDATED[$attribute]);
             // throw new AfwRuntimeException("debugg rafik choof silentField($attribute)");
         }
