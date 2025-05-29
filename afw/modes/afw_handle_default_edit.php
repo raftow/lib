@@ -264,6 +264,8 @@ if ($_POST["pbmon"]) {
                 $pbm_confirmed = true;
             }
 
+            
+
             // die("pbm_confirmed=$pbm_confirmed");
             if ($pbm_confirmed) {
                 $old_update_context = $update_context;
@@ -276,7 +278,17 @@ if ($_POST["pbmon"]) {
                     // die("pbmp_$pbMethodCode and pbmpbis_$pbMethodCode not found in pbmethod_main_param__POST = ".var_export($_POST,true));
                 }
                 //if($obj->pbmethod_main_param) die("obj->pbmethod_main_param = ".$obj->pbmethod_main_param.", _POST = ".var_export($_POST,true));
+                if($pMethodItem['TIMER']) 
+                {
+                    $start_m_time = date('Y-m-d H:i:s');
+                }
                 list($error, $info, $warn, $technical) = $obj->executePublicMethodForUser($objme, $pbMethodCode, $lang);
+                if($pMethodItem['TIMER']) 
+                {
+                    $end_m_time = date('Y-m-d H:i:s');
+                    $duree_pbm = AfwDateHelper::timeDiffInSeconds($end_m_time, $start_m_time);
+                    $warn .= "<div class='timer'>$start_m_time &rarr; $end_m_time &rarr; $duree_pbm sec</div>";
+                }
                 //die("list($error, $info, $warn, $technical) = obj->executePublicMethodForUser($objme, $pbMethodCode, $lang) update_context=$update_context;");
 
                 if ($technical) {
