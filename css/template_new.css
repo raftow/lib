@@ -778,6 +778,17 @@ div.messages--warning>p.important {
     margin: 25px 10px 10px;
 }
 
+div.messages--warning>div.timer {
+    background-color: #049f00;
+    color: yellow;
+    font-weight: normal;
+    font-size: 14px;
+    font-family: DIGI;
+    padding: 0;
+    margin: 25px 10px 10px;
+}
+
+
 .messages--error {
     border-color: red transparent red red;
     background-color: red !important;
