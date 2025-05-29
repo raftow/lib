@@ -786,6 +786,7 @@ div.messages--warning>div.timer {
     font-family: DIGI;
     padding: 0;
     margin: 25px 10px 10px;
+    direction:ltr;
 }
 
 
