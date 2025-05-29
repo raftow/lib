@@ -782,11 +782,12 @@ div.messages--warning>div.timer {
     background-color: #049f00;
     color: yellow;
     font-weight: normal;
-    font-size: 14px;
+    font-size: 24px;
     font-family: DIGI;
-    padding: 0;
+    padding: 10px;
     margin: 25px 10px 10px;
-    direction:ltr;
+    direction: ltr;
+    width: auto !important;
 }
 
 

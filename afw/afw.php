@@ -1732,6 +1732,17 @@ class AFWObject extends AFWRoot
         else return [$is_ok, $dataErr];
     }
 
+    public static final function mfkValueToOrderedList($mfk_value, $start_from=0)
+    {
+        $result = [];
+        $id_arr = explode(",", trim($mfk_value,","));
+        foreach($id_arr as $num => $id)
+        {
+            $result[$start_from+$num] = $id;
+        }
+
+        return $result;
+    }
 
     public final function mfkValueToArrayOrBoolIndex($attribute, $boolIndex = true, $takeDefault = true)
     {
