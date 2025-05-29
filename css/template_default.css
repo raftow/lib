@@ -783,6 +783,15 @@ table.grid tbody tr:hover>td {
     box-shadow: 8px 0 0 #e09600;
 }
 
+div.messages--warning>p.important {
+    background-color: #ff5400;
+    color: white;
+    font-weight: normal;
+    font-size: 14px;
+    padding: 0;
+    margin: 25px 10px 10px;
+}
+
 .messages--error {
     border-color: red transparent red red;
     background-color: red !important;
