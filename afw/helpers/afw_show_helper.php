@@ -1599,7 +1599,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                 if ((!$showAsDataTable) and ($rows_count_table == 10)) {
                     $html .= "\n</tbody>\n";
                     
-                    $html .= $html_header;
+                    $html .= $the_header;
                     $html .= '<tbody>';
                     $rows_count_table = 0;
                 }
