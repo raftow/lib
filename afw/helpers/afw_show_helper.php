@@ -1328,23 +1328,23 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
         $html_header .= "<table $id_prop float='right' dir='$dir' class='$class_table' cellpadding='4' cellspacing='3' style='$tab_style'>\n"; // style='background-color: #fff !important;'
 
         $count_header = count($header_trad);
-
+        $the_header = "";
         if ($count_header > 0) {
-            $html_header .= "   <thead>\n";
+            $the_header .= "   <thead>\n";
             if (!$showAsDataTable) {
                 if ($bigtitle) {
-                    $html_header .= "   <tr class='$bigtitle_tr_class'>\n";
-                    $html_header .= "        <td class='col-importance-high' colspan='$count_header'>$bigtitle</td>\n";
-                    $html_header .= "   </tr>\n";
+                    $the_header .= "   <tr class='$bigtitle_tr_class'>\n";
+                    $the_header .= "        <td class='col-importance-high' colspan='$count_header'>$bigtitle</td>\n";
+                    $the_header .= "   </tr>\n";
                 }
 
                 if ($img_width) {
-                    $html_header .= "   <tr>\n";
-                    $html_header .= "        <td class='col-importance-high' colspan='$count_header'><img src='../lib/images/barre.png' style='width:$img_width' ></td>\n";
-                    $html_header .= "   </tr>\n";
+                    $the_header .= "   <tr>\n";
+                    $the_header .= "        <td class='col-importance-high' colspan='$count_header'><img src='../lib/images/barre.png' style='width:$img_width' ></td>\n";
+                    $the_header .= "   </tr>\n";
                 }
             }
-            $html_header .= "   <tr>\n";
+            $the_header .= "   <tr>\n";
             foreach ($header_trad as $nom_col => $trad_col) {
                 $importance = ($dataImportance and is_array($dataImportance)) ? $dataImportance[$nom_col] : "";
                 if ($width_th_arr[$nom_col]) {
@@ -1353,11 +1353,13 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                     $width_th = '';
                 }
 
-                $html_header .= "      <th class='col-importance-$importance th-$nom_col' $width_th align='center'>$trad_col</th>\n";
+                $the_header .= "      <th class='col-importance-$importance th-$nom_col' $width_th align='center'>$trad_col</th>\n";
             }
-            $html_header .= "   </tr>\n";
-            $html_header .= "   </thead>\n";
+            $the_header .= "   </tr>\n";
+            $the_header .= "   </thead>\n";
         }
+
+        $html_header .= $the_header;
 
         if ($rows_by_table > 0 and !$showAsDataTable) {
             $html_arr = [];
@@ -1443,6 +1445,9 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                     $html = $html_header;
                     $rows_count_table = 0;
                 }
+
+                
+                
             }
 
             if ($rows_count_table > 0) {
@@ -1463,6 +1468,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
             $sum_cols_total = [];
             $my_class_name = '';
             $cl_tr = '';
+            $rows_count_table = 0;
             foreach ($data as $id => $tuple) {
                 $row_class_css = $css_class_name;
                 if ($row_class_key) {
@@ -1589,6 +1595,14 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                     //else die("not summing $nom_col data = ".var_export($data,true));
                 }
                 $html .= "   </tr>\n";
+                $rows_count_table++;
+                if ((!$showAsDataTable) and ($rows_count_table == 10)) {
+                    $html .= "\n</tbody>\n";
+                    
+                    $html .= $html_header;
+                    $html .= '<tbody>';
+                    $rows_count_table = 0;
+                }
             }
 
             if ($total_cols and count($total_cols) > 0) {
