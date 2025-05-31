@@ -6331,6 +6331,8 @@ h5.popup>p{
 .popup-editor-panel {
     border: solid 11px #80808017;
     float: left;
+    z-index: 9999;
+    position: relative;
 }
 
 .popup-editing {

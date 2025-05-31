@@ -1054,7 +1054,7 @@ input:-internal-autofill-selected {
 }
 
 .form_content {
-    background-color: #f5f5f5c2;
+    background-color: #f5f5f5;
     padding: 10px;
     height: 100%;
     min-height: 480px;
