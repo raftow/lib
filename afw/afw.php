@@ -1189,6 +1189,7 @@ class AFWObject extends AFWRoot
         $query_special = null,
         $eager_joins = false
     ) {
+        if($limit==200) throw new AfwRuntimeException("rafik : test why limit==200 in loadMany");
         return AfwLoadHelper::loadMany(
             $this,
             $limit,
