@@ -1260,7 +1260,7 @@ class AfwFormatHelper
      * @param AFWObject $object
      */
 
-    public static final function formatITEMS(&$object, $attribute, $structure, $table_name, $call_method, $max_items)
+    public static final function formatITEMS(&$object, $attribute, $structure, $table_name, $call_method, $max_items, $eager=false)
     {
         /*
         if((!$structure["NO-CACHE"]) and $object->gotItems Cache[$attribute])   
@@ -1275,6 +1275,9 @@ class AfwFormatHelper
             if ($ansTab) {
                 $className = AfwStringHelper::tableToClass($ansTab);
                 AfwAutoLoader::addModule($ansMod);
+                /**
+                 * @var AFWObject $objectITEM
+                 */
                 $objectITEM = new $className();
                 // $objectITEM->setMyDebugg($object->MY_DEBUG);
                 if ($structure['ITEM']) {
@@ -1311,7 +1314,8 @@ class AfwFormatHelper
                     $limit_loadMany = '';
                 }
 
-                $return = $objectITEM->loadMany($limit_loadMany, $structure['ORDER_BY']);
+                if($eager) $return = $objectITEM->loadManyEager($limit_loadMany, $structure['ORDER_BY']);
+                else $return = $objectITEM->loadMany($limit_loadMany, $structure['ORDER_BY']);
                 // if($attribute=="requestList") die("sql_for_loadmany of $attribute = ".$object->debugg_sql_for_loadmany." returned list => ".var_export($return,true));
 
                 // if(!$structure["NO-CACHE"]) $object->gotIte msCache[$attribute] = $return;
@@ -1753,7 +1757,7 @@ class AfwFormatHelper
             
             switch ($attribute_category) {
                 case 'ITEMS':
-                    $return = AfwFormatHelper::formatITEMS($object, $attribute, $structure, $object->getMyTable(), $call_method, $max_items);
+                    $return = AfwFormatHelper::formatITEMS($object, $attribute, $structure, $object->getMyTable(), $call_method, $max_items, $structure["EAGER"]);
                     break;
 
                 case 'FORMULA':
