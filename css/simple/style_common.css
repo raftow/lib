@@ -6339,3 +6339,45 @@ h5.popup>p{
     border: dashed 1px silver;
     padding: 2px 2px;
 }
+
+.hzm_col {
+    overflow: hidden;
+}
+
+.badgeafw {
+    transform: rotate(-45deg);
+    position: relative;
+    margin-top: 18px;
+    margin-left: -4px;
+    top: -67px;
+    left: -8px;
+    overflow: hidden;
+    transform-origin: 45px 45px;
+    width: 90px;
+    line-height: 0.5;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    opacity: .8;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.bgred {
+    background-color: red;
+}
+
+.bggreen {
+    background-color: #1ba91c;
+}
+
+.bgblue {
+    background-color: blue;
+}
+
+/* 
+<div class="badgeafw bgred">&lArr;</div> 
+<div class="badgeafw bggreen">&rArr;</div> */
