@@ -122,6 +122,24 @@ button.bf.hzm-specialmethod {
     background-color: #d8f5ce !important;
 }
 
+.bf.bf-green:hover {
+    border: none !important;
+    color: #d8f5ce !important;
+    background-color: #0f700f !important;
+}
+
+.bf.bf-gray {
+    border: none !important;
+    color: #191919 !important;
+    background-color: #969796 !important;
+}
+
+.bf.bf-gray:hover {
+    border: none !important;
+    color: #191919 !important;
+    background-color: #626362 !important;
+}
+
 .bf.bf-red {
     border: 1px #d61212 solid !important;
     color: #ed0d0d !important;
@@ -129,13 +147,12 @@ button.bf.hzm-specialmethod {
     text-shadow: 1px 1px 1px #c46734;
 }
 
-/*
-.bf.bf-blue {
-    border: 1px #2059bd solid !important;
-    color: #2059bd !important;
-    background-color: #fafaff !important;
-    text-shadow: 1px 1px 1px #1795c3;
-}*/
+.bf.bf-red:hover {
+    border: 1px #d61212 solid !important;
+    color: white !important;
+    background-color: #ed0d0d !important;
+    text-shadow: 1px 1px 1px #c46734;
+}
 
 .bf.bf-blue {
     border: none !important;
@@ -144,11 +161,25 @@ button.bf.hzm-specialmethod {
     text-shadow: 1px 1px 1px #1795c3;
 }
 
+.bf.bf-blue:hover {
+    border: none !important;
+    background-color: rgb(27, 134, 192) !important;
+    color: rgb(170 203 245) !important;
+    text-shadow: 1px 1px 1px #1795c3;
+}
+
 .bf.bf-yellow {
     border: 1px #8c8e31 solid !important;
     color: #8c8e31 !important;
-    background-color: #fffffa !important;
+    background-color: #f6f8c5 !important;
 }
+
+.bf.bf-yellow:hover {
+    border: 1px #8c8e31 solid !important;
+    color: #f6f8c5 !important;
+    background-color: #8c8e31 !important;
+}
+
 
 .bf.bf-purple {
     border: 1px #8d20bd solid !important;
@@ -156,7 +187,20 @@ button.bf.hzm-specialmethod {
     background-color: #fbb5f6ae !important;
 }
 
+.bf.bf-purple:hover {
+    border: 1px #8d20bd solid !important;
+    color: #e5cfee !important;
+    background-color: #8d20bd !important;
+}
+
 .bf.bf-orange {
+    border: 1px #ffaa71 solid !important;
+    color: #ffffff !important;
+    background-color: #fbc053 !important;
+}
+
+
+.bf.bf-orange:hover {
     border: 1px #ffaa71 solid !important;
     color: #ffffff !important;
     background-color: orange !important;
