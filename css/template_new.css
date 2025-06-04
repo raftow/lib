@@ -432,12 +432,12 @@ input.longbtn.yellowbtn:hover {
 }
 
 .bluebtn {
-    background-color: rgb(37,98,178);
-    color: rgb(255 255 255);
+    background-color: rgb(144 191 251);
+    color: rgb(19 85 120);
 }
 
 .bluebtn:hover {
-    background-color: rgb(12, 64, 133);
+    background-color: rgb(42 114 208);
     color: rgb(233,241,254);
 }
 

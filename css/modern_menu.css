@@ -117,9 +117,9 @@ button.bf.hzm-specialmethod {
 }
 
 .bf.bf-green {
-    border: 1px #20a11f8c solid !important;
+    border: none !important;
     color: #0f700f !important;
-    background-color: #fafffa !important;
+    background-color: #d8f5ce !important;
 }
 
 .bf.bf-red {
@@ -129,10 +129,18 @@ button.bf.hzm-specialmethod {
     text-shadow: 1px 1px 1px #c46734;
 }
 
+/*
 .bf.bf-blue {
     border: 1px #2059bd solid !important;
     color: #2059bd !important;
     background-color: #fafaff !important;
+    text-shadow: 1px 1px 1px #1795c3;
+}*/
+
+.bf.bf-blue {
+    border: none !important;
+    background-color: rgb(170 203 245) !important;
+    color: rgb(19 85 120) !important;
     text-shadow: 1px 1px 1px #1795c3;
 }
 
