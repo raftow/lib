@@ -130,15 +130,25 @@ button.bf.hzm-specialmethod {
 
 .bf.bf-gray {
     border: none !important;
-    color: #191919 !important;
-    background-color: #969796 !important;
+    color: #6e6c6c !important;
+    background-color: #e7e7e7 !important;
 }
 
 .bf.bf-gray:hover {
     border: none !important;
-    color: #191919 !important;
+    color: white !important;
     background-color: #626362 !important;
 }
+
+.bf-gray .hzm-otherlink.hzm-otherlink-icon-container.only-border.border-primary {
+    border-color: #6e6c6c;
+}
+
+.bf-gray .hzm-container-center.hzm-vertical-align-middle.hzm-icon-run {
+    color: #6e6c6c !important;
+}
+
+
 
 .bf.bf-red {
     border: 1px #d61212 solid !important;
