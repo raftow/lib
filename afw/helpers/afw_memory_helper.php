@@ -65,8 +65,8 @@ class AfwMemoryHelper extends AFWRoot
         } else {
             $nb_instances_total++;
         }
-        $MAX_MEMORY_BY_REQUEST = AfwSession::config('MAX_MEMORY_BY_REQUEST',1000000000);
-        $MAX_INSTANCES_BY_REQUEST = AfwSession::config('MAX_INSTANCES_BY_REQUEST',10000);
+        $MAX_MEMORY_BY_REQUEST = AfwSession::config('MAX_MEMORY_BY_REQUEST',2000000000);
+        $MAX_INSTANCES_BY_REQUEST = AfwSession::config('MAX_INSTANCES_BY_REQUEST',20000);
         $mm = memory_get_usage(true);
         if (($mm > $MAX_MEMORY_BY_REQUEST) and $MODE_DEVELOPMENT) 
         {
@@ -81,7 +81,7 @@ class AfwMemoryHelper extends AFWRoot
         }
         if ($nb_instances > $MAX_INSTANCES_BY_REQUEST and (!$MODE_BATCH_LOURD)) 
         {
-            die("too much objects created : $nb_instances : " .var_export($tab_instances, true));
+            die("too much objects created : $nb_instances > $MAX_INSTANCES_BY_REQUEST : " .var_export($tab_instances, true)."\n and MODE_BATCH_LOURD=".var_export($MODE_BATCH_LOURD,true));
         }
     }
 }
