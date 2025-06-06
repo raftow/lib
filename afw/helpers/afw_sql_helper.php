@@ -185,6 +185,10 @@ class AfwSqlHelper extends AFWRoot
 
                 // else $obj->simpleError("field $key has value '$value' setted in FIELDS_UPDATED and can not be saved, DB_STRUCTURE : ".var_export($structure,true));
             }
+            else
+            {
+                 $report .= "\n -- ignored tech field $key \n";
+            }
             // if($key=='my_exp') die($query);
         }
 
@@ -1221,7 +1225,7 @@ class AfwSqlHelper extends AFWRoot
         
 
                 list($query, $fields_updated, $report) = AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated, $nocote_fields);
-                if($onlyReturnSQL) return $query;
+                if($onlyReturnSQL) return $query." report ".$report;
                 /*
                 if(static::$TABLE == "student_session") 
                 {
