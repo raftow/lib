@@ -3084,8 +3084,12 @@ class AFWObject extends AFWRoot
      */
     public function update($only_me = true, $nocote_fields=null)
     {
-
         return AfwSqlHelper::updateObject($this, $only_me, $nocote_fields);
+    }
+
+    public function sqlCommit()
+    {
+        return AfwSqlHelper::updateObject($this, true, null, true);
     }
 
     /**

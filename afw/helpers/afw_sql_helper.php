@@ -1120,7 +1120,7 @@ class AfwSqlHelper extends AFWRoot
      * update
      * commit attributes update to DB
      */
-    public static function updateObject($object, $only_me = true, $nocote_fields=null)
+    public static function updateObject($object, $only_me = true, $nocote_fields=null, $onlyReturnSQL=false)
     {
         if($object->IS_COMMITING) throw new AfwRuntimeException("To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods");
         $object->IS_COMMITING = true;
@@ -1221,7 +1221,7 @@ class AfwSqlHelper extends AFWRoot
         
 
                 list($query, $fields_updated, $report) = AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated, $nocote_fields);
-
+                if($onlyReturnSQL) return $query;
                 /*
                 if(static::$TABLE == "student_session") 
                 {
