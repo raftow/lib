@@ -48,11 +48,7 @@ class AfwMomkenObject extends AFWObject {
         	return  "active";
         }
  
-        public function isTechField($attribute) {
-            return (($attribute=="created_by") or ($attribute=="created_at") or ($attribute=="updated_by") or ($attribute=="updated_at") or ($attribute=="validated_by") or ($attribute=="validated_at") or ($attribute=="version"));  
-        }
-	
-
+        
         public function getTimeStampFromRow($row,$context="update", $timestamp_field="")
         {
                 if(!$timestamp_field) return $row["synch_timestamp"];
