@@ -2286,9 +2286,17 @@ class AFWObject extends AFWRoot
         return count($this->FIELDS_UPDATED);
     }
 
+    public function changedNewValues()
+    {
+        $result = "";
+        $flds = array_keys($this->FIELDS_UPDATED);
+        foreach($flds as $fld) $result .= " >> $fld=".$this->getVal($fld);
+        return $result;
+    }
+
     public function hasChanged()
     {
-        $debugg_has_changed = implode(',', array_keys($this->FIELDS_UPDATED))." " .var_export($this->FIELDS_UPDATED, true);
+        $debugg_has_changed = implode(',', array_keys($this->FIELDS_UPDATED))." " .var_export($this->FIELDS_UPDATED, true)." >>>>> ".$this->changedNewValues();
         // $this->debugg_has_changed = $debugg_has_changed;
         return $debugg_has_changed;
     }
