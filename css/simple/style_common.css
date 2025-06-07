@@ -6338,6 +6338,7 @@ h5.popup>p{
 .popup-editing {
     border: dashed 1px silver;
     padding: 2px 2px;
+    min-width: 60px;
 }
 
 .hzm_col {

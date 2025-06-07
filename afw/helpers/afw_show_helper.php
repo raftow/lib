@@ -1571,6 +1571,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                         $cuclass = $popupEditSettings["class"];
                         $curecord = $popupEditSettings["record"][$id];
                         $data_aff_old = $data_aff;
+                        if(!$data_aff_old) $data_aff_old = "&nbsp;";
                         $data_aff = "<div class='popup-editing'>";
                         $data_aff .= "<span id='span-$cumodule-$cuclass-$id-$nom_col'>$data_aff_old</span>";
                         $data_aff .= "<img class='popup-edit' idobj='$id' mod='$cumodule' cls='$cuclass' col='$nom_col' val='$val_col' tit='$cutitle' record='$curecord' parent_container='$idTable' src=\"../lib/images/pen.png\" width=\"16\" heigth=\"16\">";
