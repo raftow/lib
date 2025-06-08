@@ -1901,7 +1901,7 @@ class AFWObject extends AFWRoot
 
     public function whyAttributeIsNotApplicable($attribute, $lang = 'ar')
     {
-        $icon = 'na20.png';
+        $icon = 'na32.png';
         $textReason = $this->translateMessage('NA-HERE', $lang);
         return [$icon, $textReason, 20, 20];
     }
