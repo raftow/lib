@@ -216,7 +216,7 @@ class AfwPrevilegeHelper
             }
         }
 
-        array_push($tableau, $tableau_final);
+        $tableau = array_merge($tableau, $tableau_final);
         /*
         if(static::$TABLE=="practice")
         {
