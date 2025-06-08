@@ -165,7 +165,7 @@ class AfwPrevilegeHelper
 
         // die("setSpecialRetrieveCols returned hide_retrieve_cols = ".var_export($hide_retrieve_cols,true).", force_retrieve_cols = ".var_export($force_retrieve_cols,true));
         $tableau = [];
-
+        $tableau_final = [];
         $db_struct_all = $object->getAllMyDbStructure();
 
         foreach ($db_struct_all as $attribute => $descAttr) {
@@ -202,7 +202,8 @@ class AfwPrevilegeHelper
                     }
 
                     if ($take and $takeCateg) {
-                        $tableau[] = $attribute;
+                        if($descAttr["RETRIEVE_LAST"]) $tableau_final[] = $attribute;
+                        else $tableau[] = $attribute;
                     }
                 }
                 if ($debugg) {
@@ -214,6 +215,8 @@ class AfwPrevilegeHelper
                 // if($attribute == "ongoing_requests_count") die("$attribute is not RetrieveCol in mode $mode reason=$AttributeNotRetrievableWhy descAttr2=".var_export($descAttr2,true));
             }
         }
+
+        $tableau = array_push($tableau, $tableau_final);
         /*
         if(static::$TABLE=="practice")
         {
