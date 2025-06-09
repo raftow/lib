@@ -1754,6 +1754,15 @@ class AfwDateHelper
         return [$hdate, $gtime];
     }
 
+    public static function timeDiffInHours($gdate2, $gdate1, $round = true)
+    {
+        $result_diff = self::timeDiffInSeconds($gdate2, $gdate1);
+        $result_diff / 3600;
+        if ($round) {$result_diff = round($result_diff);}
+
+        return $result_diff;
+    }
+
     public static function timeDiffInSeconds($gdate2, $gdate1)
     {
         $stmp2 = self::gregToTimestamp($gdate2);
