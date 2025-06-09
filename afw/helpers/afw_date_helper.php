@@ -1757,7 +1757,7 @@ class AfwDateHelper
     public static function timeDiffInHours($gdate2, $gdate1, $round = true)
     {
         $result_diff = self::timeDiffInSeconds($gdate2, $gdate1);
-        $result_diff / 3600;
+        $result_diff = $result_diff / 3600;
         if ($round) {$result_diff = round($result_diff);}
 
         return $result_diff;
@@ -1774,7 +1774,7 @@ class AfwDateHelper
     public static function gregDateDiff($gdate2, $gdate1, $round = true)
     {
         $result_diff = self::timeDiffInSeconds($gdate2, $gdate1);
-        $result_diff / (24 * 3600);
+        $result_diff = $result_diff / (24 * 3600);
         if ($round) {
             $result_diff = round($result_diff);
         }
