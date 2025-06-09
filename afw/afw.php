@@ -1219,9 +1219,7 @@ class AFWObject extends AFWRoot
      * @param string  $limit : Optional add limit to query
      * @param string  $order_by : Optional add order by to query
      */
-    public function loadCol(
-        $object,
-        $col_name,
+    public function loadCol($col_name,
         $distinct = false,
         $limit = '',
         $order_by = ''

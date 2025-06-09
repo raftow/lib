@@ -1718,9 +1718,29 @@ class AfwFormatHelper
         return $return;
     }
 
-    public static function pbm_result($err, $info, $warn = null, $sep = "<br>\n", $tech = "", $result_arr=[])
+    public static function pbm_result($err, $info, $warn = null, $sep = "<br>\n", $tech = "", $result_arr=[], $limitSize=null)
     {
         // die(" 1 ==> pbm_result($err, $info, $warn) warn = ".var_export($warn,true));
+        if($limitSize and (count($err)>$limitSize))
+        {
+            $diff = count($err) - $limitSize;
+            array_splice($err, $limitSize);
+            $err[] = "and $diff more errors...";
+        }
+        if($limitSize and (count($info)>$limitSize))
+        {
+            $diff = count($info) - $limitSize;
+            array_splice($info, $limitSize);
+            $info[] = "and $diff more ...";
+        }
+
+        if($limitSize and (count($warn)>$limitSize))
+        {
+            $diff = count($warn) - $limitSize;
+            array_splice($warn, $limitSize);
+            $warn[] = "and $diff more ...";
+        }
+
         if (is_array($err)) $err = implode($sep, $err);
         if (is_array($info)) $info = implode($sep, $info);
         if (is_array($warn)) $warn = implode($sep, $warn);
