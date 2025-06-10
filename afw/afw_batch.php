@@ -52,6 +52,11 @@
             return self::debugg($string);
         }
 
+        public static function print_the_log()
+        {
+            return self::debugg(AfwSession::getLog());
+        }
+
         public static function print_custom($type,$string)
         {
             if($type=="debugg") return self::print_debugg($string);
