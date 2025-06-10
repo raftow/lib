@@ -232,6 +232,8 @@ class AfwUrlManager extends AFWRoot
     public static function currentPageCode()
     {
         $currentPageCodeArr = [];
+        $acceptedCodeArr = [];
+        $rejectedCodeArr = [];
         $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
         $serv_uri = trim($_SERVER['REQUEST_URI']);
         $serv_uri = str_replace('.php','',$serv_uri);
@@ -306,6 +308,7 @@ class AfwUrlManager extends AFWRoot
             
             if(
                 (strlen($uri_item)>=3) 
+                and (strlen($uri_item)<=10) 
                 and (!is_numeric($uri_item)) 
                 and (!AfwStringHelper::stringStartsWith($uri_item,'sel_'))
                 and ($uri_item != "currmod")
@@ -319,11 +322,16 @@ class AfwUrlManager extends AFWRoot
             )
             {
                 $currentPageCodeArr[] = $uri_item;
+                $acceptedCodeArr[] = $uri_item." not arabic, not numeric, not mp, not limit, not newo, not submit, not php, not currstep, not currmod, not sel_, not too short or too long,";
+            }
+            else
+            {
+                $rejectedCodeArr[] = $uri_item." arabic or numeric or mp or limit or newo or submit or php or currstep or currmod or sel_ or too short(<3) or too long (>10)";
             }
             $previous_item = $uri_item;
         }
 
-        return implode("_",$currentPageCodeArr);
+        return [implode("_",$currentPageCodeArr), implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)];
     }
 
 

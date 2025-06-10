@@ -17,7 +17,7 @@ class AfwHtmlIncluderHelper
       $main_module = $cmodule = AfwUrlManager::currentURIModule();
       $xmodule = AfwSession::getCurrentlyExecutedModule();
       $xtemplate = AfwSession::getCurrentModuleTemplate();
-      $pagecode = AfwUrlManager::currentPageCode();
+      list($pagecode, $log_explain) = AfwUrlManager::currentPageCode();
       $company = AfwSession::currentCompany();
       $menu_template = AfwSession::currentMenuTemplate();
     
@@ -331,12 +331,13 @@ class AfwHtmlIncluderHelper
           {
             $header .= "
           <script src='./js/$pagecode_js_file'></script>  
+          <!-- auto-js file construction $log_explain -->
           ";  
           }
           else
           {
             $header .= "
-          <!-- auto-js file '[module]/js/$pagecode_js_file' not found so skipped --> 
+          <!-- auto-js file construction gived '[module]/js/$pagecode_js_file' not found so skipped : $log_explain --> 
           "; 
           }
 
