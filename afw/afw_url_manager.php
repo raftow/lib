@@ -294,7 +294,7 @@ class AfwUrlManager extends AFWRoot
             else $ignored_vars .= "  [$var/$varval]  ,";
         }
 
-        die("curr page code => ignored_vars = $ignored_vars uri_items = ".var_export($uri_items,true));
+        // die("curr page code => ignored_vars = $ignored_vars uri_items = ".var_export($uri_items,true));
 
         $previous_item = "";
         foreach($uri_items as $uri_item) 
