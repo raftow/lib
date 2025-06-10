@@ -245,6 +245,7 @@ class AfwUrlManager extends AFWRoot
         $uri_items = explode('/', $serv_uri);
         unset($uri_items[0]);
         unset($uri_items[1]);
+        if($uri_items[2]=="main") unset($uri_items[2]);
         $post_i = 0;
         $POST_MAX = 3;
         $ignored_vars = "";
@@ -262,10 +263,10 @@ class AfwUrlManager extends AFWRoot
                 and (!is_numeric($var)) 
                 and (is_string($varval))
                 and (!AfwStringHelper::stringStartsWith($varval,'['))
-                and (!AfwStringHelper::stringStartsWith($var,'sel_'))
-                and (!AfwStringHelper::stringStartsWith($var,'cur'))
+                and (!AfwStringHelper::stringStartsWith($var,'sel_'))                
                 and (!AfwStringHelper::stringEndsWith($var,'go'))
                 and ($var != "main")
+                and ($var != "curstep")
                 and ($varval != "main")
                 and ($var != "my_module")
                 and ($varval != "afw")
