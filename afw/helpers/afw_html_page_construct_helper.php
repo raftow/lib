@@ -78,7 +78,7 @@
                 // die("main_section_file_name=$main_section_file_name");
                 $f3c = substr($main_section_file_name,0,3);
                 $f7c = substr($main_section_file_name,0,7);
-                $pagecode = AfwUrlManager::currentPageCode();
+                list($pagecode, $log_explain) = AfwUrlManager::currentPageCode();
                 // die("pagecode=$pagecode");
                 $pagecode_splitted = implode(" ",explode("_",$pagecode));
                 // to avoid infinite mirroring
