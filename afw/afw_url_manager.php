@@ -253,6 +253,7 @@ class AfwUrlManager extends AFWRoot
             $var = trim(strtolower($var));
             $varval = str_replace('afw_mode_','',$varval);
             $varval = str_replace('.php','',$varval);
+            if($var=="cl") $varval = substr($varval,0,20);
 
             if(
                 ((strlen($var)>=3) or (strlen($varval)>=3))
@@ -308,7 +309,7 @@ class AfwUrlManager extends AFWRoot
             
             if(
                 (strlen($uri_item)>=3) 
-                and (strlen($uri_item)<=10) 
+                and (strlen($uri_item)<=20) 
                 and (!is_numeric($uri_item)) 
                 and (!AfwStringHelper::stringStartsWith($uri_item,'sel_'))
                 and ($uri_item != "currmod")
@@ -326,7 +327,7 @@ class AfwUrlManager extends AFWRoot
             }
             else
             {
-                $rejectedCodeArr[] = $uri_item." arabic or numeric or mp or limit or newo or submit or php or currstep or currmod or sel_ or too short(<3) or too long (>10)";
+                $rejectedCodeArr[] = $uri_item." arabic or numeric or mp or limit or newo or submit or php or currstep or currmod or sel_ or too short(<3) or too long (>20)";
             }
             $previous_item = $uri_item;
         }
