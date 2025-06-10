@@ -234,7 +234,7 @@ class AfwUrlManager extends AFWRoot
         $currentPageCodeArr = [];
         $acceptedCodeArr = [];
         $rejectedCodeArr = [];
-        $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
+        $original_serv_uri = $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
         $serv_uri = trim($_SERVER['REQUEST_URI']);
         $serv_uri = str_replace('.php','',$serv_uri);
         $serv_uri = str_replace('?','/', $serv_uri);
@@ -265,7 +265,6 @@ class AfwUrlManager extends AFWRoot
                 and (!AfwStringHelper::stringStartsWith($var,'sel_'))
                 and (!AfwStringHelper::stringStartsWith($var,'cur'))
                 and (!AfwStringHelper::stringEndsWith($var,'go'))
-                and ($var != "currmod")
                 and ($var != "main")
                 and ($varval != "main")
                 and ($var != "my_module")
@@ -338,7 +337,7 @@ class AfwUrlManager extends AFWRoot
             $previous_item = $uri_item;
         }
         $log_explain = "explain disabled";
-        $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)."\n ignored_vars=$ignored_vars \n_POST = ".var_export($_POST,true)." \nserv_uri=$serv_uri \nuri_items = ".var_export($uri_items,true);
+        $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)."\n ignored_vars=$ignored_vars \n_POST = ".var_export($_POST,true)." \nserv_uri=$serv_uri \noriginal_serv_uri=$original_serv_uri\nuri_items = ".var_export($uri_items,true);
 
         return [implode("_",$currentPageCodeArr), $log_explain];
     }
