@@ -252,9 +252,11 @@ class AfwUrlManager extends AFWRoot
         {
             $var = trim(strtolower($var));
             $varval = str_replace('afw_mode_','',$varval);
+            $varval = str_replace('afw_handle_default_','',$varval);
             $varval = str_replace('.php','',$varval);
+            if($var=="class_obj") $var = "cl";
             if($var=="cl") $varval = substr($varval,0,20);
-
+            
             if(
                 ((strlen($var)>=3) or (strlen($varval)>=3))
                 and (!is_numeric($var)) 
@@ -336,7 +338,7 @@ class AfwUrlManager extends AFWRoot
             $previous_item = $uri_item;
         }
         $log_explain = "explain disabled";
-        $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)."\n ignored_vars=$ignored_vars \n_POST = ".var_export($_POST,true)." \nuri_items = ".var_export($uri_items,true);
+        $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)."\n ignored_vars=$ignored_vars \n_POST = ".var_export($_POST,true)." \nserv_uri=$serv_uri \nuri_items = ".var_export($uri_items,true);
 
         return [implode("_",$currentPageCodeArr), $log_explain];
     }
