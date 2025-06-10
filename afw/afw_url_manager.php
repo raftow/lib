@@ -277,9 +277,9 @@ class AfwUrlManager extends AFWRoot
                 and (!AfwStringHelper::is_arabic($var,0.4))
             )
             {
-                if(is_string($varval) and (strlen($varval)<= 8) and ($post_i < $POST_MAX))
+                if(is_string($varval) and (strlen($varval)>= 3) and (strlen($varval)<= 20) and ($post_i < $POST_MAX))
                 {
-                    if($var != "main_page") $uri_items[] = $var;
+                    if(($var != "main_page") and (is_string($var) and (strlen($var)>= 3) and (strlen($var)<= 20)))  $uri_items[] = $var;
                     $uri_items[] = $varval;            
                     $post_i++;
                 }
@@ -332,7 +332,7 @@ class AfwUrlManager extends AFWRoot
             $previous_item = $uri_item;
         }
         $log_explain = "explain disabled";
-        $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)." _POST".var_export($_POST,true);
+        $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)." ignored_vars=$ignored_vars _POST".var_export($_POST,true)." uri_item".var_export($uri_item,true);
 
         return [implode("_",$currentPageCodeArr), $log_explain];
     }
