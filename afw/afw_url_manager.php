@@ -332,7 +332,7 @@ class AfwUrlManager extends AFWRoot
             $previous_item = $uri_item;
         }
         $log_explain = "explain disabled";
-        $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)." ignored_vars=$ignored_vars _POST".var_export($_POST,true)." uri_item".var_export($uri_item,true);
+        $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)."\n ignored_vars=$ignored_vars \n_POST = ".var_export($_POST,true)." \nuri_items = ".var_export($uri_items,true);
 
         return [implode("_",$currentPageCodeArr), $log_explain];
     }
