@@ -748,6 +748,13 @@ table.grid tbody tr:hover>td {
 }
 
 
+div.messages--error>a {
+    color: wheat;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #efed96;
+    padding-top: 8px;
+    margin-top: 8px;
+}
 
 .messages {
     border-style: solid;
