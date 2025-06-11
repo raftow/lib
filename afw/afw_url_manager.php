@@ -229,7 +229,7 @@ class AfwUrlManager extends AFWRoot
         return strtolower($phpself_arr[0]);
     }
 
-    private static function defaultCurrentPageCode($theModule, $theClass, $uri_items)
+    private static function defaultCurrentPageCode($theModule, $theClass, $uri_items, $original_serv_uri, $serv_uri, $ignored_vars)
     {
         $currentPageCodeArr = [];
         $acceptedCodeArr = [];
@@ -288,7 +288,7 @@ class AfwUrlManager extends AFWRoot
         }   
 
         $log_explain = "with uri items but explain disabled";
-        // $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)."\n ignored_vars=$ignored_vars \n_POST = ".var_export($_POST,true)." \nserv_uri=$serv_uri \noriginal_serv_uri=$original_serv_uri\nuri_items = ".var_export($uri_items,true);
+        $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)."\n ignored_vars=$ignored_vars \n_POST = ".var_export($_POST,true)." \nserv_uri=$serv_uri \noriginal_serv_uri=$original_serv_uri\nuri_items = ".var_export($uri_items,true);
 
         $pageCode = implode("_",$currentPageCodeArr);
         return [$uri_items, $pageCode, $log_explain];
@@ -375,15 +375,16 @@ class AfwUrlManager extends AFWRoot
         }
 
         
-        return [$theModule, $theClass, $uri_items];
+        return [$theModule, $theClass, $uri_items, $original_serv_uri, $serv_uri, $ignored_vars];
         // die("curr page code => ignored_vars = $ignored_vars uri_items = ".var_export($uri_items,true));
     }
         
     public static function currentPageCode()
     {
-        list($theModule, $theClass, $uri_items) = self::analyseCurrentUrl();
+        list($theModule, $theClass, $uri_items, $original_serv_uri, $serv_uri, $ignored_vars) = self::analyseCurrentUrl();
         
         $pageCode = null;
+        $log_explain_advanced = "";
         if($theClass and $theModule)
         {
             $theStructureClass = ucfirst($theModule).$theClass."AfwStructure";
@@ -392,16 +393,18 @@ class AfwUrlManager extends AFWRoot
                 $pageCode = $theStructureClass::pageCode($uri_items);
                 $log_explain = "from $theStructureClass::pageCode(...) method";
             }
+            else $log_explain_advanced = "$theStructureClass::pageCode(...) not found";
         }
+        else $log_explain_advanced = "theClass=$theClass and theModule=$theModule";
 
         if(!$pageCode)
         {
-            list($uri_items, $pageCode, $log_explain) = self::defaultCurrentPageCode($theModule, $theClass, $uri_items);
+            list($uri_items, $pageCode, $log_explain) = self::defaultCurrentPageCode($theModule, $theClass, $uri_items, $original_serv_uri, $serv_uri, $ignored_vars);
                         
         }
         
 
-        return [$pageCode, $log_explain];
+        return [$pageCode, $log_explain." >> ".$log_explain_advanced];
     }
 
 
