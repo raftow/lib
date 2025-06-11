@@ -229,76 +229,25 @@ class AfwUrlManager extends AFWRoot
         return strtolower($phpself_arr[0]);
     }
 
-    public static function currentPageCode()
+    private static function defaultCurrentPageCode($theModule, $theClass, $uri_items)
     {
         $currentPageCodeArr = [];
         $acceptedCodeArr = [];
         $rejectedCodeArr = [];
-        $original_serv_uri = $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
-        $serv_uri = trim($_SERVER['REQUEST_URI']);
-        $serv_uri = str_replace('.php','',$serv_uri);
-        $serv_uri = str_replace('?','/', $serv_uri);
-        $serv_uri = str_replace('\\','/', $serv_uri);
-        $serv_uri = str_replace('=','/', $serv_uri);
-        $serv_uri = str_replace('.','/', $serv_uri);
-        $serv_uri = str_replace('&','/', $serv_uri);
-        $uri_items = explode('/', $serv_uri);
-        unset($uri_items[0]);
-        unset($uri_items[1]);
-        if($uri_items[2]=="main") unset($uri_items[2]);
-        $post_i = 0;
-        $POST_MAX = 3;
-        $ignored_vars = "";
-        foreach($_POST as $var => $varval)
-        {
-            $var = trim(strtolower($var));
-            $varval = str_replace('afw_mode_','',$varval);
-            $varval = str_replace('afw_handle_default_','',$varval);
-            $varval = str_replace('.php','',$varval);
-            if($var=="class_obj") $var = "cl";
-            if($var=="cl") $varval = substr($varval,0,20);
-            
-            if(
-                ((strlen($var)>=3) or (strlen($varval)>=3))
-                and (!is_numeric($var)) 
-                and (is_string($varval))
-                and (!AfwStringHelper::stringStartsWith($varval,'['))
-                and (!AfwStringHelper::stringStartsWith($var,'sel_'))                
-                and (!AfwStringHelper::stringEndsWith($var,'go'))
-                and ($var != "main")
-                and ($var != "curstep")
-                and ($varval != "main")
-                and ($var != "my_module")
-                and ($varval != "afw")
-                and ($var != "pbmon")
-                and ($var != "file_obj")
-                and ($var != "class_parent")
-                and ($var != "class_obj")
-                and ($var != "id_obj")
-                and ($var != "php")
-                and ($var != "submit")
-                and ($var != "newo")
-                and ($var != "popup")
-                and ($var != "limit")
-                and (!AfwStringHelper::is_arabic($var,0.4))
-            )
-            {
-                if(is_string($varval) and (strlen($varval)>= 3) and (strlen($varval)<= 20) and ($post_i < $POST_MAX))
-                {
-                    if(($var != "main_page") and (is_string($var) and (strlen($var)>= 3) and (strlen($var)<= 20)))  $uri_items[] = $var;
-                    $uri_items[] = $varval;            
-                    $post_i++;
-                }
-                else $ignored_vars .= "  ($var/$varval/$post_i)  ,";
-            }
-            else $ignored_vars .= "  [$var/$varval]  ,";
-        }
-
-        // die("curr page code => ignored_vars = $ignored_vars uri_items = ".var_export($uri_items,true));
 
         $previous_item = "";
         foreach($uri_items as $uri_item) 
         {
+            if(!$theModule and ($previous_item=="currmod")) 
+            {
+                $theModule = $uri_item; 
+            }
+
+            if(!$theClass and ($previous_item=="cl")) 
+            {
+                $theClass = $uri_item;
+            }
+
             if(!AfwStringHelper::stringContain($uri_item,'_'))
             {
                 $uri_item = AfwStringHelper::classToTable($uri_item); 
@@ -336,11 +285,123 @@ class AfwUrlManager extends AFWRoot
                 $rejectedCodeArr[] = $uri_item." arabic or numeric or mp or limit or newo or submit or php or currstep or currmod or sel_ or too short(<3) or too long (>20)";
             }
             $previous_item = $uri_item;
-        }
-        $log_explain = "explain disabled";
-        $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)."\n ignored_vars=$ignored_vars \n_POST = ".var_export($_POST,true)." \nserv_uri=$serv_uri \noriginal_serv_uri=$original_serv_uri\nuri_items = ".var_export($uri_items,true);
+        }   
 
-        return [implode("_",$currentPageCodeArr), $log_explain];
+        $log_explain = "with uri items but explain disabled";
+        // $log_explain = implode("\n<br>",$acceptedCodeArr)."\n<br>".implode("\n<br>",$rejectedCodeArr)."\n ignored_vars=$ignored_vars \n_POST = ".var_export($_POST,true)." \nserv_uri=$serv_uri \noriginal_serv_uri=$original_serv_uri\nuri_items = ".var_export($uri_items,true);
+
+        $pageCode = implode("_",$currentPageCodeArr);
+        return [$uri_items, $pageCode, $log_explain];
+    }
+
+
+    public static function analyseCurrentUrl()
+    {
+        
+        $original_serv_uri = $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
+        $serv_uri = trim($_SERVER['REQUEST_URI']);
+        $serv_uri = str_replace('.php','',$serv_uri);
+        $serv_uri = str_replace('?','/', $serv_uri);
+        $serv_uri = str_replace('\\','/', $serv_uri);
+        $serv_uri = str_replace('=','/', $serv_uri);
+        $serv_uri = str_replace('.','/', $serv_uri);
+        $serv_uri = str_replace('&','/', $serv_uri);
+        $uri_items = explode('/', $serv_uri);
+        unset($uri_items[0]);
+        unset($uri_items[1]);
+        if($uri_items[2]=="main") 
+        {
+            unset($uri_items[2]);
+        }
+        $uriModule = self::currentURIModule();
+        $post_i = 0;
+        $POST_MAX = 3;
+        $ignored_vars = "";
+        $theModule = "";
+        $theClass = "";
+        foreach($_POST as $var => $varval)
+        {
+            $var = trim(strtolower($var));
+            $varval = str_replace('afw_mode_','',$varval);
+            $varval = str_replace('afw_handle_default_','',$varval);
+            $varval = str_replace('.php','',$varval);
+            if($var=="class_obj") $var = "cl";
+            if($var=="cl") 
+            {
+                $theClass = $varval;
+                $varval = substr($varval,0,20);
+            }
+            if($var=="currmod") $theModule = $varval; 
+            if(($var=="my_module") and !$theModule) $theModule = $varval; 
+            if(
+                ((strlen($var)>=3) or (strlen($varval)>=3))
+                and (!is_numeric($var)) 
+                and (is_string($varval))
+                and (!AfwStringHelper::stringStartsWith($varval,'['))
+                and (!AfwStringHelper::stringStartsWith($var,'sel_'))                
+                and (!AfwStringHelper::stringEndsWith($var,'go'))
+                and ($var != "main")
+                and ($var != "curstep")
+                and ($varval != "main")
+                and ($var != "my_module")
+                and ($varval != "afw")
+                and ($var != "pbmon")
+                and ($var != "file_obj")
+                and ($var != "class_parent")
+                and ($var != "class_obj")
+                and ($var != "id_obj")
+                and ($var != "php")
+                and ($var != "submit")
+                and ($var != "newo")
+                and ($var != "popup")
+                and ($var != "limit")
+                and (!AfwStringHelper::is_arabic($var,0.4))
+            )
+            {
+                if(is_string($varval) and (strlen($varval)>= 3) and (strlen($varval)<= 20) and ($post_i < $POST_MAX))
+                {
+                    if(($var != "main_page") and (is_string($var) and (strlen($var)>= 3) and (strlen($var)<= 20)))  $uri_items[] = $var;
+                    $uri_items[] = $varval;            
+                    $post_i++;
+                }
+                else $ignored_vars .= "  ($var/$varval/$post_i)  ,";
+            }
+            else $ignored_vars .= "  [$var/$varval]  ,";
+        }
+
+        if(!$theModule) 
+        {
+            $theModule = $uriModule; 
+        }
+
+        
+        return [$theModule, $theClass, $uri_items];
+        // die("curr page code => ignored_vars = $ignored_vars uri_items = ".var_export($uri_items,true));
+    }
+        
+    public static function currentPageCode()
+    {
+        list($theModule, $theClass, $uri_items) = self::analyseCurrentUrl();
+        
+        $pageCode = null;
+        if($theClass and $theModule)
+        {
+            $theStructureClass = ucfirst($theModule).$theClass."AfwStructure";
+            if(method_exists($theStructureClass, "pageCode"))
+            {
+                $pageCode = $theStructureClass::pageCode($uri_items);
+                $log_explain = "from $theStructureClass::pageCode(...) method";
+            }
+        }
+
+        if(!$pageCode)
+        {
+            list($uri_items, $pageCode, $log_explain) = self::defaultCurrentPageCode($theModule, $theClass, $uri_items);
+                        
+        }
+        
+
+        return [$pageCode, $log_explain];
     }
 
 
