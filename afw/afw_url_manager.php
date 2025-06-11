@@ -374,6 +374,22 @@ class AfwUrlManager extends AFWRoot
             $theModule = $uriModule; 
         }
 
+
+        $previous_item = "";
+        foreach($uri_items as $uri_item) 
+        {
+            if(!$theModule and ($previous_item=="currmod")) 
+            {
+                $theModule = $uri_item; 
+            }
+
+            if(!$theClass and ($previous_item=="cl")) 
+            {
+                $theClass = $uri_item;
+            }
+
+            $previous_item = $uri_item;
+        } 
         
         return [$theModule, $theClass, $uri_items, $original_serv_uri, $serv_uri, $ignored_vars];
         // die("curr page code => ignored_vars = $ignored_vars uri_items = ".var_export($uri_items,true));
