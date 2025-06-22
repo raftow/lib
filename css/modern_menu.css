@@ -125,7 +125,7 @@ button.bf.hzm-specialmethod {
 .bf.bf-green:hover {
     border: none !important;
     color: #d8f5ce !important;
-    background-color: #0f700f !important;
+    background-color: #37a137 !important;
 }
 
 .bf.bf-gray {
@@ -151,10 +151,9 @@ button.bf.hzm-specialmethod {
 
 
 .bf.bf-red {
-    border: 1px #d61212 solid !important;
-    color: #ed0d0d !important;
-    background-color: #fbf0e12e !important;
-    text-shadow: 1px 1px 1px #c46734;
+    border: 1px solid #fb827c !important;
+    color: #fff4f4 !important;
+    background-color: #f8241991 !important;
 }
 
 .bf.bf-red:hover {
