@@ -81,6 +81,64 @@ class AfwChartHelper
         return [$x_js_code, $y_js_code, $minX, $minY, $maxX, $maxY];
     }
 
+    public static function dataToXYR($data)
+    {
+        $minX = 9999;
+        $minY = 9999;
+        $maxX = -9999;
+        $maxY = -9999;
+        $result = "";
+        foreach($data as $x => $dataX)
+        foreach($dataX as $y => $r)
+        {
+            if($x<$minX) $minX = $x;
+            if($y<$minY) $minY = $y;
+            if($x>$maxX) $maxX = $x;
+            if($y>$maxY) $maxY = $y;
+            $result .= "{
+                x: $x,
+                y: $y,
+                r: $r
+            },
+            ";
+        }
+
+        $result = trim($result);
+        $result = trim($result, ",");
+        return ["[$result]", $minX, $minY, $maxX, $maxY];
+    }
+
+    public static function dataToJsXYRValues($data, $labels)
+    {
+        // die("dataToJsXYRValues : data = ".var_export($data, true));
+
+        $data_js = "";
+
+        $minX = 9999;
+        $minY = 9999;
+        $maxX = 0;
+        $maxY = 0;
+
+        foreach($data as $dataI => $dataItem)
+        {
+            list($dataItemXYR, $minX0, $minY0, $maxX0, $maxY0) = self::dataToXYR($dataItem);
+            if($minX0<$minX) $minX = $minX0;
+            if($minY0<$minY) $minY = $minY0;
+            if($maxX0>$maxX) $maxX = $maxX0;
+            if($maxY0>$maxY) $maxY = $maxY0;
+            $label = $labels[$dataI];
+            $data_js .= "{
+            label: '$label',
+            data: $dataItemXYR
+          },
+          ";
+        }
+
+        $data_js = trim($data_js);
+        $data_js = trim($data_js, ",");
+        return [$data_js, $minX, $minY, $maxX, $maxY];
+    }
+
 
     public static function scatterChartScript($data, $idCanvas)
     {
@@ -144,6 +202,39 @@ class AfwChartHelper
     }
     });
     </script>";
+
+        return $return;
+    }
+
+
+    
+    
+    
+
+    public static function bubbleChartScript($data, $idCanvas, $labels)
+    {
+        list($data_sets_js, $minX, $minY, $maxX, $maxY) = self::dataToJsXYRValues($data, $labels);
+
+        $return =
+            "<script>
+        new Chart(
+            \"$idCanvas\",
+            {
+              type: 'bubble',
+              options: {
+                aspectRatio: 1,
+                scales: {
+                  x: {
+                    max: $maxX,
+                  },
+                  y: {
+                    max: $maxY,                    
+                  }
+                }
+              },
+
+              datasets: $data_sets_js
+            });";
 
         return $return;
     }
