@@ -110,7 +110,7 @@ class AfwChartHelper
 
     public static function dataToJsXYRValues($data, $labels)
     {
-        die("dataToJsXYRValues : data = ".var_export($data, true));
+        // die("dataToJsXYRValues : data = ".var_export($data, true));
 
         $data_js = "";
 
