@@ -233,7 +233,7 @@ class AfwChartHelper
                 }
               },
 
-              datasets: $data_sets_js
+              datasets: [$data_sets_js]
             });";
 
         return $return;
