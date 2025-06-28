@@ -990,8 +990,17 @@ class AFWObject extends AFWRoot
         return $this->AFIELD_VALUE;
     }
 
+    private function detectUpdatedFields()
+    {
+        foreach($this->AFIELD_VALUE as $attribute => $value)
+        {
+            $this->nativeSet($attribute,$value);
+        }
+    }
+
     public function getAllfieldsToInsert()
     {
+        $this->detectUpdatedFields();
         $return = array_merge($this->FIELDS_INITED, $this->FIELDS_UPDATED);
 
         return $return;
