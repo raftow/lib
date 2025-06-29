@@ -131,15 +131,18 @@ class AfwChartHelper
             $pre_js .= "data$dataI = $dataItemXYR; \n"; 
             $data_js .= "{
             label: '$label',
-            data: data$dataI.map(row => ({
-                x: row.x,
-                y: row.y,
-                r: row.r
-              }))
+            data: data$dataI
           },
           ";
         }
 
+        /*
+         .map(row => ({
+                x: row.x,
+                y: row.y,
+                r: row.r
+              }))
+         */
         $data_js = trim($data_js);
         $data_js = trim($data_js, ",");
         return [$pre_js, $data_js, $minX, $minY, $maxX, $maxY];
