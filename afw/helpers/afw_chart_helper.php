@@ -241,6 +241,8 @@ class AfwChartHelper
               },
 
               datasets: [$data_sets_js]
+            }
+        );
         </script>";
 
         return $return;
