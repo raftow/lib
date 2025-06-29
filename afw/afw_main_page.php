@@ -1,7 +1,7 @@
 <?php
 class AfwMainPage
 {
-    public static function getDefaultOptions($Main_Page, $Main_Module="", $Main_Class="all")
+    public static function getDefaultOptions($Main_Page, $Main_Module="", $Main_Table="all")
     {
         $options = [];
 
@@ -15,7 +15,7 @@ class AfwMainPage
             $options["menu"]=false;
         }
         $curr_path = dirname(__FILE__);
-        $special_options_file = "$curr_path/../../$Main_Module/$Main_Class"."_options_for_$Main_Page";
+        $special_options_file = "$curr_path/../../$Main_Module/extra/$Main_Table"."_options_for_$Main_Page";
         if(file_exists($special_options_file))
         {
             $special_options = include($special_options_file);
