@@ -228,7 +228,7 @@ class AfwChartHelper
             "<script>
         $pre_js    
         new Chart(
-            document.getElementById('$idCanvas'),
+            \"$idCanvas\",
             {
               type: 'bubble',
               options: {
