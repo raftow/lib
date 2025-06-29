@@ -129,7 +129,11 @@ class AfwChartHelper
             $label = $labels[$dataI];
             $data_js .= "{
             label: '$label',
-            data: $dataItemXYR
+            data: $dataItemXYR.map(row => ({
+                x: row.x,
+                y: row.y,
+                r: row.r
+              }))
           },
           ";
         }
@@ -217,6 +221,7 @@ class AfwChartHelper
 
         $return =
             "<script>
+            
         new Chart(
             document.getElementById('$idCanvas'),
             {
@@ -234,7 +239,6 @@ class AfwChartHelper
               },
 
               datasets: [$data_sets_js]
-            });
         </script>";
 
         return $return;
