@@ -223,7 +223,7 @@ class AfwChartHelper
     public static function bubbleChartScript($data, $idCanvas, $labels)
     {
         list($pre_js, $data_sets_js, $minX, $minY, $maxX, $maxY) = self::dataToJsXYRValues($data, $labels);
-
+        $pre_js = "";
         $return =
             "<script>
         $pre_js    
@@ -231,8 +231,30 @@ class AfwChartHelper
             \"$idCanvas\",
             {
               type: 'bubble',
-              options: {
-                aspectRatio: 1,
+              options: {},
+
+              datasets: [{
+                label: 'First Dataset',
+                data: [{
+                    x: 20,
+                    y: 30,
+                    r: 15
+                }, {
+                    x: 40,
+                    y: 10,
+                    r: 10
+                }],
+                backgroundColor: 'rgb(255, 99, 132)'
+            }]
+              
+            }
+        );
+        </script>";
+
+        // datasets: [$data_sets_js]
+
+
+        /*                aspectRatio: 1,
                 scales: {
                   x: {
                     max: $maxX,
@@ -240,13 +262,8 @@ class AfwChartHelper
                   y: {
                     max: $maxY,                    
                   }
-                }
-              },
-
-              datasets: [$data_sets_js]
-            }
-        );
-        </script>";
+                }*/
+              
 
         return $return;
     }
