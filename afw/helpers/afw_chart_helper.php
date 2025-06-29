@@ -113,12 +113,13 @@ class AfwChartHelper
         // die("dataToJsXYRValues : data = ".var_export($data, true));
 
         $data_js = "";
+        $pre_js = "";
 
         $minX = 9999;
         $minY = 9999;
         $maxX = 0;
         $maxY = 0;
-
+        
         foreach($data as $dataI => $dataItem)
         {
             list($dataItemXYR, $minX0, $minY0, $maxX0, $maxY0) = self::dataToXYR($dataItem);
@@ -127,9 +128,10 @@ class AfwChartHelper
             if($maxX0>$maxX) $maxX = $maxX0;
             if($maxY0>$maxY) $maxY = $maxY0;
             $label = $labels[$dataI];
+            $pre_js .= "data$dataI = $dataItemXYR; \n"; 
             $data_js .= "{
             label: '$label',
-            data: $dataItemXYR.map(row => ({
+            data: data$dataI.map(row => ({
                 x: row.x,
                 y: row.y,
                 r: row.r
@@ -140,7 +142,7 @@ class AfwChartHelper
 
         $data_js = trim($data_js);
         $data_js = trim($data_js, ",");
-        return [$data_js, $minX, $minY, $maxX, $maxY];
+        return [$pre_js, $data_js, $minX, $minY, $maxX, $maxY];
     }
 
 
@@ -217,11 +219,11 @@ class AfwChartHelper
 
     public static function bubbleChartScript($data, $idCanvas, $labels)
     {
-        list($data_sets_js, $minX, $minY, $maxX, $maxY) = self::dataToJsXYRValues($data, $labels);
+        list($pre_js, $data_sets_js, $minX, $minY, $maxX, $maxY) = self::dataToJsXYRValues($data, $labels);
 
         $return =
             "<script>
-            
+        $pre_js    
         new Chart(
             document.getElementById('$idCanvas'),
             {
