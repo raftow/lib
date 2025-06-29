@@ -1,7 +1,7 @@
 <?php
 class AfwMainPage
 {
-    public static function getDefaultOptions($Main_Page, $Main_Module="")
+    public static function getDefaultOptions($Main_Page, $Main_Module="", $Main_Class="all")
     {
         $options = [];
 
@@ -14,6 +14,18 @@ class AfwMainPage
         {
             $options["menu"]=false;
         }
+        $curr_path = dirname(__FILE__);
+        $special_options_file = "$curr_path/../../$Main_Module/$Main_Class"."_options_for_$Main_Page";
+        if(file_exists($special_options_file))
+        {
+            $special_options = include($special_options_file);
+            $options = array_merge($options, $special_options);
+        }
+        else
+        {
+            die("$special_options_file not found");
+        }
+
         return $options;
     }
     public static function echoMainPage($current_module, $Main_Page, $module_path, $options = [])
