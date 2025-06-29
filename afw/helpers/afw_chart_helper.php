@@ -218,7 +218,7 @@ class AfwChartHelper
         $return =
             "<script>
         new Chart(
-            \"$idCanvas\",
+            document.getElementById('$idCanvas'),
             {
               type: 'bubble',
               options: {
