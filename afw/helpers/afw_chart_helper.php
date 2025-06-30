@@ -232,7 +232,7 @@ class AfwChartHelper
             {
               type: 'bubble',
               options: {
-                aspectRatio: 1,
+                // aspectRatio: 1,
                 scales: {
                   x: {
                     max: $maxX
