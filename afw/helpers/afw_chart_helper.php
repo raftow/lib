@@ -230,7 +230,7 @@ class AfwChartHelper
         new Chart(
             \"$idCanvas\",
             {
-              type: 'bubble',
+              type: 'scatter',
               options: {
                 // aspectRatio: 1,
                 scales: {
@@ -248,9 +248,15 @@ class AfwChartHelper
                     x: 0.20,
                     y: 0.30,
                     r: 0.15
-                }, {
+                }, 
+                {
                     x: 0.40,
                     y: 0.10,
+                    r: 0.20
+                }, 
+                {
+                    x: 0.60,
+                    y: 0.30,
                     r: 0.20
                 }],
                 backgroundColor: 'rgb(155, 0, 132)'
