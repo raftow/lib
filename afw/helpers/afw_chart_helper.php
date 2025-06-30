@@ -231,7 +231,16 @@ class AfwChartHelper
             \"$idCanvas\",
             {
               type: 'bubble',
-              options: {},
+              options: {
+                aspectRatio: 1,
+                scales: {
+                  x: {
+                    max: $maxX
+                  },
+                  y: {
+                    max: $maxY                    
+                  }
+                }},
 
               datasets: [{
                 label: 'First Dataset',
