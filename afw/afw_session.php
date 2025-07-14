@@ -606,7 +606,7 @@ class AfwSession extends AFWRoot {
                 }                 
         }
 
-        public static function userIsConnected()
+        public static function userIsAuthenticated()
         {
                 return (self::getSessionVar("user_id") > 0);
         }

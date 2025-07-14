@@ -40,7 +40,7 @@ $debugg_after_session_created = true;
 $login_dbg = array();
 $result_message = "";
 if(!$login_page_options) $login_page_options = AfwSession::config("login_page_options", array());
-if(AfwSession::userIsConnected()) 
+if(AfwSession::userIsAuthenticated()) 
 {
         header("Location: index.php");
 } 
