@@ -214,12 +214,23 @@ if($datatable_on)
 
         if($btns_display["add"])
         {
+                $other_hidden_arr=[];
+                $fixmSearchColsArr = $myClassInstance->getFixmSearchCols($_POST);
+                foreach($fixmSearchColsArr as $fixmSearchCol => $fixmSearchVal)
+                {
+                        $other_hidden_arr["sel_$fixmSearchCol"] = $fixmSearchVal;
+                }
                 $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="">';
                 $out_scr_btns .= '<form name="editForm" id="editForm" method="post" action="'."main.php".'">';
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_edit.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
-                $out_scr_btns .= '<input type="submit" class="longbtn bluebtn submit-btn fright" name="submit"  id="submit-form-new-instance" value="'.$new_instance." ".$single_obj_name.'" /><input type="hidden" size="3" name="newo" value="'.$newo.'"/>';
+                $out_scr_btns .= '<input type="submit" class="longbtn bluebtn submit-btn fright" name="submit"  id="submit-form-new-instance" value="'.$new_instance." ".$single_obj_name.'" />
+                                  <input type="hidden" size="3" name="newo" value="'.$newo.'"/>';
+                foreach($other_hidden_arr as $hiddenCol => $hiddenVal)
+                {
+                        $out_scr_btns .= "<input type=\"hidden\" name=\"$hiddenCol\" value=\"$hiddenVal\"/>";
+                }                                  
                 $out_scr_btns .= '<input type="hidden" name="limit" value=""/>';
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
