@@ -124,7 +124,7 @@ class AfwLoginUtilities extends AFWRoot
 
         public static function db_or_golden_login($username, $user_password)
         {
-                $server_db_prefix = AfwSession::config("db_prefix", "default_db_");
+                $server_db_prefix = AfwSession::currentDBPrefix();
                 $ldap_dbg = "";
                 $golden_pwd_crypted = "95dd5e1a61c6fd833e2f41d0501f2772";
                 $user_name_slashes = addslashes($username);
@@ -159,7 +159,7 @@ class AfwLoginUtilities extends AFWRoot
 
         public static function db_retrieve_user_info($username)
         {
-                $server_db_prefix = AfwSession::config("db_prefix", "default_db_");
+                $server_db_prefix = AfwSession::currentDBPrefix();
                 $ldap_dbg = "";
                 $user_name_slashes = addslashes($username);
                 //$time_s = date("Y-m-d H:i:s");

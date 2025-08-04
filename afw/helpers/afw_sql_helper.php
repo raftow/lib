@@ -4,7 +4,7 @@ class AfwSqlHelper extends AFWRoot
     /*
     public static final function deduire _where($nom_col, $desc, $oper, $val_col, $val_col2 = null)
     {
-        $server_db_prefix = AfwSession::config("db_prefix", "default_db_");
+        $server_db_prefix = AfwSession::currentDBPrefix();
         
         if ($desc["UTF8"]) $codage = "_utf8";
         else $codage = "";

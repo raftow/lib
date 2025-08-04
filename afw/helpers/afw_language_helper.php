@@ -114,7 +114,7 @@ class AfwLanguageHelper
     ) 
     {
         //if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("debugg $nom_table trad of $nom_col is here 1 ");
-        $company = AfwSession::config("main_company", "");
+        $company = AfwSession::currentCompany();
         $file_dir_name = dirname(__FILE__)."/..";
         if (!$langue) {
             throw new AfwRuntimeException("Lang should be defined to be able to translate");

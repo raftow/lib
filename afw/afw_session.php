@@ -547,9 +547,28 @@ class AfwSession extends AFWRoot {
                 return $application_nameArr[$lang];
         }
 
+        public static function setCurrentCompany($main_company)
+        {
+                self::setSessionVar("main_company", $main_company);
+        }
+
+        public static function currentDBPrefix()
+        {
+                $dbSwicthWithCompany = self::config("db-swicth-with-company", true);
+                $main_company = self::getSessionVar("main_company");
+                if($dbSwicthWithCompany and $main_company) return $main_company."_";
+                return AfwSession::config("db_prefix", "default_db_");
+        }
+
+        public static function companiesList()
+        {
+                return AfwSession::config("companies", ["uoh", "nauss"]);
+        }
 
         public static function currentCompany()
         {
+                $main_company = self::getSessionVar("main_company");
+                if($main_company) return $main_company;
                 return self::config("main_company", "");
         }
 
@@ -740,7 +759,7 @@ class AfwSession extends AFWRoot {
         }
 
 
-        public static function loadContextConfig($configContext, $loadClientConfig=false, $reload=false)
+        public static function loadContextConfig($configContext, $loadClientConfig=false, $reload=false, $force_main_company="")
         {
                 $contextAlreadyLoaded = self::config("$configContext-config-already-loaded",false, $configContext);
                 if($reload or !$contextAlreadyLoaded)
@@ -751,7 +770,7 @@ class AfwSession extends AFWRoot {
                         if(!$the_config_arr or (!is_array($the_config_arr)) or (count($the_config_arr)==0)) die("$context_config_file file should return a correct config array");
                         $the_config_arr["$configContext-config-already-loaded"] = true;
                         AfwSession::initConfig($the_config_arr, $configContext, $context_config_file);
-                        
+                        if($force_main_company) $the_config_arr["main_company"] = $force_main_company;
                         if($loadClientConfig)
                         {
                                 if(!$the_config_arr["main_company"]) die($configContext."_config.php file should define the main_company param to be able to load $configContext config for client");
