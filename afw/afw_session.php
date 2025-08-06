@@ -204,7 +204,7 @@ class AfwSession extends AFWRoot {
         {
                 foreach($var_data as $col => $val) 
                 {
-                        $_SESSION[$col] = $val;
+                        self::setSessionVar(col, $val);
                 }
         }
 
@@ -217,6 +217,10 @@ class AfwSession extends AFWRoot {
         {
                 if(empty($value)) self::emptingVar($var, "setSessionVar");
                 $_SESSION[$var] = $value;
+                if(($var=="main_company") and ($value!="nauss"))
+                {
+                        throw new AfwRuntimeException("main_company attempt to be set to [$value] value");
+                }
                 return $value;
         }
 
@@ -236,8 +240,10 @@ class AfwSession extends AFWRoot {
 
         public static function pushIntoSessionArray($key, $value_to_push)
         {
-                self::setSessionVarIfNotSet($key, array());                
-                array_push($_SESSION[$key], $value_to_push);
+                $arr = self::getSessionVar($key);                
+                if((!$arr) or (!is_array($arr))) $arr = array();
+                array_push($arr, $value_to_push);
+                self::setSessionVar($key, $arr);
         }
 
         public static function pullSessionVar($var, $source="pullSessionVar")
@@ -739,7 +745,7 @@ class AfwSession extends AFWRoot {
         public static function startSession()
         {
                 session_start();
-                $_SESSION["started"] = true;
+                AfwSession::setSessionVar("started", true);
         }
 
 
@@ -750,15 +756,6 @@ class AfwSession extends AFWRoot {
                         if(empty($value)) self::emptingVar($key, "closeSession");
                         unset($_SESSION[$key]);
                 }
-                $_SESSION["user_avail"] = "N";
-                
-                /*
-
-                $_SESSION["user_id"] = "";
-                $_SESSION["user_firstname"] = "";
-                $_SESSION["my_module_id"] = null;
-                $_SESSION["customer_id"] = "";
-                */
         }
 
         public static function sessionStarted()
