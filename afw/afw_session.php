@@ -200,12 +200,27 @@ class AfwSession extends AFWRoot {
                 return $_SESSION[$var];
         }
 
+        public static function initSession($var_data, $prefix="")
+        {
+                foreach($var_data as $col => $val) 
+                {
+                        $_SESSION[$col] = $val;
+                }
+        }
+
+        public static function initUserSession($var_data)
+        {
+                self::initSession($var_data, "user_");
+        }
+
         public static function setSessionVar($var, $value)
         {
                 if(empty($value)) self::emptingVar($var, "setSessionVar");
                 $_SESSION[$var] = $value;
                 return $value;
         }
+
+        
 
         public static function setSessionVarIfNotSet($var, $value)
         {
@@ -749,6 +764,11 @@ class AfwSession extends AFWRoot {
         public static function sessionStarted()
         {
                 return ($_SESSION["started"]);
+        }
+
+        public static function die_and_export_session()
+        {
+                die(var_export($_SESSION,true)); 
         }
 
 

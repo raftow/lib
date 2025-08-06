@@ -166,7 +166,7 @@ function getDataFromSQL($database, $sql, $trans_data=array(), $break_if_error=tr
         {
              $information = "<br>\n<pre class='sql hzmlib'><b>DB</b> : $database,\n<b>sql</b> :\n $sql\n <b>rows</b> : $rtab </pre>";
              //throw new AfwRuntimeException($information);
-             $_SESSION["analysis_log"].= $information;
+             //$_SES SION["analysis_log"].= $information;
         }
         
         return $tableau;
@@ -182,8 +182,8 @@ function execQuery($database, $query_txt, $titre="", $continueAndSendAlert=false
    // $query_txt = str_replace('[prefix]', "xx", $query_txt);
    
    $start_q_time = date("Y-m-d H:i:s");
-   if($print_debugg) debugg("Start query : $start_q_time");  
-   if($print_debugg) debugg("Query : $query_txt");
+   if($print_debugg) AfwBtach::debugg("Start query : $start_q_time");  
+   if($print_debugg) AfwBtach::debugg("Query : $query_txt");
    //if($print_debugg) debugg("db_arr[$database] = ".var_export($db_arr[$database],true));
 
    list($res, $project_link_name) =  AfwDatabase::db_query($query_txt, true, true, $database);
@@ -224,7 +224,7 @@ function execQuery($database, $query_txt, $titre="", $continueAndSendAlert=false
    $affected_rows = AfwMysql::affected_rows(AfwDatabase::getLinkByName($project_link_name));
    
    
-   if($print_debugg) debugg("End query : $end_q_time, duree : $duree_q, affected : $affected_rows row(s) \n");  
+   if($print_debugg) AfwBatch::debugg("End query : $end_q_time, duree : $duree_q, affected : $affected_rows row(s) \n");  
 
    if(($analyse_sql=='W') or ($analyse_sql=='Y') or ($duree_q>10))
    {
@@ -238,7 +238,7 @@ function execQuery($database, $query_txt, $titre="", $continueAndSendAlert=false
    {
        $information = "<br>\n<pre class='sql hzmlib hzmexec'><b>DB</b> : $database,\n<b>sql</b> :\n $query_txt,\n <b>affected</b> : $affected_rows,\n <b>duree</b> : $duree_q</pre>";
        //throw new AfwRuntimeException($information);
-       $_SESSION["analysis_log"].= $information;
+       //$_SE SSION["analysis_log"].= $information;
    }
 
    return array('result'=>$res, 'affected_rows'=>$affected_rows, 'sql'=>$query_txt);

@@ -16,7 +16,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $xmodule = AfwSession::getCurrentlyExecutedModule();
         $module = AfwUrlManager::currentURIModule();
         $company = AfwSession::currentCompany();
-        // if($company!="nauss") die("debugg rafik main_company=[$company] should be nauss : _SESSION = ".var_export($_SESSION,true));
+        // if($company!="nauss") die("debugg rafik main_company=[$company] should be nauss : _SESSION = ".var_export($_SES SION,true));
         $login_out_css = "sign-in";
         $login_out_cl = "login $login_template";
         $login_page = "login-$login_template.php";
