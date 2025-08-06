@@ -322,14 +322,14 @@ class AfwSession extends AFWRoot {
                 self::getSingleton()->setData($var, $value);
         }
 
-        public static function config($key, $default, $configContext="system", $loadContextConfig='no')
+        public static function config($key, $default, $configContext="system", $loadContextConfig='no', $force_main_company = "")
         {                
                 $doLoadContextConfig = ($loadContextConfig!='no');
                 if($doLoadContextConfig) 
                 {
                         $loadClientConfig = (($loadContextConfig == "client") or ($loadContextConfig == "force-client")); 
                         $reload = (($loadContextConfig == "force") or ($loadContextConfig == "force-client")); 
-                        self::loadContextConfig($configContext, $loadClientConfig, $reload);
+                        self::loadContextConfig($configContext, $loadClientConfig, $reload, $force_main_company);
                 }
                 
                 $var = $configContext."|".$key;
@@ -793,10 +793,13 @@ class AfwSession extends AFWRoot {
                 {
                         $this_dir_name = dirname(__FILE__); 
                         $context_config_file = "$this_dir_name/../../config/".$configContext."_config.php";
-                        $the_config_arr = include($context_config_file);
-                        if(!$the_config_arr or (!is_array($the_config_arr)) or (count($the_config_arr)==0)) die("$context_config_file file should return a correct config array");
-                        $the_config_arr["$configContext-config-already-loaded"] = true;
-                        AfwSession::initConfig($the_config_arr, $configContext, $context_config_file);
+                        if(file_exists($context_config_file))
+                        {
+                                $the_config_arr = include($context_config_file);
+                                if(!$the_config_arr or (!is_array($the_config_arr)) or (count($the_config_arr)==0)) die("$context_config_file file should return a correct config array");
+                                $the_config_arr["$configContext-config-already-loaded"] = true;
+                                AfwSession::initConfig($the_config_arr, $configContext, $context_config_file);                        
+                        }
                         if($force_main_company) $the_config_arr["main_company"] = $force_main_company;
                         if($loadClientConfig)
                         {
@@ -806,11 +809,19 @@ class AfwSession extends AFWRoot {
                                 if($reload or !$contextClientAlreadyLoaded)
                                 {               
                                         $client_config_file = "$this_dir_name/../../client-$main_company/".$configContext."_config.php";
-                                        $client_config_arr = include($client_config_file);
-                                        if(!$client_config_arr or (!is_array($client_config_arr)) or (count($client_config_arr)==0)) die($configContext."_config.php file of client $main_company should return a correct config array");
-                                        if($main_company != $client_config_arr["main_company"]) die($configContext."_config.php file should define the same main_company param, avoid bad copy-past in config files");
-                                        $client_config_arr["$configContext-client-$main_company-config-already-loaded"] = true;
-                                        AfwSession::initConfig($client_config_arr, $configContext, $client_config_file);
+                                        if(file_exists($client_config_file))
+                                        {
+                                                $client_config_arr = include($client_config_file);
+                                                if(!$client_config_arr or (!is_array($client_config_arr)) or (count($client_config_arr)==0)) die($configContext."_config.php file of client $main_company should return a correct config array");
+                                                if($client_config_arr["main_company"] and ($main_company != $client_config_arr["main_company"])) die($configContext."_config.php file should define the same main_company param, avoid bad copy-past in config files");
+                                                $client_config_arr["$configContext-client-$main_company-config-already-loaded"] = true;
+                                                AfwSession::initConfig($client_config_arr, $configContext, $client_config_file);
+                                                // if($configContext=="display") die(" $client_config_file found, client_config_arr = ".var_export($client_config_arr,true));
+                                        }
+                                        else
+                                        {
+                                                // die("$client_config_file not found");
+                                        }
                                 }
                         }
                 }
