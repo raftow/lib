@@ -569,9 +569,6 @@ class AfwSession extends AFWRoot {
         public static function currentCompany()
         {
                 $main_company = self::getSessionVar("main_company");
-                // if($main_company!="nauss") self::logSessionData();
-                die("debugg rafik main_company=[$main_company] should be nauss : _SESSION = ".var_export($_SESSION,true));
-
                 if($main_company) return $main_company;
                 return self::config("main_company", "");
         }
