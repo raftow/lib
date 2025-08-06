@@ -256,6 +256,10 @@ class AfwSession extends AFWRoot {
 
         public static function emptingVar($var, $source)
         {
+                if($var=="main_company")
+                {
+                        throw new AfwRuntimeException("main_company attempt to be emptied");
+                }
                 if(($var == "user_id") and 
                    ($source != "resetSession") and 
                    ($source != "header") and 
