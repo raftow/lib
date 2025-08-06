@@ -291,12 +291,15 @@ class AfwSession extends AFWRoot {
                 
         }
 
-        public static function resetSession()
+        public static function resetSession($except_var="")
         {
                 foreach($_SESSION as $colsess =>$val) 
                 {
-                        self::emptingVar($colsess, "resetSession");
-                        unset($_SESSION[$colsess]);
+                        if($except_var != $colsess)
+                        {
+                                self::emptingVar($colsess, "resetSession");
+                                unset($_SESSION[$colsess]);
+                        }                        
                 }
         }
 
