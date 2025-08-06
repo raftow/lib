@@ -663,7 +663,7 @@ class AfwLoadHelper extends AFWRoot
         // $orderBy = trim($object->ORDER_BY_FIELDS);
 
         
-        $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
+        $server_db_prefix = AfwSession::currentDBPrefix();
 
         if(!$pk) $pk = $object->getPKField();
 

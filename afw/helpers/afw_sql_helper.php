@@ -312,7 +312,7 @@ class AfwSqlHelper extends AFWRoot
     ) 
     {
         
-        $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
+        $server_db_prefix = AfwSession::currentDBPrefix();
 
         $all_oper_arr = [
             'in (.)' => AfwLanguageHelper::translateKeyword('IN', $lang),
@@ -709,7 +709,7 @@ class AfwSqlHelper extends AFWRoot
         $join_sentence_arr = [];
         $join_retrieve_fields = [];
 
-        $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
+        $server_db_prefix = AfwSession::currentDBPrefix();
 
         // add left joins for all retrieved fields with type = FK and category empty (real fields)
         $colsRet = AfwPrevilegeHelper::getRetrieveCols($object,
