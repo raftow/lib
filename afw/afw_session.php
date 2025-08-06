@@ -549,6 +549,7 @@ class AfwSession extends AFWRoot {
 
         public static function setCurrentCompany($main_company)
         {
+                if($main_company=="uoh") throw new AfwRuntimeException("debugg rafik main_company=uoh should be nauss");
                 self::setSessionVar("main_company", $main_company);
         }
 
@@ -568,6 +569,8 @@ class AfwSession extends AFWRoot {
         public static function currentCompany()
         {
                 $main_company = self::getSessionVar("main_company");
+                if($main_company=="uoh") throw new AfwRuntimeException("debugg rafik main_company=uoh should be nauss");
+
                 if($main_company) return $main_company;
                 return self::config("main_company", "");
         }
