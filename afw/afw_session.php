@@ -217,10 +217,12 @@ class AfwSession extends AFWRoot {
         {
                 if(empty($value)) self::emptingVar($var, "setSessionVar");
                 $_SESSION[$var] = $value;
+                /*
                 if(($var=="main_company") and ($value!="nauss"))
                 {
                         throw new AfwRuntimeException("main_company attempt to be set to [$value] value");
                 }
+                */
                 return $value;
         }
 
@@ -577,7 +579,7 @@ class AfwSession extends AFWRoot {
 
         public static function setCurrentCompany($main_company)
         {
-                if($main_company!="nauss") throw new AfwRuntimeException("debugg rafik main_company=uoh should be nauss");
+                // if($main_company!="nauss") throw new AfwRuntimeException("debugg rafik main_company=uoh should be nauss");
                 self::setSessionVar("main_company", $main_company);
         }
 
