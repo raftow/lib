@@ -332,6 +332,7 @@ class AfwUrlManager extends AFWRoot
                 $varval = substr($varval,0,20);
             }
             if($var=="currmod") $theModule = $varval; 
+            if($var=="cm") $theModule = $varval; 
             if(($var=="my_module") and !$theModule) $theModule = $varval; 
             if(
                 ((strlen($var)>=3) or (strlen($varval)>=3))
