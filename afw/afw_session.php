@@ -762,8 +762,11 @@ class AfwSession extends AFWRoot {
         {
                 foreach($_SESSION as $key => $value) 
                 {
-                        if(empty($value)) self::emptingVar($key, "closeSession");
-                        unset($_SESSION[$key]);
+                        if("main_company" != $key)
+                        {
+                                if(empty($value)) self::emptingVar($key, "closeSession");
+                                unset($_SESSION[$key]);
+                        }
                 }
         }
 
