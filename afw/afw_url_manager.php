@@ -319,7 +319,7 @@ class AfwUrlManager extends AFWRoot
         $ignored_vars = "";
         $theModule = "";
         $theClass = "";
-        foreach($_POST as $var => $varval)
+        foreach($_REQUEST as $var => $varval)
         {
             $var = trim(strtolower($var));
             $varval = str_replace('afw_mode_','',$varval);
