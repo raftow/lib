@@ -1,3 +1,30 @@
+@font-face {
+	font-family: saharat;
+	font-style: normal;
+        font-weight: 400;
+        src: local('Tajawal'), local('Tajawal-Regular'), url(../../lib/fonts/gg2021.woff2) format('woff2');
+        unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE80-FEFC;
+        font-size:14px;
+}
+
+@font-face {
+	font-family: title;
+	font-style: normal;
+        font-weight: 400;
+        src: local('Tajawal'), local('Tajawal-Regular'), url(../../lib/fonts/gg2021.woff2) format('woff2');
+        unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE80-FEFC;
+        font-size:14px;
+}
+
+@font-face {
+	font-family: menu;
+	font-style: normal;
+        font-weight: 400;
+        src: local('Tajawal'), local('Tajawal-Regular'), url(../../lib/fonts/gg2021.woff2) format('woff2');
+        unicode-range: U+0600-06FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE80-FEFC;
+        font-size:14px;
+}
+
 /* cyrillic-ext */
 @font-face {
     font-family: 'Roboto Slab';

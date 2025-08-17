@@ -6350,6 +6350,11 @@ class AFWObject extends AFWRoot
             $this->tech_notes = $notes;
     }
 
+    public function repeatRetrieveHeader()
+    {
+        return 0;
+    }
+
     /*********************************XXXXXXXXXXXXXXXXXXXXXXXX**************************** */
 
 }
