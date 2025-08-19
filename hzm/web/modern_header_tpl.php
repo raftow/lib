@@ -14,7 +14,7 @@
                     <a href="/"> <img src="/lib/images/msg.svg" alt=""> </a>
                 </li>
             </div>
-            <div class="hzm-user-account hzm-container-center hzm-custom-icon-container [user_bg_class]">
+            <div class="hzm-user-account [user_admin] hzm-container-center hzm-custom-icon-container [user_bg_class]">
                 <a href="[user_account_page]">
                     [user_picture]
                 </a>

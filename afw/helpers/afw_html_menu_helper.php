@@ -72,6 +72,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $welcome = $objme->translate("welcome", $lang);
             $welcome_user = "<span> $welcome </span><br>$user_full<p>$user_job</p><p>$user_dep</p>";
             $user_picture = $objme->getUserPicture();
+            $user_admin = $objme->isAdmin() ? "admin" : "";
             $user_account_page = "user_account.php";
             $ord = $objme->id % 5;
             $user_bg_class = "ubg".$ord;
@@ -81,6 +82,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $user_picture = '<i class="hzm-container-center hzm-vertical-align-middle hzm-icon-std hzm-user-account fa-user"></i></a>';
             $user_account_page = "login.php";
             $user_bg_class = "ubg0";
+            $user_admin = "";
         }
 
         $welcome_div = "";
@@ -98,6 +100,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $data_tokens = array();
         
         $data_tokens["user_picture"] = $user_picture;
+        $data_tokens["user_admin"] = $user_admin;
         $enable_search_box = AfwSession::config("enable_search_box", false);
         if($enable_search_box)
         {

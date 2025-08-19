@@ -405,3 +405,9 @@ nav span.orgunit {
     font-weight: bold;
     color: #0670bb;
 }
+
+.hzm-user-account.admin {
+    background-color: #aaa912 !important;
+    border: 2px solid black;
+    padding-top: 2px;
+}
