@@ -407,7 +407,10 @@ nav span.orgunit {
 }
 
 .hzm-user-account.admin {
-    background-color: #aaa912 !important;
-    border: 2px solid black;
-    padding-top: 2px;
+    background-color: #678a04 !important;
+}
+
+.hzm-user-account.admin>a>div
+{
+    color: #e7f851;
 }
