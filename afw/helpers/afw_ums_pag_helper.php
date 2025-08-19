@@ -647,7 +647,7 @@ class AfwUmsPagHelper extends AFWRoot
     ) {
 
 
-        if ($auser and $auser->isSuperAdmin()) {
+        if ($auser and $auser->isAdmin()) {
             return true;
         }
 
