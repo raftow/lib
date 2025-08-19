@@ -4298,7 +4298,8 @@ class AFWObject extends AFWRoot
 
     protected function userCanEditMeWithoutRole($auser)
     {
-        return [false, 'userCanEditMeWithoutRole not implemented'];
+        if($auser->isAdmin()) return true;
+        return [false, 'userCanEditMeWithoutRole not implemented for non admin users'];
     }
 
     final public function userCanEditMeStandard($auser)
