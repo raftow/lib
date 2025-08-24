@@ -648,7 +648,7 @@ if (true) {
 
                                                                                                                         if ($btnclass) {
                                                                                         ?>
-                                                                                                                                <td class='col-importance-<?= $importance ?> <?= $frameworkAction ?>'><a class="btn-micro <?= $btnclass ?>" <?= $target_action ?> href="<?= "main.php" . "?" . $link ?>"><?= $frameworkAction_tr ?></a></td>
+                                                                                                                                <td class='btn-class col-importance-<?= $importance ?> <?= $frameworkAction ?>'><a class="btn-micro <?= $btnclass ?>" <?= $target_action ?> href="<?= "main.php" . "?" . $link ?>"><?= $frameworkAction_tr ?></a></td>
                                                                                                                                 <?
                                                                                                                         } elseif ($img) {
                                                                                                                                 $tooltip = "";
@@ -657,7 +657,7 @@ if (true) {
 
                                                                                                                                 if ($ajax_class) {
                                                                                                                                 ?>
-                                                                                                                                        <td class='col-importance-<?= $importance ?> <?= $frameworkAction ?>'><a href="#" id="<?= $id ?>" cl="<?= $cl ?>" md="<?= $currmod ?>" lbl="<?= $lbl ?>" class="<?= $ajax_class ?>">
+                                                                                                                                        <td class='ajax col-importance-<?= $importance ?> <?= $frameworkAction ?>'><a href="#" id="<?= $id ?>" cl="<?= $cl ?>" md="<?= $currmod ?>" lbl="<?= $lbl ?>" class="<?= $ajax_class ?>">
                                                                                                                                                         <img lbl='ajax' src="<?= $img ?>" width="24" heigth="24" <?= $tooltip ?>>
                                                                                                                                                 </a>
                                                                                                                                         </td>
@@ -666,7 +666,7 @@ if (true) {
                                                                                                                                         if($link) $the_action_link = "main.php" . "?" . $link;
                                                                                                                                         else $the_action_link = "#";
                                                                                                                                 ?>
-                                                                                                                                        <td class='col-importance-<?= $importance ?> <?= $frameworkAction ?>'><a <?= $target_action ?> href="<?php echo $the_action_link; ?>">
+                                                                                                                                        <td class='action-link col-importance-<?= $importance ?> <?= $frameworkAction ?>'><a <?= $target_action ?> href="<?php echo $the_action_link; ?>">
                                                                                                                                                         <img lbl='no-ajax' src="<?= $img ?>" width="24" heigth="24" <?= $tooltip ?>>
                                                                                                                                                 </a>
                                                                                                                                         </td>
@@ -675,7 +675,7 @@ if (true) {
                                                                                                                                 }
 
                                                                                                                                 // die("DBG-after ajax test\n"); 
-                                                                                                                        } else echo "<td  class='col-importance-$importance $frameworkAction'>no_image_for_mode_$frameworkAction action_item_props=".var_export($action_item_props,true)."</td>";
+                                                                                                                        } else echo "<td  class='col-importance-$importance $frameworkAction no-image'>no_image_for_mode_$frameworkAction action_item_props=".var_export($action_item_props,true)."</td>";
                                                                                                                         // die("DBG-accept_HimSelf true finished\n"); 
                                                                                                                 } else {
                                                                                                                         $rejectHimSelfReason = AfwStringHelper::stripCotes(AfwFrameworkHelper::rejectHimSelfReason($liste_obj[$id],$frameworkAction));
@@ -688,15 +688,19 @@ if (true) {
                                                                                                                         }
 
                                                                                                                         ?>
-                                                                                                                        <td class='col-importance-<?= $importance ?>'><img src="<?= $images['locked_him_self'] ?>" width="24" heigth="24" <?= $tooltip ?>></td>
+                                                                                                                        <td class='col-importance-<?= $importance ?> locked-him-self'><img src="<?= $images['locked_him_self'] ?>" width="24" heigth="24" <?= $tooltip ?>></td>
                                                                                                                 <?
                                                                                                                 }
                                                                                                         } elseif ($can and (!$canOnMe)) {
                                                                                                                 if (($objme and $objme->isAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='عندما تكون نتائج البحث كثيرة يتم ايقاف التعديلات على جزء من السجلات. قم باختيار معايير اكثر دقة للبحث' data-original-title='$action_item -> $cant_do_action_log - Tooltip on bottom 2' class='red-tooltip'";
-                                                                                                                if($canOnMe===null) $canImage = $images['off'];
-                                                                                                                else $canImage = $images['locked_on_me'];
+                                                                                                                if($canOnMe===null) {
+                                                                                                                        $canCss = 'off';                                                                                                                        
+                                                                                                                } else {
+                                                                                                                        $canCss = 'locked_on_me';                                                                                                                        
+                                                                                                                }
+                                                                                                                $canImage = $images[$canCss];
                                                                                                                 ?>
-                                                                                                                <td class='col-importance-<?= $importance ?>'><img src="<?= $canImage ?>" width="24" heigth="24" <?= $tooltip ?>></td>
+                                                                                                                <td class='col-importance-<?php echo $importance." " .$canCss ?>'><img src="<?= $canImage ?>" width="24" heigth="24" <?= $tooltip ?>></td>
                                                                                                         <?
                                                                                                         } else {
                                                                                                                 if (($objme and $objme->isAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='لا يمكنك التعديل على هذا السجل راجع المشرف للتأكد من الصلاحيات وسياسة التعديل' data-original-title='You have not authorization to do $frameworkAction on this entity : [$action_item -> $cant_do_action_log] - Tooltip on bottom 3' class='red-tooltip'";

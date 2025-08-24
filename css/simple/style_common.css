@@ -2862,6 +2862,11 @@ hr {
 	margin-bottom: 7px;
         width: 100%;
 }
+
+.form-group.hide {
+    display: none;
+}
+
 input, input::-webkit-input-placeholder {
 	font-size: 13px;
 	padding-top: 2px
@@ -6379,6 +6384,14 @@ h5.popup>p{
     background-color: blue;
 }
 
+p.sms.notification {
+    font-size: 14px;
+    padding: 15px;
+    background-color: #c6e6fd;
+    color: black;
+}
+
 /* 
 <div class="badgeafw bgred">&lArr;</div> 
 <div class="badgeafw bggreen">&rArr;</div> */
+

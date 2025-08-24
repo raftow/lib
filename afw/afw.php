@@ -4317,12 +4317,18 @@ class AFWObject extends AFWRoot
         return [true, ''];
     }
 
+    protected function supervisorCanEditMe()
+    {
+        return [false, ''];
+    }
+
 
     final public function userCanEditMe($auser)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        if ($auser and $auser->isAdmin()) {
-            return $this->adminCanEditMe();
+        if ($auser) {
+            if($auser->isAdmin()) return $this->adminCanEditMe();
+            if($auser->isSupervisor()) return $this->supervisorCanEditMe();
         }
         
         list(

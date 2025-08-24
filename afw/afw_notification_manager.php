@@ -5,10 +5,10 @@
 class AfwNotificationManager extends AFWRoot {
 
         
-        private static function prepareNotificationBody($object_related, $notification_code, $notification_type, $lang)
+        public static function prepareNotificationBody($object_related, $notification_code, $notification_type, $lang)
         {
-                $body_tpl = $object_related->tm($notification_code."_${notification_type}_notification", $lang);  
-                if($body_tpl == $notification_code."_${notification_type}_notification") $body_tpl = "";
+                $body_tpl = $object_related->tm($notification_code."_".$notification_type."_notification", $lang);  
+                if($body_tpl == $notification_code."_".$notification_type."_notification") $body_tpl = "";
                 if(!$body_tpl)
                 {
                         $body_tpl = $object_related->tm($notification_code."_default_notification");  

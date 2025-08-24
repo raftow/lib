@@ -20,6 +20,7 @@ if(!$currmod)
 {
         $currmod = AfwUrlManager::currentWebModule();
 }
+else AfwAutoLoader::addModule($currmod);
 
 $out_scr = "";
 $objme = AfwSession::getUserConnected();
