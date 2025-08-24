@@ -1275,7 +1275,7 @@ class AfwDateHelper
             $hgreg_matrix[$hijri_year . $hijri_month] = $gdfirst;
         } else {
             //if(count($hgreg_matrix)>0) die("gregdate_of_first_hijri_day($hijri_year, $hijri_month) : ".var_export($hgreg_matrix,true));
-            $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
+            $server_db_prefix = AfwSession::currentDBPrefix();
             $sql_greg = " select greg_date
                             from $server_db_prefix" . "cmn.hijra_date_base 
                             where hijri_year = $hijri_year
@@ -1459,7 +1459,7 @@ class AfwDateHelper
             }
         }
         //else die("please check $hg_cache_file");
-        $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
+        $server_db_prefix = AfwSession::currentDBPrefix();
         $sql_hij = "select hijri_year as HY,
                         hijri_month as HM,
                         greg_date as GD
@@ -1530,15 +1530,17 @@ class AfwDateHelper
                 $hdate = $yyyy . $mm . $dd;
                 if($yyyy!=$hijri_year)
                 {
-                    $hijri_to_greg_file = dirname(__FILE__) . "/../../../lib/chsys/dates/hijri_" . $yyyy . "_to_greg.php";
+                    $hijri_to_greg_file_name = "lib/chsys/dates/hijri_" . $yyyy . "_to_greg";
+                    $hijri_to_greg_file = dirname(__FILE__) . "/../../../".$hijri_to_greg_file_name.".php";
                     $hijri_to_greg_arr = include($hijri_to_greg_file);
                 }
             }
         }
         
         if (!$hijri_to_greg_arr[$hdate]) {
-            AfwSession::hzmLog("failed to find hijri_to_greg[$hdate] ($original_hdate) in file $hijri_to_greg_file ", "fail"); // ."hijri_to_greg = ".var_export($hijri_to_greg_arr,true)
-            if ($hijri_year > 1430) throw new RuntimeException("kifech ma convertech hijri_to_greg[$hdate] ($original_hdate) chouf $hdate in file $hijri_to_greg_file");
+            $err_message = "Failed to convert hijri date ($original_hdate) to gregorian date, seems that the file $hijri_to_greg_file_name is not available or is incomplete";
+            AfwSession::hzmLog($err_message, "fail"); 
+            throw new AfwBusinessException($err_message);
         }
         return $hijri_to_greg_arr[$hdate];
     }

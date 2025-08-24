@@ -6,6 +6,8 @@ interface AfwFrontEndUser {
     public function translate($attribute, $lang);
     public function getUserPicture();
     public function generateCacheFile($lang="ar", $onlyIfNotDone=false, $throwError=false);
+    public function isAdmin();
+    public function isSuperAdmin();
     
 }
 

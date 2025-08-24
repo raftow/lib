@@ -222,7 +222,7 @@ class AFWObject extends AFWRoot
         $call_method = "__construct(table = $table)";
 
         if ($table != '') {
-            $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
+            $server_db_prefix = AfwSession::currentDBPrefix();
             static::$MODULE = strtolower($module);
             static::$DATABASE = $server_db_prefix . $database_module;
             static::$TABLE = $table;
@@ -537,7 +537,7 @@ class AFWObject extends AFWRoot
         $my_database = static::$DATABASE;
         if (!$my_database) {
             $my_modue = static::$MODULE;
-            $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
+            $server_db_prefix = AfwSession::currentDBPrefix();
             // $origin = "server_db_prefix.my_modue";
             $my_database = $server_db_prefix . $my_modue;
         }
@@ -4298,7 +4298,8 @@ class AFWObject extends AFWRoot
 
     protected function userCanEditMeWithoutRole($auser)
     {
-        return [false, 'userCanEditMeWithoutRole not implemented'];
+        if($auser->isAdmin()) return [true, ''];
+        return [false, 'userCanEditMeWithoutRole not implemented for non admin users'];
     }
 
     final public function userCanEditMeStandard($auser)
@@ -4578,7 +4579,7 @@ class AFWObject extends AFWRoot
         $objme = AfwSession::getUserConnected();
         $me = $objme ? $objme->id : 0;
 
-        $server_db_prefix = AfwSession::config('db_prefix', "default_db_");
+        $server_db_prefix = AfwSession::currentDBPrefix();
 
         if (!$sepBefore) {
             $sepBefore = '§';
@@ -6354,6 +6355,11 @@ class AFWObject extends AFWRoot
     public function setTechnicalNotes($notes)
     {
             $this->tech_notes = $notes;
+    }
+
+    public function repeatRetrieveHeader()
+    {
+        return 0;
     }
 
     /*********************************XXXXXXXXXXXXXXXXXXXXXXXX**************************** */

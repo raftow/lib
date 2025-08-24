@@ -9,6 +9,19 @@ class AfwHtmlHelper extends AFWRoot {
                 return dirname(__FILE__)."/../../hzm/web"; 
         }
 
+        public static function arrayToSelectOptions($arr, $selection)
+        {
+                $html_options = '';
+                foreach ($arr as $option) 
+                {
+                        $selected = "";
+                        if($selection==$option) $selected = "selected";
+                        $html_options .= "<option value='$option' $selected>$option</option>";
+                }
+
+                return $html_options;
+        }
+
         public static function arrayToHtml($arr_key_vals, $keyDecodeArr=null, $wdKey="1", $wdVal="3", $odd="odd", $even="even")
         {
                 $html_rows = '';

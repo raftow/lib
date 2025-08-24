@@ -1,7 +1,7 @@
 <?php
 // die("afw direct start");
 // session_start();
-// die("session table : ".var_export($_SESSION,true));
+// die("session table : ".var_export($_SE SSION,true));
 $file_dir_name = dirname(__FILE__); 
 
 function myErrorHandler($errno, $errstr, $errfile, $errline) 

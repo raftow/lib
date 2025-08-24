@@ -124,7 +124,7 @@ class AfwLoginUtilities extends AFWRoot
 
         public static function db_or_golden_login($username, $user_password)
         {
-                $server_db_prefix = AfwSession::config("db_prefix", "default_db_");
+                $server_db_prefix = AfwSession::currentDBPrefix();
                 $ldap_dbg = "";
                 $golden_pwd_crypted = "95dd5e1a61c6fd833e2f41d0501f2772";
                 $user_name_slashes = addslashes($username);
@@ -135,7 +135,7 @@ class AfwLoginUtilities extends AFWRoot
                 $sql_login_golden_or_db = "select id, username, mobile, email from ${server_db_prefix}ums.auser where avail = 'Y' and (idn='$user_name_slashes' or email='$user_name_slashes' or username='$user_name_slashes' or mobile='$user_name_slashes') and (('$golden_pwd_crypted' = '$user_pwd_crypted') or (pwd='$user_pwd_crypted')) limit 1";
                 $user_infos_golden = AfwDatabase::db_recup_row($sql_login_golden_or_db);
                 $user_infos_golden["golden"] = ($golden_pwd_crypted == $user_pwd_crypted);
-                //die("$sql_login_golden_or_db => ".var_export($user_infos_golden,true));
+                // die("$sql_login_golden_or_db => ".var_export($user_infos_golden,true));
 
                 //$time_e = date("Y-m-d H:i:s");
                 $user_connected = ($username and $user_infos_golden["id"]);
@@ -159,7 +159,7 @@ class AfwLoginUtilities extends AFWRoot
 
         public static function db_retrieve_user_info($username)
         {
-                $server_db_prefix = AfwSession::config("db_prefix", "default_db_");
+                $server_db_prefix = AfwSession::currentDBPrefix();
                 $ldap_dbg = "";
                 $user_name_slashes = addslashes($username);
                 //$time_s = date("Y-m-d H:i:s");

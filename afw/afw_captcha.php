@@ -8,10 +8,10 @@ header('Content-type: image/jpeg');
 try
 {
     $phrb = new PhraseBuilder();
-    $_SESSION["cpt"] = strtoupper($phrb->build());
-    
-    $cpt = CaptchaBuilder::create($_SESSION["cpt"]);
+    $cpt_phrase = strtoupper($phrb->build());    
+    $cpt = CaptchaBuilder::create($cpt_phrase);
     $cpt->build();
+    $_SESSION["cpt"] = $cpt_phrase;
     $cpt->output();    
 }
 catch(Exception $e)

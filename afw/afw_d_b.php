@@ -182,7 +182,7 @@ class AfwDB extends AFWRoot
                 }
                 else
                 {
-                    $_SESSION["error"] .= $desc_error;
+                    $_SES SION["error"] .= $desc_error;
                 }   
             }
             
@@ -225,7 +225,6 @@ class AfwDB extends AFWRoot
             {
                 $information = "<br>\n<pre class='sql hzmlib'><b>DB</b> : $database,\n<b>sql</b> :\n $sql\n <b>rows</b> : $rtab </pre>";
                 //throw new AfwRuntimeException($information);
-                $_SESSION["analysis_log"].= $information;
             }
             
             return $tableau;
@@ -299,7 +298,7 @@ class AfwDB extends AFWRoot
         {
             $information = "<br>\n<pre class='sql hzmlib hzmexec'><b>DB</b> : $database,\n<b>sql</b> :\n $query_txt,\n <b>affected</b> : $affected_rows,\n <b>duree</b> : $duree_q</pre>";
             //throw new AfwRuntimeException($information);
-            $_SESSION["analysis_log"].= $information;
+            // $SE SSION["analysis_log"].= $information;
         }
 
         return array('result'=>$res, 'affected_rows'=>$affected_rows, 'sql'=>$query_txt);

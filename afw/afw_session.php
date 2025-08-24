@@ -200,12 +200,33 @@ class AfwSession extends AFWRoot {
                 return $_SESSION[$var];
         }
 
+        public static function initSession($var_data, $prefix="")
+        {
+                foreach($var_data as $col => $val) 
+                {
+                        self::setSessionVar(col, $val);
+                }
+        }
+
+        public static function initUserSession($var_data)
+        {
+                self::initSession($var_data, "user_");
+        }
+
         public static function setSessionVar($var, $value)
         {
                 if(empty($value)) self::emptingVar($var, "setSessionVar");
                 $_SESSION[$var] = $value;
+                /*
+                if(($var=="main_company") and ($value!="nauss"))
+                {
+                        throw new AfwRuntimeException("main_company attempt to be set to [$value] value");
+                }
+                */
                 return $value;
         }
+
+        
 
         public static function setSessionVarIfNotSet($var, $value)
         {
@@ -221,8 +242,10 @@ class AfwSession extends AFWRoot {
 
         public static function pushIntoSessionArray($key, $value_to_push)
         {
-                self::setSessionVarIfNotSet($key, array());                
-                array_push($_SESSION[$key], $value_to_push);
+                $arr = self::getSessionVar($key);                
+                if((!$arr) or (!is_array($arr))) $arr = array();
+                array_push($arr, $value_to_push);
+                self::setSessionVar($key, $arr);
         }
 
         public static function pullSessionVar($var, $source="pullSessionVar")
@@ -235,6 +258,10 @@ class AfwSession extends AFWRoot {
 
         public static function emptingVar($var, $source)
         {
+                if($var=="main_company")
+                {
+                        throw new AfwRuntimeException("main_company attempt to be emptied");
+                }
                 if(($var == "user_id") and 
                    ($source != "resetSession") and 
                    ($source != "header") and 
@@ -266,12 +293,15 @@ class AfwSession extends AFWRoot {
                 
         }
 
-        public static function resetSession()
+        public static function resetSession($except_var="")
         {
                 foreach($_SESSION as $colsess =>$val) 
                 {
-                        self::emptingVar($colsess, "resetSession");
-                        unset($_SESSION[$colsess]);
+                        if($except_var != $colsess)
+                        {
+                                self::emptingVar($colsess, "resetSession");
+                                unset($_SESSION[$colsess]);
+                        }                        
                 }
         }
 
@@ -292,14 +322,14 @@ class AfwSession extends AFWRoot {
                 self::getSingleton()->setData($var, $value);
         }
 
-        public static function config($key, $default, $configContext="system", $loadContextConfig='no')
+        public static function config($key, $default, $configContext="system", $loadContextConfig='no', $force_main_company = "")
         {                
                 $doLoadContextConfig = ($loadContextConfig!='no');
                 if($doLoadContextConfig) 
                 {
                         $loadClientConfig = (($loadContextConfig == "client") or ($loadContextConfig == "force-client")); 
                         $reload = (($loadContextConfig == "force") or ($loadContextConfig == "force-client")); 
-                        self::loadContextConfig($configContext, $loadClientConfig, $reload);
+                        self::loadContextConfig($configContext, $loadClientConfig, $reload, $force_main_company);
                 }
                 
                 $var = $configContext."|".$key;
@@ -547,9 +577,29 @@ class AfwSession extends AFWRoot {
                 return $application_nameArr[$lang];
         }
 
+        public static function setCurrentCompany($main_company)
+        {
+                // if($main_company!="nauss") throw new AfwRuntimeException("debugg rafik main_company=uoh should be nauss");
+                self::setSessionVar("main_company", $main_company);
+        }
+
+        public static function currentDBPrefix()
+        {
+                $dbSwicthWithCompany = self::config("db-swicth-with-company", true);
+                $main_company = self::getSessionVar("main_company");
+                if($dbSwicthWithCompany and $main_company) return $main_company."_";
+                return AfwSession::config("db_prefix", "default_db_");
+        }
+
+        public static function companiesList()
+        {
+                return AfwSession::config("companies", ["uoh", "nauss"]);
+        }
 
         public static function currentCompany()
         {
+                $main_company = self::getSessionVar("main_company");
+                if($main_company) return $main_company;
                 return self::config("main_company", "");
         }
 
@@ -704,7 +754,7 @@ class AfwSession extends AFWRoot {
         public static function startSession()
         {
                 session_start();
-                $_SESSION["started"] = true;
+                AfwSession::setSessionVar("started", true);
         }
 
 
@@ -712,23 +762,22 @@ class AfwSession extends AFWRoot {
         {
                 foreach($_SESSION as $key => $value) 
                 {
-                        if(empty($value)) self::emptingVar($key, "closeSession");
-                        unset($_SESSION[$key]);
+                        if("main_company" != $key)
+                        {
+                                if(empty($value)) self::emptingVar($key, "closeSession");
+                                unset($_SESSION[$key]);
+                        }
                 }
-                $_SESSION["user_avail"] = "N";
-                
-                /*
-
-                $_SESSION["user_id"] = "";
-                $_SESSION["user_firstname"] = "";
-                $_SESSION["my_module_id"] = null;
-                $_SESSION["customer_id"] = "";
-                */
         }
 
         public static function sessionStarted()
         {
                 return ($_SESSION["started"]);
+        }
+
+        public static function die_and_export_session()
+        {
+                die(var_export($_SESSION,true)); 
         }
 
 
@@ -740,18 +789,21 @@ class AfwSession extends AFWRoot {
         }
 
 
-        public static function loadContextConfig($configContext, $loadClientConfig=false, $reload=false)
+        public static function loadContextConfig($configContext, $loadClientConfig=false, $reload=false, $force_main_company="")
         {
                 $contextAlreadyLoaded = self::config("$configContext-config-already-loaded",false, $configContext);
                 if($reload or !$contextAlreadyLoaded)
                 {
                         $this_dir_name = dirname(__FILE__); 
                         $context_config_file = "$this_dir_name/../../config/".$configContext."_config.php";
-                        $the_config_arr = include($context_config_file);
-                        if(!$the_config_arr or (!is_array($the_config_arr)) or (count($the_config_arr)==0)) die("$context_config_file file should return a correct config array");
-                        $the_config_arr["$configContext-config-already-loaded"] = true;
-                        AfwSession::initConfig($the_config_arr, $configContext, $context_config_file);
-                        
+                        if(file_exists($context_config_file))
+                        {
+                                $the_config_arr = include($context_config_file);
+                                if(!$the_config_arr or (!is_array($the_config_arr)) or (count($the_config_arr)==0)) die("$context_config_file file should return a correct config array");
+                                $the_config_arr["$configContext-config-already-loaded"] = true;
+                                AfwSession::initConfig($the_config_arr, $configContext, $context_config_file);                        
+                        }
+                        if($force_main_company) $the_config_arr["main_company"] = $force_main_company;
                         if($loadClientConfig)
                         {
                                 if(!$the_config_arr["main_company"]) die($configContext."_config.php file should define the main_company param to be able to load $configContext config for client");
@@ -760,11 +812,19 @@ class AfwSession extends AFWRoot {
                                 if($reload or !$contextClientAlreadyLoaded)
                                 {               
                                         $client_config_file = "$this_dir_name/../../client-$main_company/".$configContext."_config.php";
-                                        $client_config_arr = include($client_config_file);
-                                        if(!$client_config_arr or (!is_array($client_config_arr)) or (count($client_config_arr)==0)) die($configContext."_config.php file of client $main_company should return a correct config array");
-                                        if($main_company != $client_config_arr["main_company"]) die($configContext."_config.php file should define the same main_company param, avoid bad copy-past in config files");
-                                        $client_config_arr["$configContext-client-$main_company-config-already-loaded"] = true;
-                                        AfwSession::initConfig($client_config_arr, $configContext, $client_config_file);
+                                        if(file_exists($client_config_file))
+                                        {
+                                                $client_config_arr = include($client_config_file);
+                                                if(!$client_config_arr or (!is_array($client_config_arr)) or (count($client_config_arr)==0)) die($configContext."_config.php file of client $main_company should return a correct config array");
+                                                if($client_config_arr["main_company"] and ($main_company != $client_config_arr["main_company"])) die($configContext."_config.php file should define the same main_company param, avoid bad copy-past in config files");
+                                                $client_config_arr["$configContext-client-$main_company-config-already-loaded"] = true;
+                                                AfwSession::initConfig($client_config_arr, $configContext, $client_config_file);
+                                                // if($configContext=="display") die(" $client_config_file found, client_config_arr = ".var_export($client_config_arr,true));
+                                        }
+                                        else
+                                        {
+                                                // die("$client_config_file not found");
+                                        }
                                 }
                         }
                 }

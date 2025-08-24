@@ -11,7 +11,7 @@ class AfwReplacement {
         if(!$lang) $lang="ar";
         // $old_module = $module;
         // $module = UmsManager::decodeModuleCodeOrIdToModuleCode($module);
-        $company = AfwSession::config("main_company", "");
+        $company = AfwSession::currentCompany();
         if(!$company)
         {
             throw new AfwRuntimeException("company code required to do AfwReplacement::trans_replace (see main_company param in system config file)");

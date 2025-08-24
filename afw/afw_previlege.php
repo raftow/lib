@@ -4,7 +4,7 @@
     {
         public static function loadAllServerModules()
         {
-            $company = AfwSession::config("main_company", "");
+            $company = AfwSession::currentCompany();
             $file_modules_all = dirname(__FILE__)."/../../client-$company/modules_all.php"; 
             if(file_exists($file_modules_all))
             {

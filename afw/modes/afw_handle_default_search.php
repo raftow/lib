@@ -500,6 +500,7 @@ if (true) {
                                                                         $ids = "";
                                                                         $ids_count = 0;
                                                                         $maxRecordsUmsCheck = $obj->maxRecordsUmsCheck();
+                                                                        $repeat_retrieve_header = $obj->repeatRetrieveHeader();
                                                                         $umsCheckDisabledInRetrieveMode = $obj->umsCheckDisabledInRetrieveMode();
                                                                         if ($maxRecordsUmsCheck > 100) $maxRecordsUmsCheck = 100;
                                                                         foreach ($data as $id => $tuple) 
@@ -509,6 +510,16 @@ if (true) {
                                                                                 if ($ids) $ids .= ",";
                                                                                 $ids .= $id;
                                                                                 $ids_count++;
+                                                                                if($repeat_retrieve_header and (($ids_count % $repeat_retrieve_header) == 0))
+                                                                                {
+                                                                                        ?>
+                                                                                        <thead>
+                                                                                                <tr>
+                                                                                                        <?= $datatable_header ?>
+                                                                                                </tr>
+                                                                                        </thead>
+                                                                                        <?php
+                                                                                }
                                                                                 //}
                                                                                 if ($cl_tr == $class_td2) $cl_tr = $class_td1;
                                                                                 else $cl_tr = $class_td2;
