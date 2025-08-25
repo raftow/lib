@@ -103,6 +103,17 @@ class AfwMomkenObject extends AFWObject {
                 return $arr_list_of_gender;
         }
 
+        public static function list_of_aparameter_type_enum()
+        {
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+            
+            $return = self::afield_type()[$lang];
+
+            unset($return[5]);
+            unset($return[6]);
+            return $return;
+        }
+
         public static function list_of_afield_type_enum()
         {
             $lang = AfwLanguageHelper::getGlobalLanguage();
