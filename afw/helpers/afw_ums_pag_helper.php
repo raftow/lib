@@ -439,12 +439,18 @@ class AfwUmsPagHelper extends AFWRoot
                             $fld->set('reel', 'Y');
                         }
 
-                        if (isset($obj->UNIQUE_KEY) and is_array($obj->UNIQUE_KEY) and (!in_array($attribute, $obj->UNIQUE_KEY))) {
-                            $fld->set('distinct_for_list', 'N');
+                        if (isset($obj->UNIQUE_KEY) and is_array($obj->UNIQUE_KEY)) 
+                        {
+                            if(!in_array($attribute, $obj->UNIQUE_KEY))
+                            {
+                                $fld->set('distinct_for_list', 'N');
+                            } else {
+                                // if ($attribute == "original_name") throw new AfwRuntimeException("rafik-medali : obj->UNIQUE_KEY = " . var_export($obj->UNIQUE_KEY, true) . " obj = " . var_export($obj, true));
+                                $fld->set('distinct_for_list', 'Y');
+                            }
                         } else {
-                            // if ($attribute == "original_name") throw new AfwRuntimeException("rafik-medali : obj->UNIQUE_KEY = " . var_export($obj->UNIQUE_KEY, true) . " obj = " . var_export($obj, true));
-                            $fld->set('distinct_for_list', 'Y');
-                        }
+                            $fld->set('distinct_for_list', 'W'); // no index at the origine
+                        }  
                     }
                     if ($fld->commit()) {
                         if ($field_to_create) {
