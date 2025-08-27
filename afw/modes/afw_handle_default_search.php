@@ -462,12 +462,16 @@ if (true) {
                                                                         if ($bf_code) 
                                                                         {
                                                                                 $can_action_arr[$action_item] = ($objme and $objme->iCanDoBFCode($bf_system, $bf_code));
+                                                                                $can_case = "objme->iCanDoBFCode($bf_system, $bf_code)";
                                                                         } 
                                                                         else 
                                                                         {
-                                                                                $can_action_arr[$action_item] = ($objme and $objme->iCanDoOperationOnObjClass($obj, $frameworkAction));
-                                                                                if ($objme and (!$can_action_arr[$action_item])) $cant_do_action_log_arr[$action_item] = $objme->getICantDoReason();
+                                                                                $can_action_arr[$action_item] = ($objme and $objme->iCanDoOperationOnObjClass($obj, $frameworkAction));                                                                                
+                                                                                $can_case = "objme->iCanDoOperationOnObjClass(obj, $frameworkAction)";
                                                                         }
+                                                                        if ($objme and (!$can_action_arr[$action_item])) $cant_do_action_log_arr[$action_item] = $objme->getICantDoReason();
+                                                                        if(!$cant_do_action_log_arr[$action_item]) $cant_do_action_log_arr[$action_item] = "but reason not explained";
+                                                                        $cant_do_action_log_arr[$action_item] .= " ($can_case)";
                                                                 }
                                                         }
 
@@ -589,8 +593,7 @@ if (true) {
                                                                                                         $cant_do_action_log = "action $action_item not allowed ";
 
                                                                                                         if (!$can) 
-                                                                                                        {
-                                                                                                                if(!$cant_do_action_log_arr[$action_item]) $cant_do_action_log_arr[$action_item] = "but reason not explained";
+                                                                                                        {                                                                                                                
                                                                                                                 $cant_do_action_log .= $cant_do_action_log_arr[$action_item]." ";
                                                                                                         }
 
@@ -691,7 +694,7 @@ if (true) {
                                                                                                                 } else {
                                                                                                                         $rejectHimSelfReason = AfwStringHelper::stripCotes(AfwFrameworkHelper::rejectHimSelfReason($liste_obj[$id],$frameworkAction));
                                                                                                                         $tooltip_text = "locked him self on $frameworkAction, the reason is : $rejectHimSelfReason";
-                                                                                                                        if (($objme and $objme->isAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false)) {
+                                                                                                                        if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) {
                                                                                                                                 // die("DBG-accept_HimSelf false => $tooltip_text\n");  
                                                                                                                                 $tooltip = "data-toggle='tooltip' data-placement='bottom' title='$tooltip_text' data-original-title=' - Tooltip on bottom 1' class='red-tooltip'";
                                                                                                                         } else {
@@ -703,7 +706,7 @@ if (true) {
                                                                                                                 <?
                                                                                                                 }
                                                                                                         } elseif ($can and (!$canOnMe)) {
-                                                                                                                if (($objme and $objme->isAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='عندما تكون نتائج البحث كثيرة يتم ايقاف التعديلات على جزء من السجلات. قم باختيار معايير اكثر دقة للبحث' data-original-title='$action_item -> $cant_do_action_log - Tooltip on bottom 2' class='red-tooltip'";
+                                                                                                                if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='عندما تكون نتائج البحث كثيرة يتم ايقاف التعديلات على جزء من السجلات. قم باختيار معايير اكثر دقة للبحث' data-original-title='$action_item -> $cant_do_action_log - Tooltip on bottom 2' class='red-tooltip'";
                                                                                                                 if($canOnMe===null) {
                                                                                                                         $canCss = 'off';                                                                                                                        
                                                                                                                 } else {
@@ -714,7 +717,7 @@ if (true) {
                                                                                                                 <td class='col-importance-<?php echo $importance." " .$canCss ?>'><img src="<?= $canImage ?>" width="24" heigth="24" <?= $tooltip ?>></td>
                                                                                                         <?
                                                                                                         } else {
-                                                                                                                if (($objme and $objme->isAdmin()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='لا يمكنك التعديل على هذا السجل راجع المشرف للتأكد من الصلاحيات وسياسة التعديل' data-original-title='You have not authorization to do $frameworkAction on this entity : [$action_item -> $cant_do_action_log] - Tooltip on bottom 3' class='red-tooltip'";
+                                                                                                                if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='لا يمكنك التعديل على هذا السجل راجع المشرف للتأكد من الصلاحيات وسياسة التعديل' data-original-title='You have not authorization to do $frameworkAction on this entity : [$action_item -> $cant_do_action_log] - Tooltip on bottom 3' class='red-tooltip'";
                                                                                                         ?>
                                                                                                                 <td class='col-importance-<?= $importance ?>'><img src="<?= $images['locked'] ?>" width="24" heigth="24" <?= $tooltip ?> alt="<?= "" ?>"></td>
                                                                                         <?

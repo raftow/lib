@@ -1939,7 +1939,7 @@ class AfwLoadHelper extends AFWRoot
                     // if(!$return) throw new AfwRuntimeException($object."<br>here:attribute=$attribute,<br>b_abstract=$b_abstract,<br>integrity=$integrity,<br>return=$return<br>");
                 } else {
                     throw new AfwRuntimeException(
-                        "Try to get object value for strange non implemented object type=[$attribute_type] for attribute " .
+                        "Try to get object value from non-object type=[$attribute_type], happened with attribute " .
                             $attribute .
                             ' of table ' .
                             $object->getMyTable() .

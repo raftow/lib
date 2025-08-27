@@ -1202,7 +1202,6 @@ class AfwStringHelper
 
         public static function clean_input($string, $soft=true, $string_is_secure=false, $urldecode=false) 
         {
-                if(self::is_arabic($string, 0.9)) return $string;
                 if(is_array($string)) return $string;
                 $string2 = stripslashes($string);                
                 if($urldecode) $string2 = urldecode($string2);
