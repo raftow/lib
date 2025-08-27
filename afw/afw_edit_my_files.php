@@ -1,5 +1,5 @@
 <?php
-
+$this_file_dir_name = dirname(__FILE__);
 require_once ("afw_autoloader.php");
 // die("afw_autoloader loaded");
 AfwSession::startSession();
@@ -16,8 +16,8 @@ if(!$objme)
 if(!isset($MODULE) or (!$MODULE)) 
 {
         $MODULE = "ums"; 
-        require_once("$file_dir_name/../$MODULE/ini.php"); 
-        require_once("$file_dir_name/../$MODULE/module_config.php"); 
+        require_once("$this_file_dir_name/../../$MODULE/ini.php"); 
+        require_once("$this_file_dir_name/../../$MODULE/module_config.php"); 
 
 }
 if(!$_REQUEST["x"]) $_REQUEST["x"] = "u".$objme->id;
@@ -29,10 +29,10 @@ $correct_codeme = substr(md5("code".$me),0,8);
 if($correct_codeme==$codeme)
 {
         // 
-        if(!isset($file_dir_name)) $file_dir_name = dirname(__FILE__);
         
-        require_once("$file_dir_name/../$MODULE/application_config.php");
-        AfwSession::initConfig($config_arr, "system", "$file_dir_name/../$MODULE/application_config.php");
+        
+        require_once("$this_file_dir_name/../../$MODULE/application_config.php");
+        AfwSession::initConfig($config_arr, "system", "$this_file_dir_name/../../$MODULE/application_config.php");
         
         $doc_types = $module_config_token["file_types"];
         if(!$doc_types) $doc_types = "'define them in module_config.php'";
@@ -69,12 +69,12 @@ if($correct_codeme==$codeme)
                            
         
         
-        die("will include $file_dir_name/../$MODULE/main.php");
+        die("will include $this_file_dir_name/../../$MODULE/main.php");
         
-        include("$file_dir_name/../$MODULE/main.php");           
+        include("$this_file_dir_name/../../$MODULE/main.php");           
 }
 else
 {
-        include("$file_dir_name/lib/afw/modes/afw_denied_access_page.php");
+        include("$this_file_dir_name/modes/afw_denied_access_page.php");
 }           
 ?>
