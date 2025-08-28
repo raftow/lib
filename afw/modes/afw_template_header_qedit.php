@@ -109,7 +109,7 @@ foreach($class_db_structure as $nom_col => $desc)
                         
                         ob_start();
                         // if($nom_col=="symbol") die("type_input($nom_col, $desc, $col_val, $obj, $separator, true, inputlong);");
-                	type_input($nom_col, $desc, $col_val, $obj, $separator, true, "inputlong");
+                	AfwQeditMotor::type_input($nom_col, $desc, $col_val, $obj, $separator, true, "inputlong");
                         
         		$fixm_input[$nom_col] = ob_get_clean();
                         
