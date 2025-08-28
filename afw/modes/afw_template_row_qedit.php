@@ -547,6 +547,12 @@ if(!$obj->qedit_minibox)
                         </td>
 <?php	
                 }
+                else
+                {
+                        ?>
+                        <!-- for <?php echo "col=$col : orig_nom_col=$orig_nom_col"?> so hidden -->
+                        <?php
+                }
              }
         }
          
