@@ -339,8 +339,9 @@ if(!$obj->HIDE_DISPLAY_MODE)
                 }
                 else
                 {
+                        $afw_class = get_class($obj);
                         if($viewIcon == "view_error") $qedit_input_arr[1]["show"] = ["input"=>"<img src='../lib/images/error-red.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='$data_errors'>", "cols"=>1];
-                        else $qedit_input_arr[1]["show"] = ["input"=>"", "cols"=>1];
+                        else $qedit_input_arr[1]["show"] = ["input"=>"<!-- ENABLE_DISPLAY_MODE_IN_QEDIT viewIcon = $viewIcon afw class = $afw_class-->", "cols"=>1];
                 }
                 $qedit_input_arr[1]["show"]["input"] .= $qedit_hidden_pk_input;
              
