@@ -528,7 +528,7 @@ if(!$obj->qedit_minibox)
              {
                 $input_html_colspan_html = "";
                 if($input_html_colspan>1) $input_html_colspan_html = "colspan='$input_html_colspan'";
-                if($orig_nom_col and ($orig_nom_col!="id"))
+                if(($orig_nom_col or ($col=="show")) and ($orig_nom_col!="id"))
                 {
                         $col_translated = $qedit_trad_arr[$orig_nom_col];
                         
