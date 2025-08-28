@@ -436,7 +436,7 @@ if(!$obj->qedit_minibox)
 
                 }
 ?>
-<tr class="qerow<?=$qerow_num?> <?=$obj_odd_even?> <?=$obj->getHLClass()?> <?=get_class($obj)?>">
+<tr class="qerow<?=$qerow_num?> <?php echo $obj_odd_even?> <?php echo $obj->getHLClass()?> <?php echo get_class($obj)?>">
 <?php	
 
 
@@ -522,7 +522,7 @@ if(!$obj->qedit_minibox)
              
              if(($class_db_structure[$orig_nom_col]["QEDIT_HIDE"]) or ($orig_nom_col=="id"))
              {
-                    echo $input_html;
+                    echo $input_html." <!-- see structure[$orig_nom_col][QEDIT_HIDE] -->";
              }
              else
              {
@@ -533,13 +533,13 @@ if(!$obj->qedit_minibox)
                         $col_translated = $qedit_trad_arr[$orig_nom_col];
                         
 ?>
-			<td <?=$input_html_colspan_html?> <?=$class_xqe_prop?> align="<?=$aligntd?>" <?=$css_style?> >
+			<td hint="orig_nom_col=<?php echo $orig_nom_col?>" <?php echo $input_html_colspan_html?> <?php echo $class_xqe_prop?> align="<?php echo $aligntd?>" <?php echo $css_style?> >
                         <?php 
                                 
                                 if($header_imbedded)
                                 {
 ?>
-                        <label class='imbedded-label'><?=$col_translated?></label>
+                        <label class='imbedded-label'><?php echo $col_translated?></label>
 <?php 
                                 }
                                 echo $input_html;
