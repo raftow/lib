@@ -248,7 +248,7 @@ class AFWObject extends AFWRoot
 
     private static $attributeDefaultsArr = [];
 
-    private final function attributeDefaults($table_name, $field_name)
+    private function attributeDefaults($table_name, $field_name)
     {
         if (self::$attributeDefaultsArr[$table_name][$field_name]) return self::$attributeDefaultsArr[$table_name][$field_name];
         $struct = AfwStructureHelper::getStructureOf($this, $field_name);
@@ -4244,7 +4244,7 @@ class AFWObject extends AFWRoot
         return true;
     }
 
-    final private static function decodeDeleteReturn($ret)
+    private static function decodeDeleteReturn($ret)
     {
         if($ret==-1) return "UMS implementation does not allow this user to delete this record, see userCanDeleteMeStandard";
         if($ret==-2) return "The business rules and conditions of this afw-sub-class does not allow this user to delete this record see userCanDeleteMeSpecial";

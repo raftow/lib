@@ -41,24 +41,35 @@ if($correct_codeme==$codeme)
         
         $AfileClass = AfwSession::config("$MODULE-AfileClass", AfwSession::config("AfileClass", "WorkflowFile"));
         
-        $Main_Page="afw_mode_qedit.php";
-        $cl = $AfileClass;
-        if($AfileClass=="Afile") $currmod="ums";
-        else $currmod="workflow";
+        $_REQUEST["Main_Page"]="afw_mode_qedit.php";
+        $_REQUEST["cl"] = $AfileClass;
+        if($AfileClass=="Afile") 
+        {
+                $_REQUEST["currmod"]="ums";
+                $col_active = "avail";
+        }
+        else 
+        {
+                $_REQUEST["currmod"]="workflow";
+                $col_active = "active";
+        }
         $limit="200";
         $popup="";
         $ids="cond";
-        if(!$display_deleted) $cond_display_deleted = "avail='Y'";
-        else $cond_display_deleted = "avail in ('N','W')";
+        $_REQUEST["limit"] = $limit;
+        $_REQUEST["popup"] = $popup;
+        $_REQUEST["ids"] = $ids;
+        if(!$display_deleted) $cond_display_deleted = "$col_active='Y'";
+        else $cond_display_deleted = "$col_active in ('N','W')";
         
         if($allowed_extensions) $cond_allowed_extensions = "and (afile_ext in ($allowed_extensions) )";
         else  $cond_allowed_extensions = "";
         
         $cond = "(doc_type_id is null or doc_type_id in (0,1,$doc_types)) $cond_allowed_extensions and $cond_display_deleted" ;
+        $_REQUEST["cond"] = $cond;
         $fixm="owner_id=$me";
          
         $sel_owner_id=$me;
-        
         $_REQUEST["fixm"] = $fixm;
         $_REQUEST["sel_owner_id"] = $sel_owner_id;
         
@@ -69,7 +80,7 @@ if($correct_codeme==$codeme)
                            
         
         
-        die("will include $this_file_dir_name/../../$MODULE/main.php");
+        // die("will include $this_file_dir_name/../../$MODULE/main.php");
         
         include("$this_file_dir_name/../../$MODULE/main.php");           
 }
