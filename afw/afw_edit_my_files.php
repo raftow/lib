@@ -67,12 +67,14 @@ if($correct_codeme==$codeme)
         
         $cond = "(doc_type_idhh is null or doc_type_id in (0,1,$doc_types)) $cond_allowed_extensions and $cond_display_deleted" ;
         $_REQUEST["cond"] = $cond;
-        $fixm="owner_id=$me";
-         
-        $sel_owner_id=$me;
-        $_REQUEST["fixm"] = $fixm;
-        $_REQUEST["sel_owner_id"] = $sel_owner_id;
-        
+
+        if(!$objme->isAdmin())
+        {
+                $fixm="owner_id=".$objme->id;         
+                $sel_owner_id=$objme->id;
+                $_REQUEST["fixm"] = $fixm;
+                $_REQUEST["sel_owner_id"] = $sel_owner_id;
+        }
         
         $fixmtit="كل المرفقات";
         $fixmdisable="1";
