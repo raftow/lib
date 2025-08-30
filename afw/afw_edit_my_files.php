@@ -65,7 +65,7 @@ if($correct_codeme==$codeme)
         if($allowed_extensions) $cond_allowed_extensions = "and (afile_ext in ($allowed_extensions) )";
         else  $cond_allowed_extensions = "";
         
-        $cond = "(doc_type_id is null or doc_type_id in (0,1,$doc_types)) $cond_allowed_extensions and $cond_display_deleted" ;
+        $cond = "(doc_type_idhh is null or doc_type_id in (0,1,$doc_types)) $cond_allowed_extensions and $cond_display_deleted" ;
         $_REQUEST["cond"] = $cond;
         $fixm="owner_id=$me";
          
