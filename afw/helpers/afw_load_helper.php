@@ -403,7 +403,9 @@ class AfwLoadHelper extends AFWRoot
                 }
             }
 
-            if ($cache_management and $return and is_object($return) and ($return->getId() == $object_id)) {
+            if(!is_object($return)) $return = null;
+
+            if ($cache_management and $return and ($return->getId() == $object_id)) {
                 $myObject->setMySmallCacheForAttribute($attribute, $return);
             }
         } 
