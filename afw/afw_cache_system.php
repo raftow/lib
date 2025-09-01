@@ -152,9 +152,18 @@ class AfwCacheSystem
             {
                     if($context != "structure_cache")
                     {
-                        $id = $object->getId();
-                        if(!$id) $id = "empty";
-                        $obj_cl = get_class($object);
+                        if(is_object($object))
+                        {
+                            $id = $object->getId();
+                            if(!$id) $id = "empty";
+                            $obj_cl = get_class($object);
+                        }
+                        elseif(is_string($object))
+                        {
+                            $id = -strlen($object);
+                            $obj_cl = "string";
+                        }
+                        else throw new AfwRuntimeException("strange not object nor string to store in cache system : ".var_export($object, true));
                     }
                     else
                     {
@@ -260,11 +269,10 @@ class AfwCacheSystem
         return $message;
     }
     
-    function triggerCreation($module_code, $table_name)
+    function triggerCreation($module_code, $table_name, $caller="php")
     {
          if(($this->module_to_audit==$module_code) and ($this->table_to_audit==$table_name))
-         {
-             $caller = important_trace();
+         {             
              if(!$this->triggerTable[$caller]) $this->triggerTable[$caller] = 1;
              else $this->triggerTable[$caller]++;
              
