@@ -771,6 +771,7 @@ class AfwLoadHelper extends AFWRoot
                 $classNameTable,
                 $loaded_by
             );
+            if($objectCache==="null-object-not-found") return;
             if ($objectCache and $objectCache->id) {
                 // because now we store empty objects in cache
                 // so construct $result_row from object found in cache
@@ -943,14 +944,27 @@ class AfwLoadHelper extends AFWRoot
         $object->resetUpdates();
 
         if ($cache_management) {
-            if ($has_been_loaded and $loaded_by) {
-                AfwCacheSystem::getSingleton()->putIntoCache(
-                    $classNameModule,
-                    $classNameTable,
-                    $object,
-                    $loaded_by
-                );
+            if($loaded_by)
+            {
+                if ($has_been_loaded) {
+                    AfwCacheSystem::getSingleton()->putIntoCache(
+                        $classNameModule,
+                        $classNameTable,
+                        $object,
+                        $loaded_by
+                    );
+                }
+                else
+                {
+                    AfwCacheSystem::getSingleton()->putIntoCache(
+                        $classNameModule,
+                        $classNameTable,
+                        "null-object-not-found",
+                        $loaded_by
+                    );
+                }
             }
+            
         } else {
             /*
             AfwCacheSystem::getSingleton()->skipPutIntoCache(
