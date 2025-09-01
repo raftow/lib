@@ -204,7 +204,7 @@ class AfwSession extends AFWRoot {
         {
                 foreach($var_data as $col => $val) 
                 {
-                        self::setSessionVar(col, $val);
+                        self::setSessionVar($col, $val);
                 }
         }
 
