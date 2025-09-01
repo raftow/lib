@@ -170,12 +170,8 @@ if (!$liste_obj) {
                                         $objTempForInternalSearch->select_visibilite_horizontale();
                                         $objTempForInternal_ids_arr = AfwLoadHelper::loadManyIds($objTempForInternalSearch);
                                         $objTempForInternal_ids_txt = implode(",", $objTempForInternal_ids_arr);
-                                        if (!$objTempForInternal_ids_txt) 
-                                        {
-                                                $where_col = "FALSE";
-                                                $objTempForInternal_ids_txt = "0";
-                                        }
-                                        else $where_col = "$nom_col in (" . $objTempForInternal_ids_txt . ")";
+                                        if (!$objTempForInternal_ids_txt) $objTempForInternal_ids_txt = "0";
+                                        $where_col = "$nom_col in (" . $objTempForInternal_ids_txt . ")";
                                 } else {
                                         // die("DBG-qsearch_by_text::getClauseWhere for $nom_col [$my_oper] (qsearch_by_text=$qsearch_by_text)");
                                         list($where_col, $fixm_col, $cond_phrase) = AfwSqlHelper::getClauseWhere($obj, "me." . $nom_col, $my_oper,  $qsearch_by_text, "", $lang);
@@ -720,10 +716,10 @@ if (true) {
                                                                                                                 ?>
                                                                                                                 <td class='col-importance-<?php echo $importance." " .$canCss ?>'><img src="<?= $canImage ?>" width="24" heigth="24" <?= $tooltip ?>></td>
                                                                                                         <?
-                                                                                                        } else { // means can't ($can is false)
+                                                                                                        } else {
                                                                                                                 if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='لا يمكنك التعديل على هذا السجل راجع المشرف للتأكد من الصلاحيات وسياسة التعديل' data-original-title='You have not authorization to do $frameworkAction on this entity : [$action_item -> $cant_do_action_log] - Tooltip on bottom 3' class='red-tooltip'";
                                                                                                         ?>
-                                                                                                                <td class='col-importance-<?= $importance ?> can-t-case'><img src="<?= $images['locked'] ?>" width="24" heigth="24" <?= $tooltip ?> alt="<?= "" ?>"></td>
+                                                                                                                <td class='col-importance-<?= $importance ?>'><img src="<?= $images['locked'] ?>" width="24" heigth="24" <?= $tooltip ?> alt="<?= "" ?>"></td>
                                                                                         <?
                                                                                                         }
                                                                                                 }

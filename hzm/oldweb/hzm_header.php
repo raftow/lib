@@ -6,7 +6,7 @@
   
   $f3c = substr($Main_Page,0,3);
   $f7c = substr($Main_Page,0,7);
-  if(!$pagecode) $pagecode = AfwUrlManager::currentPageCode();
+  if(!$pagecode) list($pagecode,) = AfwUrlManager::currentPageCode();
   $pagecode_splitted = implode(" ",explode("_",$pagecode));
   // die("rafik-adm-001 : config=".var_export($config,true));
   
