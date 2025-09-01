@@ -146,7 +146,7 @@ class AfwCacheSystem
     } 
     
             
-    function putIntoCache($module_code, $table_name, $object, $indexValue="", $context="")
+    function putIntoCache($module_code, $table_name, $object, $indexValue="", $context="", $id=null, $obj_cl=null)
     {
             if((!AfwSession::config("MODE_MEMORY_OPTIMIZE", false)) or (AfwSession::config("CACHE_FORCE_USE", true)))
             {
@@ -160,8 +160,7 @@ class AfwCacheSystem
                         }
                         elseif(is_string($object))
                         {
-                            $id = -strlen($object);
-                            $obj_cl = "string";
+                            if((!$id) or (!$obj_cl)) throw new AfwRuntimeException("error/warning string is to store in cache system without specify class and id of object related");                            
                         }
                         else throw new AfwRuntimeException("strange not object nor string to store in cache system : ".var_export($object, true));
                     }

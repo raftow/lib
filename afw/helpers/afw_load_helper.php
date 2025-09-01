@@ -960,7 +960,10 @@ class AfwLoadHelper extends AFWRoot
                         $classNameModule,
                         $classNameTable,
                         "null-object-not-found",
-                        $loaded_by
+                        $loaded_by,
+                        "",
+                        $value,
+                        $classNameTable
                     );
                 }
             }
