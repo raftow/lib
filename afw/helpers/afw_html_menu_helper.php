@@ -83,6 +83,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $user_account_page = "login.php";
             $user_bg_class = "ubg0";
             $user_admin = "";
+            $user_dep = "";
         }
 
         $welcome_div = "";

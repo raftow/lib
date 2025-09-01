@@ -90,6 +90,7 @@ nav .logo-name .logo_name{
     color: var(--text-color);
     margin-right: 14px;
     transition: var(--tran-05);
+    max-width: 120px !important;
 }
 nav.close .logo_name{
     opacity: 0;
