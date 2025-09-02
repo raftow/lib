@@ -293,7 +293,7 @@ class AfwHtmlIncluderHelper
           if(file_exists($xtemplate_css_file_full_path))
           {
             $header .= "
-            <link hint='rafik' href=\"../lib/css/$xtemplate_css_file?crst=$crst\" rel=\"stylesheet\" type=\"text/css\">
+            <link hint='rafik-2-9-2025' href=\"../lib/css/$xtemplate_css_file?crst=$crst\" rel=\"stylesheet\" type=\"text/css\">
             ";
           }
           else 
