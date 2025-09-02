@@ -1718,7 +1718,7 @@ class AfwDateHelper
             $round
         );
 
-        // $return = "[$hdate2 => $gdate2] - [$hdate1 => $gdate1] => $gdate2 $time2 - $gdate1 $time1 = $return";
+        // die("$return = [$hdate2 => $gdate2] - [$hdate1 => $gdate1]");
 
         return $return;
     }
