@@ -958,13 +958,15 @@ class AfwLoadHelper extends AFWRoot
                 }
                 else
                 {
+                    if($value) $id_value = $value;
+                    else $id_value = -999; 
                     AfwCacheSystem::getSingleton()->putIntoCache(
                         $classNameModule,
                         $classNameTable,
                         "null-object-not-found",
                         $loaded_by,
                         "",
-                        $value,
+                        $id_value,
                         $classNameTable
                     );
                 }

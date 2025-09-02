@@ -160,7 +160,7 @@ class AfwCacheSystem
                         }
                         elseif(is_string($object))
                         {
-                            if((!$id) or (!$obj_cl)) throw new AfwRuntimeException("error/warning string is to store in cache system without specify class and id of object related");                            
+                            if(($id==="") or ($id===0) or ($id===null) or (!$obj_cl)) throw new AfwRuntimeException("error/warning string is to store in cache system without specify class and id of object related");                            
                         }
                         else throw new AfwRuntimeException("strange not object nor string to store in cache system : ".var_export($object, true));
                     }
