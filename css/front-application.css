@@ -1455,7 +1455,8 @@ button.bf.hzm-specialmethod {
     border: 1px #c2b647 solid;
     background-color: #fbf8e7;
     color: #1a690e;
-    font-size: 18px;
+    font-size: 12px !important;
+    min-height: 99px !important;
     float: right;
     max-width: 380px;
     /* align-items: center; */

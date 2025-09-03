@@ -205,7 +205,7 @@ table.dataTable.row-border tbody th, table.dataTable.row-border tbody td, table.
     word-wrap: break-word;
     text-overflow: revert !important;
     height: 80px;
-    line-height: 32px;
+    line-height: 16px;
     white-space: pre-wrap;
 }
 
@@ -828,7 +828,7 @@ div.qfilter>h1 {
 }
 
 .steps_wizardv1 li.CurrentStep a {
-    color: #feffff !important;
+    color: #107cd8 !important;
     font-weight: normal;
     font-size: 100%;
 }
