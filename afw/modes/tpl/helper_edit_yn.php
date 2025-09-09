@@ -12,8 +12,9 @@ if ($obj->fixm_disable)
 elseif ($desc["SWITCHER"]) 
 {
     $onoff = ($val=="Y") ? "on" : "off";
-    
-    $switcher_img = "<img class='switcher-btn' for='$col_name' id='img-$col_name' src='../lib/images/$onoff.png' width='48' heigth='32'>";                                                
+    if($desc["READONLY"]) $switcher_img_class = "";
+    else $switcher_img_class = "switcher-btn";
+    $switcher_img = "<img class='$switcher_img_class' for='$col_name' id='img-$col_name' src='../lib/images/$onoff.png' width='48' heigth='32'>";                                                
 ?>
     <div class='form-control form-switcher'>
         <input type="hidden" value="<?php echo $val ?>" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" <?php echo $checkbox_checked ?>>
