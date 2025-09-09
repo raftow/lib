@@ -12,7 +12,7 @@ if ($obj->fixm_disable)
 elseif ($desc["SWITCHER"]) 
 {
     $onoff = ($val=="Y") ? "on" : "off";
-    if($desc["READONLY"]) $switcher_img_class = "";
+    if($desc["READONLY"]) $switcher_img_class = "flou";
     else $switcher_img_class = "switcher-btn";
     $switcher_img = "<img class='$switcher_img_class' for='$col_name' id='img-$col_name' src='../lib/images/$onoff.png' width='48' heigth='32'>";                                                
 ?>
