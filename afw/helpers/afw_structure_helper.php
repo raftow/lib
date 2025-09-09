@@ -121,18 +121,18 @@ class AfwStructureHelper extends AFWRoot
         }
         // if(($table_name=="invester") and ($attribute=="city_id")) die($table_name." AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute) returned debugg_db_structure = ".var_export($debugg_db_structure,true));
         if ($return_type == 'structure') {
-            if ($repare) {
+            if (true) {
                 if ($attribute != 'all') {
                     $struct = $debugg_db_structure[$attribute];
                     // if(($table_name=="school") and ($attribute=="roomList")) die($table_name.", struct of $attribute (before repare) = ".var_export($struct,true)." debugg_db_structure = ".var_export($debugg_db_structure, true));
-                    if ($struct) {
+                    if ($struct and $repare) {
                         $struct = AfwStructureHelper::repareStructure($struct);
                     }
                     // if(($table_name=="school") and ($attribute=="roomList")) die($table_name.", struct of $attribute (after repare) = ".var_export($struct,true)." debugg_db_structure = ".var_export($debugg_db_structure, true));
                     return $struct;
                 } else {
                     foreach ($debugg_db_structure as $key => $struct) {
-                        if ($key != 'all') {
+                        if (($key != 'all') and $repare) {
                             $debugg_db_structure[$key] = AfwStructureHelper::repareStructure($struct);
                         }
                     }
