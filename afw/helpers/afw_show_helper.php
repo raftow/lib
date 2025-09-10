@@ -788,25 +788,25 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                 !$obj->showRetrieveErrors);
         $j = 0;
 
-        foreach ($liste_obj as $id => $val) {
+        foreach ($liste_obj as $id => $objListItem) {
             $j++;
-            if (is_object($val) and ($val instanceof AFWObject) and AfwUmsPagHelper::userCanDoOperationOnObject($val, $objme, 'display')) {
+            if (is_object($objListItem) and ($objListItem instanceof AFWObject) and AfwUmsPagHelper::userCanDoOperationOnObject($objListItem, $objme, 'display')) {
                 // we force errors test only if we are not in mode mode_show_all_records
-                $check_errors_needed_in_object = $val->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'));
+                $check_errors_needed_in_object = $objListItem->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'));
                 $force_test_errors =
                     (!$mode_show_all_records or $check_errors_needed_in_object);
-                $val_isOk = $val->isOk($force_test_errors); //
+                $val_isOk = $objListItem->isOk($force_test_errors); //
 
                 if ($mode_show_all_records or !$val_isOk) {
-                    $objIsActive = $val->isActive() ? 'active' : 'inactive';
-                    $viewIcon = $val->isActive() ? 'detail64' : 'view_off';
-                    // die("show ManyObj, val = ".var_export($val,true));
-                    if ($val->isActive()) {
+                    $objIsActive = $objListItem->isActive() ? 'active' : 'inactive';
+                    $viewIcon = $objListItem->isActive() ? 'detail64' : 'view_off';
+                    // die("show ManyObj, val = ".var_export($objListItem,true));
+                    if ($objListItem->isActive()) {
                         if ($check_errors_needed_in_object) {
                             if ($val_isOk) {
                                 $objIsActive = 'active';
                                 $viewIcon = 'view_ok';
-                                //die("$val_isOk = $val ->isOk($mode_show_all_records)");
+                                //die("$val_isOk = $objListItem ->isOk($mode_show_all_records)");
                             } else {
                                 $objIsActive = 'error';
                                 $viewIcon = 'view_err';
@@ -819,13 +819,13 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                     if (count($header) != 0) {
                         // if($obj instanceof Atable) die("header = ".var_export($header, true));
                         foreach ($header as $col => $desc) {
-                            if (!$val->attributeIsApplicable($col)) {
+                            if (!$objListItem->attributeIsApplicable($col)) {
                                 list(
                                     $icon,
                                     $textReason,
                                     $wd,
                                     $hg,
-                                ) = $val->whyAttributeIsNotApplicable($col);
+                                ) = $objListItem->whyAttributeIsNotApplicable($col);
                                 if (!$wd) {
                                     $wd = 20;
                                 }
@@ -836,29 +836,29 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                     "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='" .
                                     htmlentities($textReason) .
                                     "'  width='$wd' heigth='$hg'>";
-                            } elseif (AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($val, $col, $objme, 'DISPLAY', $desc)) {
+                            } elseif (AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($objListItem, $col, $objme, 'DISPLAY', $desc)) {
                                 if ($desc == 'AAA') {
-                                    $tuple['description'] = $val->__toString();
+                                    $tuple['description'] = $objListItem->__toString();
                                 } else {
-                                    $val_id = $val->getId();
-                                    $ord = $val->getMoveOrder();
+                                    $val_id = $objListItem->getId();
+                                    $ord = $objListItem->getMoveOrder();
                                     switch ($desc['TYPE']) {
                                         case 'PK':                                            
                                             $tuple[$col] = $val_id;
                                             break;
                                         case 'DEL':
                                             $col_trans = AfwLanguageHelper::translateKeyword("DELETE", $lang);
-                                            $val_id = $val->getId();
-                                            $val_class = $val->getMyClass();
-                                            $val_currmod = $val->getMyModule();
+                                            $val_id = $objListItem->getId();
+                                            $val_class = $objListItem->getMyClass();
+                                            $val_currmod = $objListItem->getMyModule();
                                             $lvl = $desc['DEL_LEVEL'];
                                             if (!$lvl) {
                                                 $lvl = 2;
                                             }
-                                            $userCanDel = $val->userCanDeleteMe($objme);
+                                            $userCanDel = $objListItem->userCanDeleteMe($objme);
                                             if ($userCanDel > 0) {
                                                 $delete_button_path = $images['delete'];
-                                                $lbl = $val->getShortDisplay($lang);
+                                                $lbl = $objListItem->getShortDisplay($lang);
                                                 // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
                                                 $tuple[$col_trans] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='$delete_button_path' style='height: 22px !important;'></a>";
                                             } else {
@@ -889,16 +889,16 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                         case 'SHOW':
                                             $col_trans = AfwLanguageHelper::translateKeyword("DISPLAY", $lang);
                                             // die("for col $col and lang=$lang col_trans=$col_trans");
-                                            if ($val->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'))) {
-                                                if (!$val->isActive()) {
+                                            if ($objListItem->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'))) {
+                                                if (!$objListItem->isActive()) {
                                                     $data_errors =
                                                         'تم حذفها الكترونيا';
                                                 } elseif (
-                                                    !$val->isOk(
+                                                    !$objListItem->isOk(
                                                         $force_check = true
                                                     )
                                                 ) {
-                                                    $data_errors_arr = AfwDataQualityHelper::getDataErrors($val, 
+                                                    $data_errors_arr = AfwDataQualityHelper::getDataErrors($objListItem, 
                                                         $lang
                                                     );
                                                     $data_errors = implode(
@@ -923,18 +923,18 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                         'لا يوجد أخطاء';
                                                 }
                                             } else {
-                                                if (!$val->isActive()) {
+                                                if (!$objListItem->isActive()) {
                                                     $data_errors = 'تم حذفها الكترونيا';
                                                 } else {
                                                     $data_errors = 'لم يتم تفعيل التثبت من الأخطاء لهذا الكيان';
                                                 }
                                             }
                                             $currstep = $desc["GO-TO-STEP"];
-                                            if (!$currstep) $currstep = $val->getDefaultStep();
+                                            if (!$currstep) $currstep = $objListItem->getDefaultStep();
                                             if (!$currstep) $currstep = 1;
-                                            $val_id = $val->getId();
-                                            $val_class = $val->getMyClass();
-                                            $val_currmod = $val->getMyModule();
+                                            $val_id = $objListItem->getId();
+                                            $val_class = $objListItem->getMyClass();
+                                            $val_currmod = $objListItem->getMyModule();
                                             $tuple[$col_trans] =
                                                 "<a href='main.php?Main_Page=afw_mode_display.php&cl=$val_class&currmod=$val_currmod&id=$val_id&currstep=$currstep' ><img src='../lib/images/$viewIcon.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='" .
                                                 htmlentities($data_errors) . // var_export($desc,true).
@@ -943,16 +943,16 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                         case 'EDIT':
                                             $col_trans = AfwLanguageHelper::translateKeyword($col, $lang);
                                             $currstep = $desc["GO-TO-STEP"];
-                                            if (!$currstep) $currstep = $val->getDefaultStep();
+                                            if (!$currstep) $currstep = $objListItem->getDefaultStep();
                                             if (!$currstep) $currstep = 1;
-                                            $val_id = $val->getId();
-                                            // if(!is_numeric($val_id)) die("val object export = ".var_export($val,true).", val->getId() => $val_id");
-                                            $val_class = $val->getMyClass();
-                                            $val_currmod = $val->getMyModule();
+                                            $val_id = $objListItem->getId();
+                                            // if(!is_numeric($val_id)) die("val object export = ".var_export($objListItem,true).", val->getId() => $val_id");
+                                            $val_class = $objListItem->getMyClass();
+                                            $val_currmod = $objListItem->getMyModule();
                                             list(
                                                 $canEdit,
                                                 $cantEditReason,
-                                            ) = $val->userCanEditMe($objme);
+                                            ) = $objListItem->userCanEditMe($objme);
                                             if ($canEdit) {
                                                 $edit_button_path = $images['modifier'];                                                
                                                 $tuple[$col_trans] = "<a href='m.php?mp=ed&cl=$val_class&cm=$val_currmod&id=$val_id&cs=$currstep&clp=$class_origin' class='editme showmany'><img src='$edit_button_path' width='22' heigth='22'></a>";
@@ -962,11 +962,11 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
 
                                             break;
                                         case 'FK':
-                                            if (AfwStructureHelper::isLookupAttribute($val, $col, $desc)) {
-                                                $val_decoded = $val->getVal($col);
-                                                $tuple[$col] = $val->decode($col) . "<!-- val decoded is $val_decoded -->";
+                                            if (AfwStructureHelper::isLookupAttribute($objListItem, $col, $desc)) {
+                                                $val_decoded = $objListItem->getVal($col);
+                                                $tuple[$col] = $objListItem->decode($col) . "<!-- val decoded is $val_decoded -->";
                                             } else {
-                                                $obj_col = $val->het($col);
+                                                $obj_col = $objListItem->het($col);
                                                 if (empty($desc['CATEGORY'])) {
                                                     if ($obj_col) {
                                                         $tuple[$col] = $obj_col->showMe('retrieve', $lang);
@@ -977,14 +977,14 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                             'EMPTY_IS_ALL'
                                                         ) {
                                                             $all_code = "ALL-$col";
-                                                            $return = $val->translate(
+                                                            $return = $objListItem->translate(
                                                                 $all_code,
                                                                 $lang
                                                             );
                                                             if (
                                                                 $return == $all_code
                                                             ) {
-                                                                $return = $val->translateOperator(
+                                                                $return = $objListItem->translateOperator(
                                                                     'ALL',
                                                                     $lang
                                                                 );
@@ -1034,14 +1034,14 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                             'EMPTY_IS_ALL'
                                                         ) {
                                                             $all_code = "ALL-$col";
-                                                            $return = $val->translate(
+                                                            $return = $objListItem->translate(
                                                                 $all_code,
                                                                 $lang
                                                             );
                                                             if (
                                                                 $return == $all_code
                                                             ) {
-                                                                $return = $val->translateOperator(
+                                                                $return = $objListItem->translateOperator(
                                                                     'ALL',
                                                                     $lang
                                                                 );
@@ -1063,16 +1063,16 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             }
                                             break;
                                         case 'MFK':
-                                            $objs = $val->get($col,'object','',false);
+                                            $objs = $objListItem->get($col,'object','',false);
                                             
                                             if (!is_array($objs)) {
-                                                throw new AfwRuntimeException("How $val => get($col,'object','',false) return " . var_export($objs, true));
+                                                throw new AfwRuntimeException("How $objListItem => get($col,'object','',false) return " . var_export($objs, true));
                                             }
                                             $nbc = count($objs);
                                             /*
                                             if(($col=="show_field_mfk") and $nbc<2)
                                             {
-                                                die("rafik 20240923 : $val => get($col,'object','',false) = ".var_export($objs,true));
+                                                die("rafik 20240923 : $objListItem => get($col,'object','',false) = ".var_export($objs,true));
                                             }*/
                                             if ($nbc>0) 
                                             {
@@ -1096,14 +1096,15 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             }
                                             break;
                                         case 'ANSWER':
-                                            $tuple[$col] = $val->decode($col);
+                                            $tuple[$col] = $objListItem->decode($col);
                                             break;
                                         case 'YN':
-                                            // if(($val->id==476) and ($col=="active")) echo("see FORMAT in desc = ".var_export($desc,true));
+                                            // if(($objListItem->id==476) and ($col=="active")) echo("see FORMAT in desc = ".var_export($desc,true));
                                             if ($desc['FORMAT'] == 'icon') {
-                                                $onoff = $val->sureIs($col) ? "on" : "off";
-                                                list($switcher_authorized, $switcher_title, $switcher_text) = $val->switcherConfig($col, $objme);
-                                                if($desc['READONLY']) $switcher_authorized = false;
+                                                $onoff = $objListItem->sureIs($col) ? "on" : "off";
+                                                list($switcher_authorized, $switcher_title, $switcher_text) = $objListItem->switcherConfig($col, $objme);
+                                                $structureCol = AfwPrevilegeHelper::keyIsToDisplayForUser($objListItem, $nom_col, $objme);
+                                                if($structureCol['READONLY']) $switcher_authorized = false;
                                                 if($switcher_authorized)
                                                 {
                                                     $switcher_img_style = "";
@@ -1119,9 +1120,9 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
 
                                                 if($switcher_authorized)
                                                 {
-                                                    $val_class = $val->getMyClass();
-                                                    $currm = $val->getMyModule();
-                                                    $val_id = $val->id;
+                                                    $val_class = $objListItem->getMyClass();
+                                                    $currm = $objListItem->getMyModule();
+                                                    $val_id = $objListItem->id;
                                                     $tuple[$col] = "<span case='1' id='$currm-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currm' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
                                                 }
                                                 else
@@ -1130,39 +1131,39 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                 }
                                                 
                                             } else {
-                                                $col_decoded = $val->decode($col);
+                                                $col_decoded = $objListItem->decode($col);
                                                 $tuple[$col] = $col_decoded;
                                             }
 
-                                            // if(($val->id==476) and ($col=="active"))  echo("tuple[$col] = ".$tuple[$col]);
+                                            // if(($objListItem->id==476) and ($col=="active"))  echo("tuple[$col] = ".$tuple[$col]);
 
                                             /*
                                              $yn_decoded = $col.strtoupper($col_decoded);
-                                             $yn_translated = $val->translate($yn_decoded,$lang);
+                                             $yn_translated = $objListItem->translate($yn_decoded,$lang);
                                              //die("yn_translated=$yn_translated"); 
                                              if((!$yn_translated) or ($yn_translated==$yn_decoded)) 
                                              {
                                              $yn_decoded = strtoupper($col_decoded);
-                                             $yn_translated = $val->translate($yn_decoded,$lang);
+                                             $yn_translated = $objListItem->translate($yn_decoded,$lang);
                                              }
                                              if((!$yn_translated) or ($yn_translated==$yn_decoded))
                                              {
                                              $yn_decoded = strtoupper($col_decoded);
-                                             $yn_translated = $val->translateOperator($yn_decoded,$lang);
+                                             $yn_translated = $objListItem->translateOperator($yn_decoded,$lang);
                                              }
                                              $tuple[$col] = $yn_translated;*/
 
                                             break;
                                         case 'ENUM':
-                                            $value = $val->getVal($col);
-                                            $display_val = $val->decode($col);
+                                            $value = $objListItem->getVal($col);
+                                            $display_val = $objListItem->decode($col);
                                             if (
                                                 $display_val and
                                                 $desc['FORMAT-INPUT'] ==
                                                 'hzmtoggle'
                                             ) {
                                                 //if(!$display_val) $display_val = "...";
-                                                // die("key=$attribute, val=$val, display_val=$display_val, HZM-CSS=".$structure["HZM-CSS"]);
+                                                // die("key=$attribute, val=$objListItem, display_val=$display_val, HZM-CSS=".$structure["HZM-CSS"]);
                                                 $css_arr = AfwStringHelper::afw_explode(
                                                     $desc['HZM-CSS']
                                                 );
@@ -1175,27 +1176,27 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             }
                                             break;
                                         default:
-                                            $tuple[$col] = $val->decode($col);
-                                            //if($col=="homework") die("$val -> decode($col) = [".$tuple[$col]."]");
+                                            $tuple[$col] = $objListItem->decode($col);
+                                            //if($col=="homework") die("$objListItem -> decode($col) = [".$tuple[$col]."]");
                                             break;
                                     }
                                 }
                             }
-                            $dataValue[$id][$col] = $val->getVal($col);
+                            $dataValue[$id][$col] = $objListItem->getVal($col);
                             $dataImportance[$col] = AfwHtmlHelper::importanceCss($obj, $col, $desc);
                         }
                     }
-                    if ($val->rowCategoryAttribute()) {
+                    if ($objListItem->rowCategoryAttribute()) {
                         list($categoryAttribute, $categoryAttributeCATEGORY) = explode(":", $obj->rowCategoryAttribute());
                         //die("list(attr=$categoryAttribute, cat=$categoryAttributeCATEGORY)");
                         if ($categoryAttributeCATEGORY) {
-                            $tuple["ca-".$categoryAttribute] = $val->calc($categoryAttribute);
-                            //die("tuple[$categoryAttribute] = ".$tuple[$categoryAttribute]." = $val-->calc($categoryAttribute)");
+                            $tuple["ca-".$categoryAttribute] = $objListItem->calc($categoryAttribute);
+                            //die("tuple[$categoryAttribute] = ".$tuple[$categoryAttribute]." = $objListItem-->calc($categoryAttribute)");
                         } else
-                            $tuple["ca-".$categoryAttribute] = $val->getVal($categoryAttribute);
+                            $tuple["ca-".$categoryAttribute] = $objListItem->getVal($categoryAttribute);
                     }
                     $data[$id] = $tuple;
-                    $recordArr[$id] = $val->getShortDisplay($lang);
+                    $recordArr[$id] = $objListItem->getShortDisplay($lang);
                     $isAvail[$id] = $objIsActive;
                     // $count_liste_obj++;
                 }
