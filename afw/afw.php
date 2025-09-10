@@ -49,6 +49,7 @@ class AFWObject extends AFWRoot
     public static $DATABASE = '____afw';
     public static $MODULE = 'afw';
     public static $TABLE = 'afw_object';
+    public static $STATS_CONFIG = null;
     public static $copypast = false;
     private static $mfk_separator = ',';
 
@@ -4567,6 +4568,16 @@ class AFWObject extends AFWRoot
     public function getMySpecialFields()
     {
         $arrMySpecialFields = [];
+
+        foreach($_GET as $key => $val)
+        {
+            $arrMySpecialFields["getted_".$key] = $val;
+        }
+
+        foreach($_POST as $key => $val)
+        {
+            $arrMySpecialFields["posted_".$key] = $val;
+        }
 
         return $arrMySpecialFields;
     }

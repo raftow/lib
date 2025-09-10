@@ -861,8 +861,9 @@ class AfwSqlHelper extends AFWRoot
             $fields_updated = [];
             $fields_to_insert = $object->getAllfieldsToInsert();
 
-            
-            /* if (($object::$TABLE == "application_model")) {
+            $dbg_rafik = false;
+            /*
+            if ($dbg_rafik and ($object::$TABLE == "period")) {
                 die("afw.insert($pk) before before insert die : object->FIELDS_INITED = " . var_export($object->getAllfieldDefaultValues(), true) . ", 
                               object -> FIELDS_UPDATED = " . var_export($object->fieldsHasChanged(), true) . " 
                               after merge => " . var_export($fields_to_insert, true) . " 

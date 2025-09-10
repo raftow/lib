@@ -29,6 +29,10 @@ if(!$cl)
         exit; 
 }
 
+/**
+ * @var AFWObject $myObj
+ */
+
 $myObj = new $cl();
 
 if(!$stc) $stc = $myObj->STATS_DEFAULT_CODE;

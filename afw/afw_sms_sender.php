@@ -11,7 +11,7 @@ class AfwSmsSender extends AFWRoot {
 
          // @todo we need a specific application ID for company-crm
 
-        public static function sendSMS($mobile, $message, $username = "company-crm-2factor", $application_id = 40)
+        public static function sendSMS($mobile, $message, $encoding = "utf-8")
         {
                 $lang = AfwLanguageHelper::getGlobalLanguage();
                 if(AfwSession::config("sms_simulation_mode", false))
@@ -34,7 +34,7 @@ class AfwSmsSender extends AFWRoot {
                         
                         if($mobile_error) return array(false, "mobile format error : ".$mobile_error.$error_details_if_failed);
                         
-                        $res = self::hzmSMS($mobile, $body, $username, $application_id);
+                        $res = self::hzmSMS($mobile, $body, $encoding);
                         $the_username = $res->SmsUser;
                         $error_details_if_failed .= " result of hzmSMS : " . var_export($res,true);
                         
@@ -50,7 +50,7 @@ class AfwSmsSender extends AFWRoot {
                         }
                         else
                         {
-                                return array(false, "failed to send SMS to $mobile with reponsible user name [$the_username] ".date("Y-m-d H:i:s")." sms server api response : [" . $res->SendSMSResult."]".$error_details_if_failed);
+                                return array(false, "failed to send SMS to $mobile with reponsible user name [$the_username] ".date("Y-m-d H:i:s")." sms server api response : [" . $res->SendSMSResult." res=".var_export($res, true)."]".$error_details_if_failed);
                         }
                         
                         
@@ -60,13 +60,24 @@ class AfwSmsSender extends AFWRoot {
 
         public static function hzmSMS($mobile_number, $message, $encoding="utf-8")
         {
-                global $smsSender_wsdlUrl;
+                // throw new AfwRuntimeException("hzmSMS what params", ['ALL'=>true], ['mobile_number'=>$mobile_number, 'message'=>$message, 'encoding'=>$encoding]);
+                // global $smsSender_wsdlUrl;
                 $file_dir_hzm = dirname(__FILE__);
                 $sms_config_config_file = "$file_dir_hzm/../../config/sms_config.php";
+                if(!file_exists($sms_config_config_file))
+                {
+                        throw new AfwRuntimeException("sms config file ".$sms_config_config_file." not found !");
+                }
                 $arrConfig = include($sms_config_config_file);
+                if((!$arrConfig) or (!is_array($arrConfig)))
+                {
+                        throw new AfwRuntimeException("sms config file should return the config array, but it return : ".var_export($arrConfig, true));
+                }
+
                 if(!$arrConfig["type"]) $arrConfig["type"]="soap";
                 if($arrConfig["type"]=="soap")
                 {
+                        // die("rafik crm debugg 250908 arrConfig=".var_export($arrConfig, true));
                         return self::soapSMS($mobile_number, $message, $arrConfig, $encoding);
                 }
 
@@ -77,10 +88,11 @@ class AfwSmsSender extends AFWRoot {
         public static function soapSMS($mobile_number, $message, $arrConfig, $encoding="utf-8")
         {        
                 // 
-                // obso : if($user_name == "company-crm-2factor") $user_name = $sms_username; 
+                // throw new AfwRuntimeException("soapSMS what params", ['ALL'=>true], ['mobile_number'=>$mobile_number, 'message'=>$message, 'arrConfig'=>$arrConfig, 'encoding'=>$encoding]);
                                   
                 
                 foreach($arrConfig as $key => $val) $$key = $val;
+                $hard_params = $arrConfig["hard-params"];
                 try 
                 { 
                         $opts = array(
@@ -103,25 +115,30 @@ class AfwSmsSender extends AFWRoot {
                         $MessageCol = $params['MESSAGE-BODY-PARAM'];
                         if(!$MessageCol) $MessageCol = "Message";
                         
-                        foreach($hard_params as $key => $val) $soapParams[$key] = $val;
-                        $soapParams = array($NumberCol=>$mobile_number, $MessageCol=>$message, );
-                
+                        // die("new SoapClient(smsSender_wsdlUrl = $smsSender_wsdlUrl, soapClientOptions = ".var_export($soapClientOptions, true).")");
                         $soapClient = new SoapClient($smsSender_wsdlUrl, $soapClientOptions);  // ' UTF-8'
+                        // die("new SoapClient(smsSender_wsdlUrl = $smsSender_wsdlUrl, soapClientOptions = ".var_export($soapClientOptions, true).") => ".var_export($soapClient, true));
                         $error = 0;    
                         
+                        
                         //$info = $soapClient->__call($method, array($params));
+                        
+                        $soapParams = array($NumberCol=>$mobile_number, $MessageCol=>$message, 'APPLICATION_ID'=>$application_id, 'PROCESS_ID'=>$process_id, 'USER_NAME'=>$user_name, );
+                        foreach($hard_params as $key => $val) $soapParams[$key] = $val;
+                        // die("with arrConfig=".var_export($arrConfig, true)." soapClient->$method(soapParams = ".var_export($soapParams, true).") will be executed ");
                         $info = $soapClient->$method($soapParams);
+                        // die("soapClient->$method(soapParams = ".var_export($soapParams, true).") => ".var_export($info, true));
                 } 
                 catch (SoapFault $fault) 
                 { 
                         $message = "hzm SMS sender failed with fault : ".var_export($fault,true);
                         AfwSession::log($message);
-                        //throw $fault;
+                        throw $fault;
                         $error = 1; 
                 }
                 catch (Exception $e) 
                 { 
-                        // throw $e;
+                        throw $e;
                         $message = "hzm SMS sender failed with exception : ".var_export($e,true);
                         AfwSession::log($message);
                         $error = 1; 
@@ -140,5 +157,3 @@ class AfwSmsSender extends AFWRoot {
                 }
         }
 }
-
-

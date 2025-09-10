@@ -106,12 +106,12 @@ class AfwMysql
             }
             catch(Exception $e)
             {
-                die("failed to do connection($hostname, $username, *****, $database) : ".$e->getMessage());
+                die("Failed to do connection <!-- ($hostname, $username, *****, $database) : ".$e->getMessage()." -->");
                 // if you do throw new AfwRuntimeException it will show stack trace containing password
             }
             catch(Error $e)
             {
-                die("error when doing connection($hostname, $username, *****, $database)");
+                die("Error when doing connection <!-- ($hostname, $username, *****, $database) : ".$e->getMessage()." -->");
                 // if you do throw new AfwRuntimeException it will show stack trace containing password
             } 
         }

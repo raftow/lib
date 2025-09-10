@@ -6,15 +6,16 @@ class AfwRuntimeException extends RuntimeException
      * @param AFWObject $object 
      * @return AfwRuntimeException
      */
-    public function __construct(string $message, array $throwed_arr = [
-                                                                'FIELDS_UPDATED' => true,
-                                                                'SQL' => true,
-                                                                'DEBUGG' => true,
-                                                                'CACHE' => false,
-                                                                'ALL' => false,
-                                                                'POST' => true,
-                                                            ]
-                                        , AFWObject $object = null                    
+    public function __construct(string $message, 
+                                array $throwed_arr = [
+                                                        'FIELDS_UPDATED' => true,
+                                                        'SQL' => true,
+                                                        'DEBUGG' => true,
+                                                        'CACHE' => false,
+                                                        'ALL' => false,
+                                                        'POST' => true,
+                                                    ], 
+                                        $object = null
     )
     {
         $msg = "";
@@ -22,6 +23,8 @@ class AfwRuntimeException extends RuntimeException
             $msg .=
                 "\n   throwed this = " . var_export($object, true) . "<br>\n";
         }
+
+        
 
         if ($throwed_arr['FIELDS_UPDATED'] and $object) {
             $msg .=

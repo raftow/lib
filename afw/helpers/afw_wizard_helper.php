@@ -274,16 +274,12 @@ class AfwWizardHelper extends AFWRoot
                         if (!isset($struct['OTM-TITLE'])) {
                             $struct['OTM-TITLE'] = true;
                         }
-                        list($displ2, $link_url2) = $object->displayAttribute(
-                            $attribute,
-                            false,
-                            $lang
-                        );
+                        list($displ2, $link_url2) = $object->displayAttribute($attribute,false,$lang);
                         $displ2 = trim($displ2);
                         if (!$displ2) {
                             $displ2 = "case 3 : this->displayAttribute($attribute,false, $lang) return nothing";
                         } else {
-                            $displ2 .= "<!-- case 3 : this->displayAttribute($attribute,false, $lang) -->";
+                            $displ2 .= "<!-- case 3 : this->displayAttribute($attribute,false, $lang) returned ($displ2, $link_url2) -->";
                         }
                         if (!isset($struct['OTM-NO-LABEL'])) {
                             if (!isset($struct['OTM-REMOVE-AUTO-LABEL'])) {
