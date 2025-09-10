@@ -1959,7 +1959,7 @@ $('#$showAsDataTable').DataTable( {
                         $currm = $objItem->getMyModule();
                         $val_id = $objItem->id;
                         $return = "<span id='$currm-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currm' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
-                        $return .= "rafik2<!-- ".var_export($structureCol, true)." -->";
+                        //$return .= "<!-- ".var_export($structureCol, true)." -->";
                     }
                     else
                     {
