@@ -1103,7 +1103,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             if ($desc['FORMAT'] == 'icon') {
                                                 $onoff = $objListItem->sureIs($col) ? "on" : "off";
                                                 list($switcher_authorized, $switcher_title, $switcher_text) = $objListItem->switcherConfig($col, $objme);
-                                                $structureCol = AfwPrevilegeHelper::keyIsToDisplayForUser($objListItem, $nom_col, $objme);
+                                                $structureCol = AfwPrevilegeHelper::keyIsToDisplayForUser($objListItem, $col, $objme);
                                                 if($structureCol['READONLY']) $switcher_authorized = false;
                                                 if($switcher_authorized)
                                                 {
