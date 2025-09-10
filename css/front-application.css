@@ -4543,6 +4543,11 @@ div.mbsc-popup.mbsc-popup-anchored {
     border: 3px solid #007aff7d !important;
 }
 
+.flou{
+    opacity: 0.6;
+}
+
+
 .switcher.afw-authorised {
     cursor: pointer;
 }

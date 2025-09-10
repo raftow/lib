@@ -355,9 +355,10 @@ class AFWObject extends AFWRoot
 
     public function getMyDbStructure(
         $return_type = 'structure',
-        $attribute = 'all'
+        $attribute = 'all', 
+        $repare=true
     ) {
-        $return = self::getDbStructure($return_type, $attribute);
+        $return = self::getDbStructure($return_type, $attribute, 'all', null, null, $repare);
         //if(!$return) die(static::$TABLE." getDbStructure($return_type, $attribute) returned empty value");
         return $return;
     }
@@ -367,7 +368,8 @@ class AFWObject extends AFWRoot
         $attribute = 'all',
         $step = 'all',
         $start_step = null,
-        $end_step = null
+        $end_step = null, 
+        $repare=true
     ) {
         $class_name = static::class;
         $module_code = static::$MODULE;
@@ -381,7 +383,8 @@ class AFWObject extends AFWRoot
                 $attribute,
                 $step,
                 $start_step,
-                $end_step
+                $end_step, 
+                $repare
             );  
     }
 
