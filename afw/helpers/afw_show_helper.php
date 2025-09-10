@@ -1124,7 +1124,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                                     $currm = $objListItem->getMyModule();
                                                     $val_id = $objListItem->id;
                                                     $tuple[$col] = "<span case='1' id='$currm-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currm' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
-                                                    $tuple[$col] .= "rafik<!-- ".var_export($structureCol, true)." -->";
+                                                    // $tuple[$col] .= "rafik<!-- ".var_export($structureCol, true)." -->";
                                                 }
                                                 else
                                                 {
@@ -1932,16 +1932,21 @@ $('#$showAsDataTable').DataTable( {
                 if ($desc['FORMAT'] == 'icon') {
                     $onoff = $objItem->sureIs($col) ? "on" : "off";
                     list($switcher_authorized, $switcher_title, $switcher_text) = $objItem->switcherConfig($col, $objme);
+                    $structureCol = AfwPrevilegeHelper::keyIsToDisplayForUser($objItem, $col, $objme);
+                    if($structureCol['READONLY']) $switcher_authorized = false;
                     if($switcher_authorized)
                     {
                         $switcher_img_style = "";
+                        $switcher_img_net = "net";
                     }
                     else
                     {
-                        $switcher_img_style = "style='opacity: 0.6;'";
+                        $switcher_img_style = ""; // style='opacity: 0.6;'
+                        $switcher_img_net = "flou";
                     }
                     
-                    $img_onoff = "<img src='../lib/images/$onoff.png' width='30' heigth='20' $switcher_img_style>";
+                    
+                    $img_onoff = "<img class='$switcher_img_net' src='../lib/images/$onoff.png' width='30' heigth='20' $switcher_img_style>";                                                                    
 
                     if($switcher_authorized)
                     {
@@ -1949,6 +1954,7 @@ $('#$showAsDataTable').DataTable( {
                         $currm = $objItem->getMyModule();
                         $val_id = $objItem->id;
                         $return = "<span id='$currm-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currm' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
+                        // $return .= "rafik2<!-- ".var_export($structureCol, true)." -->";
                     }
                     else
                     {
