@@ -1103,16 +1103,19 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                                             if ($desc['FORMAT'] == 'icon') {
                                                 $onoff = $val->sureIs($col) ? "on" : "off";
                                                 list($switcher_authorized, $switcher_title, $switcher_text) = $val->switcherConfig($col, $objme);
+                                                if($desc['READONLY']) $switcher_authorized = false;
                                                 if($switcher_authorized)
                                                 {
                                                     $switcher_img_style = "";
+                                                    $switcher_img_net = "net";
                                                 }
                                                 else
                                                 {
-                                                    $switcher_img_style = "style='opacity: 0.6;'";
+                                                    $switcher_img_style = ""; // style='opacity: 0.6;'
+                                                    $switcher_img_net = "flou";
                                                 }
                                                 
-                                                $img_onoff = "<img src='../lib/images/$onoff.png' width='30' heigth='20' $switcher_img_style>";                                                
+                                                $img_onoff = "<img class='$switcher_img_net' src='../lib/images/$onoff.png' width='30' heigth='20' $switcher_img_style>";                                                
 
                                                 if($switcher_authorized)
                                                 {
