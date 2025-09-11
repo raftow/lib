@@ -543,10 +543,14 @@ class AfwLoadHelper extends AFWRoot
                             // $htr_s = hrtime()[1];
                             $qrm = $objItem->quickRetrieveMethod();
                             // $qrm = "val";
-                            if($qrm=="qshow") $tuple[$col] = AfwShowHelper::quickShowAttribute($objItem, $col, $lang, $desc, $newline);
+                            $qrm_log = "";
+                            if($qrm=="qshow") {
+                                $tuple[$col] = AfwShowHelper::quickShowAttribute($objItem, $col, $lang, $desc, $newline);
+                                $qrm_log = "quickShowAttribute on $col, $lang, desc = ".var_export($desc, true);
+                            }
                             elseif($qrm=="decode") $tuple[$col] = $objItem->decode($col);
                             else $tuple[$col] = $objItem->getVal($col);
-                            if($col=="qsearch") die("$col showing with method $qrm = <br>".$tuple[$col]);
+                            if($col=="qsearch") die("$col showing with method $qrm = <br>".$tuple[$col]."<br> log : $qrm_log");
                             
                             // $htr_e = hrtime()[1];
                             // $htr = $htr_e - $htr_s;
