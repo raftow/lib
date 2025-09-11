@@ -550,7 +550,8 @@ class AfwLoadHelper extends AFWRoot
                             }
                             elseif($qrm=="decode") $tuple[$col] = $objItem->decode($col);
                             else $tuple[$col] = $objItem->getVal($col);
-                            if($col=="qsearch") die("$col showing with method $qrm = <br>".$tuple[$col]."<br> log : $qrm_log");
+                            
+                            // if($col=="qsearch") die("$col showing with method $qrm = <br>".$tuple[$col]."<br> log : $qrm_log");
                             
                             // $htr_e = hrtime()[1];
                             // $htr = $htr_e - $htr_s;
