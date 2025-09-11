@@ -1933,11 +1933,11 @@ $('#$showAsDataTable').DataTable( {
                     $onoff = $objItem->sureIs($col) ? "on" : "off";
                     list($switcher_authorized, $switcher_title, $switcher_text) = $objItem->switcherConfig($col, $objme);
                     $structureCol = AfwPrevilegeHelper::keyIsToDisplayForUser($objItem, $col, $objme);
-                    /*
+                    
                     if(($objItem instanceof ApplicationField) and ($col=="qsearch"))
                     {
-                        die("objItem instanceof ApplicationField and col==$col, structureCol=".var_export($structureCol,true));
-                    }*/
+                        die("objItem instanceof ApplicationField and col==$col, desc=".var_export($desc,true).", structureCol=".var_export($structureCol,true));
+                    }
                     if($structureCol['READONLY']) $switcher_authorized = false;
                     if($switcher_authorized)
                     {

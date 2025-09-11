@@ -546,6 +546,8 @@ class AfwLoadHelper extends AFWRoot
                             if($qrm=="qshow") $tuple[$col] = AfwShowHelper::quickShowAttribute($objItem, $col, $lang, $desc, $newline);
                             elseif($qrm=="decode") $tuple[$col] = $objItem->decode($col);
                             else $tuple[$col] = $objItem->getVal($col);
+                            if($col=="qsearch") die("$col showing with method $qrm = <br>".$tuple[$col]);
+                            
                             // $htr_e = hrtime()[1];
                             // $htr = $htr_e - $htr_s;
                             // if($htr > 5000000) die("htr of $col = $htr <br>\nend=$htr_e <br>\nstart=$htr_s");
