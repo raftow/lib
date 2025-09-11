@@ -1936,6 +1936,7 @@ $('#$showAsDataTable').DataTable( {
                     
                     if(($objItem instanceof ApplicationField) and ($col=="qsearch"))
                     {
+                        if($objItem->isEmpty()) throw new AfwRuntimeException("ApplicationField field empty is showing attribute $col");
                         die("objItem instanceof ApplicationField and col==$col, desc=".var_export($desc,true).", structureCol=".var_export($structureCol,true));
                     }
                     if($structureCol['READONLY']) $switcher_authorized = false;
