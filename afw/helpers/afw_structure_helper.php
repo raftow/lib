@@ -433,10 +433,14 @@ class AfwStructureHelper extends AFWRoot
                     $methodStructEval = substr($value_struct, 2);
                     // if(($field_name=="qsearch") and ($col_struct=="READONLY")) die("rafik-20240916-field_name=$field_name col_struct=$col_struct value_struct=$value_struct methodStructEval=$methodStructEval");
                     $struct[$col_struct] = $object->$methodStructEval($field_name, $col_struct);
+                    $struct["$col_struct-from"] = "method::$methodStructEval";
                     $objectClass = get_class($object);
                     //  and ($object->getVal("field_name")=="qsearch")
                     if(($objectClass=="ApplicationField") and ($object->id>0) and ($field_name=="qsearch") and ($col_struct=="READONLY")) die("rafik-20240916-field_name=$field_name col_struct=$col_struct value_struct=$value_struct methodStructEval=$methodStructEval, struct[$col_struct] = object($object->id, fname=".$object->getVal("field_name").")->$methodStructEval($field_name, $col_struct) = ".var_export($struct[$col_struct],true)); 
-                    
+                    if(($objectClass=="ApplicationField") and (!$object->id))
+                    {
+                        throw new AfwRuntimeException("ان شاء الله وجدناها");
+                    }
                     /*
                     if($field_name=="value") die("rafik-20240916-field_name=[$field_name], 
                                                     <br> col_struct=[$col_struct], 
