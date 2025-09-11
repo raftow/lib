@@ -26,7 +26,7 @@ class AfwStructureHelper extends AFWRoot
     {
         $cl = get_class($object);
         $struct = null;
-        if ($repare) $struct = self::$structuresArray[$cl][$field_name];
+        if (!$repare) $struct = self::$structuresArray[$cl][$field_name];
         if (!$struct) {
             // if($field_name=="level_enum") throw new RuntimeException("rafik 240927");
             $orig_field_name = $field_name;
@@ -48,7 +48,7 @@ class AfwStructureHelper extends AFWRoot
                 }
             }
 
-            if ($repare) self::$structuresArray[$cl][$field_name] = $struct;
+            if (!$repare) self::$structuresArray[$cl][$field_name] = $struct;
         }
         return $struct;
     }
