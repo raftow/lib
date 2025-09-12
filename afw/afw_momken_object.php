@@ -125,11 +125,76 @@ class AfwMomkenObject extends AFWObject {
             return self::afield_type()["code"][$fieldTypeId];
         }
 
+        public static function afield_type_by_code($the_code)        
+        {
+            $arr = self::afield_type();
+            foreach($arr['code'] as $eid => $code)
+            {
+                if($the_code==$code) return $eid;
+            }
+            return 0;
+        }
+
         public static function need_decode($fieldTypeId)        
         {
             return self::afield_type()["need_decode"][$fieldTypeId];
         }
         
+        public static function fromAFWtoAfieldType($afwType, $afwCat, $structure)
+        {
+            // $file_dir_name = dirname(__FILE__);
+            // 
+            $afwType = strtoupper($afwType);
+            if ($afwType == 'FK') {
+                if ($afwCat == 'ITEMS') {
+                    return self::afield_type_by_code("items");
+                }
+                return self::afield_type_by_code("list");
+            } elseif ($afwType == 'MFK') {
+                return self::afield_type_by_code("mlst");
+            } elseif ($afwType == 'MENUM') {
+                return self::afield_type_by_code("menum");
+            } elseif ($afwType == 'MTEXT') {
+                return self::afield_type_by_code("mtxt");
+            } elseif ($afwType == 'YN') {
+                return self::afield_type_by_code("yn");
+            } elseif ($afwType == 'TEXT') {
+                if ($structure['SIZE'] == 'AREA' or $structure['SIZE'] == 'AEREA') {
+                    return self::afield_type_by_code("mtxt");
+                } else {
+                    return self::afield_type_by_code("text");
+                }
+            } elseif ($afwType == 'DATE') {
+                return self::afield_type_by_code("date");
+            } elseif ($afwType == 'GDAT') {
+                return self::afield_type_by_code("Gdat");
+            } elseif ($afwType == 'GDATE') {
+                return self::afield_type_by_code("Gdat");
+            } elseif ($afwType == 'DATETIME') {
+                return self::afield_type_by_code("Gdat");
+            } elseif ($afwType == 'INT') {
+                return self::afield_type_by_code("int");
+            } elseif ($afwType == 'BIGINT') {
+                return self::afield_type_by_code("bigint");
+            } elseif ($afwType == 'INT') {
+                return self::afield_type_by_code("nmbr");
+            } elseif ($afwType == 'ENUM') {
+                return self::afield_type_by_code("enum");
+            } elseif ($afwType == 'AMNT') {
+                return self::afield_type_by_code("amnt");
+            } elseif ($afwType == 'PCTG') {
+                return self::afield_type_by_code("pctg");
+            } elseif ($afwType == 'TIME') {
+                return self::afield_type_by_code("time");
+            } elseif ($afwType == 'FLOAT') {
+                return self::afield_type_by_code("float");
+            } else {
+                return -1;
+                // throw new AfwRuntimeException("[$afwType] afw type is strange and can not be converted to a known application field type");
+            }
+        }
+
+
         public static function afield_type()
         {
                 $arr_list_of_afield_type = array();
