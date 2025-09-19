@@ -36,11 +36,12 @@ class AfwSmsSender extends AFWRoot {
                         
                         $res = self::hzmSMS($mobile, $body, $encoding);
                         $the_username = $res->SmsUser;
+                        $the_username_sent = $res->user_name_sent;
                         $error_details_if_failed .= " result of hzmSMS : " . var_export($res,true);
                         
                         if($res->SendSMSResult=='TRUE')
                         {
-                                $info = "SMS sent successfully to $mobile with reponsible user name [$the_username] ".date("Y-m-d H:i:s");
+                                $info = "SMS sent successfully to $mobile with reponsible user name [$the_username / $the_username_sent] ".date("Y-m-d H:i:s");
                                 
                                 return array(true, $info);
                         }
@@ -50,7 +51,15 @@ class AfwSmsSender extends AFWRoot {
                         }
                         else
                         {
-                                return array(false, "failed to send SMS to $mobile with reponsible user name [$the_username] ".date("Y-m-d H:i:s")." sms server api response : [" . $res->SendSMSResult." res=".var_export($res, true)."]".$error_details_if_failed);
+                                $message = "failed to send SMS to $mobile with reponsible user name [$the_username / $the_username_sent] ".date("Y-m-d H:i:s");
+                                if($mobile=="0598988330")
+                                {
+                                        $message .= " \n sms server api response : [" . $res->SendSMSResult."]";
+                                        $message .= " \n [res=".var_export($res, true)."]";
+                                        $message .= " \n error=".$error_details_if_failed;
+                                }
+                                
+                                return array(false, $message);
                         }
                         
                         
@@ -78,7 +87,16 @@ class AfwSmsSender extends AFWRoot {
                 if($arrConfig["type"]=="soap")
                 {
                         // die("rafik crm debugg 250908 arrConfig=".var_export($arrConfig, true));
-                        return self::soapSMS($mobile_number, $message, $arrConfig, $encoding);
+                        $return = self::soapSMS($mobile_number, $message, $arrConfig, $encoding);
+                        if(is_object($return) and ($mobile_number=="0598988330"))
+                        {
+                                $return->mobile_number = $mobile_number;
+                                $return->message = $message;
+                                $return->arrConfig = $arrConfig;
+                                $return->encoding = $encoding;
+                        }
+
+                        return $return;
                 }
 
                 throw new AfwRuntimeException("sms api type ".$arrConfig["type"]." not implemented !");
@@ -125,9 +143,9 @@ class AfwSmsSender extends AFWRoot {
                         
                         $soapParams = array($NumberCol=>$mobile_number, $MessageCol=>$message, 'APPLICATION_ID'=>$application_id, 'PROCESS_ID'=>$process_id, 'USER_NAME'=>$user_name, );
                         foreach($hard_params as $key => $val) $soapParams[$key] = $val;
-                        // die("with arrConfig=".var_export($arrConfig, true)." soapClient->$method(soapParams = ".var_export($soapParams, true).") will be executed ");
+                        // if($mobile_number=="0598988330") die("with hard_params=".var_export($hard_params, true)." arrConfig=".var_export($arrConfig, true)." soapClient->$method(soapParams = ".var_export($soapParams, true).") will be executed ");
                         $info = $soapClient->$method($soapParams);
-                        // die("soapClient->$method(soapParams = ".var_export($soapParams, true).") => ".var_export($info, true));
+                        // if($mobile_number=="0598988330") die("soapClient->$method(soapParams = ".var_export($soapParams, true).") => ".var_export($info, true));
                 } 
                 catch (SoapFault $fault) 
                 { 
@@ -148,7 +166,11 @@ class AfwSmsSender extends AFWRoot {
                 
                 if ($error == 0) 
                 {        
-                        //$info->Params = $soapParams;
+                        if(is_object($info))
+                        {
+                                if($mobile_number=="0598988330") $info->Params = $soapParams;
+                                $info->user_name_sent = $user_name;
+                        }
                         return $info;
                 }
                 else

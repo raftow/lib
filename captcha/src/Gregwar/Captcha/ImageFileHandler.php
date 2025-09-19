@@ -53,7 +53,7 @@ class ImageFileHandler
     /**
      * Saves the provided image content as a file
      *
-     * @param GdImage $contents
+     * @param \GdImage $contents
      *
      * @return string
      */

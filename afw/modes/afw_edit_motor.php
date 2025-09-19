@@ -887,7 +887,7 @@ class AfwEditMotor {
                 //if($info["tooltip"])  echo '<img data-toggle="tooltip" data-placement="top" title="'.$info["tooltip"].'" src="../lib/images/tooltip.png" />';
                 if ($info["help"])  echo '<span class="hspan">' . $info["help"] . '</span>';
                 $htmlDiv .= "</label>\n";
-
+                $htmlDiv .= "<!-- ".var_export($desc,true)." -->";
                 /* old code before change 004
                                                             echo "<label for='$col' $class_label>".$info["trad"]."\n";
                                                             if($info["tooltip"])  echo '<img data-toggle="tooltip" data-placement="top" title="'.$info["tooltip"].'" src="../lib/images/tooltip.png" />';

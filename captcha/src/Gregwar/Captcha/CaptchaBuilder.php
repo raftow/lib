@@ -48,11 +48,6 @@ class CaptchaBuilder implements CaptchaBuilderInterface
     protected $phrase = null;
 
     /**
-     * @var PhraseBuilderInterface
-     */
-    protected $builder;
-
-    /**
      * @var bool
      */
     protected $distortion = true;
@@ -127,15 +122,9 @@ class CaptchaBuilder implements CaptchaBuilderInterface
      */
     public $tempDir = 'temp/';
 
-    public function __construct($phrase = null, PhraseBuilderInterface $builder = null)
+    public function __construct($phrase = null)
     {
-        if ($builder === null) {
-            $this->builder = new PhraseBuilder;
-        } else {
-            $this->builder = $builder;
-        }
-        
-        $this->phrase = is_string($phrase) ? $phrase : $this->builder->build($phrase);
+        $this->phrase = $phrase;
     }
 
     /**
@@ -192,20 +181,15 @@ class CaptchaBuilder implements CaptchaBuilderInterface
         return $this->phrase;
     }
 
-    /**
-     * Returns true if the given phrase is good
-     */
-    public function testPhrase($phrase)
-    {
-        return ($this->builder->niceize($phrase) == $this->builder->niceize($this->getPhrase()));
-    }
+    
 
     /**
      * Instantiation
+     * @return CaptchaBuilder
      */
     public static function create($phrase = null)
     {
-        return new self($phrase);
+        return new self($phrase, null);
     }
 
     /**
@@ -312,7 +296,7 @@ class CaptchaBuilder implements CaptchaBuilderInterface
      */
     protected function writePhrase($image, $phrase, $font, $width, $height)
     {
-        die("phrase=$phrase");
+        // die("rafik phrase=$phrase");
         $length = mb_strlen($phrase);
         if ($length === 0) {
             return \imagecolorallocate($image, 0, 0, 0);
@@ -366,7 +350,7 @@ class CaptchaBuilder implements CaptchaBuilderInterface
         @unlink($tempj);
         @unlink($tempp);
 
-        return $this->testPhrase($value);
+        return true;
     }
 
     /**
@@ -396,7 +380,9 @@ class CaptchaBuilder implements CaptchaBuilderInterface
             $font = __DIR__ . '/Font/captcha'.$this->rand(0, 5).'.ttf';
             
         }
-        //die("font=$font");
+
+
+        // die("rafik : font=$font");
         if (empty($this->backgroundImages)) {
             
             // if background images list is not set, use a color fill as a background
@@ -413,6 +399,7 @@ class CaptchaBuilder implements CaptchaBuilderInterface
                 $bg_source = "defined : $color";
                 $bg = imagecolorallocate($image, $color[0], $color[1], $color[2]);
             }
+            // die("rafik : bg =".var_export($bg, true));
             //return "using bg color source : $bg_source ".var_export($bg,true);
             
             $this->backgroundColor = $bg;
@@ -420,12 +407,16 @@ class CaptchaBuilder implements CaptchaBuilderInterface
         } else {
             //return "using bgimages : ".var_export($this->backgroundImages,true);
             // use a random background image
-            $randomBackgroundImage = $this->backgroundImages[rand(0, count($this->backgroundImages)-1)];
+            $bg_index = rand(0, count($this->backgroundImages)-1);
+            $randomBackgroundImage = $this->backgroundImages[$bg_index];
 
             $imageType = $this->validateBackgroundImage($randomBackgroundImage);
 
             $image = $this->createBackgroundImageFromType($randomBackgroundImage, $imageType);
+            $bg_source = "from this->backgroundImages[$bg_index]";
         }
+
+        // die("rafik : image (source=$bg_source) =".var_export($image, true));
 
         // Apply effects
         if (!$this->ignoreAllEffects) {
@@ -443,6 +434,8 @@ class CaptchaBuilder implements CaptchaBuilderInterface
                 }
             }
         }
+
+        // die("rafik : image (after nb BehindLines effects=$effects) =".var_dump($image));
 
         // Write CAPTCHA text
         $color = $this->writePhrase($image, $this->phrase, $font, $width, $height);
@@ -463,6 +456,8 @@ class CaptchaBuilder implements CaptchaBuilderInterface
                 }
             }
         }
+
+        // die("rafik : image (after nb FrontLines effects=$effects) =".var_dump($image));
 
         // Distort the image
         if ($this->distortion && !$this->ignoreAllEffects) {

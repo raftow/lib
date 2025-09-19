@@ -1,4 +1,4 @@
-<?php
+id<?php
 //die("rafik before anything $currstep = $currstep");
 require_once(dirname(__FILE__)."/../../../config/global_config.php");
 // here was old const php
@@ -44,6 +44,7 @@ if($tech_notes) $myObj->debugg_tech_notes = [$tech_notes];
 $inited_cols = array();
 
 $out_scr = "";
+if(!$id and $key) $id = "key-$key";
 // die("rafik before object load id=$id , method_back=$method_back : => _POST = ".var_export($_POST,true));
 if($id)
 {

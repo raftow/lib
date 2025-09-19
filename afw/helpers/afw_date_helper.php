@@ -1378,7 +1378,7 @@ class AfwDateHelper
             else return "error 3";
         }
 
-        if (($wd_gdate <= '19700101') and (!$ifSeemsHijriKeepAsIs)) {
+        if (($wd_gdate <= '19000101') and (!$ifSeemsHijriKeepAsIs)) {
             if ($throwError) throw new AfwRuntimeException(
                 "to_hijri : gdate($gdate) after self::remove_dashes = $wd_gdate is not greg known greg date"
             );

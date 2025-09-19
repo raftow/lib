@@ -2717,16 +2717,38 @@ class AFWObject extends AFWRoot
     }
 
     /**
-     * select
+     * selectIn
      * Set attribute's value in the Search criteria
      * @param string $attribute
      * @param Array $values
      */
     public function selectIn($attribute, $values)
     {
+        return $this->selectInside($attribute, $values, $not="");
+    }
+
+    /**
+     * selectNotIn
+     * Set attribute's value in the Search criteria
+     * @param string $attribute
+     * @param Array $values
+     */
+    public function selectNotIn($attribute, $values)
+    {
+        return $this->selectInside($attribute, $values, $not="not");
+    }
+
+    /**
+     * selectInside
+     * Set attribute's value in the Search criteria
+     * @param string $attribute
+     * @param Array $values
+     */
+    private function selectInside($attribute, $values, $not="")
+    {
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
-                'Impossible faire call to the method selectIn() with the virtual table ' .
+                'Impossible faire call to the method selectInside() with the virtual table ' .
                     static::$TABLE .
                     '.'
             );
@@ -2748,7 +2770,7 @@ class AFWObject extends AFWRoot
             $this->SEARCH .=
                 ' and ' .
                 $attribute_sql .
-                " in ('" .
+                " $not in ('" .
                 implode("','", $values) .
                 "')";
             //if($attribute=="parent_module_id") throw new AfwRuntimeException("this->SEARCH = ".$this->SEARCH);
@@ -4662,7 +4684,7 @@ class AFWObject extends AFWRoot
                 $token = $sepBefore . $token . $sepAfter;
                 if (strpos($text_to_decode, $token) !== false) {
                     $field_val = $this->calc($fieldname);
-                    /* if($fieldname == "afield_type_id")
+                    /* if($fieldname == "date_start_perf_greg")
                     {
                         die("debugg rafik 2024092808 <br> [$field_val] = $this => calc($fieldname)");
                     }*/
@@ -4676,7 +4698,7 @@ class AFWObject extends AFWRoot
                 }
             }
 
-            //if($text_to_decode == "id_module_type=5 and id_system = §goal_system_id§ and id_pm = §goal_domain_id§ ") die("arr_tokens = ".var_export($arr_tokens,true));
+            // if($text_to_decode == "تقرير الأداء لفترة من [date_start_perf_greg]") die("this_db_structure = ".var_export($this_db_structure,true)." arr_tokens = ".var_export($arr_tokens,true));
 
             $arr_spec_fields = $this->getMySpecialFields();
             foreach (
@@ -6380,5 +6402,40 @@ class AFWObject extends AFWRoot
     }
 
     /*********************************XXXXXXXXXXXXXXXXXXXXXXXX**************************** */
+
+
+    public static function code_of_boolean($lkp_id=null)
+    {
+        $lang = AfwLanguageHelper::getGlobalLanguage();
+        if($lkp_id) return self::boolean()['code'][$lkp_id];
+        else return self::boolean()['code'];
+    }
+
+    public static function name_of_boolean($boolean, $lang="ar")
+    {
+        return self::boolean()[$lang][$boolean];            
+    }
+
+
+    public static function list_of_boolean($lang = null)
+    {
+        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+        return self::boolean()[$lang];
+    }
+    
+    public static function boolean()
+    {
+            $arr_list_of_boolean = array();
+            
+            $arr_list_of_boolean["code"][0] = "N";
+            $arr_list_of_boolean["ar"][0] = 'لا';
+            $arr_list_of_boolean["en"][0] = 'no';
+            
+            $arr_list_of_boolean["code"][1] = "Y";
+            $arr_list_of_boolean["ar"][1] = 'نعم';
+            $arr_list_of_boolean["en"][1] = 'yes';
+            
+            return $arr_list_of_boolean;
+    }
 
 }

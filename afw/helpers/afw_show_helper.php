@@ -1192,7 +1192,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                         //die("list(attr=$categoryAttribute, cat=$categoryAttributeCATEGORY)");
                         if ($categoryAttributeCATEGORY) {
                             $tuple["ca-".$categoryAttribute] = $objListItem->calc($categoryAttribute);
-                            //die("tuple[$categoryAttribute] = ".$tuple[$categoryAttribute]." = $objListItem-->calc($categoryAttribute)");
+                            // if(($categoryAttribute=="request_late") and ($objListItem->id==88210)) die("tuple[ca-$categoryAttribute] = ".$tuple["ca-".$categoryAttribute]." = $objListItem-->calc($categoryAttribute)");
                         } else
                             $tuple["ca-".$categoryAttribute] = $objListItem->getVal($categoryAttribute);
                     }

@@ -95,7 +95,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 }
         }
 
-        if (($desc["STEP"] == $obj->currentStep) or (!$obj->editByStep)) {
+        if ((strtoupper($desc["STEP"]) == 'ALL') or ($desc["STEP"] == $obj->currentStep) or (!$obj->editByStep)) {
                 if (!$mode_field_read_only) list($mode_field_read_only, $the_reason_readonly) = AfwStructureHelper::attributeIsReadOnly($obj, $nom_col, $nom_col_desc = "", $nom_col_submode = "", $nom_col_for_this_instance = true, $returm_me_reason_readonly = true);
                 // if($nom_col == "orgunit_id") die("$nom_col attribute Is ReadOnly = [$mode_field_read_only], reason=[$the_reason_readonly], ");
                 if ($mode_field_read_only) {

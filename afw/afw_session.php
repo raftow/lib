@@ -377,7 +377,7 @@ class AfwSession extends AFWRoot {
 
         public static function initConfig($config_arr, $configContext="system", $fromFile="")
         {
-                if(!$fromFile) throw new AfwRuntimeException("initing config to see from context $configContext where is the file ?");
+                if(!$fromFile) throw new AfwRuntimeException("AfwSession::initConfig (with context `$configContext`) without specifying the config file name");
                 /*
                 if(AfwStringHelper::stringEndsWith($fromFile,"application_config.php"))
                 {
@@ -755,6 +755,8 @@ class AfwSession extends AFWRoot {
         {
                 session_start();
                 AfwSession::setSessionVar("started", true);
+                AfwSession::pullSessionVar("was_customer");
+                AfwSession::pullSessionVar("was_user");
         }
 
 
@@ -780,12 +782,34 @@ class AfwSession extends AFWRoot {
                 die(var_export($_SESSION,true)); 
         }
 
+        public static function setWasCustomer()
+        {
+                self::setSessionVar("was_customer", true);
+                self::setSessionVar("was_user", false);
+        }
+
+        public static function setWasUser()
+        {
+                self::setSessionVar("was_customer", false);
+                self::setSessionVar("was_user", true);
+        }
+
+        public static function wasCustomer()
+        {
+                return self::getSessionVar("was_customer");
+        }
+
+        public static function wasUser()
+        {
+                return self::getSessionVar("was_user");
+        }
+        
 
         public static function logout()
         {
                 self::closeSession(); 
-                self::getSingleton()->unsetCustomer();
-                self::getSingleton()->unsetUser();
+                if(self::getSingleton()->unsetCustomer()) self::setWasCustomer();
+                elseif(self::getSingleton()->unsetUser()) self::setWasUser();
         }
 
 
