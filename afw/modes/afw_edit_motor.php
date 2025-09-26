@@ -331,6 +331,7 @@ class AfwEditMotor {
 
                     $minimum = AfwDateHelper::formatTimeHHNN($startHH, $startNN);
                     $maximum = AfwDateHelper::formatTimeHHNN($endHH, $endNN);
+                    if($desc["SEPARATOR"]) $separator = $desc["SEPARATOR"];
                     self::clock($col_name, $input_name, $valaff, $minimum, $maximum, $onchange, $input_style = "", $increment, $is_required, $separator, $duration = false);
                 } else {
                     if ($desc["FORMAT"] == "CLASS") {
