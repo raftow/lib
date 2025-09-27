@@ -117,7 +117,7 @@ class AfwUmsPagHelper extends AFWRoot
 
         if ($mdl_id) {
             $tbl = Atable::getAtableByName($mdl_id, $table_name);
-            if (!$tbl) {
+            if ((!$tbl) or (!is_object($tbl))) {
                 $tbl_id = 0;
                 if ($cretbl) {
                     $tbl = new Atable();
