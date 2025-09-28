@@ -84,7 +84,7 @@ class AfwRunHelper
 
         public static function simpleError($msg, $call_method = "", $light = false)
         {
-                throw new AfwRuntimeException($msg . " : call_method=$call_method");
+                throw new AfwBusinessException($msg . " : call_method=$call_method");
         }
 
         public static function lightSafeDie($error_title, $objToExport = null)
