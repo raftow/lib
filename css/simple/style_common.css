@@ -6396,3 +6396,11 @@ p.sms.notification {
 <div class="badgeafw bgred">&lArr;</div> 
 <div class="badgeafw bggreen">&rArr;</div> */
 
+p.help.p-helper {
+    color: #a65b0a;
+    width: 100%;
+    float: right;
+    font-size: 15px;
+    padding: 5px;
+    background-color: #ebe198;
+}

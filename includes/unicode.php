@@ -301,7 +301,7 @@ function hzm_truncate_bytes($string, $len) {
  *   of the returned string fall within length guidelines (see parameters
  *   $max_length and $min_wordsafe_length), word boundaries are ignored.
  * @param $add_ellipsis
- *   If TRUE, add t('...') to the end of the truncated string (defaults to
+ *   If TRUE, add trans('...') to the end of the truncated string (defaults to
  *   FALSE). The string length will still fall within $max_length.
  * @param $min_wordsafe_length
  *   If $wordsafe is TRUE, the minimum acceptable length for truncation (before
@@ -331,7 +331,7 @@ function truncate_utf8($string, $max_length, $wordsafe = FALSE, $add_ellipsis = 
 
   if ($add_ellipsis) {
     // Truncate ellipsis in case $max_length is small.
-    $ellipsis = hzm_substr(t('...'), 0, $max_length);
+    $ellipsis = hzm_substr(trans('...'), 0, $max_length);
     $max_length -= hzm_strlen($ellipsis);
     $max_length = max($max_length, 0);
   }

@@ -1,6 +1,13 @@
 <?php
-include("interface.mail.php");
-include("smtp.phpmailer.php");
+$file_dir_mailer = dirname(__FILE__);
+require_once("$file_dir_mailer/interface.mail.php");
+require_once("$file_dir_mailer/smtp.phpmailer.php");
+require_once("$file_dir_mailer/hzm.formatter.php");
+require_once("$file_dir_mailer/../includes/unicode.php");
+
+
+
+// throw new Exception("include_once $file_dir_mailer/interface.mail.php and $file_dir_mailer/smtp.phpmailer.php");
 /**
  * @file
  * The code processing mail in the smtp module.
@@ -11,7 +18,7 @@ include("smtp.phpmailer.php");
 * Modify the drupal mail system to use smtp when sending emails.
 * Include the option to choose between plain text or HTML
 */
-class SmtpMailSystem implements MailSystemInterface {
+class SmtpMailSystem  {
 
   public $errorInfo;
   
@@ -32,9 +39,9 @@ class SmtpMailSystem implements MailSystemInterface {
     $message['body'] = implode("\n<br>\n", $message['body']);
     if ($this->AllowHtml == 0) {
       // Convert any HTML to plain-text.
-      $message['body'] = hzm_html_to_text($message['body']);
+      $message['body'] = HzmMailFormatter::hzm_html_to_text($message['body']);
       // Wrap the mail body for sending.
-      $message['body'] = hzm_wrap_mail($message['body']);
+      $message['body'] = HzmMailFormatter::hzm_wrap_mail($message['body']);
     }
     return $message;
   }
@@ -118,7 +125,7 @@ class SmtpMailSystem implements MailSystemInterface {
       if (($from = AfwSession::config('smtp_from', '')) == '') {
         // If smtp_from config option is blank, use site_email.
         if (($from = AfwSession::config('site_mail', '')) == '') {
-          AfwSession::pushWarning(t('There is no submitted from address.'), 'error');
+          AfwSession::pushWarning(trans('There is no submitted from address.'), 'error');
           if ($logging) {
             // AfwRunHelper::afw_guard('smtp', 'There is no submitted from address.', array(), // AfwRunHelper::afw_guard_ERROR);
           }
@@ -134,7 +141,7 @@ class SmtpMailSystem implements MailSystemInterface {
     }
     /*
     elseif (!valid_email_address($from)) {
-      AfwSession::pushWarning(t('The submitted from address (@from) is not valid.', array('@from' => $from)), 'error');
+      AfwSession::pushWarning(trans('The submitted from address (@from) is not valid.', array('@from' => $from)), 'error');
       if ($logging) {
         // AfwRunHelper::afw_guard('smtp', 'The submitted from address (@from) is not valid.', array('@from' => $from), // AfwRunHelper::afw_guard_ERROR);
       }
@@ -231,7 +238,7 @@ class SmtpMailSystem implements MailSystemInterface {
             break;
             default:
               // Everything else is unsuppored by PHPMailer.
-              AfwSession::pushWarning(t('The %header of your message is not supported by PHPMailer and will be sent as text/plain instead.', array('%header' => "Content-Type: $value")), 'error');
+              AfwSession::pushWarning(trans('The %header of your message is not supported by PHPMailer and will be sent as text/plain instead.', array('%header' => "Content-Type: $value")), 'error');
               if ($logging) {
                 // AfwRunHelper::afw_guard('smtp', 'The %header of your message is not supported by PHPMailer and will be sent as text/plain instead.', array('%header' => "Content-Type: $value"), // AfwRunHelper::afw_guard_ERROR);
               }
@@ -461,7 +468,7 @@ class SmtpMailSystem implements MailSystemInterface {
 
             if (file_exists($file_path)) {
               if (!$mailer->AddAttachment($file_path, $file_name, $file_encoding, $file_type)) {
-                AfwSession::pushWarning(t('Attahment could not be found or accessed.'));
+                AfwSession::pushWarning(trans('Attahment could not be found or accessed.'));
               }
             }
             else {
@@ -484,7 +491,7 @@ class SmtpMailSystem implements MailSystemInterface {
               
 
               if (!$mailer->AddAttachment($real_path, $file_name)) {
-                AfwSession::pushWarning(t('Attachment could not be found or accessed.'));
+                AfwSession::pushWarning(trans('Attachment could not be found or accessed.'));
               }
 
               */
@@ -544,7 +551,7 @@ class SmtpMailSystem implements MailSystemInterface {
 
 
     // Set other connection settings.
-    $mailer->Host = AfwSession::config('smtp_host', '') . ';' . AfwSession::config('smtp_hostbackup', '');
+    $mailer->Host = AfwSession::config('smtp_host', '[no-host-defined]') . ';' . AfwSession::config('smtp_hostbackup', '');
     $mailer->Port = AfwSession::config('smtp_port', '25');
     $mailer->Mailer = 'smtp';
 
