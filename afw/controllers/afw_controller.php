@@ -7,9 +7,31 @@ class AfwController extends AFWRoot
 
         public function __construct($request) {}
 
+        public function headerTemplate($methodName, $default_header_template)
+        {
+                return $default_header_template;
+        }
+        public function menuTemplate($methodName, $default_menu_template)
+        {
+                return $default_menu_template;
+        }
+        public function bodyTemplate($methodName, $default_body_template)
+        {
+                return $default_body_template;
+        }
+        public function footerTemplate($methodName, $default_footer_template)
+        {
+                return $default_footer_template;
+        }
+
         public function defaultMethod($request)
         {
                 return "index";
+        }
+
+        public function viewType()
+        {
+                return "modern";
         }
 
         public function myViewSettings($methodName)
@@ -39,10 +61,11 @@ class AfwController extends AFWRoot
                 foreach ($data as $key => $value) $$key = $value;
                 $file_dir_name = dirname(__FILE__);
                 $view_name_tpl = $view_name . "_tpl";
-                $view_template_path = "$file_dir_name/../../$view_module/tpl/$view_name_tpl.php";
+                $view_template_path = "$file_dir_name/../../../$view_module/tpl/$view_name_tpl.php";
                 if (!file_exists($view_template_path)) {
                         throw new AfwRuntimeException("view template not found : $view_template_path");
                 } else {
+                        if($mt=="survey_request") die("view_template_path is : ".$view_template_path);
                         include_once($view_template_path);
                 }
         }
@@ -57,9 +80,10 @@ class AfwController extends AFWRoot
                 if ($warning) AfwSession::pushWarning($warning);
                 if ($info) AfwSession::pushInformation($info);
                 if ($success) AfwSession::pushSuccess($success);
-                if (!file_exists("$file_dir_name/../../$view_module/$view_page.php")) {
-                        $this->renderError("view page not found : $file_dir_name/../../$view_module/$view_page.php");
-                } else include_once("$file_dir_name/../../$view_module/$view_page.php");
+                $view_page_full_path = "$file_dir_name/../../../$view_module/$view_page.php";
+                if (!file_exists($view_page_full_path)) {
+                        $this->renderError("view page not found : $view_page_full_path");
+                } else include_once($view_page_full_path);
         }
 
         public function renderInternal($view_module, $view_name, $data)

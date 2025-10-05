@@ -10,7 +10,7 @@
             } 
             else 
             {
-
+                if(!$desc["FORMAT-INPUT"]) $desc["FORMAT-INPUT"] = $desc["FORMAT"];
                 if ($desc["FORMAT-INPUT"] == "hzmtoggle") 
                 {
                     $display_val = $liste_rep[$val];
@@ -66,6 +66,25 @@
                                 onClick="toggleHzmBtn('<?php echo $col_name ?>', <?php echo $liste_choix_text ?>, <?php echo $liste_codes_text ?>, <?php echo $listeOrdres_text ?>, <?php echo $liste_css_text ?>,<?php echo count($liste_choix) ?>)"><?php echo $display_val ?></button>
 <?php
                 } 
+                elseif ($desc["FORMAT-INPUT"] == "stars") 
+                {
+?>
+                    <input type='hidden' name='<?php echo $col_name ?>' id='<?php echo $col_name ?>' value='<?php echo $val ?>'>
+                    <div class="stars-list answers-list" aria-hidden="true">
+<?php
+                    $c=0;
+                    foreach($liste_rep as $val_i => $title_i)
+                    {
+                        // star-rated star-rated-on
+?>
+                        <div class="star-<?php echo $val_i ?> star-rating star " data-star="<?php echo $val_i ?>" title="<?php echo $title_i ?>"><i class="fa fa-star ri-star-fill"></i></div>
+<?php
+                    }
+?>
+                    <div class="rating-label">---</div>
+                    </div>
+<?php
+                }
                 elseif ($desc["FORMAT-INPUT"] == "btn-bootstrap") 
                 {
                     $arr_classes = ["primary","secondary","success","danger","warning","info","light","dark",];

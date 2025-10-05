@@ -9,7 +9,7 @@ foreach($themeArr as $theme => $themeValue)
     $$theme = $themeValue;
 }
 require_once("afw_rights.php");
-require_once("afw_search_motor.php");
+
 $new_instance =  AfwLanguageHelper::translateKeyword("new_instance", $lang);
 $qedit_new =     AfwLanguageHelper::translateKeyword("qedit_new", $lang); 
 $qedit_update =  AfwLanguageHelper::translateKeyword("qedit_update", $lang); 
@@ -258,7 +258,7 @@ foreach($class_db_structure as $nom_col => $desc)
 if(!$_POST["ms_ret_cols"]) $_POST["ms_ret_cols"] = $list_of_ret_cols_default;
 
 ob_start();        
-select(
+AfwQsearchMotor::select(
         						$list_of_ret_cols_all,
         						( (isset($_POST["ms_ret_cols"])) ? $_POST["ms_ret_cols"]: array()  ),
         						array(

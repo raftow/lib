@@ -7,7 +7,7 @@ foreach ($themeArr as $theme => $themeValue) {
     $$theme = $themeValue;
 }
 
-require_once 'afw_search_motor.php';
+
 
 if (! $currmod) {
     $currmod = AfwUrlManager::currentWebModule();

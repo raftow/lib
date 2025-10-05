@@ -68,6 +68,14 @@ if(!class_exists('AfwAutoLoader'))
                                         {
                                                 $file_path_to_load = $autol_file_dir_name."/helpers/$file_name";
                                         }
+                                        elseif(AfwStringHelper::stringEndsWith ($file_name, "_motor.php"))
+                                        {
+                                                $file_path_to_load = $autol_file_dir_name."/motors/$file_name";
+                                        }
+                                        elseif(AfwStringHelper::stringEndsWith ($file_name, "_controller.php"))
+                                        {
+                                                $file_path_to_load = $autol_file_dir_name."/controllers/$file_name";
+                                        }
                                         else
                                         {
                                                 $file_path_to_load = $autol_file_dir_name."/$file_name";

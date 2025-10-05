@@ -8,7 +8,7 @@ foreach($themeArr as $theme => $themeValue)
 }
 
 
-require_once("afw_edit_motor.php");
+
 require_once ('afw_rights.php');
 
 $objme = AfwSession::getUserConnected();
