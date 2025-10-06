@@ -1,7 +1,7 @@
 <?php
 // die("DBG-mode handle search");
 require_once(dirname(__FILE__) . "/../../../config/global_config.php");
-require_once('afw_rights.php');
+require_once(dirname(__FILE__).'/../modes/afw_rights.php');
 
 $themeArr = AfwThemeHelper::loadTheme("handle-qsearch");
 foreach($themeArr as $theme => $themeValue)

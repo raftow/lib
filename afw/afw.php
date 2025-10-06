@@ -2662,6 +2662,11 @@ class AFWObject extends AFWRoot
         return true;
     }
 
+    public function whereEqual($attribute, $value, $returnSQLOnly=false)
+    {
+        return $this->select($attribute, $value, $returnSQLOnly);
+    }
+
     /**
      * select
      * Set attribute's value in the Search criteria

@@ -9,7 +9,7 @@ foreach($themeArr as $theme => $themeValue)
     $$theme = $themeValue;
 }
 require_once("afw_rights.php");
-require_once("afw_qsearch_motor.php");
+
 
 $new_instance =  AfwLanguageHelper::translateKeyword("new_instance", $lang);
 $qedit_new =     AfwLanguageHelper::translateKeyword("qedit_new", $lang); 

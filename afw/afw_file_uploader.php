@@ -82,26 +82,21 @@ class AfwFileUploader extends AFWRoot
                         if(in_array($extension, self::$picture_types_arr)) $afile_pic = "Y";
                         else  $afile_pic = "N";
                 
-                        $af = new Afile();
+                        $af = Afile::loadByMainIndex($afile_original_name, $afile_size, $me, $orgunit_id, true);
                         
-                        $af->set("afile_name",$afile_name);
-                        $af->set("original_name",$afile_original_name);
+                        $af->set("afile_name",$afile_name);                        
                         $af->set("afile_type",$afile_type);
                         $af->set("afile_ext",$extension);
                         $af->set("picture",$afile_pic);
-                        $af->set("afile_size",$afile_size);
                         // intelligent deduce of $doc_type_id
                         if($doc_type_id==9999)
                         {
                              // @todo   
                         }
                         $af->set("doc_type_id",$doc_type_id);
-                        $af->set("owner_id",$me);
-                        $af->set("stakeholder_id",$orgunit_id);
-                        
                         $error = "";
                         
-                        if($af->insert())
+                        if($af->commit())
                         {
                                 $new_name =  $af->getNewName();
                                 $mv_from_file = $file_arr['tmp_name'];

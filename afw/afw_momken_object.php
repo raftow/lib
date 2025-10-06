@@ -103,6 +103,45 @@ class AfwMomkenObject extends AFWObject {
                 return $arr_list_of_gender;
         }
 
+
+        public static function list_of_stars()
+        {
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+            return self::stars()[$lang];
+        }
+        
+        public static function stars()
+        {
+                $arr_list_of_stars = array();
+                
+
+
+
+                
+                $arr_list_of_stars["en"][1] = "Very dissatisfied";
+                $arr_list_of_stars["ar"][1] = "غير راضي إطلاقًا";
+                $arr_list_of_stars["code"][1] = "*";
+
+                $arr_list_of_stars["en"][2] = "Dissatisfied";
+                $arr_list_of_stars["ar"][2] = "غير راضي";
+                $arr_list_of_stars["code"][2] = "**";
+
+                $arr_list_of_stars["en"][3] = "Neutral";
+                $arr_list_of_stars["ar"][3] = "محايد";
+                $arr_list_of_stars["code"][3] = "***";
+
+                $arr_list_of_stars["en"][4] = "Satisfied";
+                $arr_list_of_stars["ar"][4] = "راضي";
+                $arr_list_of_stars["code"][4] = "****";
+
+                $arr_list_of_stars["en"][5] = "Very satisfied";
+                $arr_list_of_stars["ar"][5] = "راضي جدًا";
+                $arr_list_of_stars["code"][5] = "*****";
+
+                
+                return $arr_list_of_stars;
+        }
+
         public static function list_of_aparameter_type_enum()
         {
             $lang = AfwLanguageHelper::getGlobalLanguage();

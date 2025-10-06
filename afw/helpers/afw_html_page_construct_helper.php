@@ -106,12 +106,12 @@
                 self::addHtml("<body class=\"hzm_body $f7c $pagecode_splitted\" dir=\"$dir\" >");
 
                 
-                if((!$options["disable_header"]) and (!AfwSession::hasOption("FULL_SCREEN")))
+                if(($header_template!="no-header") and (!$options["disable_header"]) and (!AfwSession::hasOption("FULL_SCREEN")))
                 {
                         $the_header = AfwHtmlMenuHelper::renderHeader($header_template, $lang, $role, $tpl_path, $selected_menu, $options);
                 }
 
-                if((!$options["disable_menu"]) and (!AfwSession::hasOption("FULL_SCREEN")))
+                if(($menu_template!="no-menu") and (!$options["disable_menu"]) and (!AfwSession::hasOption("FULL_SCREEN")))
                 {
                         $the_menu = AfwHtmlMenuHelper::renderMenu($menu_template, $lang, $role, $tpl_path, $selected_menu, $options);
                 }

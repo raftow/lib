@@ -1023,6 +1023,7 @@ input.fa.previous:before{
 
 .form-control.form-switcher {
     border: none !important;
+    background-color: transparent;
 }
 
 .mbsc-ios.mbsc-textarea-inner.mbsc-textfield-inner-outline {

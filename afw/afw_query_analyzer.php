@@ -198,16 +198,15 @@ class AfwQueryAnalyzer
             );
 
             if (self::$sql_picture_arr[$this_module][$this_table] > $_sql_analysis_seuil_calls_by_table) {
-                if ($MODE_DEVELOPMENT) {
                     throw new AfwRuntimeException(
                         "<p>static analysis crash : The table $this_module-$this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times ($this_table_lower-sql-analysis-max-calls)</p>
                              <h5>$sql_query</h5><br> 
+                             If this is absolutely needed please define global variable MODE_SQL_PROCESS_LOURD to true
                              <div class='technical'>
                              So it is to be optimized sql_picture => " . var_export(self::$sql_picture_arr, true) .
                             " all_vars => " . AfwSession::log_all_data() .
                             "</div>"
                     );
-                }
             }
         }
 

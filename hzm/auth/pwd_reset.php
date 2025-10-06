@@ -52,7 +52,7 @@ elseif(($_POST["mobile"]) and ($_POST["idn"]) and ($_POST["resetGo"]))
         //die("AFWDebugg::initialiser(".$DEBUGG_SQL_DIR.$my_debug_file.")");
         AFWDebugg::initialiser($DEBUGG_SQL_DIR,$my_debug_file);
         AFWDebugg::log("reset process starting");
-        AfwSession::resetSession();
+        AfwSession::resetSession("main_company");
         $idn    = AfwStringHelper::clean_input($_POST["idn"]);
         $mobile = AfwStringHelper::clean_input($_POST["mobile"]);
 

@@ -14,8 +14,7 @@ class AfwEditMotor {
 
     public static function type_input($col_name, $desc, $val, &$obj, $separator = ':', $data_loaded = false, $force_css = "", $qedit_orderindex = 0, $data_length_class_default_for_fk = "inputmoyen")
     {
-        global $_GET, $_POST,
-            $lang, $mode_hijri_edit,  $objme;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
 
         $editor = $desc["EDITOR"];
 
@@ -966,16 +965,19 @@ class AfwEditMotor {
         return [$htmlDiv, $openedInGroupDiv, $fgroup];
     }
 
-    
+    /**
+     * @var AFWObject $obj
+     */
 
-    public static function prepareEditInfoForColumn($obj, $nom_col, $desc, $lang, $colErrors=[], $step_show_error=false)
+    public static function prepareEditInfoForColumn($obj, $nom_col, $desc=null, $lang="ar", $colErrors=[], $step_show_error=false)
     {
+        if(!$desc) $desc = AfwStructureHelper::getStructureOf($obj, $nom_col);
         $id = $obj->id;
         $separator = $obj->getSeparatorFor($nom_col);
         $col_val = $obj->getVal($nom_col);
         //if($nom_col=="response_templates") die("case not mode_field_read_only nom_col = $nom_col, value = $col_val ");
         $all_form_readonly = false;
-
+        $data_col["desc"]  = $desc;
         if (($desc['TYPE'] == 'PK') && empty($col_val)) {
             $data_col["trad"]  = "";
         } else {

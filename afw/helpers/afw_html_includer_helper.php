@@ -81,6 +81,10 @@ class AfwHtmlIncluderHelper
         <script src='../lib/js/hzm.js'></script>
         ";
 
+        if ($options["stars-rating"]) {
+          $header .= "<script src='../lib/js/stars-rating.js'></script>";
+        }
+
         $crst = md5("crst" . date("YmdHis"));
         
 
@@ -247,17 +251,17 @@ class AfwHtmlIncluderHelper
           
           <link href=\"../lib/css/def_".$lang."_".$my_font.".css\" rel=\"stylesheet\" type=\"text/css\">
           <link href=\"../lib/css/$my_afw_theme/style_common.css?crst=$crst\" rel=\"stylesheet\" type=\"text/css\">
-          <link href=\"../lib/css/$my_afw_theme/style_$lang.css?crst=$crst\" rel=\"stylesheet\" type=\"text/css\">
-          <link href=\"../lib/css/$menu_template"."_menu.css?crst=$crst\" rel=\"stylesheet\" type=\"text/css\">
-          <link href=\"../lib/css/$menu_template"."_menu_$lang.css?crst=$crst\" rel=\"stylesheet\" type=\"text/css\">
+          <link href=\"../lib/css/$my_afw_theme/style_$lang.css?crst=$crst\" rel=\"stylesheet\" type=\"text/css\">";
+
+          if($options["menu"])
+          {
+            $header .= "<link href=\"../lib/css/$menu_template"."_menu.css?crst=$crst\" rel=\"stylesheet\" type=\"text/css\">
+            <link href=\"../lib/css/$menu_template"."_menu_$lang.css?crst=$crst\" rel=\"stylesheet\" type=\"text/css\">";
+          }
           
-          
+          $header .= "       
           <link href='../$main_module/css/module.css?crst=$crst' rel='stylesheet' type='text/css'>
           <link href='../client-$company/css/common-$company.css?crst=$crst' rel='stylesheet' type='text/css'>
-
-          
-
-          
           ";
           
           if($options["menu"])

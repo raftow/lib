@@ -14,7 +14,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
 {
     global $lang, $class_inputSelect_multi_big, $class_inputInt, $class_inputText, $class_inputSelected;
     $objme = AfwSession::getUserConnected();
-    require_once('afw_rights.php');
+    require_once(dirname(__FILE__).'/../modes/afw_rights.php');
     // global $TMP_ROOT;
     // $images = AfwThemeHelper::loadTheme();
     $maxlength_input = 1000;

@@ -46,6 +46,13 @@ class AfwSession extends AFWRoot {
                 return self::getSingleton()->getLogTime();
         }
 
+        public static function devMode()
+        {
+                return self::config("development_mode", AfwSession::config("MODE_DEVELOPMENT", false));
+        }
+
+        
+
         public static function setUser($user_id)
         {
                 if($user_id>0)

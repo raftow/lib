@@ -7,9 +7,67 @@ class AfwController extends AFWRoot
 
         public function __construct($request) {}
 
+        public function headerTemplate($methodName, $default_header_template)
+        {
+                return $default_header_template;
+        }
+        public function menuTemplate($methodName, $default_menu_template)
+        {
+                return $default_menu_template;
+        }
+        public function bodyTemplate($methodName, $default_body_template)
+        {
+                return $default_body_template;
+        }
+        public function footerTemplate($methodName, $default_footer_template)
+        {
+                return $default_footer_template;
+        }
+
+        public static function coolDie($message, $vars)
+        {
+                die(self::class." stopped to say : $message <br>".var_export($vars, true));
+        }
+
+        public function standardSubmit($request, $onObject)
+        {                
+                $data = $request;                
+                
+                $all_real_fields = AfwStructureHelper::getAllRealFields($onObject);
+                foreach ($all_real_fields as $field_name) 
+                {
+                    if($request[$field_name]) $onObject->set($field_name, $request[$field_name]);
+                }
+
+                // if controller submit standard has not saved your form
+                // please uncomment the debugg below and use it to know the reason
+                /*
+                if($onObject->getVal("survey_token")=="a53533becef32a3")
+                {
+                       self::coolDie("rafik debuggs survey_token controller", ["request"=>$request, "all_real_fields"=>$all_real_fields, "onObject"=>$onObject, ]);
+                }
+                */
+                
+
+                if (!$onObject->isOk(true)) {
+                        $data["all_error"] = implode(",\n", AfwDataQualityHelper::getDataErrors($onObject, ));
+                } else {
+                        $onObject->commit();                        
+                        $data["id"] = $onObject->id;
+                        $data["mainObject"] = $onObject;
+                }
+
+                return $data;
+        }
+
         public function defaultMethod($request)
         {
                 return "index";
+        }
+
+        public function viewType()
+        {
+                return "modern";
         }
 
         public function myViewSettings($methodName)
@@ -39,10 +97,11 @@ class AfwController extends AFWRoot
                 foreach ($data as $key => $value) $$key = $value;
                 $file_dir_name = dirname(__FILE__);
                 $view_name_tpl = $view_name . "_tpl";
-                $view_template_path = "$file_dir_name/../../$view_module/tpl/$view_name_tpl.php";
+                $view_template_path = "$file_dir_name/../../../$view_module/tpl/$view_name_tpl.php";
                 if (!file_exists($view_template_path)) {
                         throw new AfwRuntimeException("view template not found : $view_template_path");
                 } else {
+                        if($mt=="survey_request") die("view_template_path is : ".$view_template_path);
                         include_once($view_template_path);
                 }
         }
@@ -57,9 +116,10 @@ class AfwController extends AFWRoot
                 if ($warning) AfwSession::pushWarning($warning);
                 if ($info) AfwSession::pushInformation($info);
                 if ($success) AfwSession::pushSuccess($success);
-                if (!file_exists("$file_dir_name/../../$view_module/$view_page.php")) {
-                        $this->renderError("view page not found : $file_dir_name/../../$view_module/$view_page.php");
-                } else include_once("$file_dir_name/../../$view_module/$view_page.php");
+                $view_page_full_path = "$file_dir_name/../../../$view_module/$view_page.php";
+                if (!file_exists($view_page_full_path)) {
+                        $this->renderError("view page not found : $view_page_full_path");
+                } else include_once($view_page_full_path);
         }
 
         public function renderInternal($view_module, $view_name, $data)

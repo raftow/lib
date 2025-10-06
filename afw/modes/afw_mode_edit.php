@@ -8,8 +8,6 @@ foreach($themeArr as $theme => $themeValue)
 {
     $$theme = $themeValue;
 }
-require_once("afw_edit_motor.php");
-
 
 require_once ('afw_rights.php');
 

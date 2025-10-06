@@ -493,9 +493,9 @@ class AfwStructureHelper extends AFWRoot
      * @return array
      */
 
-    public static final function getAllRealFields(&$object, $structure = false)
+    public static final function getAllRealFields(&$object, $returnStructure = false)
     {
-        if (!$structure) {
+        if (!$returnStructure) {
             $cls = $object->getMyClass();
             if (self::$allRealFields[$cls]) return self::$allRealFields[$cls];
         }
@@ -505,11 +505,11 @@ class AfwStructureHelper extends AFWRoot
         $result_arr = [];
         foreach ($class_db_structure as $attribute => $desc) {
             if (AfwStructureHelper::attributeIsReel($object, $attribute, $desc)) {
-                if (!$structure) $result_arr[] = $attribute;
+                if (!$returnStructure) $result_arr[] = $attribute;
                 else $result_arr[$attribute] = $desc;
             }
         }
-        if (!$structure) {
+        if (!$returnStructure) {
             self::$allRealFields[$cls] = $result_arr;
         }
 
@@ -1091,7 +1091,9 @@ class AfwStructureHelper extends AFWRoot
         if (is_numeric($attribute)) {
             return false;
         }
-        if ((!$structure) or (AfwStringHelper::stringStartsWith($structure['CATEGORY'], "::"))) {
+        if ((!$structure) 
+            or (AfwStringHelper::stringStartsWith($structure['CATEGORY'], "::"))
+            or (AfwStringHelper::stringStartsWith($structure['OBSOLETE'], "::"))) {
             $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         }
         // if($attribute=="nomcomplet") die("structure of $attribute =".var_export($structure,true));

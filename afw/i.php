@@ -7,11 +7,11 @@ $devMode = AfwSession::config('MODE_DEVELOPMENT', false);
 if(!$controllerName) $controllerName = AfwSession::config("default_controller_name", "");
 if($controllerName)
 {
-        $controllerType = AfwSession::config("$controllerName-controller-type", "modern");
+        $ControllerClass = ucfirst($controllerName)."Controller";                        
         //$module = "unknown-module";
         try{
-                $ControllerClass = $controllerName."Controller";
                 $controllerObj = new $ControllerClass ($request);
+                $viewType = $controllerObj->viewType();
                 $old_request = $request;
                 
                 $defaultMethod = $controllerObj->defaultMethod($request);                
@@ -22,15 +22,7 @@ if($controllerName)
                 $prepareMethodName = "prepare".ucfirst($methodName);
                 $initiateMethodName = "initiate".ucfirst($methodName);
                 
-                if($controllerType=="standard")
-                {
-                        list($html_hedear, $page_header_file, $page_footer_file) = $controllerObj->myViewSettings($methodName);                        
-                }
-                /*
-                else
-                {
-                        list($module, $is_direct, $page, $page_path, $options) = $controllerObj->myNewViewSettings($methodName);                        
-                }*/
+                
 
                 if($controllerObj->alwaysNeedPrepare($request) or method_exists($controllerObj, $prepareMethodName)) $custom_scripts = $controllerObj->$prepareMethodName($request);
                 if(method_exists($controllerObj, $initiateMethodName)) $request = $controllerObj->$initiateMethodName($request);
@@ -88,16 +80,24 @@ if($controllerName)
                 } else throw new AfwRuntimeException("Custom script ".$custom_script["path"] . " has unknown type, review your controller prepare method : $prepareMethodName ");
         }
         $options["controllerObj"] = $controllerObj;
-        if($controllerType=="standard")
+        if($viewType=="standard")
         {
+                list($html_hedear, $page_header_file, $page_footer_file) = $controllerObj->myViewSettings($methodName);                        
                 //die("custom_scripts=".var_export($custom_scripts,true));
-                //die("rafik see : will include once ".dirname(__FILE__)."/../../$page_header_file with \$config =".var_export($config,true));
+                // die("rafik see : will include once ".dirname(__FILE__)."/../../$page_header_file with \$html_hedear =".var_export($html_hedear,true));
                 include_once (dirname(__FILE__)."/../../$page_header_file");
                 echo AfwControllerHelper::showControllerPage($controllerObj, $controllerName, $methodName, $request, true, $options);
                 include_once (dirname(__FILE__)."/../../$page_footer_file");
         }
+        elseif($viewType=="empty")
+        {
+                //
+        }                
         else
         {
+                // this code below is not clear for me @toreview
+                // list($module, $is_direct, $page, $page_path, $options) = $controllerObj->myNewViewSettings($methodName);                        
+                // if($methodName=="survey_request") die("AfwControllerHelper::showControllerPage($ControllerClass controllerObj, $controllerName, methodName=$methodName, request=".var_export($request,true).", false, options=".var_export($options,true).")");
                 echo AfwControllerHelper::showControllerPage($controllerObj, $controllerName, $methodName, $request, false, $options);
         }
         
