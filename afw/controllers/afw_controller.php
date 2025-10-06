@@ -24,6 +24,42 @@ class AfwController extends AFWRoot
                 return $default_footer_template;
         }
 
+        public static function coolDie($message, $vars)
+        {
+                die(self::class." stopped to say : $message <br>".var_export($vars, true));
+        }
+
+        public function standardSubmit($request, $onObject)
+        {                
+                $data = $request;                
+                
+                $all_real_fields = AfwStructureHelper::getAllRealFields($onObject);
+                foreach ($all_real_fields as $field_name) 
+                {
+                    if($request[$field_name]) $onObject->set($field_name, $request[$field_name]);
+                }
+
+                // if controller submit standard has not saved your form
+                // please uncomment the debugg below and use it to know the reason
+                /*
+                if($onObject->getVal("survey_token")=="a53533becef32a3")
+                {
+                       self::coolDie("rafik debuggs survey_token controller", ["request"=>$request, "all_real_fields"=>$all_real_fields, "onObject"=>$onObject, ]);
+                }
+                */
+                
+
+                if (!$onObject->isOk(true)) {
+                        $data["all_error"] = implode(",\n", AfwDataQualityHelper::getDataErrors($onObject, ));
+                } else {
+                        $onObject->commit();                        
+                        $data["id"] = $onObject->id;
+                        $data["mainObject"] = $onObject;
+                }
+
+                return $data;
+        }
+
         public function defaultMethod($request)
         {
                 return "index";

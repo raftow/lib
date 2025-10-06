@@ -4,12 +4,26 @@ function prepareRatingWithStars(numberOfPossibleAnswers) {
         //Define the animation on mouseover
         .on("mouseenter", function () {
             var thisnum = $(this).data('star');
+            var inputname = $(this).data('inputname');
+            
+            $('#rating-label-'+inputname).html(starlabel(inputname, thisnum));
+            $('#rating-label-'+inputname).removeClass('hover-star-1');
+            $('#rating-label-'+inputname).removeClass('hover-star-2');
+            $('#rating-label-'+inputname).removeClass('hover-star-3');
+            $('#rating-label-'+inputname).removeClass('hover-star-4');
+            $('#rating-label-'+inputname).removeClass('hover-star-5');
+            $('#rating-label-'+inputname).removeClass('hover-star-6');
+            $('#rating-label-'+inputname).removeClass('hover-star-7');
+            $('#rating-label-'+inputname).removeClass('hover-star-8');
+            $('#rating-label-'+inputname).removeClass('hover-star-9');
+            $('#rating-label-'+inputname).removeClass('hover-star-10');
+            $('#rating-label-'+inputname).addClass('hover-star-'+thisnum);
             //mar the current star
             $(this).addClass("star-drained").addClass("star-hover");
             //add/remove classes from sibling-elements
             $(this).siblings('.star-rating').each(function () {
                 //smaller than the chosen and not "no answer" => add class to emphasize them
-                if ($(this).data('star') < thisnum && thisnum != numberOfPossibleAnswers) {
+                if ($(this).data('star') < thisnum) { // && thisnum != numberOfPossibleAnswers
                     $(this).addClass("star-drained");
                 } else {
                     $(this).addClass("star-stub");
@@ -19,6 +33,21 @@ function prepareRatingWithStars(numberOfPossibleAnswers) {
         //define animation on mouseleave
         .on("mouseleave", function () {
             var thisnum = $(this).data('star');
+            var inputname = $(this).data('inputname');
+            var thechoice = $('#'+inputname).val();
+            var the_starlabel = '---';
+            if(thechoice>0) the_starlabel = starlabel(inputname, thechoice)
+            $('#rating-label-'+inputname).html(the_starlabel);
+            $('#rating-label-'+inputname).removeClass('hover-star-1');
+            $('#rating-label-'+inputname).removeClass('hover-star-2');
+            $('#rating-label-'+inputname).removeClass('hover-star-3');
+            $('#rating-label-'+inputname).removeClass('hover-star-4');
+            $('#rating-label-'+inputname).removeClass('hover-star-5');
+            $('#rating-label-'+inputname).removeClass('hover-star-6');
+            $('#rating-label-'+inputname).removeClass('hover-star-7');
+            $('#rating-label-'+inputname).removeClass('hover-star-8');
+            $('#rating-label-'+inputname).removeClass('hover-star-9');
+            $('#rating-label-'+inputname).removeClass('hover-star-10');
             //remove hover-classes from this element
             $(this).removeClass("star-drained star-hover star-stub");
             //remove the selector classes from the siblings
@@ -30,6 +59,20 @@ function prepareRatingWithStars(numberOfPossibleAnswers) {
         //define the click-event
         .on("click", function (event) {
             var thischoice = $(this).data('star');
+            var inputname = $(this).data('inputname');
+            $('#'+inputname).val(thischoice);
+            $('#rating-label-'+inputname).html(starlabel(inputname, thischoice));
+            $('#rating-label-'+inputname).removeClass('star-1');
+            $('#rating-label-'+inputname).removeClass('star-2');
+            $('#rating-label-'+inputname).removeClass('star-3');
+            $('#rating-label-'+inputname).removeClass('star-4');
+            $('#rating-label-'+inputname).removeClass('star-5');
+            $('#rating-label-'+inputname).removeClass('star-6');
+            $('#rating-label-'+inputname).removeClass('star-7');
+            $('#rating-label-'+inputname).removeClass('star-8');
+            $('#rating-label-'+inputname).removeClass('star-9');
+            $('#rating-label-'+inputname).removeClass('star-10');
+            $('#rating-label-'+inputname).addClass('star-'+thischoice);
             //toggle the em-action on the hidden input
             /*
             answersList.find("input[type=radio]").prop('checked', false);

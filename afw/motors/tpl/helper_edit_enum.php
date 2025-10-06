@@ -77,11 +77,11 @@
                     {
                         // star-rated star-rated-on
 ?>
-                        <div class="star-<?php echo $val_i ?> star-rating star " data-star="<?php echo $val_i ?>" title="<?php echo $title_i ?>"><i class="fa fa-star ri-star-fill"></i></div>
+                        <div class="star-<?php echo $val_i ?> star-rating star " data-inputname="<?php echo $col_name ?>" data-star="<?php echo $val_i ?>" title="<?php echo $title_i ?>"><i class="fa fa-star ri-star-fill"></i></div>
 <?php
                     }
 ?>
-                    <div class="rating-label">---</div>
+                    <div id="rating-label-<?php echo $col_name ?>" class="rating-label">---</div>
                     </div>
 <?php
                 }

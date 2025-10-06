@@ -72,6 +72,7 @@ form {
 
 .form-control {
     display: block;
+    box-shadow: none !important;
     width: 100%;
     height: 42px !important;
     /* padding: 3px 12px; */
@@ -6426,6 +6427,14 @@ p.help.p-helper {
     width: 36px;
     margin: 0 !important;
 }
+
+.rating-label {
+    float: left;
+    margin-left: 40%;
+    font-weight: bold;
+    font-size: 15px;
+}
+
 .star-cancel{color: #727272;}
 .star-cancel.star-drained{color: #932424}
 .star-cancel.star-hover{color: #a12424; text-shadow: 1px 0 #a12424;}
@@ -6442,12 +6451,12 @@ p.help.p-helper {
 .star-3.star-drained{color: hsl(54,60%,65%)}
 .star-3.star-drained.star-hover{text-shadow: 1px 2px hsl(54,60%,65%);}
 .star-2{color: #989898}
-.star-2.star-rated-on:not(.star-stub){color: hsl(48,80%,50%)}
-.star-2.star-drained{color: hsl(48,80%,50%)}
+.star-2.star-rated-on:not(.star-stub){color: hsl(42.06deg 90.02% 45.66%)}
+.star-2.star-drained{color: hsl(42.06deg 90.02% 45.66%)}
 .star-2.star-drained.star-hover{text-shadow: 1px 2px hsl(48,60%,65%);}
 .star-1{color: #a4a4a4}
-.star-1.star-rated-on:not(.star-stub){color: hsl(42,80%,50%)}
-.star-1.star-drained{color: hsl(42,80%,50%)}
+.star-1.star-rated-on:not(.star-stub){color: hsl(25.44deg 85.46% 45.51%)}
+.star-1.star-drained{color: hsl(25.44deg 85.46% 45.51%)}
 .star-1.star-drained.star-hover{text-shadow: 1px 2px hsl(42,60%,65%);}
 
 .star-6{color: #b0b0b0}
@@ -6470,3 +6479,17 @@ p.help.p-helper {
 .star-10.star-rated-on:not(.star-stub){color: hsl(12,80%,50%)}
 .star-10.star-drained{color: hsl(12,60%,65%)}
 .star-10.star-drained.star-hover{text-shadow: 1px 2px hsl(12,60%,65%);}
+
+
+.star-1.rating-label{color: red}
+.star-2.rating-label{color: red}
+.star-3.rating-label{color: orange}
+.star-4.rating-label{color: green}
+.star-5.rating-label{color: green}
+
+.hover-star-1.rating-label{color: red}
+.hover-star-2.rating-label{color: red}
+.hover-star-3.rating-label{color: orange}
+.hover-star-4.rating-label{color: green}
+.hover-star-5.rating-label{color: green}
+

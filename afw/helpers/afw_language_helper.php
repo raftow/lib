@@ -74,12 +74,13 @@ class AfwLanguageHelper
 
         $paths = array();
 
-        $paths[] = "$file_dir_name/../../lib";
-        $paths[] = "$file_dir_name/../../ums";
-        $paths[] = "$file_dir_name/../../hrm";
-        $paths[] = "$file_dir_name/../../crm";
         if ($module) $paths[] = "$file_dir_name/../../$module";
         if ($parent_module) $paths[] = "$file_dir_name/../../$parent_module";
+        if(($module!="lib") and ($parent_module!="lib")) $paths[] = "$file_dir_name/../../lib";
+        if(($module!="ums") and ($parent_module!="ums")) $paths[] = "$file_dir_name/../../ums";
+        if(($module!="hrm") and ($parent_module!="hrm")) $paths[] = "$file_dir_name/../../hrm";
+        if(($module!="crm") and ($parent_module!="crm")) $paths[] = "$file_dir_name/../../crm";
+        
 
         return $paths;
     }
@@ -91,11 +92,15 @@ class AfwLanguageHelper
 
 
         $paths = self::getTranslationPaths($module, $parent_module);
-        foreach ($paths as $path) include_once $path . "/messages_$lang.php";
-
-        if ($messages[$text]) return $messages[$text];
-        else return $text;
-        // else return $text."paths=".var_export($paths,true)." messages=".var_export($messages,true); 
+        foreach ($paths as $path) 
+        {
+            include $path . "/messages_$lang.php";
+            if ($messages[$text]) return $messages[$text];
+            elseif($text=="save responses") return $text." we take $path/messages_$lang.php but not found => ".var_export($messages,true); 
+        }    
+        
+        return $text;
+        
     }
 
 
