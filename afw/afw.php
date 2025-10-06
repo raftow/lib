@@ -5545,7 +5545,11 @@ class AFWObject extends AFWRoot
             return [false, 'isSystemField'];
         }
 
-        if (!$structure) $structure = AfwStructureHelper::getStructureOf($this, $attribute);
+        // get structure or force repare if needed 
+        if ((!$structure) or AfwStringHelper::stringStartsWith($structure["OBSOLETE"],"::")) 
+        {
+            $structure = AfwStructureHelper::getStructureOf($this, $attribute, true);
+        }
 
         if ($structure["OBSOLETE"]) {
             return [false, 'obsolete'];
