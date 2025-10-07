@@ -73,15 +73,20 @@
                     <div class="stars-list answers-list" aria-hidden="true">
 <?php
                     $c=0;
+                    $rating_label_text = "---";
+                    $rating_label_class = "";
+                    if($val>0) $rating_label_class= "star-$val";
                     foreach($liste_rep as $val_i => $title_i)
                     {
-                        // star-rated star-rated-on
+                        if($val_i<=$val) $rated_on_off = "star-rated star-rated-on";
+                        else $rated_on_off = "";
+                        if($val_i==$val) $rating_label_text = $title_i;
 ?>
-                        <div class="star-<?php echo $val_i ?> star-rating star " data-inputname="<?php echo $col_name ?>" data-star="<?php echo $val_i ?>" title="<?php echo $title_i ?>"><i class="fa fa-star ri-star-fill"></i></div>
+                        <div class="star-<?php echo $val_i ?> star-rating star<?php echo $rated_on_off ?>" data-inputname="<?php echo $col_name ?>" data-star="<?php echo $val_i ?>" title="<?php echo $title_i ?>"><i class="fa fa-star ri-star-fill"></i></div>
 <?php
                     }
 ?>
-                    <div id="rating-label-<?php echo $col_name ?>" class="rating-label">---</div>
+                    <div id="rating-label-<?php echo $col_name ?>" class="rating-label <?php echo $rating_label_class ?>"><?php echo $rating_label_text ?></div>
                     </div>
 <?php
                 }
