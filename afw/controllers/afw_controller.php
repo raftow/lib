@@ -42,17 +42,26 @@ class AfwController extends AFWRoot
                 // if controller submit standard has not saved your form
                 // please uncomment the debugg below and use it to know the reason
                 /*
-                if($onObject->getVal("survey_token")=="a53533becef32a3")
+                if($onObject->getVal("survey_token")=="72696ce122b0c29")
                 {
                        self::coolDie("rafik debuggs survey_token controller", ["request"=>$request, "all_real_fields"=>$all_real_fields, "onObject"=>$onObject, ]);
-                }
-                */
+                }*/
+                
                 
 
                 if (!$onObject->isOk(true)) {
                         $data["all_error"] = implode(",\n", AfwDataQualityHelper::getDataErrors($onObject, ));
+                        die($data["all_error"]);
                 } else {
+                        /*
+                        if($onObject->getVal("survey_token")=="72696ce122b0c29")
+                        {
+                                $sql = $onObject->commit(false,true);                        
+                                die($sql);
+                        }
+                        else */
                         $onObject->commit();                        
+                        
                         $data["id"] = $onObject->id;
                         $data["mainObject"] = $onObject;
                 }

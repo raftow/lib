@@ -1,8 +1,9 @@
 <?php
 class AfwMainPage
 {
-    public static function getDefaultOptions($Main_Page, $Main_Module="", $Main_Table="all")
+    public static function getDefaultOptions($Main_Page, $Main_Module="lib", $Main_Table="all")
     {
+        if(!$Main_Module) $Main_Module="lib"; 
         $options = [];
 
         if(strpos($Main_Page,"_qedit.php")!==FALSE)
@@ -30,7 +31,7 @@ class AfwMainPage
     }
     public static function echoMainPage($current_module, $Main_Page, $module_path, $options = [])
     {
-        if(count($options)==0) $options = AfwMainPage::getDefaultOptions($Main_Page);
+        if(count($options)==0) $options = AfwMainPage::getDefaultOptions($Main_Page,$current_module);
         $curr_path = dirname(__FILE__);
         include("$curr_path/afw_main_start.php");
         // die("echoMainPage($current_module, $Main_Page, $module_path) after afw_main_start lang=$lang");

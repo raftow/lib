@@ -215,8 +215,14 @@ class AfwChartHelper
         return $return;
     }
 
+    // public static function pieChart($data, $divName, $labels, $width=600, $height=500)
 
-    
+    public static function modeChartInIFrame($url, $width=600, $height=500)
+    {
+        $html = "<iframe src=\"$url\" style=\"float:right;padding:18px;border:none;width:$width"."px; height:$height"."px;\"></iframe>";
+
+        return $html;
+    }
     
     
 

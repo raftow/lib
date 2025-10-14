@@ -56,9 +56,15 @@ if (! $lang) {
 }
 
 $stats_where           = $stats_config['STATS_WHERE'];
+$url_settings          = $stats_config['URL_SETTINGS'];
+
 $footer_titles         = $stats_config['FOOTER_TITLES'];
 $repeat_titles_nb_rows = $stats_config['REPEAT_TITLES_NB_ROWS'];
+if(!$repeat_titles_nb_rows) $repeat_titles_nb_rows = 20;
 $show_pie              = $stats_config['SHOW_PIE'];
+$pie_mode              = $stats_config['PIE_MODE'];
+if(!$pie_mode) $pie_mode = "TOTAL";
+$filter                = $stats_config['FILTER'];
 $global_footer_sum     = $stats_config['FOOTER_SUM'];
 $stats_where           = $myObj->decodeText($stats_where, $prefix = '', $add_cotes = true, $sepBefore = '[', $sepAfter = ']');
 $myObj->where($stats_where);
@@ -73,6 +79,7 @@ if (! $group_sep) {
 }
 
 $config_sql_group_by    = $stats_config['SQL_GROUP_BY'];
+$stats_data_from    = $stats_config['STATS_DATA_FROM'];
 $config_group_cols      = $stats_config['GROUP_COLS'];
 $stats_data_arr         = [];
 $stats_row_code_arr     = [];
@@ -103,7 +110,27 @@ foreach ($config_group_cols as $group_col_index => $group_col_item) {
 
 $group_cols_list_sql = implode(',', $group_cols_arr);
 
-if ($config_sql_group_by) {
+
+$stats_title = $myObj->translate('stats.' . $stc, $lang);
+$stats_title = $myObj->decodeText($stats_title, $prefix = '', $add_cotes = false, $sepBefore = '[', $sepAfter = ']');
+
+if($stats_data_from)
+{
+    $params_list = $stats_config["PARAMS"];
+    if(!$params_list) $params_list = [];
+    $params_arr = [];
+    foreach($params_list as $param_name)
+    {
+        if(isset($_REQUEST[$param_name])) $params_arr[$param_name] = $_REQUEST[$param_name];
+    }
+
+    $dataFromClass = $stats_data_from['class'];
+    $dataFromMethod = $stats_data_from['method'];
+
+    list($stats_data_arr, $stat_trad) = $dataFromClass::$dataFromMethod($params_arr);
+
+}
+elseif ($config_sql_group_by) {
     $arrAggregFunctions = [];
     foreach ($config_stats_display_cols as $display_col) {
         $aggCol                      = $display_col['COLUMN'];
@@ -230,9 +257,7 @@ if ($config_sql_group_by) {
     }
 } else {
 
-    $stats_title = $myObj->translate('stats.' . $stc, $lang);
-
-    $stats_title = $myObj->decodeText($stats_title, $prefix = '', $add_cotes = false, $sepBefore = '[', $sepAfter = ']');
+    
 
     $myObj_list = $myObj->loadMany('', $group_cols_list_sql);
 
@@ -385,6 +410,7 @@ if ($config_sql_group_by) {
 /*************************************************************************/
 // show statistics doesn't matter the source of data is php, sql or whatever
 
+// preapre stat_trad and calc value for formula columns
 foreach ($stats_data_arr as $stats_curr_row => $stats_data_row) {
     foreach ($config_stats_formula_cols as $config_stats_formula_col_index => $config_stats_formula_col_item) {
         $show_name = $config_stats_formula_col_item["SHOW-NAME"];
@@ -392,18 +418,7 @@ foreach ($stats_data_arr as $stats_curr_row => $stats_data_row) {
             $method_formula                              = $config_stats_formula_col_item["METHOD"];
             $stats_data_arr[$stats_curr_row][$show_name] = $cl::$method_formula($stats_data_row, $formatted = true);
             if (! $stat_trad[$show_name]) {
-                $nom_col_short  = "$show_name.stat";
-                $trad_col_short = $myObj->translate($nom_col_short, $lang);
-                if ($trad_col_short == $nom_col_short) {
-                    $nom_col_short  = "$show_name.short";
-                    $trad_col_short = $myObj->translate($nom_col_short, $lang);
-                }
-                if ($trad_col_short == $nom_col_short) {
-                    $stat_trad[$show_name] = $myObj->translate($show_name, $lang);
-                } else {
-                    $stat_trad[$show_name] = $trad_col_short;
-                }
-
+                $stat_trad[$show_name] = AfwLanguageHelper::translateStatsColumn($myObj, $show_name, $lang);
             }
         }
     }
@@ -413,7 +428,10 @@ foreach ($stats_data_arr as $stats_curr_row => $stats_data_row) {
 
 // display stats
 
+$settings_label = AfwLanguageHelper::translateKeyword("settings", $lang);
+
 $out_scr .= "<h3 class='centertitle bluetitle'>$stats_title</h3>";
+$out_scr .= "<h3 class='righttitle specialtitle'><a href='$url_settings&stc=$stc&stccl=$cl&stccurrmod=$currmod'>$settings_label</a></h3>";
 
 $out_scr .= "<br>
 <table class='display dataTable stats_table' cellspacing='3' cellpadding='4'>";
@@ -509,12 +527,12 @@ foreach ($stats_data_arr as $stats_curr_row => $stats_data_item) {
 
         if ($class_xqe_col) {
             $class_xqe      = "xqe_${odd_even}_${class_xqe_col}";
-            $class_xqe_prop = "class='$class_xqe $bloc_col_end_class stats_$col'";
+            $class_xqe_prop = "class='stats-td $class_xqe $bloc_col_end_class stats_$col'";
         } else {
-            $class_xqe_prop = "class='$bloc_col_end_class stats_$col";
+            $class_xqe_prop = "class='stats-td $bloc_col_end_class stats_$col'";
         }
 
-        $out_scr .= "      <td class = 'stats-td' $class_xqe_prop align = '$aligntd'>$val_stat_show</td>";
+        $out_scr .= "      <td $class_xqe_prop align = '$aligntd'>$val_stat_show</td>";
 
     }
     $out_scr .= "   </tr>";
@@ -554,9 +572,7 @@ if ($global_footer_sum) {
         }
 
         if ($class_xqe_col) {
-            $class_xqe = "xqe_sum_footer_$ {
-    class_xqe_col}
-    ";
+            $class_xqe      = "xqe_hf_${class_xqe_col} xqe_sum_footer_$class_xqe_col";
             $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class stats_$col'";
         } else {
             $class_xqe_prop = "class = '$bloc_col_end_class stats_$col'";
@@ -591,12 +607,10 @@ if ($footer_titles) {
         }
 
         if ($class_xqe_col) {
-            $class_xqe = "xqe_hf_$ {
-        class_xqe_col}
-        ";
-            $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class'";
+            $class_xqe      = "xqe_hf_${class_xqe_col}";
+            $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class stats_$col'";
         } else {
-            $class_xqe_prop = "$bloc_col_end_class";
+            $class_xqe_prop = "class = '$bloc_col_end_class stats_$col'";
         }
 
         $out_scr .= "      <th $class_xqe_prop align = '$aligntd'>$info</th>";
@@ -618,18 +632,46 @@ $stats_bottom_help = $myObj->decodeText($stats_bottom_help, $prefix = "", $add_c
 if ($stats_bottom_help != $stats_bottom_help_code) {
     $out_scr .= "<div class = 'stats_bottom_help'>$stats_bottom_help</div>";
 }
+    
+$data_pie = [];
 
-if ($show_pie) {
-    if ($show_pie == "FOOTER") {
-        foreach ($stat_trad as $col => $info) {
-            if (! $footer_sum_title_arr[$col]) {
+if ($show_pie == "FOOTER") {
+    if ($pie_mode=="TOTAL") 
+    {
+        foreach ($stat_trad as $col => $info) 
+        {
+            if (!$footer_sum_title_arr[$col]) {
                 $data_pie[$info] = $footer_total_arr[$col];
             }
 
         }
+        $file_dir_name = dirname(__FILE__);
+        $statsClass    = $cl;
+        require_once "$file_dir_name/../graphic/afw_gpie_header.php";
+        require_once "$file_dir_name/../graphic/afw_gpie_body.php";
     }
-    $file_dir_name = dirname(__FILE__);
-    $statsClass    = $cl;
-    require_once "$file_dir_name/../afw_gpie_header.php";
-    require_once "$file_dir_name/../afw_gpie_body.php";
+    elseif ($pie_mode=="FILTER") {
+
+        list($colFilter, $colFilterValue) = explode("=", $filter);
+        foreach ($stat_trad as $col => $info) 
+        {
+            foreach ($stats_data_arr as $stats_curr_row => $stats_data_item) {
+                if($stats_data_item[$colFilter]==$colFilterValue)
+                {
+                    if(is_numeric($stats_data_item[$col])) $data_pie[$info] = $stats_data_item[$col];
+                }
+            }
+        }
+        $file_dir_name = dirname(__FILE__);
+        $statsClass    = $cl;
+        // $out_scr = "<div class='var_export'> data_pie = ".var_export($data_pie, true)."</div>";
+        // $out_scr .= AfwChartHelper::pieChart($data_pie, "dipe", []);
+        $out_scr .= AfwChartHelper::modeChartInIFrame("chart.php?cl=SurveyToken&currmod=crm&survey_id=1&question_num=2");
+        
+        /*
+        ob_start();
+        require_once "$file_dir_name/../graphic/afw_gpie_header.php";
+        require_once "$file_dir_name/../graphic/afw_gpie_body.php";
+        $out_scr .= ob_get_clean();*/
+    }
 }

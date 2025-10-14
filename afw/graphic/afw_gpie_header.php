@@ -11,8 +11,9 @@
       google.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
-          ['<?=$data_pie_col_key?>', '<?=$data_pie_col_val?>'],
+          ['xx<?=$data_pie_col_key?>', 'yy<?=$data_pie_col_val?>'],
 <?
+     // echo "data_pie=".var_export($data_pie,true); 
      foreach($data_pie as $data_pie_key => $data_pie_val)
      {
 ?>
@@ -46,8 +47,13 @@
       google.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
+<?php
+     if($data_bar_col_key)
+     {
+?>
           ['<?=$data_bar_col_key?>', '<?=$data_bar_col_val?>', { role: "style" }, { role: 'annotation' }],
-<?
+<?php
+     }
      foreach($data_bar as $data_bar_key => $data_bar_val)
      {
 ?>

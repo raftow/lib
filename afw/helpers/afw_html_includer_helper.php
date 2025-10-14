@@ -104,6 +104,10 @@ class AfwHtmlIncluderHelper
           $header .= "<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js'></script>";
         }
 
+        if ($options["gstatic-chart-js"]) {
+          $header .= "<script src='https://www.gstatic.com/charts/loader.js'></script>";
+        }
+
 
         if($options["otp"]) $header .= "
           <link rel='stylesheet' href='../lib/css/otp.css'>";

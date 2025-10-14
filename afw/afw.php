@@ -3080,10 +3080,10 @@ class AFWObject extends AFWRoot
         return $this->getVal($this->fld_CREATION_USER_ID());
     }
 
-    public function commit($reload_if_failed=false)
+    public function commit($reload_if_failed=false, $onlyReturnSQL = false)
     {
         if ($this->getId() > 0) {
-            $return = $this->update();
+            $return = $this->update(true,null,$onlyReturnSQL);
             if($reload_if_failed and (!$return)) $this->reloadMe();
             return $return;
         } else {
@@ -3120,9 +3120,9 @@ class AFWObject extends AFWRoot
      * update
      * Update row
      */
-    public function update($only_me = true, $nocote_fields=null)
+    public function update($only_me = true, $nocote_fields=null, $onlyReturnSQL = false)
     {
-        return AfwSqlHelper::updateObject($this, $only_me, $nocote_fields);
+        return AfwSqlHelper::updateObject($this, $only_me, $nocote_fields, $onlyReturnSQL);
     }
 
     public function sqlCommit()
@@ -3703,7 +3703,7 @@ class AFWObject extends AFWRoot
     ) 
     {
         $token_arr = AfwPrevilegeHelper::prepareAfwTokens($this, $text_to_decode, $lang, $trad_erase, $token_arr);
-        // if(get_class($this)=="Application") die("token_arr=".var_export($token_arr,true));
+        // if(get_class($this)=="CrmCustomer") die("token_arr=".var_export($token_arr,true));
         foreach ($token_arr as $token => $val_token) {
             //if($token=="[travelStationList.no_icons]") die("for the token $token value is $val_token , token_arr = ".var_export($token_arr,true)." text_to_decode=$text_to_decode");
             $text_to_decode = str_replace($token, $val_token, $text_to_decode);

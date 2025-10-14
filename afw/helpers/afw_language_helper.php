@@ -273,6 +273,23 @@ class AfwLanguageHelper
         
     }
 
+    // 
+
+    public static function translateStatsColumn($attribute, $myClass, $myObj=null, $lang = 'ar')
+    {
+        if(!$myObj) $myObj = new $myClass();
+        $nom_col_short  = "$attribute.stat";
+        $trad_col_short = $myObj->translate($nom_col_short, $lang);
+        if ($trad_col_short == $nom_col_short) {
+            $nom_col_short  = "$attribute.short";
+            $trad_col_short = $myObj->translate($nom_col_short, $lang);
+            if ($trad_col_short == $nom_col_short) {
+                $trad_col_short = $myObj->translate($attribute, $lang);
+            }
+        }
+        return $trad_col_short;
+    }
+
 
     public static function tarjemMessage($message, $module, $lang = 'ar')
     {
