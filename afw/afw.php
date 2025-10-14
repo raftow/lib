@@ -690,6 +690,35 @@ class AFWObject extends AFWRoot
     }
 
     /**
+     * isFrameworkDesignedField
+     * check if the attribute parameter is a technical field or not
+     * technical field is updated automically with AFW Framework no need (and no effect) to manage its update by developer
+     * @param string $attribute
+     */
+
+    public function isFrameworkDesignedField($attribute)
+    {
+        return (($this->isValidationField($attribute)) or
+                ($this->isTechField($attribute)) or
+                ($this->isAdminField($attribute)) or
+                ($this->isSystemField($attribute))
+            ); 
+    }
+
+    /**
+     * isValidationField
+     * check if the attribute parameter is a technical field or not
+     * technical field is updated automically with AFW Framework no need (and no effect) to manage its update by developer
+     * @param string $attribute
+     */
+
+    public function isValidationField($attribute)
+    {
+        return (($attribute==$this->fld_VALIDATION_USER_ID()) or
+             ($attribute==$this->fld_VALIDATION_DATE())); 
+    }
+
+    /**
      * isTechField
      * check if the attribute parameter is a technical field or not
      * technical field is updated automically with AFW Framework no need (and no effect) to manage its update by developer

@@ -118,15 +118,16 @@ try {
 
                 $af->set("afile_name", $afile_name);
                 $af->set("afile_type", $afile_type);
-                $af->set("afile_ext", strtolower($extension));
+                $af->set("afile_ext", strtolower($extension)); 
+                $new_name =  $af->getNewName();
+                // $af->set("stored_file_name", $af->getNewName());               
                 $af->set("picture", $afile_pic);
                 $af->set("doc_type_id", $doc_type_id);
                 
 
                 $error = "";
 
-                if ($af->commit()) {
-                        $new_name =  $af->getNewName();
+                if ($af->commit()) {                        
                         $mv_from_file = $_FILES['upl']['tmp_name'];
                         $uploads_root_path = AfwSession::config("uploads_root_path", "");
                         if(!$uploads_root_path) throw new AfwRuntimeException("uploads_root_path is not defined correctly in system config");
