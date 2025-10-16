@@ -120,7 +120,7 @@ try {
                 $af->set("afile_type", $afile_type);
                 $af->set("afile_ext", strtolower($extension)); 
                 $new_name =  $af->getNewName();
-                // $af->set("stored_file_name", $af->getNewName());               
+                $af->set("stored_file_name", $af->getNewName());               
                 $af->set("picture", $afile_pic);
                 $af->set("doc_type_id", $doc_type_id);
                 
