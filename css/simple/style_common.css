@@ -6493,3 +6493,8 @@ p.help.p-helper {
 .hover-star-4.rating-label{color: green}
 .hover-star-5.rating-label{color: green}
 
+
+
+table.stats_table th {
+    text-align: center !important;
+}

@@ -825,7 +825,7 @@ class AfwSqlHelper extends AFWRoot
      * @param AFWObject $object
      * @param int $pk : Optional, specify the primary key
      */
-    public static function insertObject($object, $pk = '', $check_if_exists_by_uk = true)
+    public static function insertObject($object, $pk = '', $check_if_exists_by_uk = true, $disableAfterCommitDBEvent=false)
     {
         global $lang, $print_debugg, $print_sql, $MODE_BATCH_LOURD;
 
@@ -1089,7 +1089,9 @@ class AfwSqlHelper extends AFWRoot
 
                 $object->debugg_tech_notes .= " value setted for PK($my_pk) = $my_setted_id ";
                 $object->majTriggered();
-                $object->afterInsert($my_setted_id, $fields_updated);
+                
+                $object->afterInsert($my_setted_id, $fields_updated, $disableAfterCommitDBEvent);
+                                
                 $object->majTriggerReset();
                 if ($print_debugg and $print_sql) {
                     echo "<br>\n ############################################################################# <br>\n";
@@ -1127,7 +1129,7 @@ class AfwSqlHelper extends AFWRoot
      * update
      * commit attributes update to DB
      */
-    public static function updateObject(&$object, $only_me = true, $nocote_fields=null, $onlyReturnSQL=false)
+    public static function updateObject(&$object, $only_me = true, $nocote_fields=null, $onlyReturnSQL=false, $disableAfterCommitDBEvent=false)
     {
         if($object->IS_COMMITING) throw new AfwRuntimeException("To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods");
         $object->IS_COMMITING = true;
@@ -1264,7 +1266,7 @@ class AfwSqlHelper extends AFWRoot
                         $object->IS_COMMITING = false;
                         $object->majTriggered();
                         $object->resetChangedFields();
-                        $object->afterUpdate($id_updated, $fields_updated);
+                        $object->afterUpdate($id_updated, $fields_updated, $disableAfterCommitDBEvent);
                         $object->majTriggerReset();
                     }
                     if ($only_me and $return > 1) {

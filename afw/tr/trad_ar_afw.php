@@ -189,6 +189,8 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["OBJECT-WITHOUT-NAME"]         	                = "[كيان بدون اسم]";
         
         $trad["OPERATOR"]["HIDDEN-MENU"]         	                = "قائمة مخفية";
+        $trad["OPERATOR"]["SETTINGS"]         	                = "الإعدادات";
+        
 
         return $trad;
     }

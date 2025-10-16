@@ -225,7 +225,7 @@ class Bdata extends AFWObject{
                 return true;
 	}
         
-        public function afterInsert($id, $fields_updated) {
+        public function afterInsert($id, $fields_updated, $disableAfterCommitDBEvent=false) {
 	        //echo "<br>\n<br>\n bdata.afterInsert before load : ".var_export($this,true);
                 $this->load($id);
                 //die("<br>\n<br>\n bdata.afterInsert after  load($id) : ".var_export($this,true));

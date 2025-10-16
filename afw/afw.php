@@ -3076,9 +3076,9 @@ class AFWObject extends AFWRoot
      * Insert row
      * @param int $pk : Optional, specify the primary key
      */
-    public function insert($pk = '', $check_if_exists_by_uk = true)
+    public function insert($pk = '', $check_if_exists_by_uk = true, $disableAfterCommitDBEvent=false)
     {
-        return AfwSqlHelper::insertObject($this, $pk, $check_if_exists_by_uk);
+        return AfwSqlHelper::insertObject($this, $pk, $check_if_exists_by_uk, $disableAfterCommitDBEvent);
     }
     public function getVersion()
     {
@@ -3109,14 +3109,14 @@ class AFWObject extends AFWRoot
         return $this->getVal($this->fld_CREATION_USER_ID());
     }
 
-    public function commit($reload_if_failed=false, $onlyReturnSQL = false)
+    public function commit($reload_if_failed=false, $onlyReturnSQL = false, $disableAfterCommitDBEvent=false)
     {
         if ($this->getId() > 0) {
-            $return = $this->update(true,null,$onlyReturnSQL);
+            $return = $this->update(true,null,$onlyReturnSQL, $disableAfterCommitDBEvent);
             if($reload_if_failed and (!$return)) $this->reloadMe();
             return $return;
         } else {
-            return $this->insert();
+            return $this->insert('',true, $disableAfterCommitDBEvent);
         }
     }
 
@@ -3149,9 +3149,9 @@ class AFWObject extends AFWRoot
      * update
      * Update row
      */
-    public function update($only_me = true, $nocote_fields=null, $onlyReturnSQL = false)
+    public function update($only_me = true, $nocote_fields=null, $onlyReturnSQL = false, $disableAfterCommitDBEvent=false)
     {
-        return AfwSqlHelper::updateObject($this, $only_me, $nocote_fields, $onlyReturnSQL);
+        return AfwSqlHelper::updateObject($this, $only_me, $nocote_fields, $onlyReturnSQL, $disableAfterCommitDBEvent);
     }
 
     public function sqlCommit()
@@ -4139,9 +4139,12 @@ class AFWObject extends AFWRoot
      * @param string $id
      * @param array $fields_updated
      */
-    public function afterInsert($id, $fields_updated)
+    public function afterInsert($id, $fields_updated, $disableAfterCommitDBEvent=false)
     {
-        $this->afterMaj($id, $fields_updated);
+        if(!$disableAfterCommitDBEvent)
+        {
+            $this->afterMaj($id, $fields_updated);
+        }
     }
 
     /**
@@ -4161,9 +4164,12 @@ class AFWObject extends AFWRoot
      * @param string $id
      * @param array $fields_updated
      */
-    public function afterUpdate($id, $fields_updated)
+    public function afterUpdate($id, $fields_updated, $disableAfterCommitDBEvent=false)
     {
-        $this->afterMaj($id, $fields_updated);
+        if(!$disableAfterCommitDBEvent)
+        {
+            $this->afterMaj($id, $fields_updated);
+        }
     }
 
     public function getTypeOf($attribute)

@@ -57,13 +57,16 @@ if (! $lang) {
 
 $stats_where           = $stats_config['STATS_WHERE'];
 $url_settings          = $stats_config['URL_SETTINGS'];
-
+$chart_url          = $stats_config['CHART_URL'];
 $footer_titles         = $stats_config['FOOTER_TITLES'];
 $repeat_titles_nb_rows = $stats_config['REPEAT_TITLES_NB_ROWS'];
 if(!$repeat_titles_nb_rows) $repeat_titles_nb_rows = 20;
 $show_pie              = $stats_config['SHOW_PIE'];
 $pie_mode              = $stats_config['PIE_MODE'];
 if(!$pie_mode) $pie_mode = "TOTAL";
+$chart_mode              = $stats_config['CHART_MODE'];
+if(!$chart_mode) $chart_mode = "IFRAME";
+
 $filter                = $stats_config['FILTER'];
 $global_footer_sum     = $stats_config['FOOTER_SUM'];
 $stats_where           = $myObj->decodeText($stats_where, $prefix = '', $add_cotes = true, $sepBefore = '[', $sepAfter = ']');
@@ -428,10 +431,12 @@ foreach ($stats_data_arr as $stats_curr_row => $stats_data_row) {
 
 // display stats
 
-$settings_label = AfwLanguageHelper::translateKeyword("settings", $lang);
+$settings_label = AfwLanguageHelper::translateKeyword("SETTINGS", $lang);
+$url_settings = "$url_settings&stc=$stc&stccl=$cl&stccurrmod=$currmod";
+$stats_title = str_replace('[seturl]', $url_settings, $stats_title);
 
 $out_scr .= "<h3 class='centertitle bluetitle'>$stats_title</h3>";
-$out_scr .= "<h3 class='righttitle specialtitle'><a href='$url_settings&stc=$stc&stccl=$cl&stccurrmod=$currmod'>$settings_label</a></h3>";
+$out_scr .= "<h3 class='righttitle specialtitle'><a target='_settings' href='$url_settings'>$settings_label</a></h3>";
 
 $out_scr .= "<br>
 <table class='display dataTable stats_table' cellspacing='3' cellpadding='4'>";
@@ -666,7 +671,15 @@ if ($show_pie == "FOOTER") {
         $statsClass    = $cl;
         // $out_scr = "<div class='var_export'> data_pie = ".var_export($data_pie, true)."</div>";
         // $out_scr .= AfwChartHelper::pieChart($data_pie, "dipe", []);
-        $out_scr .= AfwChartHelper::modeChartInIFrame("chart.php?cl=SurveyToken&currmod=crm&survey_id=1&question_num=2");
+        if($chart_mode=="IFRAME")
+        {
+                $out_scr .= AfwChartHelper::modeChartInIFrame($chart_url);
+        }
+        else
+        {
+                $out_scr .= "chart mode $chart_mode is not implemented";
+        }
+        
         
         /*
         ob_start();
