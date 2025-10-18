@@ -5998,12 +5998,33 @@ class AFWObject extends AFWRoot
 
     public final function canInsert()
     {
-        foreach ($this->UNIQUE_KEY as $attribute) {
+        if(count($this->UNIQUE_KEY)>0)
+        {
+            $needed_to_insert_fields = $this->UNIQUE_KEY;
+        }
+        else
+        {
+            $needed_to_insert_fields = [];
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+            $this->initDISPLAY_FIELD("ar");
+            if($this->DISPLAY_FIELD) $needed_to_insert_fields[] = $this->DISPLAY_FIELD;
+            $this->initDISPLAY_FIELD("en");
+            if($this->DISPLAY_FIELD) $needed_to_insert_fields[] = $this->DISPLAY_FIELD;
+            $this->initDISPLAY_FIELD($lang);
+
+            if(count($needed_to_insert_fields)==0)
+            {
+                $needed_to_insert_fields = AfwStructureHelper::allRealAttributes(get_class($this), 1);
+            }
+        }
+
+        foreach ($needed_to_insert_fields as $attribute) {
             if($this->attributeIsRequired($attribute))
             {
                 if(!$this->getVal($attribute)) return false;
             }
         }
+        
         return true;
     }
 

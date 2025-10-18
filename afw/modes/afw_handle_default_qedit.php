@@ -38,9 +38,12 @@ for($i=0;$i<$nb_objs;$i++)
 {
         $pki = "id_$i";
         $id    = $_POST[$pki];
+        /**
+         * @var AFWObject $obj
+         */
         $obj = new $class(); 
                
-        $is_load = false;
+        $record_is_loaded = false;
         $unique_pk_id = (is_numeric($id) && ($id>0));
         // if($id == 6082) die("obj $i of $class class, id ='$id' will be loaded unique_pk_id = $unique_pk_id");
         if($id and ($unique_pk_id or $obj->PK_MULTIPLE))
@@ -48,7 +51,7 @@ for($i=0;$i<$nb_objs;$i++)
         	//AFWDebugg::log("try to load $class row $id");
                 // if($id == 6082) die("obj $i of $class class, id ='$id' will be loaded just now");
                 
-                if($obj->load($id) and ($obj->id == $id)) $is_load = true;
+                if($obj->load($id) and ($obj->id == $id)) $record_is_loaded = true;
                 else 
                 {
                         $return_message = $myObj->tm("Return back", $lang);    
@@ -67,7 +70,7 @@ for($i=0;$i<$nb_objs;$i++)
 
         
         
-        //if(!$is_load)  AFWDebugg::log("failed to load $class row $id");
+        //if(!$record_is_loaded)  AFWDebugg::log("failed to load $class row $id");
         // if($i==1) die(var_export($obj,true));
         foreach($class_db_structure as $nom_col => $desc)
         {
@@ -177,7 +180,7 @@ for($i=0;$i<$nb_objs;$i++)
                         
                                 
                                 
-        		if((!isset($fixm_array[$nom_col])) or $is_load) // les records loaded (not new) doivent etre mis a jour si un des cols du fixe mode change
+        		if((!isset($fixm_array[$nom_col])) or $record_is_loaded) // les records loaded (not new) doivent etre mis a jour si un des cols du fixe mode change
                         {
                                 // if($nom_col=="owner_id" and $i==1) echo "owner_id $i => before set $obj val of $nom_col = ".$obj->getVal($nom_col);
                                 if(($nom_col!="id") and ($nom_col!=$obj->getPKField())) $obj->set($nom_col, $val);
@@ -217,7 +220,7 @@ for($i=0;$i<$nb_objs;$i++)
          
         // if($i==1) die("i=$i => fixm = $fixm, fixm_array = ".var_export($fixm_array,true));
         
-        if(!$is_load)
+        if(!$record_is_loaded)
         {
                 if($obj->isChanged())
                 {
@@ -225,7 +228,7 @@ for($i=0;$i<$nb_objs;$i++)
                            die(var_export($obj,true));
                         }*/
 
-                        // if((!$is_load)) die("i=$i pki=$pki id=$id => is_load = $is_load, obj = ".var_export($obj,true));
+                        // if((!$record_is_loaded)) die("i=$i pki=$pki id=$id => record_is_loaded = $record_is_loaded, obj = ".var_export($obj,true));
                         // if(($obj->getMyClass()=="Afield") and (!$obj->getVal("field_name"))) throw new AfwRun timeException("afield insert with field_name empty : ".var_export($obj,true));
                         
                         

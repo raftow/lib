@@ -1046,6 +1046,19 @@ class AfwStructureHelper extends AFWRoot
     }
 
 
+    public static function allRealAttributes($className, $step = "all")
+    {
+        $returnArr = [];
+        $this_db_structure = $className::getDbStructure($return_type = 'structure', 'all');
+        foreach ($this_db_structure as $attrib => $desc) {
+            if ((!$desc['CATEGORY']) and (($step == "all") or ($desc['STEP']== "all") or ($desc['STEP']==$step))) {
+                $returnArr[]=$attrib;
+            }
+        }
+
+        return $returnArr;
+    }
+
     public static function getParentOf($className, $this_table, $attribute)
     {
         $this_db_structure = $className::getDbStructure($return_type = 'structure', 'all');
@@ -1166,6 +1179,8 @@ class AfwStructureHelper extends AFWRoot
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         }
+
+        if (!$desc) return false;
 
         return !$desc['CATEGORY'];
     }
