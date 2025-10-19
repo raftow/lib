@@ -421,7 +421,7 @@ foreach ($stats_data_arr as $stats_curr_row => $stats_data_row) {
             $method_formula                              = $config_stats_formula_col_item["METHOD"];
             $stats_data_arr[$stats_curr_row][$show_name] = $cl::$method_formula($stats_data_row, $formatted = true);
             if (! $stat_trad[$show_name]) {
-                $stat_trad[$show_name] = AfwLanguageHelper::translateStatsColumn($myObj, $show_name, $lang);
+                $stat_trad[$show_name] = AfwLanguageHelper::translateStatsColumn($show_name, $cl, $myObj,  $lang);
             }
         }
     }
