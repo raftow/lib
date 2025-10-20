@@ -528,7 +528,7 @@ class AfwExcel
             return array($ok, $errors, $warnings, $infos);
       }
 
-      public function getHeaderTrad($trad = "")
+      public function getHeaderTrad($trad = [])
       {
             $headerTrad = [];
 
