@@ -1,5 +1,5 @@
 <?php
-
+ini_set("upload_max_filesize","40M");
 $file_dir_name = dirname(__FILE__);
 
 try {
@@ -190,7 +190,7 @@ try {
                         $_FILES['insert'] = $error;
                 }
         } else {
-                $error = "حدث خطأ عند تحميل الملف نرجوا التثبت من  صيغة الملف وحجمه : " . $_FILES['upl']['error'] . " => " . var_export($_FILES, true); //"upload error occured (check file type and format and size)";//;
+                $error = "حدث خطأ عند تحميل الملف نرجوا التثبت من صيغة الملف وحجمه : " . $_FILES['upl']['error'] . " => " . var_export($_FILES, true); //"upload error occured (check file type and format and size)";//;
         }
 
         echo '{"status":"error", "message":"خطأ : ' . $error . '"}';

@@ -2,6 +2,10 @@
 
 class AfwImportHelper extends AFWRoot
 {
+    /**
+     * @param AFWObject $object
+     * @param Afile $afileObj
+     */
     public static function executeSimpleImport(
         $object,
         $afileObj,
@@ -25,7 +29,7 @@ class AfwImportHelper extends AFWRoot
 
         $value_source =
             $afileObj->getId() . '-' . $afileObj->getShortDisplay($lang);
-        $max_records_once = 3000;
+        $max_records_once = 500;//3000;
         $start_record_num = ($curr_bloc - 1) * $max_records_once;
         $end_record_num = $curr_bloc * $max_records_once - 1;
         list($excel, $my_head, $my_data) = $afileObj->getExcelData(
@@ -33,6 +37,8 @@ class AfwImportHelper extends AFWRoot
             $end_record_num,
             'executeSimpleImport'
         );
+
+        // die("my_head=".var_export($my_head, true)."<br>\n my_data=".var_export($my_data, true));
         $desc_target = AfwStructureHelper::getStructureOf($object,$attribute_target);
         $options = [];
 

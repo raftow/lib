@@ -173,7 +173,7 @@ class AfwFileUploader extends AFWRoot
                 }
                 else
                 {
-                        $error = "حدث خطأ عند تحميل الملف نرجوا التثبت من  صيغة الملف وحجمه : ";
+                        $error = "حدث خطأ عند تحميل الملف نرجوا التثبت من صيغة الملف وحجمه : ";
                         $error .= "<br> صيغة الملف : $extension ";
                         $error .= "<br> نوع الملف : $afile_type ";
                         // $error .= "<br> الصيغ المسموح بها : ";

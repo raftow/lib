@@ -404,8 +404,8 @@ class AfwShowHelper
                         }
                         $html .= "
 
-                        <div id=\"fg-$nom_col\" class=\"attrib-$nom_col form-group $css_custom\">
-                            <label for=\"$nom_col\" class=\"hzm_label hzm_label_$nom_col \"><b>$trad_col : </b> 
+                        <div id=\"fg-$nom_col\" class=\"minibox attrib-$nom_col form-group $css_custom\">
+                            <label for=\"$nom_col\" class=\"hzm_label hzm_label_$nom_col \">$trad_col :  
                             </label>
                             <div class=\"hzm_data hzm_data_$nom_col form-control inputreadonly $inputarea\" style=\"\">            
                             $data_col       
@@ -2726,13 +2726,39 @@ $('#$showAsDataTable').DataTable( {
 
         $val = $value;
         $display_val = $object->decode($attribute);
-        if ($display_val and $structure['FORMAT-INPUT'] == 'hzmtoggle') {
+        if(!$structure["FORMAT-INPUT"]) $structure["FORMAT-INPUT"] = $structure["FORMAT"];
+        if ($display_val and $structure['FORMAT-INPUT'] == 'hzmtoggle') 
+        {
             //if(!$display_val) $display_val = "...";
             // die("key=$attribute, val=$val, display_val=$display_val, HZM-CSS=".$structure["HZM-CSS"]);
             $css_arr = AfwStringHelper::afw_explode($structure['HZM-CSS']);
             $css_val = $css_arr[$val];
             $data_to_display = "<div class='$css_val'>$display_val</div>";
-        } else {
+        } 
+        elseif ($display_val and $structure["FORMAT-INPUT"] == "stars") 
+        {
+                    $objTableName = $object->getTableName();
+                    $objName = $object->__toString();
+                    $fieldAnsTab = $structure["ANSWER"];
+                    $fcol_name = $structure["FUNCTION_COL_NAME"];
+                    $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $object);
+                    $data_to_display = "<div class='stars-list answers-list' aria-hidden='true'>";
+                    $c=0;
+                    $rating_label_text = "---";
+                    $rating_label_class = "";
+                    if($val>0) $rating_label_class= "star-$val";
+                    foreach($liste_rep as $val_i => $title_i)
+                    {
+                        if($val_i<=$val) $rated_on_off = "star-rated star-rated-on";
+                        else $rated_on_off = "";
+                        if($val_i==$val) $rating_label_text = $title_i;
+                        $data_to_display .= "   <div class='star-$val_i star-rating star$rated_on_off' data-inputname='$attribute' data-star='$val_i' title='$title_i'><i class='fa fa-star ri-star-fill'></i></div>";
+                    }
+                    $data_to_display .= "   <div id=\"rating-label-$attribute\" class=\"rating-label $rating_label_class\">$rating_label_text</div>";
+                    $data_to_display .= "</div>";
+                }
+        
+        else {
             $data_to_display = $display_val;
         } // ." ==> ".$structure["FORMAT-INPUT"]
 

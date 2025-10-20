@@ -4611,7 +4611,12 @@ class AFWObject extends AFWRoot
         } elseif ($structure['TYPE'] == 'EDIT') {
             list($data_to_display, $link_to_display) = AfwShowHelper::showEditButton($this, $attribute, $class_origin, $langue, $structure);
         } elseif ($structure['TYPE'] == 'ENUM') {
-            list($data_to_display, $link_to_display) = AfwShowHelper::showEnum($this, $attribute, $value, $langue, $structure);
+            /*if(AfwStringHelper::stringStartsWith($attribute, "attribute_"))
+            {
+                $data_to_display = "AfwShowHelper::showEnum(this, $attribute, $value, $langue, ".var_export($structure,true).")";
+            }
+            else*/ 
+                list($data_to_display, $link_to_display) = AfwShowHelper::showEnum($this, $attribute, $value, $langue, $structure);
         }         
         else {
             $data_to_display = $this->decode($key);

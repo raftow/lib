@@ -836,15 +836,19 @@ class AfwPrevilegeHelper
         return (!isset($desc['MINIBOX']) and $desc['RETRIEVE'] and !$desc['MINIBOX-PREVENT']) or $desc['MINIBOX'];
     }
 
+    /**
+     * @param AFWObject $object
+     */
 
-    public static final function getMiniBoxCols($object)
+    public static final function getMiniBoxCols($object, $only_applicable=true)
     {
         $tableau = [];
 
         $FIELDS_ALL = $object->getAllAttributes();
 
         foreach ($FIELDS_ALL as $attribute) {
-            if (AfwPrevilegeHelper::isMiniBoxCol($object, $attribute)) {
+            if (AfwPrevilegeHelper::isMiniBoxCol($object, $attribute) and
+                ((!$only_applicable) or ($object->attributeIsApplicable($attribute)))) {
                 $tableau[] = $attribute;
             }
         }

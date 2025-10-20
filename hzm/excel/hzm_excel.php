@@ -21,6 +21,9 @@ class HzmExcel
 
       public $myRange;
 
+
+      
+
       public function __construct($file_path, $pkey_name = "", $header_rows = 1, $map_with_row = 1, $header = null)
       {
             $this->filePath = $file_path;
