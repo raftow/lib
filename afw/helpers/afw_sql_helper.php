@@ -24,11 +24,11 @@ class AfwSqlHelper extends AFWRoot
         
         if($pkCol_arr)
         {
-            $sql = "INSERT IGNORE INTO $table $set_insert_cols ON DUPLICATE KEY UPDATE $table $set_update_cols WHERE $pk_cols_where;";
+            $sql = "INSERT IGNORE INTO $table SET $set_insert_cols ON DUPLICATE KEY UPDATE $table SET $set_update_cols WHERE $pk_cols_where;";
         }
         else
         {
-            $sql = "INSERT INTO $table $set_insert_cols;";
+            $sql = "INSERT INTO $table SET $set_insert_cols;";
         }
 
         return $sql;

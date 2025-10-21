@@ -1130,6 +1130,14 @@ class AfwDateHelper
         return $arr_hij_period;
     }
 
+    public static function parseGregDate($gdate, $sep='/', $format='d/m/Y')
+    {
+        $formatItemIndex = array_flip(explode($sep, $format));
+        $gdateItems = explode($sep, $gdate);
+
+        return $gdateItems[$formatItemIndex["Y"]]."-".$gdateItems[$formatItemIndex["m"]]."-".$gdateItems[$formatItemIndex["d"]];
+    }
+
     public static function gregToHijri($gdate, $mode = 'hdate', $ifSeemsHijriKeepAsIs = false, $throwError = true)
     {
         /*
