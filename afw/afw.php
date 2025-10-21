@@ -4214,7 +4214,7 @@ class AFWObject extends AFWRoot
     ) {
 
 
-        if ($dropdown or $this->hideDisactiveRowsFor($objme = AfwSession::getUserConnected())) {
+        if ($dropdown or $this->hideNonActiveRowsFor($objme = AfwSession::getUserConnected())) {
             $selects[$this->fld_ACTIVE()] = 'Y'; // get_class($this).".".
         }
         /*
@@ -5662,7 +5662,7 @@ class AFWObject extends AFWRoot
         return true;
     }
 
-    protected function hideDisactiveRowsFor($auser)
+    protected function hideNonActiveRowsFor($auser)
     {
         return !$auser or !$auser->isAdmin();
     }
