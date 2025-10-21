@@ -445,15 +445,7 @@ class AfwExcel
 		
 	}
 
-	public static function readExcel($file_path, $row_num_start=-1, $row_num_end=-1, $caller="not-defined")
-    {
-			$spreadsheet = 
-            $excel = new HzmExcel($file_path);
-            $my_data = $excel->getData($row_num_start, $row_num_end, $caller);
-            $my_head = $excel->getHeaderTrad();
-            
-            return [$excel, $my_head, $my_data];
-    }
+	
 
 
 	public function getDataStartRow()

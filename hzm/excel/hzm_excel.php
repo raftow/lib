@@ -3,7 +3,7 @@ $file_hzm_dir_name = dirname(__FILE__);
 
 //require_once("$file_hzm_dir_name/../../xlsapp/Classes/PHPExcel.php");
 die("PHPExcel.php is no more supported and not compatible with PHP 8.0 to be migrated to PhpSpreadsheet class see https://phpspreadsheet.readthedocs.io/en/latest/");
-
+/*
 class HzmExcel
 {
 
@@ -122,11 +122,6 @@ class HzmExcel
                         $key_trad = $keyRequirement["trad_$lang"];
                         $ok = false;
                         $errors[] = $this->translateMessage("mandatory column missed", $lang) . " : $key ($key_trad)";
-                        /*
-                            if($keyRequirement["mandatory"])
-                            {
-                                    die("[$key] is not found in this->header : ".var_export($this->header,true)." keyRequirement of $key ==> ".var_export($keyRequirement,true));
-                            } */
                   }
             }
 
@@ -193,10 +188,6 @@ class HzmExcel
                         foreach ($record as $col_num => $value) {
                               $col_name = $this->header[$col_num];
 
-                              /*if(strlen($value)>500) 
-                            {
-                                if($objme) throw new AfwRuntimeException("value too big in ($col_num[$col_name],row:$row_num) ");
-                            }*/
                               $data[$id][$col_name] = $value;
 
                               unset($value);
@@ -213,3 +204,4 @@ class HzmExcel
             return $data;
       }
 }
+*/
