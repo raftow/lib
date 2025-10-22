@@ -127,13 +127,19 @@ class AfwUmsPagHelper extends AFWRoot
                     $tbl->set('titre_short', $table_name);
                     $tbl->set('titre', $table_name . '.descr');
 
+                    $val_is_entity = 'Y';
+                    $val_is_lookup = 'N';
                     if ($tbl->IS_LOOKUP) {
+                        $val_is_lookup = 'Y';                        
+                    }
+
+                    if ($tbl->IS_SMALL_LOOKUP) {
                         $val_is_lookup = 'Y';
-                    } else {
-                        $val_is_lookup = 'N';
+                        $val_is_entity = 'N';
                     }
 
                     $tbl->set('is_lookup', $val_is_lookup);
+                    $tbl->set('is_entity', $val_is_entity);
 
                     $tbl->set('titre_u', $table_name . '.single');
                     $tbl->set('key_field', 'id');
