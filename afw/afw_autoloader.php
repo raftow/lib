@@ -24,6 +24,19 @@ if(!class_exists('AfwAutoLoader'))
                         
                 }
 
+                public static function afwClassExists($cl)
+                {
+                        try
+                        {
+                                if(class_exists($cl,true)) return true;
+                                else return false;
+                        }
+                        catch(Exception $e)
+                        {
+                                return false;
+                        }
+                }
+
                 public static function addMainModule($module)
                 {
                         $to_add = "/../$module/";

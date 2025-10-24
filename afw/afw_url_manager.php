@@ -412,7 +412,7 @@ class AfwUrlManager extends AFWRoot
         if($theClass and $theModule)
         {
             $theStructureClass = ucfirst($theModule).$theClass."AfwStructure";
-            if(!class_exists($theStructureClass,true))
+            if(!AfwAutoLoader::afwClassExists($theStructureClass))
             {
                 throw new AfwBusinessException("class '$theStructureClass' not found in module '$theModule'");
             }
