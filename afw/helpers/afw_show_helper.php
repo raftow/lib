@@ -1582,7 +1582,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                         $data_aff .= "<img class='popup-edit' idobj='$id' mod='$cumodule' cls='$cuclass' col='$nom_col' val='$val_col' tit='$cutitle' record='$curecord' parent_container='$idTable' src=\"../lib/images/pen.png\" width=\"16\" heigth=\"16\">";
                         $data_aff .= "</div>";
                     }
-                    else
+                    elseif(($nom_col != 'مسح') and (strtoupper($nom_col) != 'DEL') and (strtoupper($nom_col) != 'DELETE'))
                     {
                         $data_aff = "<span class='$nom_col-span'>$data_aff</span>";
                     }
