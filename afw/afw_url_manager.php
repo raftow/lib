@@ -1,4 +1,7 @@
 <?php
+
+use Complex\Autoloader;
+
 const CONST_URI_ORDER = 0;
 // old require of afw_root
 
@@ -399,12 +402,20 @@ class AfwUrlManager extends AFWRoot
     public static function currentPageCode()
     {
         list($theModule, $theClass, $uri_items, $original_serv_uri, $serv_uri, $ignored_vars) = self::analyseCurrentUrl();
-        
+        AfwAutoLoader::addModule($theModule);
+        if(!class_exists($theClass,true))
+        {
+            throw new AfwBusinessException("class '$theClass' not found in module '$theModule'");
+        }
         $pageCode = null;
         $log_explain_advanced = "";
         if($theClass and $theModule)
         {
             $theStructureClass = ucfirst($theModule).$theClass."AfwStructure";
+            if(!class_exists($theStructureClass,true))
+            {
+                throw new AfwBusinessException("class '$theStructureClass' not found in module '$theModule'");
+            }
             if(method_exists($theStructureClass, "pageCode"))
             {
                 $pageCode = $theStructureClass::pageCode($uri_items);

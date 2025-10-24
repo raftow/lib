@@ -18,7 +18,7 @@ if(!class_exists('AfwAutoLoader'))
                         if(!in_array($to_add, self::$modules_autoload_by_prio))
                         {
                                 array_push(self::$modules_autoload_by_prio, $to_add);
-                                if(count(self::$modules_autoload_by_prio)>self::$MAX_MODULES) 
+                                if(count(self::$modules_autoload_by_prio)>AfwSession::config('MAX_MODULES', self::$MAX_MODULES)) 
                                    throw new AfwRuntimeException("adding module($module) : too much modules, self::modules_autoload_by_prio=".var_export(self::$modules_autoload_by_prio,true));                                
                         }
                         
