@@ -738,7 +738,7 @@ class AfwLoadHelper extends AFWRoot
         $classNameModule = $object->getMyModule();
         $classNameTable = $object->getMyTable();
         
-        if($optim_lookup and $object->IS_LOOKUP)
+        if($optim_lookup and $object->IS_SMALL_LOOKUP)
         {
             if (!$result_row)  // may be to add : and $object->IS_SMALL
             {
