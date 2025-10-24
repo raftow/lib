@@ -723,7 +723,8 @@ class AfwLoadHelper extends AFWRoot
      */
     public static function loadAfwObject(&$object, $value = '', $result_row = '', $order_by_sentence = '', $optim_lookup=true) 
     {
-        global $MODE_BATCH_LOURD;
+        global $MODE_BATCH_LOURD, $load_count;
+
         // $time_start = microtime(true);
 
 
@@ -737,24 +738,26 @@ class AfwLoadHelper extends AFWRoot
         $classNameModule = $object->getMyModule();
         $classNameTable = $object->getMyTable();
         
-        if ((!$result_row) and $optim_lookup and $object->IS_LOOKUP)  // may be to add : and $object->IS_SMALL
+        if($optim_lookup and $object->IS_LOOKUP)
         {
-            global $load_count;
-            
-            if (!$load_count[$className]["any"]) $load_count[$className]["any"] = 0;
-            $load_count[$className]["any"]++;
-            if ($MODE_OPTIMIZE_MAX and (!$MODE_BATCH_LOURD) and ($load_count[$className]["any"] > 3)) {
-                throw new AfwRuntimeException("All the lookup table $className should be loaded once, not record by record");
+            if (!$result_row)  // may be to add : and $object->IS_SMALL
+            {
+                if (!$load_count[$className]["any"]) $load_count[$className]["any"] = 0;
+                $load_count[$className]["any"]++;
+                if ($MODE_OPTIMIZE_MAX and (!$MODE_BATCH_LOURD) and ($load_count[$className]["any"] > 3)) {
+                    throw new AfwRuntimeException("All the lookup table $className should be loaded once, not record by record");
+                }
             }
-        }
 
-        if ($value) {
-            if (!$load_count[$className][$value]) $load_count[$className][$value] = 0;
-            $load_count[$className][$value]++;
-            if ($load_count[$className][$value] > 3) {
-                throw new AfwRuntimeException("same table $className same id $value too much loaded");
+            if ($value) {
+                if (!$load_count[$className][$value]) $load_count[$className][$value] = 0;
+                $load_count[$className][$value]++;
+                if ($load_count[$className][$value] > 3) {
+                    throw new AfwRuntimeException("same table $className same id $value too much loaded");
+                }
             }
         }
+        
 
         // $myId = $object->getId();
         $loaded_by = null;
