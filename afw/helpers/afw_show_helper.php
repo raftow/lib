@@ -1584,7 +1584,7 @@ if($obj instanceof Atable) die("header of Atable = ".var_export($header, true));
                     }
                     else
                     {
-                        $data_aff = "<span>$data_aff</span>";
+                        $data_aff = "<span class='$nom_col-span'>$data_aff</span>";
                     }
 
                     $html .=
