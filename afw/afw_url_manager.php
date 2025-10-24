@@ -403,7 +403,7 @@ class AfwUrlManager extends AFWRoot
     {
         list($theModule, $theClass, $uri_items, $original_serv_uri, $serv_uri, $ignored_vars) = self::analyseCurrentUrl();
         AfwAutoLoader::addModule($theModule);
-        if(!class_exists($theClass,true))
+        if($theClass and (!class_exists($theClass,true)))
         {
             throw new AfwBusinessException("class '$theClass' not found in module '$theModule'");
         }
