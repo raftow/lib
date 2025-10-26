@@ -9,7 +9,7 @@ class AfwDbOci
     private $username = null;
     private $password = null;
 
-    private function connect(string $encoding = "", int $session_mode = OCI_DEFAULT)
+    private function connect(string $encoding = "", int $session_mode = 0)
     {
         $this->connection = oci_connect($this->username, $this->password, $this->connection_string, $encoding, $session_mode);
         
@@ -21,7 +21,7 @@ class AfwDbOci
         return true;
     }
 
-    public function connectFromAfwSessionConfig($module_server, string $encoding = "", int $session_mode = OCI_DEFAULT)
+    public function connectFromAfwSessionConfig($module_server, string $encoding = "", int $session_mode = 0)
     {
         $this->connection_string = AfwSession::config($module_server."connection_string", '', "the_database", 'yes');
         $this->username = AfwSession::config($module_server."user", '', "the_database", 'yes');
@@ -40,7 +40,7 @@ class AfwDbOci
         
     }
 
-    public function connectFromConfig($config, $module_server, string $encoding = "", int $session_mode = OCI_DEFAULT)
+    public function connectFromConfig($config, $module_server, string $encoding = "", int $session_mode = 0)
     {
         $this->connection_string = $config[$module_server."connection_string"];
         $this->username = $config[$module_server."username"];

@@ -1138,7 +1138,7 @@ class AfwDateHelper
         return $gdateItems[$formatItemIndex["Y"]]."-".$gdateItems[$formatItemIndex["m"]]."-".$gdateItems[$formatItemIndex["d"]];
     }
 
-    public static function gregToHijri($gdate, $mode = 'hdate', $ifSeemsHijriKeepAsIs = false, $throwError = true)
+    public static function gregToHijri($gdate, $mode = 'hdate', $ifSeemsHijriKeepAsIs = false, $throwError = true, $estimateIfOutOfRange = true)
     {
         /*
                 list($year,$month,$day) = self::splitGregDate($gdate);
@@ -1151,7 +1151,7 @@ class AfwDateHelper
             return "$gdate ? how in mode $mode";
         }
 
-        return self::to_hijri($gdate, $mode, ' ', true, $ifSeemsHijriKeepAsIs, $throwError);
+        return self::to_hijri($gdate, $mode, ' ', true, $ifSeemsHijriKeepAsIs, $throwError, $estimateIfOutOfRange);
     }
 
     public static function repareGorbojHijriDate($hdate, $without_dashes = true)
@@ -1366,7 +1366,8 @@ class AfwDateHelper
         $separator = ' ',
         $emptyIsCurrent = true,
         $ifSeemsHijriKeepAsIs = false,
-        $throwError = true
+        $throwError = true,
+        $estimateIfOutOfRange = true
     ) {
         /******* preparations ************/
 
@@ -1497,7 +1498,11 @@ class AfwDateHelper
 
         $return = AfwSession::getVar("hijri-of-$gdate");
         if (($mode == 'hdate') and (strlen($return) != 8)) {
-            if ($throwError) throw new AfwRuntimeException("Error converting $wd_gdate from DB => row_hijri=" . var_export($row_hijri, true) . " => hijri_day = $hijri_day = diff_date($gdate,$greg_date) + 1 => return=$return");
+            if($estimateIfOutOfRange)
+            {
+                  return self::convertGregToHijri($gdate);  
+            }
+            elseif ($throwError) throw new AfwRuntimeException("Error converting $wd_gdate from DB => row_hijri=" . var_export($row_hijri, true) . " => hijri_day = $hijri_day = diff_date($gdate,$greg_date) + 1 => return=$return");
             else return "error 6";
         }
 
