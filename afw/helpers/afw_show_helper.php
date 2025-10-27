@@ -2467,8 +2467,11 @@ $('#$showAsDataTable').DataTable( {
                 {
                     $an_item = $first_item;
                     if(!$an_item) $an_item = AfwStructureHelper::getEmptyObject($object, $attribute);
-                    if($an_item) $modulepopup = $options["POPUP-EDIT-SETTINGS"]["module"] = $an_item->getMyModule();
-                    $classpopup = $options["POPUP-EDIT-SETTINGS"]["class"];
+                    if($an_item) 
+                    {
+                        $modulepopup = $options["POPUP-EDIT-SETTINGS"]["module"] = $an_item->getMyModule();
+                        $classpopup = $options["POPUP-EDIT-SETTINGS"]["class"] = $an_item->getMyClass();
+                    }
                     foreach($structure["RETRIEVE-POPUP-EDITOR"] as $colpopup)
                     {
                         $data_to_display .= AfwInputHelper::popupEditor($modulepopup, $classpopup, $colpopup, $lang);
