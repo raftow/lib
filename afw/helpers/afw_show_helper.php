@@ -2465,7 +2465,9 @@ $('#$showAsDataTable').DataTable( {
                 //popup-edit
                 if($structure["RETRIEVE-POPUP-EDITOR"])
                 {
-                    $modulepopup = $options["POPUP-EDIT-SETTINGS"]["module"] = $first_item->getMyModule();
+                    $an_item = $first_item;
+                    if(!$an_item) $an_item = AfwStructureHelper::getEmptyObject($object, $attribute);
+                    if($an_item) $modulepopup = $options["POPUP-EDIT-SETTINGS"]["module"] = $an_item->getMyModule();
                     $classpopup = $options["POPUP-EDIT-SETTINGS"]["class"];
                     foreach($structure["RETRIEVE-POPUP-EDITOR"] as $colpopup)
                     {
