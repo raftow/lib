@@ -311,9 +311,9 @@ class AfwStructureHelper extends AFWRoot
 
         if ($struct['SHOW-ADMIN']) {
             $struct['EDIT-ADMIN'] = true;
-            if (!$struct['DISPLAY']) {
+            if (!$struct['DISPLAY'] and !$struct['EDIT']) {
                 $struct['DISPLAY'] = true;
-                $struct['READONLY'] = true;
+                $struct['READONLY'] = 'because DISPLAY property is not defined';
             }
         }
 
@@ -409,7 +409,7 @@ class AfwStructureHelper extends AFWRoot
             $struct['SHOW'] = true;
             if (!$struct['STEP-CUSTOMIZED']) $struct['STEP'] = 99;
             $struct['EDIT'] = true;
-            $struct['READONLY'] = true;
+            $struct['READONLY'] = 'admin or technical field';
         }
 
         if (($struct["TYPE"] == "YN") and (strtoupper($struct["FORMAT"]) == "ICON") and (!$struct["SWITCHER"])) {
@@ -419,7 +419,7 @@ class AfwStructureHelper extends AFWRoot
 
         if ($struct['READONLY-AFTER-INSERT']) {
             if (!$object->isEmpty()) {
-                $struct['READONLY'] = true;
+                $struct['READONLY'] = 'READONLY-AFTER-INSERT';
             }
         }
 
@@ -565,14 +565,14 @@ class AfwStructureHelper extends AFWRoot
         } elseif ($display_in_edit_mode['*'] and $desc['SHOW']) {
             if (!$desc['EDIT']) {
                 $desc['EDIT'] = true;
-                $desc['READONLY'] = true;
+                $desc['READONLY'] = 'because EDIT is false when SHOW is true';
                 $desc['READONLY_REASON'] = 'SHOW and not EDIT';
             }
         }
 
         if ($desc['CATEGORY'] == 'ITEMS') {
             list($desc['EDIT'], $reason) = AfwStructureHelper::itemsEditableBy($object, $attribute, $user, $desc);
-            $desc['READONLY'] = true;
+            $desc['READONLY'] = 'ITEMS CATEGORY';
             if ($desc['EDIT']) {
                 // this is bug ITEMS attribute should remain readonly
                 // $desc["DISABLE-READONLY-ITEMS"] = true;
@@ -805,7 +805,7 @@ class AfwStructureHelper extends AFWRoot
                 $desc['TYPE'] != 'PK'
             ) {
                 $desc['EDIT'] = true;
-                $desc['READONLY'] = true;
+                $desc['READONLY'] = 'because EDIT is false but SHOW is true';
             }
         }
         // rafik 20/12/2019 not needed id_obj hidden always exists and for all steps not only step=1 so the line below is nomore usefull

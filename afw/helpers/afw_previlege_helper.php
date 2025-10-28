@@ -57,7 +57,7 @@ class AfwPrevilegeHelper
                 $structure['TYPE'] != 'PK'
             ) {
                 $structure['EDIT'] = true;
-                $structure['READONLY'] = true;
+                $structure['READONLY'] = 'EDIT=false+SHOW=true';
             }
         }
         $user_can_see_attribute =
