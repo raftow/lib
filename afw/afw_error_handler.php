@@ -193,9 +193,9 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
                                             <span><?= gettype($arg); ?> : <?= var_export( $arg, true ); ?></span>
                                         <? else : ?>
                                             <? if(is_object($arg)) : ?> 
-                                                <span>Object</span>
+                                                <span>Object <?= get_class($arg) ?> </span>
                                             <? else : ?>    
-                                                <span>Array</span>
+                                                <span>Array [<?= count($arg) ?> items]</span>
                                             <? endif; ?>
                                         <? endif; ?>
                                         <?= $i < count( $trace['args'] ) -1 ? ',' : ''; ?> 

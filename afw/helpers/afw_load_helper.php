@@ -49,6 +49,11 @@ class AfwLoadHelper extends AFWRoot
                 // if($nom_table_fk=="identity_type") throw new RuntimeException("$nom_table_fk table where = $where : why not optimized and load all");
             }
             
+            /*
+            if($oneId and (!self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$oneId]))
+            {
+
+            }*/
         }
         elseif($oneId and self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$oneId])
         {
@@ -213,6 +218,8 @@ class AfwLoadHelper extends AFWRoot
         if((!$small_lookup) and (count($val_arr)>0)) $where="$pk in (".implode(",",$val_arr).")";
         else $where="1";
         self::getLookupData($nom_module_fk, $nom_table_fk, $where, "", $oneId);
+
+        
 
         if(count($val_arr)>0)
         {
