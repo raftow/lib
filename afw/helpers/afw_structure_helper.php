@@ -1098,6 +1098,11 @@ class AfwStructureHelper extends AFWRoot
         return ($structure["TYPE"] or $object->isTechField($attribute)); //  or $this->getAfieldValue($attribute)
     }
 
+    public static function structureIsNumericField($structure)
+    {
+        return (($structure["TYPE"]=="FK") or ($structure["TYPE"]=="INT") or ($structure["TYPE"]=="PCT") or ($structure["TYPE"]=="FLOAT"));
+    }
+
 
     public static function attributeIsReel(&$object, $attribute, $structure = null)
     {

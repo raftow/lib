@@ -148,8 +148,13 @@ class AfwSqlHelper extends AFWRoot
                     var_export($value, true));
             }
             $isTechField = $obj->isTechField($key);
+            
             if (!$isTechField) {
                 $structure = AfwStructureHelper::getStructureOf($obj, $key);
+                if(($value==="") and AfwStructureHelper::structureIsNumericField($structure))
+                {
+                    $value=0;
+                }
                 /*
                 if($obj->getMyClass()=='Afield' and $key=='avail') 
                 {
