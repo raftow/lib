@@ -5510,7 +5510,7 @@ class AFWObject extends AFWRoot
         } else {
             $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
         }
-        if (!$desc['STEP']) {
+        if (!$desc['STEP'] and !$desc['OBSOLETE']) {
             return 1;
         } else {
             return $desc['STEP'];
