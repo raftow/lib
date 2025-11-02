@@ -4453,6 +4453,8 @@ input#save_only {
     text-align: center !important;
     border: none !important;
     border-radius: 0 !important;
+    line-height: 34px;
+    white-space: nowrap;
 }
 
 .error.cell {
@@ -4462,6 +4464,8 @@ input#save_only {
     text-align: center !important;
     border: none !important;
     border-radius: 0 !important;
+    line-height: 34px;
+    white-space: nowrap;
 }
 
 .warning.cell {
@@ -4471,6 +4475,8 @@ input#save_only {
     text-align: center !important;
     border: none !important;
     border-radius: 0 !important;
+    line-height: 34px;
+    white-space: nowrap;
 }
 
 /*    mobi select*/
