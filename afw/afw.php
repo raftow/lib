@@ -198,6 +198,7 @@ class AFWObject extends AFWRoot
         $database_module = '',
         $module = ''
     ) {
+        if (!$table) return null;
         if (!$module) {
             $module = $database_module;
         }
