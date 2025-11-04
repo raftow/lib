@@ -52,23 +52,7 @@ for($i=0;$i<$nb_objs;$i++)
                 // if($id == 6082) die("obj $i of $class class, id ='$id' will be loaded just now");
                 
                 if($obj->load($id) and ($obj->id == $id)) $record_is_loaded = true;
-                elseif ($obj->UNIQUE_KEY and $obj->tryToLoadWithUniqueKeyForEditMode()) {
-                        $ukey_array = array();
-
-                        foreach ($obj->UNIQUE_KEY as $ukey) {
-                        $ukey_array[$ukey] = $_POST[$ukey. "_" . $i];
-                        }
-
-                        if ($obj->loadWithUniqueKey($ukey_array)) {
-                                $id = $obj->getId();
-                                //if((!$id) and $objme and $objme->isSuperAdmin()) die("rafik loadWithUniqueKey failed object still without ID ".var_export($obj,true));
-                                $record_is_loaded = true;
-                        }
-                        else{
-                        // die("loadWithUniqueKey failed to found record and has used ukey_array = ".var_export($ukey_array,true)." obj=".var_export($obj,true));
-                        }
-                }
-                else 
+                else
                 {
                         $return_message = $myObj->tm("Return back", $lang);    
                         $return_page = "main.php?Main_Page=afw_mode_qsearch.php&cl=$class&currmod=$currmod";
@@ -79,7 +63,24 @@ for($i=0;$i<$nb_objs;$i++)
                 
                 // if($id == 6082) die("obj $i of $class class, id ='$id' has been loaded obj = ".var_export($obj,true));
         }
-        else
+        elseif ($obj->UNIQUE_KEY and $obj->tryToLoadWithUniqueKeyForEditMode()) 
+        {
+                $ukey_array = array();
+
+                foreach ($obj->UNIQUE_KEY as $ukey) {
+                        $ukey_array[$ukey] = $_POST[$ukey. "_" . $i];
+                }
+
+                if ($obj->loadWithUniqueKey($ukey_array)) {
+                        $id = $obj->getId();
+                        //if((!$id) and $objme and $objme->isSuperAdmin()) die("rafik loadWithUniqueKey failed object still without ID ".var_export($obj,true));
+                        $record_is_loaded = true;
+                }
+                else{
+                        // die("loadWithUniqueKey failed to found record and has used ukey_array = ".var_export($ukey_array,true)." obj=".var_export($obj,true));
+                }
+        }
+        else 
         {
                $_POST[$pki] = "";
         }
