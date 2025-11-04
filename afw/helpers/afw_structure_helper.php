@@ -399,6 +399,11 @@ class AfwStructureHelper extends AFWRoot
             throw new AfwRuntimeException("repareMyStructure first parameter should be AFWObject instance");
         }
 
+        if($object->UNIQUE_KEY and in_array($field_name, $object->UNIQUE_KEY)) {
+            $struct['QEDIT'] = 'reapred because in UNIQUE_KEY';
+            $struct['EDIT'] = 'reapred because in UNIQUE_KEY';
+        }
+
         //if($field_name == "nomcomplet") die("in getStructureOf($field_name) run of this->getMyDbStructure($return_type, $field_name) = ".var_export($struct,true));
         if (
             $object->editByStep and
