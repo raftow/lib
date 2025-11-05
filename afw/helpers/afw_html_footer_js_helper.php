@@ -278,6 +278,18 @@ $(document).ready(function(){
 <?php
   }
 ?>
+
+    $(document).ready(function() {
+        $(".hasDatepicker").datepicker({ 
+                showAnim: "fold",
+                dateFormat: "yy-mm-dd",
+                changeMonth: true,
+                changeYear: true,
+                minDate: $min_date,
+        <?php echo AfwEditMotor::calendar_translations($lang) ?>
+                });
+        });
+
     $("#slog-switcher").click(function()
                         { 
                                 $("#system_log_div").toggleClass("hide");            
