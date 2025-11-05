@@ -38,19 +38,19 @@ class AfwStructureHelper extends AFWRoot
                 false
             );
 
+            if($field_name == "birth_gdate") echo("$field_name dbg struct before repareMyStructure =".var_export($struct,true));
+
+            if ($struct and $repare) {
+                $struct = AfwStructureHelper::repareMyStructure($object, $struct, $field_name);
+            }
+
             if($field_name == "birth_gdate") echo("$field_name dbg struct before technicalRepareMyStructure =".var_export($struct,true));
 
             if ($struct and $technical_repare) {
                 $struct = AfwStructureHelper::technicalRepareMyStructure($object, $struct, $field_name);
             }            
 
-            if($field_name == "birth_gdate") echo("$field_name dbg struct after technicalRepareMyStructure =".var_export($struct,true));
-
-            if ($struct and $repare) {
-                $struct = AfwStructureHelper::repareMyStructure($object, $struct, $field_name);
-            }
-
-            if($field_name == "birth_gdate") die("$field_name dbg struct after repareMyStructure =".var_export($struct,true));
+            if($field_name == "birth_gdate") die("$field_name dbg struct after technicalRepareMyStructure =".var_export($struct,true));
 
             if (($struct["CATEGORY"] == "SHORTCUT") /* or (($struct["CATEGORY"]=="FORMULA") and ($field_name != "tech_notes"))*/) {
                 if (!$object->shouldBeCalculatedField($field_name)) {
@@ -306,13 +306,23 @@ class AfwStructureHelper extends AFWRoot
         return $debugg_db_structure;
     }
 
+    public static function structEnablesProperty($struct, $property)
+    {
+        if (isset($struct[$property])) {
+            if ($struct[$property] and AfwStringHelper::stringStartsWith($struct[$property], '::')) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static function repareStructure($struct)
     {
-        if ($struct['RETRIEVE']) {
+        if (self::structEnablesProperty($struct, 'RETRIEVE')) {
             $struct['SHOW'] = 'repare as RETRIEVE is true';
         }
 
-        if ($struct['RETRIEVE_FGROUP']) {
+        if (self::structEnablesProperty($struct, 'RETRIEVE_FGROUP')) {    
             $struct[strtoupper($struct['FGROUP']) . '-RETRIEVE'] = true;
         }
         if ($struct['ALL_FGROUP']) {
