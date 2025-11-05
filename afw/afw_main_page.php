@@ -24,7 +24,7 @@ class AfwMainPage
         }
         else
         {
-            // die("$special_options_file not found");
+            die("$special_options_file not found");
         }
 
         return $options;
