@@ -68,7 +68,7 @@ try {
         if (!$allowed_exention_list) {
                 list($allowed, $ft_allowed, $ft_used) = DocType::getExentionsAllowed($file_types, $upper = false);
                 $ft_used_names = implode(" / ", array_keys($ft_used));
-                $allowed_policy = "حسب أنواع المستندات : ".$ft_used_names;
+                $allowed_policy = "حسب أنواع المستندات : ".$ft_used_names." [$module]";
         } else {
                 $allowed = explode(",", $allowed_exention_list);
                 $allowed_policy = "حسب سياسة رفع المستندات";
