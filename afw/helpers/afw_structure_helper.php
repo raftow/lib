@@ -22,7 +22,7 @@ class AfwStructureHelper extends AFWRoot
     /**
      * @param AFWObject $object
      */
-    public static final function getStructureOf(&$object, $field_name, $repare = true)
+    public static final function getStructureOf(&$object, $field_name, $repare = true, $technical_repare=true)
     {
         $cl = get_class($object);
         $struct = null;
@@ -37,6 +37,10 @@ class AfwStructureHelper extends AFWRoot
                 $field_name,
                 false
             );
+
+            if ($struct and $technical_repare) {
+                $struct = AfwStructureHelper::technicalRepareMyStructure($object, $struct, $field_name);
+            }            
 
             if ($struct and $repare) {
                 $struct = AfwStructureHelper::repareMyStructure($object, $struct, $field_name);
@@ -388,20 +392,15 @@ class AfwStructureHelper extends AFWRoot
         return $struct;
     }
 
-    /**
-     * @param AFWObject $object
-     * 
-     */
-
-    public static final function repareMyStructure(&$object, $struct, $field_name)
+    public static final function technicalRepareMyStructure(&$object, $struct, $field_name)
     {
         if (!($object instanceof AFWObject)) {
             throw new AfwRuntimeException("repareMyStructure first parameter should be AFWObject instance");
         }
 
         if($object->UNIQUE_KEY and in_array($field_name, $object->UNIQUE_KEY)) {
-            $struct['QEDIT'] = 'reapred because in UNIQUE_KEY';
-            $struct['EDIT'] = 'reapred because in UNIQUE_KEY';
+            if(!$struct['QEDIT']) $struct['QEDIT'] = 'reapred because in UNIQUE_KEY';
+            if(!$struct['EDIT']) $struct['EDIT'] = 'reapred because in UNIQUE_KEY';
         }
 
         //if($field_name == "nomcomplet") die("in getStructureOf($field_name) run of this->getMyDbStructure($return_type, $field_name) = ".var_export($struct,true));
@@ -428,6 +427,21 @@ class AfwStructureHelper extends AFWRoot
             }
         }
 
+        
+        return AfwStructureHelper::repareStructure($struct);
+    }
+
+    /**
+     * @param AFWObject $object
+     * 
+     */
+
+    public static final function repareMyStructure(&$object, $struct, $field_name)
+    {
+        if (!($object instanceof AFWObject)) {
+            throw new AfwRuntimeException("repareMyStructure first parameter should be AFWObject instance");
+        }
+
         foreach ($struct as $col_struct => $value_struct) {
             if (is_string($value_struct)) {
                 if (AfwStringHelper::stringStartsWith($value_struct, '>>config::')) {
@@ -440,30 +454,11 @@ class AfwStructureHelper extends AFWRoot
                     $struct[$col_struct] = $object->$methodStructEval($field_name, $col_struct);
                     $struct["$col_struct-from"] = get_class($object)."::method::$methodStructEval objectId=".$object->id;
                     $objectClass = get_class($object);
-                    //  and ($object->getVal("field_name")=="qsearch")
-                    /*
-                    if(($objectClass=="ApplicationField") and ($object->id>0) and ($field_name=="qsearch") and ($col_struct=="READONLY")) 
-                    {
-                        die("rafik-20240916-field_name=$field_name col_struct=$col_struct value_struct=$value_struct methodStructEval=$methodStructEval, struct[$col_struct] = object($object->id, fname=".$object->getVal("field_name").")->$methodStructEval($field_name, $col_struct) = ".var_export($struct[$col_struct],true)); 
-                    }*/
-                        
-                    /*
-                    if(($objectClass=="ApplicationField") and (!$object->id) and ($field_name=="qsearch") and ($col_struct=="READONLY"))
-                    {
-                        throw new AfwRuntimeException("ان شاء الله وجدناها");
-                    }*/
-                    /*
-                    if($field_name=="value") die("rafik-20240916-field_name=[$field_name], 
-                                                    <br> col_struct=[$col_struct], 
-                                                    <br> value_struct=$value_struct, 
-                                                    <br> object class is $objectClass,
-                                                    <br> calculated struct[$col_struct] = object-> $methodStructEval($field_name, $col_struct) 
-                                                    <br> result : struct[$col_struct] = ".$struct[$col_struct]);*/
                 }
             }
         }
 
-        return AfwStructureHelper::repareStructure($struct);
+        return $struct;
     }
 
 
