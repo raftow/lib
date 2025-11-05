@@ -23,7 +23,13 @@ if($Main_Page)
         include_once ("$file_module_path/module_config.php"); 
         require("$m_file_dir_name/afw_main_page.php"); 
         // die("before AfwMainPage::echoMainPag Main_Page=$Main_Page MODULE=$MODULE");
-        AfwMainPage::echoMainPage($MODULE, $Main_Page, $file_module_path);
+        $table = null;
+        if(isset($_REQUEST["cl"])) $table = strtolower($_REQUEST["cl"]); 
+        // $table = AfwStringHelper::classToTable($_REQUEST["cl"]);
+        if(!$table) $table = "all";
+
+        $options = AfwMainPage::getDefaultOptions($Main_Page, $MODULE, $table);
+        AfwMainPage::echoMainPage($MODULE, $Main_Page, $file_module_path,$options);
 
 }
 else throw new AfwRuntimeException("m.php : Main_Page not defined");
