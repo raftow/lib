@@ -31,6 +31,7 @@ class AfwFileUploader extends AFWRoot
 
         public static function completeUpload($file_title, $file_code, $file_arr, $afileManager=null, $allowed_exentions = null, $doc_type_id = 7, $default_user_id=0, $default_orgunit_id=0)
         {
+                $allowed_exentions_policy = "حسب سياسة شاشة رفع الوثائق";
                 $objme = AfwSession::getUserConnected();
                 if(($default_user_id) and (!$objme))
                 {
@@ -47,6 +48,7 @@ class AfwFileUploader extends AFWRoot
                 if(!$allowed_exentions)
                 {
                         $allowed_exentions = self::$options["default_allowed_exention_list"][0];   
+                        $allowed_exentions_policy = "حسب سياسة نوع الوثيقة";
                 }
 
                 $extension = strtolower(pathinfo($file_arr['name'], PATHINFO_EXTENSION));
@@ -60,7 +62,7 @@ class AfwFileUploader extends AFWRoot
                         if(!in_array(strtolower($extension), $allowed_exentions))
                         {
                                 return array("status" => "error", 
-                                             "message" => 'صيغة الملف '.$extension.' غير مسموح بها يسمح فقط بـ  :'.implode(",",$allowed_exentions),
+                                             "message" => 'صيغة الملف '.$extension.' غير مسموح بها يسمح فقط بـ  :'.implode(",",$allowed_exentions)." ".$allowed_exentions_policy,
                                              "afile_object" => null
                                         );
                         }
