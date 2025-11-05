@@ -309,7 +309,7 @@ class AfwStructureHelper extends AFWRoot
     public static function repareStructure($struct)
     {
         if ($struct['RETRIEVE']) {
-            $struct['SHOW'] = true;
+            $struct['SHOW'] = 'repare as RETRIEVE is true';
         }
 
         if ($struct['RETRIEVE_FGROUP']) {
@@ -412,13 +412,16 @@ class AfwStructureHelper extends AFWRoot
         //if($field_name == "nomcomplet") die("in getStructureOf($field_name) run of this->getMyDbStructure($return_type, $field_name) = ".var_export($struct,true));
         if (
             $object->editByStep and
-            !$object->disableTechnicalFieldsDefaultBehavior and
-            ($object->isAdminField($field_name) or
-                $object->isTechField($field_name))
+            (!$object->disableTechnicalFieldsDefaultBehavior) and
+            ($object->isAdminField($field_name) or $object->isTechField($field_name))
         ) {
-            $struct['SHOW'] = true;
-            if (!$struct['STEP-CUSTOMIZED']) $struct['STEP'] = 99;
-            $struct['EDIT'] = true;
+            $struct['SHOW'] = 'admin or technical field';
+            if (!$struct['STEP-CUSTOMIZED']) 
+            {
+                $struct['STEP'] = 99;
+                $struct['STEP_REPARE'] = 'because admin or technical field';
+            }
+            $struct['EDIT'] = 'admin or technical field';
             $struct['READONLY'] = 'admin or technical field';
         }
 
