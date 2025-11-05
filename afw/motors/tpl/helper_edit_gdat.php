@@ -3,7 +3,7 @@
 if(!$col_name) $col_name = "XXX";
             $js_cal_script = "
 <script>
-    \$(function() {
+    \$(document).ready(function() {
         \$(\"#$col_name\").datepicker({ 
                 showAnim: \"fold\",
                 dateFormat: \"yy-mm-dd\",
