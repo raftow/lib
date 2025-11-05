@@ -26,7 +26,7 @@ class AfwStructureHelper extends AFWRoot
     {
         $cl = get_class($object);
         $struct = null;
-        if (!$repare) $struct = self::$structuresArray[$cl][$field_name];
+        if (!$repare and $technical_repare) $struct = self::$structuresArray[$cl][$field_name];
         if (!$struct) {
             // if($field_name=="level_enum") throw new RuntimeException("rafik 240927");
             $orig_field_name = $field_name;
@@ -38,13 +38,13 @@ class AfwStructureHelper extends AFWRoot
                 false
             );
 
-            if($field_name == "birth_gdate") echo("$field_name dbg struct before repareMyStructure =".var_export($struct,true));
+            // if($field_name == "birth_gdate") echo("$field_name dbg struct before repareMyStructure =".var_export($struct,true));
 
             if ($struct and $repare) {
                 $struct = AfwStructureHelper::repareMyStructure($object, $struct, $field_name);
             }
 
-            if($field_name == "birth_gdate") echo("$field_name dbg struct before technicalRepareMyStructure =".var_export($struct,true));
+            // if($field_name == "birth_gdate") echo("$field_name dbg struct before technicalRepareMyStructure =".var_export($struct,true));
 
             if ($struct and $technical_repare) {
                 $struct = AfwStructureHelper::technicalRepareMyStructure($object, $struct, $field_name);
@@ -58,7 +58,7 @@ class AfwStructureHelper extends AFWRoot
                 }
             }
 
-            if (!$repare) self::$structuresArray[$cl][$field_name] = $struct;
+            if (!$repare and $technical_repare) self::$structuresArray[$cl][$field_name] = $struct;
         }
         return $struct;
     }
@@ -136,14 +136,14 @@ class AfwStructureHelper extends AFWRoot
                     $struct = $debugg_db_structure[$attribute];
                     // if(($table_name=="school") and ($attribute=="roomList")) die($table_name.", struct of $attribute (before repare) = ".var_export($struct,true)." debugg_db_structure = ".var_export($debugg_db_structure, true));
                     if ($struct and $repare) {
-                        $struct = AfwStructureHelper::repareStructure($struct);
+                        $struct = AfwStructureHelper::technicalRepareStructure($struct);
                     }
                     // if(($table_name=="school") and ($attribute=="roomList")) die($table_name.", struct of $attribute (after repare) = ".var_export($struct,true)." debugg_db_structure = ".var_export($debugg_db_structure, true));
                     return $struct;
                 } else {
                     foreach ($debugg_db_structure as $key => $struct) {
                         if (($key != 'all') and $repare) {
-                            $debugg_db_structure[$key] = AfwStructureHelper::repareStructure($struct);
+                            $debugg_db_structure[$key] = AfwStructureHelper::technicalRepareStructure($struct);
                         }
                     }
 
@@ -309,14 +309,14 @@ class AfwStructureHelper extends AFWRoot
     public static function structEnablesProperty($struct, $property)
     {
         if (isset($struct[$property])) {
-            if ($struct[$property] and AfwStringHelper::stringStartsWith($struct[$property], '::')) {
+            if ($struct[$property] and ((!is_string($struct[$property])) or (!AfwStringHelper::stringStartsWith($struct[$property], '::')))) {
                 return true;
             }
         }
         return false;
     }
 
-    public static function repareStructure($struct)
+    public static function technicalRepareStructure($struct)
     {
         if (self::structEnablesProperty($struct, 'RETRIEVE')) {
             $struct['SHOW'] = 'repare as RETRIEVE is true';
@@ -447,7 +447,7 @@ class AfwStructureHelper extends AFWRoot
         }
 
         
-        return AfwStructureHelper::repareStructure($struct);
+        return AfwStructureHelper::technicalRepareStructure($struct);
     }
 
     /**
