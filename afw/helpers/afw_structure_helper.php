@@ -50,7 +50,7 @@ class AfwStructureHelper extends AFWRoot
                 $struct = AfwStructureHelper::technicalRepareMyStructure($object, $struct, $field_name);
             }            
 
-            if($field_name == "birth_gdate") die("$field_name dbg struct after technicalRepareMyStructure =".var_export($struct,true));
+            // if($field_name == "birth_gdate") die("$field_name dbg struct after technicalRepareMyStructure =".var_export($struct,true));
 
             if (($struct["CATEGORY"] == "SHORTCUT") /* or (($struct["CATEGORY"]=="FORMULA") and ($field_name != "tech_notes"))*/) {
                 if (!$object->shouldBeCalculatedField($field_name)) {

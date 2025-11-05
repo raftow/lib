@@ -5512,7 +5512,7 @@ class AFWObject extends AFWRoot
             $desc = AfwStructureHelper::repareMyStructure($this, $desc, $attribute);
         }
 
-        return $desc['SHOW'];
+        return AfwStructureHelper::structEnablesProperty($desc, 'SHOW');
     }
 
     final public function stepOfAttribute($attribute, $desc = null)
