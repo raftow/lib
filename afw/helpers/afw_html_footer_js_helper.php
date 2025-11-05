@@ -280,7 +280,7 @@ $(document).ready(function(){
 ?>
 
     $(document).ready(function() {
-        $(".hasDatepicker").datepicker({ 
+        $(".hasCalendarsPicker").datepicker({ 
                 showAnim: "fold",
                 dateFormat: "yy-mm-dd",
                 changeMonth: true,
