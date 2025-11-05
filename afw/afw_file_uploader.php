@@ -8,7 +8,7 @@ class AfwFileUploader extends AFWRoot
 
         public static function getDocTypes($module)
         {
-                return AfwSession::config("$module-file_types", AfwSession::config("file_types", [10,13]));
+                return AfwSession::config("$module-file_types", AfwSession::config("file_types", [6,7,18,19,20,27,28,29,33,34]));
         }
         
 
