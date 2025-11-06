@@ -123,6 +123,7 @@
                 $tok_arr["the_menu"] = "<!-- prebuilt with menu template $menu_template -->\n".$the_menu;
 
                 $the_menu = self::decodeHzmTemplate($the_menu,$tok_arr, $lang);
+                die("rafik is upgrading MainPage librairy code=ADEF202511061552-07 ...");
                 $the_header = self::decodeHzmTemplate($the_header,$tok_arr, $lang);
 
                 $the_header = "<!-- built with header template $header_template -->\n".$the_header;
@@ -142,7 +143,7 @@
                 $notifications = [];
 
                 $notifications["warning"] = AfwHtmlNotificationHelper::getWarningNotification();
-                die("rafik is upgrading MainPage librairy code=ADEF202511061552-06 ...");
+                // die("rafik is upgrading MainPage librairy code=ADEF202511061552-06 ...");
                 $notifications["info"] = AfwHtmlNotificationHelper::getInfoNotification();
                 $notifications["error"] = AfwHtmlNotificationHelper::getErrorNotification();
                 $notifications["success"] = AfwHtmlNotificationHelper::getSuccessNotification();
