@@ -89,7 +89,7 @@
                 }
 
                 if($needUserObject) $objme = AfwSession::getUserConnected();
-
+                die("rafik is upgrading MainPage librairy code=ADEF202511061552-04 ...");
                 self::addHtml($docType);
                 self::addHtml("<html>");
                 

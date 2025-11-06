@@ -63,7 +63,7 @@ class AfwMainPage
         if(count($options)==0) $options = AfwMainPage::getDefaultOptions($Main_Page,$current_module);
         $curr_path = dirname(__FILE__);
         include("$curr_path/afw_main_start.php");
-        die("rafik is upgrading MainPage librairy code=ADEF202511061552-03 ...");
+        //die("rafik is upgrading MainPage librairy code=ADEF202511061552-03 ...");
         // die("echoMainPage($current_module, $Main_Page, $module_path) after afw_main_start lang=$lang");
         // die("echoMainPage 20241119  : after include($curr_path/afw_main_start.php) lang = ".$lang);
         echo self::renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);
