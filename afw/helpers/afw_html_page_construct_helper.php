@@ -234,8 +234,8 @@
 
         public static function renderMainSection($the_main_section_file, $arrRequest, $lang)
         {
-                $out_scr = self::executeMainSection($the_main_section_file, $arrRequest, $lang);
-                return $out_scr;
+                $html_output = self::executeMainSection($the_main_section_file, $arrRequest, $lang);
+                return $html_output;
         } 
 
         public static function executeMainSection($the_main_section_file, $arrRequest, $lang)
@@ -255,6 +255,7 @@
                                 throw new AfwRuntimeException("main section file [$the_main_section_file] not found");
                         }
                         foreach ($arrRequest as $col => $val) ${$col} = $val;
+                        global $out_scr;
                         include($the_main_section_file);
                         return $out_scr;
                 }
@@ -266,12 +267,12 @@
                 foreach ($arrRequest as $col => $val) ${$col} = $val;
                 ob_start();
                 self::executeMainSection($the_main_section_file, $arrRequest, $lang);
-                $out_scr = ob_get_clean();
-                if(!$out_scr)
+                $html_output = ob_get_clean();
+                if(!$html_output)
                 {
                         throw new AfwRuntimeException("file main section [$the_main_section_file] should return html it is called with arrRequest=<pre class='php'>".var_export($arrRequest,true)."</pre>");
                 }
-                return $out_scr;
+                return $html_output;
         } 
 
 

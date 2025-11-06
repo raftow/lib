@@ -33,10 +33,10 @@ if($tech_notes) $myObj->tech_notes = $tech_notes;
 $can = $objme->iCanDoOperationOnObjClass($myObj,"display");
 $iCanDoOperationLog = var_export($objme->iCanDoOperationLog,true);
 $iCanDoBFLog = var_export($objme->iCanDoBFLog,true);
-$out_scr = "<!--iCanDo : $iCanDoOperationLog  ,  $iCanDoBFLog -->";
+AfwMainPage::initOutput("<!--iCanDo : $iCanDoOperationLog  ,  $iCanDoBFLog -->");
 if(!$can)
 {
-    $out_scr .="<center>لا يوجد عندك صلاحية لرؤية هذه المعلومات</center>";  
+    AfwMainPage::addOutput("<center>لا يوجد عندك صلاحية لرؤية هذه المعلومات</center>");  
 }
 
 if($myObj->load($id))
@@ -44,20 +44,20 @@ if($myObj->load($id))
         $lv_obj =& $myObj;
         include_once("afw_save_last_visit.php");
         
-        //$out_scr .= "<table class='$class_table' cellpadding='4' cellspacing='3'><tr><td colspan='2' align='center' class='$class_bloc'>";
+        //AfwMainPage::addOutput( "<table class='$class_table' cellpadding='4' cellspacing='3'><tr><td colspan='2' align='center' class='$class_bloc'>";
 
         
 	if(AfwUmsPagHelper::userCanDoOperationOnObject($myObj,$objme,'display'))
-        {
-		$out_scr .= AfwShowHelper::showMinibox($myObj);
+    {
+		AfwMainPage::addOutput( AfwShowHelper::showMinibox($myObj));
 	}
 	else
-		$out_scr .= "لا يوجد عندك صلاحية لعرض هذا السجل";
-	//$out_scr .= "</td></tr></table>";
-        //$out_scr .= "</div></div></div>";
-        //$out_scr .= "</td></tr></table>";
+		AfwMainPage::addOutput( "لا يوجد عندك صلاحية لعرض هذا السجل");
+	//AfwMainPage::addOutput( "</td></tr></table>";
+        //AfwMainPage::addOutput( "</div></div></div>";
+        //AfwMainPage::addOutput( "</td></tr></table>";
 }
 else 
-	$out_scr .="<center><table><tr><td><img src='image/warning.png' alt=''></td><td class='error'>لا يمكن تحميل هذا السجل، يبدوا أنه غير موجود أو حصل خطأ أثناء التحميل</td></tr></table></center>";
+	AfwMainPage::addOutput("<center><table><tr><td><img src='image/warning.png' alt=''></td><td class='error'>لا يمكن تحميل هذا السجل، يبدوا أنه غير موجود أو حصل خطأ أثناء التحميل</td></tr></table></center>");
 
 ?>

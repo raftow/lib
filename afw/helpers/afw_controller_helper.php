@@ -33,7 +33,7 @@ class AfwControllerHelper
                                     need_ob=$need_ob,<br>
                                     options=".var_export($options,true).")");*/
 
-            $out_scr =  AfwHtmlPageConstructHelper::renderPage($lang, 
+            $html_output = AfwHtmlPageConstructHelper::renderPage($lang, 
                                     $header_template,
                                     $menu_template,
                                     $body_template,
@@ -43,17 +43,17 @@ class AfwControllerHelper
                                     $need_ob,
                                     $options                                    
             );
-            if (!$out_scr) {
-                $out_scr = "<div class='afw_tech'><center>";
+            if (!$html_output) {
+                $html_output = "<div class='afw_tech'><center>";
                 if (AfwSession::config("MODE_DEVELOPMENT", false)) {
                     //throw new AfwRuntimeException("<h1>no output from $Main_Page_path/$Main_Page</h1> ($module_dir_name == $file_dir_name)");
-                    $out_scr .= "<h1>no output from controller $controllerName : methodName=$methodName</h1>";
+                    $html_output .= "<h1>no output from controller $controllerName : methodName=$methodName</h1>";
                 }
-                $out_scr .= "<div style='padding:40px;text-align:center'><center><img src='../lib/images/page_not_found.png'><BR><BR><BR><BR><span class='error'>هذه الصفحة غير موجودة </span></center></div>";
-                $out_scr .= "</center></div>";
+                $html_output .= "<div style='padding:40px;text-align:center'><center><img src='../lib/images/page_not_found.png'><BR><BR><BR><BR><span class='error'>هذه الصفحة غير موجودة </span></center></div>";
+                $html_output .= "</center></div>";
             }
 
-            return $out_scr; 
+            return $html_output; 
             
         }
         else

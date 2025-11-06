@@ -1741,7 +1741,7 @@ $('#$showAsDataTable').DataTable( {
             }
             $currstep = 4;
             //if($object->test_rafik) die("test_rafik 400 before require $template (cl=$cl,id=$id) obj = ".var_export($obj,true));
-            
+            global $out_scr;
             include_once dirname(__FILE__) . '/../modes/' . $template; //."?currstep=".$currstep;
             //return ob_get_clean();
             return $out_scr;

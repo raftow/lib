@@ -95,7 +95,7 @@ class AfwDB extends AFWRoot
 
     public static function showError($msg, $call_method = "") 
     {
-        global $_POST, $out_scr, $MODE_BATCH;
+        global $_POST, $MODE_BATCH;
         
         if($MODE_BATCH) $br = "";
         else $br = "<br>";
@@ -128,7 +128,7 @@ class AfwDB extends AFWRoot
                     $message .= "</table><hr>";
             }
             
-            $message .= $out_scr;
+            $message .= AfwMainPage::getOutput();
             
             die($ob_html.$message);
             trigger_error($message, E_USER_ERROR);

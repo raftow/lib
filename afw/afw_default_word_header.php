@@ -6,13 +6,8 @@
         
         function myErrorHandler($errno, $errstr, $errfile, $errline) 
         {
-           global $out_scr;
-            //if($errno != 8)
-            {
-                $out_scr .= "<b>Custom error:</b> [$errno] $errstr<br>";
-                $out_scr .= " Error on line $errline in $errfile<br>";
-            }
-            
+                AfwMainPage::addOutput("<b>Custom error:</b> [$errno] $errstr<br>");
+                AfwMainPage::addOutput(" Error on line $errline in $errfile<br>");
         }
         
         include("afw_error_handler.php");

@@ -12,7 +12,7 @@ if(!$currmod)
         $currmod = AfwUrlManager::currentWebModule();
 }
 
-$out_scr = "";
+AfwMainPage::initOutput("");
 $objme = AfwSession::getUserConnected();
 if(!$objme) 
 {
@@ -69,23 +69,23 @@ if(!$context_action) $context_action = "view_only";
 
 $page_title = $obj->translate('QSEARCH',$lang,true)." ".$single_obj_name;
 
-$out_scr .= "<div id='page-content-wrapper' class='qsearch_page'>
+$html_output .= "<div id='page-content-wrapper' class='qsearch_page'>
                 <div class='row row-filter-$cl_short'>
                         <div class='qfilter col-sm-10 col-md-10 pb10'>
                                 <h1>$page_title</h1>";
 
 
-$out_scr .= '<form name="searchForm" id="searchForm" method="post" action="'."main.php".'">';
+$html_output .= '<form name="searchForm" id="searchForm" method="post" action="'."main.php".'">';
 
-$out_scr .= '<div class="row row-'.$cl_short.'">';
-$out_scr .=  AfwShowHelper::showObject($obj,"HTML", "afw_get_employee_template.php");
-$out_scr .= '</div>';
+$html_output .= '<div class="row row-'.$cl_short.'">';
+$html_output .=  AfwShowHelper::showObject($obj,"HTML", "afw_get_employee_template.php");
+$html_output .= '</div>';
 
-$out_scr .= '<input type="hidden" name="goon"  value="1"/>';
-$out_scr .= '<input type="hidden" name="context_action"  value="'.$context_action.'"/>';
-$out_scr .= '<input type="hidden" id="Main_Page" name="Main_Page" value="afw_get_employee.php"/>';
+$html_output .= '<input type="hidden" name="goon"  value="1"/>';
+$html_output .= '<input type="hidden" name="context_action"  value="'.$context_action.'"/>';
+$html_output .= '<input type="hidden" id="Main_Page" name="Main_Page" value="afw_get_employee.php"/>';
 
-$out_scr .= "<div class='btn-group' role='group' aria-label='...'>
+$html_output .= "<div class='btn-group' role='group' aria-label='...'>
                         <table>
                                 <tr>
                                         <td width='15px'>&nbsp;</td>
@@ -98,17 +98,17 @@ $out_scr .= "<div class='btn-group' role='group' aria-label='...'>
                 </div>
 ";                
 if($goon) {
-        $out_scr .= $search_result_html;
+        $html_output .= $search_result_html;
 }
-$out_scr .= '</form>';
+$html_output .= '</form>';
 
 
 
-$out_scr .= "</div>
+$html_output .= "</div>
        </div>
 </div>";  
 
-
+AfwMainPage::addOutput($html_output);
 
 ?>
 

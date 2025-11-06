@@ -83,9 +83,9 @@ $pk_audit_obj = $id10000+$version_obj;
 $update_date_obj = $myObj->getUpdateDate();
 $update_user_id_obj = $myObj->getUpdateUserId();
 $myObj_display = $myObj->getDisplay($lang);
-$out_scr = $header_bloc_audit;
-$out_scr .= "<br><h1>تقصي الأثر على التعديلات المجراة على السجل : </h2><br>";
-$out_scr .= "<span class='object_view'>$myObj_display</span><br>";
+AfwMainPage::initOutput($header_bloc_audit);
+AfwMainPage::addOutput("<br><h1>تقصي الأثر على التعديلات المجراة على السجل : </h2><br>");
+AfwMainPage::addOutput("<span class='object_view'>$myObj_display</span><br>");
 
 $audit_header["all"] = array('version' => "النسخة", 'update_date' => "تاريخ التعديل", 'update_auser_id' => "صاحب التعديل", 'update_context' => "سياق التعديل");
 $audit_data["all"] = array();
@@ -135,13 +135,13 @@ foreach($attribute_arr as $attribute)
         $audit_header["all"][$attribute] = $attribute_label;
         if($show!="merged")
         {
-                $out_scr .= "<br><h2>تقصي الأثر على الحقل :$attribute_label </h2>";
-                $out_scr .= "<div id='audit-$cl-$id-$attribute'>";
+                AfwMainPage::addOutput("<br><h2>تقصي الأثر على الحقل :$attribute_label </h2>");
+                AfwMainPage::addOutput("<div id='audit-$cl-$id-$attribute'>");
                 
                 list($html,$ids) = AfwShowHelper::tableToHtml($audit_data[$attribute], $audit_header[$attribute]);
-                $out_scr .= $html;
-                $out_scr .= "</div>";
-                $out_scr .= "<br><hr>";
+                AfwMainPage::addOutput($html);
+                AfwMainPage::addOutput("</div>");
+                AfwMainPage::addOutput("<br><hr>");
         }
 }
 
@@ -162,7 +162,7 @@ foreach($attribute_arr as $attribute)
             } 
             $step++;
             /*
-            $out_scr .= "<br>step $step : (attribute=$attribute, audit_key=$audit_key) audit_data_all = ".var_export($audit_data["all"],true); 
+            AfwMainPage::addOutput( "<br>step $step : (attribute=$attribute, audit_key=$audit_key) audit_data_all = ".var_export($audit_data["all"],true); 
             if((!$nodecode) and (!$decoded_attr_arr["all"][$audit_key][$attribute]))
             {
                     $myObj->simulSet($attribute, $audit_data["all"][$audit_key][$attribute]);
@@ -187,11 +187,11 @@ foreach($attribute_arr as $attribute)
 
 if(($show=="merged") or ($show=="all"))
 {
-        $out_scr .= "<div id='audit-$cl-$id-all'>";
+        AfwMainPage::addOutput("<div id='audit-$cl-$id-all'>");
         
         list($html,$ids) = AfwShowHelper::tableToHtml($audit_data["all"], $audit_header["all"]);
-        $out_scr .= $html;
-        $out_scr .= "</div>";
-        $out_scr .= "<br><hr>";
+        AfwMainPage::addOutput($html);
+        AfwMainPage::addOutput("</div>");
+        AfwMainPage::addOutput("<br><hr>");
 }
 

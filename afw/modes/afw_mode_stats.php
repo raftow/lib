@@ -20,7 +20,7 @@ if (! $currmod) {
 }
 
 if (! $cl) {
-    $out_scr .= 'Mode Stat : no defined class ';
+    AfwMainPage::addOutput( 'Mode Stat : no defined class ');
     exit;
 
 }
@@ -36,7 +36,7 @@ if (! $stc) {
 }
 
 if (! $stc) {
-    $out_scr .= 'Mode Stat : no defined stat code ';
+    AfwMainPage::addOutput( 'Mode Stat : no defined stat code ');
     exit;
 
 }
@@ -46,7 +46,7 @@ $stats_config = $myObj::$STATS_CONFIG[$stc];
 // die();
 
 if (! $stats_config) {
-    $out_scr .= 'Mode Stat : no defined stat config : ' . $stc;
+    AfwMainPage::addOutput( 'Mode Stat : no defined stat config : ' . $stc);
     exit;
 
 }
@@ -435,21 +435,21 @@ $settings_label = AfwLanguageHelper::translateKeyword("SETTINGS", $lang);
 $url_settings = "$url_settings&stc=$stc&stccl=$cl&stccurrmod=$currmod";
 $stats_title = str_replace('[seturl]', $url_settings, $stats_title);
 
-$out_scr .= "<h3 class='centertitle bluetitle'>$stats_title</h3>";
-$out_scr .= "<h3 class='righttitle specialtitle'><a target='_settings' href='$url_settings'>$settings_label</a></h3>";
+AfwMainPage::addOutput( "<h3 class='centertitle bluetitle'>$stats_title</h3>");
+AfwMainPage::addOutput( "<h3 class='righttitle specialtitle'><a target='_settings' href='$url_settings'>$settings_label</a></h3>");
 
-$out_scr .= "<br>
-<table class='display dataTable stats_table' cellspacing='3' cellpadding='4'>";
+AfwMainPage::addOutput( "<br>
+<table class='display dataTable stats_table' cellspacing='3' cellpadding='4'>");
 
 $class_xqe_col = "x";
 
 if ($config_stats_super_header) {
-    $out_scr .= "   <tr>";
+    AfwMainPage::addOutput( "   <tr>");
     foreach ($config_stats_super_header as $config_stats_super_header_col) {
         $config_stats_super_header_col_colspan = $config_stats_super_header_col["colspan"];
         $config_stats_super_header_col_title   = $myObj->translate($config_stats_super_header_col["title"], $lang);
 
-        $out_scr .= "      <th colspan='$config_stats_super_header_col_colspan' class='xqe_hf_$class_xqe_col xqe_super_header'>$config_stats_super_header_col_title</th>";
+        AfwMainPage::addOutput( "      <th colspan='$config_stats_super_header_col_colspan' class='xqe_hf_$class_xqe_col xqe_super_header'>$config_stats_super_header_col_title</th>");
         if ($class_xqe_col == "x") {
             $class_xqe_col = "z";
         } else {
@@ -457,7 +457,7 @@ if ($config_stats_super_header) {
         }
 
     }
-    $out_scr .= "   </tr>";
+    AfwMainPage::addOutput( "   </tr>");
 }
 
 $aligntd       = "center";
@@ -492,7 +492,7 @@ foreach ($stat_trad as $col => $info) {
 $thead_html .= "   </tr>
 </thead>";
 
-$out_scr .= $thead_html;
+AfwMainPage::addOutput( $thead_html);
 
 $odd_even                    = "odd";
 $nb_rows_before_repeat_thead = 0;
@@ -500,10 +500,10 @@ $nb_rows_before_repeat_thead = 0;
 foreach ($stats_data_arr as $stats_curr_row => $stats_data_item) {
     if ($nb_rows_before_repeat_thead > $repeat_titles_nb_rows) {
         $nb_rows_before_repeat_thead = 0;
-        $out_scr .= $thead_html;
+        AfwMainPage::addOutput( $thead_html);
     }
     $class_xqe_col = "x";
-    $out_scr .= "   <tr>";
+    AfwMainPage::addOutput( "   <tr>");
     foreach ($stat_trad as $col => $info) {
         $val_stat           = $stats_data_item[$col];
         $url_to_show_before = $url_to_show_arr[$col];
@@ -537,10 +537,10 @@ foreach ($stats_data_arr as $stats_curr_row => $stats_data_item) {
             $class_xqe_prop = "class='stats-td $bloc_col_end_class stats_$col'";
         }
 
-        $out_scr .= "      <td $class_xqe_prop align = '$aligntd'>$val_stat_show</td>";
+        AfwMainPage::addOutput( "      <td $class_xqe_prop align = '$aligntd'>$val_stat_show</td>");
 
     }
-    $out_scr .= "   </tr>";
+    AfwMainPage::addOutput( "   </tr>");
     if ($odd_even == "odd") {
         $odd_even = "even";
     } else {
@@ -552,11 +552,10 @@ foreach ($stats_data_arr as $stats_curr_row => $stats_data_item) {
 
 $class_xqe_col = "x";
 
-$out_scr .= "<tfoot>";
+AfwMainPage::addOutput( "<tfoot>");
 
 if ($global_footer_sum) {
-    $out_scr .= "
-<tr>";
+    AfwMainPage::addOutput("\n<tr>");
     foreach ($stat_trad as $col => $info) {
         if ($class_xqe_col == "x") {
             $class_xqe_col = "z";
@@ -583,21 +582,18 @@ if ($global_footer_sum) {
             $class_xqe_prop = "class = '$bloc_col_end_class stats_$col'";
         }
 
-        $out_scr .= "      <th $class_xqe_prop align = '$aligntd'>$footer_total_val</th>";
+        AfwMainPage::addOutput( "      <th $class_xqe_prop align = '$aligntd'>$footer_total_val</th>");
 
     }
 
-    $out_scr .= "   </tr>
+    AfwMainPage::addOutput( "   </tr>");
 
-    ";
-
-    // $out_scr .= "log = ".$footer_total_arr["logcount_pp_reg"];
+    // AfwMainPage::addOutput( "log = ".$footer_total_arr["logcount_pp_reg"];
 
 }
 
 if ($footer_titles) {
-    $out_scr .= "
-    <tr>";
+    AfwMainPage::addOutput( "\n<tr>");
     foreach ($stat_trad as $col => $info) {
         if ($class_xqe_col == "x") {
             $class_xqe_col = "z";
@@ -618,16 +614,14 @@ if ($footer_titles) {
             $class_xqe_prop = "class = '$bloc_col_end_class stats_$col'";
         }
 
-        $out_scr .= "      <th $class_xqe_prop align = '$aligntd'>$info</th>";
+        AfwMainPage::addOutput( "      <th $class_xqe_prop align = '$aligntd'>$info</th>");
 
     }
 
-    $out_scr .= "   </tr>
-
-        ";
+    AfwMainPage::addOutput( "   </tr>\n");
 }
-$out_scr .= "</tfoot>";
-$out_scr .= "</table>";
+AfwMainPage::addOutput( "</tfoot>");
+AfwMainPage::addOutput( "</table>");
 
 $stats_bottom_help_code = "stats." . $stc . ".help";
 
@@ -635,7 +629,7 @@ $stats_bottom_help = $myObj->translate($stats_bottom_help_code, $lang);
 $stats_bottom_help = $myObj->decodeText($stats_bottom_help, $prefix = "", $add_cotes = false, $sepBefore = "[ ", $sepAfter = " ]");
 
 if ($stats_bottom_help != $stats_bottom_help_code) {
-    $out_scr .= "<div class = 'stats_bottom_help'>$stats_bottom_help</div>";
+    AfwMainPage::addOutput( "<div class = 'stats_bottom_help'>$stats_bottom_help</div>");
 }
     
 $data_pie = [];
@@ -669,15 +663,15 @@ if ($show_pie == "FOOTER") {
         }
         $file_dir_name = dirname(__FILE__);
         $statsClass    = $cl;
-        // $out_scr = "<div class='var_export'> data_pie = ".var_export($data_pie, true)."</div>";
-        // $out_scr .= AfwChartHelper::pieChart($data_pie, "dipe", []);
+        // AfwMainPage::initOutput("<div class='var_export'> data_pie = ".var_export($data_pie, true)."</div>");
+        // AfwMainPage::addOutput( AfwChartHelper::pieChart($data_pie, "dipe", []);
         if($chart_mode=="IFRAME")
         {
-                $out_scr .= AfwChartHelper::modeChartInIFrame($chart_url);
+                AfwMainPage::addOutput( AfwChartHelper::modeChartInIFrame($chart_url));
         }
         else
         {
-                $out_scr .= "chart mode $chart_mode is not implemented";
+                AfwMainPage::addOutput( "chart mode $chart_mode is not implemented");
         }
         
         
@@ -685,6 +679,6 @@ if ($show_pie == "FOOTER") {
         ob_start();
         require_once "$file_dir_name/../graphic/afw_gpie_header.php";
         require_once "$file_dir_name/../graphic/afw_gpie_body.php";
-        $out_scr .= ob_get_clean();*/
+        AfwMainPage::addOutput( ob_get_clean();*/
     }
 }

@@ -5288,8 +5288,7 @@ class AFWObject extends AFWRoot
 
     public function setServerStructureObject($class, $id, $obj)
     {
-        global $_SERVER; //, $out_scr
-        //$out_scr .= "<br>\nsetted $class [$id] = ".var_export($obj,true);
+        global $_SERVER; 
         $_SERVER['STR-OBJECTS'][$class][$id] = $obj;
     }
 

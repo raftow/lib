@@ -59,14 +59,14 @@ foreach($themeArr as $theme => $themeValue)
 
         // die("rafik pbmon=$pbmon, _POST = ".var_export($_POST,true));
 
-        $out_scr = "<!--iCanDo : $iCanDoOperationLog  ,  $iCanDoBFLog -->";
+        AfwMainPage::initOutput("<!--iCanDo : $iCanDoOperationLog  ,  $iCanDoBFLog -->");
         if($myObj->load($id))
         {
                 die("rafik myObj = ".var_export($myObj,true));
                 $lv_obj =& $myObj;
                 include_once("afw_save_last_visit.php");
                 
-                //$out_scr .= "<table class='$class_table' cellpadding='4' cellspacing='3'><tr><td colspan='2' align='center' class='$class_bloc'>";
+                //AfwMainPage::addOutput( "<table class='$class_table' cellpadding='4' cellspacing='3'><tr><td colspan='2' align='center' class='$class_bloc'>";
 
                 if($pbmon)
                 {
@@ -123,14 +123,14 @@ foreach($themeArr as $theme => $themeValue)
                                 {
                                         $currstep_orig = "default";
                                         $currstep = 1;
-                                        //$out_scr .= $objme->showObjTech();
+                                        //AfwMainPage::addOutput( $objme->showObjTech();
                                 }    
-                                // $out_scr .= '<input type="hidden" name="oldcurrstep"   value="'.$currstep.'"/>';
+                                // AfwMainPage::addOutput( '<input type="hidden" name="oldcurrstep"   value="'.$currstep.'"/>';
                         }
                         else $currstep_orig = "defined";
                         
-                        // $out_scr .= '<input type="hidden" name="currstep"   value="'.$currstep.'"/>';
-                        // $out_scr .= '<input type="hidden" name="currstep_orig"   value="'.$currstep_orig.'"/>';
+                        // AfwMainPage::addOutput( '<input type="hidden" name="currstep"   value="'.$currstep.'"/>';
+                        // AfwMainPage::addOutput( '<input type="hidden" name="currstep_orig"   value="'.$currstep_orig.'"/>';
                         
                         $myObj->currentStep = $currstep;
                         // @todo-$objme->curStepFor[$myObj->getTableName()][$myObj->getId()] = $currstep;
@@ -138,17 +138,17 @@ foreach($themeArr as $theme => $themeValue)
                     }
                         
                     //if($myObj->test_rafik) die("rafik 3 ".var_export($myObj,true));
-                    $out_scr .= $myObj->showHTML();
+                    AfwMainPage::addOutput($myObj->showHTML());
                 }
                 else
-                        $out_scr .= "لا يوجد عندك صلاحية لعرض هذا السجل";
-                //$out_scr .= "</td></tr></table>";
-                //$out_scr .= "</div></div></div>";
-                //$out_scr .= "</td></tr></table>";
+                        AfwMainPage::addOutput("لا يوجد عندك صلاحية لعرض هذا السجل");
+                //AfwMainPage::addOutput( "</td></tr></table>";
+                //AfwMainPage::addOutput( "</div></div></div>";
+                //AfwMainPage::addOutput( "</td></tr></table>";
         }
         else 
         {
-                $out_scr .="<center><table><tr><td><img src='image/warning.png' alt=''></td><td class='error'>لا يمكن تحميل هذا السجل، يبدوا أنه غير موجود أو حصل خطأ أثناء التحميل</td></tr></table></center>";
+                AfwMainPage::addOutput("<center><table><tr><td><img src='image/warning.png' alt=''></td><td class='error'>لا يمكن تحميل هذا السجل، يبدوا أنه غير موجود أو حصل خطأ أثناء التحميل</td></tr></table></center>");
         }
 
 //if($myObj->test_rafik) die("rafik 2");

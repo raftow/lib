@@ -22,7 +22,7 @@ if(!$currmod)
 }
 else AfwAutoLoader::addModule($currmod);
 
-$out_scr = "";
+AfwMainPage::initOutput("");
 $objme = AfwSession::getUserConnected();
 if(!$objme) 
 {
@@ -377,13 +377,13 @@ else
 }
 
 
-$out_scr .= "<div id='page-content-wrapper' class='qsearch_page'>
+AfwMainPage::addOutput( "<div id='page-content-wrapper' class='qsearch_page'>
                 <div class='row row-filter-$cl_short'>
-                        <div class='qfilter col-sm-10 col-md-10 pb10'><h1>$page_title</h1>";
+                        <div class='qfilter col-sm-10 col-md-10 pb10'><h1>$page_title</h1>");
 if($page_sub_title)                        
 {
-        $out_scr .= "<h2>$page_sub_title</h2>";
-        $out_scr .= "<h3>$page_action_description</h3>";
+        AfwMainPage::addOutput( "<h2>$page_sub_title</h2>");
+        AfwMainPage::addOutput( "<h3>$page_action_description</h3>");
 }
 
 $list_of_ret_cols_all = array();
@@ -425,7 +425,7 @@ AfwQsearchMotor::select(
                                                 
 $input_select_list_of_ret_cols  = ob_get_clean();
 
-// $out_scr .= '<div align="center" class="aaa" style="width:81%;">';
+// AfwMainPage::addOutput( '<div align="center" class="aaa" style="width:81%;">';
 if(!$myClassInstance->isLourde())
 {
         $aclourde = '';
@@ -434,13 +434,13 @@ else
 {
         $aclourde = 'class="form_lourde"';
 }
-$out_scr .= '<form name="searchForm" id="searchForm" '.$aclourde.' method="post" action="'."main.php".'">';
+AfwMainPage::addOutput('<form name="searchForm" id="searchForm" '.$aclourde.' method="post" action="'."main.php".'">');
 $cl_short = strtolower(substr($myClassInstance->getMyClass(),0,10));
 
-$out_scr .= '<div class="row row-'.$cl_short.'">';
+AfwMainPage::addOutput( '<div class="row row-'.$cl_short.'">');
 
 
-$out_scr .= AfwShowHelper::showObject($myClassInstance,"HTML", "afw_template_default_qsearch.php");
+AfwMainPage::addOutput( AfwShowHelper::showObject($myClassInstance,"HTML", "afw_template_default_qsearch.php"));
 
 
 
@@ -471,16 +471,16 @@ if($action=="retrieve")
                    $select_view .= "<option value='$fgroupcode' $fgroup_selected>حقول $fgroupname</option>";   
                 }
                 $select_view .= "</select></div>";
-                $out_scr .= '<div class="col-md-'.$size_qsearch_text.'">                
+                AfwMainPage::addOutput( '<div class="col-md-'.$size_qsearch_text.'">                
                         <div class="form-group">                        
                                 <label>ماذا تريد أن ترى ؟</label>                        		
                                 '.$select_view.'		                
                         </div>        
-                </div>';
+                </div>');
         }
         else
         {
-                $out_scr .= "<input type='hidden' id='qsearchview' name='qsearchview' value='all' />";
+                AfwMainPage::addOutput( "<input type='hidden' id='qsearchview' name='qsearchview' value='all' />");
         }
 }
 else
@@ -504,30 +504,30 @@ else
                   <option value='' $fgroup_0_selected>فقط اظهار القائمة المعنية وعدد عناصرها </option>
                   <option value='exec' $fgroup_exec_selected>تنفيذ $methodTranslated</option>
                 </select></div>";
-        $out_scr .= '<div class="col-md-'.$size_qsearch_text.'">                
+        AfwMainPage::addOutput( '<div class="col-md-'.$size_qsearch_text.'">                
                 <div class="form-group">                        
                         <label>ماذا تريد أن تفعل ؟</label>                        		
                         '.$select_view.'		                
                 </div>        
-        </div>';
+        </div>');
 }
 
 
 
 
-$out_scr .= '</div>';
-$out_scr .= '<input type="hidden" name="datatable_on"  value="1"/>';
-//$out_scr .= '<input type="hidden" name="file_obj"  value="'.$file_obj.'"/>';
-$out_scr .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
-$out_scr .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
-$out_scr .= '<input type="hidden" name="action" value="'.$action.'"/>';
-$out_scr .= '<input type="hidden" name="action_params" value="'.$action_params.'"/>';
-$out_scr .= '<input type="hidden" name="r" value="'.$r.'"/>';
-$out_scr .= '<input type="hidden" name="limite"    value="0"/>' ;
+AfwMainPage::addOutput( '</div>');
+AfwMainPage::addOutput( '<input type="hidden" name="datatable_on"  value="1"/>');
+//AfwMainPage::addOutput( '<input type="hidden" name="file_obj"  value="'.$file_obj.'"/>');
+AfwMainPage::addOutput( '<input type="hidden" name="cl" value="'.$cl.'"/>');
+AfwMainPage::addOutput( '<input type="hidden" name="currmod" value="'.$currmod.'"/>');
+AfwMainPage::addOutput( '<input type="hidden" name="action" value="'.$action.'"/>');
+AfwMainPage::addOutput( '<input type="hidden" name="action_params" value="'.$action_params.'"/>');
+AfwMainPage::addOutput( '<input type="hidden" name="r" value="'.$r.'"/>');
+AfwMainPage::addOutput( '<input type="hidden" name="limite"    value="0"/>');
 
-$out_scr .= '<input type="hidden" id="Main_Page" name="Main_Page" value="afw_mode_qsearch.php"/>';
+AfwMainPage::addOutput( '<input type="hidden" id="Main_Page" name="Main_Page" value="afw_mode_qsearch.php"/>');
 /*
-$out_scr .= '<script type="text/javascript">
+AfwMainPage::addOutput( '<script type="text/javascript">
     function avancedSubmitToggle()
     {
         if($("#Main_Page").val()!="afw_mode_search.php") 
@@ -550,7 +550,7 @@ $out_scr .= '<script type="text/javascript">
     }
 </script>';
 */
-$out_scr .= '<script type="text/javascript">
+AfwMainPage::addOutput( '<script type="text/javascript">
         $(document).ready(function() {       
                 $("#qsearch-submit-form").click(function(){
                         $(".alert-dismissable").fadeOut().remove();
@@ -558,9 +558,9 @@ $out_scr .= '<script type="text/javascript">
                 });
         });
     
-</script>';
+</script>');
 
-$out_scr .= "<div class='btn-group' role='group' aria-label='...'>
+AfwMainPage::addOutput( "<div class='btn-group' role='group' aria-label='...'>
                 <table>
                 <tr>
                         <td width='15px'>&nbsp;</td>
@@ -570,7 +570,7 @@ $out_scr .= "<div class='btn-group' role='group' aria-label='...'>
                         <td width='15px'>&nbsp;</td>
                 </form>
                 
-";  
+");  
 
 // die("DBG-qsearch form ready");
 
@@ -578,55 +578,46 @@ $out_scr .= "<div class='btn-group' role='group' aria-label='...'>
 // @todo : is not working well so disabled
 if(false and $objme and $objme->isAdmin())
 {
-        $out_scr .= '<td><form name="adv_searchForm" id="adv_searchForm" method="post" action="'."main.php".'">';
-        $out_scr .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
-        $out_scr .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
-        $out_scr .= '<input type="hidden" name="get_cache"    value="1"/>' ;
-        $out_scr .= '<input type="hidden" id="Main_Page" name="Main_Page" value="afw_mode_search.php"/>';
-        $out_scr .= "<input id='submit-form' type='submit' name='submit' class='greenbtn smallbtn fright' value='".$myClassInstance->translate('SUBMIT-SEARCH-ADVANCED',$lang,true)."'>";
-        $out_scr .= '</form></td>';
+        AfwMainPage::addOutput( '<td><form name="adv_searchForm" id="adv_searchForm" method="post" action="'."main.php".'">');
+        AfwMainPage::addOutput( '<input type="hidden" name="cl" value="'.$cl.'"/>');
+        AfwMainPage::addOutput( '<input type="hidden" name="currmod" value="'.$currmod.'"/>');
+        AfwMainPage::addOutput( '<input type="hidden" name="get_cache"    value="1"/>');
+        AfwMainPage::addOutput( '<input type="hidden" id="Main_Page" name="Main_Page" value="afw_mode_search.php"/>');
+        AfwMainPage::addOutput( "<input id='submit-form' type='submit' name='submit' class='greenbtn smallbtn fright' value='".$myClassInstance->translate('SUBMIT-SEARCH-ADVANCED',$lang,true)."'>");
+        AfwMainPage::addOutput( '</form></td>');
 }
 else
 {
-        $out_scr .= '<td>&nbsp;</td>';
+        AfwMainPage::addOutput( '<td>&nbsp;</td>');
 }
-$out_scr .= '<td width="15px">&nbsp;</td>';
+AfwMainPage::addOutput( '<td width="15px">&nbsp;</td>');
 if($datatable_on)
 {
-        $out_scr .= '   <td>';
-        $out_scr .= "<a href=\"main.php?Main_Page=afw_mode_qsearch.php&cl=$cl&currmod=$currmod&resetcrit=1\"><div id='reset-form' type='submit' name='submit-reset-form' class='yellbtn smallbtn fright'>".$myClassInstance->translate('RESET-CRITEREA',$lang,true)."</div></a>";
-        $out_scr .= '   </td>';
+        AfwMainPage::addOutput( '   <td>');
+        AfwMainPage::addOutput( "<a href=\"main.php?Main_Page=afw_mode_qsearch.php&cl=$cl&currmod=$currmod&resetcrit=1\"><div id='reset-form' type='submit' name='submit-reset-form' class='yellbtn smallbtn fright'>".$myClassInstance->translate('RESET-CRITEREA',$lang,true)."</div></a>");
+        AfwMainPage::addOutput( '   </td>');
 }
 else
 {
-        $out_scr .= '<td>&nbsp;</td>';
+        AfwMainPage::addOutput( '<td>&nbsp;</td>');
 }                
-$out_scr .= "   <td width='15px'>&nbsp;</td>
+AfwMainPage::addOutput( "   <td width='15px'>&nbsp;</td>
                 </tr></table>
-        </div>";
-$out_scr .= "</center>";
-$out_scr .= '';
+        </div>");
+AfwMainPage::addOutput( "</center>");
+AfwMainPage::addOutput( '');
 
 
 
-$out_scr .= "</div>
+AfwMainPage::addOutput( "</div>
        </div>
-</div>";  
-$out_scr .= "<div id=\"search_result_div\">";
+</div>");  
+AfwMainPage::addOutput( "<div id=\"search_result_div\">");
 if($datatable_on) {
         
-        $out_scr .= $search_result_html;
-        $out_scr .= $out_scr_btns;
+        AfwMainPage::addOutput( $search_result_html);
+        AfwMainPage::addOutput( $out_scr_btns);
         
 }
-$out_scr .= "</div>";
-// $out_scr .= '</div>'; 
-
-	
-
-
-
-
-
-
-?>
+AfwMainPage::addOutput( "</div>");
+// AfwMainPage::addOutput( '</div>'); 

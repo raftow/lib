@@ -178,8 +178,8 @@ $nb_objs = count($qedit_objs);
 //print_r($myMainObject);
 //die();
 
-$out_scr = $header_bloc_edit;
-$out_scr .= '<form method="post" action="main.php">';
+AfwMainPage::initOutput($header_bloc_edit);
+AfwMainPage::addOutput( '<form method="post" action="main.php">');
 $myMainObject->updatedFromQEdit = $updo;
 $myMainObject->id_origin = $id_origin;
 $myMainObject->class_origin = $class_origin;
@@ -203,7 +203,7 @@ else
 // die("qedit myMainObject->fixm_array : ".var_export($myMainObject->fixm_array,true));
 if(($myMainObject) and (!$header_imbedded))
 {
-    $out_scr .=  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_header_qedit.php");        
+    AfwMainPage::addOutput(  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_header_qedit.php"));        
 }
 else 
 {/*
@@ -217,30 +217,30 @@ else
     }*/
     if($fixmtit) 
     {
-        $out_scr .= "<h3 class='bluetitle'><i></i>$fixmtit</h3>";
+        AfwMainPage::addOutput( "<h3 class='bluetitle'><i></i>$fixmtit</h3>");
     }
     else
     {
-        $out_scr .= "<h3 class='bluetitle'>وصف السجلات التي يتم العمل عليها</h3>";
+        AfwMainPage::addOutput( "<h3 class='bluetitle'>وصف السجلات التي يتم العمل عليها</h3>");
     }
-    $out_scr .= "<table class=\"display dataTable afwgrid\" style=\"width: 100%;\" cellspacing=\"3\" cellpadding=\"4\">";
+    AfwMainPage::addOutput( "<table class=\"display dataTable afwgrid\" style=\"width: 100%;\" cellspacing=\"3\" cellpadding=\"4\">");
 }
 
 if(!$nb_objs)
 {
     if($myMainObject->no_row_to_qedit_message)
-        $out_scr .= $myMainObject->no_row_to_qedit_message;
+        AfwMainPage::addOutput( $myMainObject->no_row_to_qedit_message);
     elseif($not_found_mess)
-        $out_scr .= $not_found_mess;
+        AfwMainPage::addOutput( $not_found_mess);
     else
-        $out_scr .= "لا يوجد سجلات";
+        AfwMainPage::addOutput( "لا يوجد سجلات");
     
 
 
 
     if(($myMainObject) and (!$header_imbedded))
     {
-        $out_scr .=  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_footer_qedit.php");
+        AfwMainPage::addOutput(  AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_footer_qedit.php"));
     }
 
     
@@ -265,7 +265,7 @@ else
             else $qedit_obj->odd_even = $tr_odd_even;    
             // AfwSession::hzmLog("الله المستعان ".date("H:i:s")." before AfwShowHelper::showObject( $qedit_obj ... afw_template_row_qedit.php)","FOOTER");  
             if(!$class_db_structure) $class_db_structure = $qedit_obj::getDbStructure($return_type="structure", $attribute = "all");
-            $out_scr .= AfwShowHelper::showObject($qedit_obj,"HTML", "afw_template_row_qedit.php", $color = false, $childrens = false, $decode = true, $virtuals = "", $indent = "", $data_template, $class_db_structure);
+            AfwMainPage::addOutput( AfwShowHelper::showObject($qedit_obj,"HTML", "afw_template_row_qedit.php", $color = false, $childrens = false, $decode = true, $virtuals = "", $indent = "", $data_template, $class_db_structure));
             $num++;
             if($tr_odd_even == "odd") $tr_odd_even = "even"; else $tr_odd_even = "odd";
             
@@ -283,9 +283,9 @@ else
         //AfwSession::hzmLog("الله المستعان ".date("H:i:s")." before AfwShowHelper::showObject( ... afw_template_footer_qedit.php)","FOOTER");        
         if($myMainObject)
         {
-            $out_scr .= AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_footer_qedit.php", $color = false, $childrens = false, $decode = true, $virtuals = "", $indent = "", $data_template);
+            AfwMainPage::addOutput( AfwShowHelper::showObject($myMainObject,"HTML", "afw_template_footer_qedit.php", $color = false, $childrens = false, $decode = true, $virtuals = "", $indent = "", $data_template));
         }
-        else $out_scr .= "</table>";
+        else AfwMainPage::addOutput( "</table>");
         
         
         
@@ -305,7 +305,7 @@ else
         }            
         
         
-        $out_scr .= '   <input type="hidden" name="id_origin"   value="'.$id_origin.'"/>
+        AfwMainPage::addOutput( '   <input type="hidden" name="id_origin"   value="'.$id_origin.'"/>
         		<input type="hidden" name="class_origin"   value="'.$class_origin.'"/>
         		<input type="hidden" name="module_origin"   value="'.$module_origin.'"/>
                 <input type="hidden" name="step_origin"   value="'.$step_origin.'"/>
@@ -329,8 +329,8 @@ else
         		<input type="hidden" name="popup"   value="'.$popup_2.'"/>
                         <input type="hidden" name="Main_Page" id="Main_Page" value="afw_handle_default_qedit.php"/>
         		
-        	    </form>';
-        $out_scr .= $footer_bloc_edit;
+        	    </form>');
+        AfwMainPage::addOutput( $footer_bloc_edit);
 
         $datatable_on = true;
         $mode_hijri_edit = true;

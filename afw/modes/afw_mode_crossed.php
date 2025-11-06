@@ -77,13 +77,13 @@ ici ce n'est pas applicable car on n'as pas d'insert de new records
 //$myMainObject->commonFields = $comfld;
 if(isset($copypast)) $myMainObject::$copypast = $copypast;
 
-$out_scr .= "<div class=\"filebox editcard\">";
+AfwMainPage::addOutput("<div class=\"filebox editcard\">");
 if($fixmtit) 
 {
-        $out_scr .= "<h3 class=\"bluetitle\"><i></i>$fixmtit</h3>";
+        AfwMainPage::addOutput("<h3 class=\"bluetitle\"><i></i>$fixmtit</h3>");
 }
-$out_scr .= '<form method="post" action="main.php">';
-$out_scr .= "<div class=\"hzm_table_container\">";
+AfwMainPage::addOutput('<form method="post" action="main.php">');
+AfwMainPage::addOutput("<div class=\"hzm_table_container\">");
 if($ids)
 {
         if($ids=="all") { 
@@ -257,11 +257,9 @@ if($nb_objs>0)
 
 
         
-        $out_scr .= $header_bloc_crossed;
-
-        $out_scr .= "<div class='hzm_table_container'>$html</div>";
-        
-        $out_scr .= "<div class='hzm_table_container'>";
+        AfwMainPage::addOutput($header_bloc_crossed);
+        AfwMainPage::addOutput("<div class='hzm_table_container'>$html</div>");
+        AfwMainPage::addOutput("<div class='hzm_table_container'>");
         if($myMainObject->return_mode)
         {
                  $submit_qedit_title_code = 'UPDATE_AND_RETURN';
@@ -273,8 +271,8 @@ if($nb_objs>0)
                  $submit_name = "submit";
         }
         $submit_title = $myMainObject->translate($submit_qedit_title_code,$lang,true);
-        $out_scr .=  "<input type=\"submit\" name=\"$submit_name\"  id=\"$submit_name\" class=\"$class_inputSubmit\" value=\"&nbsp; $submit_title &nbsp;\" width=\"200px\" height=\"30px\" />";
-        $out_scr .= "</div>";
+        AfwMainPage::addOutput("<input type=\"submit\" name=\"$submit_name\"  id=\"$submit_name\" class=\"$class_inputSubmit\" value=\"&nbsp; $submit_title &nbsp;\" width=\"200px\" height=\"30px\" />");
+        AfwMainPage::addOutput("</div>");
         
         
         $hid_sel_ = "";
@@ -287,7 +285,7 @@ if($nb_objs>0)
             }
         }            
         
-        $out_scr .= '   <input type="hidden" name="id_origin"   value="'.$id_origin.'"/>
+        AfwMainPage::addOutput('   <input type="hidden" name="id_origin"   value="'.$id_origin.'"/>
         		<input type="hidden" name="class_origin"   value="'.AfwStringHelper::hzmEncrypt($class_origin).'"/>
                         <input type="hidden" name="module_origin"   value="'.$module_origin.'"/>
                         <input type="hidden" name="step_origin"   value="'.$step_origin.'"/>
@@ -311,9 +309,9 @@ if($nb_objs>0)
                         <input type="hidden" name="pbmon"   value="'.$method_back.'"/>
                         <input type="hidden" name="Main_Page" id="Main_Page" value="afw_handle_default_crossed.php"/>
         		
-        	    ';
-        $out_scr .= $footer_bloc_crossed;
-        $out_scr .= "</div></form></div>";
+        	    ');
+        AfwMainPage::addOutput($footer_bloc_crossed);
+        AfwMainPage::addOutput("</div></form></div>");
         /*
         $datatable_on = true;
         $mode_hijri_edit = true;

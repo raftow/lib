@@ -27,7 +27,7 @@ if(!$currmod)
         $currmod = AfwUrlManager::currentWebModule();
 }
 
-$out_scr = "";
+AfwMainPage::initOutput("");
 
 $session_previous_search = AfwSession::getSessionVar("search-$cl");
 
@@ -220,11 +220,11 @@ else
 
 
 /*
-$out_scr .= "<center>";
-$out_scr .= "<div align=\"center\" class=\"$class_titre\" style=\"width:80%;font-size:32px\">".$title_mode_search."</div>";
-$out_scr .= "</center><br>";
+AfwMainPage::addOutput( "<center>";
+AfwMainPage::addOutput( "<div align=\"center\" class=\"$class_titre\" style=\"width:80%;font-size:32px\">".$title_mode_search."</div>";
+AfwMainPage::addOutput( "</center><br>";
 */
-$out_scr .= "<div class='container'>
+AfwMainPage::addOutput( "<div class='container'>
   <div class='panel-group'>
     <div class='panel panel-default'>
       <div class='panel-heading'>
@@ -232,7 +232,7 @@ $out_scr .= "<div class='container'>
         $critirea_of_search
       </div>
       <div id='collapse1' class='panel-collapse in collapse $collapse_show'>
-        <div class='search-panel'>";
+        <div class='search-panel'>");
 
 $list_of_ret_cols_all = array();
 $list_of_ret_cols_default = array();
@@ -273,31 +273,31 @@ AfwQsearchMotor::select(
                                                 
 $input_select_list_of_ret_cols  = ob_get_clean();
 
-// $out_scr .= '<div align="center" class="aaa" style="width:81%;">';
+// AfwMainPage::addOutput( '<div align="center" class="aaa" style="width:81%;">';
 
-$out_scr .= '<form name="searchForm" id="searchForm" method="post" action="'."main.php".'">';
+AfwMainPage::addOutput( '<form name="searchForm" id="searchForm" method="post" action="'."main.php".'">');
 
-$out_scr .= AfwShowHelper::showObject($my_class,"HTML", "afw_template_default_search.php");
-$out_scr .= '<table width="100%"><tr><td cellpadding="8px">';
-$out_scr .= '<input type="hidden" name="datatable_on"  value="1"/>';
-//$out_scr .= '<input type="hidden" name="file_obj"  value="'.$file_obj.'"/>';
-$out_scr .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
-$out_scr .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';
-$out_scr .= '<input type="hidden" name="limite"    value="0"/>' ;
+AfwMainPage::addOutput( AfwShowHelper::showObject($my_class,"HTML", "afw_template_default_search.php"));
+AfwMainPage::addOutput( '<table width="100%"><tr><td cellpadding="8px">');
+AfwMainPage::addOutput( '<input type="hidden" name="datatable_on"  value="1"/>');
+//AfwMainPage::addOutput( '<input type="hidden" name="file_obj"  value="'.$file_obj.'"/>');
+AfwMainPage::addOutput( '<input type="hidden" name="cl" value="'.$cl.'"/>');
+AfwMainPage::addOutput( '<input type="hidden" name="currmod" value="'.$currmod.'"/>');
+AfwMainPage::addOutput( '<input type="hidden" name="limite"    value="0"/>');
 
-$out_scr .= '<input type="hidden" name="Main_Page" value="afw_mode_search.php"/>';
-$out_scr .= '<div class="panel-heading">
+AfwMainPage::addOutput( '<input type="hidden" name="Main_Page" value="afw_mode_search.php"/>');
+AfwMainPage::addOutput( '<div class="panel-heading">
         <h4 class="panel-title">'.$my_class->translate('RETRIEVE-RESULT-ACTIONS',$lang,true).'
           
         </h4>
-      </div>';
+      </div>');
 
-$out_scr .= '<table  class="search-grid">';
-$out_scr .= '<tr class="altitem"><td width="15px">&nbsp;</td><td style="padding-top:22px">'.$my_class->translate('EXCEL-EXPORT',$lang,true).'</td><td>&nbsp;</td>
+AfwMainPage::addOutput( '<table  class="search-grid">');
+AfwMainPage::addOutput( '<tr class="altitem"><td width="15px">&nbsp;</td><td style="padding-top:22px">'.$my_class->translate('EXCEL-EXPORT',$lang,true).'</td><td>&nbsp;</td>
 <td style="width: 2%;padding-left: 8px;">
 <input type="checkbox" value="1"  id="genere_xls" name="genere_xls">
 </td>
-';
+');
 /*
 <div class="slideThree">
 	<input type="checkbox" value="1" id="genere_xls_0" name="genere_xls_0" />
@@ -305,42 +305,33 @@ $out_scr .= '<tr class="altitem"><td width="15px">&nbsp;</td><td style="padding-
 </div>
 */
 
-$out_scr .= '</tr>';
-$out_scr .= '<tr class="item"><td width="15px">&nbsp;</td><td style="padding-top:22px">'.$my_class->translate('RETRIEVE-COLS',$lang,true).'</td><td>&nbsp;</td>';
-$out_scr .= '<td style="padding-top: 10px;">'.$input_select_list_of_ret_cols.'</td>';
-$out_scr .= '</tr>';
+AfwMainPage::addOutput( '</tr>');
+AfwMainPage::addOutput( '<tr class="item"><td width="15px">&nbsp;</td><td style="padding-top:22px">'.$my_class->translate('RETRIEVE-COLS',$lang,true).'</td><td>&nbsp;</td>');
+AfwMainPage::addOutput( '<td style="padding-top: 10px;">'.$input_select_list_of_ret_cols.'</td>');
+AfwMainPage::addOutput( '</tr>');
 
-$out_scr .= '<tr class="altitem"><td width="15px">&nbsp;</td><td style="padding-top:9px"><input type="submit" class="bluebtn smallbtn fright" name="submit"  id="submit-form"   value="'.$my_class->translate('SUBMIT-SEARCH',$lang,true).' " /></td><td>&nbsp;</td><td>&nbsp;</td></tr>';
-$out_scr .= '</table>';
+AfwMainPage::addOutput( '<tr class="altitem"><td width="15px">&nbsp;</td><td style="padding-top:9px"><input type="submit" class="bluebtn smallbtn fright" name="submit"  id="submit-form"   value="'.$my_class->translate('SUBMIT-SEARCH',$lang,true).' " /></td><td>&nbsp;</td><td>&nbsp;</td></tr>');
+AfwMainPage::addOutput( '</table>');
 
-$out_scr .= '</td></tr></table>';
-// $out_scr .= '</div>';
-$out_scr .= "</center>";
-$out_scr .= '</form>';
+AfwMainPage::addOutput( '</td></tr></table>');
+// AfwMainPage::addOutput( '</div>');
+AfwMainPage::addOutput( "</center>");
+AfwMainPage::addOutput( '</form>');
 
-$out_scr .= "</div>
+AfwMainPage::addOutput( "</div>
       </div>
     </div>
   </div>
 </div>
 
 
-";  
-$out_scr .= "<div id=\"search_result_div\">";
+");  
+AfwMainPage::addOutput( "<div id=\"search_result_div\">");
 if($datatable_on) {
         
-        $out_scr .= $search_result_html;
-        $out_scr .= $out_scr_btns;
+        AfwMainPage::addOutput( $search_result_html);
+        AfwMainPage::addOutput( $out_scr_btns);
         
 }
-$out_scr .= "</div>";
-// $out_scr .= '</div>'; 
-
-	
-
-
-
-
-
-
-?>
+AfwMainPage::addOutput( "</div>");
+// AfwMainPage::addOutput( '</div>'); 

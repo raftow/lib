@@ -334,41 +334,41 @@ $fixm_list = implode(",",$fixm_list_arr);
 $nb_new_objs = $nb_objs - $real_nb_objs;
 if($nb_new_objs<0) $nb_new_objs = 0;
 
-$out_scr .= '<center>';
-$out_scr .= '<table cellspacing="3" cellpadding="1">';
-$out_scr .= "<tr><td align='center'><br>تم حفظ $updated_nb_objs من السجلات بنجاح<br><br></td></tr>";
+AfwMainPage::addOutput( '<center>';
+AfwMainPage::addOutput( '<table cellspacing="3" cellpadding="1">';
+AfwMainPage::addOutput( "<tr><td align='center'><br>تم حفظ $updated_nb_objs من السجلات بنجاح<br><br></td></tr>";
 
-$out_scr .= '<tr>';
-$out_scr .= '<td><br>'; 
-$out_scr .= '<form name="editForm" id="editForm" method="post" action="main.php">';
-$out_scr .= '<input type="hidden" name="Main_Page" value="afw_mode_search.php"/>';
-$out_scr .= '<input type="hidden" name="cl" value="'.$class.'"/>';
-$out_scr .= '<input type="submit" class="yellowbtn btn fright" name="submit"  id="submit-form" value="'.$other _search.'" />';
-$out_scr .= '</form><br>';
-$out_scr .= '</td>';
-$out_scr .= '</tr>';
+AfwMainPage::addOutput( '<tr>';
+AfwMainPage::addOutput( '<td><br>'; 
+AfwMainPage::addOutput( '<form name="editForm" id="editForm" method="post" action="main.php">';
+AfwMainPage::addOutput( '<input type="hidden" name="Main_Page" value="afw_mode_search.php"/>';
+AfwMainPage::addOutput( '<input type="hidden" name="cl" value="'.$class.'"/>';
+AfwMainPage::addOutput( '<input type="submit" class="yellowbtn btn fright" name="submit"  id="submit-form" value="'.$other _search.'" />';
+AfwMainPage::addOutput( '</form><br>';
+AfwMainPage::addOutput( '</td>';
+AfwMainPage::addOutput( '</tr>';
 
-$out_scr .= '<tr>';
-$out_scr .= '<td><br>'; 
-$out_scr .= '<form name="editForm" id="editForm" method="post" action="main.php">';
-$out_scr .= '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
-$out_scr .= '<input type="hidden" name="cl" value="'.$class.'"/>';
-$out_scr .= '<input type="hidden" name="newo" value="3"/>';
-$out_scr .= '<input type="hidden" name="limit" value="30"/>';
-$out_scr .= '<input type="hidden" name="ids" value="all"/>';
-$out_scr .= '<input type="hidden" name="fixmdisable" value="1"/>';
-$out_scr .= '<input type="hidden" name="fixm" value="'.$fixm.'"/>';
+AfwMainPage::addOutput( '<tr>';
+AfwMainPage::addOutput( '<td><br>'; 
+AfwMainPage::addOutput( '<form name="editForm" id="editForm" method="post" action="main.php">';
+AfwMainPage::addOutput( '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
+AfwMainPage::addOutput( '<input type="hidden" name="cl" value="'.$class.'"/>';
+AfwMainPage::addOutput( '<input type="hidden" name="newo" value="3"/>';
+AfwMainPage::addOutput( '<input type="hidden" name="limit" value="30"/>';
+AfwMainPage::addOutput( '<input type="hidden" name="ids" value="all"/>';
+AfwMainPage::addOutput( '<input type="hidden" name="fixmdisable" value="1"/>';
+AfwMainPage::addOutput( '<input type="hidden" name="fixm" value="'.$fixm.'"/>';
 
 foreach($fixm_array as $fixm_col => $fixm_val) {
-       if($fixm_col) $out_scr .= '<input type="hidden" name="sel_'.$fixm_col.'" value="'.$fixm_val.'"/>';
+       if($fixm_col) AfwMainPage::addOutput( '<input type="hidden" name="sel_'.$fixm_col.'" value="'.$fixm_val.'"/>';
 }
 
-$out_scr .= '<input type="submit" class="bluebtn btn fright" name="submit"  id="submit-form" value="'.$back _to_last_form.'" />';
-$out_scr .= '</form><br>';
-$out_scr .= '</td>';
-$out_scr .= '</tr>';
+AfwMainPage::addOutput( '<input type="submit" class="bluebtn btn fright" name="submit"  id="submit-form" value="'.$back _to_last_form.'" />';
+AfwMainPage::addOutput( '</form><br>';
+AfwMainPage::addOutput( '</td>';
+AfwMainPage::addOutput( '</tr>';
 
-$out_scr .= '</table>';
-$out_scr .= '</center>'; */
+AfwMainPage::addOutput( '</table>';
+AfwMainPage::addOutput( '</center>'; */
 
 ?>

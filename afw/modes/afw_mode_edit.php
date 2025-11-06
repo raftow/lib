@@ -41,7 +41,7 @@ $development_mode = AfwSession::config("MODE_DEVELOPMENT", false);
 if($tech_notes) $myObj->debugg_tech_notes = [$tech_notes];  
 $inited_cols = array();
 
-$out_scr = "";
+AfwMainPage::initOutput("");
 if(!$id and $key) $id = "key-$key";
 // die("rafik before object load id=$id , method_back=$method_back : => _POST = ".var_export($_POST,true));
 if($id)
@@ -98,7 +98,7 @@ if($id)
 
         if($err or $war or $inf)
         {
-            $out_scr .= AfwHtmlHelper::showNotification($err, $war, $inf);
+            AfwMainPage::addOutput(AfwHtmlHelper::showNotification($err, $war, $inf));
         }
     }
 }
@@ -144,7 +144,7 @@ if(!$can)
         $deniedEditMessage = $myObj->getDeniedEditMessage($lang);
         if($deniedEditMessage)
         {
-                $out_scr .= $deniedEditMessage;
+                AfwMainPage::addOutput($deniedEditMessage);
                 exit(); 
         }
         else
@@ -200,14 +200,14 @@ else
     //die("filled object :".var_export($myObj,true));
 }
 
-$out_scr .= $header_bloc_edit;
+AfwMainPage::addOutput($header_bloc_edit);
 if($die_message)
 {
-    $out_scr .= "<div class='die_div'>".$die_message."</div>";
+    AfwMainPage::addOutput("<div class='die_div'>".$die_message."</div>");
 }
 else
 {
-    $out_scr .= '<form id="edit_form" name="edit_form" method="post" action="main.php" enctype="multipart/form-data" >';
+    AfwMainPage::addOutput('<form id="edit_form" name="edit_form" method="post" action="main.php" enctype="multipart/form-data" >');
 
 
 
@@ -242,22 +242,22 @@ else
                 {
                     $currstep_orig = "default";
                     $currstep = 1;
-                    //$out_scr .= $objme->showObjTech();
+                    //AfwMainPage::addOutput( $objme->showObjTech();
                 }    
-                $out_scr .= '<input type="hidden" name="oldcurrstep"   value="'.$currstep.'"/>';
+                AfwMainPage::addOutput('<input type="hidden" name="oldcurrstep"   value="'.$currstep.'"/>');
         }
         else $currstep_orig = "defined";
         
-        $out_scr .= '<input type="hidden" name="currstep"   value="'.$currstep.'"/>';
-        $out_scr .= '<input type="hidden" name="currstep_orig"   value="'.$currstep_orig.'"/>';
+        AfwMainPage::addOutput('<input type="hidden" name="currstep"   value="'.$currstep.'"/>');
+        AfwMainPage::addOutput('<input type="hidden" name="currstep_orig"   value="'.$currstep_orig.'"/>');
         
         $myObj->currentStep = $currstep;
         // @todo-$objme->curStepFor[$myObj->getTableName()][$myObj->getId()] = $currstep;
         
     }
-    $out_scr .= $myObj->showHTML("afw_template_default_edit.php", array("inited_cols"=>$inited_cols));
+    AfwMainPage::addOutput($myObj->showHTML("afw_template_default_edit.php", array("inited_cols"=>$inited_cols)));
 
-    $out_scr .= '   <input type="hidden" name="pbmon"     value="1"/>
+    AfwMainPage::addOutput('   <input type="hidden" name="pbmon"     value="1"/>
             <input type="hidden" name="file_obj"   value="_'.$cl.'"/>
             <input type="hidden" name="class_obj"  value="'.$cl.'"/>
             <input type="hidden" name="class_parent"  value="'.$clp.'"/>
@@ -274,8 +274,8 @@ else
                 $().ready(function() {
                     \$(\"#edit_form\").validate();
                 });
-                </script>";
-    $out_scr .= $footer_bloc_edit;
+                </script>");
+    AfwMainPage::addOutput($footer_bloc_edit);
     $mode_hijri_edit = true;	    
 }
 ?>
