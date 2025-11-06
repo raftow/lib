@@ -16,7 +16,7 @@ class AfwMainPage
     public static function addOutput($html)
     {
         global $out_scr;
-        if(AfwStringHelper::stringEndsWith($html,"id")) throw new AfwRuntimeException("rafik is upgrading lib module");
+        // if(AfwStringHelper::stringEndsWith($html,"id")) throw new AfwRuntimeException("rafik is upgrading lib module");
         $out_scr .= $html;
     }
 
