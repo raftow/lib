@@ -871,6 +871,3 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                 echo "<!-- script js $md / $file_js not found in module/js path $file_js_path -->";
         }
 
-
-
-        ?>

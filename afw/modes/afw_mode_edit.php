@@ -1,4 +1,4 @@
-id<?php
+<?php
 //die("rafik before anything $currstep = $currstep");
 require_once(dirname(__FILE__)."/../../../config/global_config.php");
 // here was old const php
@@ -278,4 +278,3 @@ else
     AfwMainPage::addOutput($footer_bloc_edit);
     $mode_hijri_edit = true;	    
 }
-?>

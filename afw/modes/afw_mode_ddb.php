@@ -291,4 +291,3 @@ else
         $datatable_on = true;
         $mode_hijri_edit = true;
 }        	    
-?>

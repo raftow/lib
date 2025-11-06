@@ -737,5 +737,3 @@ function showPublicMethodButton($obj, $pbm_code, $pbm_item, $lang)
         }
 
 }
-
-?>

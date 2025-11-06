@@ -134,12 +134,12 @@
                 if($need_ob)
                 {
                         $the_section .= self::obRenderMainSection($the_main_section_file, $arrRequest, $lang);
-                        die("rafik is upgrading MainPage librairy code=ADEF202511061552-10 after the_section .= self::obRenderMainSection($the_main_section_file, arrRequest, $lang)");
+                        // die("rafik is upgrading MainPage librairy code=ADEF202511061552-10 after the_section .= self::obRenderMainSection($the_main_section_file, arrRequest, $lang)");
                 }
                 else
                 {
                         $the_section .= self::renderMainSection($the_main_section_file, $arrRequest, $lang);
-                        die("rafik is upgrading MainPage librairy code=ADEF202511061552-10 after the_section .= self::renderMainSection($the_main_section_file, arrRequest, $lang)");
+                        // die("rafik is upgrading MainPage librairy code=ADEF202511061552-10 after the_section .= self::renderMainSection($the_main_section_file, arrRequest, $lang)");
                 }
 
                 $notifications = [];

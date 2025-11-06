@@ -759,4 +759,3 @@ if ($genere_xls) {
 
 
 $search_result_html = ob_get_clean();
-?>

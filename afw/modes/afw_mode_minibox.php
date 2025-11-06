@@ -59,5 +59,3 @@ if($myObj->load($id))
 }
 else 
 	AfwMainPage::addOutput("<center><table><tr><td><img src='image/warning.png' alt=''></td><td class='error'>لا يمكن تحميل هذا السجل، يبدوا أنه غير موجود أو حصل خطأ أثناء التحميل</td></tr></table></center>");
-
-?>

@@ -43,6 +43,3 @@ AfwMainPage::addOutput( '</td></tr></table>';
 //header("Location: main.php?Main_Page=afw_mode_search.php&cl=$class&lastsearch=true");
 //header("Location: main.php");
 */
-?>
-
-

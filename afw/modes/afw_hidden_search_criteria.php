@@ -27,5 +27,3 @@ foreach($hidden_inputs_arr as $col => $input_h)
    echo $input_h;
 }
 
-
-?>

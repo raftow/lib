@@ -154,8 +154,3 @@ else AfwSession::pushInformation(AfwLanguageHelper::translateKeyword("no_update_
 
 $ids = implode(",",$list_objs_ids);
 include("afw_mode_ddb.php");
-
-
-
-
-?>

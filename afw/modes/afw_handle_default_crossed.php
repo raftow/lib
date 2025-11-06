@@ -224,7 +224,3 @@ else
 {
     include("afw_mode_crossed.php");
 }
-
-
-
-?>

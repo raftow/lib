@@ -370,5 +370,3 @@ AfwMainPage::addOutput( '</tr>';
 
 AfwMainPage::addOutput( '</table>';
 AfwMainPage::addOutput( '</center>'; */
-
-?>

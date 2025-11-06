@@ -215,8 +215,4 @@ foreach($class_db_structure as $nom_col => $desc)
 <script src="./js/<?=$file_js?>"></script>
 <?php
    }
-?>                
-
-
-
-
+?>

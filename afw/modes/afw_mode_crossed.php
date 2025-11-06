@@ -317,4 +317,3 @@ if($nb_objs>0)
         $mode_hijri_edit = true;
         */
 }        	    
-?>

@@ -94,4 +94,3 @@ if($MODE_DEVELOPMENT or AfwSession::getSessionVar("user_golden"))
 <?php
 include("$module_dir_name/../../hzm/web/hzm_basic_footer.php");
 
-?>

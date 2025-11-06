@@ -19,5 +19,3 @@
         return true;
  }
 */
-
-?>

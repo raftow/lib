@@ -155,4 +155,3 @@ foreach($themeArr as $theme => $themeValue)
 
 //AFWDebugg::print_str('fin afw-mode-dipslay');
 }
-?>

@@ -205,5 +205,3 @@ foreach($class_db_structure as $nom_col => $desc)
         ?>
 </table>
 </td></tr></table>
-
-
