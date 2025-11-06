@@ -89,7 +89,7 @@
                 }
 
                 if($needUserObject) $objme = AfwSession::getUserConnected();
-                die("rafik is upgrading MainPage librairy code=ADEF202511061552-04 ...");
+                // die("rafik is upgrading MainPage librairy code=ADEF202511061552-04 ...");
                 self::addHtml($docType);
                 self::addHtml("<html>");
                 
@@ -105,7 +105,7 @@
 
                 self::addHtml("<body class=\"hzm_body $f7c $pagecode_splitted\" dir=\"$dir\" >");
 
-                
+                die("rafik is upgrading MainPage librairy code=ADEF202511061552-05 ...");
                 if(($header_template!="no-header") and (!$options["disable_header"]) and (!AfwSession::hasOption("FULL_SCREEN")))
                 {
                         $the_header = AfwHtmlMenuHelper::renderHeader($header_template, $lang, $role, $tpl_path, $selected_menu, $options);
