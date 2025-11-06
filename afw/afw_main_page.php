@@ -1,23 +1,32 @@
 <?php
 class AfwMainPage
 {
-
-    public static function initOutput($html)
+    public static function resetOutput()
     {
         global $out_scr;
-        $out_scr = ($html);
+        $out_scr = "";
+    }
+    
+    public static function initOutput($html)
+    {        
+        self::resetOutput();
+        self::addOutput($html);
     }
 
     public static function addOutput($html)
     {
         global $out_scr;
+        if(AfwStringHelper::stringEndsWith($html,"id")) throw new AfwRuntimeException("rafik is upgrading lib module");
         $out_scr .= $html;
     }
 
-    public static function getOutput()
+    public static function getOutput($reset=false)
     {
-        global $out_scr;
-        return $out_scr;
+        global $out_scr;        
+        if(!$reset) return $out_scr;
+        $return =  $out_scr;
+        self::resetOutput();
+        return $return;
     }
 
 
