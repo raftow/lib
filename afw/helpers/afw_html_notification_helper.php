@@ -25,7 +25,7 @@ class AfwHtmlNotificationHelper {
 
     private static function getNotification($type, $pre_message)
     {
-        die("rafik is upgrading MainPage librairy code=ADEF202511061552-10 ...");
+        //die("rafik is upgrading MainPage librairy code=ADEF202511061552-10 ...");
         $notification_message = "";        
         if(AfwSession::getSessionVar($type))
         {
