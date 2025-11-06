@@ -125,7 +125,7 @@
                 $the_menu = self::decodeHzmTemplate($the_menu,$tok_arr, $lang);
                 // die("rafik is upgrading MainPage librairy code=ADEF202511061552-07 ...");
                 $the_header = self::decodeHzmTemplate($the_header,$tok_arr, $lang);
-                die("rafik is upgrading MainPage librairy code=ADEF202511061552-09 after the_header = self::decodeHzmTemplate($the_header,$tok_arr, $lang) ...");
+                //die("rafik is upgrading MainPage librairy code=ADEF202511061552-09 after the_header = self::decodeHzmTemplate($the_header,$tok_arr, $lang) ...");
                 $the_header = "<!-- built with header template $header_template -->\n".$the_header;
                 $the_menu = "<!-- built with menu template $menu_template -->\n".$the_menu;
 
@@ -134,14 +134,16 @@
                 if($need_ob)
                 {
                         $the_section .= self::obRenderMainSection($the_main_section_file, $arrRequest, $lang);
+                        die("rafik is upgrading MainPage librairy code=ADEF202511061552-10 after the_section .= self::obRenderMainSection($the_main_section_file, arrRequest, $lang)");
                 }
                 else
                 {
                         $the_section .= self::renderMainSection($the_main_section_file, $arrRequest, $lang);
+                        die("rafik is upgrading MainPage librairy code=ADEF202511061552-10 after the_section .= self::renderMainSection($the_main_section_file, arrRequest, $lang)");
                 }
 
                 $notifications = [];
-                die("rafik is upgrading MainPage librairy code=ADEF202511061552-08 ...");
+                // die("rafik is upgrading MainPage librairy code=ADEF202511061552-08 ...");
                 $notifications["warning"] = AfwHtmlNotificationHelper::getWarningNotification();
                 // die("rafik is upgrading MainPage librairy code=ADEF202511061552-06 ...");
                 $notifications["info"] = AfwHtmlNotificationHelper::getInfoNotification();
