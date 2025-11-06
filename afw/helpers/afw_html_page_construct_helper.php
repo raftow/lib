@@ -141,7 +141,7 @@
                 }
 
                 $notifications = [];
-                die("rafik is upgrading MainPage librairy code=ADEF202511061552-08 ...");
+                // die("rafik is upgrading MainPage librairy code=ADEF202511061552-08 ...");
                 $notifications["warning"] = AfwHtmlNotificationHelper::getWarningNotification();
                 // die("rafik is upgrading MainPage librairy code=ADEF202511061552-06 ...");
                 $notifications["info"] = AfwHtmlNotificationHelper::getInfoNotification();
