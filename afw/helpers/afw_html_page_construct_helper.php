@@ -125,7 +125,7 @@
                 $the_menu = self::decodeHzmTemplate($the_menu,$tok_arr, $lang);
                 // die("rafik is upgrading MainPage librairy code=ADEF202511061552-07 ...");
                 $the_header = self::decodeHzmTemplate($the_header,$tok_arr, $lang);
-
+                die("rafik is upgrading MainPage librairy code=ADEF202511061552-09 after the_header = self::decodeHzmTemplate($the_header,$tok_arr, $lang) ...");
                 $the_header = "<!-- built with header template $header_template -->\n".$the_header;
                 $the_menu = "<!-- built with menu template $menu_template -->\n".$the_menu;
 

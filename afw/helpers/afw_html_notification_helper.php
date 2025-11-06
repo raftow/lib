@@ -25,7 +25,7 @@ class AfwHtmlNotificationHelper {
 
     private static function getNotification($type, $pre_message)
     {
-        //die("rafik is upgrading MainPage librairy code=ADEF202511061552-10 ...");
+        //
         $notification_message = "";        
         if(AfwSession::getSessionVar($type))
         {
@@ -39,7 +39,7 @@ class AfwHtmlNotificationHelper {
             }            
             $notification_message .= AfwSession::pullSessionVar($type,"header"); 
         }
-        // die("rafik is upgrading MainPage librairy code=ADEF202511061552-09 ...");
+        // 
         if($notification_message) return self::prepareNofication($notification_message, $type);
         else return "";
     }
