@@ -23,8 +23,8 @@
                 global $immediate_output, $immediate_output_nb;
                 if($immediate_output) 
                 {  
-                        echo $return; 
                         $immediate_output_nb++; 
+                        echo "im.output($immediate_output_nb)=".$return;                         
                         if($immediate_output_nb>MAX_OUTPUT) throw new AfwRuntimeException("MAX OUTPUT REACHED");
                 }
         }

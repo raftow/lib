@@ -54,4 +54,3 @@ else
 {
         echo "<div class='error'>No account object found, You need to login before</div>";
 }
-?>
