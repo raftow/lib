@@ -105,7 +105,7 @@
 
                 self::addHtml("<body class=\"hzm_body $f7c $pagecode_splitted\" dir=\"$dir\" >");
 
-                die("rafik is upgrading MainPage librairy code=ADEF202511061552-05 ...");
+                // die("rafik is upgrading MainPage librairy code=ADEF202511061552-05 ...");
                 if(($header_template!="no-header") and (!$options["disable_header"]) and (!AfwSession::hasOption("FULL_SCREEN")))
                 {
                         $the_header = AfwHtmlMenuHelper::renderHeader($header_template, $lang, $role, $tpl_path, $selected_menu, $options);
@@ -142,6 +142,7 @@
                 $notifications = [];
 
                 $notifications["warning"] = AfwHtmlNotificationHelper::getWarningNotification();
+                die("rafik is upgrading MainPage librairy code=ADEF202511061552-06 ...");
                 $notifications["info"] = AfwHtmlNotificationHelper::getInfoNotification();
                 $notifications["error"] = AfwHtmlNotificationHelper::getErrorNotification();
                 $notifications["success"] = AfwHtmlNotificationHelper::getSuccessNotification();
