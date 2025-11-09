@@ -146,6 +146,7 @@ class AfwLoadHelper extends AFWRoot
                     $desc['WHERE'] = $where;
                     $desc['ORDERBY'] = $order_by;
                     list($sql,$listeRep) = self::loadManyFollowingStructureAndValue($obj,$desc,$val_to_keep, null, $dropdown, $optim);
+                    $obj->debugg_sql_for_loadmany = $sql;
                     $case = "self::loadManyFollowingStructureAndValue from : cl=$obj_cl, where=$where, order_by=$order_by, val_to_keep=$val_to_keep ";
                     
                 }
