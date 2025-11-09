@@ -148,7 +148,7 @@ class AfwLoadHelper extends AFWRoot
                     list($sql,$listeRep) = self::loadManyFollowingStructureAndValue($obj,$desc,$val_to_keep, null, $dropdown, $optim);
                     $obj->debugg_sql_for_loadmany = $sql;
                     $case = "self::loadManyFollowingStructureAndValue from : cl=$obj_cl, where=$where, order_by=$order_by, val_to_keep=$val_to_keep ";
-                    
+                    if($fk_attribute=="application_plan_branch_mfk") die("case=$case sql=$sql");
                 }
                 
                 $return = self::constructDropDownItems($listeRep, $lang, $fk_attribute, $fk_table, '', $max_items_count);
