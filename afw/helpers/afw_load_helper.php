@@ -87,7 +87,7 @@ class AfwLoadHelper extends AFWRoot
         return AfwLoadHelper::vhGetListe($objRep, $attribute, $object->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, null, $desc['ORDERBY'], $dropdown = true, $optim = true);
     }
 
-    public static function vhGetListe($obj, $fk_attribute, $fk_table, $where, $action="default", $lang="ar", $val_to_keep=null, $order_by="", $dropdown = false, $optim = true, $max_items_count=true)
+    public static function vhGetListe(&$obj, $fk_attribute, $fk_table, $where, $action="default", $lang="ar", $val_to_keep=null, $order_by="", $dropdown = false, $optim = true, $max_items_count=true)
     {
         $return = [];
         if(!$where) $where = "1";
