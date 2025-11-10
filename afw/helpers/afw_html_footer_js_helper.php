@@ -279,16 +279,15 @@ $(document).ready(function(){
   }
 ?>
 
-    $(document).ready(function() {
+    /*$(document).ready(function() {
         $(".hasCalendarsPicker").datepicker({ 
                 showAnim: "fold",
                 dateFormat: "yy-mm-dd",
                 changeMonth: true,
                 changeYear: true,
-                minDate: $min_date,
         <?php echo AfwEditMotor::calendar_translations($lang) ?>
                 });
-        });
+        });*/
 
     $("#slog-switcher").click(function()
                         { 
