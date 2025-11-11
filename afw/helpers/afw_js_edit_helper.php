@@ -60,7 +60,9 @@ class AfwJsEditHelper extends AFWRoot
     public static function getJsOfReloadOf($object,    
         $attribute,
         $desc = '',
-        $original_attribute = ''
+        $original_attribute = '',
+        $is_filter = false
+
     ) 
     {
         // $lang = AfwLanguageHelper::getGlobalLanguage();
@@ -74,7 +76,7 @@ class AfwJsEditHelper extends AFWRoot
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $original_attribute);
         }
-        if ($desc['REQUIRED'] or $desc['MANDATORY']) {
+        if ($desc['REQUIRED'] or $desc['MANDATORY'] or $is_filter) {
             $option_empty_value = '';
         } else {
             $option_empty_value = ' value=0';
@@ -162,19 +164,23 @@ $dependencies_values
         return $items;
     }
 
-/**
+    /**
      * @var AFWObject $object
      */
     public static function getAttributeLoadMyPropsItems($desc) 
     {
-        foreach ($desc['DEPENDENT_OFME'] as $fld) 
+        if($desc['DEPENDENT_OFME'] and is_array($desc['DEPENDENT_OFME']))
         {
-            
-            if(self::isLoadMyPropsField($fld))
+            foreach ($desc['DEPENDENT_OFME'] as $fld) 
             {
-                return self::getLoadMyPropsItems($fld);
+                
+                if(self::isLoadMyPropsField($fld))
+                {
+                    return self::getLoadMyPropsItems($fld);
+                }
             }
         }
+        
     }
 
     /**

@@ -150,7 +150,7 @@ class AfwQsearchMotor {
 							array(
 								"class" => "form-control $class_inputSearch $class_select $inp_selected",
 								"name"  => $col_name,
-								"reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name),
+								"reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name, '', '', true),
 								"onchange" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
 								"onchangefn" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name, $descr = "", false),
 							),
