@@ -3,6 +3,9 @@ class AfwLoadHelper extends AFWRoot
 {
     private static $lookupMatrix;
     private static $lookupProps;
+    private static $noCacheManagementArr = [];
+
+
 
     public static function getLookupMatrix()
     {
@@ -261,15 +264,15 @@ class AfwLoadHelper extends AFWRoot
     }
 
 
+    public static final function noCacheManagement($myClass)
+    {
+        self::$noCacheManagementArr[$myClass] = true;
+    }
+
     public static final function cacheManagement($myObject)
     {
-        /*
-        global $DISABLE_CACHE_MANAGEMENT;
-
-        if (!$DISABLE_CACHE_MANAGEMENT) $cache_management = AfwSession::config('cache_management', true);
-        else $cache_management = false;
-        return $cache_management;
-        */
+        if(self::$noCacheManagementArr[get_class($myObject)]) return false;
+        
         return true;
     }
 
@@ -324,7 +327,7 @@ class AfwLoadHelper extends AFWRoot
              die("degugg 1 rafik3 attribute=$attribute ansTab=$ansTab ansMod=$ansMod ");
          }*/
         
-        
+        $className = AfwStringHelper::tableToClass($ansTab);        
 
         if (isset($ansTab) && intval($object_id) > 0) {
             $object = null;
@@ -339,8 +342,8 @@ class AfwLoadHelper extends AFWRoot
             }
             // 2. otherwise try from global cache management
             elseif ($cache_management) {
-                $className = AfwStringHelper::tableToClass($ansTab);
-                if (!$className) throw new AfwRuntimeException("for attribute $attribute of $this_table we can not calc tableToClass(answer table = $ansTab)");
+                
+                if (!$className) throw new AfwRuntimeException("cache management : for attribute $attribute of $this_table we can not calc tableToClass(answer table = $ansTab)");
 
                 $loadObjectFK_step = 2;
                 $object = &AfwCacheSystem::getSingleton()->getFromCache(
@@ -364,6 +367,7 @@ class AfwLoadHelper extends AFWRoot
             // 3. otherwise load object
             if (!$object) {
                 $loadObjectFK_step = 3;
+                if (!$className) throw new AfwRuntimeException("prepare for load for attribute $attribute of $this_table we can not calc tableToClass(answer table = $ansTab)");
                 $object = new $className();
                 // $object->setMyDebugg($object->MY_DEBUG);
 
@@ -858,10 +862,8 @@ class AfwLoadHelper extends AFWRoot
                         "\n ORDER BY " .
                         $order_by_sentence .
                         " -- oo \n LIMIT 1";
-                    if ($object->MY_DEBUG and false) {
-                        AFWDebugg::log(
-                            "query to load afw object value = $value "
-                        );
+                    if ($classNameTable=="auto_job_contact") {
+                        die("$className ($classNameTable) afw rafik load query=$query");                        
                     }
                     $module_server = $object->getModuleServer();
                     $result_row = AfwDatabase::db_recup_row(
