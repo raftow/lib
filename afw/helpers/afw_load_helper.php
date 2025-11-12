@@ -98,14 +98,13 @@ class AfwLoadHelper extends AFWRoot
         if($dataObject)
         {
             if(is_array($dataObject)) $dataObjectArr = $dataObject;
-            else $dataObjectArr = [$dataObject];
+            else $dataObjectArr = [$dataObject->id => $dataObject];
 
             if(count($dataObjectArr)>0)
             {
-                foreach($dataObject as $iditem => $item)
+                foreach($dataObjectArr as $iditem => $item)
                 {
                     $jsonArray[] = [
-                        "id" => $iditem,
                         "data" => self::getJsonData($item, $lang)
                     ];
                 }                
@@ -115,7 +114,37 @@ class AfwLoadHelper extends AFWRoot
         return $jsonArray;
     }
 
+
     
+    
+
+    public static function getAnswerTableJsonArrayWithDetails(&$object, $attribute, $lang)
+    {
+        $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        $nom_table_fk   = $desc["ANSWER"];
+        $nom_module_fk  = $desc["ANSMODULE"];
+        if (!$nom_module_fk) {
+            $nom_module_fk = AfwUrlManager::currentWebModule();
+        }
+        if(!$nom_table_fk) throw new AfwRuntimeException("desc of $attribute is ".var_export($desc,true));
+        $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
+        $objRep  = new $nom_class_fk;
+        $desc["WHERE"] = $object->decodeText($desc["WHERE"]);
+        $objRep->where($desc["WHERE"]);
+        $dataObjectArr = $objRep->loadMany('',$desc['ORDERBY'], $optim = true);
+        $jsonArray = [];
+        if(count($dataObjectArr)>0)
+        {
+            foreach($dataObjectArr as $iditem => $item)
+            {
+                $jsonArray[] = [
+                    "data" => self::getJsonData($item, $lang)
+                ];
+            }                
+        }
+
+         return $jsonArray;
+    }
 
     public static function getAnswerTableJsonArray(&$object, $attribute, $lang)
     {
