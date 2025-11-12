@@ -74,6 +74,48 @@ class AfwLoadHelper extends AFWRoot
         return $dataLookup;
     } 
 
+    public static function getJsonData(&$object, $lang)
+    {
+        
+        $attributesNoJsonArr = AfwFrameworkHelper::getAllAttributesInMode($object, 'NOJSON');
+        $options = [];
+
+        foreach($attributesNoJsonArr as $attribute)
+        {
+            $options["except-$attribute"] = true;
+        }
+
+        return $object->getJsonMe($options);    
+    }
+
+
+
+    public static function showObjectAsJsonArray(&$object, $attribute, $lang)
+    {
+        $dataObject = $object->het($attribute);
+
+        $jsonArray = [];
+        if($dataObject)
+        {
+            if(is_array($dataObject)) $dataObjectArr = $dataObject;
+            else $dataObjectArr = [$dataObject];
+
+            if(count($dataObjectArr)>0)
+            {
+                foreach($dataObject as $iditem => $item)
+                {
+                    $jsonArray[] = [
+                        "id" => $iditem,
+                        "data" => $item->getJsonData($lang)
+                    ];
+                }                
+            }
+        }
+        
+        return $jsonArray;
+    }
+
+    
 
     public static function getAnswerTableJsonArray(&$object, $attribute, $lang)
     {
