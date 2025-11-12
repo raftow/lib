@@ -1607,7 +1607,7 @@ class AFWObject extends AFWRoot
             }
             if($decode)
             {
-                $result[$attribute] = $this->showAttribute($attribute);
+                $result[$attribute."_display"] = $this->showAttribute($attribute);
             }
         }
 
