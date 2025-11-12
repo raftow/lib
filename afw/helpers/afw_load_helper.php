@@ -126,7 +126,7 @@ class AfwLoadHelper extends AFWRoot
         if (!$nom_module_fk) {
             $nom_module_fk = AfwUrlManager::currentWebModule();
         }
-        if(!$nom_table_fk) throw new AfwRuntimeException("desc of $attribute is ".var_export($desc,true));
+        if((!$nom_table_fk) or (strtoupper($nom_table_fk)=="FUNCTION")) throw new AfwRuntimeException("getAnswerTableJsonArrayWithDetails fails for anstab($nom_module_fk,$nom_table_fk) for Structure of $attribute = ".var_export($desc,true));
         $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
         $objRep  = new $nom_class_fk;
         $desc["WHERE"] = $object->decodeText($desc["WHERE"]);
