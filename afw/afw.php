@@ -1595,11 +1595,15 @@ class AFWObject extends AFWRoot
         foreach($impFields as $attribute)
         {
             if(!$options["except-$attribute"]) $result[$attribute] = $this->getVal($attribute);
-            $decode = ($options["decode_fk"][$attribute]);
+            
             if($options["decode_fk"]=="all")
             {
                 $struct = AfwStructureHelper::getStructureOf($this, $attribute);
                 $decode = (($struct["TYPE"]=="FK") or ($struct["TYPE"]=="MFK") or ($struct["TYPE"]=="ENUM") or ($struct["TYPE"]=="MENUM"));
+            }
+            else
+            {
+                $decode = ($options["decode_fk"][$attribute]);
             }
             if($decode)
             {
