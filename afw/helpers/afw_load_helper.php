@@ -106,7 +106,7 @@ class AfwLoadHelper extends AFWRoot
                 {
                     $jsonArray[] = [
                         "id" => $iditem,
-                        "data" => $item->getJsonData($lang)
+                        "data" => self::getJsonData($item, $lang)
                     ];
                 }                
             }
