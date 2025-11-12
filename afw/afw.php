@@ -1600,6 +1600,12 @@ class AFWObject extends AFWRoot
         return $result;
     }
 
+    public function getAnswerTableJsonArrayWithDetails ($attribute, $lang=null)
+    {
+        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+        return AfwLoadHelper::getAnswerTableJsonArrayWithDetails ($this, $attribute, $lang);
+    }
+
     public function getAnswerTableJsonArray($attribute, $lang=null)
     {
         if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
