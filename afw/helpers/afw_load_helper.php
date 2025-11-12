@@ -133,11 +133,11 @@ class AfwLoadHelper extends AFWRoot
         }
 
         if(!$nom_table_fk) return [];
-        
+
         $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
         $objRep  = new $nom_class_fk;
         $desc["WHERE"] = $object->decodeText($desc["WHERE"]);
-        $objRep->where($desc["WHERE"]);
+        if($desc["WHERE"]) $objRep->where($desc["WHERE"]);
         $dataObjectArr = $objRep->loadMany('',$desc['ORDERBY'], $optim = true);
         $jsonArray = [];
         if(count($dataObjectArr)>0)
