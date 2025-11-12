@@ -74,9 +74,10 @@ class AfwLoadHelper extends AFWRoot
         return $dataLookup;
     } 
 
-    public static function getJsonData(&$object, $lang)
+    public static function getJsonData(&$object, $lang, $decode_fk="all")
     {
         $options = [];
+        $options["decode_fk"] = $decode_fk;
         /*
         $attributesNoJsonArr = AfwFrameworkHelper::getAllAttributesInMode($object, 'NOJSON');
 
