@@ -76,15 +76,15 @@ class AfwLoadHelper extends AFWRoot
 
     public static function getJsonData(&$object, $lang)
     {
-        
-        $attributesNoJsonArr = AfwFrameworkHelper::getAllAttributesInMode($object, 'NOJSON');
         $options = [];
+        /*
+        $attributesNoJsonArr = AfwFrameworkHelper::getAllAttributesInMode($object, 'NOJSON');
 
         foreach($attributesNoJsonArr as $attribute)
         {
             $options["except-$attribute"] = true;
         }
-
+        */  
         return $object->getJsonMe($options);    
     }
 
