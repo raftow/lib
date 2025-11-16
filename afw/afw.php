@@ -6548,4 +6548,17 @@ class AFWObject extends AFWRoot
             return $arr_list_of_boolean;
     }
 
+
+    public function giveWhat($what)
+    {
+        if($what == "value") return $this->id;
+        elseif($what == "object") return $this;
+        elseif($what == "decodeme") 
+        {
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+            return $this->getDisplay($lang);
+        }
+        else throw new AfwRuntimeException("giveWhat :: error :: unknown what = $what");
+    }
+
 }
