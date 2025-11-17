@@ -2384,9 +2384,18 @@ class AFWObject extends AFWRoot
     }
 
 
-    public function fieldsHasChanged()
+    public function fieldsHasChanged($newValues=false)
     {
-        return $this->FIELDS_UPDATED;
+        $return_arr = $this->FIELDS_UPDATED;
+        if($newValues)
+        {
+            foreach($return_arr as $col => $oldVal)
+            {
+                $newVal = $this->getVal($col);
+                $return_arr["$col-new"] = $newVal;
+            }
+        }
+        return $return_arr;
     }
 
     public function resetChangedFields()
