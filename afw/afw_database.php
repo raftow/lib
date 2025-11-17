@@ -63,6 +63,12 @@ class AfwDatabase extends AFWRoot
         return $project_link_name;
     }
 
+
+    public static function db_last_insert_id($project_link_name)
+    {
+        return AfwMysql::insert_id(AfwDatabase::getLinkByName($project_link_name));
+    }
+
     /**
      * _query
      * Return result of an execution's query
