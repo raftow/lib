@@ -2172,6 +2172,8 @@ class AFWObject extends AFWRoot
                 //$this->debugg_simul_do_not_save_to = $value;
                 // it means it is simulation only
                 // if(($attribute=="email")) die(" nothing_updated = $nothing_updated, simul_do_not_save = $simul_do_not_save id=".$this->getId().", attribute=$attribute, value = $value, this->FIELDS_UPDATED=".var_export($this->FIELDS_UPDATED,true));
+            } elseif ($this->FIELDS_UPDATED[$attribute]) {
+                // it means updated twice we keep storing the first value before first update                 
             } else {
                 // rafik : since version 2.0.1 if we are updating existing record
                 // we put in FIELDS_UPDATED the old values
