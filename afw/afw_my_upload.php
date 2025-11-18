@@ -107,7 +107,7 @@ try {
                 } elseif ($AfileClass == "WorkflowFile") {
                         AfwAutoLoader::addModule("workflow");
                         $owner_type = $after_upload;
-                        $owner_id = $after_upload_obj_id;
+                        $owner_id = $me; // was after_upload_obj_id but strange, rafik 18/11/25
                         $af = WorkflowFile::loadByMainIndex($afile_original_name, $owner_type, $owner_id, $afile_size,$create_obj_if_not_found=true);
                         if(!$af->is_new)
                         {
