@@ -10,6 +10,10 @@ class AfwQueryAnalyzer
     public static $duree_sql_total;
     public static $sql_picture_arr;
 
+    private static $excluded_tables = array(
+        "words" => 1,
+    );
+
     public static function resetQueriesExecuted()
     {
         self::$nb_queries_executed = 1;
@@ -119,11 +123,18 @@ class AfwQueryAnalyzer
         if (!self::$duree_sql_total) {
             $duree_sql_total = 0;
         }
-        if (!self::$nb_queries_executed) {
-            self::$nb_queries_executed = 1;
-        } else {
-            self::$nb_queries_executed++;
+
+        $this_table_lower = strtolower($this_table);
+
+        if(!self::$excluded_tables[$this_table_lower])
+        {
+            if (!self::$nb_queries_executed) {
+                self::$nb_queries_executed = 1;
+            } else {
+                self::$nb_queries_executed++;
+            }
         }
+
         $we_can_not_throw_analysis_exception = ($MODE_SQL_PROCESS_LOURD or $MODE_BATCH_LOURD);
         $we_should_throw_analysis_exception = ($MODE_DEVELOPMENT and (self::$nb_queries_executed > $_sql_analysis_seuil_calls));
         if ($we_should_throw_analysis_exception and !$we_can_not_throw_analysis_exception)
@@ -161,8 +172,9 @@ class AfwQueryAnalyzer
         self::$duree_sql_total += $duree_q;
         
         $title_duration = '';
+        $this_table_lower = strtolower($this_table);
 
-        if ($MODE_DEVELOPMENT and (!$MODE_BATCH_LOURD) and (!$MODE_SQL_PROCESS_LOURD) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
+        if ((!self::$excluded_tables[$this_table_lower]) and $MODE_DEVELOPMENT and (!$MODE_BATCH_LOURD) and (!$MODE_SQL_PROCESS_LOURD) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
             if (!self::$_sql_analysis[$this_module][$this_table][$sql_query]) {
                 self::$_sql_analysis[$this_module][$this_table][$sql_query] = 1;
             } else {
@@ -198,6 +210,8 @@ class AfwQueryAnalyzer
             );
 
             if (self::$sql_picture_arr[$this_module][$this_table] > $_sql_analysis_seuil_calls_by_table) {
+                if(!self::$excluded_tables[$this_table_lower])
+                {
                     throw new AfwRuntimeException(
                         "<p>static analysis crash : The table $this_module-$this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times ($this_table_lower-sql-analysis-max-calls)</p>
                              <h5>$sql_query</h5><br> 
@@ -207,6 +221,8 @@ class AfwQueryAnalyzer
                             " all_vars => " . AfwSession::log_all_data() .
                             "</div>"
                     );
+                }
+                    
             }
         }
 

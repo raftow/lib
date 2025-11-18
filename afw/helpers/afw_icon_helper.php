@@ -4,6 +4,16 @@ class AfwIconHelper
 {
 
         private static $awesome_icon_map = array(
+                "service" => "f1b6",
+                "stat statistics" => "f683",
+                "report" => "f201",
+                "chart" => "f080",
+                "servicestack" => "brand-f3ec",
+                "server"=>"f233",
+                "shapes" => "f61f",
+                "endpoint" => "f090",
+                "envelope" => "f0e0",
+                "database" => "f1c0",
                 "teeth" => "f62e",
                 "teethOpen" => "f62f",
                 "telegram" => "brand-f2c6",
@@ -16,8 +26,8 @@ class AfwIconHelper
                 "textHeight" => "f034",
                 "textWidth" => "f035",
                 "th" => "f00a",
-                "thLarge" => "f009",
-                "thList" => "f00b",
+                "large" => "f009",
+                "list" => "f00b",
                 "theRedYeti" => "brand-f69d",
                 "theaterMasks" => "f630",
                 "themeco" => "brand-f5c6",
@@ -29,18 +39,18 @@ class AfwIconHelper
                 "thermometerQuarter" => "f2ca",
                 "thermometerThreeQuarters" => "f2c8",
                 "thinkPeaks" => "brand-f731",
-                "thumbsDown = const IconDataRegular(0xf165",
+                "thumbsDown" => "f165",
                 "solidThumbsDown" => "f165",
-                "thumbsUp = const IconDataRegular(0xf164",
+                "thumbsUp" => "f164",
                 "solidThumbsUp" => "f164",
                 "thumbtack" => "f08d",
                 "ticketAlt" => "f3ff",
                 "times" => "f00d",
-                "timesCircle = const IconDataRegular(0xf057",
+                "timesCircle" => "f057",
                 "solidTimesCircle" => "f057",
                 "tint" => "f043",
                 "tintSlash" => "f5c7",
-                "tired = const IconDataRegular(0xf5c8",
+                "tired" => "f5c8",
                 "solidTired" => "f5c8",
                 "toggleOff" => "f204",
                 "toggleOn" => "f205",
@@ -60,7 +70,7 @@ class AfwIconHelper
                 "transgender" => "f224",
                 "transgenderAlt" => "f225",
                 "trash" => "f1f8",
-                "trashAlt = const IconDataRegular(0xf2ed",
+                "trashAlt" => "f2ed",
                 "solidTrashAlt" => "f2ed",
                 "trashRestore" => "f829",
                 "trashRestoreAlt" => "f82a",
@@ -100,13 +110,13 @@ class AfwIconHelper
                 "upload" => "f093",
                 "ups" => "brand-f7e0",
                 "usb" => "brand-f287",
-                "user = const IconDataRegular(0xf007",
+                "user" => "f007",
                 "solidUser" => "f007",
                 "userAlt" => "f406",
                 "userAltSlash" => "f4fa",
                 "userAstronaut" => "f4fb",
                 "userCheck" => "f4fc",
-                "userCircle = const IconDataRegular(0xf2bd",
+                "userCircle" => "f2bd",
                 "solidUserCircle" => "f2bd",
                 "userClock" => "f4fd",
                 "userCog" => "f4fe",
@@ -179,13 +189,13 @@ class AfwIconHelper
                 "wifi" => "f1eb",
                 "wikipediaW" => "brand-f266",
                 "wind" => "f72e",
-                "windowClose = const IconDataRegular(0xf410",
+                "windowClose" => "f410",
                 "solidWindowClose" => "f410",
-                "windowMaximize = const IconDataRegular(0xf2d0",
+                "windowMaximize" => "f2d0",
                 "solidWindowMaximize" => "f2d0",
-                "windowMinimize = const IconDataRegular(0xf2d1",
+                "windowMinimize" => "f2d1",
                 "solidWindowMinimize" => "f2d1",
-                "windowRestore = const IconDataRegular(0xf2d2",
+                "windowRestore" => "f2d2",
                 "solidWindowRestore" => "f2d2",
                 "windows" => "brand-f17a",
                 "wineBottle" => "f72f",
@@ -222,41 +232,59 @@ class AfwIconHelper
 
         );
         
-
+        /*
         public static function proposeIcon($strings)
         {
                 $icon = "fa fa-file";
 
-                $icon_map = array(
-                        "user" => "fa fa-user",
-                        "admin" => "fa fa-cog",
-                        "settings" => "fa fa-cog",
-                        "report" => "fa fa-chart-bar",
-                        "chart" => "fa fa-chart-bar",
-                        "dashboard" => "fa fa-tachometer-alt",
-                        "task" => "fa fa-tasks",
-                        "project" => "fa fa-folder-open",
-                        "document" => "fa fa-file-alt",
-                        "file" => "fa fa-file-alt",
-                        "message" => "fa fa-envelope",
-                        "email" => "fa fa-envelope",
-                        "calendar" => "fa fa-calendar-alt",
-                        "event" => "fa fa-calendar-alt",
-                        "contact" => "fa fa-address-book",
-                        "phone" => "fa fa-phone",
-                        "help" => "fa fa-question-circle",
-                );
-
                 foreach ($strings as $str) {
                         $str_lower = strtolower($str);
-                        foreach ($icon_map as $key => $mapped_icon) {
-                                if (strpos($str_lower, $key) !== false) {
+                        foreach (self::$awesome_icon_map as $key => $mapped_icon) {
+                                if ((strpos($str_lower, $key) !== false) or
+                                    (strpos($key, $str_lower) !== false))
+                                {  
                                         return $mapped_icon;
                                 }
                         }
                 }
 
                 return $icon;
+        }*/
+
+
+        public static function proposeIcons($strings, $returnKeys=false, $debugg=false)
+        {
+                
+                $icons = []; 
+
+                foreach ($strings as $str) {
+                        $str_parts = explode(" ", $str);
+                        foreach($str_parts as $part) {
+                                $str_lower = strtolower($part);
+                                $str_synonyms_arr = PagSynonymHelper::getSynonyms($str_lower);
+                                foreach ($str_synonyms_arr as $str_synonym) {
+                                        foreach (self::$awesome_icon_map as $key => $mapped_icon) 
+                                        {
+                                                if (((strlen($key)>4) and (strpos($str_synonym, $key) !== false)) or
+                                                    ((strlen($str_synonym)>4) and (strpos($key, $str_synonym) !== false)) or
+                                                    ($str_synonym==$key))
+                                                {  
+                                                        if($returnKeys) $icons[] = $key." ($str_synonym)";
+                                                        else $icons[] = $mapped_icon;
+                                                }
+                                                elseif($returnKeys and $debugg)
+                                                {
+                                                      $icons[] = "$str_synonym vs $key rejected";  
+                                                }
+                                        }
+                                }
+                                
+                        }                        
+                }
+
+                // $icons[] = "fa fa-file";
+
+                return $icons; 
         }
 
 
@@ -267,8 +295,9 @@ class AfwIconHelper
 
         public static function getIconHtmlFromStrings($strings)
         {
-                $icon_class = self::proposeIcon($strings);
-                return self::getIconHtml($icon_class);
+                $icon_class_arr = self::proposeIcons($strings);
+                $return = "";
+                foreach($icon_class_arr as $icon_class) $return .= "\n".self::getIconHtml($icon_class);
         }
 
         public static function findAwesomeWord($word, $brand=true, $partial=false)
