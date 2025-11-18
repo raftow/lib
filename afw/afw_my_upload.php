@@ -139,7 +139,7 @@ try {
                         // array ( 'upl' => array ( 'name' => 'normalLeaveRamadan1436.jpg', 'type' => 'image/jpeg', 'tmp_name' => 'C:\\wamp\\tmp\\php942C.tmp', 'error' => 0, 'size' => 79454, ), )
                         if (move_uploaded_file($mv_from_file, $mv_to_file)) {
                                 if ($after_upload) {
-                                        $after_upload_full_file_name = "$file_dir_name/../$module/afup/after_upload_$after_upload.php";
+                                        $after_upload_full_file_name = "$file_dir_name/../../$module/afup/after_upload_$after_upload.php";
                                         if (file_exists($after_upload_full_file_name)) {
                                                 include($after_upload_full_file_name);
                                         } else {
