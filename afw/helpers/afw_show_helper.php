@@ -2656,7 +2656,7 @@ $('#$showAsDataTable').DataTable( {
                 }
                 $link_to_display = '';
             } else {
-                $data_to_display = $object->decode($attribute);
+                $data_to_display = $object->decode($attribute,'',false,$lang);
                 if($debugg) $data_to_display .= " from object->decode($attribute)";
                 // if(($attribute == "cher_id") and (!contient(trim(strtolower($data_to_display)),"<img"))) die($object->getDisplay("ar")."rafik::data_to_display=$data_to_display");
                 // if(($attribute == "cher_id") and (!trim($data_to_display))) die($object->getDisplay("ar")."->decode($attribute) empty ->getVal($attribute) = ".$object->getVal($attribute));
@@ -2730,7 +2730,7 @@ $('#$showAsDataTable').DataTable( {
         $data_to_display = "";
 
         $val = $value;
-        $display_val = $object->decode($attribute);
+        $display_val = $object->decode($attribute,'',false,$lang);
         if(!$structure["FORMAT-INPUT"]) $structure["FORMAT-INPUT"] = $structure["FORMAT"];
         if ($display_val and $structure['FORMAT-INPUT'] == 'hzmtoggle') 
         {

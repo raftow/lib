@@ -1594,40 +1594,48 @@ class AFWObject extends AFWRoot
 
         foreach($impFields as $attribute)
         {
-
-            if(!$options["except-$attribute"]) $result[$attribute] = $this->getVal($attribute);
-            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
-            if($options["decode_fk"]=="all")
+            if(!$options["except-$attribute"]) 
             {
-                $decode = (($struct["TYPE"]=="FK") or ($struct["TYPE"]=="MFK") or ($struct["TYPE"]=="ENUM") or ($struct["TYPE"]=="MENUM"));
-            }
-            else
-            {
-                $decode = ($options["decode_fk"][$attribute]);
-            }
-            
-            if($decode)
-            {
-                $result[$attribute."_display"] = $this->showAttribute($attribute);
-                $result[$attribute."_ar"] = $this->showAttribute($attribute,null,true,"ar");
-                $result[$attribute."_en"] = $this->showAttribute($attribute,null,true,"en");
-            }
-
-            if(($struct["TYPE"]=="FK") and $struct["JSON-EXPAND"])
-            {
-                if(AfwStringHelper::stringEndsWith($attribute, "_id"))
+                $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+                if(!$struct["NO-JSON"])
                 {
-                    $attribute_expand = substr($attribute,0,strlen($attribute)-3);
-                }
-                else
-                {
-                    $attribute_expand = $attribute;
+                    $result[$attribute] = $this->getVal($attribute);                
+                    if($options["decode_fk"]=="all")
+                    {
+                        $decode = (($struct["TYPE"]=="FK") or ($struct["TYPE"]=="MFK") or ($struct["TYPE"]=="ENUM") or ($struct["TYPE"]=="MENUM"));
+                    }
+                    else
+                    {
+                        $decode = ($options["decode_fk"][$attribute]);
+                    }
+                    
+                    if($decode and (!$struct["NO-JSON-DECODE"]) and (!$struct["NO-JSON-DETAILS"]))
+                    {
+                        $result[$attribute."_display"] = $this->showAttribute($attribute);
+                        $result[$attribute."_ar"] = $this->showAttribute($attribute,null,true,"ar");
+                        $result[$attribute."_en"] = $this->showAttribute($attribute,null,true,"en");
+                    }
+
+                    if(($struct["TYPE"]=="FK") and $struct["JSON-EXPAND"])
+                    {
+                        if(AfwStringHelper::stringEndsWith($attribute, "_id"))
+                        {
+                            $attribute_expand = substr($attribute,0,strlen($attribute)-3);
+                        }
+                        else
+                        {
+                            $attribute_expand = $attribute;
+                        }
+                        
+                        $objExpand = $this->het($attribute);
+                        if($objExpand) $result[$attribute_expand] = $objExpand->getJsonMe();    
+                        else $result[$attribute_expand] = null;
+                    }
                 }
                 
-                $objExpand = $this->het($attribute);
-                if($objExpand) $result[$attribute_expand] = $objExpand->getJsonMe();    
-                else $result[$attribute_expand] = null;
+
             }
+            
             
         }
 
@@ -4680,7 +4688,7 @@ class AFWObject extends AFWRoot
                 list($data_to_display, $link_to_display) = AfwShowHelper::showEnum($this, $attribute, $value, $langue, $structure);
         }         
         else {
-            $data_to_display = $this->decode($key);
+            $data_to_display = $this->decode($key,'',false,$langue);
             //if($key=="response_templates") die("data_to_display of ($key val:$value) is $data_to_display");
         }
 
