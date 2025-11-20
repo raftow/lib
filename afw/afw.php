@@ -4600,8 +4600,6 @@ class AFWObject extends AFWRoot
             $langue = 'ar';
         }
 
-        $this->debugg_last_attribute = $attribute;
-
         if (!$structure) {
             $structure = AfwStructureHelper::getStructureOf($this, $attribute);
         } else {
@@ -4665,7 +4663,7 @@ class AFWObject extends AFWRoot
         } elseif ($structure['TYPE'] == 'MFK') {
             list($data_to_display, $link_to_display) = AfwShowHelper::showMFK($this, $attribute, $langue, $structure, $getlink);
         } elseif ($structure['TYPE'] == 'YN') {
-            $ynCode = strtoupper($this->decode($key));
+            $ynCode = strtoupper($this->decode($key, '', false, $langue));
             $data_to_display = $this->showYNValueForAttribute($ynCode, $key, $langue);
         } elseif ($structure['TYPE'] == 'PK') {
             if (!$structure['OFFSET']) {

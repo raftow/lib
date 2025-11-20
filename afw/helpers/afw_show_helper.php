@@ -2743,12 +2743,12 @@ $('#$showAsDataTable').DataTable( {
         elseif ($display_val and $structure["FORMAT-INPUT"] == "stars") 
         {
                     $objTableName = $object->getTableName();
-                    $objName = $object->__toString();
+                    // $objName = $object->__toString();
                     $fieldAnsTab = $structure["ANSWER"];
                     $fcol_name = $structure["FUNCTION_COL_NAME"];
                     $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $object);
                     $data_to_display = "<div class='stars-list answers-list' aria-hidden='true'>";
-                    $c=0;
+                    //$c=0;
                     $rating_label_text = "---";
                     $rating_label_class = "";
                     if($val>0) $rating_label_class= "star-$val";
