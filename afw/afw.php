@@ -1594,21 +1594,39 @@ class AFWObject extends AFWRoot
 
         foreach($impFields as $attribute)
         {
+
             if(!$options["except-$attribute"]) $result[$attribute] = $this->getVal($attribute);
-            
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
             if($options["decode_fk"]=="all")
             {
-                $struct = AfwStructureHelper::getStructureOf($this, $attribute);
                 $decode = (($struct["TYPE"]=="FK") or ($struct["TYPE"]=="MFK") or ($struct["TYPE"]=="ENUM") or ($struct["TYPE"]=="MENUM"));
             }
             else
             {
                 $decode = ($options["decode_fk"][$attribute]);
             }
+            
             if($decode)
             {
                 $result[$attribute."_display"] = $this->showAttribute($attribute);
             }
+
+            if(($struct["TYPE"]=="FK") and $struct["JSON-EXPAND"])
+            {
+                if(AfwStringHelper::stringEndsWith($attribute, "_id"))
+                {
+                    $attribute_expand = substr($attribute,0,strlen($attribute)-3);
+                }
+                else
+                {
+                    $attribute_expand = $attribute;
+                }
+                
+                $objExpand = $this->het($attribute);
+                if($objExpand) $result[$attribute_expand] = $objExpand->getJsonMe();    
+                else $result[$attribute_expand] = null;
+            }
+            
         }
 
         return $result;
