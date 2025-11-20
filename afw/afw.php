@@ -1609,6 +1609,8 @@ class AFWObject extends AFWRoot
             if($decode)
             {
                 $result[$attribute."_display"] = $this->showAttribute($attribute);
+                $result[$attribute."_ar"] = $this->showAttribute($attribute,null,true,"ar");
+                $result[$attribute."_en"] = $this->showAttribute($attribute,null,true,"en");
             }
 
             if(($struct["TYPE"]=="FK") and $struct["JSON-EXPAND"])
