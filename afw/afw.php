@@ -840,14 +840,17 @@ class AFWObject extends AFWRoot
         );
     }
 
-
+    public function isVirtual()
+    {
+        return false;
+    }
 
     /**
      * loadVirtualRow
      * load virtual row
      * @param array $search_tab
      */
-    protected function loadVirtualRow()
+    public function loadVirtualRow()
     {
         return '';
     }
@@ -6586,16 +6589,6 @@ class AFWObject extends AFWRoot
     }
 
 
-    public function giveWhat($what)
-    {
-        if($what == "value") return $this->id;
-        elseif($what == "object") return $this;
-        elseif($what == "decodeme") 
-        {
-            $lang = AfwLanguageHelper::getGlobalLanguage();
-            return $this->getDisplay($lang);
-        }
-        else throw new AfwRuntimeException("giveWhat :: error :: unknown what = $what");
-    }
+    
 
 }

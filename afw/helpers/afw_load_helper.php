@@ -89,6 +89,24 @@ class AfwLoadHelper extends AFWRoot
         return $object->getJsonMe($options);    
     }
 
+    public static function giveWhat(&$object, $what)
+    {
+        if(!$object)
+        {
+            if($what == "value") return 0;
+            elseif($what == "object") return null;
+            elseif($what == "decodeme") return "";
+        }
+        if($what == "value") return $object->id;
+        elseif($what == "object") return $object;
+        elseif($what == "decodeme") 
+        {
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+            return $object->getDisplay($lang);
+        }
+        else throw new AfwRuntimeException("giveWhat :: error :: unknown what = $what");
+    }
+
 
 
     public static function showObjectAsJsonArray(&$object, $attribute, $lang)
@@ -917,7 +935,7 @@ class AfwLoadHelper extends AFWRoot
         }
         // $time_end4_1 = microtime(true);
         if ($object->getSQL() or $result_row) {
-            if ($object->IS_VIRTUAL) {
+            if ($object->isVirtual()) {
                 $return = $object->loadVirtualRow();
                 $object->debugg_last_sql = 'case of load using loadVirtualRow';
                 $object->ME_VIRTUAL = true;
@@ -1422,20 +1440,7 @@ class AfwLoadHelper extends AFWRoot
             $return = [];
         }
 
-        if ($object->MY_DEBUG and false) {
-            AFWDebugg::log(
-                '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-            );
-            AFWDebugg::log(
-                'End of method ' .
-                    get_class($object) .
-                    "->$call_method : return = " .
-                    print_r($return, true)
-            );
-            AFWDebugg::log(
-                '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-            );
-        }
+        
         $object->clearSelect();
         
         $method_time_end = hrtime(true); // nano sec
@@ -1458,17 +1463,6 @@ class AfwLoadHelper extends AFWRoot
     public static function loadListe(&$object, $limit = '', $order_by = '')
     {
         $call_method = "loadListe(limit = $limit, order_by = $order_by)";
-        if ($object->MY_DEBUG and false) {
-            AFWDebugg::log(
-                '----------------------------------------------------------------------------------------'
-            );
-            AFWDebugg::log(
-                'Start of method ' . get_class($object) . "->$call_method"
-            );
-            AFWDebugg::log(
-                '----------------------------------------------------------------------------------------'
-            );
-        }
         $query =
             'SELECT ' .
             $object->getPKField() .
@@ -1495,20 +1489,7 @@ class AfwLoadHelper extends AFWRoot
         } else {
             $return = [];
         }
-        if ($object->MY_DEBUG and false) {
-            AFWDebugg::log(
-                '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-            );
-            AFWDebugg::log(
-                'End of method ' .
-                    get_class($object) .
-                    "->$call_method : return = " .
-                    print_r($return, true)
-            );
-            AFWDebugg::log(
-                '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-            );
-        }
+        
         return $return;
     }
 
@@ -1528,17 +1509,6 @@ class AfwLoadHelper extends AFWRoot
         $order_by = ''
     ) {
         $call_method = "loadCol(limit = $limit, order_by = $order_by)";
-        if ($object->MY_DEBUG and false) {
-            AFWDebugg::log(
-                '----------------------------------------------------------------------------------------'
-            );
-            AFWDebugg::log(
-                'Start of method ' . get_class($object) . "->$call_method"
-            );
-            AFWDebugg::log(
-                '----------------------------------------------------------------------------------------'
-            );
-        }
         $query =
             'SELECT ' .
             ($distinct ? 'DISTINCT ' : '') .
@@ -1561,20 +1531,7 @@ class AfwLoadHelper extends AFWRoot
             $return[] = $value[$col_name];
         }
         $object->clearSelect();
-        if ($object->MY_DEBUG and false) {
-            AFWDebugg::log(
-                '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-            );
-            AFWDebugg::log(
-                'End of method ' .
-                    get_class($object) .
-                    "->$call_method : return = " .
-                    print_r($return, true)
-            );
-            AFWDebugg::log(
-                '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
-            );
-        }
+        
         return $return;
     }
 
