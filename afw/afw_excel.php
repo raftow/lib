@@ -24,11 +24,11 @@ class AfwExcel
 	public $myRange;
 
 
-	public static function getExcelFileData($file_path, $row_num_start=-1, $row_num_end=-1, $caller="not-defined")
+	public static function getExcelFileData($file_path, $row_num_start=-1, $row_num_end=-1, $caller="not-defined", $colNameToUpper=false)
     {
             $excel = new AfwExcel($file_path);
-            $my_data = $excel->getData($row_num_start, $row_num_end, $caller);
-            $my_head = $excel->getHeaderTrad();
+            $my_data = $excel->getData($row_num_start, $row_num_end, $caller, $colNameToUpper);
+            $my_head = $excel->getHeaderTrad([], $colNameToUpper);
             
             return [$excel, $my_head, $my_data];
     }
@@ -520,13 +520,14 @@ class AfwExcel
             return array($ok, $errors, $warnings, $infos);
       }
 
-      public function getHeaderTrad($trad = [])
+      public function getHeaderTrad($trad = [], $colNameToUpper=false)
       {
             $headerTrad = [];
 
             foreach ($this->header  as $index => $col_name) {
                   $trad_col_name = $trad[$col_name];
                   $headerTrad[$col_name] = $trad_col_name ? $trad_col_name : $col_name;
+				  if($colNameToUpper) $headerTrad[$col_name] = strtoupper($headerTrad[$col_name]);
             }
 
             return $headerTrad;
@@ -537,7 +538,7 @@ class AfwExcel
             return count($this->tableau);
       }
 
-      public function getData($row_num_start = -1, $row_num_end = -1, $caller)
+      public function getData($row_num_start = -1, $row_num_end = -1, $caller='none', $colNameToUpper=false)
       {
             global $callers_arr, $nb_get_xls_data, $nb_data, $objme;
 
@@ -563,7 +564,9 @@ class AfwExcel
             foreach ($this->tableau as $row_num => $record) {
                   if (($row_num >= $row_num_start) and (($row_num <= $row_num_end) or ($row_num_end == -1))) {
                         if ($this->pkey_name)
-                              $id = $record[$this->pkey_name];
+						{
+							$id = $record[$this->pkey_name];
+						}
                         else
                               $id = $row_num;
 
@@ -575,6 +578,8 @@ class AfwExcel
                             {
                                 if($objme) throw new AfwRuntimeException("value too big in ($col_num[$col_name],row:$row_num) ");
                             }*/
+
+							  if($colNameToUpper) $col_name = strtoupper($col_name);	
                               $data[$id][$col_name] = $value;
 
                               unset($value);

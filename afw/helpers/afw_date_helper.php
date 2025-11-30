@@ -1132,10 +1132,16 @@ class AfwDateHelper
 
     public static function parseGregDate($gdate, $sep='/', $format='d/m/Y')
     {
-        $formatItemIndex = array_flip(explode($sep, $format));
+        $formatExploded = explode($sep, $format);
+        $formatItemIndex = array_flip($formatExploded);
         $gdateItems = explode($sep, $gdate);
-
-        return $gdateItems[$formatItemIndex["Y"]]."-".$gdateItems[$formatItemIndex["m"]]."-".$gdateItems[$formatItemIndex["d"]];
+        // echo("format = $format so formatExploded=".var_export($formatExploded,true)."<br>formatItemIndex=".var_export($formatItemIndex,true)."<br>");
+        // echo("gdate=$gdate so gdateItems=".var_export($gdateItems,true)."<br>");
+        // if($format!='d/m/Y') throw new AfwRuntimeException("only format d/m/Y is supported for now in parseGregDate(gdate=$gdate, sep='$sep', format='$format')");
+        $yyyy = AfwStringHelper::left_complete_len($gdateItems[$formatItemIndex["Y"]], '0', 4);
+        $mm = AfwStringHelper::left_complete_len($gdateItems[$formatItemIndex["m"]], 2, '0');
+        $dd = AfwStringHelper::left_complete_len($gdateItems[$formatItemIndex["d"]], 2, '0');
+        return $yyyy."-".$mm."-".$dd;
     }
 
     public static function gregToHijri($gdate, $mode = 'hdate', $ifSeemsHijriKeepAsIs = false, $throwError = true, $estimateIfOutOfRange = true)
