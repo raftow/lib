@@ -64,7 +64,7 @@ class AFWObject extends AFWRoot
      * @var string
      */
 
-    protected $AUDIT_DATA = false;
+    public $AUDIT_DATA = false;
 
     public $arr_erros = null;
     private $tech_notes = "";
