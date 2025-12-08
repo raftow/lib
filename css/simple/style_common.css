@@ -4155,6 +4155,12 @@ div.filebox.editcard>.panel-heading {
    padding: 8px;
 }
 
+pre.ok.php {
+    background-color: #78dbfd;
+    border: 4px solid #338fe6 !important;
+    margin: 15px !important;
+}
+
 .php.code.zone {
     background-color: #fefff7;
     width: 100%;
