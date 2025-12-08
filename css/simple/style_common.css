@@ -6507,3 +6507,37 @@ table.stats_table th {
     text-align: center !important;
 }
 
+.help_message_info {
+    background: color-mix(in srgb,#eff6ff,transparent 5%);
+    outline-color: #eff6ff;
+    color: #eff6ff;
+    box-shadow: 0px 4px 8px 0px color-mix(in srgb,#3b82f6,transparent 96%);
+}
+
+.help_message_content {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    gap: 0.5rem;
+    height: 100%;
+}
+
+.message_icon {
+    font-size: 1.125rem;
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.pi-info-circle::before {
+    content: "";
+}
+
+.pi:before {
+    --webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.help_text {
+    font-size: 1rem;
+    font-weight: 500
+}
