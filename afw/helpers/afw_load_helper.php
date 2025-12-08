@@ -892,7 +892,9 @@ class AfwLoadHelper extends AFWRoot
                 $classNameTable,
                 $loaded_by
             );
+            /* this code cause problems as non exisiting ....
             if($objectCache==="null-object-not-found") return;
+            */
             if ($objectCache and $objectCache->id) {
                 // because now we store empty objects in cache
                 // so construct $result_row from object found in cache
@@ -1073,6 +1075,7 @@ class AfwLoadHelper extends AFWRoot
                         $loaded_by
                     );
                 }
+                /* this code cause problems as non exisiting ....
                 else
                 {
                     if($value) $id_value = $value;
@@ -1086,7 +1089,7 @@ class AfwLoadHelper extends AFWRoot
                         $id_value,
                         $classNameTable
                     );
-                }
+                }*/
             }
             
         } else {
