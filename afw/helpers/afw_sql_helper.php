@@ -1,6 +1,69 @@
 <?php
 class AfwSqlHelper extends AFWRoot
 {
+    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol=[], $isScalarCol=[], $isNoEmptyString=[], $isDate=[], $isDatetime=[], $datetimeformat='MM/DD/YYYY HH24:MI')
+    {
+        $my_row_cols = array_keys($my_row);
+        $insert_cols = "";
+        $insert_vals = "";
+        $set_update_cols = "";
+        $pk_cols_where = "1=1\n";
+        foreach($tableColsArr as $row_col)
+        {
+            $row_val = $my_row[$row_col];
+            if($isNoEmptyString[$row_col] and (!$row_val or (strtoupper($row_val)=="NULL"))) $row_val_string = "null";
+            elseif($isDatetime[$row_col]) $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
+            elseif($isDate[$row_col]) $row_val_string = "TO_DATE('$row_val', 'yyyy-mm-dd')";
+            else 
+                {
+                    $row_val_cleaned = str_replace("'", "''", $row_val);
+                    $row_val_string = "'$row_val_cleaned'";
+                }
+            $insert_cols .= ", $row_col";
+            if($isScalarCol[$row_col] and ($row_val or ($row_val=='0'))) $insert_vals .= ", $row_val -- $row_col \n";
+            else  $insert_vals .= ", $row_val_string -- $row_col \n";
+
+            if(!$isPKCol[$row_col]) 
+            {
+                if((!$row_val) and ($row_val!==0)) $row_val = "null";
+                if($isScalarCol[$row_col]) $set_update_cols .= " $row_col=$row_val,\n";
+                elseif($isDate[$row_col]) $set_update_cols .= " $row_col=TO_DATE('$row_val', 'yyyy-mm-dd'),\n";
+                else $set_update_cols .= " $row_col=$row_val_string,\n";
+
+            }
+            else 
+            {
+                if(!$isScalarCol[$row_col]) $pk_cols_where .= "   AND $row_col='$row_val'\n";
+                else $pk_cols_where .= "   AND $row_col=$row_val\n";
+            }
+        }
+        $insert_cols=trim($insert_cols);
+        $insert_cols=trim($insert_cols,",");
+
+        $insert_vals=trim($insert_vals);
+        $insert_vals=trim($insert_vals,",");
+
+        $set_update_cols=trim($set_update_cols);
+        $set_update_cols=trim($set_update_cols,",");
+        
+        $sql = "begin
+                        insert into $table
+                        (
+                            $insert_cols
+                        )
+                        values
+                        (
+                            $insert_vals
+                        );
+                exception when dup_val_on_index
+                then
+                        update $table set $set_update_cols
+                        where $pk_cols_where;
+                end;";
+        
+
+        return $sql;
+    }
     public static final function sqlInsertOrUpdate($table, $my_row, $pkCol_arr=null)
     {
         $my_row_cols = array_keys($my_row);
