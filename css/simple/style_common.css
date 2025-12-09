@@ -6573,7 +6573,7 @@ table.stats_table th {
 }
 
 .gap-4 {
-    gap: 1rem;
+    row-gap: 1rem;
 }
 
 .justify-center {
@@ -6612,4 +6612,6 @@ table.stats_table th {
     --tw-text-opacity: 1;
     color: rgb(209 213 219 / var(--tw-text-opacity, 1));
 }
+
+
 
