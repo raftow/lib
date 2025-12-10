@@ -6551,7 +6551,7 @@ table.stats_table th {
 }
 
 .help_text {
-    font-size: 1rem;
+    font-size: inherit;
     font-weight: 500
 }
 
