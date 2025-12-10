@@ -11,6 +11,7 @@ class AfwSqlHelper extends AFWRoot
         foreach($tableColsArr as $row_col)
         {
             $row_val = $my_row[$row_col];
+            $old_row_val = $row_val;
             if($isNoEmptyString[$row_col] and (!$row_val or (strtoupper($row_val)=="NULL"))) $row_val_string = "null";
             elseif($isDatetime[$row_col]) $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
             elseif($isDate[$row_col]) $row_val_string = "TO_DATE('$row_val', 'yyyy-mm-dd')";
@@ -25,15 +26,15 @@ class AfwSqlHelper extends AFWRoot
 
             if(!$isPKCol[$row_col]) 
             {
-                if((!$row_val) and ($row_val!==0)) $row_val = "null";
-                if($isScalarCol[$row_col]) $set_update_cols .= " $row_col=$row_val,\n";
-                elseif($isDate[$row_col]) $set_update_cols .= " $row_col=TO_DATE('$row_val', 'yyyy-mm-dd'),\n";
-                else $set_update_cols .= " $row_col=$row_val_string,\n";
+                if((!$row_val) and ($row_val!==0) and ($row_val!=='0')) $row_val = "null";
+                if($isScalarCol[$row_col]) $set_update_cols .= " $row_col=$row_val, -- oldn=$old_row_val\n";
+                // elseif($isDate[$row_col]) $set_update_cols .= " $row_col=TO_DATE('$row_val', 'yyyy-mm-dd'),\n";
+                else $set_update_cols .= " $row_col=$row_val_string, -- olds=$old_row_val\n";
 
             }
             else 
             {
-                if(!$isScalarCol[$row_col]) $pk_cols_where .= "   AND $row_col='$row_val'\n";
+                if(!$isScalarCol[$row_col]) $pk_cols_where .= "   AND $row_col=$row_val_string\n";
                 else $pk_cols_where .= "   AND $row_col=$row_val\n";
             }
         }

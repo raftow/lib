@@ -147,6 +147,45 @@ class AfwStringHelper
         }
 
 
+        public static function dividePhraseToNStrings($phrase, $max_len, $n)
+        {
+                $string = str_replace("'", "", $phrase);
+                $string = str_replace("\"", " ", $string);                
+                $string = str_replace("[", " ", $string);
+                $string = str_replace("]", " ", $string);
+                $string = str_replace("(", " ", $string);
+                $string = str_replace(")", " ", $string);
+                $string = str_replace("'", " ", $string);
+                $string = str_replace("<", " ", $string);
+                $string = str_replace(">", " ", $string);
+                $string = str_replace("{", " ", $string);
+                $string = str_replace("}", " ", $string);
+
+                $words = explode(" ", $string);
+                $result_arr = array();
+                for ($i = 0; $i < $n; $i++) {
+                        $result_arr[$i] = "";
+                }
+
+                $current_index = 0;
+                foreach ($words as $word) {
+                        if (strlen($result_arr[$current_index] . " " . $word) > $max_len) {
+                                $current_index++;
+                                if ($current_index >= $n) {
+                                        break;
+                                }
+                        }
+
+
+                        if ($result_arr[$current_index] != "") {
+                                $result_arr[$current_index] .= " ";
+                        }
+                        $result_arr[$current_index] .= $word;
+                }
+
+                return $result_arr;
+        }
+
         public static function splitArabicFromLatinSentences($string, $latinWordsInArabicMax = 2, $trim_chars = "\"[]()'<>{}")
         {
                 global $print_full_debugg;

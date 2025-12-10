@@ -1137,6 +1137,12 @@ class AfwFormatHelper
         return AfwFormatHelper::formatMobile($phone_num, $country);
     }
 
+    public static function formatMobileInternational($mobile_num, $countryKey = "00966")
+    {
+        $mobile_num = AfwFormatHelper::formatMobile($mobile_num);
+        return $countryKey . substr($mobile_num, 1);
+    }
+
     public static function formatMobile($mobile_num, $country = "SA")
     {
         list($mobile_nummber1, $mobile_nummber2) = explode("/", $mobile_num);
