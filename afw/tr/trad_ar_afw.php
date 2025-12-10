@@ -6,8 +6,9 @@ class AfwOperatorArTranslator{
     {
         $trad = [];
         
-        $trad["OPERATOR"]["ALL"]					= "الجميع";
+        
 
+        $trad["OPERATOR"]["ALL"]					= "الجميع";
         $trad["OPERATOR"]["INSTR-STD"]					= "أدخل";
         $trad["OPERATOR"]["INSTR-TEXT"]					= "أدخل";
         $trad["OPERATOR"]["INSTR-FK"]					= "إختر";
@@ -163,6 +164,7 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["archive"]                            = "الأرشيف";
         
         $trad["OPERATOR"]["on"]	         	                    = "على";
+        $trad["OPERATOR"]["at"]					                = "بتاريخ";
         $trad["OPERATOR"]["dark mode"]	         	            = "ليلي";
         $trad["OPERATOR"]["Search here"]	         	        = "ابحث هنا";
         $trad["OPERATOR"]["page"]	         	                = "صفحة";
