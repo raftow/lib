@@ -4598,15 +4598,3 @@ div.content-annonce>ul {
     width: 100%;
 }
 
-span.badge.badge-secondary.error {
-    background-color: red;
-}
-
-span.badge.badge-secondary {
-    background-color: green;
-    color: white;
-    padding: 0px 12px;
-    border-radius: 50%;
-    font-size: 11px;
-    font-family: system-ui;
-}
