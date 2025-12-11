@@ -87,10 +87,10 @@
        ),
        
        "stats"=>array(
-           'categories' => array("lookup"=>"bm", "blookup"=>"bm", "entity"=>"bm", "relation"=>"bm", "detail"=>"bm", "detail_generated"=>"bm", 'view' =>"bm", 'detail_owned' =>"bm",),
+           'categories' => array("lookup"=>false, "blookup"=>false, "entity"=>"bm", "relation"=>"bm", "detail"=>"bm", "detail_generated"=>"bm", 'view' =>"bm", 'detail_owned' =>"bm",),
            'goals' => array("entity"=>"endswith:stats", "relation"=>"endswith:stats", "detail"=>"endswith:stats", "detail_generated"=>"endswith:stats", 'view' =>"endswith:stats", 'detail_owned' =>"endswith:stats",),
            'label' => array("ar"=>"إحصائيات","en"=>"stats", "fr"=>"stats"),
-           'menu' => array("blookup"=>false, "entity"=>true, "relation"=>true, "detail"=>true, 'view' =>false, "detail_generated"=>false, 'detail_owned' =>true),
+           'menu' => array("lookup"=>false, "blookup"=>false, "entity"=>true, "relation"=>true, "detail"=>true, 'view' =>false, "detail_generated"=>false, 'detail_owned' =>true),
            'bf_type' => array("all"=>"SCREEN", ),
            'titre' => "إحصائيات [titre_short]",
            'titre_en' => "[titre_short_en] statistics",
