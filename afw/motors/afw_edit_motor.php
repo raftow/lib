@@ -771,6 +771,11 @@ class AfwEditMotor {
 
         if(!$info) $info = self::prepareEditInfoForColumn($obj, $col, $desc, $lang);
 
+        if($col=="doc_type_id")  
+        {
+            die("rafik dbg 20251212 => desc=".var_export($desc, true)." => info=".var_export($info, true));
+        }
+
         $htmlDiv = "";
         $colspan = "";
         $css_class = "";
