@@ -686,7 +686,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                         <div class="panel_bottom form_bottom_buttons ">
                                                 <!-- <h5 class='greentitle'><i></i>وظائف ذات صلة</h5>-->
                                                 <?
-                                                echo $html_buttons_spec_methods_bis;
+                                                // echo $html_buttons_spec_methods_bis;
                                                 ?>
                                         </div>
                                         <div class='body_nav_hzm'>
@@ -805,17 +805,22 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                         $pbm_arr = $obj->getPublicMethodsForUser($objme, "display");
                         if (count($pbm_arr) > 0) {
                                 $html_buttons_spec_methods = "";
-                                $html_buttons_spec_methods_bis = "";
-                                foreach ($pbm_arr as $pbm_code => $pbm_item) {
-                                        // if we click on the button and have action_lourde css class 
-                                        // it will open the loader at the same time the form can not submit because of
-                                        // missed required data or the form errors
-                                        $action_lourde = (($check_error_activated) and (count($obj_errors) == 0));
-                                        $html_buttons_spec_methods .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin());
-                                        $html_buttons_spec_methods_bis .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin(), "bis");
+                                // $html_buttons_spec_methods_bis = "";
+                                foreach ($pbm_arr as $pbm_code => $pbm_item) 
+                                {
+                                        if(!$pbm_item["HIDE"])
+                                        {
+                                                // if we click on the button and have action_lourde css class 
+                                                // it will open the loader at the same time the form can not submit because of
+                                                // missed required data or the form errors
+                                                $action_lourde = (($check_error_activated) and (count($obj_errors) == 0));
+                                                $html_buttons_spec_methods .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin());
+                                                // $html_buttons_spec_methods_bis .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin(), "bis");
+                                        }
+                                        
                                 }
                                 $html_buttons_spec_methods = trim($html_buttons_spec_methods);
-                                $html_buttons_spec_methods_bis = trim($html_buttons_spec_methods_bis);
+                                // $html_buttons_spec_methods_bis = trim($html_buttons_spec_methods_bis);
                                 $orders_to_execute = $obj->translateMessage("Orders to execute", $lang);
                                 if ($html_buttons_spec_methods) {
                         ?>

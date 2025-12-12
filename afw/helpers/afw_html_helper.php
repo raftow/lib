@@ -190,8 +190,11 @@ class AfwHtmlHelper extends AFWRoot {
                 
                 foreach($pbm_arr as $pbm_code => $pbm_item)
                 {
-                        $action_lourde = true;
-                        $html_buttons_spec_methods .= self::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $isAdmin, "bis");
+                        if(!$pbm_item["HIDE"])
+                        {
+                                $action_lourde = true;
+                                $html_buttons_spec_methods .= self::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $isAdmin, "bis");
+                        }
                 }
 
                 return $html_buttons_spec_methods;
