@@ -119,9 +119,19 @@ class AfwEditMotor {
         $data_length_class = " inputlong";
         if($obj)
         {
+            // non understood old code because no comments
+            /*
             $old_WHERE = $obj->decodeText($desc["WHERE"]);
             $desc["WHERE"] = $obj->getWhereOfAttribute($orig_col_name);
             if (!$desc["WHERE"]) $desc["WHERE"] = $old_WHERE;
+            */
+
+            // new code more logic for me
+            // decode where :
+            $old_where = $desc["WHERE"];
+            if(!$desc["WHERE"]) $desc["WHERE"] = $obj->getWhereOfAttribute($orig_col_name);
+            $beforeDecodeWhere = $desc["WHERE"];
+            $desc["WHERE"] = $obj->decodeText($desc["WHERE"]);
         }
         
         //if($col_name=="id_sh_org_1") die("obj->getWhereOfAttribute($orig_col_name) = ".$desc["WHERE"]);            
