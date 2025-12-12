@@ -11,6 +11,10 @@ if ((!$auto_c)  and (!$auto_complete_default))
 {
     if(!$desc['ORDERBY']) $desc['ORDERBY'] = $objRep->ORDER_BY_FIELDS;
     $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+    if($col_name=="doc_type_id")  
+    {
+        die("rafik-2 dbg 20251212 => desc=".var_export($desc, true)." => l_rep=".var_export($l_rep, true));
+    }
     if ($desc["FORMAT-INPUT"] == "btn-bootstrap") 
     {
         $arr_classes = ["primary","secondary","success","danger","warning","info","light","dark",];
