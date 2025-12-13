@@ -2485,6 +2485,11 @@ $('#$showAsDataTable').DataTable( {
                 if (!$structure['DISPLAY']) {
                     $structure['DISPLAY'] = $structure['FORMAT'];
                 }
+
+                if (($structure['DISPLAY']===true) and $structure['FORMAT']) {
+                    $structure['DISPLAY'] = $structure['FORMAT'];
+                }
+
                 if (strtoupper($structure['DISPLAY']) == 'MINIBOX') {
                     $data_to_display = AfwShowHelper::showMinibox($object->get($attribute), 
                         $structure['STYLE']
