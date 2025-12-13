@@ -1815,8 +1815,9 @@ class AFWObject extends AFWRoot
         if (!$langue) $langue = $lang;
         // $objme = AfwSession::getUserConnected();
         if (!$force and !AfwSession::hasOption('CHECK_ERRORS') and !$this->forceCheckErrors) {
-            if (!$returnErrors) return true;
-            else return [true, []];
+            $is_ok = (count($this->arr_erros) == 0);
+            if (!$returnErrors) return $is_ok;
+            else return [$is_ok, $this->arr_erros];
         }
         $stop_on_first_error = (!$returnErrors);
         $returnErrorsStep = "all";
@@ -1827,11 +1828,11 @@ class AFWObject extends AFWRoot
 
 
 
-        $dataErr = AfwDataQualityHelper::getDataErrors($this, $langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step);
+        $this->arr_erros = AfwDataQualityHelper::getDataErrors($this, $langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step);
         // die("showErrorsAsSessionWarnings:: getDataErrors($langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step) => ".var_export($dataErr,true));
-        $is_ok = count($dataErr) == 0;
+        $is_ok = (count($this->arr_erros) == 0);
         if (!$returnErrors) return $is_ok;
-        else return [$is_ok, $dataErr];
+        else return [$is_ok, $this->arr_erros];
     }
 
     public static final function mfkValueToOrderedList($mfk_value, $start_from=0)
