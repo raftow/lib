@@ -66,7 +66,7 @@ class AFWObject extends AFWRoot
 
     public $AUDIT_DATA = false;
 
-    public $arr_erros = null;
+    public $arr_erros = [];
     private $tech_notes = "";
     private $PK_FIELD = '';
 
