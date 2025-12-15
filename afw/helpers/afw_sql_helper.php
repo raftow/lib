@@ -27,9 +27,9 @@ class AfwSqlHelper extends AFWRoot
             if(!$isPKCol[$row_col]) 
             {
                 if((!$row_val) and ($row_val!==0) and ($row_val!=='0')) $row_val = "null";
-                if($isScalarCol[$row_col]) $set_update_cols .= " $row_col=$row_val, -- oldn=$old_row_val\n";
+                if($isScalarCol[$row_col]) $set_update_cols .= "\n-- oldn=$old_row_val : \n $row_col=$row_val,";
                 // elseif($isDate[$row_col]) $set_update_cols .= " $row_col=TO_DATE('$row_val', 'yyyy-mm-dd'),\n";
-                else $set_update_cols .= " $row_col=$row_val_string, -- olds=$old_row_val\n";
+                else $set_update_cols .= "\n-- olds=$old_row_val : \n $row_col=$row_val_string,";
 
             }
             else 
