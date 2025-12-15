@@ -6513,6 +6513,15 @@ table.stats_table th {
     text-align: center !important;
 }
 
+.help {
+    background-color: #54aaf7;
+    margin-top: 8px;
+    padding: 5px;
+    color: white;
+    font-weight: normal;
+}
+
+
 .help_message_info {
     background-color: #eff6ff;
     border: 1px solid #4b83ca;
@@ -6612,6 +6621,5 @@ table.stats_table th {
     --tw-text-opacity: 1;
     color: rgb(209 213 219 / var(--tw-text-opacity, 1));
 }
-
 
 
