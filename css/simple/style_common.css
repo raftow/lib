@@ -528,7 +528,9 @@ input,select,textarea,li {
 }
 
 
-
+.warning.info.alert {
+    background-color: rgb(255 241 203);
+}
 
 .warning {
     color: rgb(78, 67, 55);
