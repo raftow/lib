@@ -6553,7 +6553,7 @@ table.stats_table th {
 }
 
 .info_circle::before {
-    content: "";
+    content: "i";
 }
 
 .pi:before {
