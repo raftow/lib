@@ -4,7 +4,7 @@ $trad["*"]["lookup_code"] = "";
 $trad["*"]["tech_fields"] = "Technical fields";
 $trad["*"]["row_id"] = "";
 $trad["*"]["id"] = "Sequence";
-$trad["*"]["qsearch_by_text"] = "Some words";
+$trad["*"]["qsearch_by_text"] = "Find the following words";
 $trad["*"]["qsearch_by_help"] = "The quick search will use the following fields as search target";
 
 
@@ -58,8 +58,10 @@ $trad["*"]["pctFinished"] = "percentage finished";
 $trad["*"]["more-about"] = "More about";
 $trad["*"]["sci_id"] = "WIZARD Step";
 
-
+$trad["*"]["any_word"] = "Any semantic word";
 			
 
 $trad["*"]["EDIT.CARD"] = "Edit";
+$trad["*"]["PLEASE_WAIT"]         	                = "Please wait ...";
+$trad["*"]["LOADING"]         	                = "Loading ...";
 ?>

@@ -1,6 +1,5 @@
 <?php
 $lang = AfwLanguageHelper::getGlobalLanguage();
-if(!$lang) $lang = 'ar';
 
 $themeArr = AfwThemeHelper::loadTheme();
 foreach($themeArr as $theme => $themeValue)
@@ -9,7 +8,7 @@ foreach($themeArr as $theme => $themeValue)
 }
 require_once 'afw_rights.php';
 
-global $currmod,$sub_pack,$cl,$TMP_ROOT, $uri_module, $popup, $file_box_css_class;
+// global $currmod,$sub_pack,$cl,$TMP_ROOT, $uri_module, $popup, $file_box_css_class;
 
 $objme = AfwSession::getUserConnected();
 
@@ -20,7 +19,8 @@ $data = array();
 $link = array();
 $sub_pack = str_replace('_', '', $sub_pack);
 $pack= str_replace('_', '', $pack);
-
+/**
+ * @var AFWObject $obj */
 if($obj->editByStep)
 {
    if((!$obj->currentStep) or $obj->getForceDefaultStep()) $obj->currentStep = $obj->getDefaultStep();  

@@ -12,7 +12,8 @@ class AfwQsearchMotor {
 
 	public static function type_input($col_name, $desc, $obj, $selected = false)
 	{
-		global $lang, $class_inputSelect_multi_big, $class_inputInt, $class_inputText, $class_inputSelected;
+		//global $lang, $class_inputSelect_multi_big, $class_inputInt, $class_inputText, $class_inputSelected;
+		$lang = AfwLanguageHelper::getGlobalLanguage();
 		require_once(dirname(__FILE__).'/../modes/afw_rights.php');
 
 		// $images = AfwThemeHelper::loadTheme();
@@ -46,7 +47,7 @@ class AfwQsearchMotor {
 						$fkObj,
 						array($_POST[$col_name]),
 						array(
-							"class" => "form-control $class_inputSearch $class_select $inp_selected",
+							"class" => "form-control $lang $lang $class_inputSearch $class_select $inp_selected",
 							"name"  => $col_name,
 						),
 						"asc",
@@ -58,7 +59,7 @@ class AfwQsearchMotor {
 						$fkObj,
 						((isset($_POST[$col_name])) ? $_POST[$col_name] : array()),
 						array(
-							"class" => "form-control $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+							"class" => "form-control $lang $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
 							"name"  => $col_name . "[]",
 							"size"  => 5,
 							"multi" => true
@@ -148,7 +149,7 @@ class AfwQsearchMotor {
 							$l_rep,
 							isset($_POST[$col_name]) ? array($_POST[$col_name]) : $searchDefaultValue,
 							array(
-								"class" => "form-control $class_inputSearch $class_select $inp_selected",
+								"class" => "form-control $lang $lang $class_inputSearch $class_select $inp_selected",
 								"name"  => $col_name,
 								"reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name, '', '', true),
 								"onchange" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
@@ -163,7 +164,7 @@ class AfwQsearchMotor {
 							$l_rep,
 							((isset($_POST[$col_name])) ? $_POST[$col_name] : $searchDefaultValue),
 							array(
-								"class" => "form-control $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+								"class" => "form-control $lang $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
 								"name"  => $col_name . "[]",
 								"size"  => 5,
 								"multi" => true
@@ -200,8 +201,8 @@ class AfwQsearchMotor {
 		?>
 						<table style='width: 100%;' cellspacing='0' cellpadding='0'>
 							<tr style="background-color: rgba(255, 255, 255, 0);">
-								<td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?= $col_name ?>" name="<?= $col_name ?>" class="form-control inputtrescourt cl_id" value="<?= $val ?>" readonly></td>
-								<td style="padding:0px;margin:0px;"><input type="text" id="<?= $col_name_atc ?>" name="<?= $col_name_atc ?>" class="form-control <?= $atc_input_normal . " " . $class_inputSearch ?>" value="<?= $val_display ?>"></td>
+								<td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?= $col_name ?>" name="<?= $col_name ?>" class="form-control <?= $lang ?> inputtrescourt cl_id" value="<?= $val ?>" readonly></td>
+								<td style="padding:0px;margin:0px;"><input type="text" id="<?= $col_name_atc ?>" name="<?= $col_name_atc ?>" class="form-control <?= $lang ?> <?= $atc_input_normal . " " . $class_inputSearch ?>" value="<?= $val_display ?>"></td>
 							</tr>
 						</table>
 						<script>
@@ -241,7 +242,7 @@ class AfwQsearchMotor {
 					<?
 					} else {
 					?>
-						<input type="text" class="form-control <?= trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
+						<input type="text" class="form-control <?= $lang?> <?= trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
 				<?
 					}
 				}
@@ -253,7 +254,7 @@ class AfwQsearchMotor {
 						$fkObj,
 						( (isset($_POST[$col_name])) ? $_POST[$col_name]: array()  ),
 						array(
-							"class" => "form-control $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+							"class" => "form-control <?= $lang?> $class_inputSearch $class_inputSelect_multi_big $inp_selected",
 							"name"  => $col_name."[]",
 							"size"  => 5,
 							"multi" => true
@@ -268,7 +269,7 @@ class AfwQsearchMotor {
 			case 'INT':
 			case 'AMNT':
 
-				?> <input type="text" class="form-control <?= trim(" inputfull $class_inputSearch ") ?>" placeholder="<?php echo $col_placeholder ?>" name="<?php echo $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
+				?> <input type="text" class="form-control <?= $lang?> <?= trim(" inputfull $class_inputSearch ") ?>" placeholder="<?php echo $col_placeholder ?>" name="<?php echo $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
 			<?php echo $desc["UNIT"];
 				//echo $desc["TITLE_AFTER"];
 				break;
@@ -319,7 +320,7 @@ class AfwQsearchMotor {
 							من
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>
+							<input type="text" class="form-control <?= $lang?> <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>
 							<script type="text/javascript">
 								$('#<?= $col_name ?>').calendarsPicker({
 									calendar: $.calendars.instance('UmmAlQura')
@@ -330,7 +331,7 @@ class AfwQsearchMotor {
 							إلى
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<? echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
+							<input type="text" class="form-control <?= $lang?> <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<? echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
 							<script type="text/javascript">
 								$('#<?= $col_name . "_2" ?>').calendarsPicker({
 									calendar: $.calendars.instance('UmmAlQura')
@@ -391,7 +392,7 @@ class AfwQsearchMotor {
 					),
 					array($operSelected),
 					array(
-						"class" => "form-control $class_inputOper $inp_selected",
+						"class" => "form-control $lang $class_inputOper $inp_selected",
 						"name"  => "oper_" . $col_name
 					),
 					"",
@@ -405,7 +406,7 @@ class AfwQsearchMotor {
 					),
 					array($operSelected),
 					array(
-						"class" => "form-control $class_inputOper $inp_selected",
+						"class" => "form-control $lang $class_inputOper $inp_selected",
 						"name"  => "oper_" . $col_name
 					),
 					"",
@@ -427,7 +428,7 @@ class AfwQsearchMotor {
 					),
 					array($operSelected),
 					array(
-						"class" => "form-control $class_inputOper $inp_selected",
+						"class" => "form-control $lang $class_inputOper $inp_selected",
 						"name"  => "oper_" . $col_name
 					),
 					"",
@@ -443,7 +444,7 @@ class AfwQsearchMotor {
 					),
 					array($operSelected),
 					array(
-						"class" => "form-control $class_inputOper $inp_selected",
+						"class" => "form-control $lang $class_inputOper $inp_selected",
 						"name"  => "oper_" . $col_name
 					),
 					"",
@@ -460,7 +461,7 @@ class AfwQsearchMotor {
 						),
 						array($operSelected),
 						array(
-							"class" => "form-control $class_inputOper $inp_selected",
+							"class" => "form-control $lang $class_inputOper $inp_selected",
 							"name"  => "oper_" . $col_name
 						),
 						"",
@@ -474,7 +475,7 @@ class AfwQsearchMotor {
 						),
 						array($operSelected),
 						array(
-							"class" => "form-control $class_inputOper $inp_selected",
+							"class" => "form-control $lang $class_inputOper $inp_selected",
 							"name"  => "oper_" . $col_name
 						),
 						"",
@@ -490,7 +491,7 @@ class AfwQsearchMotor {
 					),
 					array($operSelected),
 					array(
-						"class" => "form-control $class_inputOper $inp_selected",
+						"class" => "form-control $lang $class_inputOper $inp_selected",
 						"name"  => "oper_" . $col_name
 					),
 					"",
@@ -505,7 +506,7 @@ class AfwQsearchMotor {
 					),
 					array($operSelected),
 					array(
-						"class" => "form-control $class_inputOper $inp_selected",
+						"class" => "form-control $lang $class_inputOper $inp_selected",
 						"name"  => "oper_" . $col_name
 					),
 					"",

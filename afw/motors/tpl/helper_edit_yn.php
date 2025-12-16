@@ -16,7 +16,7 @@ elseif ($desc["SWITCHER"])
     else $switcher_img_class = "switcher-btn";
     $switcher_img = "<img class='$switcher_img_class' for='$col_name' id='img-$col_name' src='../lib/images/$onoff.png' width='48' heigth='32'>";                                                
 ?>
-    <div class='form-control form-switcher'>
+    <div class='form-control <?php echo $lang ?> form-switcher'>
         <input type="hidden" value="<?php echo $val ?>" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" <?php echo $checkbox_checked ?>>
         <?php echo $switcher_img ?>
     </div>
@@ -29,7 +29,7 @@ elseif ($desc["CHECKBOX"])
 
     $checkbox_extra_class = $desc["CHECKBOX_CSS_CLASS"];
 ?>
-    <div class='form-control form-ckbox'><input type="checkbox" value="1" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" <?php echo $checkbox_checked ?> class="echeckbox <?php echo $checkbox_extra_class ?>"></div>
+    <div class='form-control <?php echo $lang ?> form-ckbox'><input type="checkbox" value="1" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" <?php echo $checkbox_checked ?> class="echeckbox <?php echo $checkbox_extra_class ?>"></div>
 <?php
 } 
 else 
@@ -38,7 +38,7 @@ else
         $answer_list,
         array($val),
         array(
-            "class" => "form-control form-yn",
+            "class" => "form-control $lang form-yn",
             "name"  => $col_name,
             "id"  => $col_name,
             "tabindex" => $qedit_orderindex,

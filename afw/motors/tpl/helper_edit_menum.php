@@ -9,7 +9,7 @@ if ($desc["CHECKBOX"])
         $checkbox_css_class = $desc["CHECKBOX_CSS_CLASS"];
         $size_css_class = $desc["SIZE_CSS_CLASS"];
 ?>
-    <div class='form-control form-ckbox <?php echo $size_css_class ?>'>
+    <div class='form-control <?php echo $lang ?> form-ckbox <?php echo $size_css_class ?>'>
         <input type="checkbox" value="<?php echo $repId ?>" name="<?php echo $col_name ?>[]" id="<?php echo $col_name."_".$repId ?>" <?php echo $checkbox_checked ?> class="echeckbox <?php echo $checkbox_css_class ?>">
         <label class='label_for_mchk' id="label_for_<?php echo $col_name."_".$repId ?>"><?php echo $repTitle ?></label>
     </div>
@@ -19,7 +19,7 @@ if ($desc["CHECKBOX"])
 else
 {
     $infos_arr = array(
-        "class" => "form-control form-menum",
+        "class" => "form-control $lang form-menum",
         "name"  => $col_name . "[]",
         "id"  => $col_name,
         "size"  => 5,

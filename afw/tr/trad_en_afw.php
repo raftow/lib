@@ -22,6 +22,8 @@ class AfwOperatorEnTranslator{
         $trad["OPERATOR"]["BETWEEN"]	                         	= "from-to";
         $trad["OPERATOR"]["FILE"]	                         	= " ";
         $trad["OPERATOR"]["THE-FILE"]	                         	= "attributes screen";
+        $trad["OPERATOR"]["WHAT-TO-SEE"]	                         	= "What do you want to see?";
+        
 
         $trad["OPERATOR"]["SEARCH"]	                         	= "search in";
         $trad["OPERATOR"]["QSEARCH"]	                         	= "Quick search of";
@@ -116,8 +118,8 @@ class AfwOperatorEnTranslator{
 
         $trad["OPERATOR"]["page"]	         	                = "page";
         $trad["OPERATOR"]["record"]	         	                = "record";
-        $trad["OPERATOR"]["new_instance"]	         	        = "new record"; 
-        $trad["OPERATOR"]["qedit_new"]	         	                = "add many records";              
+        $trad["OPERATOR"]["new_instance"]	         	        = "new"; 
+        $trad["OPERATOR"]["qedit_new"]	         	                = "add many";              
         $trad["OPERATOR"]["qedit_update"]	         	        = "quick update of search results";   
         $trad["OPERATOR"]["other_search"]	         	        = "back to"; 
         $trad["OPERATOR"]["back_to_last_form"]        	                = "back to previous screen";

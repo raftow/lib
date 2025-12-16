@@ -70,7 +70,7 @@ if ((!$auto_c)  and (!$auto_complete_default))
 
         $prop_sel =
             array(
-                "class" => "form-control form-select",
+                "class" => "form-control $lang form-select",
                 "name"  => $col_name,
                 "id"  => $col_name,
                 "tabindex" => $qedit_orderindex,
@@ -152,7 +152,7 @@ else
                     <td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>" readonly></td>
                   
                     <td style="padding:0px;margin:0px;">
-                        <input placeholder="<?php echo $placeholder ?>" type="text" id="<?php echo $col_name_atc ?>" name="<?php echo $col_name_atc ?>" class="form-control form-autoc" value="<?php echo $val_display ?>" <?php echo $input_required ?>>
+                        <input placeholder="<?php echo $placeholder ?>" type="text" id="<?php echo $col_name_atc ?>" name="<?php echo $col_name_atc ?>" class="form-control <?php echo $lang ?> form-autoc" value="<?php echo $val_display ?>" <?php echo $input_required ?>>
                     </td>
                     <?
                     if ($auto_c_create) {
@@ -186,7 +186,7 @@ else
                         //alert(ui.item.id);
                         $("#<?php echo $col_name ?>").val(ui.item.id);
                         $("#<?php echo $col_name ?>").attr('class', 'inputtrescourt cl_id');
-                        $("#<?php echo $col_name_atc ?>").attr('class', 'form-control form-autoc');
+                        $("#<?php echo $col_name_atc ?>").attr('class', 'form-control '.$lang.' form-autoc');
                         $("#<?php echo $col_name_atc ?>").addClass('input_changed');
                     },
 

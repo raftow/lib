@@ -122,7 +122,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                 if($val<=0) $val = "سجل جديد";
                 $type_input_ret = "text";
 	?>			
-                                <input placeholder="<?=$placeholder?>" type="text" class="form-control" name="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=32 maxlength=255 readonly>
+                                <input placeholder="<?=$placeholder?>" type="text" class="form-control $lang" name="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=32 maxlength=255 readonly>
 	<?php			break;
 		case 'FK'     : $nom_table_fk   = $desc["ANSWER"];
                                 $nom_module_fk  = $desc["ANSMODULE"];
@@ -150,7 +150,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                         $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="load ManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                                                 
                                         $prop_sel =
-                                              array(  "class" => "form-control",
+                                              array(  "class" => "form-control $lang",
 						"name"  => $formInputName,
                                                 "id"  => $formInputName,
                                                 "tabindex" => $qedit_orderindex,
@@ -226,7 +226,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                         <table cellspacing='0' cellpadding='0' style="width:100%">
                                         <tr style="background-color: rgba(255, 255, 255, 0);">
                                                 <td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?=$formInputName?>"     name="<?=$formInputName?>" value="<?=$val?>" readonly></td>
-                                                <td style="padding:0px;margin:0px;"><input placeholder="<?=$placeholder?>"  type="text" id="<?=$col_name_atc?>" name="<?=$col_name_atc?>" class="form-control" value="<?=$val_display?>"></td>
+                                                <td style="padding:0px;margin:0px;"><input placeholder="<?=$placeholder?>"  type="text" id="<?=$col_name_atc?>" name="<?=$col_name_atc?>" class="form-control $lang" value="<?=$val_display?>"></td>
                                                 <?
                                                 if($auto_c_create) 
                                                 {
@@ -293,7 +293,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                 $type_input_ret = "select";
                                 
                                 $infos_arr = array(
-						"class" => "form-control",
+						"class" => "form-control $lang",
 						"name"  => $formInputName."[]",
                                                 "id"  => $formInputName,
 						"size"  => 5,
@@ -330,7 +330,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                 
                                 
                                 $infos_arr = array(
-						"class" => "form-control",
+						"class" => "form-control $lang",
 						"name"  => $formInputName."[]",
                                                 "id"  => $formInputName,
 						"size"  => 5,
@@ -453,7 +453,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                                 }   
                                                 
                                                 $info = array(
-        							"class" => "form-control",
+        							"class" => "form-control $lang",
         							"name"  => $formInputName,
                                                                 "id"  => $formInputName,
                                                                 "tabindex" =>$qedit_orderindex,
@@ -492,7 +492,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                 else 
                                 {      
 	?>
-                                <input placeholder="<?=$placeholder?>" type="text" tabindex="<?=$qedit_orderindex?>" class="form-control" name="<?php echo $formInputName ?>" id="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=6 maxlength=6 <?php echo $readonly?> onchange="<?php echo $onchange?>" <?=$input_style?>>
+                                <input placeholder="<?=$placeholder?>" type="text" tabindex="<?=$qedit_orderindex?>" class="form-control $lang" name="<?php echo $formInputName ?>" id="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=6 maxlength=6 <?php echo $readonly?> onchange="<?php echo $onchange?>" <?=$input_style?>>
 	<?php			
                                 }
                                 

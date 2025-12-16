@@ -248,7 +248,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                                 }
                                                 else
                                                 {
-                                                        $display_attribute_RO_class = "form-control inputreadonly";
+                                                        $display_attribute_RO_class = "form-control $lang inputreadonly";
                                                 }
                                                 
                                                 

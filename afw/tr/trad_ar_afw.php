@@ -64,6 +64,7 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["FILE"]	                         	= " ";   
         $trad["OPERATOR"]["TO"]	                         	= "الانتقال إلى معلومات"; 
         $trad["OPERATOR"]["DATA-OF"]	                         	= "معلومات"; 
+        $trad["OPERATOR"]["WHAT-TO-SEE"]	                         	= "ماذا تريد أن ترى؟";
             
         
         $trad["OPERATOR"]["NEW"]	                        	= "إضافة سجل جديد";

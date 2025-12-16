@@ -122,7 +122,7 @@ class AfwLanguageHelper
         $company = AfwSession::currentCompany();
         $file_dir_name = dirname(__FILE__)."/..";
         if (!$langue) {
-            throw new AfwRuntimeException("Lang should be defined to be able to translate");
+            throw new AfwRuntimeException("\$lang should be defined to be able to translate");
         }
 
         $langue = strtolower($langue);
@@ -132,7 +132,7 @@ class AfwLanguageHelper
         }
 
         if ($trad[$nom_table][$nom_col]) {
-            // if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("debugg $nom_table trad of $nom_col = ".var_export($trad,true));
+            if(($module=="lib/afw") and ($nom_table=="all") and ($nom_col=="qsearch_by_help")) die("debugg $nom_table trad of $nom_col = ".var_export($trad,true));
             return $trad[$nom_table][$nom_col];
         }
 
@@ -165,7 +165,7 @@ class AfwLanguageHelper
                 }
 
                 if (file_exists($nom_file)) {
-                    //if(($module=="adm") and ($nom_table=="applicant") and ($nom_col=="address_type_enum")) echo(" 2. tarjem find the file nom_file=$nom_file <br>");
+                    
                     //if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire include_once $nom_file ");
 
@@ -192,9 +192,13 @@ class AfwLanguageHelper
                         throw new AfwRuntimeException("after include_once $nom_file trad 1 is " . var_export($trad, true));
                     }
 
+                    // if(($module=="lib/afw") and ($nom_table=="all") and ($nom_col=="qsearch_by_help")) echo(" 2. tarjem has found the file nom_file=$nom_file : caseTrans=$caseTrans<br> trad[*][$nom_col]=".$trad["*"][$nom_col]);
+                    if($nom_table=="all") $nom_table = "*";
                     if ($trad[$nom_table][$nom_col]) {
                         return $trad[$nom_table][$nom_col];
                     }
+
+                    
                 }
             } 
             else 

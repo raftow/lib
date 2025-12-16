@@ -3984,6 +3984,43 @@ class AFWObject extends AFWRoot
         return $nom_col;
     }
 
+    public static function gtr($nom_col, $langue = 'ar', $tokens = [])
+    {
+        $operator = null;
+        $nom_table = "all";            
+        $module = "lib/afw";
+
+        if(!$nom_col) $nom_col = $nom_table; // plural translation
+
+        $return = AfwLanguageHelper::tarjem(
+            $nom_col,
+            $langue,
+            $operator,
+            $nom_table,
+            $module
+        );
+        
+        if(AfwStringHelper::stringStartsWith(trim($return), "??")
+           and 
+           AfwStringHelper::stringEndsWith(trim($return), "??"))
+        {
+            $return = AfwStringHelper::methodToTitle($nom_col);
+        }
+        $return_before = $return;
+        $return = AfwReplacement::trans_replace($return, $module, $langue);
+
+        /*if ($nom_col == 'trainingunittype.single') {
+            throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem(col=$nom_col, lng=$langue, oper=$operator, tbl=$nom_table, module=$module) (intermediaire = $return_before)");
+        }*/
+
+        foreach($tokens as $token => $val_token)
+        {
+            $return = str_replace($token, $val_token, $return);
+        }    
+
+        return $return;
+    }
+
     public static function t($nom_col, $langue = 'ar', $operator = null)
     {
         $nom_table = static::$TABLE;

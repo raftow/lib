@@ -2,6 +2,10 @@
 // die("DBG-mode qsearch");
 require_once(dirname(__FILE__)."/../../../config/global_config.php");
 
+$lang = AfwLanguageHelper::getGlobalLanguage();
+$please_wait = AFWObject::gtr("PLEASE_WAIT",$lang);
+$loading = AFWObject::gtr("LOADING",$lang);
+$please_wait_loading = $please_wait." ".$loading;
 
 $themeArr = AfwThemeHelper::loadTheme();
 foreach($themeArr as $theme => $themeValue)
@@ -154,7 +158,7 @@ if(!$can)
 }
 
 
-if(!$lang) $lang = 'ar';
+
 
 
 
@@ -458,8 +462,9 @@ if($action=="retrieve")
         
         if(!$disable_select_view_in_qsearch_mode[$cl])
         {
-                $select_view = "<div class='qsearchview_select'><select id='qsearchview' name='qsearchview' class='form-control'>
-                  <option value='all' $fgroup_all_selected>جميع الحقول</option>
+                $all_fields = AFWObject::gtr("all fields", $lang);
+                $select_view = "<div class='qsearchview_select'><select id='qsearchview' name='qsearchview' class='form-control $lang'>
+                  <option value='all' $fgroup_all_selected >$all_fields</option>
                 ";
                 $qsrch_fgroups = $myClassInstance->getFieldGroupArr($lang);
                 $size_qsearch_text = ${"size_qsearch_".$myClassInstance};
@@ -468,12 +473,13 @@ if($action=="retrieve")
                 {
                    if($qsearchview==$fgroupcode) $fgroup_selected = "selected";
                    else $fgroup_selected = "";
-                   $select_view .= "<option value='$fgroupcode' $fgroup_selected>حقول $fgroupname</option>";   
+                   $select_view .= "<option value='$fgroupcode' $fgroup_selected> $fgroupname</option>";   
                 }
                 $select_view .= "</select></div>";
+                $what_to_see = $myClassInstance->translate('WHAT-TO-SEE',$lang,true);
                 AfwMainPage::addOutput( '<div class="col-md-'.$size_qsearch_text.'">                
                         <div class="form-group">                        
-                                <label>ماذا تريد أن ترى ؟</label>                        		
+                                <label>'.$what_to_see.'</label>                        		
                                 '.$select_view.'		                
                         </div>        
                 </div>');
@@ -500,7 +506,7 @@ else
         else $fgroup_exec_selected = "";
 
         $select_view = "<div class='qsearchview_select'>
-                <select id='qsearchview' name='qsearchview' class='form-control'>
+                <select id='qsearchview' name='qsearchview' class='form-control $lang'>
                   <option value='' $fgroup_0_selected>فقط اظهار القائمة المعنية وعدد عناصرها </option>
                   <option value='exec' $fgroup_exec_selected>تنفيذ $methodTranslated</option>
                 </select></div>";
@@ -550,11 +556,14 @@ AfwMainPage::addOutput( '<script type="text/javascript">
     }
 </script>';
 */
+
 AfwMainPage::addOutput( '<script type="text/javascript">
         $(document).ready(function() {       
                 $("#qsearch-submit-form").click(function(){
                         $(".alert-dismissable").fadeOut().remove();
-                        $("#search_result_div").html(\'<div class="footer1 hzm-relative-loader-div" id="mySQLloader"><div class="relative hzm-loading-div" id="myloading">الرجاء الانتظار جارٍ معالجة الطلب                   </div></div>\');
+                        $("#search_result_div").html(\'<div class="footer1 hzm-relative-loader-div" id="mySQLloader"><div class="relative hzm-loading-div" id="myloading">
+                        '.$please_wait_loading.'
+                        </div></div>\');
                 });
         });
     

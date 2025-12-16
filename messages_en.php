@@ -34,5 +34,5 @@
      
      // afw messages
      $messages["only_show_errors_mode_is_activated"] = "only show errors mode is activated";
-     
+     $messages["Orders to execute"] = "Executable orders";
 ?>

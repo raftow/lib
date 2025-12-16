@@ -190,7 +190,7 @@ if($nb_objs>0)
                 
                 $css_unit_tooltip_active = "class_input_width_$css_input_width_pct";
                 
-                $html_before .= "<div class=\"form-control-div $css_unit_tooltip_active $css_form_control_div_special\">";
+                $html_before .= "<div class=\"form-control-div $lang $css_unit_tooltip_active $css_form_control_div_special\">";
                 if($info_tooltip) $html_before .= "<div class=\"hzm_tooltip\"><img data-toggle=\"tooltip\" data-placement=\"left\" class=\"hzm_tt\" title=\"".$info_tooltip."\" src=\"../lib/images/information.png\" /></div>";
                 
                 if($info_unit) $html_after .= "<div class=\"hzm_unit\">".$info_unit."</div>";

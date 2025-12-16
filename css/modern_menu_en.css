@@ -89,7 +89,7 @@ nav .logo-name .logo_name {
     font-weight: 600;
     color: var(--text-color);
     padding-top: 12px;
-    margin-left: -12px;
+    margin-left: 0px;
     transition: var(--tran-05);
     text-align: center;
 }

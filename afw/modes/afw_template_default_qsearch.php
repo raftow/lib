@@ -6,8 +6,9 @@ foreach($themeArr as $theme => $themeValue)
     $$theme = $themeValue;
 }
 require_once 'afw_rights.php';
-global  $TMP_DIR,$cl,$pk,$spk,$TMP_ROOT, $lang, $class_table, $class_tr1, $class_tr2, $pct_tab_search_criteria, $class_tr1_sel, $class_tr2_sel ;
+//global  $TMP_DIR,$cl,$pk,$spk,$TMP_ROOT, $lang, $class_table, $class_tr1, $class_tr2, $pct_tab_search_criteria, $class_tr1_sel, $class_tr2_sel ;
 $objme = AfwSession::getUserConnected();
+$lang = AfwLanguageHelper::getGlobalLanguage();
 if(!$lang) $lang = 'ar';
 
 //echo "langue = $lang <br>";
@@ -15,6 +16,7 @@ if(!$lang) $lang = 'ar';
 //$lab_id = AfwLanguageHelper::tarjem("id",$lang,true);
 define("LIMIT_INPUT_SELECT", 30);
 $data = array();
+
 
 if(!$obj)
 {
@@ -41,6 +43,10 @@ foreach($class_db_structure as $nom_col => $desc)
 $total_qsize = 0;
 $max_total_qsize = 99;//$obj->max_total_qsize;
 if(!$max_total_qsize) $max_total_qsize = 10; 
+
+/**
+ * @var AFWObject $obj
+ */
 
 foreach($class_db_structure as $nom_col => $desc)
 {
@@ -100,8 +106,9 @@ foreach($class_db_structure as $nom_col => $desc)
                 AfwQsearchMotor::type_input("qsearch_by_text", $desc_qsearch_by_text, $obj, $qsearch_by_text);
                 $trad_qsearch_by_text_input = ob_get_clean();
                  
-                $trad_qsearch_by_text = $obj->translate("qsearch_by_text",$lang);
-                $trad_qsearch_by_help = $obj->translate("qsearch_by_help",$lang);
+                // $trad_qsearch_by_text = " obj::gtr(qsearch_by_text,$lang) = [".$obj::gtr("qsearch_by_text",$lang)."] ";
+                $trad_qsearch_by_text = $obj::gtr("qsearch_by_text",$lang);
+                $trad_qsearch_by_help = $obj::gtr("qsearch_by_help",$lang);
                 $qsearch_by_text_cols = AfwPrevilegeHelper::getAllTextSearchableCols($obj);
                 $translated_text_searchable_cols_arr = AfwLanguageHelper::translateCols($obj, $qsearch_by_text_cols,$lang, true); 
                 
@@ -198,7 +205,7 @@ foreach($class_db_structure as $nom_col => $desc)
                 <div class="form-group">
                         <label><?php echo $obj->translate('SUBMIT-SEARCH-ADVANCED',$lang,true); ?>
                         </label>
-                        <input id="submit_advanced" type="button" name="submit_advanced" class="form-control togglebtn" onclick="avancedSubmitToggle();" value="إستعلام فقط">
+                        <input id="submit_advanced" type="button" name="submit_advanced" class="form-control <?php echo $lang; ?> togglebtn" onclick="avancedSubmitToggle();" value="إستعلام فقط">
                 </div>
         </div>
 <?php

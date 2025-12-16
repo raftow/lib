@@ -7,15 +7,12 @@ foreach($themeArr as $theme => $themeValue)
 
 define("LIMIT_INPUT_SELECT", 10);
 
-
-// die("test 123456");
-global $TMP_DIR, $TMP_ROOT, $lang, $cl, $pack, $sub_pack, $id, $aligntd, $currmod, $uri_module, $file_box_css_class;
-
+$lang = AfwLanguageHelper::getGlobalLanguage();
+$fsens = ($lang=="ar") ? "right" : "left";
 $objme = AfwSession::getUserConnected();
 
 $otherLink_genereLog = false;
 
-if (!$lang) $lang = 'ar';
 
 $data = array();
 /**
@@ -227,7 +224,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                         else $inputarea = "";
 
 
-                                        $ro_classes_form = "form-control inputreadonly $inputarea";
+                                        $ro_classes_form = "form-control $lang inputreadonly $inputarea";
                                 }
                                 $col_val_class = "";
                                 if (($desc['TYPE'] == 'YN') or ($desc['TYPE'] == 'INT') or ($desc['TYPE'] == 'ENUM') or ($desc['TYPE'] == 'FK')) {
@@ -553,7 +550,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                 ?>
 
                 <div class="hzm_form_panel hzm_step_body_<?= $clStep . " step_panel_" . $obj->currentStep ?>">
-                        <div class="form_right form_wizard_body form_wizard_<?php echo $cl_short; ?> form_right_<?php echo $clStep . " step_body_" . $obj->currentStep; ?>" >
+                        <div class="form_<?php echo $fsens ?> form_wizard_body form_wizard_<?php echo $cl_short; ?> form_right_<?php echo $clStep . " step_body_" . $obj->currentStep; ?>" >
                                 <div class="wizard_buttons">
                                 <div class='body_nav_hzm'>
                                                 <p>

@@ -1,21 +1,25 @@
 </div>
 <!-- #Footer -->
 <?php
+        $lang = AfwLanguageHelper::getGlobalLanguage();
+        if(!$lang) $lang="ar";
+        $please_wait = AFWObject::gtr("PLEASE_WAIT",$lang);
+        $loading = AFWObject::gtr("LOADING",$lang);
+        $please_wait_loading = $please_wait." ".$loading;
+        $objme = AfwSession::getUserConnected();
 
- $objme = AfwSession::getUserConnected();
+        if($objme)
+        {
+                $are_you_sure = $objme->translateMessage("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECORD",$lang);
+                $once_deleted = $objme->translateMessage("ONCE_DELETED_YOU_WILL_NOT_BE_ABLE_TO_GO_BACK",$lang);
+                $has_been_deleted = $objme->translateMessage("THE_FOLLOWING_RECORD_HAS_BEEN_DELETED",$lang);
+                $you_dont_have_rights = $objme->translateMessage("CANT_DELETE_THE_ROW",$lang);
+                $safely_cancelled = $objme->translateMessage("DELETE_HAVE_BEEN_SAFELY_CANCELLED",$lang);
+        }
 
- if($objme)
- {
-         $are_you_sure = $objme->translateMessage("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECORD",$lang);
-         $once_deleted = $objme->translateMessage("ONCE_DELETED_YOU_WILL_NOT_BE_ABLE_TO_GO_BACK",$lang);
-         $has_been_deleted = $objme->translateMessage("THE_FOLLOWING_RECORD_HAS_BEEN_DELETED",$lang);
-         $you_dont_have_rights = $objme->translateMessage("CANT_DELETE_THE_ROW",$lang);
-         $safely_cancelled = $objme->translateMessage("DELETE_HAVE_BEEN_SAFELY_CANCELLED",$lang);
- }
+        if($datatable_on) include("../lib/datatable/datatable_js.php");
 
-  if($datatable_on) include("../lib/datatable/datatable_js.php");
-
-  include_once("hzm_footer_features_js.php");
+        include_once("hzm_footer_features_js.php");
 ?>
 
 
@@ -48,7 +52,7 @@
 </div>    
 <div class="footer-s hzm-loader-div hide" id="myloader">
         <div class="hzm-loading-div" id="myloading">
-                الرجاء الانتظار جارٍ معالجة الطلب                   
+                <?php echo $please_wait_loading; ?>        
         </div>
 
 </div>

@@ -585,7 +585,7 @@ input.fa.finish.wizardbtn {
     max-width: 170px !important;
     /* --webkit-appearance: butt; */
     min-width: 70px !important;
-    font-size: 14px !important;
+    font-size: inherit;
     margin: 0;
 }
 

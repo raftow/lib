@@ -1,11 +1,15 @@
 <?php
 
- $objme = AfwSession::getUserConnected();
+        $objme = AfwSession::getUserConnected();
+        $lang = AfwLanguageHelper::getGlobalLanguage();
+        if(!$lang) $lang="ar";
+        $please_wait = AFWObject::gtr("PLEASE_WAIT",$lang);
+        $loading = AFWObject::gtr("LOADING",$lang);
+        $please_wait_loading = $please_wait." ".$loading;
 
+        if($datatable_on) include("../lib/datatable/datatable_js.php");
 
-  if($datatable_on) include("../lib/datatable/datatable_js.php");
-
-  include_once("hzm_footer_features_js.php");
+        include_once("hzm_footer_features_js.php");
 ?>
 
 
@@ -38,7 +42,7 @@
 </div>    
 <div class="footer-s hzm-loader-div hide" id="myloader">
         <div class="hzm-loading-div" id="myloading">
-                الرجاء الانتظار جارٍ معالجة الطلب                   
+                <?php echo $please_wait_loading; ?>  
         </div>
 
 </div>
