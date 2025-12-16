@@ -3373,15 +3373,15 @@ class AFWObject extends AFWRoot
             $col = $this->moveColumn();
             $limitDown = $this->moveLimit($col);
             if(!$col) return [false, "No move column defined", null];
+            $colVal = $this->getVal($col);
+            $newVal = $this->getVal($col) + $sens;
+            if($newVal<$limitDown) 
+            {
+                return [false, "LIMIT-REACHED", null];
+            }
             $isInIndex = $this->isIndexAttribute($col);
             if($isInIndex)
-            {
-                $colVal = $this->getVal($col);
-                $newVal = $this->getVal($col) + $sens;
-                if($newVal<$limitDown) 
-                {
-                    return [false, "LIMIT-REACHED", null];
-                }
+            {                
                 $newArrIndex = $this->getMyIndexArray();
                 $newArrIndex[$col] = $newVal;
                 $secondObjSwitched = $this->loadBrotherWithUniqueKey($newArrIndex);
@@ -3403,8 +3403,8 @@ class AFWObject extends AFWRoot
                 $newId = $secondObjSwitched->id;
             }
             $status = "NOTHING-DONE";
-            if($sens<0) $status = "MOVED-UP-$newId-$limitDown";
-            elseif($sens>0) $status = "MOVED-DOWN-$newId-$limitDown";
+            if($sens<0) $status = "MOVED-UP-$newId-$limitDown-$col-$newVal";
+            elseif($sens>0) $status = "MOVED-DOWN-$newId-$limitDown-$col-$newVal";
 
             return [true, $status, $secondObjSwitched];
         }
