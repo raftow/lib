@@ -3403,8 +3403,8 @@ class AFWObject extends AFWRoot
                 $newId = $secondObjSwitched->id;
             }
             $status = "NOTHING-DONE";
-            if($sens<0) $status = "MOVED-UP-$newId-$limitDown";
-            elseif($sens>0) $status = "MOVED-DOWN-$newId-$limitDown";
+            if($sens<0) $status = "MOVED-UP-$newId-$limitDown-$col-$newVal";
+            elseif($sens>0) $status = "MOVED-DOWN-$newId-$limitDown-$col-$newVal";
 
             return [true, $status, $secondObjSwitched];
         }
