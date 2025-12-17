@@ -12,7 +12,7 @@
                 if ($input_type_html == "text") 
                 {
 ?>
-                    <input type="text" tabindex="<?php echo $qedit_orderindex ?>" class="form-control <?php echo $lang ?>" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" size=6 maxlength=6 <?php echo $readonly ?> onchange="<?php echo $onchange ?>" placeholder="<?php echo $placeholder ?>" <?php echo $input_options_html . " " . $style_input ?> <?php echo $input_required ?>>
+                    <input type="text" tabindex="<?php echo $qedit_orderindex ?>" class="form-control <?php echo $lang_input ?>" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" size=6 maxlength=6 <?php echo $readonly ?> onchange="<?php echo $onchange ?>" placeholder="<?php echo $placeholder ?>" <?php echo $input_options_html . " " . $style_input ?> <?php echo $input_required ?>>
 <?php
                 } 
                 else 
@@ -27,7 +27,7 @@
                             $answer_list,
                             array($val),
                             array(
-                                "class" => "form-control $lang hzm_numeric",
+                                "class" => "form-control $lang_input hzm_numeric",
                                 "name"  => $col_name,
                                 "id"  => $col_name,
                                 "tabindex" => $qedit_orderindex,
@@ -42,7 +42,7 @@
                     else 
                     {
 ?>
-                        <input type="<?php echo $input_type_html ?>" tabindex="<?php echo $qedit_orderindex ?>" class="form-control <?php echo $lang ?> hzm_numeric" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" <?php echo $input_options_html ?>  onchange="<?php echo $onchange ?>" <?php echo $input_required ?>>
+                        <input type="<?php echo $input_type_html ?>" tabindex="<?php echo $qedit_orderindex ?>" class="form-control <?php echo $lang_input ?> hzm_numeric" name="<?php echo $col_name ?>" id="<?php echo $col_name ?>" value="<?php echo $val ?>" <?php echo $input_options_html ?>  onchange="<?php echo $onchange ?>" <?php echo $input_required ?>>
 <?php
                     }
                 }

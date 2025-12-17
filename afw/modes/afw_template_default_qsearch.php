@@ -205,7 +205,7 @@ foreach($class_db_structure as $nom_col => $desc)
                 <div class="form-group">
                         <label><?php echo $obj->translate('SUBMIT-SEARCH-ADVANCED',$lang,true); ?>
                         </label>
-                        <input id="submit_advanced" type="button" name="submit_advanced" class="form-control <?php echo $lang; ?> togglebtn" onclick="avancedSubmitToggle();" value="إستعلام فقط">
+                        <input id="submit_advanced" type="button" name="submit_advanced" class="form-control <?php echo $lang_input; ?> togglebtn" onclick="avancedSubmitToggle();" value="إستعلام فقط">
                 </div>
         </div>
 <?php

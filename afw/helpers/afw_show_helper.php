@@ -407,7 +407,7 @@ class AfwShowHelper
                         <div id=\"fg-$nom_col\" class=\"minibox attrib-$nom_col form-group $css_custom\">
                             <label for=\"$nom_col\" class=\"hzm_label hzm_label_$nom_col \">$trad_col :  
                             </label>
-                            <div class=\"hzm_data hzm_data_$nom_col form-control $lang inputreadonly $inputarea\" style=\"\">            
+                            <div class=\"hzm_data hzm_data_$nom_col form-control $lang_input inputreadonly $inputarea\" style=\"\">            
                             $data_col       
                             </div>                        
                         </div>";

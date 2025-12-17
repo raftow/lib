@@ -87,6 +87,9 @@
     
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     function consume_bearer_api($url, $token, $proxy = null , $data = null, $verify_host=false, $verify_pear=false, $return_transfer=true)
     {
         return consume_complex_api(true, $url, $token, $proxy, $data, $verify_host, $verify_pear, $return_transfer);

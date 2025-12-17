@@ -122,7 +122,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                 if($val<=0) $val = "سجل جديد";
                 $type_input_ret = "text";
 	?>			
-                                <input placeholder="<?=$placeholder?>" type="text" class="form-control $lang" name="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=32 maxlength=255 readonly>
+                                <input placeholder="<?=$placeholder?>" type="text" class="form-control $lang_input" name="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=32 maxlength=255 readonly>
 	<?php			break;
 		case 'FK'     : $nom_table_fk   = $desc["ANSWER"];
                                 $nom_module_fk  = $desc["ANSMODULE"];
@@ -150,7 +150,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                         $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="load ManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
                                                 
                                         $prop_sel =
-                                              array(  "class" => "form-control $lang",
+                                              array(  "class" => "form-control $lang_input",
 						"name"  => $formInputName,
                                                 "id"  => $formInputName,
                                                 "tabindex" => $qedit_orderindex,
@@ -226,7 +226,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                         <table cellspacing='0' cellpadding='0' style="width:100%">
                                         <tr style="background-color: rgba(255, 255, 255, 0);">
                                                 <td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?=$formInputName?>"     name="<?=$formInputName?>" value="<?=$val?>" readonly></td>
-                                                <td style="padding:0px;margin:0px;"><input placeholder="<?=$placeholder?>"  type="text" id="<?=$col_name_atc?>" name="<?=$col_name_atc?>" class="form-control $lang" value="<?=$val_display?>"></td>
+                                                <td style="padding:0px;margin:0px;"><input placeholder="<?=$placeholder?>"  type="text" id="<?=$col_name_atc?>" name="<?=$col_name_atc?>" class="form-control $lang_input" value="<?=$val_display?>"></td>
                                                 <?
                                                 if($auto_c_create) 
                                                 {
@@ -293,7 +293,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                 $type_input_ret = "select";
                                 
                                 $infos_arr = array(
-						"class" => "form-control $lang",
+						"class" => "form-control $lang_input",
 						"name"  => $formInputName."[]",
                                                 "id"  => $formInputName,
 						"size"  => 5,
@@ -330,7 +330,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                 
                                 
                                 $infos_arr = array(
-						"class" => "form-control $lang",
+						"class" => "form-control $lang_input",
 						"name"  => $formInputName."[]",
                                                 "id"  => $formInputName,
 						"size"  => 5,
@@ -453,7 +453,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                                 }   
                                                 
                                                 $info = array(
-        							"class" => "form-control $lang",
+        							"class" => "form-control $lang_input",
         							"name"  => $formInputName,
                                                                 "id"  => $formInputName,
                                                                 "tabindex" =>$qedit_orderindex,
@@ -492,7 +492,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                 else 
                                 {      
 	?>
-                                <input placeholder="<?=$placeholder?>" type="text" tabindex="<?=$qedit_orderindex?>" class="form-control $lang" name="<?php echo $formInputName ?>" id="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=6 maxlength=6 <?php echo $readonly?> onchange="<?php echo $onchange?>" <?=$input_style?>>
+                                <input placeholder="<?=$placeholder?>" type="text" tabindex="<?=$qedit_orderindex?>" class="form-control $lang_input" name="<?php echo $formInputName ?>" id="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=6 maxlength=6 <?php echo $readonly?> onchange="<?php echo $onchange?>" <?=$input_style?>>
 	<?php			
                                 }
                                 
@@ -511,7 +511,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                         $type_input_ret = "text";
                                         
 	?>                              
-        				<textarea placeholder="<?=$placeholder ?>" class="form-control" cols="<?=$cols?>" rows="<?=$rows?>" id="<?php echo $formInputName ?>" name="<?php echo $formInputName ?>" dir="<?php echo $dir ?>" onchange="<?php echo $onchange?>" <?=$input_style?>><?php echo $val ?></textarea>
+        				<textarea placeholder="<?=$placeholder ?>" class="form-control $lang_input" cols="<?=$cols?>" rows="<?=$rows?>" id="<?php echo $formInputName ?>" name="<?php echo $formInputName ?>" dir="<?php echo $dir ?>" onchange="<?php echo $onchange?>" <?=$input_style?>><?php echo $val ?></textarea>
 	<?			}
                                 else
                                 {
@@ -523,7 +523,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                     else $data_length_class = " inputultralong";
                                     $type_input_ret = "text";  
 	?>
-        				<input placeholder="<?=$placeholder ?>" type="text" tabindex="<?=$qedit_orderindex?>" class="form-control" name="<?php echo $formInputName ?>" id="<?php echo $formInputName ?>"  dir="<?php echo $dir ?>" value="<?php echo $val ?>" size=32 maxlength=255 onchange="<?php echo $onchange?>" <?=$input_style?>>
+        				<input placeholder="<?=$placeholder ?>" type="text" tabindex="<?=$qedit_orderindex?>" class="form-control $lang_input" name="<?php echo $formInputName ?>" id="<?php echo $formInputName ?>"  dir="<?php echo $dir ?>" value="<?php echo $val ?>" size=32 maxlength=255 onchange="<?php echo $onchange?>" <?=$input_style?>>
 	<?
         			}
 				break;
@@ -562,7 +562,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                 						$answer_list,
                 						array($val),
                 						array(
-                							"class" => "form-control", 
+                							"class" => "form-control $lang_input", 
                 							"name"  => $formInputName,
                                                                         "id"  => $formInputName,
                                                                         "tabindex" =>$qedit_orderindex,
@@ -581,7 +581,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                         $valaff = AfwDateHelper::displayDate($val);
         				?>
                                         
-                                        <input placeholder="<?=$placeholder ?>" type="text" id="<?=$input_name?>" name="<?=$formInputName?>" value="<?=$valaff?>" class="form-control" onchange="<?php echo $onchange?>" <?=$input_style?>>
+                                        <input placeholder="<?=$placeholder ?>" type="text" id="<?=$input_name?>" name="<?=$formInputName?>" value="<?=$valaff?>" class="form-control $lang_input" onchange="<?php echo $onchange?>" <?=$input_style?>>
                                         
                                         <script type="text/javascript">
                                           $('#<?=$input_name?>').calendarsPicker({calendar: $.calendars.instance('UmmAlQura')});
@@ -595,7 +595,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                         $valaff = AfwDateHelper::displayGDate($val);
         				?>
                                         
-                                        <input placeholder="<?=$placeholder ?>" type="text" id="<?=$input_name?>" name="<?=$formInputName?>" value="<?=$valaff?>" class="form-control" onchange="<?php echo $onchange?>" <?=$input_style?>>
+                                        <input placeholder="<?=$placeholder ?>" type="text" id="<?=$input_name?>" name="<?=$formInputName?>" value="<?=$valaff?>" class="form-control $lang_input" onchange="<?php echo $onchange?>" <?=$input_style?>>
                                         <script type="text/javascript">
                                             $("#<?=$input_name?>").datepicker({
                                               changeMonth: true,
@@ -608,7 +608,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
         		<?php		break;
 		default       :
                               $type_input_ret = "text";   
-	?>			<input placeholder="<?=$placeholder ?>" type="text" tabindex="<?=$qedit_orderindex?>" class="form-control" name="<?php echo $formInputName ?>" id="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=32 maxlength=255  onchange="<?php echo $onchange?>" <?=$input_style?>>
+	?>			<input placeholder="<?=$placeholder ?>" type="text" tabindex="<?=$qedit_orderindex?>" class="form-control $lang_input" name="<?php echo $formInputName ?>" id="<?php echo $formInputName ?>" value="<?php echo $val ?>" size=32 maxlength=255  onchange="<?php echo $onchange?>" <?=$input_style?>>
 	<?php			break;
 	}
 	if($attribute_error) echo "<div class='help-inline alert alert-danger alert-dismissable'>$attribute_error</div>\n";

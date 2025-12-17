@@ -47,7 +47,7 @@ class AfwQsearchMotor {
 						$fkObj,
 						array($_POST[$col_name]),
 						array(
-							"class" => "form-control $lang $lang $class_inputSearch $class_select $inp_selected",
+							"class" => "form-control $lang_input $lang $class_inputSearch $class_select $inp_selected",
 							"name"  => $col_name,
 						),
 						"asc",
@@ -59,7 +59,7 @@ class AfwQsearchMotor {
 						$fkObj,
 						((isset($_POST[$col_name])) ? $_POST[$col_name] : array()),
 						array(
-							"class" => "form-control $lang $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+							"class" => "form-control $lang_input $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
 							"name"  => $col_name . "[]",
 							"size"  => 5,
 							"multi" => true
@@ -149,7 +149,7 @@ class AfwQsearchMotor {
 							$l_rep,
 							isset($_POST[$col_name]) ? array($_POST[$col_name]) : $searchDefaultValue,
 							array(
-								"class" => "form-control $lang $lang $class_inputSearch $class_select $inp_selected",
+								"class" => "form-control $lang_input $lang $class_inputSearch $class_select $inp_selected",
 								"name"  => $col_name,
 								"reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name, '', '', true),
 								"onchange" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
@@ -164,7 +164,7 @@ class AfwQsearchMotor {
 							$l_rep,
 							((isset($_POST[$col_name])) ? $_POST[$col_name] : $searchDefaultValue),
 							array(
-								"class" => "form-control $lang $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+								"class" => "form-control $lang_input $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
 								"name"  => $col_name . "[]",
 								"size"  => 5,
 								"multi" => true
@@ -392,7 +392,7 @@ class AfwQsearchMotor {
 					),
 					array($operSelected),
 					array(
-						"class" => "form-control $lang $class_inputOper $inp_selected",
+						"class" => "form-control $class_inputOper $inp_selected",
 						"name"  => "oper_" . $col_name
 					),
 					"",
@@ -406,7 +406,7 @@ class AfwQsearchMotor {
 					),
 					array($operSelected),
 					array(
-						"class" => "form-control $lang $class_inputOper $inp_selected",
+						"class" => "form-control $class_inputOper $inp_selected",
 						"name"  => "oper_" . $col_name
 					),
 					"",

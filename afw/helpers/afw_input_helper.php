@@ -14,7 +14,17 @@ class AfwInputHelper extends AFWRoot
                 $lang = AfwLanguageHelper::getGlobalLanguage();
                 $html = "";
                 $orig_col_name = $col_name;
-                $dir = "ltr";
+                
+                if($desc["utf8"] or $desc["UTF8"] or ((!isset($desc["UTF8"])) and AfwStringHelper::stringEndsWith($orig_col_name, "_ar"))) 
+                {
+                        $dir = "rtl";
+                        $lang_input = "lang_ar";
+                }
+                else {
+                        $dir = "ltr";
+                        $lang_input = "lang_en";
+                }
+                        
                 if($obj)
                 {
                         $col_title = $obj->getAttributeLabel($orig_col_name,$lang);
@@ -111,7 +121,7 @@ class AfwInputHelper extends AFWRoot
                                 else
                                 {
                                         $type_input_ret = "text";
-                                        $html .= "<input type=\"text\" class=\"form-control $lang\" name=\"$col_name\" value=\"$val\" size=32 maxlength=255 readonly>";
+                                        $html .= "<input type=\"text\" class=\"form-control $lang_input\" name=\"$col_name\" value=\"$val\" size=32 maxlength=255 readonly>";
                                 }
                                 break;
                         case 'FK'     : 
@@ -139,7 +149,7 @@ class AfwInputHelper extends AFWRoot
                                                 }
                                                 
                                                 
-                                                $prop_sel = array(  "class" => "form-control $lang",
+                                                $prop_sel = array(  "class" => "form-control $lang_input",
                                                                         "name"  => $col_name,
                                                                         "id"  => $col_name,
                                                                         "tabindex" => $qedit_orderindex,
@@ -207,7 +217,7 @@ class AfwInputHelper extends AFWRoot
                                                                         </td>
                                                                         <!-- do not put placeholder=$placeholder because it disable required behavior  -->
                                                                         <td style='padding:0px;margin:0px;'>
-                                                                                <input placeholder='اكتب بعض الكلمات للبحث' type='text' id='$col_name_atc name='$col_name_atc' class='form-control $lang' value='$val_display'  $input_required >
+                                                                                <input placeholder='اكتب بعض الكلمات للبحث' type='text' id='$col_name_atc name='$col_name_atc' class='form-control $lang_input' value='$val_display'  $input_required >
                                                                         </td>
                                                                         <td style='padding:0px;margin:0px;'>$help_atc</td>
                                                                 </tr>
@@ -231,7 +241,7 @@ class AfwInputHelper extends AFWRoot
                                                                         //alert(ui.item.id);
                                                                         $(\"#$col_name\").val(ui.item.id);
                                                                         $(\"#$col_name\").attr('class', 'inputtrescourt cl_id');
-                                                                        $(\"#$col_name_atc\").attr('class', 'form-control $lang');
+                                                                        $(\"#$col_name_atc\").attr('class', 'form-control $lang_input');
                                                                         $(\"#$col_name_atc\").addClass('input_changed');
                                                                 },
                                                         
@@ -262,7 +272,7 @@ class AfwInputHelper extends AFWRoot
                                         $type_input_ret = "select";
                                         
                                         $infos_arr = array(
-                                                        "class" => "form-control $lang",
+                                                        "class" => "form-control $lang_input",
                                                         "name"  => $col_name."[]",
                                                         "id"  => $col_name,
                                                         "size"  => 5,
@@ -296,7 +306,7 @@ class AfwInputHelper extends AFWRoot
                                         $type_input_ret = "select";
                                         
                                         $infos_arr = array(
-                                                        "class" => "form-control $lang",
+                                                        "class" => "form-control $lang_input",
                                                         "name"  => $col_name."[]",
                                                         "id"  => $col_name,
                                                         "size"  => 5,
@@ -323,7 +333,7 @@ class AfwInputHelper extends AFWRoot
                                                         $liste_rep,
                                                         array($val),
                                                         array(
-                                                                "class" => "form-control $lang",
+                                                                "class" => "form-control $lang_input",
                                                                 "name"  => $col_name,
                                                                 "id"  => $col_name,
                                                                 "tabindex" =>$qedit_orderindex,
@@ -423,7 +433,7 @@ class AfwInputHelper extends AFWRoot
                                                         }   
                                                         
                                                         $info = array(
-                                                                        "class" => "form-control $lang",
+                                                                        "class" => "form-control $lang_input",
                                                                         "name"  => $col_name,
                                                                         "id"  => $col_name,
                                                                         "tabindex" =>$qedit_orderindex,
@@ -499,7 +509,7 @@ class AfwInputHelper extends AFWRoot
                                         {
                                                 if($input_type_html=="text")
                                                 {      
-                                                        return "<input type='text' tabindex='$qedit_orderindex' class='form-control $lang' name='$col_name' id='$col_name' value='$val' size=6 maxlength=6 $readonly 
+                                                        return "<input type='text' tabindex='$qedit_orderindex' class='form-control $lang_input' name='$col_name' id='$col_name' value='$val' size=6 maxlength=6 $readonly 
                                                                                 onchange=\"$onchange \" placeholder=\"$placeholder\" $input_options_html $style_input $input_required >";
                                                 }
                                                 else
@@ -516,7 +526,7 @@ class AfwInputHelper extends AFWRoot
                                                                                 $answer_list,
                                                                                 array($val),
                                                                                 array(
-                                                                                        "class" => "form-control $lang hzm_numeric", 
+                                                                                        "class" => "form-control $lang_input hzm_numeric", 
                                                                                         "name"  => $col_name,
                                                                                         "id"  => $col_name,
                                                                                         "tabindex" =>$qedit_orderindex,
@@ -529,7 +539,7 @@ class AfwInputHelper extends AFWRoot
                                                         }
                                                         else
                                                         {   
-                                                                $html .= "<input type=\"$input_type_html\" tabindex='$qedit_orderindex' class='form-control $lang hzm_numeric' name='$col_name' id='$col_name' value='$val' $input_options_html $input_required >";
+                                                                $html .= "<input type=\"$input_type_html\" tabindex='$qedit_orderindex' class='form-control $lang_input hzm_numeric' name='$col_name' id='$col_name' value='$val' $input_options_html $input_required >";
                                                         }
                                                 }
                                         }
@@ -569,7 +579,7 @@ class AfwInputHelper extends AFWRoot
                                                                         $answer_list,
                                                                         array($val),
                                                                         array(
-                                                                                "class" => "form-control $lang hzm_time", 
+                                                                                "class" => "form-control $lang_input hzm_time", 
                                                                                 "name"  => $col_name,
                                                                                 "id"  => $col_name,
                                                                                 "tabindex" =>$qedit_orderindex,
@@ -582,7 +592,7 @@ class AfwInputHelper extends AFWRoot
                                 break;
                         case 'GDAT'   :
                                         $val_GDAT = substr($val,0,10);
-                                        $html .= "<input placeholder=\"$placeholder\" type=\"text\" tabindex=\"$qedit_orderindex\" class=\"form-control $lang\" name=\"$col_name\" id=\"$col_name\"  dir=\"$dir\" value=\"$val_GDAT\" size=10 maxlength=10 onchange=\"$onchange\" $input_style $input_required>";
+                                        $html .= "<input placeholder=\"$placeholder\" type=\"text\" tabindex=\"$qedit_orderindex\" class=\"form-control $lang_input\" name=\"$col_name\" id=\"$col_name\"  dir=\"$dir\" value=\"$val_GDAT\" size=10 maxlength=10 onchange=\"$onchange\" $input_style $input_required>";
                                 break;
                         case 'TEXT'   : $utf8 = $desc["UTF8"];
                                         $dir = $desc["DIR"];
@@ -625,7 +635,7 @@ class AfwInputHelper extends AFWRoot
                                                                 $placeholder .= $nb_words_max;
                                                         }
                                                 }        
-                                                $html .= "<textarea placeholder=\"$placeholder\" class=\"form-control $lang $css_class\" cols=\"$cols\" rows=\"$rows\" id=\"$col_name\" name=\"$col_name\" dir=\"$dir\" onchange=\"$onchange\" $input_style $input_required >$val</textarea>";
+                                                $html .= "<textarea placeholder=\"$placeholder\" class=\"form-control $lang_input $css_class\" cols=\"$cols\" rows=\"$rows\" id=\"$col_name\" name=\"$col_name\" dir=\"$dir\" onchange=\"$onchange\" $input_style $input_required >$val</textarea>";
                                         }        
                                         else
                                         {
@@ -642,7 +652,7 @@ class AfwInputHelper extends AFWRoot
                                                 else if(isset($desc["SIZE"]) && $desc["SIZE"] < 255)  $data_length_class = " inputtreslong";
                                                 else $data_length_class = " inputultralong";
                                                 $type_input_ret = "text";  
-                                                $html .= "<input placeholder=\"$placeholder\" type=\"text\" tabindex=\"$qedit_orderindex\" class=\"form-control $lang $css_class\" name=\"$col_name\" id=\"$col_name\"  dir=\"$dir\" $val_sentence size='$fld_size' maxlength='$maxlength' onchange=\"$onchange\" $input_style $input_required >";
+                                                $html .= "<input placeholder=\"$placeholder\" type=\"text\" tabindex=\"$qedit_orderindex\" class=\"form-control $lang_input $css_class\" name=\"$col_name\" id=\"$col_name\"  dir=\"$dir\" $val_sentence size='$fld_size' maxlength='$maxlength' onchange=\"$onchange\" $input_style $input_required >";
                                         }
                                         break;
                         case 'YN'     :
@@ -678,7 +688,7 @@ class AfwInputHelper extends AFWRoot
                                                 else $checkbox_checked = "";
                                         
                                                 $checkbox_extra_class = $desc["CHECKBOX_CSS_CLASS"];               
-                                                $html .= "<div class='form-control $lang'><input type='checkbox' value='1'  id='$col_name' name='$col_name' $checkbox_checked class='echeckbox $checkbox_extra_class></div>";
+                                                $html .= "<div class='form-control $lang_input'><input type='checkbox' value='1'  id='$col_name' name='$col_name' $checkbox_checked class='echeckbox $checkbox_extra_class></div>";
                                         }
                                         else 
                                         {
@@ -686,7 +696,7 @@ class AfwInputHelper extends AFWRoot
                                                                 $answer_list,
                                                                 array($val),
                                                                 array(
-                                                                        "class" => "form-control $lang", 
+                                                                        "class" => "form-control $lang_input", 
                                                                         "name"  => $col_name,
                                                                         "id"  => $col_name,
                                                                         "tabindex" =>$qedit_orderindex,
@@ -709,14 +719,14 @@ class AfwInputHelper extends AFWRoot
                                                 $valaff_n = "الموافق لـ ".AfwDateHelper::hijriToGreg($valaff)." نـ";
                                         else     
                                                 $valaff_n = "";
-                                        $html .= "<input placeholder='$placeholder' type=\"text\" id=\"$input_name\" name=\"$col_name\" value=\"$valaff\" class=\"form-control $lang\" onchange=\"$onchange \" $input_style $input_required >
+                                        $html .= "<input placeholder='$placeholder' type=\"text\" id=\"$input_name\" name=\"$col_name\" value=\"$valaff\" class=\"form-control $lang_input\" onchange=\"$onchange \" $input_style $input_required >
                                                 <script type=\"text/javascript\">
                                                 $('#$input_name').calendarsPicker({calendar: $.calendars.instance('UmmAlQura')});
                                                 </script>";
                                 	break;
                         default       :
                                         $type_input_ret = "text";   
-                                        $html .= "<input placeholder='$placeholder' type=\"text\" tabindex=\"$qedit_orderindex\" class=\"form-control $lang\" name=\"$col_name\" id=\"$col_name\" value=\"$val\" size=32 maxlength=255  onchange=\"$onchange \" $input_style $input_required >";
+                                        $html .= "<input placeholder='$placeholder' type=\"text\" tabindex=\"$qedit_orderindex\" class=\"form-control $lang_input\" name=\"$col_name\" id=\"$col_name\" value=\"$val\" size=32 maxlength=255  onchange=\"$onchange \" $input_style $input_required >";
                 			break;
                 }
                 

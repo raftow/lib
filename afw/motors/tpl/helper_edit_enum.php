@@ -134,7 +134,7 @@
                     }
 
                     $info = array(
-                        "class" => "form-control $lang form-enum",
+                        "class" => "form-control $lang_input form-enum",
                         "name"  => $col_name,
                         "id"  => $col_name,
                         "tabindex" => $qedit_orderindex,

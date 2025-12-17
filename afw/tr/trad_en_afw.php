@@ -135,6 +135,7 @@ class AfwOperatorEnTranslator{
 
         $trad["OPERATOR"]["MY-FILES"]         	                = "my files";
         $trad["OPERATOR"]["ETC"]         	                = "etc";
+        $trad["OPERATOR"]["Properties of"]	                         	= "Properties of"; 
 
         return $trad;
     }

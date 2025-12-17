@@ -17,7 +17,7 @@
     $type_input_ret = "select";
 
     $infos_arr = array(
-        "class" => "form-control $lang form-mfk",
+        "class" => "form-control $lang_input form-mfk",
         "name"  => $col_name . "[]",
         "id"  => $col_name,
         "size"  => 5,

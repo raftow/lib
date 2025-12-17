@@ -222,7 +222,7 @@
                         } else {
                             $type_input_ret = "text";
                         ?>
-                    <input type="text" class="form-control <?php echo $lang ?> form-pk" name="<?php echo $col_name ?>" value="<?php echo $val ?>" size=32 maxlength=255 readonly>
+                    <input type="text" class="form-control <?php echo $lang_input ?> form-pk" name="<?php echo $col_name ?>" value="<?php echo $val ?>" size=32 maxlength=255 readonly>
         <?php
             }
                             break;
@@ -466,7 +466,7 @@
                                     $answer_list,
                                     [$val],
                                     [
-                                        "class"    => "form-control $lang hzm_time",
+                                        "class"    => "form-control $lang_input hzm_time",
                                         "name"     => $col_name,
                                         "id"       => $col_name,
                                         "tabindex" => $qedit_orderindex,
@@ -484,8 +484,17 @@
                             $utf8           = $desc["UTF8"];
                             $fromListMethod = $desc["FROM_LIST"];
                             $dir            = $desc["DIR"];
-                            if (! $dir) {
-                                ($lang != "ar") ? $dir = "ltr" : $dir = "rtl";
+                            
+                            if($desc["utf8"] or $desc["UTF8"] or ((!isset($desc["UTF8"])) and AfwStringHelper::stringEndsWith($orig_col_name, "_ar"))) 
+                            {
+                                    if (!$dir) $dir = "rtl";
+                                    $lang_input = "lang_ar";
+                                    $utf8 = true;
+                            }
+                            else {
+                                    if (!$dir) $dir = "ltr";
+                                    $lang_input = "lang_en";
+                                    $utf8 = false;
                             }
 
                             if ($dir == "auto") {
@@ -554,7 +563,7 @@
                                     $fromList,
                                     [trim($val)],
                                     [
-                                        "class"    => "form-control $lang form-select",
+                                        "class"    => "form-control $lang_input form-select",
                                         "name"     => $col_name,
                                         "id"       => $col_name,
                                         "tabindex" => $qedit_orderindex,
@@ -713,6 +722,8 @@
 
                 public static function clock($col_name, $input_name, $valaff, $minimum, $maximum, $onchange, $input_style = "", $precision = 10, $required = false, $separator = ':', $duration = false, $durationNegative = true, $lang='ar')
                 {
+                    
+                    $lang_input = "";
                     if ($required) {
                         $required       = 'true';
                         $input_required = "required";
@@ -733,7 +744,7 @@
                         $durationNegative = 'false';
                     }
                 ?>
-        <input type="text" id="<?php echo $input_name ?>" name="<?php echo $col_name ?>" value="<?php echo $valaff ?>" class="form-control <?php echo $lang ?> form-time<?php echo $input_name ?>" onchange="<?php echo $onchange ?>"<?php echo $input_style ?> <?php echo $input_required ?>>
+        <input type="text" id="<?php echo $input_name ?>" name="<?php echo $col_name ?>" value="<?php echo $valaff ?>" class="form-control <?php echo $lang_input ?> form-time<?php echo $input_name ?>" onchange="<?php echo $onchange ?>"<?php echo $input_style ?> <?php echo $input_required ?>>
         <script>
             $(document).ready(function() {
                 $("#<?php echo $input_name ?>").clockTimePicker({

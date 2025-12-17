@@ -5198,3 +5198,14 @@ span.cms-title {
     min-height: 520px;
     min-width: 220px;
 }
+
+.label_required {
+    padding-right: 18px !important;
+    background: url(../../../lib/images/star-12.png) 100% 80% no-repeat;
+}
+
+.label_mandatory {
+    padding-right: 18px !important;
+    background: url(../../../lib/images/star-12.png) 100% 80% no-repeat;
+}
+

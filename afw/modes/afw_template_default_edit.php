@@ -224,7 +224,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                         else $inputarea = "";
 
 
-                                        $ro_classes_form = "form-control $lang inputreadonly $inputarea";
+                                        $ro_classes_form = "form-control $lang_input inputreadonly $inputarea";
                                 }
                                 $col_val_class = "";
                                 if (($desc['TYPE'] == 'YN') or ($desc['TYPE'] == 'INT') or ($desc['TYPE'] == 'ENUM') or ($desc['TYPE'] == 'FK')) {
@@ -763,11 +763,11 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 } else {
                                                         $getOtherLinkStep = "all";
                                                 }
-
+                                                $other_links_label = $obj::gtr("Other links", $lang);
                                                 $other_links = $obj->getOtherLinksForUser("edit", $objme, $otherLink_genereLog, $getOtherLinkStep);
                                                 if (count($other_links) > 0) {
                                                 ?>
-                                                        <h5 class='bluetitle'><i></i>روابط ذات صلة</h5>
+                                                        <h5 class='bluetitle'><i></i><?php echo $other_links_label ?></h5>
 
                                                         <?
 

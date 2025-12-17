@@ -5139,15 +5139,7 @@ pre#body-body {
     text-align: center;
 }
 
-.label_required {
-    padding-right: 20px !important;
-    background: url(../../../lib/images/star-12.png) 100% 80% no-repeat;
-}
 
-.label_mandatory {
-    padding-right: 13px !important;
-    background: url(../../../lib/images/star-12.png) 100% 80% no-repeat;
-}
 
 .loader_container{
   visibility:hidden;
@@ -6624,4 +6616,7 @@ table.stats_table th {
     color: rgb(209 213 219 / var(--tw-text-opacity, 1));
 }
 
+p.display {
+    font-size: 80%;
+}
 

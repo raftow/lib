@@ -463,7 +463,7 @@ if($action=="retrieve")
         if(!$disable_select_view_in_qsearch_mode[$cl])
         {
                 $all_fields = AFWObject::gtr("all fields", $lang);
-                $select_view = "<div class='qsearchview_select'><select id='qsearchview' name='qsearchview' class='form-control $lang'>
+                $select_view = "<div class='qsearchview_select'><select id='qsearchview' name='qsearchview' class='form-control $lang_input'>
                   <option value='all' $fgroup_all_selected >$all_fields</option>
                 ";
                 $qsrch_fgroups = $myClassInstance->getFieldGroupArr($lang);
@@ -506,7 +506,7 @@ else
         else $fgroup_exec_selected = "";
 
         $select_view = "<div class='qsearchview_select'>
-                <select id='qsearchview' name='qsearchview' class='form-control $lang'>
+                <select id='qsearchview' name='qsearchview' class='form-control $lang_input'>
                   <option value='' $fgroup_0_selected>فقط اظهار القائمة المعنية وعدد عناصرها </option>
                   <option value='exec' $fgroup_exec_selected>تنفيذ $methodTranslated</option>
                 </select></div>";

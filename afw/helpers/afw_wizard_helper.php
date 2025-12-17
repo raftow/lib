@@ -308,19 +308,19 @@ class AfwWizardHelper extends AFWRoot
                         $link = [];
                         $title = '';
                         if ($struct['OTM-SHOW']) {
-                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY").' ';
+                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY", $lang).' ';
                         }
                         elseif ($struct['OTM-CARD']) {
-                            $title .= AfwLanguageHelper::translateKeyword("PROFILE").' ';
+                            $title .= AfwLanguageHelper::translateKeyword("PROFILE", $lang).' ';
                         }
                         elseif ($struct['OTM-FILE']) {
-                            $title .= AfwLanguageHelper::translateKeyword("FILE").' ';
+                            $title .= AfwLanguageHelper::translateKeyword("FILE", $lang).' ';
                         }
                         elseif ($struct['OTM-RETURNTO']) {
-                            $title .= AfwLanguageHelper::translateKeyword("TO").' ';
+                            $title .= AfwLanguageHelper::translateKeyword("TO", $lang).' ';
                         }
                         else{
-                            $title .= AfwLanguageHelper::translateKeyword("DATA-OF").' ';
+                            $title .= AfwLanguageHelper::translateKeyword("Properties of", $lang).' ';
                         }
 
                         if (!$struct['OTM-NO-LABEL']) {
@@ -328,7 +328,7 @@ class AfwWizardHelper extends AFWRoot
                         }
                         // else $title .= "debugg_rafik : ".var_export($struct,true);
                         if ($struct['OTM-TITLE']) {
-                            $title .= "<br>".$displ2;
+                            $title .= "<br><p class='display'>".$displ2."</p>";
                         }
                         $title = trim($title);
 
@@ -367,7 +367,7 @@ class AfwWizardHelper extends AFWRoot
                         $link = [];
                         $title = '';
                         if ($struct['OTM-SHOW']) {
-                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY").' ';
+                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY", $lang).' ';
                         } else {
                             $title .=
                                 $object->tf($struct['LINK_TO_MFK_ITEMS']) . ' ';

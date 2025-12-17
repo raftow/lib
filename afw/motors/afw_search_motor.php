@@ -43,7 +43,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                     $liste_rep,
                     array($_POST[$col_name]),
                     array(
-                        "class" => "form-control $lang $class_inputSearch $class_select $inp_selected",
+                        "class" => "form-control $lang_input $class_inputSearch $class_select $inp_selected",
                         "name"  => $col_name,
                     ),
                     "asc",
@@ -55,7 +55,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                     $liste_rep,
                     ((isset($_POST[$col_name])) ? $_POST[$col_name] : array()),
                     array(
-                        "class" => "form-control $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+                        "class" => "form-control $lang_input $class_inputSearch $class_inputSelect_multi_big $inp_selected",
                         "name"  => $col_name . "[]",
                         "size"  => 5,
                         "multi" => true
@@ -124,7 +124,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                         $l_rep,
                         isset($_POST[$col_name]) ? array($_POST[$col_name]) : $searchDefaultValue,
                         array(
-                            "class" => "form-control $lang $class_inputSearch $class_select $inp_selected",
+                            "class" => "form-control $lang_input $class_inputSearch $class_select $inp_selected",
                             "name"  => $col_name,
                             "reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj,$col_name),
                             "onchange" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
@@ -138,7 +138,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                         $l_rep,
                         ((isset($_POST[$col_name])) ? $_POST[$col_name] : $searchDefaultValue),
                         array(
-                            "class" => "form-control $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+                            "class" => "form-control $lang_input $class_inputSearch $class_inputSelect_multi_big $inp_selected",
                             "name"  => $col_name . "[]",
                             "size"  => 5,
                             "multi" => true
@@ -254,7 +254,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                 $liste_rep,
                 ((isset($_POST[$col_name])) ? $_POST[$col_name] : array()),
                 array(
-                    "class" => "form-control $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+                    "class" => "form-control $lang_input $class_inputSearch $class_inputSelect_multi_big $inp_selected",
                     "name"  => $col_name . "[]",
                     "size"  => 5,
                     "multi" => true
@@ -343,7 +343,7 @@ public static function type_oper($col_name, $desc, $obj, $selected = false)
                 ),
                 array($operSelected),
                 array(
-                    "class" => "form-control $lang $class_inputOper $inp_selected",
+                    "class" => "form-control $lang_input $class_inputOper $inp_selected",
                     "name"  => "oper_" . $col_name
                 ),
                 "",
@@ -357,7 +357,7 @@ public static function type_oper($col_name, $desc, $obj, $selected = false)
                 ),
                 array($operSelected),
                 array(
-                    "class" => "form-control $lang $class_inputOper $inp_selected",
+                    "class" => "form-control $lang_input $class_inputOper $inp_selected",
                     "name"  => "oper_" . $col_name
                 ),
                 "",
@@ -379,7 +379,7 @@ public static function type_oper($col_name, $desc, $obj, $selected = false)
                 ),
                 array($operSelected),
                 array(
-                    "class" => "form-control $lang $class_inputOper $inp_selected",
+                    "class" => "form-control $lang_input $class_inputOper $inp_selected",
                     "name"  => "oper_" . $col_name
                 ),
                 "",
@@ -395,7 +395,7 @@ public static function type_oper($col_name, $desc, $obj, $selected = false)
                 ),
                 array($operSelected),
                 array(
-                    "class" => "form-control $lang $class_inputOper $inp_selected",
+                    "class" => "form-control $lang_input $class_inputOper $inp_selected",
                     "name"  => "oper_" . $col_name
                 ),
                 "",
@@ -412,7 +412,7 @@ public static function type_oper($col_name, $desc, $obj, $selected = false)
                     ),
                     array($operSelected),
                     array(
-                        "class" => "form-control $lang $class_inputOper $inp_selected",
+                        "class" => "form-control $lang_input $class_inputOper $inp_selected",
                         "name"  => "oper_" . $col_name
                     ),
                     "",
@@ -426,7 +426,7 @@ public static function type_oper($col_name, $desc, $obj, $selected = false)
                     ),
                     array($operSelected),
                     array(
-                        "class" => "form-control $lang $class_inputOper $inp_selected",
+                        "class" => "form-control $lang_input $class_inputOper $inp_selected",
                         "name"  => "oper_" . $col_name
                     ),
                     "",
@@ -442,7 +442,7 @@ public static function type_oper($col_name, $desc, $obj, $selected = false)
                 ),
                 array($operSelected),
                 array(
-                    "class" => "form-control $lang $class_inputOper $inp_selected",
+                    "class" => "form-control $lang_input $class_inputOper $inp_selected",
                     "name"  => "oper_" . $col_name
                 ),
                 "",
@@ -457,7 +457,7 @@ public static function type_oper($col_name, $desc, $obj, $selected = false)
                 ),
                 array($operSelected),
                 array(
-                    "class" => "form-control $lang $class_inputOper $inp_selected",
+                    "class" => "form-control $lang_input $class_inputOper $inp_selected",
                     "name"  => "oper_" . $col_name
                 ),
                 "",

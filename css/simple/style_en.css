@@ -5199,3 +5199,19 @@ span.cms-title {
     min-height: 520px;
     min-width: 220px;
 }
+
+.label_required {
+    padding-left: 18px !important;
+    background: url(../../../lib/images/star-12.png) 0% 80% no-repeat !important;
+}
+
+.label_mandatory {
+    padding-left: 18px !important;
+    background: url(../../../lib/images/star-12.png) 0% 80% no-repeat !important;
+}
+
+input.form-control.lang_ar,
+textarea.form-control.lang_ar, 
+select.form-control.lang_ar {
+    font-family: menu;
+}

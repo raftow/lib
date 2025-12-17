@@ -137,7 +137,7 @@ class AfwQeditMotor {
                     
                     
                     if ($obj->qedit_minibox)
-                        $css_class = "form-control";
+                        $css_class = "form-control $lang_input";
                     else $css_class = $class_select . $data_loaded_class . $data_length_class;
 
                     $prop_sel =
@@ -185,7 +185,7 @@ class AfwQeditMotor {
                     $auto_c_create = $auto_c["CREATE"];
 
                     if ($obj->qedit_minibox)
-                        $atc_input_normal = "form-control";
+                        $atc_input_normal = "form-control $lang_input";
                     else $atc_input_normal = $data_loaded_class . " inputshort";
 
                     if ($auto_c_create) {
@@ -298,7 +298,7 @@ class AfwQeditMotor {
                 if ($desc["MEDIUM_DROPDOWN_WIDTH"] or ($desc["SIZE"] < 64)) $class_of_input_select_multi = $class_inputSelect_multi;
 
                 if ($obj->qedit_minibox)
-                    $css_class = "form-control";
+                    $css_class = "form-control $lang_input";
                 else $css_class = $class_of_input_select_multi . $data_loaded_class . $data_length_class;
 
 
@@ -355,7 +355,7 @@ class AfwQeditMotor {
                 if ($desc["MEDIUM_DROPDOWN_WIDTH"]) $class_of_input_select_multi = $class_inputSelect_multi;
 
                 if ($obj->qedit_minibox)
-                    $css_class = "form-control";
+                    $css_class = "form-control $lang_input";
                 else $css_class = $class_of_input_select_multi . $data_loaded_class . $data_length_class;
 
 
@@ -486,7 +486,7 @@ class AfwQeditMotor {
                         } else {
                             $css_arr = null;
                             if ($obj->qedit_minibox)
-                                $css_class = "form-control";
+                                $css_class = "form-control $lang_input";
                             else $css_class = $class_inputSelect . $data_loaded_class . $data_length_class;
                         }
 
@@ -570,7 +570,7 @@ class AfwQeditMotor {
                         <?php 
                     } else {
                         if ($obj->qedit_minibox)
-                            $css_class = "form-control";
+                            $css_class = "form-control $lang_input";
                         else $css_class = $class_of_input . $data_loaded_class . $data_length_class;
                         if ($input_type_html == "text") {
                         ?>
@@ -588,10 +588,22 @@ class AfwQeditMotor {
                 break;
 
             case 'TEXT':
-                $utf8 = $desc["UTF8"];
-                $fromListMethod = $desc["FROM_LIST"];
                 $dir = $desc["DIR"];
-                if (!$dir) $dir = ($utf8 ? "rtl" : "ltr");
+                if($desc["utf8"] or $desc["UTF8"] or ((!isset($desc["UTF8"])) and AfwStringHelper::stringEndsWith($orig_col_name, "_ar"))) 
+                {
+                        if (!$dir) $dir = "rtl";
+                        $lang_input = "lang_ar";
+                        $utf8 = true;
+                }
+                else {
+                        if (!$dir) $dir = "ltr";
+                        $lang_input = "lang_en";
+                        $utf8 = false;
+                }
+                
+                $fromListMethod = $desc["FROM_LIST"];
+                
+                
                 
                 if ($obj->fixm_disable) {
 
@@ -609,7 +621,7 @@ class AfwQeditMotor {
                     $type_input_ret = "text";
 
                     if ($obj->qedit_minibox)
-                        $css_class = "form-control";
+                        $css_class = "form-control $lang_input";
                     else $css_class = $class_inputText . $data_loaded_class;
 
 
@@ -651,7 +663,7 @@ class AfwQeditMotor {
                     $type_input_ret = "text";
 
                     if ($obj->qedit_minibox)
-                        $css_class = "form-control";
+                        $css_class = "form-control $lang_input";
                     else $css_class = $class_inputText . $data_loaded_class . $data_length_class;
                 ?>
                     <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="inputqe <?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" dir="<?php  echo $dir ?>" value="<?php  echo $val ?>" size=32 maxlength=255 onchange="<?php  echo $onchange ?>" <?php  echo $style_input ?>>
@@ -696,7 +708,7 @@ class AfwQeditMotor {
                 <?php 
                 } else {
                     if ($obj->qedit_minibox)
-                        $css_class = "form-control";
+                        $css_class = "form-control $lang_input";
                     else $css_class = $class_inputSelectcourt . $data_loaded_class . $data_length_class;
 
                     self::select(
@@ -759,7 +771,7 @@ class AfwQeditMotor {
                         $answer_list,
                         array($val),
                         array(
-                            "class" => "form-control",
+                            "class" => "form-control $lang_input",
                             "name"  => $col_name,
                             "id"  => $col_name,
                             "tabindex" => $qedit_orderindex,
@@ -837,7 +849,7 @@ class AfwQeditMotor {
             default:
                 $type_input_ret = "text";
                 if ($obj->qedit_minibox)
-                    $css_class = "form-control";
+                    $css_class = "form-control $lang_input";
                 else $css_class = $class_inputText . $data_loaded_class;
 
             ?> <input placeholder="<?= $placeholder ?>" type="text" tabindex="<?= $qedit_orderindex ?>" class="inputqe <?= $css_class ?>" name="<?php  echo $col_name ?>" id="<?php  echo $col_name ?>" value="<?php  echo $val ?>" size=32 maxlength=255 onchange="<?php  echo $onchange ?>">
