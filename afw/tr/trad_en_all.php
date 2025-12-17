@@ -64,4 +64,5 @@ $trad["*"]["any_word"] = "Any semantic word";
 $trad["*"]["EDIT.CARD"] = "Edit";
 $trad["*"]["PLEASE_WAIT"]         	                = "Please wait ...";
 $trad["*"]["LOADING"]         	                = "Loading ...";
+$trad["*"]["settings_tooltip"]         	                = "Please use JSON format";
 ?>

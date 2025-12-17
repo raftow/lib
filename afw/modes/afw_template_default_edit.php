@@ -755,46 +755,9 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                         ?>
                                                 </p>
                                         </div>
-
-                                        <div id="all_btns" class="panel_links" style="width: 100%;height:100%">
-                                                <?php
-                                                if ($obj->editByStep) {
-                                                        $getOtherLinkStep = $obj->currentStep;
-                                                } else {
-                                                        $getOtherLinkStep = "all";
-                                                }
-                                                $other_links_label = $obj::gtr("Other links", $lang);
-                                                $other_links = $obj->getOtherLinksForUser("edit", $objme, $otherLink_genereLog, $getOtherLinkStep);
-                                                if (count($other_links) > 0) {
-                                                ?>
-                                                        <h5 class='bluetitle'><i></i><?php echo $other_links_label ?></h5>
-
-                                                        <?
-
-                                                        foreach ($other_links as $k => $other_link) {
-                                                                echo AfwHtmlHelper::showOtherLinkButton($obj, $other_link, $lang);
-                                                        }
-                                                        ?>
-                                                <?
-                                                }
-
-                                                if ($otherLink_genereLog) {
-                                                        // very bad it erase all log find better solution (named log) 
-                                                        echo "<div class='consolehzm'>" . AfwSession::getLog("otherLink") . "</div>";
-                                                }
-
-
-
-
-
-
-
-
-                                                ?>
-
-                                                </table>
-                                        </div>
-
+                                        <!-- Other links -->
+                                        <!-- old was here -->
+                                        <!-- Other links -->        
                                 </div>
                         </div> <!-- form_right -->
                         <?
@@ -837,6 +800,39 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                         } else {
                                 // $form_right_width = 100;
                         }
+?>
+<!-- Other links -->
+        <div id="all_btns" class="panel_links" style="width: 100%;height:100%">
+                <?php
+                if ($obj->editByStep) {
+                        $getOtherLinkStep = $obj->currentStep;
+                } else {
+                        $getOtherLinkStep = "all";
+                }
+                $other_links_label = $obj::gtr("Other links", $lang);
+                $other_links = $obj->getOtherLinksForUser("edit", $objme, $otherLink_genereLog, $getOtherLinkStep);
+                if (count($other_links) > 0) 
+                {
+                ?>
+                        <h5 class='bluetitle'><i></i><?php echo $other_links_label ?></h5>
+                <?php
+
+                        foreach ($other_links as $k => $other_link) {
+                                echo AfwHtmlHelper::showOtherLinkButton($obj, $other_link, $lang);
+                        }
+                }
+
+                if ($otherLink_genereLog) 
+                {
+                        // very bad it erase all log find better solution (named log) 
+                        echo "<div class='consolehzm'>" . AfwSession::getLog("otherLink") . "</div>";
+                }
+                ?>
+
+                </table>
+        </div>
+<!-- Other links --> 
+<?php                        
 
                         if (false) { // $form_right_width == 100
                                 list($help_picture, $logHelpPic) = AfwHtmlHelper::showHelpPicture($obj, $obj->currentStep);

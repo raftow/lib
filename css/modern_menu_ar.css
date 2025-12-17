@@ -481,6 +481,14 @@ li.wizardv1_li.ErronedStep {
     padding-right: 18px;
 }
 
+button.bf.hzm-specialmethod {
+    float: right;
+}
+
+button.bf.hzm-otherlink {
+    float: right;
+}
+
 .hasCalendarsPicker {
     padding-left: 24px;
     width: 100%;

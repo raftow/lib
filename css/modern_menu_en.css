@@ -166,6 +166,15 @@ body.dark .nav-links li a:hover .link-name{
     justify-content: center;
     cursor: pointer;
 }
+
+button.bf.hzm-specialmethod {
+    float: left;
+}
+
+button.bf.hzm-otherlink {
+    float: left;
+}
+
 .mode-toggle .switch{
     position: relative;
     display: inline-block;

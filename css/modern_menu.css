@@ -99,9 +99,10 @@ nav.close>.calendar_bloc_g {
     width: 99%;
 }
 
+
+
 button.bf.hzm-specialmethod {
     width: 23%;
-    float: right;
     max-width: 450px;
     margin-right: 1%;
     margin-left: 1%;
@@ -243,7 +244,6 @@ button.bf.hzm-otherlink {
     background-color: #f5faff;
     color: #0c5cb1;
     margin-bottom: 10px;
-    float: right;
     margin-left: 1%;
     min-height: 120px;
     height: auto;
