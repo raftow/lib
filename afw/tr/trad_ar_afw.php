@@ -43,6 +43,8 @@ class AfwOperatorArTranslator{
         $trad["OPERATOR"]["RETRIEVE-RESULT-ACTIONS"]	                = "اجراءات على نتائج البحث";
         $trad["OPERATOR"]["EDIT"]	                         	= " ";
         $trad["OPERATOR"]["INSERT"]	                        	= "إضافة";
+        $trad["OPERATOR"]["DONE-SUCCESSFULLY"]	               	= "تمت بنجاح"; 
+        $trad["OPERATOR"]["WITH-INCREMENTAL-ID"]	          	= "برقم تسلسلي";
         
         $trad["OPERATOR"]["_SEARCH"]	                         	= "البحث عن";
         $trad["OPERATOR"]["_EDIT"]	                         	= "تعديل";

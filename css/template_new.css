@@ -555,6 +555,15 @@ input.longbtn.yellowbtn:hover {
     line-height: 2;
 }
 
+input.fa.previous.wizardbtn.en {
+    font-size: 12px !important;
+}
+
+input[disabled].fa.wizardbtn.disabled {
+    background-color: #e1dcdc !important;
+    color: #a5a2a2 !important;
+}
+
 input.fa.previous.wizardbtn {
     background-color: rgb(235, 195, 63) !important;
     border: none !important;

@@ -99,7 +99,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         
 
         $data_tokens = array();
-        
+        $data_tokens["lang"] = $lang;
         $data_tokens["user_picture"] = $user_picture;
         $data_tokens["user_admin"] = $user_admin;
         $enable_search_box = AfwSession::config("enable_search_box", false);

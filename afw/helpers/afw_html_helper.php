@@ -616,12 +616,17 @@ class AfwHtmlHelper extends AFWRoot {
 
         public static function importanceCss($object, $fieldname, $desc)
         {
-                $importance = strtolower($desc["IMPORTANT"]);
-                if (!$importance) $importance = "in";
                 $uk_arr = $object->UNIQUE_KEY ? $object->UNIQUE_KEY : [];
-                if (($importance == "in") and in_array($fieldname, $uk_arr)) $importance = "high";
-                elseif (($importance == "in") and ($desc['TYPE'] == 'PK' or $desc['PILLAR'] or $desc['POLE'])) $importance = "normal";
-                elseif ($importance == "in") $importance = "small";
+                if(is_array($desc))
+                {
+                        $importance = strtolower($desc["IMPORTANT"]);
+                        if (!$importance) $importance = "in";
+                        if (($importance == "in") and in_array($fieldname, $uk_arr)) $importance = "high";
+                        elseif (($importance == "in") and ($desc['TYPE'] == 'PK' or $desc['PILLAR'] or $desc['POLE'])) $importance = "normal";
+                        elseif ($importance == "in") $importance = "small";
+                }                
+                else $importance = "in";
+                
                 if (($fieldname == "عرض") or ($fieldname == "view") or ($fieldname == "display")) $importance = "small";
                 if (($fieldname == "تعديل") or ($fieldname == "edit") or ($fieldname == "update")) $importance = "high";
 

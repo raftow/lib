@@ -5215,3 +5215,8 @@ textarea.form-control.lang_ar,
 select.form-control.lang_ar {
     font-family: menu;
 }
+
+div.body_nav_hzm>p {
+    float: left;
+}
+

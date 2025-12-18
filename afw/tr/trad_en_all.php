@@ -30,7 +30,8 @@ $trad["*"]["TIMESTAMP"] = "Last updated timestamp";
 $trad["*"]["heure_mod"] = "Last updated time";
 
 
-
+$trad["*"]["step1"] = "Definition";
+$trad["*"]["step2"] = "Advanced Information";
 $trad["*"]["nom"] = "Name";
 $trad["*"]["titre"] = "Title";
 $trad["*"]["titre_short"] = "Short title";

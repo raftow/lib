@@ -8,6 +8,11 @@ class AfwIconHelper
                 "stat statistics" => "f683",
                 "report" => "f201",
                 "chart" => "f080",
+                "gear" => "f013",
+                "transformation" => "f013",
+                "job" => "f085",
+                "task" => "f085",
+                "work" => "f085",
                 "servicestack" => "brand-f3ec",
                 "server"=>"f233",
                 "shapes" => "f61f",
@@ -112,6 +117,8 @@ class AfwIconHelper
                 "usb" => "brand-f287",
                 "user" => "f007",
                 "solidUser" => "f007",
+                "contact" => "f007",
+                "person" => "f007",
                 "userAlt" => "f406",
                 "userAltSlash" => "f4fa",
                 "userAstronaut" => "f4fb",
@@ -136,8 +143,13 @@ class AfwIconHelper
                 "userTag" => "f507",
                 "userTie" => "f508",
                 "userTimes" => "f235",
-                "users" => "f0c0",
+                "users" => "f0c0",                
                 "usersCog" => "f509",
+                "link" => "f0c1",
+                "relation" => "f0c1",
+                "attach" => "f0c1",
+                "url" => "f0c1",
+                "endpoint" => "f0c1",
                 "usps" => "brand-f7e1",
                 "ussunnah" => "brand-f407",
                 "utensilSpoon" => "f2e5",
@@ -265,11 +277,15 @@ class AfwIconHelper
                                 foreach ($str_synonyms_arr as $str_synonym) {
                                         foreach (self::$awesome_icon_map as $key => $mapped_icon) 
                                         {
+                                                $key = strtolower($key);
                                                 if (((strlen($key)>4) and (strpos($str_synonym, $key) !== false)) or
                                                     ((strlen($str_synonym)>4) and (strpos($key, $str_synonym) !== false)) or
-                                                    ($str_synonym==$key))
+                                                    ($str_synonym==$key) or 
+                                                    ($str_synonym==$key."s") or 
+                                                    ($str_synonym."s"==$key) 
+                                                    )
                                                 {  
-                                                        if($returnKeys) $icons[] = $key." ($str_synonym)";
+                                                        if($returnKeys) $icons[] = "f:$key (s:$str_synonym)";
                                                         else $icons[] = $mapped_icon;
                                                 }
                                                 elseif($returnKeys and $debugg)

@@ -4049,6 +4049,17 @@ class AFWObject extends AFWRoot
             throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem(col=$nom_col, lng=$langue, oper=$operator, tbl=$nom_table, module=$module) (intermediaire = $return_before)");
         }*/
 
+        if($langue == 'en')    
+        {
+            $pos1 = strpos($return, "_");
+            $pos2 = strpos($return, ".");
+            if(($pos1===false) and ($pos2===false) and ((strtoupper($return) === $return) or (strtolower($return) === $return)))
+            {
+                // $return_before = $return;
+                $return = AfwStringHelper::firstCharUpper(strtolower($return)); // ." [$return_before/$pos1/$pos2]";
+            }
+        }
+
         return $return;
     }
 

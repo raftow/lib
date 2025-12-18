@@ -14,8 +14,8 @@
                 [calendar_item_s]
                 <div class="[calendar_class]">
                     <div id="year" class="calendar_year">[display_date_year]</div>
-                    <div class="calendar_day">
-                    <span class="dday">[display_date_day]</span>
+                    <div class="calendar_day [lang]">
+                    <span class="dday [lang]">[display_date_day]</span>
                     <br>
                     [display_date_month]
                     </div>

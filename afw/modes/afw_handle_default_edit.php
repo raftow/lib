@@ -109,7 +109,6 @@ foreach ($class_db_structure as $nom_col => $desc) {
             }
 
             if ($obj_by_uk) {
-                $obj_at = $obj_by_uk;
                 $obj_at->activate();
             } else {
                 foreach ($auto_c_create as $attr => $auto_c_create_item) {
@@ -172,7 +171,7 @@ if ($obj->editByStep) {
         $obj->setLastEditedStep($currstep);
     } 
 }
-$new_label = $obj->insertNewLabel("ar");
+$new_label = $obj->insertNewLabel($lang);
 $successful_save = AfwLanguageHelper::translateKeyword("save_with_sucess", $lang) . " " . AfwLanguageHelper::translateKeyword("changes", $lang);
 
 $case_of_handle = "unknown";
@@ -186,7 +185,9 @@ if (!$is_loaded_from_db) {
 
     if ($id > 0) {
         if ($can_show_info) {
-            AfwSession::pushInformation("تمت $new_label بنجاح  برقم تسلسلي $id");
+            $done_successfully = $obj->translateOperator("DONE-SUCCESSFULLY", $lang);
+            $with_incremental_id = $obj->translateOperator("WITH-INCREMENTAL-ID", $lang);
+            AfwSession::pushInformation("$new_label $done_successfully $with_incremental_id $id");
             // if($objme and $objme->isAdmin()) 
 
             $case_of_handle = "insert new and goto other step";

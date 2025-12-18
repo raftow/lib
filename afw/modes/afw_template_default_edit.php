@@ -569,7 +569,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         $class_btn_prev = "graybtn";
                                                                 }
                                                         ?>
-                                                                <input type="submit" name="save_previous" id="save_previous" class="fa previous <?= $class_btn_prev ?> wizardbtn fright" value="&nbsp;<?= $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?= $disabled_prev ?>></input>
+                                                                <input type="submit" name="save_previous" id="save_previous" class="fa previous <?= $class_btn_prev ?> wizardbtn fright <?= $disabled_prev ?> <?= $lang ?>" value="&nbsp;<?= $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?= $disabled_prev ?>></input>
                                                                 <?
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
                                                                 if ($obj->canSaveOnly($obj->currentStep)) {
@@ -703,7 +703,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         $class_btn_prev = "graybtn";
                                                                 }
                                                         ?>
-                                                                <input type="submit" name="save_previous" id="save_previous" class="fa previous <?= $class_btn_prev ?> wizardbtn fright" value="&nbsp;<?= $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?= $disabled_prev ?>></input>
+                                                                <input type="submit" name="save_previous" id="save_previous" class="fa previous <?= $class_btn_prev ?> wizardbtn fright <?= $disabled_prev ?> <?= $lang ?>" value="&nbsp;<?= $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?= $disabled_prev ?>></input>
                                                                 <?
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
                                                                 if ($obj->canSaveOnly($obj->currentStep)) {
@@ -726,7 +726,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 if ($nextStep > 0) {
                                                                         // ." ($currStep -> $nextStep)"
                                                                 ?>
-                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft <?= $lang ?>" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
                                                                 <?
                                                                 }
 

@@ -297,7 +297,7 @@ if($datatable_on)
                 $out_scr_btns .= '<div class="btn-qsearch btn-centered-'.$btns_total.'-btn-'.$btn_num.'" style="">';
                 $migration_export = $myClassInstance->translate('MIGRATION-EXPORT',$lang,true);
                 
-                $out_scr_btns .= '<form name="migrationForm" id="migrationForm" method="post" action="'."main.php".'">';
+                $out_scr_btns .= '<form name="migrationForm" id="migrationForm" method="post" action="'.'main.php'.'">';
                 $out_scr_btns .= '<input type="hidden" name="migration_on"  value="1"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="'.$cl.'"/>';
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="'.$currmod.'"/>';

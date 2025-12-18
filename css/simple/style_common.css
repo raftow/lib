@@ -5758,7 +5758,6 @@ div.body_nav_hzm>p {
     padding-right: 4px; /* rafik : should keep low value to avoid buttons on wizard navigation to wrap to new line for mobile screen */
     padding-left: 6px;  /* rafik : should keep low value to avoid buttons on wizard navigation to wrap to new line for mobile screen */  
     width: 100%;
-    float: right;
     background-color: #fbf8e785;
     border-bottom: 1px solid #c2b647;
     border-top: 1px solid #c2b647;

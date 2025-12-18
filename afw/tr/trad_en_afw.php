@@ -34,6 +34,7 @@ class AfwOperatorEnTranslator{
         $trad["OPERATOR"]["RETRIEVE-RESULT-ACTIONS"]	                = "actions on search result";
         $trad["OPERATOR"]["EDIT"]	                         	= "edit";
         $trad["OPERATOR"]["INSERT"]	                        	= "add";
+        $trad["OPERATOR"]["DONE-SUCCESSFULLY"]	               	= "Done successfully";
 
         $trad["OPERATOR"]["_SEARCH"]	                         	= "search of";
         $trad["OPERATOR"]["_EDIT"]	                         	= "edit";
@@ -136,6 +137,9 @@ class AfwOperatorEnTranslator{
         $trad["OPERATOR"]["MY-FILES"]         	                = "my files";
         $trad["OPERATOR"]["ETC"]         	                = "etc";
         $trad["OPERATOR"]["Properties of"]	                         	= "Properties of"; 
+        $trad["OPERATOR"]["DISPLAY"]	                         	= "Show";
+        $trad["OPERATOR"]["DELETE"]	                         	= "Delete";
+        	
 
         return $trad;
     }
