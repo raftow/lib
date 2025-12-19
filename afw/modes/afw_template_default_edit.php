@@ -100,7 +100,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 $w = $obj->currentStep;
                 $u = in_array($obj->currentStep, $desc["STEPS"]);
 
-                die("debugg rafik 2025-12-19 x = $x, y = $y, z = $z, w = $w, u = $u, ");
+                die("debugg x = $x, y = $y, z = $z, w = $w, u = $u, ");
         }
 
         if (((strtoupper($desc["STEP"]) == 'STEPS') and is_array($desc["STEPS"]) and in_array($obj->currentStep, $desc["STEPS"])) or 
