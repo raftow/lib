@@ -26,7 +26,7 @@ $MODULE = $currmod;
 if(!$MODULE) die("module not defined to access trahser");
   
 include("$file_dir_name/../lib/afw/afw_check_member.php");
-$lang = AfwSession::getSessionVar("lang");
+$lang = AfwLanguageHelper::getGlobalLanguage();
 if(!$lang) $lang = "ar";
  
 // 
@@ -83,11 +83,11 @@ if($myObj_loaded)
    
    $deleted = $myObj->delete();
    if($deleted) $deleted_message = "DELETED";
-   else $deleted_message = $myObj->tm("DELETE_NOT_ALLOWED")." : ".$myObj->deleteNotAllowedReason;
+   else $deleted_message = $myObj->tm("DELETE_NOT_ALLOWED",$lang)." : ".$myObj->tm($myObj->deleteNotAllowedReason,$lang);
 }
 else
 {
-   $deleted_message = $myObj->tm("OBJECT_NOT_FOUND");
+   $deleted_message = $myObj->tm("OBJECT_NOT_FOUND",$lang);
 }
 
 echo $deleted_message;
