@@ -136,6 +136,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
         } else {
                 $mode_field_read_only = true;
                 $mode_field_read_only_log = "$nom_col is not in step " . $obj->currentStep . " but in step " . $desc["STEP"];
+                if($desc["STEP"]=='STEPS') $mode_field_read_only_log .= " steps = ".var_export($desc["STEPS"]);
                 $mode_field_edit = false;
                 $mode_field_edit_log = $mode_field_read_only_log;
                 $i_can_see_attribute = false;
