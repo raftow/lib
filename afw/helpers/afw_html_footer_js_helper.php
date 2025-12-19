@@ -198,8 +198,8 @@ function move_triggers()
                             if(bswal==1)
                             {
                                 swal({
-                                  title: "<?=$are_you_sure_move_up?> : "+lbl,
-                                  text: "<?=$once_moved?>", // +div_to_del+" / "+$ele.id,
+                                  title: "<?php echo $are_you_sure_move_up?> : "+lbl,
+                                  text: "<?php echo $once_moved?>", // +div_to_del+" / "+$ele.id,
                                   icon: "warning",
                                   buttons: true,
                                   dangerMode: true,
@@ -238,8 +238,8 @@ function move_triggers()
                             if(bswal==1)
                             {
                                 swal({
-                                      title: "<?=$are_you_sure_move_down?> : "+lbl,
-                                      text: "<?=$once_moved?>", // +div_to_del+" / "+$ele.id,
+                                      title: "<?php echo $are_you_sure_move_down?> : "+lbl,
+                                      text: "<?php echo $once_moved?>", // +div_to_del+" / "+$ele.id,
                                       icon: "warning",
                                       buttons: true,
                                       dangerMode: true,
@@ -413,8 +413,8 @@ $(document).ready(function(){
             }
             $(".alert.messages").fadeOut().remove();
             swal({
-                  title: "<?=$are_you_sure?> : "+lbl,
-                  text: "<?=$once_deleted?>", // +div_to_del+" / "+$ele.id,
+                  title: "<?php echo $are_you_sure?> : "+lbl,
+                  text: "<?php echo $once_deleted?>", // +div_to_del+" / "+$ele.id,
                   icon: "warning",
                   buttons: true,
                   dangerMode: true,
@@ -425,7 +425,7 @@ $(document).ready(function(){
                     $.ajax({
                                 type:'POST',
                                 url:'../lib/api/afw_trash.php',
-                                data:{cl:cl, currmod:md, del_id:del_id},
+                                data:{cl:cl, currmod:md, del_id:del_id, lang:'<?php echo $lang?>'},
                                 success: function(data)
                                 {
                                     data = data.trimLeft();

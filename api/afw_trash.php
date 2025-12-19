@@ -4,7 +4,7 @@ $file_dir_name = dirname(__FILE__);
 require_once("../afw/afw_autoloader.php");
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
-$lang = "en";
+$lang = $_REQUEST['lang'];
 
 AfwSession::startSession();
 $update_context = "delete with afw trash network service";
@@ -27,7 +27,6 @@ if(!$MODULE) die("module not defined to access trahser");
   
 include("$file_dir_name/../lib/afw/afw_check_member.php");
 $lang = AfwLanguageHelper::getGlobalLanguage();
-if(!$lang) $lang = "ar";
  
 // 
 
