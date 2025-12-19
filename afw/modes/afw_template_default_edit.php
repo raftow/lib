@@ -1,14 +1,13 @@
 <?php
 $themeArr = AfwThemeHelper::loadTheme();
-foreach($themeArr as $theme => $themeValue)
-{
-    $$theme = $themeValue;
+foreach ($themeArr as $theme => $themeValue) {
+        $$theme = $themeValue;
 }
 
 define("LIMIT_INPUT_SELECT", 10);
 
 $lang = AfwLanguageHelper::getGlobalLanguage();
-$fsens = ($lang=="ar") ? "right" : "left";
+$fsens = ($lang == "ar") ? "right" : "left";
 $objme = AfwSession::getUserConnected();
 
 $otherLink_genereLog = false;
@@ -103,14 +102,15 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 die("debugg x = $x, y = $y, z = $z, w = $w, u = $u, ");
         }*/
 
-        if (((strtoupper($desc["STEP"]) == 'STEPS') and is_array($desc["STEPS"]) and in_array($obj->currentStep, $desc["STEPS"])) or 
-            (strtoupper($desc["STEP"]) == 'ALL') or 
-            ($desc["STEP"] == $obj->currentStep) or 
-            (!$obj->editByStep)) {
+        if (((strtoupper($desc["STEP"]) == 'STEPS') and is_array($desc["STEPS"]) and in_array($obj->currentStep, $desc["STEPS"])) or
+                (strtoupper($desc["STEP"]) == 'ALL') or
+                ($desc["STEP"] == $obj->currentStep) or
+                (!$obj->editByStep)
+        ) {
                 if (!$mode_field_read_only) list($mode_field_read_only, $the_reason_readonly) = AfwStructureHelper::attributeIsReadOnly($obj, $nom_col, $nom_col_desc = "", $nom_col_submode = "", $nom_col_for_this_instance = true, $returm_me_reason_readonly = true);
-                
+
                 // if($nom_col == "desiresLimitWarningDiv") die("$nom_col attribute Is ReadOnly = [$mode_field_read_only], reason=[$the_reason_readonly], ");
-                
+
                 if ($mode_field_read_only) {
                         $mode_field_read_only_log .= "$nom_col attribute Is ReadOnly, reason=[$the_reason_readonly], ";
                         if (!$the_reason_readonly) $mode_field_read_only_log .= "see you implemtation of surcharge of method attribute-Can-Be-Updated-By it should return array with both boolean and string explaining reason of read-only behavior";
@@ -122,7 +122,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                         and ((!$obj->isEmpty()) or (!$desc["HIDE_IF_NEW"])));
                 $mode_field_edit_log = "";
                 if ($mode_field_edit) $mode_field_edit_log .= "$nom_col is editable";
-                
+
                 // if($nom_col=="desiresLimitWarningDiv") die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) ".var_export($obj_errors,true));
                 //**
                 $nom_col_to_see = $desc["EDIT-FOR"];
@@ -131,7 +131,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 $ican_display_data = AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($obj, $nom_col_to_see, $objme, "DISPLAY", $desc);
                 $i_can_see_attribute = ($ican_display_key and $ican_display_data);
                 if (!$i_can_see_attribute) {
-                        $i_can_not_see_attribute_reason = "ican_display_key = " . var_export($ican_display_key,true) . " ican_display_data = " . var_export($ican_display_data,true);
+                        $i_can_not_see_attribute_reason = "ican_display_key = " . var_export($ican_display_key, true) . " ican_display_data = " . var_export($ican_display_data, true);
                 }
                 //**
                 $column_is_authorised_to_be_edited_by_me = AfwPrevilegeHelper::keyIsToDisplayForUser($obj, $nom_col, $objme, "EDIT");
@@ -146,11 +146,10 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 }
                 $nom_colIsApplicable = $obj->attributeIsApplicable($nom_col);
                 $data[$nom_col]["log-na"] = "obj => attributeIsApplicable($nom_col)";
-                
         } else {
                 $mode_field_read_only = true;
                 $mode_field_read_only_log = "$nom_col is not in step " . $obj->currentStep . " but in step " . $desc["STEP"];
-                if($desc["STEP"]=='STEPS') $mode_field_read_only_log .= " steps = ".var_export($desc["STEPS"]);
+                //if($desc["STEP"]=='STEPS') $mode_field_read_only_log .= " steps = ".var_export($desc["STEPS"]);
                 $mode_field_edit = false;
                 $mode_field_edit_log = $mode_field_read_only_log;
                 $i_can_see_attribute = false;
@@ -199,26 +198,22 @@ foreach ($class_db_structure as $nom_col => $desc) {
         $buttons = $desc["BUTTONS"];
         // if($nom_col=="aconditionList") die("mode_field_edit=$mode_field_edit, mode_field_read_only=$mode_field_read_only, i_can_edit_attribute=$i_can_edit_attribute log=$mode_field_edit_log");
         //echo "$nom_col <br>";
-        
 
-        
+
+
 
         if ($nom_colIsApplicable) {
 
                 // if ($nom_col == "created_by") die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) " . var_export($obj_errors, true));
-                if ($mode_field_edit) 
-                {
-                        if (!$mode_field_read_only) 
-                        {
+                if ($mode_field_edit) {
+                        if (!$mode_field_read_only) {
                                 $colErrors = $obj_errors[$nom_col];
                                 // if($nom_col=="passeport_num") die("colErrors = ".var_export($colErrors,true));
-                                
+
                                 $data[$nom_col] = AfwEditMotor::prepareEditInfoForColumn($obj, $nom_col, $desc, $lang, $colErrors, $step_show_error);
-                                $colErrors_export = var_export($colErrors,true);
+                                $colErrors_export = var_export($colErrors, true);
                                 // if($nom_col=="passeport_num") die("dbg of prepareEdit InfoForColumn : data[$nom_col] = ".var_export($data[$nom_col],true)." = prepare EditInfoForColumn(obj, $nom_col, desc, lang=$lang, colErrors=$colErrors_export, step_show_error=$step_show_error)");
-                        } 
-                        else 
-                        {
+                        } else {
                                 // if($nom_col=="response_templates") die("case mode_field_read_only nom_col = $nom_col");
                                 $obj->showAsDataTable = $desc['DATA_TABLE'];
                                 $style_div_form_control = "";
@@ -248,23 +243,22 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                 if (($desc['TYPE'] == 'YN') or ($desc['TYPE'] == 'INT') or ($desc['TYPE'] == 'ENUM') or ($desc['TYPE'] == 'FK')) {
                                         if ($desc['CATEGORY']) $col_val_0 = $obj->calc($nom_col);
                                         else $col_val_0 = $obj->getVal($nom_col);
-                                        if(strlen($col_val_0)>30) $col_val_0 = "";
-                                        else
-                                        {
-                                                $col_val_0 = str_replace(",","_",$col_val_0);
-                                                $col_val_0 = str_replace("/","_",$col_val_0);
-                                                $col_val_0 = str_replace(" ","_",$col_val_0);
-                                                $col_val_0 = str_replace(":","_",$col_val_0);
-                                                $col_val_0 = str_replace("-","_",$col_val_0);
+                                        if (strlen($col_val_0) > 30) $col_val_0 = "";
+                                        else {
+                                                $col_val_0 = str_replace(",", "_", $col_val_0);
+                                                $col_val_0 = str_replace("/", "_", $col_val_0);
+                                                $col_val_0 = str_replace(" ", "_", $col_val_0);
+                                                $col_val_0 = str_replace(":", "_", $col_val_0);
+                                                $col_val_0 = str_replace("-", "_", $col_val_0);
                                         }
-                                        
+
                                         $col_val_class = "hzm_value_" . $nom_col . "_" . $col_val_0;
                                 }
 
                                 if (($desc['TYPE'] == 'GDAT') or ($desc['TYPE'] == 'GDATE') or ($desc['TYPE'] == 'DATE')) {
                                         if (!$obj->getVal($nom_col)) $col_val_class = "hzm_value_empty_date col$nom_col";
                                 }
-                                $data[$nom_col]["ehelp"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "EHELP", $lang, $desc));                                
+                                $data[$nom_col]["ehelp"]     = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "EHELP", $lang, $desc));
                                 // if($nom_col=="applicationModelConditionList") die("ehelp=".$data[$nom_col]["ehelp"]);
                                 $id_div_input = "div_data_$nom_col";
                                 $data[$nom_col]["input"] = "<div id='$id_div_input' class='hzm_data hzm_data_$nom_col $col_val_class $ro_classes_form' style='$style_div_form_control'>";
@@ -278,9 +272,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                         {
                                                 $data[$nom_col]["input"] .= "<!-- log : $mode_field_read_only_log -->";
                                         }
-                                }
-                                else
-                                {
+                                } else {
                                         // if($nom_col=="response_templates") die("case CATEGORY and no FORCE-INPUT");
                                 }
                                 if ($i_can_see_attribute) {
@@ -288,25 +280,20 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                         if ($desc["EDIT-HIDE-VALUE"] or (isset($desc["DISPLAY"]) and (!$desc["DISPLAY"])))
                                                 if ($desc["EDIT-HIDE-VALUE"]) $data[$nom_col]["input"] .=  $desc["EDIT-HIDE-VALUE"];
                                                 else $data[$nom_col]["input"] .= $obj->tm("hidden") . "<!-- hidden because desc[DISPLAY] == false -->";
-                                        else
-                                        {
+                                        else {
                                                 // if($nom_col=="response_templates") $data[$nom_col]["input"] .= "obj->showAttribute($nom_col) = ";
                                                 $data[$nom_col]["input"] .= $obj->showAttribute($nom_col);
-
                                         }
 
                                         if ($obj_errors[$nom_col]) $data[$nom_col]["error"] = $obj_errors[$nom_col];
                                         // if($nom_col=="response_templates") die("case i can see attribute : " . $data[$nom_col]["input"]);
-                                }
-                                else
-                                {
-                                        if($nom_col=="response_templates") die("case i can not see attribute");
+                                } else {
+                                        if ($nom_col == "response_templates") die("case i can not see attribute");
                                 }
                                 $data[$nom_col]["input"] .= "</div>";
                                 // if this column is to show with accordion run the js of accordion
-                                if($desc['TEMPLATE'] == 'accordion')
-                                {
-$data[$nom_col]["input"] .= "<script>
+                                if ($desc['TEMPLATE'] == 'accordion') {
+                                        $data[$nom_col]["input"] .= "<script>
   \$( function() {
     \$(\"#$id_div_input\").accordion({
       collapsible: true
@@ -314,17 +301,17 @@ $data[$nom_col]["input"] .= "<script>
   } );
   </script>";
                                 }
-                                
-                                $data[$nom_col]["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "TOOLTIP", $lang, $desc));
+
+                                $data[$nom_col]["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "TOOLTIP", $lang, $desc));
                                 if (!$data[$nom_col]["tooltip"]) {
-                                        $tltp = AfwInputHelper::getAttributeTooltip($obj,$nom_col, $lang);
+                                        $tltp = AfwInputHelper::getAttributeTooltip($obj, $nom_col, $lang);
                                         if ($tltp) $data[$nom_col]["tooltip"] = $tltp;
                                 }
-                                $data[$nom_col]["unit"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "UNIT", $lang, $desc));
+                                $data[$nom_col]["unit"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "UNIT", $lang, $desc));
                                 $data[$nom_col]["no-hzm-unit"]  = $desc["NO-HZM-UNIT"];
                         }
 
-                        $data[$nom_col]["warning"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj,$nom_col, "WARNING", $lang, $desc));
+                        $data[$nom_col]["warning"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "WARNING", $lang, $desc));
                         if (!$data[$nom_col]["warning"]) {
                                 $col_warning = $nom_col . "_warning";
                                 $val_warning = $obj->translate($col_warning, $lang);
@@ -389,15 +376,12 @@ $data[$nom_col]["input"] .= "<script>
                                                 $o_class = $other_link["CSS-CLASS"];
                                                 $o_color = $other_link["COLOR"];
                                                 if (!$o_color) $o_color = "gray";
-                                                if($o_url=="@help")
-                                                {
+                                                if ($o_url == "@help") {
                                                         $data[$nom_col]["btns"] .= "<div class='otln help $o_class $o_color'>$o_tit</div>";
-                                                }
-                                                else
-                                                {
+                                                } else {
                                                         $data[$nom_col]["btns"] .= "<a href='$o_url' $o_target_html><div class='${o_color}btn submit-btn fright otln $o_class'>$o_tit</div></a>\n";
                                                 }
-                                                
+
 
                                                 //$col_num++;
                                         }
@@ -412,7 +396,7 @@ $data[$nom_col]["input"] .= "<script>
                         // if($nom_col=="father_id") die("for col $nom_col It is not in mode edit : ".$mode_field_edit_log);
                 }
         } else {
-                $data[$nom_col]["notes"] = "<!-- $nom_col is not applicable ".$data[$nom_col]["log-na"]." -->";
+                $data[$nom_col]["notes"] = "<!-- $nom_col is not applicable " . $data[$nom_col]["log-na"] . " -->";
                 //
         }
         // if($data["ppp"]) die(var_export($data,true));
@@ -429,8 +413,8 @@ $object_status = $obj->myDisplayStatus();
 if ($subType)
         $str_name = $subType;
 else
-        $str_name = $titre_display = $obj->translate("FILE", $lang, true) . " ".AfwStringHelper::arrow($lang)." " . 
-                                        $obj->singleTranslation($lang) . " ".AfwStringHelper::arrow($lang)." " . $obj->getShortDisplay($lang);
+        $str_name = $titre_display = $obj->translate("FILE", $lang, true) . " " . AfwStringHelper::arrow($lang) . " " .
+                $obj->singleTranslation($lang) . " " . AfwStringHelper::arrow($lang) . " " . $obj->getShortDisplay($lang);
 
 if (!$file_box_css_class) $file_box_css_class = "filebox";
 $wizard_class = $wizObj->getWizardClass();
@@ -449,14 +433,14 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
 <?php
 }
 ?>
-<div class="<?= $file_box_css_class ?> editcard <?php echo $module_code . " " . AfwStringHelper::hzmStringOf($table_name) ." s" . $object_status;  ?> ">
+<div class="<?= $file_box_css_class ?> editcard <?php echo $module_code . " " . AfwStringHelper::hzmStringOf($table_name) . " s" . $object_status;  ?> ">
         <div class="panel-heading">
                 <h3 class="panel-title col-xs-12"><span><?php echo "$str_name" ?></span></h3>
                 <h3 class="panel-title col-xs-0 text-left"><span class='object_id'><?php echo $str_id ?><span></h3>
         </div>
         <div class="<?php echo $wizard_class . " " . $module_code; ?>">
                 <?
-                if ($obj->editNbSteps > 1){
+                if ($obj->editNbSteps > 1) {
                         $step_name = array();
                         $nbStepsEditable = 0;
                         for ($kstep = 1; $kstep <= $obj->editNbSteps; $kstep++) {
@@ -499,7 +483,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 if ($obj->show_draft_errors) $step_show_error_why = "show_draft_errors is active for this class $cl";
                                                         }
                                                         if ($check_error_activated  and $step_show_error) {
-                                                                $stepErrorsList = AfwDataQualityHelper::getStepErrors($obj, $kstep);                                                                
+                                                                $stepErrorsList = AfwDataQualityHelper::getStepErrors($obj, $kstep);
                                                                 $step_errors_list = implode("\n", $stepErrorsList);
                                                                 /*if($kstep==1 and $step_errors_list)
                                                                 {
@@ -518,10 +502,10 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 else
                                                                         $class_step = "CurrentStep";
                                                                 $link = "#";
-                                                        } elseif (($kstep <= $last_edited_step) or (!$obj->stepsAreOrdered()) or ($obj->stepsAreOrdered()<=$obj->currentStep)) {
+                                                        } elseif (($kstep <= $last_edited_step) or (!$obj->stepsAreOrdered()) or ($obj->stepsAreOrdered() <= $obj->currentStep)) {
                                                                 if ($step_erroned)
                                                                         $class_step = "AlreadyStep ErronedStep ZZO LES$last_edited_step";
-                                                                elseif($kstep <= $last_edited_step)
+                                                                elseif ($kstep <= $last_edited_step)
                                                                         $class_step = "AlreadyStep LES$last_edited_step";
                                                                 else
                                                                         $class_step = "GoingStep LES$last_edited_step";
@@ -550,7 +534,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                         <?
                                                 }
                                         }
-                                        
+
                                         ?>
                                 </ul>
                         </div>
@@ -564,13 +548,13 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
 
                 <?
                 }
-                
+
                 ?>
 
                 <div class="hzm_form_panel hzm_step_body_<?= $clStep . " step_panel_" . $obj->currentStep ?>">
-                        <div class="form_<?php echo $fsens ?> form_wizard_body form_wizard_<?php echo $cl_short; ?> form_right_<?php echo $clStep . " step_body_" . $obj->currentStep; ?>" >
+                        <div class="form_<?php echo $fsens ?> form_wizard_body form_wizard_<?php echo $cl_short; ?> form_right_<?php echo $clStep . " step_body_" . $obj->currentStep; ?>">
                                 <div class="wizard_buttons">
-                                <div class='body_nav_hzm'>
+                                        <div class='body_nav_hzm'>
                                                 <p>
                                                         <?php
                                                         if ($obj->editByStep) {
@@ -592,7 +576,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
                                                                 if ($obj->canSaveOnly($obj->currentStep)) {
                                                                 ?>
-                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
                                                                 <?
                                                                 }
                                                                 // $nextStep will be = -1 if all next steps are R/O not editable, so no next editable step
@@ -610,7 +594,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 if ($nextStep > 0) {
                                                                         // ." ($currStep -> $nextStep)"
                                                                 ?>
-                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
                                                                 <?
                                                                 }
 
@@ -622,21 +606,21 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         )
                                                                 ) {
                                                                 ?>
-                                                                        <input type="submit" name="save_update" id="save_update" hint="<?= "NextStep:" . $nextStep ?>" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $finish_label ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                        <input type="submit" name="save_update" id="save_update" hint="<?= "NextStep:" . $nextStep ?>" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $finish_label ?>&nbsp;" style="margin-right: 5px;"></input>
                                                                 <?
                                                                 } else {
                                                                 ?>
                                                                         <!-- <?= "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
-                                                                <?
+                                                                        <?
                                                                 }
                                                         } else  // not edit by step
                                                         {
-                                                                ?>
-                                                                <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
-                                                                <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
-                                                        <?
+                                                                        ?>
+                                                                        <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <?
                                                         }
-                                                        ?>
+                                                                ?>
                                                 </p>
                                         </div>
                                 </div>
@@ -649,21 +633,15 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 $fgroup = "";
                                                 $internal_new_group_div_open = "";
                                                 // die("data[diploma_approved]=".var_export($data["diploma_approved"],true));
-                                                foreach ($data as $col => $info) 
-                                                {
-                                                        if($info['notes'])
-                                                        {
-                                                                echo $info["notes"];  
-                                                        }
-                                                        elseif($info['input'])
-                                                        {
+                                                foreach ($data as $col => $info) {
+                                                        if ($info['notes']) {
+                                                                echo $info["notes"];
+                                                        } elseif ($info['input']) {
                                                                 $class_db_structure[$col] = AfwStructureHelper::repareMyStructure($obj, $class_db_structure[$col], $col);
-                                                                list($htmlDiv, $openedInGroupDiv, $fgroup) = 
-                                                                   AfwEditMotor::attributeEditDiv($obj, $col, $class_db_structure[$col], $fgroup, $lang, $openedInGroupDiv, $info);
+                                                                list($htmlDiv, $openedInGroupDiv, $fgroup) =
+                                                                        AfwEditMotor::attributeEditDiv($obj, $col, $class_db_structure[$col], $fgroup, $lang, $openedInGroupDiv, $info);
                                                                 echo $htmlDiv;
-                                                        }
-                                                        elseif ($info["ehelp"])
-                                                        {
+                                                        } elseif ($info["ehelp"]) {
                                                                 echo "$br_if_needed<div class='ehelp'>" . $info["ehelp"] . "</div>"; //
                                                         }
                                                 }
@@ -679,13 +657,12 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 ?>
                                                 <br>
                                         </div>
-                                        <?php 
+                                        <?php
                                         $step_TEMPLATE = $obj->STEP_OPTIONS[$obj->currentStep]['TEMPLATE'];
                                         // echo "<br>get_class(obj) = ".get_class($obj);
                                         // echo "<br>currentStep = ".$obj->currentStep;
                                         // echo "<br>step_TEMPLATE = ".$step_TEMPLATE;
-                                        if($step_TEMPLATE == 'accordion')
-                                        {
+                                        if ($step_TEMPLATE == 'accordion') {
                                                 echo "<script>
                                                 \$( function() {
                                                 \$(\"#body_form_hzm\").accordion({
@@ -694,7 +671,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 } );
                                                 </script>";
                                         }
-                                        
+
                                         ?>
                                 </div>
                                 <div class="form_buttons">
@@ -726,7 +703,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
                                                                 if ($obj->canSaveOnly($obj->currentStep)) {
                                                                 ?>
-                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
                                                                 <?
                                                                 }
                                                                 // $nextStep will be = -1 if all next steps are R/O not editable, so no next editable step
@@ -744,7 +721,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 if ($nextStep > 0) {
                                                                         // ." ($currStep -> $nextStep)"
                                                                 ?>
-                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft <?= $lang ?>" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft <?= $lang ?>" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
                                                                 <?
                                                                 }
 
@@ -756,26 +733,26 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         )
                                                                 ) {
                                                                 ?>
-                                                                        <input type="submit" name="save_update" id="save_update" hint="<?= "NextStep:" . $nextStep ?>" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $finish_label ?>&nbsp;" style="margin-right: 5px;" ></input>
+                                                                        <input type="submit" name="save_update" id="save_update" hint="<?= "NextStep:" . $nextStep ?>" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $finish_label ?>&nbsp;" style="margin-right: 5px;"></input>
                                                                 <?
                                                                 } else {
                                                                 ?>
                                                                         <!-- <?= "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
-                                                                <?
+                                                                        <?
                                                                 }
                                                         } else  // not edit by step
                                                         {
-                                                                ?>
-                                                                <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
-                                                                <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;" ></input>
-                                                        <?
+                                                                        ?>
+                                                                        <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <?
                                                         }
-                                                        ?>
+                                                                ?>
                                                 </p>
                                         </div>
                                         <!-- Other links -->
                                         <!-- old was here -->
-                                        <!-- Other links -->        
+                                        <!-- Other links -->
                                 </div>
                         </div> <!-- form_right -->
                         <?
@@ -784,10 +761,8 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                         if (count($pbm_arr) > 0) {
                                 $html_buttons_spec_methods = "";
                                 // $html_buttons_spec_methods_bis = "";
-                                foreach ($pbm_arr as $pbm_code => $pbm_item) 
-                                {
-                                        if(!$pbm_item["HIDE"])
-                                        {
+                                foreach ($pbm_arr as $pbm_code => $pbm_item) {
+                                        if (!$pbm_item["HIDE"]) {
                                                 // if we click on the button and have action_lourde css class 
                                                 // it will open the loader at the same time the form can not submit because of
                                                 // missed required data or the form errors
@@ -795,7 +770,6 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 $html_buttons_spec_methods .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin());
                                                 // $html_buttons_spec_methods_bis .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin(), "bis");
                                         }
-                                        
                                 }
                                 $html_buttons_spec_methods = trim($html_buttons_spec_methods);
                                 // $html_buttons_spec_methods_bis = trim($html_buttons_spec_methods_bis);
@@ -810,7 +784,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 ?>
                                         </div>
                                         <!-- form_left -->
-                                <?
+                        <?
                                         // $form_right_width = 80;
                                 } else {
                                         // $form_right_width = 100;
@@ -818,44 +792,42 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                         } else {
                                 // $form_right_width = 100;
                         }
-?>
-<!-- Other links -->
-        <div id="all_btns" class="panel_links" style="width: 100%;height:100%">
-                <?php
-                if ($obj->editByStep) {
-                        $getOtherLinkStep = $obj->currentStep;
-                } else {
-                        $getOtherLinkStep = "all";
-                }
-                $other_links_label = $obj::gtr("Other links", $lang);
-                $other_links = $obj->getOtherLinksForUser("edit", $objme, $otherLink_genereLog, $getOtherLinkStep);
-                if (count($other_links) > 0) 
-                {
-                ?>
-                        <h5 class='bluetitle'><i></i><?php echo $other_links_label ?></h5>
-                <?php
+                        ?>
+                        <!-- Other links -->
+                        <div id="all_btns" class="panel_links" style="width: 100%;height:100%">
+                                <?php
+                                if ($obj->editByStep) {
+                                        $getOtherLinkStep = $obj->currentStep;
+                                } else {
+                                        $getOtherLinkStep = "all";
+                                }
+                                $other_links_label = $obj::gtr("Other links", $lang);
+                                $other_links = $obj->getOtherLinksForUser("edit", $objme, $otherLink_genereLog, $getOtherLinkStep);
+                                if (count($other_links) > 0) {
+                                ?>
+                                        <h5 class='bluetitle'><i></i><?php echo $other_links_label ?></h5>
+                                <?php
 
-                        foreach ($other_links as $k => $other_link) {
-                                echo AfwHtmlHelper::showOtherLinkButton($obj, $other_link, $lang);
-                        }
-                }
+                                        foreach ($other_links as $k => $other_link) {
+                                                echo AfwHtmlHelper::showOtherLinkButton($obj, $other_link, $lang);
+                                        }
+                                }
 
-                if ($otherLink_genereLog) 
-                {
-                        // very bad it erase all log find better solution (named log) 
-                        echo "<div class='consolehzm'>" . AfwSession::getLog("otherLink") . "</div>";
-                }
-                ?>
+                                if ($otherLink_genereLog) {
+                                        // very bad it erase all log find better solution (named log) 
+                                        echo "<div class='consolehzm'>" . AfwSession::getLog("otherLink") . "</div>";
+                                }
+                                ?>
 
-                </table>
-        </div>
-<!-- Other links --> 
-<?php                        
+                                </table>
+                        </div>
+                        <!-- Other links -->
+                        <?php
 
                         if (false) { // $form_right_width == 100
                                 list($help_picture, $logHelpPic) = AfwHtmlHelper::showHelpPicture($obj, $obj->currentStep);
                                 if ($help_picture) {
-                                ?>
+                        ?>
                                         <div class="form_left form_left_buttons help_picture_<?= $clStep . "_" . $obj->currentStep ?>" style="/*width: 12%;height:100%;*/">
                                                 <?
                                                 echo $help_picture;
@@ -880,10 +852,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
         if (file_exists($file_js_path)) {
         ?>
                 <script src='<?php echo $file_js ?>'></script>
-        <?php
-        }
-        else
-        {
+<?php
+        } else {
                 echo "<!-- script js $md / $file_js not found in module/js path $file_js_path -->";
         }
-
