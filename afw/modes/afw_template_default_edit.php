@@ -123,7 +123,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 $mode_field_edit_log = "";
                 if ($mode_field_edit) $mode_field_edit_log .= "$nom_col is editable";
                 
-                if($nom_col=="desiresLimitWarningDiv") die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) ".var_export($obj_errors,true));
+                // if($nom_col=="desiresLimitWarningDiv") die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) ".var_export($obj_errors,true));
                 //**
                 $nom_col_to_see = $desc["EDIT-FOR"];
                 if (!$nom_col_to_see) $nom_col_to_see = $nom_col;
@@ -164,7 +164,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
         if ($obj->editByStep) {
 
                 if ($mode_field_edit) {
-                        if (strtolower($desc["STEP"]) != "all") {
+                        if ((strtoupper($desc["STEP"]) != "ALL") and (strtoupper($desc["STEP"]) != "STEPS")) {
                                 if ($obj->currentStep > $desc["STEP"]) {
                                         $mode_field_edit = false; //$mode_field_read_only = true;
                                         $mode_field_edit_log .= ": $nom_col is editable but is not in step " . $obj->currentStep . " but in step : " . $desc["STEP"];
@@ -178,7 +178,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 }
         } else {
                 if ($mode_field_edit) {
-                        if (($desc["STEP"]) and (strtolower($desc["STEP"]) != "all") and (intval($desc["STEP"]) != 1)) {
+                        if (($desc["STEP"]) and (strtoupper($desc["STEP"]) != "ALL") and (strtoupper($desc["STEP"]) != "STEPS") and (intval($desc["STEP"]) != 1)) {
                                 $mode_field_edit = false;
                                 $mode_field_edit_log .= ": $nom_col is in step " . $desc["STEP"] . " but this step not exists as only step 1 exists (no tabs).";
                         }
