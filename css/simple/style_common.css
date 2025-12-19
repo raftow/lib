@@ -6514,6 +6514,12 @@ table.stats_table th {
     font-weight: normal;
 }
 
+.help.warning {
+    border-radius: 0;
+    box-shadow: none;
+    width: 100%;
+    background-color: orange;
+}
 
 .help_message_info {
     background-color: #eff6ff;
