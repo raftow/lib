@@ -91,7 +91,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                         $the_reason_readonly = "the field is setted with default value and it is not the step of this field (" . $obj->currentStep . " != " . $old_desc_step . ")";
                 }
         }
-
+        /*
         if($nom_col=="desiresLimitWarningDiv")
         {
                 $x = (strtoupper($desc["STEP"]) == 'STEPS');
@@ -101,14 +101,16 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 $u = in_array($obj->currentStep, $desc["STEPS"]);
 
                 die("debugg x = $x, y = $y, z = $z, w = $w, u = $u, ");
-        }
+        }*/
 
         if (((strtoupper($desc["STEP"]) == 'STEPS') and is_array($desc["STEPS"]) and in_array($obj->currentStep, $desc["STEPS"])) or 
             (strtoupper($desc["STEP"]) == 'ALL') or 
             ($desc["STEP"] == $obj->currentStep) or 
             (!$obj->editByStep)) {
                 if (!$mode_field_read_only) list($mode_field_read_only, $the_reason_readonly) = AfwStructureHelper::attributeIsReadOnly($obj, $nom_col, $nom_col_desc = "", $nom_col_submode = "", $nom_col_for_this_instance = true, $returm_me_reason_readonly = true);
-                // if($nom_col == "orgunit_id") die("$nom_col attribute Is ReadOnly = [$mode_field_read_only], reason=[$the_reason_readonly], ");
+                
+                if($nom_col == "desiresLimitWarningDiv") die("$nom_col attribute Is ReadOnly = [$mode_field_read_only], reason=[$the_reason_readonly], ");
+                
                 if ($mode_field_read_only) {
                         $mode_field_read_only_log .= "$nom_col attribute Is ReadOnly, reason=[$the_reason_readonly], ";
                         if (!$the_reason_readonly) $mode_field_read_only_log .= "see you implemtation of surcharge of method attribute-Can-Be-Updated-By it should return array with both boolean and string explaining reason of read-only behavior";
