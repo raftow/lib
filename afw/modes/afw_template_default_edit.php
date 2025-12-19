@@ -109,7 +109,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
             (!$obj->editByStep)) {
                 if (!$mode_field_read_only) list($mode_field_read_only, $the_reason_readonly) = AfwStructureHelper::attributeIsReadOnly($obj, $nom_col, $nom_col_desc = "", $nom_col_submode = "", $nom_col_for_this_instance = true, $returm_me_reason_readonly = true);
                 
-                if($nom_col == "desiresLimitWarningDiv") die("$nom_col attribute Is ReadOnly = [$mode_field_read_only], reason=[$the_reason_readonly], ");
+                // if($nom_col == "desiresLimitWarningDiv") die("$nom_col attribute Is ReadOnly = [$mode_field_read_only], reason=[$the_reason_readonly], ");
                 
                 if ($mode_field_read_only) {
                         $mode_field_read_only_log .= "$nom_col attribute Is ReadOnly, reason=[$the_reason_readonly], ";
@@ -122,7 +122,8 @@ foreach ($class_db_structure as $nom_col => $desc) {
                         and ((!$obj->isEmpty()) or (!$desc["HIDE_IF_NEW"])));
                 $mode_field_edit_log = "";
                 if ($mode_field_edit) $mode_field_edit_log .= "$nom_col is editable";
-                // if(($nom_col=="sci _id") and $mode_field_edit) die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) ".var_export($obj_errors,true));
+                
+                if($nom_col=="desiresLimitWarningDiv") die("mode_field_edit = $mode_field_edit, mode_field_read_only=$mode_field_read_only : (reason=$mode_field_read_only_log) ".var_export($obj_errors,true));
                 //**
                 $nom_col_to_see = $desc["EDIT-FOR"];
                 if (!$nom_col_to_see) $nom_col_to_see = $nom_col;
