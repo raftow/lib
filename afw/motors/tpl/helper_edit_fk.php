@@ -186,7 +186,7 @@ else
                         //alert(ui.item.id);
                         $("#<?php echo $col_name ?>").val(ui.item.id);
                         $("#<?php echo $col_name ?>").attr('class', 'inputtrescourt cl_id');
-                        $("#<?php echo $col_name_atc ?>").attr('class', 'form-control '.$lang_input.' form-autoc');
+                        $("#<?php echo $col_name_atc ?>").attr('class', 'form-control <?php echo $lang_input ?> form-autoc');
                         $("#<?php echo $col_name_atc ?>").addClass('input_changed');
                     },
 
