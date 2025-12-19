@@ -527,9 +527,17 @@ input,select,textarea,li {
     }
 }
 
+.info.alert {
+    border-right-width: 1px !important;
+}
 
 .warning.info.alert {
     background-color: rgb(255 241 203);
+    width: 94%;
+    margin: 0 3%;
+    border-radius: 0 !important;
+    box-shadow: none;
+    border-color: #af8c26;
 }
 
 .warning {
