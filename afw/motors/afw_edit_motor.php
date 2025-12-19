@@ -1039,7 +1039,9 @@
                     $fgroupcss     = $fgroupInfos["css"];
                     $new_fgroup_tr = $obj->getAttributeLabel($new_fgroup, $lang);
                     if ((!trim($new_fgroup_tr)) or (trim($new_fgroup_tr)==trim($new_fgroup))) {
-                        $new_fgroup_tr = $obj->getAttributeLabel("step" . $step_curr, $lang);
+                        if(is_numeric($step_curr)) {
+                            $new_fgroup_tr = $obj->getAttributeLabel("step" . $step_curr, $lang);
+                        }
                     }
 
                     // close previous in-group div
