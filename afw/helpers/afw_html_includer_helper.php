@@ -98,6 +98,12 @@ class AfwHtmlIncluderHelper
           $header .= "<link rel='stylesheet' href='../lib/css/dashboard-stats.css'>";
         }
 
+        if ($options["tree-view-js"]) {
+          $header .= "<link rel='stylesheet' type='text/css' href='../lib/css/jquerysctipttop.css' />
+                      <link rel='stylesheet' type='text/css' href='../lib/css/jsplumb-tree.css' />
+                      <script src='../lib/js/jsplumb-tree.js'></script>
+                      <script src='../lib/js/jsPlumb.min.js' integrity='sha512-A1gTsaWUck7mkEu6D8/938PKlkVS79TkgqAloQbGU4bhOPUBS9JVknN5x++J3eRNO8g6D/T3kqhHBd4KkqRNxg=='></script>";
+        }
         
 
         if ($options["chart-js"]) {
