@@ -1,5 +1,30 @@
 
         .container { margin: 150px auto; max-width: 960px; }
+        .window.module {
+            background-color: #076066;
+            color: wheat;
+        }
+
+        .window.model {
+            background-color: #076066;
+            color: wheat;
+        }
+
+        .window.stage {            
+            background-color: #309607;
+            color: rgb(255, 255, 255);
+        }
+
+        .window.status {
+            background-color: #0e5ec7;
+            color: rgb(255, 255, 255);
+        }
+
+        .window.action {
+            background-color: rgb(180, 119, 6);
+            color: rgb(255, 255, 255);
+        }
+
         .window {
             font-weight: bold;
             cursor: pointer;
@@ -20,7 +45,7 @@
             z-index:20; position:absolute;
             background-color:#eeeeef;
             color:black;
-            font-family:helvetica;
+            font-family:menu;
             font-size:0.9em;
             word-wrap:break-word;
         }
