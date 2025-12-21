@@ -6,9 +6,14 @@
         }
 
         .window.model {
-            background-color: #4c7c0c;
+            background-color: #670dd7;
             color: wheat;
         }
+
+        span.count.app.model {
+            background-color: #812ce9;
+        }
+
 
         .window.stage {            
             background-color: #309607;
