@@ -15,14 +15,26 @@
             color: rgb(255, 255, 255);
         }
 
+        span.count.app.stage {
+            background-color: #1d5806;
+        }
+
         .window.status {
             background-color: #0e5ec7;
             color: rgb(255, 255, 255);
         }
 
+        span.count.app.status {
+            background-color: #09418b;
+        }
+
         .window.action {
-            background-color: rgb(180, 119, 6);
+            background-color: rgb(221 151 23);
             color: rgb(255, 255, 255);
+        }
+
+        span.count.app.action {
+            background-color: rgb(141, 95, 10);
         }
 
         .window {
@@ -100,4 +112,8 @@
             width: 32px !important;
             height: 22px !important;
             display: block;
+            float: left;
+            margin-left: 100px;
         }
+
+        
