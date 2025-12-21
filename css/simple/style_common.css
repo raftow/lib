@@ -5537,7 +5537,9 @@ pre.hzm_par {
 pre.css {
     width: 100%;
     height: 820px;
-    text-align: left
+    text-align: left;
+    font-size: 18px !important;
+    line-height: 22px;
 }
 
 .form-control.error {
