@@ -14,7 +14,7 @@
             opacity:0.8;
             filter:alpha(opacity=80);
             */
-            width: 10em; height: auto;
+            width: 15em; height: auto;
             padding: 0.5em 0em;
             text-align:center;
             z-index:20; position:absolute;
@@ -59,9 +59,10 @@
 
         #treemain {
             height: 500px;
-            width: 100%;
+            width: 80%;
             position: relative;
             overflow: auto;
+            margin-left: 10% !important;
         }
 
     
