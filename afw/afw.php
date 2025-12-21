@@ -6638,6 +6638,12 @@ class AFWObject extends AFWRoot
     }
 
 
+    public function debuggExport()
+    {
+        return AfwStructureHelper::export($this);
+    }
+
+
     
 
 }

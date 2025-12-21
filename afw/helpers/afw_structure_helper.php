@@ -1394,4 +1394,11 @@ class AfwStructureHelper extends AFWRoot
 
         return false;
     }
+
+
+    public static function export($object)
+    {
+        $object->optimizeMemory();
+        return var_export($object, true);
+    }
 }
