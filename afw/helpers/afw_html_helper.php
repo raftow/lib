@@ -204,9 +204,10 @@ class AfwHtmlHelper extends AFWRoot {
         
         public static function showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde=true, $isAdmin=false, $ver="")
         {
-                global $next_color_arr;
+                // global $next_color_arr;
 
-
+                $theme = $pbm_item['THEME'];
+                if(!$theme) $theme = "default";
                 $condition = $pbm_item['CONDITION'];
                 if($condition)
                 {
@@ -235,39 +236,75 @@ class AfwHtmlHelper extends AFWRoot {
                 $last_color = "green";
                 if($show_pbm and $pbm_item["METHOD"])
                 {
-                        if(!$pbm_item["COLOR"]) $pbm_item["COLOR"] = $next_color_arr[$last_color];
+                        // if(!$pbm_item["COLOR"]) $pbm_item["COLOR"] = $next_color_arr[$last_color];
                         $last_color = $pbm_item["COLOR"];
                         $method_name = $pbm_item["METHOD"];
                         $method_icon = $pbm_item["ICON"];
-                        $method_tooltip = $pbm_item["TOOLTIP"];
-                        $method_log = $pbm_item["LOG"];
-                        
                         if(!$method_icon) $method_icon = "run";
-                        $pbm_item_translation = $obj->translate($method_name, $lang);
-                        $pbm_item_help = $pbm_item["LABEL_".strtoupper($lang)];
-                        if(($pbm_item_translation==$method_name) or (!$pbm_item_translation)) $pbm_item_translation = $pbm_item_help;
-                        $method_name_help = $method_tooltip;
-                        if($isAdmin) $method_name_help .= " [$method_name]";
+
+                        // tooltip or help
+                        $method_tooltip = $pbm_item["TOOLTIP_".strtoupper($lang)];
+                        if(!$method_tooltip) $method_tooltip = $pbm_item["HELP_".strtoupper($lang)];
+                        if(!$method_tooltip) $method_tooltip = $pbm_item["TOOLTIP"];
+                        if(!$method_tooltip) $method_tooltip = $pbm_item["HELP"];
+                        
+                        $method_log = $pbm_item["LOG"];                        
+                        $pbm_item_tr = $pbm_item["LABEL_".strtoupper($lang)];
+                        
+                        // translation
+                        $pbm_item_translation = $obj->translate($method_name, $lang);                        
+                        if(($pbm_item_translation==$method_name) or (!$pbm_item_translation)) $pbm_item_translation = $pbm_item_tr;
                         if(!$pbm_item_translation) 
                         {
                                 $pbm_item_translation = AfwStringHelper::methodToTitle($method_name);
                         }
+                        $pbm_original_translation = $pbm_item_translation;
+                        if(strlen($pbm_item_translation)>38) $pbm_item_translation = AfwStringHelper::truncateArabicJomla($pbm_item_translation,38);
+
+                        $method_help = $pbm_original_translation." : ".$method_tooltip;                        
+                        if($isAdmin) $method_help .= " [$method_name]";
+                        
                         $input_main_param_html = "";
                         if($pbm_item["MAIN_PARAM"])
                         {
-
                                 $obj->input_main_param = $pbm_item["DEFAULT"]; 
                                 list($input_main_param_html,) = AfwInputHelper::text_input("pbmp$ver"."_$pbm_code",$pbm_item["MAIN_PARAM"]["structure"],$obj->input_main_param,$obj,"<br>");
                         }
+
+                        if($theme=="default")
+                        {
+                                return "$input_main_param_html \n 
+                                <button name=\"submit-$pbm_code\" id=\"submit-$pbm_code\" data-toggle=\"tooltip\" data-placement=\"bottom\" type=\"submit\" class=\"bf bf-$last_color $action_lourde new-specialmethod hzm-$method_name theme-new\">                                
+                                        <div class=\"hzm-width-100 hzm-text-center hzm_margin_bottom theme-new\">                                      
+                                                <div class=\"hzm-vertical-align hzm-container-center hzm-otherlink-$method_name hzm-otherlink hzm-otherlink-icon-container border-primary theme-new\">                                        
+                                                        <i class=\"hzm-container-center hzm-vertical-align-middle hzm-icon-$method_icon theme-new\"></i>                                      
+                                                </div>                                    
+                                                <div class='pbm-tr'>$pbm_item_translation</div>
+                                        </div>  
+                                </button><!-- method $method_name enabled, reason-log : $method_log -->
+                                <script>
+                                        $(document).ready(function(){
+                                                $('#submit-$pbm_code').tooltip({
+                                                placement: \"bottom\",
+                                                title: \"$method_help\"
+                                        });
+                                });
+                                </script>";
+                        }
+                        else
+                        {
+                                return "$input_main_param_html \n 
+                                                <button name=\"submit-$pbm_code\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"".$method_tooltip."\" id=\"submit-$pbm_code\" type=\"submit\" class=\"bf bf-$last_color $action_lourde hzm-specialmethod hzm-$method_name\">                                
+                                                                <div class=\"hzm-width-100 hzm-text-center hzm_margin_bottom \">                                      
+                                                                        <div class=\"hzm-vertical-align hzm-container-center hzm-otherlink-$method_name hzm-otherlink hzm-otherlink-icon-container only-border border-primary\">                                        
+                                                                                <i class=\"hzm-container-center hzm-vertical-align-middle hzm-icon-$method_icon\"></i>                                      
+                                                                        </div>                                    
+                                                                </div>  
+                                                                $pbm_item_translation                                
+                                                </button><!-- method $method_name enabled, reason-log : $method_log -->";
+                        }
                         
-                        return "$input_main_param_html \n <button name=\"submit-$pbm_code\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"".$method_tooltip."\" id=\"submit-$pbm_code\" type=\"submit\" class=\"bf bf-$last_color $action_lourde hzm-specialmethod hzm-$method_name\">                                
-                                <div class=\"hzm-width-100 hzm-text-center hzm_margin_bottom \">                                      
-                                        <div class=\"hzm-vertical-align hzm-container-center hzm-otherlink-$method_name hzm-otherlink hzm-otherlink-icon-container only-border border-primary\">                                        
-                                                <i class=\"hzm-container-center hzm-vertical-align-middle hzm-icon-$method_icon\"></i>                                      
-                                        </div>                                    
-                                </div>  
-                                $pbm_item_translation                                
-                </button><!-- method $method_name enabled, reason-log : $method_log -->";
+                        
                         
                 }
                 else

@@ -1244,6 +1244,21 @@ a.hzm3-button.hzm3-block {
     content: "\f1f8";
 }
 
+.hzm-icon-execute:before {
+    content: "\f04b";
+}
+
+.hzm-icon-generate:before {
+    content: "\f055";
+}
+
+.hzm-icon-clone:before {
+    content: "\f0c5";
+}
+
+.hzm-icon-merge:before {
+    content: "\f02a";
+}
 
 .info.hzm-menu-folder {
     background-color: #fafafa;
@@ -1269,11 +1284,6 @@ a.hzm3-button.hzm3-block {
     padding: 25px !important;
 }
 
-.bf.bf-yellow {
-        border: 2px #bba810 solid !important;
-        color: white !important;
-        background-color: #bba810 !important;
-}
 
 .bf-yellow .hzm-otherlink.hzm-otherlink-icon-container.only-border.border-primary {
         border-color: #bba810;
@@ -1281,12 +1291,6 @@ a.hzm3-button.hzm3-block {
 
 .bf-yellow .hzm-container-center.hzm-vertical-align-middle.hzm-icon-run {
         color: #bba810 !important;
-}
-
-.bf.bf-blue {
-        border: 2px #2679c2 solid !important;
-        color: white !important;
-        background-color: #2679c2 !important;
 }
 
 .bf-blue .hzm-otherlink.hzm-otherlink-icon-container.only-border.border-primary {
@@ -1297,27 +1301,12 @@ a.hzm3-button.hzm3-block {
         color: #2679c2 !important;
 }
 
-.bf.bf-red {
-    border: 2px red solid !important;
-    color: white !important;
-    background-color: red !important;
-}
-
 .bf-red .hzm-otherlink.hzm-otherlink-icon-container.only-border.border-primary {
         border-color: red;
 }
 
 .bf-red .hzm-container-center.hzm-vertical-align-middle.hzm-icon-run {
         color: red !important;
-}
-
-
-
-
-.bf.bf-orange {
-    border: 2px #ff8a00 solid !important;
-    color: white !important;
-    background-color: #ff8a00 !important;
 }
 
 .bf-orange .hzm-otherlink.hzm-otherlink-icon-container.only-border.border-primary {
@@ -1328,13 +1317,6 @@ a.hzm3-button.hzm3-block {
     color: #ff8a00 !important;
 }
 
-
-.bf.bf-green {
-        border: 2px green solid !important;
-        color: white !important;
-        background-color: green !important;
-}
-
 .bf-green .hzm-otherlink.hzm-otherlink-icon-container.only-border.border-primary {
         border-color: green;
 }
@@ -1343,16 +1325,8 @@ a.hzm3-button.hzm3-block {
         color: green !important;
 }
 
-.bf.bf-lightblue {
-    border: 2px #78abd7 solid !important;
+.bf-green.theme-new .hzm-container-center.hzm-vertical-align-middle.hzm-icon-run {
     color: white !important;
-    background-color: #94bbdd !important;
-}
-
-.bf.bf-lightgreen {
-    border: 2px #45a314 solid !important;
-    color: white !important;
-    background-color: #9ecb5e !important;
 }
 
 .bf-lightgreen .hzm-otherlink.hzm-otherlink-icon-container.only-border.border-primary {
@@ -1398,11 +1372,40 @@ a.hzm3-button.hzm3-light-grey.hzm3-block {
 .hzm-otherlink.hzm-otherlink-icon-container.only-border.border-primary i {
     color: #2679c2;
 }
+
 .hzm-otherlink.hzm-otherlink-icon-container i {
     color: white;
     font-size: 22px;
 }
 
+.hzm-otherlink.hzm-otherlink-icon-container.theme-new i {
+    color: white !important;
+    font-size: 16px !important;
+}
+
+.pbm-tr {
+    font-size: 15px;
+    padding-top: 4px;
+}
+
+.hzm-otherlink.theme-new {
+    float: left;
+    margin-right: 10px;
+}
+
+button.new-specialmethod.theme-new {
+    min-width: 280px;
+}
+
+.bf.theme-new:hover {
+    opacity: .8;
+    top: -4px;
+}
+
+.bf.theme-new {
+    padding: 4px !important;
+    position: relative;
+}
 
 button.bf.hzm-otherlink {
     width: 85%;
@@ -2013,31 +2016,31 @@ h3.panel-title.col-xs-6 {
 }
 
 /* Tooltip */
-/*
-  .hzm_tt + .ui-tooltip > .tooltip-inner {
-    background-color: #73AD21; 
+  .tooltip-inner {
+    background-color: rgb(64 138 211) !important; 
     color: #FFFFFF; 
-    border: 1px solid green; 
     padding: 15px;
-    font-size: 20px;
+    font-family: menu !important;
+    font-size: 16px;
+    opacity: 1 !important;
   }
 
-  .hzm_tt + .ui-tooltip.top > .tooltip-arrow {
-    border-top: 5px solid green;
-  }
+  .tooltip.left .tooltip-arrow {
+    border-left-color: rgb(64 138 211) !important;
+ }
 
-  .hzm_tt + .ui-tooltip.bottom > .tooltip-arrow {
-    border-bottom: 5px solid blue;
-  }
-  .hzm_tt + .ui-tooltip.left > .tooltip-arrow {
-    border-left: 5px solid red;
-  }
+  .tooltip.top .tooltip-arrow {
+    border-top-color: rgb(64 138 211) !important;
+ }
 
+ .tooltip.bottom .tooltip-arrow {
+    border-bottom-color: rgb(64 138 211) !important;
+ }
 
-  .hzm_tt + .ui-tooltip.right > .tooltip-arrow {
-    border-right: 5px solid black;
-  }
-*/
+ .tooltip.right .tooltip-arrow {
+    border-right-color: rgb(64 138 211) !important;
+ }
+
 
 /*************************************************************************/
 

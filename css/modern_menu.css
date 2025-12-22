@@ -116,29 +116,6 @@ button.bf.hzm-specialmethod {
     padding: 10px !important;
 }
 
-.bf.bf-green {
-    border: none !important;
-    color: #0f700f !important;
-    background-color: #d8f5ce !important;
-}
-
-.bf.bf-green:hover {
-    border: none !important;
-    color: #d8f5ce !important;
-    background-color: #37a137 !important;
-}
-
-.bf.bf-gray {
-    border: none !important;
-    color: #6e6c6c !important;
-    background-color: #e7e7e7 !important;
-}
-
-.bf.bf-gray:hover {
-    border: none !important;
-    color: white !important;
-    background-color: #626362 !important;
-}
 
 .bf-gray .hzm-otherlink.hzm-otherlink-icon-container.only-border.border-primary {
     border-color: #6e6c6c;
@@ -148,16 +125,40 @@ button.bf.hzm-specialmethod {
     color: #6e6c6c !important;
 }
 
+.bf.bf-green {
+    border: none !important;
+    color: white !important;
+    background-color: #0f700f !important;
+}
+
+
+.bf.bf-green:hover {
+    border: none !important;
+    color: #d8f5ce !important;
+    background-color: #37a137 !important;
+}
+
+.bf.bf-gray {
+    border: none !important;
+    color: white !important;
+    background-color: #626362 !important;
+}
+
+.bf.bf-gray:hover {
+    border: none !important;
+    color: white !important;
+    background-color: #424342 !important;
+}
 
 
 .bf.bf-red {
-    border: 1px solid #fb827c !important;
+    border: none !important;
     color: #fff4f4 !important;
-    background-color: #f8241991 !important;
+    background-color: #CB2027 !important;
 }
 
 .bf.bf-red:hover {
-    border: 1px #d61212 solid !important;
+    border: none !important;
     color: white !important;
     background-color: #ed0d0d !important;
     text-shadow: 1px 1px 1px #c46734;
@@ -165,9 +166,8 @@ button.bf.hzm-specialmethod {
 
 .bf.bf-blue {
     border: none !important;
-    background-color: rgb(170 203 245) !important;
-    color: rgb(19 85 120) !important;
-    text-shadow: 1px 1px 1px #1795c3;
+    color: white !important;
+    background-color: #4267B2 !important;    
 }
 
 .bf.bf-blue:hover {
@@ -178,42 +178,56 @@ button.bf.hzm-specialmethod {
 }
 
 .bf.bf-yellow {
-    border: 1px #8c8e31 solid !important;
-    color: #8c8e31 !important;
-    background-color: #f6f8c5 !important;
+    border: none !important;
+    color: white !important;
+    background-color: #95D03A !important;
 }
 
 .bf.bf-yellow:hover {
-    border: 1px #8c8e31 solid !important;
+    border: none !important;
     color: #f6f8c5 !important;
     background-color: #8c8e31 !important;
 }
 
 
 .bf.bf-purple {
-    border: 1px #8d20bd solid !important;
-    color: #8d20bd !important;
-    background-color: #fbb5f6ae !important;
-}
-
-.bf.bf-purple:hover {
-    border: 1px #8d20bd solid !important;
-    color: #e5cfee !important;
+    border: none !important;
+    color: white !important;
     background-color: #8d20bd !important;
 }
 
+.bf.bf-purple:hover {
+    border: none !important;
+    color: #e5cfee !important;
+    color: #8d20bd !important;
+}
+
 .bf.bf-orange {
-    border: 1px #ffaa71 solid !important;
-    color: #ffffff !important;
-    background-color: #fbc053 !important;
+    border: none !important;
+    color: white !important;
+    background-color: #ff8a00 !important;
 }
 
 
 .bf.bf-orange:hover {
-    border: 1px #ffaa71 solid !important;
+    border: none !important;
     color: #ffffff !important;
     background-color: orange !important;
 }
+
+.bf.bf-black {
+    border: none !important;
+    color: white !important;
+    background-color: #000000 !important;
+}
+
+
+.bf.bf-black:hover {
+    border: none !important;
+    color: white !important;
+    background-color: #221529 !important;
+}
+
 
 .hzm-user-account.ubg0 {
     background-color: #bd206a !important;
@@ -240,8 +254,10 @@ button.bf.hzm-specialmethod {
 
 button.bf.hzm-otherlink {
     width: 23%;
-    border: 1px #aed8fbb0 solid;
-    background-color: #f5faff;
+    /* border: 1px #aed8fbb0 solid;
+    background-color: #f5faff;*/
+    border: none;
+    background-color: transparent;
     color: #0c5cb1;
     margin-bottom: 10px;
     margin-left: 1%;

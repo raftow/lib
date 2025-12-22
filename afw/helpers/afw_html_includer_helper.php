@@ -138,6 +138,7 @@ class AfwHtmlIncluderHelper
             if(AfwSession::config("bootstrap.bundle", false))
             {
               $bootstrap_script = "<script src='../lib/bootstrap/bootstrap.bundle.min.js'></script>";
+              $bootstrap_script = "<script src='../lib/bootstrap/bootstrap-v$bootstrap_version.min.js'></script>";
             }
             else
             {

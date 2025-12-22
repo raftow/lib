@@ -14,6 +14,9 @@ class AfwIconHelper
                 "task" => "f085",
                 "work" => "f085",
                 "servicestack" => "brand-f3ec",
+                
+                "eservice"=> "f1d0",
+                "api" => "f2db",
                 "server"=>"f233",
                 "mapping"=>"f0ec",
                 "location" => "f041",
@@ -87,6 +90,8 @@ class AfwIconHelper
                 "tripadvisor" => "brand-f262",
                 "trophy" => "f091",
                 "truck" => "f0d1",
+                "execute" => "f04b",
+                "run" => "f04b",
                 "truckLoading" => "f4de",
                 "truckMonster" => "f63b",
                 "truckMoving" => "f4df",

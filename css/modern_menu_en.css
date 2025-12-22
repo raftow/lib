@@ -498,3 +498,6 @@ li.wizardv1_li.ErronedStep {
     background-size: 24px !important;
 }
 
+.pbm-tr {
+    float: left;
+}

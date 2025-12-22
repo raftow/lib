@@ -778,7 +778,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                         ?>
                                         <!-- form_left -->
                                         <div class="form_left form_left_buttons form_left_<?php echo $clStep . "_" . $obj->currentStep ?>" style="/*width: 12%;height:100%;*/">
-                                                <h5 class='greentitle'><i></i><?php echo $orders_to_execute ?></h5>
+                                                <!-- <h5 class='greentitle'><i></i><?php echo $orders_to_execute ?></h5> -->
                                                 <?php
                                                 echo $html_buttons_spec_methods;
                                                 ?>
