@@ -1703,6 +1703,14 @@ class AFWObject extends AFWRoot
         return $result;
     }
 
+    public function hetWhat($attribute, $what)
+    {
+        if($what=="object") return $this->het($attribute);
+        if($what=="value") return $this->getVal($attribute);
+        if($what=="decodeme") return $this->decode($attribute);
+
+        return "$attribute.$what ???";
+    }
 
     public function het($attribute, $format = '', $optim_lookup = true)
     {
