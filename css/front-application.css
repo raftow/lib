@@ -4601,3 +4601,13 @@ div.content-annonce>ul {
     width: 100%;
 }
 
+span.json.ok {
+    font-weight: bold;
+    color: green;
+}
+
+span.json.error {
+    font-weight: bold !important;
+    color: red;
+    background-color: inherit;
+}
