@@ -1,6 +1,20 @@
 <?php
 class AfwFormatHelper
 {
+
+    public static final function isGoodFormat($val, $type)
+    {
+        if($type=="integer") return is_integer($val);
+        if($type=="float") return is_float($val);
+        if($type=="numeric") return is_numeric($val);
+        if($type=="date") return self::isCorrectDate($val);
+        if($type=="time") return self::isCorrectTime($val);
+        if($type=="datetime") return self::isCorrectDateTime($val);
+        if($type=="mobile") return self::isCorrectMobileNum($val);
+        if($type=="email") return self::isCorrectEmailAddress($val);
+
+        return "$type unknown";
+    }
     public static final function isCorrectFormat($val_attr, $desc)
     {
         if (!$val_attr) {
@@ -1197,6 +1211,30 @@ class AfwFormatHelper
     {
         if ($country == "SA") return preg_match('/^1[0-9]{9}$/', $trade_num);
         else return false; // because not implemented
+    }
+
+    public static function isCorrectDate($date, $format = 'Y-m-d')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        // The !== false check ensures an object was created
+        // The $d->format($format) === $date check ensures strict format adherence
+        return $d && $d->format($format) === $date;
+    }
+
+    public static function isCorrectTime($time, $format = 'H:i:s') 
+    {
+        // Create a DateTime object from the input string using the specified format
+        $d = DateTime::createFromFormat("Y-m-d $format", "2000-01-01 $time");
+        
+        // Check if object creation was successful AND the formatted output 
+        // strictly matches the original input time string
+        return $d && $d->format($format) === $time;
+    }
+
+    public static function isCorrectDateTime($datetime) 
+    {
+        list($date, $time) = explode(" ", $datetime);
+        return self::isCorrectDate($date) and self::isCorrectTime($time);
     }
 
     public static function isCorrectNationalUnifiedNumber($trade_num, $country = "SA")
