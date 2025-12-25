@@ -1,46 +1,6 @@
 
         .container { margin: 150px auto; max-width: 960px; }
-        .window.module {
-            background-color: #076066;
-            color: wheat;
-        }
-
-        .window.model {
-            background-color: #670dd7;
-            color: wheat;
-        }
-
-        span.count.app.model {
-            background-color: #9855eb;
-        }
-
-
-        .window.stage {            
-            background-color: #309607;
-            color: rgb(255, 255, 255);
-        }
-
-        span.count.app.stage {
-            background-color: #1d5806;
-        }
-
-        .window.status {
-            background-color: #0e5ec7;
-            color: rgb(255, 255, 255);
-        }
-
-        span.count.app.status {
-            background-color: #09418b;
-        }
-
-        .window.action {
-            background-color: rgb(221 151 23);
-            color: rgb(255, 255, 255);
-        }
-
-        span.count.app.action {
-            background-color: rgb(141, 95, 10);
-        }
+        
 
         .window {
             font-weight: normal;

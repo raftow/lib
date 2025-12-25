@@ -1212,52 +1212,65 @@ a.hzm3-button.hzm3-block {
     content: "\f090";
 }
 
+
 .hzm-icon-run:before {
     content: "\f101";
+    color: white;
 }
 
 .hzm-icon-link:before {
     content: "\f0a6";
+    color: white;
 }
 
 .hzm-icon-like:before {
     content: "\f164";
+    color: white;
 }
 
 .hzm-icon-table:before {
     content: "\f00a";
+    color: white;
 }
 
 .hzm-icon-rows:before {
     content: "\f00b";
+    color: white;
 }
 
 .hzm-icon-approve:before {
     content: "\f00c";
+    color: white;
 }
 
 .hzm-icon-disapprove:before {
     content: "\f00d";
+    color: white;
 }
 
 .hzm-icon-delete:before {
     content: "\f1f8";
+    color: white;
 }
 
 .hzm-icon-execute:before {
     content: "\f04b";
+    color: white;
 }
 
 .hzm-icon-generate:before {
     content: "\f055";
+    color: white;
 }
 
 .hzm-icon-clone:before {
     content: "\f0c5";
+    color: white;
 }
 
 .hzm-icon-merge:before {
     content: "\f02a";
+    color: white;
 }
 
 .info.hzm-menu-folder {
@@ -2825,13 +2838,16 @@ div.column-block>h1 {
         }
 }
 
-
-@media print, screen and (max-width: 1260px)
+@media print, screen and (max-width: 1030px)
 {
         .form_left{
             display: none !important;
         }
-        
+}
+
+
+@media print, screen and (max-width: 1260px)
+{
         .form_right{
             width: 98% !important;
         }
