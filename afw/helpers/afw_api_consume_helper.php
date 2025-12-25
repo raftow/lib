@@ -29,10 +29,10 @@ class AfwApiConsumeHelper
                 }
                 
                 $url = $p_url;
-
+                $curl_options = array();
                 // echo "initilized\n";
-                curl_setopt($curl, CURLOPT_URL, $url);
-                $curl_commands[] = "curl_setopt(\$curl, CURLOPT_URL, '$url');";
+                $curl_options[CURLOPT_URL] = $url;
+                // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_URL, '$url');";
                 
                 if($bearer)
                 {
@@ -40,33 +40,33 @@ class AfwApiConsumeHelper
                 }
 
                 
-                curl_setopt($curl, CURLOPT_HTTPHEADER, $http_header_array);
-                $curl_commands[] = "curl_setopt(\$curl, CURLOPT_HTTPHEADER, ".var_export($http_header_array, true).");";
+                $curl_options[CURLOPT_HTTPHEADER] = $http_header_array;
+                // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_HTTPHEADER, ".var_export($http_header_array, true).");";
                 // echo "option CURLOPT_HTTPHEADER setted\n";
-                curl_setopt($curl, CURLOPT_RETURNTRANSFER, $return_transfer);
-                $curl_commands[] = "curl_setopt(\$curl, CURLOPT_RETURNTRANSFER, ".var_export($return_transfer, true).");";
+                $curl_options[CURLOPT_RETURNTRANSFER] = $return_transfer;
+                // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_RETURNTRANSFER, ".var_export($return_transfer, true).");";
                 // echo "option CURLOPT_RETURNTRANSFER setted\n";
                 if($verify_host !== null)
                 {
-                    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, $verify_host);
-                    $curl_commands[] = "curl_setopt(\$curl, CURLOPT_SSL_VERIFYHOST, ".var_export($verify_host, true).");";
+                    $curl_options[CURLOPT_SSL_VERIFYHOST] = $verify_host;
+                    // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_SSL_VERIFYHOST, ".var_export($verify_host, true).");";
                 }
                 if($verify_pear !== null)
                 {
-                    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, $verify_pear);
-                    $curl_commands[] = "curl_setopt(\$curl, CURLOPT_SSL_VERIFYPEER, ".var_export($verify_pear, true).");";                
+                    $curl_options[CURLOPT_SSL_VERIFYPEER] = $verify_pear;
+                    // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_SSL_VERIFYPEER, ".var_export($verify_pear, true).");";                
                 }
-                curl_setopt($curl, CURLOPT_ENCODING, $encoding);
-                $curl_commands[] = "curl_setopt(\$curl, CURLOPT_ENCODING, ".var_export($encoding, true).");";
-                curl_setopt($curl, CURLOPT_MAXREDIRS, $maxredirs);
-                $curl_commands[] = "curl_setopt(\$curl, CURLOPT_MAXREDIRS, ".var_export($maxredirs, true).");";
-                curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
-                $curl_commands[] = "curl_setopt(\$curl, CURLOPT_TIMEOUT, ".var_export($timeout, true).");";
-                curl_setopt($curl, CURLOPT_FOLLOWLOCATION, $followlocation);
-                $curl_commands[] = "curl_setopt(\$curl, CURLOPT_FOLLOWLOCATION, ".var_export($followlocation, true).");";
+                $curl_options[CURLOPT_ENCODING] = $encoding;
+                // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_ENCODING, ".var_export($encoding, true).");";
+                $curl_options[CURLOPT_MAXREDIRS] = $maxredirs;
+                // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_MAXREDIRS, ".var_export($maxredirs, true).");";
+                $curl_options[CURLOPT_TIMEOUT] = $timeout;
+                // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_TIMEOUT, ".var_export($timeout, true).");";
+                $curl_options[CURLOPT_FOLLOWLOCATION] = $followlocation;
+                // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_FOLLOWLOCATION, ".var_export($followlocation, true).");";
                 if(!$http_version) $http_version = CURL_HTTP_VERSION_1_1; 
-                curl_setopt($curl, CURLOPT_HTTP_VERSION, $http_version);
-                $curl_commands[] = "curl_setopt(\$curl, CURLOPT_HTTP_VERSION, ".var_export($http_version, true).");";
+                $curl_options[CURLOPT_HTTP_VERSION] = $http_version;
+                // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_HTTP_VERSION, ".var_export($http_version, true).");";
                 
                 
                 if($proxy=="default")
@@ -77,47 +77,51 @@ class AfwApiConsumeHelper
                 if($proxy and ($proxy!="*"))
                 {
                         list($proxy_host, $proxy_port) = explode('|', $proxy);
-                        curl_setopt($curl, CURLOPT_PROXY, $proxy_host);
-                        $curl_commands[] = "curl_setopt(\$curl, CURLOPT_PROXY, ".var_export($proxy_host, true).");";
-                        curl_setopt($curl, CURLOPT_PROXYPORT, $proxy_port);
-                        $curl_commands[] = "curl_setopt(\$curl, CURLOPT_PROXYPORT, ".var_export($proxy_port, true).");";
-                        //curl_setopt($curl, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+                        $curl_options[CURLOPT_PROXY] = $proxy_host;
+                        // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_PROXY, ".var_export($proxy_host, true).");";
+                        $curl_options[CURLOPT_PROXYPORT] = $proxy_port;
+                        // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_PROXYPORT, ".var_export($proxy_port, true).");";
+                        //$curl_options[CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
                         
                 }
                 elseif($proxy=="*")
                 {
-                    curl_setopt($curl, CURLOPT_NOPROXY, "*");                    
-                    $curl_commands[] = "curl_setopt(\$curl, CURLOPT_NOPROXY, \"*\");";
+                    $curl_options[CURLOPT_NOPROXY] = "*";                    
+                    // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_NOPROXY, \"*\");";
                 }
-                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);             
-                $curl_commands[] = "curl_setopt(\$curl, CURLOPT_CUSTOMREQUEST, '$method');";       
+                $curl_options[CURLOPT_CUSTOMREQUEST] = $method;             
+                // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_CUSTOMREQUEST, '$method');";       
 
-
+                curl_setopt_array($curl, $curl_options);
+                $curl_commands[] = "curl_setopt_array(\$curl, ".var_export($curl_options, true).");";
                 // echo "executing\n";
                 $error_msg = "";
-                $result = curl_exec($curl);
-                $curl_commands[] = "\$result = curl_exec(\$curl);";       
-                if($print_full_debugg) AfwBatch::print_debugg("API RESULT :\n [$result]\n");
-                if(!trim($result))
+                $response = curl_exec($curl);
+                $curl_commands[] = "\$response = curl_exec(\$curl);";       
+                if($print_full_debugg) AfwBatch::print_debugg("API RESULT :\n [$response]\n");
+                if(!trim($response))
                 {
-                    $error_msg .= "API Error result is empty ";
+                    $error_msg .= "API Error : the response is empty ";
                 }
+                
                 
                 $error_msg .= curl_error($curl);
                 $curl_commands[] = "\$error_msg = curl_error(\$curl);";       
                 if($error_msg)
                 {
                     $http_header_array_text = implode(" || ", $http_header_array);
-                    $error_msg = "Error while doing curl_exec method=$method on url= $url / header = $http_header_array_text / proxy=$proxy_host port=".$proxy_port." => response=$result => error message : " . $error_msg;
+                    $error_msg = "Error while doing curl_exec method=$method on url= $url / header = $http_header_array_text / proxy=$proxy_host port=".$proxy_port." => response=$response => error message : " . $error_msg;
                     if($print_error) AfwBatch::print_error("error_msg : $error_msg");
                 }
                 
+                
                 if(!$error_msg)  $success = true; else $success = false;
-                // curl_close($curl);
                 
-                if($success) $decoded_result = json_decode($result); else $decoded_result = null;
+                curl_close($curl);
                 
-                return array('url' => $p_url, 'success' => $success, 'message' => $error_msg, 'result' => $decoded_result, 'commands'=>$curl_commands);
+                if($success) $decoded_response = json_decode($response); else $decoded_response = null;
+                
+                return array('url' => $p_url, 'success' => $success, 'message' => $error_msg, 'result' => $decoded_response, 'commands'=>$curl_commands);
         }
         else
         {
