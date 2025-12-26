@@ -70,7 +70,7 @@
         }
 
         span.count.app {
-            padding-top: 5px;
+            margin-top: 8px !important;
             border-radius: 50%;
             background-color: red;
             /* margin: 10px; */
@@ -78,7 +78,8 @@
             height: 22px !important;
             display: block;
             float: left;
-            margin-left: 100px;
+            margin-left: calc(50% - 21px);
+            padding: 1px 5px;
         }
 
         
