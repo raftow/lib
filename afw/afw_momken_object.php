@@ -104,6 +104,30 @@ class AfwMomkenObject extends AFWObject {
         }
 
 
+        public static function list_of_gender_id()
+        {
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+            return self::gender()[$lang];
+        }
+        
+        public static function gender()
+        {
+                $arr_list_of_gender = array();
+                
+                
+                $arr_list_of_gender["en"][1] = "Male";
+                $arr_list_of_gender["ar"][1] = "ذكر";
+                $arr_list_of_gender["code"][1] = "M";
+
+                $arr_list_of_gender["en"][2] = "Female";
+                $arr_list_of_gender["ar"][2] = "أنثى";
+                $arr_list_of_gender["code"][2] = "F";
+
+                
+                return $arr_list_of_gender;
+        }
+
+
         public static function list_of_stars()
         {
             $lang = AfwLanguageHelper::getGlobalLanguage();
