@@ -63,7 +63,11 @@ class AfwHtmlHelper extends AFWRoot {
         public static function tableToHtml($data, $header_trad=null, $decoderArr=null)
         {
                 $data = self::resetIndexesToDataArray($data);
+                // die("tableToHtml data = ".var_export($data, true));
+                // echo("tableToHtml old header_trad = ".var_export($header_trad, true));
+                // $header_trad=null;
                 if(!$header_trad) $header_trad = self::array_keysToHeader($data[0]);
+                // die("tableToHtml new header_trad = ".var_export($header_trad, true));
                 list($html, $ids) = AfwShowHelper::tableToHtml($data, $header_trad, $showAsDataTable=false, $isAvail=null, $nowrap_cols=null, $class_table="grid", $class_tr1="altitem", $class_tr2="item", $class_td_off="asttdoff", $lang="ar", $dir="rtl", $bigtitle="", $bigtitle_tr_class="bigtitle", $width_th_arr=array(),$img_width="", $rows_by_table=0, $showWidthedTable="",$row_class_key="",$col_class_key="",$class_td_off = 'off', $order_key = '', $decoderArr);
                 return $html;
         }

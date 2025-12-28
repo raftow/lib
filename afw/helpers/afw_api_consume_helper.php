@@ -76,10 +76,18 @@ class AfwApiConsumeHelper
                 
                 if($proxy and ($proxy!="*"))
                 {
-                        list($proxy_host, $proxy_port) = explode('|', $proxy);
+                        list($proxy_host, $proxy_port, $proxy_credentials) = explode('|', $proxy);
+                        
                         $curl_options[CURLOPT_PROXY] = $proxy_host;
                         // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_PROXY, ".var_export($proxy_host, true).");";
                         $curl_options[CURLOPT_PROXYPORT] = $proxy_port;
+
+                        if($proxy_credentials)
+                        {
+                            $curl_options[CURLOPT_PROXYUSERPWD] = $proxy_credentials;                            
+                        }
+
+
                         // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_PROXYPORT, ".var_export($proxy_port, true).");";
                         //$curl_options[CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
                         
@@ -97,6 +105,7 @@ class AfwApiConsumeHelper
                 // echo "executing\n";
                 $error_msg = "";
                 $response = curl_exec($curl);
+                // $response = '{"data":[{"code":"0100","name":"Riyadh","region_code":"0001","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null}],"meta":{"current_page":1,"from":1,"last_page":177,"per_page":1,"to":1,"total":177}}';
                 $curl_commands[] = "\$response = curl_exec(\$curl);";       
                 if($print_full_debugg) AfwBatch::print_debugg("API RESULT :\n [$response]\n");
                 if(!trim($response))
@@ -121,7 +130,7 @@ class AfwApiConsumeHelper
                 
                 if($success) $decoded_response = json_decode($response); else $decoded_response = null;
                 
-                return array('url' => $p_url, 'success' => $success, 'message' => $error_msg, 'result' => $decoded_response, 'commands'=>$curl_commands);
+                return array('url' => $p_url, 'success' => $success, 'message' => $error_msg, 'result' => $decoded_response, 'commands'=>$curl_commands, 'response' => $response);
         }
         else
         {

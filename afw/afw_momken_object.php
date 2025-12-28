@@ -383,6 +383,7 @@ class AfwMomkenObject extends AFWObject
         return $arr_list_of_answer_table;
     }
 
+    /* obsolete should be defined in extra/domains-$main_company.php
     public static function domain()
     {
         // to be defined in sub-classes not here because depend on context and module
@@ -404,12 +405,28 @@ class AfwMomkenObject extends AFWObject
         $arr_list_of_domain['code'][10] = 'HR';
 
         return $arr_list_of_domain;
+    }*/
+
+    
+    public static function domain()
+    {
+            $main_company = AfwSession::currentCompany();
+            $file_dir_name = dirname(__FILE__);        
+            $domains_file_name = $file_dir_name."/../../client-$main_company/extra/domains-$main_company.php";
+            if(file_exists($domains_file_name))
+            {
+                return include($domains_file_name);
+            }
+            
+            throw new AfwRuntimeException("Domain file missed : $domains_file_name");
     }
 
     public static function list_of_domain_enum()
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        return self::domain()[$lang];
+        $return = self::domain()[$lang];
+        if(!$return) throw new AfwRuntimeException("lang = AfwLanguageHelper::getGlobalLanguage()=$lang, self::domain()[$lang] failed");
+        return $return;
     }
 
     public static function domain_code($ansTabId)

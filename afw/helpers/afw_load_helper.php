@@ -2126,7 +2126,7 @@ class AfwLoadHelper extends AFWRoot
                     {
                             $className = AfwStringHelper::tableToClass($table);
                             $return = $className::$method();
-                            $case = "$className :: $method()";
+                            $case = "$className :: $method() = ".var_export($return,true);
                     }
                     // echo "call to $className::$method() return [";
                     // print_r($return);
@@ -2140,8 +2140,8 @@ class AfwLoadHelper extends AFWRoot
             }
 
 
-            if(!is_array($return)) throw new AfwRuntimeException("get EnumTable($answer,$table,$fattribut,obj, ..) returned : [$return] <hr><br>
-            used case $case <hr><br> 
+            if(!is_array($return)) throw new AfwRuntimeException("get EnumTable($answer,$table,$fattribut,obj, ..) returned : [$return], <br>
+            used case $case, <br> 
             used obj = ".var_export($obj,true).") 
             ");
 
