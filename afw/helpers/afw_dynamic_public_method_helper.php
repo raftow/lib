@@ -47,14 +47,14 @@ class AfwDynamicPublicMethodHelper
         return [$method_allowed, $method_not_allowed_reason];
     }
 
-    public static function splitMethodToMethodItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log)
+    public static function splitMethodToMethodItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $adminOnly = false, $public = true)
     {
         $itemsMethod = $publicDynamicMethodProps['items'];
         $itemsList = $object->executeItemsMethod($itemsMethod);
-        return self::splitMethodWithItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $itemsList);
+        return self::splitMethodWithItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $itemsList, $adminOnly, $public);
     }
 
-    public static function splitMethodWithItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $itemsList)
+    public static function splitMethodWithItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $itemsList, $adminOnly = true, $public = false)
     {
         foreach ($itemsList as $itemId => $itemPbm) {
             if ($itemId != 'none')
@@ -95,7 +95,8 @@ class AfwDynamicPublicMethodHelper
                 'COLOR' => $methodColor,
                 'LABEL_AR' => $methodTitleAr,
                 'LABEL_EN' => $methodTitleEn,
-                'PUBLIC' => true,
+                'ADMIN-ONLY' => $adminOnly,
+                'PUBLIC' => $public,
                 'BF-ID' => '',
                 'confirmation_needed' => $methodConfirmationNeeded,
                 'CONFIRMATION_WARNING' => array('ar' => $methodConfirmationWarning, 'en' => $methodConfirmationWarningEn),
