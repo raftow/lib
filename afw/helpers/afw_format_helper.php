@@ -1,92 +1,94 @@
 <?php
 class AfwFormatHelper
 {
-
     final public static function isGoodFormat($val, $type)
     {
-        if ($type == "integer") {
+        if ($type == 'integer') {
             return is_integer($val);
         }
 
-        if ($type == "float") {
+        if ($type == 'float') {
             return is_float($val);
         }
 
-        if ($type == "numeric") {
+        if ($type == 'numeric') {
             return is_numeric($val);
         }
 
-        if ($type == "date") {
+        if ($type == 'date') {
             return self::isCorrectDate($val);
         }
 
-        if ($type == "time") {
+        if ($type == 'time') {
             return self::isCorrectTime($val);
         }
 
-        if ($type == "datetime") {
+        if ($type == 'datetime') {
             return self::isCorrectDateTime($val);
         }
 
-        if ($type == "mobile") {
+        if ($type == 'mobile') {
             return self::isCorrectMobileNum($val);
         }
 
-        if ($type == "email") {
+        if ($type == 'email') {
             return self::isCorrectEmailAddress($val);
         }
 
         return "$type unknown";
     }
+
     final public static function isCorrectFormat($val_attr, $desc)
     {
-        if (! $val_attr) {
+        if (!$val_attr) {
             return [true, ''];
-        } // in this cas MANDATORY property that will reject
+        }  // in this cas MANDATORY property that will reject
 
         if ($desc['FORMAT'] == 'ARABIC-TEXT') {
-            if (! AfwStringHelper::is_arabic($val_attr)) {
+            if (!AfwStringHelper::is_arabic($val_attr)) {
                 return [false, 'FORMAT-ARABIC-TEXT'];
             }
         }
 
         if ($desc['FORMAT'] == 'EMAIL') {
-            if (! self::isCorrectEmailAddress($val_attr)) {
+            if (!self::isCorrectEmailAddress($val_attr)) {
                 return [false, 'FORMAT-EMAIL'];
             }
         }
 
         if ($desc['FORMAT'] == 'SA-MOBILE') {
-            if (! self::isCorrectMobileNum($val_attr)) {
+            if (!self::isCorrectMobileNum($val_attr)) {
                 return [false, 'FORMAT-SA-MOBILE'];
             }
         }
 
         if ($desc['FORMAT'] == 'SA-TRADENUM') {
-            if (! self::isCorrectTradeNumber($val_attr)) {
+            if (!self::isCorrectTradeNumber($val_attr)) {
                 return [false, 'FORMAT-SA-TRADENUM'];
             }
         }
 
         if ($desc['FORMAT'] == 'SA-NATIONAL-UNIFIED-NUMBER') {
-            if (! self::isCorrectNationalUnifiedNumber($val_attr)) {
+            if (!self::isCorrectNationalUnifiedNumber($val_attr)) {
                 return [false, 'FORMAT-SA-NATIONAL-UNIFIED-NUMBER'];
             }
         }
 
         if ($desc['FORMAT'] == 'SA-IDN') {
             $check_idn = true;
+
             /*
-            if ($desc['IDN-TYPE-ATTRIBUTE']) {
-                $idn_type = $object->getVal($desc['IDN-TYPE-ATTRIBUTE']);
-                if ($idn_type and $idn_type != 1 and $idn_type != 2) {
-                    $check_idn = false;
-                } // other type of IDN than ahwal and iqama so no check
-            }*/
+             * if ($desc['IDN-TYPE-ATTRIBUTE']) {
+             *     $idn_type = $object->getVal($desc['IDN-TYPE-ATTRIBUTE']);
+             *     if ($idn_type and $idn_type != 1 and $idn_type != 2) {
+             *         $check_idn = false;
+             *     } // other type of IDN than ahwal and iqama so no check
+             * }
+             */
 
             if ($check_idn) {
                 list($idn_correct, $type) = AfwFormatHelper::getIdnTypeId($val_attr);
-                if (! $idn_correct) {
+                if (!$idn_correct) {
                     return [false, 'FORMAT-SA-IDN'];
                 }
             } else {
@@ -95,7 +97,7 @@ class AfwFormatHelper
         }
 
         if ($desc['FORMAT'] == 'HTTP') {
-            if (! filter_var($val_attr, FILTER_VALIDATE_URL)) {
+            if (!filter_var($val_attr, FILTER_VALIDATE_URL)) {
                 return [false, 'FORMAT-HTTP'];
             }
         }
@@ -116,16 +118,16 @@ class AfwFormatHelper
                     $length = strlen($val_attr);
                 }
             }
-            if (! $desc['MANDATORY'] and ! $desc['REQUIRED'] and (! is_array($desc['FORMAT']) or ! $desc['FORMAT']['STRING-LENGTH'])) {
+            if (!$desc['MANDATORY'] and !$desc['REQUIRED'] and (!is_array($desc['FORMAT']) or !$desc['FORMAT']['STRING-LENGTH'])) {
                 $desc['MIN-SIZE'] = 0;
             }
             $min_size = $desc['MIN-SIZE'];
-            if (! $min_size) {
+            if (!$min_size) {
                 $min_size = 0;
             }
 
             $max_length = $desc['MAXLENGTH'];
-            if (! $max_length) {
+            if (!$max_length) {
                 $max_length = 99999;
             }
 
@@ -133,30 +135,30 @@ class AfwFormatHelper
                 return [false, 'TEXT-MIN-LENGTH'];
             }
             if ($length > $max_length) {
-                //die("TEXT-MAX-LENGTH ERROR FOUND $length > $max_length, val_attr=[$val_attr] desc=".var_export($desc,true));
+                // die("TEXT-MAX-LENGTH ERROR FOUND $length > $max_length, val_attr=[$val_attr] desc=".var_export($desc,true));
                 return [false, 'TEXT-MAX-LENGTH'];
             }
         }
 
         if (strtoupper($desc['TYPE']) == 'GDAT') {
             $val_GDAT = substr($val_attr, 0, 10);
-            if (($val_GDAT != '0000-00-00') and (! AfwDateHelper::isCorrectGregDate($val_GDAT))) {
+            if (($val_GDAT != '0000-00-00') and (!AfwDateHelper::isCorrectGregDate($val_GDAT))) {
                 return [false, 'FORMAT-GDAT'];
             }
         }
         if (strtoupper($desc['TYPE']) == 'DATE') {
-            if (! AfwDateHelper::isCorrectHijriDate($val_attr)) {
+            if (!AfwDateHelper::isCorrectHijriDate($val_attr)) {
                 return [false, 'FORMAT-DATE'];
             }
-            //if(!AfwDateHelper::isCorrectHijriDate($val_attr)) return array(false,"FORMAT-DATE");
+            // if(!AfwDateHelper::isCorrectHijriDate($val_attr)) return array(false,"FORMAT-DATE");
         }
         if (strtoupper($desc['TYPE']) == 'TIME') {
             if (
-                ! preg_match(
+                !preg_match(
                     '/^[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}$/',
                     trim($val_attr)
                 ) and
-                ! preg_match(
+                !preg_match(
                     '/^[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}$/',
                     trim($val_attr)
                 )
@@ -167,7 +169,7 @@ class AfwFormatHelper
         if (strtoupper($desc['TYPE']) == 'PCTG') {
             $val_without_decimal_dot = str_replace('.', '', $val_attr);
 
-            if (! ctype_digit($val_without_decimal_dot)) {
+            if (!ctype_digit($val_without_decimal_dot)) {
                 return [false, 'TYPE-PCTG-FORMAT'];
             }
             if (floatval($val_attr) < 0.0) {
@@ -187,7 +189,7 @@ class AfwFormatHelper
         if (strtoupper($desc['TYPE']) == 'ENUM') {
             if ($desc['ANSWER'] != 'FUNCTION') {
                 $answerTable = AfwLoadHelper::explodeEnumAnswer($desc['ANSWER']);
-                if (! isset($answerTable[$val_attr])) {
+                if (!isset($answerTable[$val_attr])) {
                     return [false, 'TYPE-ENUM'];
                 }
             }
@@ -244,15 +246,14 @@ class AfwFormatHelper
         $obj = null
     ) {
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        if (! $structure) {
+        if (!$structure) {
             if ($obj) {
                 $structure = AfwStructureHelper::getStructureOf($obj, $key);
             }
-
         }
 
-        if (! $structure) {
-            return $value . " no structure";
+        if (!$structure) {
+            return $value . ' no structure';
         }
 
         $data_to_display = $value;
@@ -260,15 +261,15 @@ class AfwFormatHelper
         $formatted = true;
 
         if (($structure['TYPE'] == 'GDAT') or
-            ($structure['TYPE'] == 'GDATE')) {
-            //list($data_to_display,) = explode(" ",$value);
+                ($structure['TYPE'] == 'GDATE')) {
+            // list($data_to_display,) = explode(" ",$value);
             $data_to_display = $value;
             // $data_to_display = AfwDateHelper::justDecodeValue($value, $structure);
-            $link_to_display                         = '';
+            $link_to_display = '';
             list($date_to_display, $time_to_display) = explode(' ', $data_to_display);
             // die("value $value date $data_to_display explode = list($date_to_display, $time_to_display)");
 
-            if ((! $structure['FORMAT']) or ($structure['FORMAT'] == 'DATE')) {
+            if ((!$structure['FORMAT']) or ($structure['FORMAT'] == 'DATE')) {
                 // throw new RuntimeException("formatValue for ($key - GDAT) called structure['FORMAT'] = ".$structure['FORMAT']);
                 $data_to_display = $date_to_display;
             }
@@ -280,8 +281,8 @@ class AfwFormatHelper
             if (AfwStringHelper::stringStartsWith($structure['FORMAT'], 'EXP-')) {
                 // ex : "FORMAT"=>"EXP-WEEKDAY-MONTHNAME"
 
-                $WeekDayOn   = 0;
-                $YearOn      = 1;
+                $WeekDayOn = 0;
+                $YearOn = 1;
                 $MonthNameOn = 0;
 
                 $fparts = explode('-', $structure['FORMAT']);
@@ -304,94 +305,94 @@ class AfwFormatHelper
                     $Separator = ' ',
                     $return_array = false
                 );
-                //die("$data_to_display = mysqldate_to_explicit_fr_date_arr(date_to_display=$date_to_display, WeekDayOn=$WeekDayOn, YearOn=$YearOn, MonthNameOn=$MonthNameOn,Separator=' ',return_array=false);");
+                // die("$data_to_display = mysqldate_to_explicit_fr_date_arr(date_to_display=$date_to_display, WeekDayOn=$WeekDayOn, YearOn=$YearOn, MonthNameOn=$MonthNameOn,Separator=' ',return_array=false);");
             } elseif ($structure['FORMAT'] == 'DATETIME') {
             } elseif ($structure['FORMAT'] == 'CONVERT_HIJRI') {
                 if ($date_to_display) {
-                    $hijri_date      = AfwDateHelper::gregToHijri($date_to_display, 'hdate-dashed', $structure['IF-SEEMS-HIJRI-KEEP']);
-                    $data_to_display = "<div class='dates_ar_en'>" .
-                        "<div class='hzmdate date_en'><div class='dval'>$date_to_display</div><div class='dunit'>م</div></div>" .
-                        "<div class='hzmdate date_ar'><div class='dval'>$hijri_date</div><div class='dunit'>هـ</div></div>" .
-                        "</div>";
+                    $hijri_date = AfwDateHelper::gregToHijri($date_to_display, 'hdate-dashed', $structure['IF-SEEMS-HIJRI-KEEP']);
+                    $data_to_display = "<div class='dates_ar_en'>"
+                        . "<div class='hzmdate date_en'><div class='dval'>$date_to_display</div><div class='dunit'>م</div></div>"
+                        . "<div class='hzmdate date_ar'><div class='dval'>$hijri_date</div><div class='dunit'>هـ</div></div>"
+                        . '</div>';
                 } else {
                     $data_to_display = '';
                 }
             }
 
-            /* see if this old charabia can be useful for some cases anduse it here before
-
-                if ($decode_format == 'FRM') 
-                {
-                    $date_en = substr(
-                        $attribute_value,
-                        0,
-                        10
-                    );
-                    $date_en = explode('-', $date_en);
-                    $month_name = AfwLanguageHelper::translateKeyword('MONTH_' . $date_en[1],$lang);
-                    $return = $date_en[2] .' ' . $month_name . ' ' . $date_en[0];
-                } elseif ($decode_format == 'FR') {
-                    $date_en = substr(
-                        $attribute_value,
-                        0,
-                        10
-                    );
-                    $date_en = explode('-', $date_en);
-
-                    $return =
-                        $date_en[2] .
-                        '/' .
-                        $date_en[1] .
-                        '/' .
-                        $date_en[0];
-                } elseif ($decode_format == 'FRH') {
-                    $date_en = substr(
-                        $attribute_value,
-                        0,
-                        10
-                    );
-                    $date_en = explode('-', $date_en);
-                    $hr = substr($attribute_value, 11, 8);
-                    $hr = explode(':', $hr);
-
-                    $hr_a = $hr[0] . 'h' . $hr[1];
-
-                    $return =
-                        $date_en[2] .
-                        '/' .
-                        $date_en[1] .
-                        '/' .
-                        $date_en[0] .
-                        ' à ' .
-                        $hr_a;
-                } elseif ($decode_format == 'HEURE') {
-                    $hr = substr($attribute_value, 11, 8);
-                    $hr = explode(':', $hr);
-
-                    $return = $hr[0] . 'h' . $hr[1];
-                } elseif ($decode_format == 'ARABIC-TIME') {
-                    $hr = substr($attribute_value, 11, 8);
-                    $hr = explode(':', $hr);
-
-                    $return =
-                        'س' . $hr[0] . ' و' . $hr[1] . 'دق';
-                    if ($hr[2]) {
-                        $return .= ' و' . $hr[2] . 'ث';
-                    }
-                } 
-                elseif ($decode_format == 'LONG') {
-                    $return = AfwDateHelper::displayGDateLong($attribute_value);
-                    
-                } else {
-                    $return = $attribute_value;
-                }
-
+            /*
+             * see if this old charabia can be useful for some cases anduse it here before
+             *
+             *  if ($decode_format == 'FRM')
+             *  {
+             *      $date_en = substr(
+             *          $attribute_value,
+             *          0,
+             *          10
+             *      );
+             *      $date_en = explode('-', $date_en);
+             *      $month_name = AfwLanguageHelper::translateKeyword('MONTH_' . $date_en[1],$lang);
+             *      $return = $date_en[2] .' ' . $month_name . ' ' . $date_en[0];
+             *  } elseif ($decode_format == 'FR') {
+             *      $date_en = substr(
+             *          $attribute_value,
+             *          0,
+             *          10
+             *      );
+             *      $date_en = explode('-', $date_en);
+             *
+             *      $return =
+             *          $date_en[2] .
+             *          '/' .
+             *          $date_en[1] .
+             *          '/' .
+             *          $date_en[0];
+             *  } elseif ($decode_format == 'FRH') {
+             *      $date_en = substr(
+             *          $attribute_value,
+             *          0,
+             *          10
+             *      );
+             *      $date_en = explode('-', $date_en);
+             *      $hr = substr($attribute_value, 11, 8);
+             *      $hr = explode(':', $hr);
+             *
+             *      $hr_a = $hr[0] . 'h' . $hr[1];
+             *
+             *      $return =
+             *          $date_en[2] .
+             *          '/' .
+             *          $date_en[1] .
+             *          '/' .
+             *          $date_en[0] .
+             *          ' à ' .
+             *          $hr_a;
+             *  } elseif ($decode_format == 'HEURE') {
+             *      $hr = substr($attribute_value, 11, 8);
+             *      $hr = explode(':', $hr);
+             *
+             *      $return = $hr[0] . 'h' . $hr[1];
+             *  } elseif ($decode_format == 'ARABIC-TIME') {
+             *      $hr = substr($attribute_value, 11, 8);
+             *      $hr = explode(':', $hr);
+             *
+             *      $return =
+             *          'س' . $hr[0] . ' و' . $hr[1] . 'دق';
+             *      if ($hr[2]) {
+             *          $return .= ' و' . $hr[2] . 'ث';
+             *      }
+             *  }
+             *  elseif ($decode_format == 'LONG') {
+             *      $return = AfwDateHelper::displayGDateLong($attribute_value);
+             *
+             *  } else {
+             *      $return = $attribute_value;
+             *  }
              */
         } elseif ($structure['TYPE'] == 'DATE') {
             $data_to_display = AfwDateHelper::justDecodeValue($value, $structure);
-            //if(AfwStringHelper::stringStartsWith($data_to_display,"هـ")) throw new AfwRuntimeException("rafik formatValue twice : $data_to_display");
+            // if(AfwStringHelper::stringStartsWith($data_to_display,"هـ")) throw new AfwRuntimeException("rafik formatValue twice : $data_to_display");
             $old_data_to_display = $data_to_display;
-            $link_to_display     = '';
+            $link_to_display = '';
             if ($structure['FORMAT'] == 'HIJRI_UNIT') {
                 $structure['HIJRI_UNIT'] = true;
             }
@@ -407,45 +408,45 @@ class AfwFormatHelper
 
             if ($structure['FORMAT'] == 'TOOLTIP_NASRANI') {
                 $help_nasrani = htmlentities(
-                    'الموافق  ' .
-                    AfwDateHelper::hijriToGreg($old_data_to_display)
+                    'الموافق  '
+                    . AfwDateHelper::hijriToGreg($old_data_to_display)
                 );
                 if ($data_to_display) {
                     $data_to_display =
-                        $data_to_display .
-                        " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img data-toggle=\"tooltip\" data-placement=\"top\" width=\"24px\" height=\"24px\" title=\"$help_nasrani\" src=\"../lib/images/information.png\" />";
+                        $data_to_display
+                        . " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img data-toggle=\"tooltip\" data-placement=\"top\" width=\"24px\" height=\"24px\" title=\"$help_nasrani\" src=\"../lib/images/information.png\" />";
                 } else {
                     $data_to_display = '';
                 }
             } elseif ($structure['FORMAT'] == 'CONVERT_NASRANI') {
                 if ($data_to_display) {
-                    $hijri_date      = $data_to_display;
+                    $hijri_date = $data_to_display;
                     $date_to_display = AfwDateHelper::hijriToGreg($old_data_to_display, false);
-                    $data_to_display = "<div class='dates_ar_en'>" .
-                        "<div class='hzmdate date_en'><div class='dval'>$date_to_display</div><div class='dunit'>م</div></div>" .
-                        "<div class='hzmdate date_ar'><div class='dval'>$hijri_date</div><div class='dunit'>هـ</div></div>" .
-                        "</div>";
+                    $data_to_display = "<div class='dates_ar_en'>"
+                        . "<div class='hzmdate date_en'><div class='dval'>$date_to_display</div><div class='dunit'>م</div></div>"
+                        . "<div class='hzmdate date_ar'><div class='dval'>$hijri_date</div><div class='dunit'>هـ</div></div>"
+                        . '</div>';
                 } else {
                     $data_to_display = '';
                 }
             } elseif ($structure['FORMAT'] == 'CONVERT_NASRANI_SIMPLE') {
                 if ($data_to_display) {
                     $data_to_display =
-                    $data_to_display .
-                    ' &nbsp;&nbsp;&nbsp; الموافق  ' .
-                    AfwDateHelper::hijriToGreg($old_data_to_display) .
-                        ' م';
+                        $data_to_display
+                        . ' &nbsp;&nbsp;&nbsp; الموافق  '
+                        . AfwDateHelper::hijriToGreg($old_data_to_display)
+                        . ' م';
                 } else {
                     $data_to_display = '';
                 }
             } elseif ($structure['FORMAT'] == 'CONVERT_NASRANI_2LINES') {
                 if ($data_to_display) {
                     $data_to_display =
-                    "<div class='date2lines'>" .
-                    $data_to_display .
-                    ' هـ<br>الموافق  ' .
-                    AfwDateHelper::hijriToGreg($old_data_to_display) .
-                        ' م </div>';
+                        "<div class='date2lines'>"
+                        . $data_to_display
+                        . ' هـ<br>الموافق  '
+                        . AfwDateHelper::hijriToGreg($old_data_to_display)
+                        . ' م </div>';
                 } else {
                     $data_to_display = '';
                 }
@@ -459,12 +460,11 @@ class AfwFormatHelper
                     $data_to_display = '';
                 }
             } elseif ($structure['FORMAT'] == 'CONVERT_NASRANI_VERY_SIMPLE') {
-
                 if ($data_to_display) {
-                    if (AfwSession::hasOption('HIJRI_TO_GREG')) {
+                    if (AfwSession::hasOption('HIJRI_TO_GREG') or true) {  // dont understand why this option HIJRI_TO_GREG is needed
                         $data_to_display =
-                        AfwDateHelper::hijriToGreg($old_data_to_display) .
-                            ' م';
+                            AfwDateHelper::hijriToGreg($old_data_to_display)
+                            . ' م';
                     }
                 } else {
                     $data_to_display = '';
@@ -488,8 +488,8 @@ class AfwFormatHelper
             }
         } elseif ($structure['TYPE'] == 'TIME') {
             $data_to_display = AfwDateHelper::displayTime($value, $structure, $structure['FORMAT'], $obj);
-            $formatted       = true;
-        } elseif (! in_array(
+            $formatted = true;
+        } elseif (!in_array(
             $structure['TYPE'],
             [
                 'MFK',
@@ -505,22 +505,21 @@ class AfwFormatHelper
             ]
         )) {
             if (($structure['TYPE'] == 'FLOAT') and
-                AfwStringHelper::stringStartsWith($structure['FORMAT'], '*.')
-            ) {
+                    AfwStringHelper::stringStartsWith($structure['FORMAT'], '*.')) {
                 list($a, $b) = explode('.', $structure['FORMAT']);
-                //if($attribute) die("$attribute : list($a,$b) = ".$structure["FORMAT"]);
-                if (! $data_to_display) {
+                // if($attribute) die("$attribute : list($a,$b) = ".$structure["FORMAT"]);
+                if (!$data_to_display) {
                     $data_to_display = 0;
                 }
 
                 $old_data_to_display = $data_to_display;
-                $data_to_display     = number_format(
+                $data_to_display = number_format(
                     $data_to_display,
                     intval($b),
                     '.',
                     ' '
                 );
-                //if($key=="price5") die("$key : list($a,$b) = ".$structure["FORMAT"]." $data_to_display = number_format($old_data_to_display, intval($b), '.', ' ') ");
+                // if($key=="price5") die("$key : list($a,$b) = ".$structure["FORMAT"]." $data_to_display = number_format($old_data_to_display, intval($b), '.', ' ') ");
                 $zero = number_format(0, intval($b), '.', ' ');
                 if ($a == '*' and $data_to_display == $zero) {
                     $data_to_display = '';
@@ -540,14 +539,14 @@ class AfwFormatHelper
                     );
                 }
 
-                //if($key=="price5") die("$key : list($a,$b) = ".$structure["FORMAT"]." $data_to_display = number_format($old_data_to_display, intval($b), '.', ' ') ");
+                // if($key=="price5") die("$key : list($a,$b) = ".$structure["FORMAT"]." $data_to_display = number_format($old_data_to_display, intval($b), '.', ' ') ");
                 // $zero = number_format(0, intval($b), '.', ' ');
                 // if(($a=="*") and ($data_to_display==$zero)) $data_to_display= "";
                 if ($data_to_display) {
                     $data_to_display .= ' %';
                 }
             } elseif ($structure['TYPE'] == 'TEXT') {
-                //if($attribute=="warning_nb") die("getVal of ($key) is $data_to_display");
+                // if($attribute=="warning_nb") die("getVal of ($key) is $data_to_display");
                 if ($structure['FORMAT'] == 'TOHTML') {
                     $data_to_display = self::toHtml($data_to_display);
                 } elseif ($structure['FORMAT'] == 'PARAGRAPH-TOHTML') {
@@ -560,11 +559,11 @@ class AfwFormatHelper
                     $cssed_to_class = $structure['CSSED_TO_CLASS'];
                     if ($data_to_display) {
                         $data_to_display =
-                            "<div class='$cssed_to_class'>" .
-                            $data_to_display .
-                            '</div>';
+                            "<div class='$cssed_to_class'>"
+                            . $data_to_display
+                            . '</div>';
                     }
-                    //if($attribute=="warning_nb") die("CSSED($cssed_to_class) : data_to_display of ($key) is $data_to_display");
+                    // if($attribute=="warning_nb") die("CSSED($cssed_to_class) : data_to_display of ($key) is $data_to_display");
                 }
 
                 if ($structure['FORMAT'] == 'PRE' or $structure['PRE']) {
@@ -592,7 +591,6 @@ class AfwFormatHelper
                         } else {
                             $dir = $structure['DIR'];
                         }
-
                     } elseif ($structure['UTF8']) {
                         $dir = 'rtl';
                     } else {
@@ -609,8 +607,8 @@ class AfwFormatHelper
                         $min_wd = '100px';
                     }
 
-                    $key_struct      = var_export($structure, true);
-                    $data_to_display = "<pre id='$key-$key' $pre_class style='direction: $dir;padding:8px;height: 100%;overflow: scroll;min-width:${min_wd};width:${wd};$text_align'>$data_to_display </pre>"; // .$key_struct;
+                    $key_struct = var_export($structure, true);
+                    $data_to_display = "<pre id='$key-$key' $pre_class style='direction: $dir;padding:8px;height: 100%;overflow: scroll;min-width:${min_wd};width:${wd};$text_align'>$data_to_display </pre>";  // .$key_struct;
                 }
 
                 if ($getFormatLink) {
@@ -624,7 +622,7 @@ class AfwFormatHelper
                 $structure['TYPE'] == 'INT' and
                 ($structure['FORMAT'] == 'CAN_ZERO' or $structure['CAN_ZERO'])
             ) {
-                if ($structure['EMPTY_IS_ALL'] and ! $data_to_display) {
+                if ($structure['EMPTY_IS_ALL'] and !$data_to_display) {
                     $all_code = "ALL-$key";
                     if ($obj) {
                         $return = $obj->translate($all_code, $lang);
@@ -635,29 +633,29 @@ class AfwFormatHelper
                         $return = $all_code;
                     }
 
-                    //die("raf, $key : data_to_display=$data_to_display, return=$return");
+                    // die("raf, $key : data_to_display=$data_to_display, return=$return");
                     $data_to_display = $return;
                 } else {
-                    if (! $data_to_display) {
+                    if (!$data_to_display) {
                         $data_to_display = '0';
                     }
-                    if ($structure['UNIT'] and (! $structure['DISPLAY_HIDE_UNIT'])) {
+                    if ($structure['UNIT'] and (!$structure['DISPLAY_HIDE_UNIT'])) {
                         $data_to_display .= ' ' . $structure['UNIT'];
                     }
                 }
-            } elseif ($data_to_display and $structure['UNIT'] and (! $structure['DISPLAY_HIDE_UNIT'])) {
+            } elseif ($data_to_display and $structure['UNIT'] and (!$structure['DISPLAY_HIDE_UNIT'])) {
                 $data_to_display .= ' ' . $structure['UNIT'];
             }
         } else {
             $data_to_display = null;
             $link_to_display = null;
-            $formatted       = false;
+            $formatted = false;
         }
-        //if($key=="price5") die("return of formatValue($value,$key) : $formatted=formatted, data_to_display=$data_to_display, link_to_display=$link_to_display");
+        // if($key=="price5") die("return of formatValue($value,$key) : $formatted=formatted, data_to_display=$data_to_display, link_to_display=$link_to_display");
         return [$formatted, $data_to_display, $link_to_display];
     }
 
-    final public static function getItemsEmptyMessage(&$object, $structure, $lang = "ar")
+    final public static function getItemsEmptyMessage(&$object, $structure, $lang = 'ar')
     {
         if ($structure['EMPTY-ITEMS-MESSAGE']) {
             $empty_code = $structure['EMPTY-ITEMS-MESSAGE'];
@@ -672,9 +670,9 @@ class AfwFormatHelper
         $lang = AfwLanguageHelper::getGlobalLanguage();
 
         $structure = AfwStructureHelper::getStructureOf($object, $attribute);
-        if (! $field_value and $structure['EMPTY_IS_ALL']) {
+        if (!$field_value and $structure['EMPTY_IS_ALL']) {
             $all_code = "ALL-$attribute";
-            $return   = $object->translate($all_code, $lang);
+            $return = $object->translate($all_code, $lang);
             if ($return == $all_code) {
                 $return = $object->translateOperator('ALL', $lang);
             }
@@ -684,17 +682,19 @@ class AfwFormatHelper
         // $call_method = "get EnumVal(attribute = $attribute, field_value = $field_value)";
 
         $answerTable = AfwLoadHelper::getEnumTotalAnswerList($object, $attribute);
-        $return      = $answerTable[$field_value];
+        $return = $answerTable[$field_value];
+
         /*
-        if($attribute=='unit_type_id')
-        {
-            die("attribute=$attribute, answerTable=".var_export($answerTable,true).", return=answerTable[$field_value]=$return");
-        }*/
+         * if($attribute=='unit_type_id')
+         * {
+         *     die("attribute=$attribute, answerTable=".var_export($answerTable,true).", return=answerTable[$field_value]=$return");
+         * }
+         */
 
         if ($return == 'INSTANCE_FUNCTION') {
             throw new AfwRuntimeException("INSTANCE_FUNCTION Error happened for attribute $attribute : answerTable = " . var_export($answerTable, true));
         }
-        $return = ! $return ? $field_value : $return;
+        $return = !$return ? $field_value : $return;
 
         return $return;
     }
@@ -704,18 +704,16 @@ class AfwFormatHelper
         $oldval = $object->getVal($attribute);
         $object->simulSet($attribute, $field_value);
         $return = $object->decode($attribute);
-        //die("$return = $object -> decode SimulatedFieldValue($attribute, $field_value)");
+        // die("$return = $object -> decode SimulatedFieldValue($attribute, $field_value)");
         $object->simulSet($attribute, $oldval);
 
         return $return;
     }
 
     /**
-     *
      * @param AFWObject $obj
      */
-
-    final public static function decode($attribute, $typattr, $decode_format, $attribute_value, $integrity = true, $lang = "ar", $structure = null, $obj = null, $translate_if_needed = true)
+    final public static function decode($attribute, $typattr, $decode_format, $attribute_value, $integrity = true, $lang = 'ar', $structure = null, $obj = null, $translate_if_needed = true)
     {
         switch ($typattr) {
             case 'INT':
@@ -735,14 +733,14 @@ class AfwFormatHelper
                         break;
                     case 'CSSED':
                         // rafik 2022/12 obsolete until we understand to avoid infinite loop
-                        $return = "CSSED is obsolete in this afw version";
-                        //$return = $object->showAttribute($attribute);
-                        //if($attribute=="warning_nb") die("showAttribute($attribute) returned $return");
+                        $return = 'CSSED is obsolete in this afw version';
+                        // $return = $object->showAttribute($attribute);
+                        // if($attribute=="warning_nb") die("showAttribute($attribute) returned $return");
                         break;
 
                     case 'EMPTY_IS_ALL':
                         $return = $attribute_value;
-                        if (! $return) {
+                        if (!$return) {
                             $all_code = "ALL-$attribute";
                             if ($obj) {
                                 $return = $obj->translate(
@@ -778,7 +776,7 @@ class AfwFormatHelper
                 break;
             case 'FLOAT':
                 list($a, $b) = explode('.', $decode_format);
-                //if($attribute) die("$attribute : list($a,$b) = ".$structure["FORMAT"]);
+                // if($attribute) die("$attribute : list($a,$b) = ".$structure["FORMAT"]);
 
                 $return = number_format(
                     $attribute_value,
@@ -786,7 +784,7 @@ class AfwFormatHelper
                     '.',
                     ' '
                 );
-                //if($attribute=="price5") die("$attribute : list($a,$b) = ".$structure["FORMAT"]." $return = number_format($attribute_value, intval($b), '.', ' ') ");
+                // if($attribute=="price5") die("$attribute : list($a,$b) = ".$structure["FORMAT"]." $return = number_format($attribute_value, intval($b), '.', ' ') ");
                 $zero = number_format(
                     0,
                     intval($b),
@@ -800,24 +798,24 @@ class AfwFormatHelper
             case 'PCTG':
                 $return =
                     number_format(
-                    $attribute_value,
-                    2,
-                    '.',
-                    ' '
-                ) . '%';
+                        $attribute_value,
+                        2,
+                        '.',
+                        ' '
+                    ) . '%';
                 break;
             case 'YN':
                 $decode_format_l = strtolower($decode_format);
-                $val             = $attribute_value;
+                $val = $attribute_value;
                 if ($val == 'Y') {
                     $return =
-                    ($decode_format_l == 'bool') ? true : 'Yes';
+                        ($decode_format_l == 'bool') ? true : 'Yes';
                 } elseif ($val == 'N') {
                     $return =
-                    ($decode_format_l == 'bool') ? false : 'No';
+                        ($decode_format_l == 'bool') ? false : 'No';
                 } elseif ($val == 'W') {
                     $return =
-                    ($decode_format_l == 'bool') ? false : 'EUH';
+                        ($decode_format_l == 'bool') ? false : 'EUH';
                 } else {
                     $return = $val;
                 }
@@ -827,9 +825,9 @@ class AfwFormatHelper
 
                 break;
             case 'TIME':
-                if (! $structure) {
-                    if (! $obj) {
-                        throw new AfwRuntimeException("structure and obj should not be both null if we decode a TIME field");
+                if (!$structure) {
+                    if (!$obj) {
+                        throw new AfwRuntimeException('structure and obj should not be both null if we decode a TIME field');
                     }
 
                     $structure = AfwStructureHelper::getStructureOf($obj, $attribute);
@@ -847,9 +845,9 @@ class AfwFormatHelper
                 );
                 break;
             case 'DATE':
-                if (! $structure) {
-                    if (! $obj) {
-                        throw new AfwRuntimeException("structure and obj should not be both null if we decode a DATE field");
+                if (!$structure) {
+                    if (!$obj) {
+                        throw new AfwRuntimeException('structure and obj should not be both null if we decode a DATE field');
                     }
 
                     $structure = AfwStructureHelper::getStructureOf($obj, $attribute);
@@ -866,16 +864,16 @@ class AfwFormatHelper
                 // $return = $object->showAttribute($attribute);
                 break;
             case 'FK':
-                if ((! $obj) or (! $structure)) {
-                    throw new AfwRuntimeException("both structure and obj should not be null if we decode an FK field");
+                if ((!$obj) or (!$structure)) {
+                    throw new AfwRuntimeException('both structure and obj should not be null if we decode an FK field');
                 }
 
                 // as we do only decode consider the answer class as lookup
-                if (! $attribute_value) {
+                if (!$attribute_value) {
                     $return = '';
                     if ($structure['EMPTY_IS_ALL']) {
                         $all_code = "ALL-$attribute";
-                        $return   = $obj->translate($all_code, $lang);
+                        $return = $obj->translate($all_code, $lang);
                         if ($return == $all_code) {
                             $return = AfwLanguageHelper::translateKeyword('ALL', $lang);
                         }
@@ -883,31 +881,31 @@ class AfwFormatHelper
                     // if($attribute=="customer_id") throw new AfwRuntimeException("AfwFormatHelper::decode($attribute) : case ABC01 return=$return");
                 } else {
                     $items_empty_message = AfwFormatHelper::getItemsEmptyMessage($obj, $structure, $lang);
-                    $items_separator     = $structure['LIST_SEPARATOR'];
-                    if (! $items_separator) {
+                    $items_separator = $structure['LIST_SEPARATOR'];
+                    if (!$items_separator) {
                         $items_separator = $structure['MFK-SHOW-SEPARATOR'];
                     }
 
-                    if (! $items_separator) {
+                    if (!$items_separator) {
                         $items_separator = "<br>\n";
                     }
 
-                    $pk = $structure["ANSWER-PK"];
-                    if (! $pk) {
-                        $pk = "((id))";
+                    $pk = $structure['ANSWER-PK'];
+                    if (!$pk) {
+                        $pk = '((id))';
                     }
 
-                    $ans_table  = $structure["ANSWER"];
-                    $ans_module = $structure["ANSMODULE"];
-                    if (! $ans_module) {
+                    $ans_table = $structure['ANSWER'];
+                    $ans_module = $structure['ANSMODULE'];
+                    if (!$ans_module) {
                         throw new AfwRuntimeException("strcuture of FK field '$attribute' does not contain ANSMODULE property, structure=" . var_export($structure, true));
                     }
 
-                    if (! isset($structure["SMALL-LOOKUP"])) {
-                        list($lkp, $issmall)       = AfwLoadHelper::getLookupProps($ans_module, $ans_table);
-                        $structure["SMALL-LOOKUP"] = ($lkp and $issmall);
+                    if (!isset($structure['SMALL-LOOKUP'])) {
+                        list($lkp, $issmall) = AfwLoadHelper::getLookupProps($ans_module, $ans_table);
+                        $structure['SMALL-LOOKUP'] = ($lkp and $issmall);
                     }
-                    $small_lookup = $structure["SMALL-LOOKUP"];
+                    $small_lookup = $structure['SMALL-LOOKUP'];
 
                     $return = AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message, $pk, $small_lookup);
                     // if($attribute=="customer_id") throw new AfwRuntimeException("AfwFormatHelper::decode($attribute) : case ABC02 return=AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message, $pk, $small_lookup)=$return");
@@ -922,7 +920,7 @@ class AfwFormatHelper
                 {
                     $object = $obj->het($attribute);
                 }
-                
+
                 if (!$object) {
                     $return = '';
                     if ($structure['EMPTY_IS_ALL']) {
@@ -937,73 +935,74 @@ class AfwFormatHelper
                     $return = $object->getDisplay($lang);
                 }*/
 
-                //if($attribute=="status_id") die("this->decode($attribute) : return=$return, object->id = ".$object->id);
+                // if($attribute=="status_id") die("this->decode($attribute) : return=$return, object->id = ".$object->id);
                 break;
             case 'MFK':
-                if ((! $obj) or (! $structure)) {
-                    throw new AfwRuntimeException("both structure and obj should not be null if we decode an FK field");
+                if ((!$obj) or (!$structure)) {
+                    throw new AfwRuntimeException('both structure and obj should not be null if we decode an FK field');
                 }
 
                 $items_empty_message = AfwFormatHelper::getItemsEmptyMessage($obj, $structure, $lang);
-                $items_separator     = $structure['LIST_SEPARATOR'];
-                if (! $items_separator) {
+                $items_separator = $structure['LIST_SEPARATOR'];
+                if (!$items_separator) {
                     $items_separator = $structure['MFK-SHOW-SEPARATOR'];
                 }
 
-                if (! $items_separator) {
+                if (!$items_separator) {
                     $items_separator = "<br>\n";
                 }
 
-                $pk = $structure["ANSWER-PK"];
-                if (! $pk) {
-                    $pk = "((id))";
+                $pk = $structure['ANSWER-PK'];
+                if (!$pk) {
+                    $pk = '((id))';
                 }
 
-                $ans_table  = $structure["ANSWER"];
-                $ans_module = $structure["ANSMODULE"];
+                $ans_table = $structure['ANSWER'];
+                $ans_module = $structure['ANSMODULE'];
 
-                if (! isset($structure["SMALL-LOOKUP"])) {
-                    list($lkp, $issmall)       = AfwLoadHelper::getLookupProps($ans_module, $ans_table);
-                    $structure["SMALL-LOOKUP"] = ($lkp and $issmall);
+                if (!isset($structure['SMALL-LOOKUP'])) {
+                    list($lkp, $issmall) = AfwLoadHelper::getLookupProps($ans_module, $ans_table);
+                    $structure['SMALL-LOOKUP'] = ($lkp and $issmall);
                 }
 
-                $small_lookup = $structure["SMALL-LOOKUP"];
-                $return       = AfwLoadHelper::lookupDecodeValues($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message, $pk, $small_lookup);
+                $small_lookup = $structure['SMALL-LOOKUP'];
+                $return = AfwLoadHelper::lookupDecodeValues($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message, $pk, $small_lookup);
                 // $return = "$return = AfwLoadHelper::lookupDecodeValues($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message,$pk, $small_lookup)";
 
-                /* rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes                
                 /*
-                $objects = $obj->OBJECTS_CACHE[$attribute]
-                    ? $obj->OBJECTS_CACHE[$attribute]
-                    : $obj->get($attribute, 'object');
-                $array = [];
-                
-                foreach ($objects as $object) {
-                    $array[] = $object->getDisplay($lang);
-                }
-                $seplist = $structure['LIST_SEPARATOR'];
-                if (!$seplist) {
-                    $seplist =
-                        $structure['MFK-SHOW-SEPARATOR'];
-                }
-                if (!$seplist) {
-                    $seplist = "<br>\n";
-                }
-                $return = implode($seplist, $array);
-                */
+                 * rafik 16/12/2023 : oboslete code because in Momken v3.0 we use the loader who manage lookups and table-based decodes
+                 * /*
+                 * $objects = $obj->OBJECTS_CACHE[$attribute]
+                 *     ? $obj->OBJECTS_CACHE[$attribute]
+                 *     : $obj->get($attribute, 'object');
+                 * $array = [];
+                 *
+                 * foreach ($objects as $object) {
+                 *     $array[] = $object->getDisplay($lang);
+                 * }
+                 * $seplist = $structure['LIST_SEPARATOR'];
+                 * if (!$seplist) {
+                 *     $seplist =
+                 *         $structure['MFK-SHOW-SEPARATOR'];
+                 * }
+                 * if (!$seplist) {
+                 *     $seplist = "<br>\n";
+                 * }
+                 * $return = implode($seplist, $array);
+                 */
 
                 break;
             case 'ANSWER':
-                if (! $obj) {
-                    throw new AfwRuntimeException("structure and obj should not be both null if we decode an ANSWER field");
+                if (!$obj) {
+                    throw new AfwRuntimeException('structure and obj should not be both null if we decode an ANSWER field');
                 }
 
                 $valfld = $attribute_value;
                 $return = self::decodeAnswerOfAttribute($obj, $attribute, $valfld);
                 break;
             case 'ENUM':
-                if (! $obj) {
-                    throw new AfwRuntimeException("structure and obj should not be both null if we decode an ENUM field");
+                if (!$obj) {
+                    throw new AfwRuntimeException('structure and obj should not be both null if we decode an ENUM field');
                 }
 
                 $valfld = $attribute_value;
@@ -1011,33 +1010,33 @@ class AfwFormatHelper
                 $return = self::getEnumVal($obj, $attribute, $valfld);
                 break;
             case 'MENUM':
-                if (! $obj) {
-                    throw new AfwRuntimeException("structure and obj should not be both null if we decode an MENUM field");
+                if (!$obj) {
+                    throw new AfwRuntimeException('structure and obj should not be both null if we decode an MENUM field');
                 }
 
-                $sep     = $obj->getSeparatorFor($attribute);
-                $valfld  = $attribute_value;
+                $sep = $obj->getSeparatorFor($attribute);
+                $valfld = $attribute_value;
                 $val_arr = explode($sep, $valfld);
-                $return  = '';
-                $array   = [];
+                $return = '';
+                $array = [];
                 foreach ($val_arr as $vv => $valval) {
                     $decvalval = self::getEnumVal($obj, $attribute, $valval);
-                    $array[]   = $decvalval;
+                    $array[] = $decvalval;
                     // $return .= " " . $decvalval;
                 }
                 $seplist = $structure['LIST_SEPARATOR'];
-                if (! $seplist) {
+                if (!$seplist) {
                     $seplist =
                         $structure['MFK-SHOW-SEPARATOR'];
                 }
-                if (! $seplist) {
+                if (!$seplist) {
                     $seplist = "<br>\n";
                 }
                 $return = implode($seplist, $array);
                 // $return = trim($return);
                 break;
             case 'TEXT':
-            // if(!$attribute_value) throw new AfwRuntimeException("decode attribute `$attribute`(TEXT TYPE) value=[$attribute_value]");
+                // if(!$attribute_value) throw new AfwRuntimeException("decode attribute `$attribute`(TEXT TYPE) value=[$attribute_value]");
             default:
                 $return = stripslashes($attribute_value);
                 switch ($decode_format) {
@@ -1068,21 +1067,21 @@ class AfwFormatHelper
                 break;
         }
 
-        $unit      = $structure['UNIT'];
+        $unit = $structure['UNIT'];
         $hide_unit = $structure['DISPLAY_HIDE_UNIT'];
-        if ($unit and $return and ! $hide_unit) {
+        if ($unit and $return and !$hide_unit) {
             $return .= ' ' . $unit;
         }
 
-        $link_url       = $structure['LINK-URL'];
+        $link_url = $structure['LINK-URL'];
         $link_css_class = $structure['LINK-CSS'];
-        if (! $link_css_class) {
+        if (!$link_css_class) {
             $link_css_class = 'nice_link';
         }
 
         $link_url = $obj->decodeText($link_url, '', false);
 
-        $target  = '';
+        $target = '';
         $popup_t = '';
 
         if (
@@ -1096,14 +1095,14 @@ class AfwFormatHelper
         return $return;
     }
 
-    public static function formatHtml($p_text, $target_window = "my_urls", $css_class = 'my_url', $click_here = "انقر هنا")
+    public static function formatHtml($p_text, $target_window = 'my_urls', $css_class = 'my_url', $click_here = 'انقر هنا')
     {
-        $p_text_arr     = explode("\n", $p_text);
+        $p_text_arr = explode("\n", $p_text);
         $new_p_text_arr = [];
 
         foreach ($p_text_arr as $p_text_item) {
             $p_text_item = trim($p_text_item);
-            if (AfwStringHelper::stringStartsWith($p_text_item, "http://") or AfwStringHelper::stringStartsWith($p_text_item, "https://")) {
+            if (AfwStringHelper::stringStartsWith($p_text_item, 'http://') or AfwStringHelper::stringStartsWith($p_text_item, 'https://')) {
                 if ($click_here) {
                     $p_text_item_label = $click_here;
                 } else {
@@ -1119,76 +1118,76 @@ class AfwFormatHelper
         return implode("\n", $new_p_text_arr);
     }
 
-    public static function toHtml($p_text, $target_window = "my_urls", $css_class = 'my_url', $click_here = "انقر هنا")
+    public static function toHtml($p_text, $target_window = 'my_urls', $css_class = 'my_url', $click_here = 'انقر هنا')
     {
         global $table_name, $img_field_names, $id;
 
         $desc = self::formatHtml($p_text, $target_window, $css_class, $click_here);
 
-        $desc = str_replace("[[Û]]", "<b>", $desc);
-        $desc = str_replace("[[/Û]]", "</b>", $desc);
-        $desc = str_replace("\n", "<br>", $desc);
-        $desc = str_replace("\r", "", $desc);
-        $desc = str_replace("[[Þ]]", "<ul>", $desc);
-        $desc = str_replace("[[", "<b>", $desc);
-        $desc = str_replace("]]", "</b>", $desc);
-        $desc = str_replace("((", "<strong>", $desc);
-        $desc = str_replace("))", "</strong>", $desc);
-        $desc = str_replace("[[/Þ]]", "</ul>", $desc);
-        $desc = str_replace("[[/Ú]]", "<li>", $desc);
-        $desc = str_replace("[[/Ú]]", "</li>", $desc);
-        $desc = str_replace("[[æ]]", "<center>", $desc);
-        $desc = str_replace("[[/æ]]", "</center>", $desc);
-        $desc = str_replace("I - ", "أولا: ", $desc);
-        $desc = str_replace("II - ", "ثانيا : ", $desc);
-        $desc = str_replace("III - ", "ثالثا : ", $desc);
-        $desc = str_replace("IV - ", "رابعا : ", $desc);
-        $desc = str_replace("V - ", "خامسا : ", $desc);
-        $desc = str_replace("VI - ", "سادسا : ", $desc);
-        $desc = str_replace("VII - ", "سابعا: ", $desc);
-        $desc = str_replace("VIII - ", "ثامنا: ", $desc);
-        $desc = str_replace("  ", "&nbsp;&nbsp;", $desc);
+        $desc = str_replace('[[Û]]', '<b>', $desc);
+        $desc = str_replace('[[/Û]]', '</b>', $desc);
+        $desc = str_replace("\n", '<br>', $desc);
+        $desc = str_replace("\r", '', $desc);
+        $desc = str_replace('[[Þ]]', '<ul>', $desc);
+        $desc = str_replace('[[', '<b>', $desc);
+        $desc = str_replace(']]', '</b>', $desc);
+        $desc = str_replace('((', '<strong>', $desc);
+        $desc = str_replace('))', '</strong>', $desc);
+        $desc = str_replace('[[/Þ]]', '</ul>', $desc);
+        $desc = str_replace('[[/Ú]]', '<li>', $desc);
+        $desc = str_replace('[[/Ú]]', '</li>', $desc);
+        $desc = str_replace('[[æ]]', '<center>', $desc);
+        $desc = str_replace('[[/æ]]', '</center>', $desc);
+        $desc = str_replace('I - ', 'أولا: ', $desc);
+        $desc = str_replace('II - ', 'ثانيا : ', $desc);
+        $desc = str_replace('III - ', 'ثالثا : ', $desc);
+        $desc = str_replace('IV - ', 'رابعا : ', $desc);
+        $desc = str_replace('V - ', 'خامسا : ', $desc);
+        $desc = str_replace('VI - ', 'سادسا : ', $desc);
+        $desc = str_replace('VII - ', 'سابعا: ', $desc);
+        $desc = str_replace('VIII - ', 'ثامنا: ', $desc);
+        $desc = str_replace('  ', '&nbsp;&nbsp;', $desc);
 
-        $desc = str_replace("[[Ê]]", "<p class='page_paragraph_title'>", $desc);
-        $desc = str_replace("[[/Ê]]", "</p>", $desc);
+        $desc = str_replace('[[Ê]]', "<p class='page_paragraph_title'>", $desc);
+        $desc = str_replace('[[/Ê]]', '</p>', $desc);
 
-        $desc = str_replace("[!!!", "<span class='important'>", $desc);
-        $desc = str_replace("!!!]", "</span>", $desc);
+        $desc = str_replace('[!!!', "<span class='important'>", $desc);
+        $desc = str_replace('!!!]', '</span>', $desc);
 
         for ($bl = 1; $bl <= 30; $bl++) {
             $desc = str_replace("+++${bl}+++", "<div class=\"bulle03\">${bl}</div>", $desc);
             $desc = str_replace("++${bl}++", "<div class=\"bulle02\">${bl}</div>", $desc);
             $desc = str_replace("+${bl}+", "<div class=\"bulle01\">${bl}</div>", $desc);
+
             /*
-                        $desc = str_replace("//","<div class='bulle_body01'>",$desc);
-                        $desc = str_replace("\\\\","</div'>",$desc);
-                        */
+             * $desc = str_replace("//","<div class='bulle_body01'>",$desc);
+             * $desc = str_replace("\\\\","</div'>",$desc);
+             */
         }
 
         if (isset($img_field_names)) {
             foreach ($img_field_names as $field_name) {
                 $token = "<$field_name>";
-                $desc  = str_replace($token, "<br><img src='pic/${table_name}_${field_name}_${id}.png' />", $desc);
+                $desc = str_replace($token, "<br><img src='pic/${table_name}_${field_name}_${id}.png' />", $desc);
             }
         }
         return $desc;
     }
 
-    public static function mobileError($mobile, $lang = "ar", $country = "SA")
+    public static function mobileError($mobile, $lang = 'ar', $country = 'SA')
     {
-        if ($country == "SA") {
-            if (! preg_match('/^05[0-9]{8}$/', $mobile)) {
-                return "Incorrect mobile number";
+        if ($country == 'SA') {
+            if (!preg_match('/^05[0-9]{8}$/', $mobile)) {
+                return 'Incorrect mobile number';
             }
-
         } else {
             return "not implemented mobile format check for country '$country'";
         }
 
-        return "";
+        return '';
     }
 
-    public static function formatPhone($phone_num, $region_id = 1, $country = "SA")
+    public static function formatPhone($phone_num, $region_id = 1, $country = 'SA')
     {
         // 011 XXX XXXX - Riyadh & the greater central region
         // 012 XXX XXXX - Western region, includes Makkah, Jeddah, Taif, Rabigh
@@ -1200,65 +1199,65 @@ class AfwFormatHelper
         // SO :
 
         // 646 | منطقة الرياض                             |
-        $prefix_reg = "011";
+        $prefix_reg = '011';
         // 648 | منطقة الشرقية                            |
         if ($region_id == 648) {
-            $prefix_reg = "013";
+            $prefix_reg = '013';
         }
 
         // 651 | منطقة عسير                               |
         if ($region_id == 651) {
-            $prefix_reg = "017";
+            $prefix_reg = '017';
         }
 
         // 652 | منطقة المدينة المنورة                    |
         if ($region_id == 652) {
-            $prefix_reg = "014";
+            $prefix_reg = '014';
         }
 
         // 653 | منطقة الجوف                              |
         if ($region_id == 653) {
-            $prefix_reg = "014";
+            $prefix_reg = '014';
         }
 
         // 655 | منطقة الباحة                             |
         if ($region_id == 655) {
-            $prefix_reg = "017";
+            $prefix_reg = '017';
         }
 
         // 656 | منطقة حائل                               |
         if ($region_id == 656) {
-            $prefix_reg = "016";
+            $prefix_reg = '016';
         }
 
         // 657 | منطقة تبوك                               |
         if ($region_id == 657) {
-            $prefix_reg = "014";
+            $prefix_reg = '014';
         }
 
         // 660 | منطقة جازان                              |
         if ($region_id == 660) {
-            $prefix_reg = "017";
+            $prefix_reg = '017';
         }
 
         // 661 | منطقة نجران                              |
         if ($region_id == 661) {
-            $prefix_reg = "017";
+            $prefix_reg = '017';
         }
 
         // 874 | منطقة الحدود الشمالية                    |
         if ($region_id == 874) {
-            $prefix_reg = "014";
+            $prefix_reg = '014';
         }
 
         // 909 | منطقة القصيم                             |
         if ($region_id == 909) {
-            $prefix_reg = "016";
+            $prefix_reg = '016';
         }
 
         // 9056 | منطقة مكة المكرمة                        |
         if ($region_id == 9056) {
-            $prefix_reg = "012";
+            $prefix_reg = '012';
         }
 
         if (strlen($phone_num) == 7) {
@@ -1268,21 +1267,21 @@ class AfwFormatHelper
         return AfwFormatHelper::formatMobile($phone_num, $country);
     }
 
-    public static function formatMobileInternational($mobile_num, $countryKey = "00966")
+    public static function formatMobileInternational($mobile_num, $countryKey = '00966')
     {
         $mobile_num = AfwFormatHelper::formatMobile($mobile_num);
         return $countryKey . substr($mobile_num, 1);
     }
 
-    public static function formatMobile($mobile_num, $country = "SA")
+    public static function formatMobile($mobile_num, $country = 'SA')
     {
-        list($mobile_nummber1, $mobile_nummber2) = explode("/", $mobile_num);
+        list($mobile_nummber1, $mobile_nummber2) = explode('/', $mobile_num);
         if ((strlen(trim($mobile_nummber2)) > 0) and (strlen($mobile_nummber1) >= 9)) {
             return AfwFormatHelper::formatMobile($mobile_nummber1, $country);
         }
 
-        $mobile_num                              = str_replace(' ', '/', $mobile_num);
-        list($mobile_nummber1, $mobile_nummber2) = explode("/", $mobile_num);
+        $mobile_num = str_replace(' ', '/', $mobile_num);
+        list($mobile_nummber1, $mobile_nummber2) = explode('/', $mobile_num);
         if ((strlen(trim($mobile_nummber2)) > 0) and (strlen($mobile_nummber1) >= 9)) {
             return AfwFormatHelper::formatMobile($mobile_nummber1, $country);
         }
@@ -1306,11 +1305,11 @@ class AfwFormatHelper
         $mobile_num = str_replace(']', '', $mobile_num);
         $mobile_num = str_replace('/', '', $mobile_num);
 
-        $country_prefix["SA"] = "966";
-        $mobile_length["SA"]  = 10;
-        $left_complete["SA"]  = [0 => "0"];
+        $country_prefix['SA'] = '966';
+        $mobile_length['SA'] = 10;
+        $left_complete['SA'] = [0 => '0'];
 
-        if (AfwStringHelper::stringStartsWith($mobile_num, "00")) {
+        if (AfwStringHelper::stringStartsWith($mobile_num, '00')) {
             $mobile_num = substr($mobile_num, 2);
         }
 
@@ -1334,9 +1333,9 @@ class AfwFormatHelper
         return $mobile_num;
     }
 
-    public static function isCorrectTradeNumber($trade_num, $country = "SA")
+    public static function isCorrectTradeNumber($trade_num, $country = 'SA')
     {
-        if ($country == "SA") {
+        if ($country == 'SA') {
             return preg_match('/^1[0-9]{9}$/', $trade_num);
         } else {
             return false;
@@ -1357,20 +1356,20 @@ class AfwFormatHelper
         // Create a DateTime object from the input string using the specified format
         $d = DateTime::createFromFormat("Y-m-d $format", "2000-01-01 $time");
 
-        // Check if object creation was successful AND the formatted output 
+        // Check if object creation was successful AND the formatted output
         // strictly matches the original input time string
         return $d && $d->format($format) === $time;
     }
 
     public static function isCorrectDateTime($datetime)
     {
-        list($date, $time) = explode(" ", $datetime);
+        list($date, $time) = explode(' ', $datetime);
         return self::isCorrectDate($date) and self::isCorrectTime($time);
     }
 
-    public static function isCorrectNationalUnifiedNumber($trade_num, $country = "SA")
+    public static function isCorrectNationalUnifiedNumber($trade_num, $country = 'SA')
     {
-        if ($country == "SA") {
+        if ($country == 'SA') {
             return preg_match('/^7[0-9]{9}$/', $trade_num);
         } else {
             return false;
@@ -1378,9 +1377,9 @@ class AfwFormatHelper
         // because not implemented
     }
 
-    public static function isCorrectPhoneNum($phone_num, $country = "SA")
+    public static function isCorrectPhoneNum($phone_num, $country = 'SA')
     {
-        if ($country == "SA") {
+        if ($country == 'SA') {
             return preg_match('/^0[1-2]{1}[0-9]{8}$/', $phone_num);
         } else {
             return false;
@@ -1388,9 +1387,9 @@ class AfwFormatHelper
         // because not implemented
     }
 
-    public static function isCorrectMobileNum($mobile_num, $country = "SA")
+    public static function isCorrectMobileNum($mobile_num, $country = 'SA')
     {
-        if ($country == "SA") {
+        if ($country == 'SA') {
             return preg_match('/^05[0-9]{8}$/', $mobile_num);
         } else {
             return false;
@@ -1402,9 +1401,10 @@ class AfwFormatHelper
     {
         return filter_var($email_address, FILTER_VALIDATE_EMAIL);
     }
-    public static function isCorrectIDN($idn, $country = "SA")
+
+    public static function isCorrectIDN($idn, $country = 'SA')
     {
-        $authorize_other_idns     = AfwSession::config('ACCEPT-ANY-OTHER-IDN', false);
+        $authorize_other_idns = AfwSession::config('ACCEPT-ANY-OTHER-IDN', false);
         list($idn_correct, $type) = AfwFormatHelper::getIdnTypeId($idn, $authorize_other_idns);
         return $idn_correct;
     }
@@ -1412,23 +1412,22 @@ class AfwFormatHelper
     public static function getIdnTypeId($id_number, $authorize_other_sa_idns = false, $authorize_nid = false)
     {
         try {
-            $id    = trim($id_number);
+            $id = trim($id_number);
             $type3 = substr($id, 0, 3);
-            $type  = substr($id, 0, 1);
-            if ($authorize_nid and ($type3 == "NID")) {
+            $type = substr($id, 0, 1);
+            if ($authorize_nid and ($type3 == 'NID')) {
                 return [$authorize_nid, 99];
             }
 
             if ((strlen($id) !== 10) or (($type != 2) and ($type != 1))) {
-                if (! $authorize_other_sa_idns) {
+                if (!$authorize_other_sa_idns) {
                     return [false, 0];
                 } else {
                     return [true, 99];
                 }
-
             }
 
-            if (! is_numeric($id)) {
+            if (!is_numeric($id)) {
                 return [false, 0];
             }
 
@@ -1439,7 +1438,7 @@ class AfwFormatHelper
             $sum = 0;
             for ($i = 0; $i < 10; $i++) {
                 if ($i % 2 == 0) {
-                    $ZFOdd = str_pad((substr($id, $i, 1) * 2), 2, "0", STR_PAD_LEFT);
+                    $ZFOdd = str_pad((substr($id, $i, 1) * 2), 2, '0', STR_PAD_LEFT);
                     $sum += substr($ZFOdd, 0, 1) + substr($ZFOdd, 1, 1);
                 } else {
                     $sum += substr($id, $i, 1);
@@ -1456,34 +1455,30 @@ class AfwFormatHelper
     }
 
     /**
-     *
      * @param AFWObject $object
      */
-
     final public static function formatITEMS(&$object, $attribute, $structure, $table_name, $call_method, $max_items, $eager = false)
     {
         /*
-        if((!$structure["NO-CACHE"]) and $object->gotItems Cache[$attribute])   
-        {
-            $return = $object->gotItems Cache[$attribute];
-            if($attribute=="requestList") die("return from gotItems Cache = " . var_export($return,true));
-        }
-        */
+         * if((!$structure["NO-CACHE"]) and $object->gotItems Cache[$attribute])
+         * {
+         *     $return = $object->gotItems Cache[$attribute];
+         *     if($attribute=="requestList") die("return from gotItems Cache = " . var_export($return,true));
+         * }
+         */
         $return = null;
-        if (! $return) {
+        if (!$return) {
             list($ansTab, $ansMod) = $object::answerTableAndModuleFor($attribute);
             if ($ansTab) {
                 $className = AfwStringHelper::tableToClass($ansTab);
                 AfwAutoLoader::addModule($ansMod);
-                /**
-                 * @var AFWObject $objectITEM
-                 */
+                /** @var AFWObject $objectITEM */
                 $objectITEM = new $className();
                 // $objectITEM->setMyDebugg($object->MY_DEBUG);
                 if ($structure['ITEM']) {
                     $item_oper = $structure['ITEM_OPER'];
                     $item_name = $structure['ITEM'];
-                    $this_id   = $object->getAfieldValue(
+                    $this_id = $object->getAfieldValue(
                         $object->getPKField()
                     );
 
@@ -1497,14 +1492,16 @@ class AfwFormatHelper
                     $sql_where = $object->decodeText($structure['WHERE']);
                     $objectITEM->where($sql_where);
                 }
-                /* obsolete since v3.0
-                            format can not be used for SQL where
-                            if($format and ($format!="IMPLODE")) {
-                                $objectITEM->where($format);
-                            }
-                            */
 
-                if (! $structure['LOGICAL_DELETED_ITEMS_ALSO']) {
+                /*
+                 * obsolete since v3.0
+                 *          format can not be used for SQL where
+                 *          if($format and ($format!="IMPLODE")) {
+                 *              $objectITEM->where($format);
+                 *          }
+                 */
+
+                if (!$structure['LOGICAL_DELETED_ITEMS_ALSO']) {
                     $objectITEM->select($objectITEM->fld_ACTIVE(), 'Y');
                 }
                 $objectITEM->debugg_tech_notes = "before load Many for Items of attribute : $attribute";
@@ -1525,10 +1522,10 @@ class AfwFormatHelper
                 // if(!$structure["NO-CACHE"]) $object->gotIte msCache[$attribute] = $return;
             } else {
                 throw new AfwRuntimeException(
-                    'Check if ANSWER property is defined for attribute ' .
-                    $attribute .
-                    ' having type ITEMS in DB_STRUCTURE of table ' .
-                    $table_name,
+                    'Check if ANSWER property is defined for attribute '
+                        . $attribute
+                        . ' having type ITEMS in DB_STRUCTURE of table '
+                        . $table_name,
                     $call_method
                 );
             }
@@ -1539,13 +1536,13 @@ class AfwFormatHelper
 
     final public static function formatSHORTCUT(&$object, $attribute, $what, $format, $table_name, $integrity, $structure, $call_method)
     {
-        //if($attribute=="skill_type_id") throw new AfwRuntimeException("$attribute is SHORTCUT");
-        //if($object->MY_DEBUG) AFWDebugg::log("Case SHORTCUT");
-        $report_arr    = [];
-        $forced_value  = $object->getAfieldValue($attribute);
-        $report_arr[]  = "forced_value=$forced_value";
+        // if($attribute=="skill_type_id") throw new AfwRuntimeException("$attribute is SHORTCUT");
+        // if($object->MY_DEBUG) AFWDebugg::log("Case SHORTCUT");
+        $report_arr = [];
+        $forced_value = $object->getAfieldValue($attribute);
+        $report_arr[] = "forced_value=$forced_value";
         $default_value = $structure['DEFAULT'];
-        if (! $default_value) {
+        if (!$default_value) {
             $default_value = '';
         }
         if (
@@ -1554,44 +1551,44 @@ class AfwFormatHelper
         ) {
             $attribute_shortcut = $structure['SHORTCUT'];
         }
-        //die("shortcut 2 = ".$attribute_shortcut);
+        // die("shortcut 2 = ".$attribute_shortcut);
 
         // if($attribute_shortcut=="skill_type_id") throw new AfwRuntimeException("$attribute forced_value = $forced_value");
         if (strpos($attribute_shortcut, '.') !== false) {
-            //if($object->MY_DEBUG) AFWDebugg::log("Object $attribute exist");
-            $fields     = explode('.', $attribute_shortcut);
-            $sc_cat     = $structure['SHORTCUT-CATEGORY'];
+            // if($object->MY_DEBUG) AFWDebugg::log("Object $attribute exist");
+            $fields = explode('.', $attribute_shortcut);
+            $sc_cat = $structure['SHORTCUT-CATEGORY'];
             $sc_cat_arr = explode('.', $sc_cat);
-            $count      = count($fields);
+            $count = count($fields);
             if ($count > 1) {
-                //die("shortcut 3 = ".var_export($fields,true));
-                //if($object->MY_DEBUG) AFWDebugg::log("count field = $count");
-                if ($sc_cat_arr[0] == "FORMULA") {
-                    $object = $object->calc($fields[0], true, "object");
+                // die("shortcut 3 = ".var_export($fields,true));
+                // if($object->MY_DEBUG) AFWDebugg::log("count field = $count");
+                if ($sc_cat_arr[0] == 'FORMULA') {
+                    $object = $object->calc($fields[0], true, 'object');
                 } else {
                     $object = $object->het($fields[0], '', $optim_lookup = false);
                 }
-                // optim=false mandatory because in shortcut we need to load object to get next attribute of shortcut 
+                // optim=false mandatory because in shortcut we need to load object to get next attribute of shortcut
                 // (just a decode is not enough)
                 if ($object) {
-                    if (! is_object($object)) {
-                        throw new AfwRuntimeException("$object returned by the shortcut[$attribute_shortcut] the shortcut item [" . $fields[0] . "] is not an object");
+                    if (!is_object($object)) {
+                        throw new AfwRuntimeException("$object returned by the shortcut[$attribute_shortcut] the shortcut item [" . $fields[0] . '] is not an object');
                     }
                     $report_arr[] =
-                    'fields[0]=' .
-                    $object->getDisplay('ar');
+                        'fields[0]='
+                        . $object->getDisplay('ar');
                     // if($attribute_shortcut=="goal.system_id") die("shortcut($attribute_shortcut) object 0 = ".var_export($object,true));
                     for ($i = 1; $i < $count - 1; $i++) {
                         if ($object === null) {
                             if ($integrity) {
                                 throw new AfwRuntimeException(
-                                    'Impossible to get [' .
-                                    $fields[$i] .
-                                    "] à cause d'une valeur NULL of object " .
-                                    $fields[$i - 1] .
-                                    ", veuillez vérifier attribute " .
-                                    $attribute .
-                                    ' de type SHORTCUT.'
+                                    'Impossible to get ['
+                                    . $fields[$i]
+                                    . "] à cause d'une valeur NULL of object "
+                                    . $fields[$i - 1]
+                                    . ', veuillez vérifier attribute '
+                                    . $attribute
+                                    . ' de type SHORTCUT.'
                                 );
                             } else {
                                 break;
@@ -1599,9 +1596,9 @@ class AfwFormatHelper
                         } else {
                             if ($object->MY_DEBUG and false) {
                                 AFWDebugg::log(
-                                    'object[' .
-                                    ($i - 1) .
-                                    ']'
+                                    'object['
+                                    . ($i - 1)
+                                    . ']'
                                 );
                             }
                             if ($object->MY_DEBUG and false) {
@@ -1612,27 +1609,27 @@ class AfwFormatHelper
                             }
                             if ($object->MY_DEBUG and false) {
                                 AFWDebugg::log(
-                                    "befor get fields[$i]=" .
-                                    $fields[$i]
+                                    "befor get fields[$i]="
+                                    . $fields[$i]
                                 );
                             }
 
-                            if ($sc_cat_arr[$i] == "FORMULA") {
-                                $object = $object->calc($fields[$i], true, "object");
+                            if ($sc_cat_arr[$i] == 'FORMULA') {
+                                $object = $object->calc($fields[$i], true, 'object');
                             } else {
                                 $object = $object->het($fields[$i]);
                             }
 
                             if ($object) {
                                 $report_arr[] =
-                                "fields[$i]=" .
-                                $object->getDisplay(
-                                    'ar'
-                                );
+                                    "fields[$i]="
+                                    . $object->getDisplay(
+                                        'ar'
+                                    );
                             }
                         }
                     }
-                    //die("short cut analyse for attribute $attribute = ".var_export($object,true));
+                    // die("short cut analyse for attribute $attribute = ".var_export($object,true));
                     if ($object === null) {
                         if ($object->MY_DEBUG and false) {
                             AFWDebugg::log(
@@ -1641,13 +1638,13 @@ class AfwFormatHelper
                         }
                         if ($integrity) {
                             throw new AfwRuntimeException(
-                                'Impossible to get [' .
-                                $fields[$count - 1] .
-                                "] à cause d'une valeur NULL of object " .
-                                $fields[$count - 2] .
-                                ", veuillez vérifier attribute " .
-                                $attribute .
-                                ' de type SHORTCUT.',
+                                'Impossible to get ['
+                                    . $fields[$count - 1]
+                                    . "] à cause d'une valeur NULL of object "
+                                    . $fields[$count - 2]
+                                    . ', veuillez vérifier attribute '
+                                    . $attribute
+                                    . ' de type SHORTCUT.',
                                 $call_method
                             );
                         } else {
@@ -1682,13 +1679,12 @@ class AfwFormatHelper
                                 $format,
                                 $integrity
                             );
-                            $report_arr[] = "last : fields[$count-1]=" .
-                                $fields[$count - 1] .
-                                ' => ' .
-                                $return;
+                            $report_arr[] = "last : fields[$count-1]="
+                                . $fields[$count - 1]
+                                . ' => '
+                                . $return;
                             $return = implode("\n<br>", $report_arr);
                         } else {
-
                             $return = $object->get(
                                 $fields[$count - 1],
                                 $what,
@@ -1697,14 +1693,14 @@ class AfwFormatHelper
                             );
 
                             $report_arr[] =
-                                "get(fields[$count-1]=" .
-                                $fields[$count - 1] .
-                                " ,$what) = " .
-                                $return;
+                                "get(fields[$count-1]="
+                                . $fields[$count - 1]
+                                . " ,$what) = "
+                                . $return;
                         }
 
                         // if(($fields[0]=="course_session") and ($fields[1]=="attendanceList"))
-                        // if(($fields[0]=="cher_id") and ($fields[1]!="emp_num") and ($fields[1]!="orgunit_name") and ($fields[1]!="orgunit_id") and ($fields[1]!="orgunit_id")) 
+                        // if(($fields[0]=="cher_id") and ($fields[1]!="emp_num") and ($fields[1]!="orgunit_name") and ($fields[1]!="orgunit_id") and ($fields[1]!="orgunit_id"))
                         // throw new AfwRuntimeException("fields=".implode("|\n<br>|",$fields)."\n<br> report_arr=".implode("\n<br>",$report_arr)."\n<br> >>> rafik debugg :: get(".$fields[$count-1].", $what, $format) = $return");
                         if ($object->MY_DEBUG and false) {
                             AFWDebugg::log($return, true);
@@ -1713,39 +1709,39 @@ class AfwFormatHelper
                 } else {
                     if ($integrity) {
                         throw new AfwRuntimeException(
-                            'Impossible to get [' .
-                            $fields[1] .
-                            "] à cause d'une valeur NULL of object " .
-                            $fields[0] .
-                            ", veuillez vérifier attribute " .
-                            $attribute .
-                            ' de type SHORTCUT. ' .
-                            $call_method
+                            'Impossible to get ['
+                            . $fields[1]
+                            . "] à cause d'une valeur NULL of object "
+                            . $fields[0]
+                            . ', veuillez vérifier attribute '
+                            . $attribute
+                            . ' de type SHORTCUT. '
+                            . $call_method
                         );
                     } else {
                         $return = $forced_value
                             ? $forced_value
                             : $default_value;
-                        //if($default_value and ($default_value==$return)) die("rafik test 0013");
+                        // if($default_value and ($default_value==$return)) die("rafik test 0013");
                     }
                 }
             } else {
                 throw new AfwRuntimeException(
-                    "Property SHORTCUT of attribute " .
-                    $attribute .
-                    ' de la table ' .
-                    $table_name .
-                    " doit avoir plus d'un element.",
+                    'Property SHORTCUT of attribute '
+                        . $attribute
+                        . ' de la table '
+                        . $table_name
+                        . " doit avoir plus d'un element.",
                     $call_method
                 );
             }
         } else {
             throw new AfwRuntimeException(
-                "Property SHORTCUT non définie of attribute " .
-                $attribute .
-                ' dans DB_STRUCTURE de la table ' .
-                $table_name .
-                '.',
+                'Property SHORTCUT non définie of attribute '
+                    . $attribute
+                    . ' dans DB_STRUCTURE de la table '
+                    . $table_name
+                    . '.',
                 $call_method
             );
         }
@@ -1755,15 +1751,15 @@ class AfwFormatHelper
 
     final public static function formatReturnedValue(&$object, $attribute, $lang, $structure, $return, $what, $format, $attribute_type, $integrity, $this_debugg)
     {
-        //if($attribute=="customer_id") throw new AfwRuntimeException("formatting Returned Value $return");
+        // if($attribute=="customer_id") throw new AfwRuntimeException("formatting Returned Value $return");
         $attr_sup_categ = $structure['SUPER_CATEGORY'];
-        $attr_categ     = $structure['CATEGORY'];
-        $attr_scateg    = $structure['SUB-CATEGORY'];
-        $case           = "";
+        $attr_categ = $structure['CATEGORY'];
+        $attr_scateg = $structure['SUB-CATEGORY'];
+        $case = '';
         if (strtolower($what) == 'value') {
             if ($return and $return instanceof AFWObject) {
                 $return = $return->getId();
-                $case   = "id value";
+                $case = 'id value';
             }
 
             if (
@@ -1772,14 +1768,14 @@ class AfwFormatHelper
                 $attr_sup_categ == 'ITEMS'
             ) {
                 $return_arr = $return;
-                $return     = '';
+                $return = '';
                 foreach ($return_arr as $return_item) {
                     $return .= ',' . $return_item->getId();
                 }
                 if ($return) {
                     $return .= ',';
                 }
-                $case = "ITEMS value";
+                $case = 'ITEMS value';
             }
         } elseif (strtolower($what) == 'decodeme') {
             if (
@@ -1802,56 +1798,57 @@ class AfwFormatHelper
                 $case = "ITEMS decodeme format=$format";
             } elseif ($return and $return instanceof AFWObject) {
                 $return = $return->getDisplay($lang);
-                $case   = "instanceof AFWObject so ->getDisplay($lang)";
+                $case = "instanceof AFWObject so ->getDisplay($lang)";
             } else {
+                if (!isset($return)) {
+                    // if(($attribute=="homework")) die("what=$what, rafik entered in non implemented zone of decode of attribute $attribute formula log = $this_debugg_formula_log  returned : [return=$return, formatted=$formatted, return_formatted=$return_formatted] ");
 
-                if (! isset($return)) {
-                    //if(($attribute=="homework")) die("what=$what, rafik entered in non implemented zone of decode of attribute $attribute formula log = $this_debugg_formula_log  returned : [return=$return, formatted=$formatted, return_formatted=$return_formatted] ");
                     /*
-                    if (($attribute == "xxxx")) 
-                    {
-                        $attribute_value = $object->getVal($attribute);
-                        throw new AfwRuntimeException("attribute-action to be not implemented this_debugg_formula_log=$this_debugg attr_categ=$attr_categ attribut=$attribute, attribute_value=$attribute_value, format=$format, what=$what, gettype=" . $attribute_type);
-                    }*/
+                     * if (($attribute == "xxxx"))
+                     * {
+                     *     $attribute_value = $object->getVal($attribute);
+                     *     throw new AfwRuntimeException("attribute-action to be not implemented this_debugg_formula_log=$this_debugg attr_categ=$attr_categ attribut=$attribute, attribute_value=$attribute_value, format=$format, what=$what, gettype=" . $attribute_type);
+                     * }
+                     */
                 }
             }
 
-            $unit      = $structure['UNIT'];
+            $unit = $structure['UNIT'];
             $hide_unit = $structure['DISPLAY_HIDE_UNIT'];
-            if ($unit and $return and ! $hide_unit) {
+            if ($unit and $return and !$hide_unit) {
                 $return .= ' ' . $unit;
             }
         } else {
-            if ($integrity and ! isset($return)) {
-                $suggest = "";
-                if ($attr_categ == "FORMULA") {
+            if ($integrity and !isset($return)) {
+                $suggest = '';
+                if ($attr_categ == 'FORMULA') {
                     $suggest = "often this happen when you dont call to return \AfwFormulaHelper::calculateFormulaResult($object,\$attribute, \$what) on your getFormuleResult method";
                 }
 
                 throw new AfwRuntimeException(
-                    "Erreur : no-return defined for get : what=$what,attribut=$attribute, format=$format, attr_categ=$attr_categ ($suggest), gettype=" .
-                    $attribute_type .
-                    ' STRUCTURE = ' .
-                    var_export($structure, true)
+                    "Erreur : no-return defined for get : what=$what,attribut=$attribute, format=$format, attr_categ=$attr_categ ($suggest), gettype="
+                    . $attribute_type
+                    . ' STRUCTURE = '
+                    . var_export($structure, true)
                 );
             }
         }
-        $link_url       = $structure['LINK-URL'];
+        $link_url = $structure['LINK-URL'];
         $link_css_class = $structure['LINK-CSS'];
-        if (! $link_css_class) {
+        if (!$link_css_class) {
             $link_css_class = 'nice_link';
         }
 
-        $target  = '';
+        $target = '';
         $popup_t = '';
 
         if ($link_url and $return != '' and $format != 'NO-URL') {
             $link_url = $object->decodeText($link_url, '', false);
-            $return   = "<a class='$link_css_class' $target href='$link_url&popup=$popup_t'>$return</a>";
-            $case .= " ->object->decodeText(link_url)";
+            $return = "<a class='$link_css_class' $target href='$link_url&popup=$popup_t'>$return</a>";
+            $case .= ' ->object->decodeText(link_url)';
         }
 
-        // if(is_string($return) and AfwStringHelper::stringContain($return,"mahamd_78.6@icloud.com")) 
+        // if(is_string($return) and AfwStringHelper::stringContain($return,"mahamd_78.6@icloud.com"))
         // if($attribute=="customer_id") throw new AfwRuntimeException("formatting Returned Value case=$case");
 
         return $return;
@@ -1865,15 +1862,15 @@ class AfwFormatHelper
      */
     final public static function decodeAnswerOfAttribute(&$object, $attribute, $field_value)
     {
-        if (! $field_value) {
+        if (!$field_value) {
             return $field_value;
         }
 
         $object->debugg_last_attribute = $attribute;
         // $call_method = "getAnswer(attribute = $attribute, field_value = $field_value)";
-        $structure   = AfwStructureHelper::getStructureOf($object, $attribute);
+        $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         $answerTable = $structure['ANSWER'];
-        $attrtype    = $object->getTypeOf($attribute);
+        $attrtype = $object->getTypeOf($attribute);
         if ($object->MY_DEBUG and false) {
             AFWDebugg::log("[answerTable=$answerTable  , attrtype=$attrtype]");
         }
@@ -1886,11 +1883,11 @@ class AfwFormatHelper
                     return $object->$methodDecode($field_value);
                 }
 
-                $answer_id     = $structure['MY_PK'] ? $structure['MY_PK'] : 'ANSWER_ID';
-                $value_fr      = $structure['MY_VAL'] ? $structure['MY_VAL'] : 'VALUE_FR';
-                $query         = 'select ' . $value_fr . " from " . $object::_prefix_table($answerTable) . " where " . $answer_id . " = '" . $field_value . "'";
+                $answer_id = $structure['MY_PK'] ? $structure['MY_PK'] : 'ANSWER_ID';
+                $value_fr = $structure['MY_VAL'] ? $structure['MY_VAL'] : 'VALUE_FR';
+                $query = 'select ' . $value_fr . ' from ' . $object::_prefix_table($answerTable) . ' where ' . $answer_id . " = '" . $field_value . "'";
                 $module_server = $object->getModuleServer();
-                $return        = AfwDatabase::db_recup_value($query, true, true, $module_server);
+                $return = AfwDatabase::db_recup_value($query, true, true, $module_server);
             }
 
             if ($attrtype == 'FK' or $attrtype == 'YN' or $attrtype == 'ENUM' or $attrtype == 'MFK') {
@@ -1902,31 +1899,30 @@ class AfwFormatHelper
         return $return;
     }
 
-    public static function decodeObjectList($objList, $what, $lang = "ar", $implodeSeparator = ",")
+    public static function decodeObjectList($objList, $what, $lang = 'ar', $implodeSeparator = ',')
     {
         $returnList = [];
         foreach ($objList as $idobj => $obj) {
-            if ($what == "value") {
+            if ($what == 'value') {
                 $returnList[] = $obj ? $obj->id : 0;
-            } elseif ($what == "decodeme") {
-                $returnList[] = $obj ? $obj->getDisplay($lang) : "";
+            } elseif ($what == 'decodeme') {
+                $returnList[] = $obj ? $obj->getDisplay($lang) : '';
             } else {
                 $returnList[$obj->id] = $obj;
             }
-
         }
-        if (($what == "value") and $implodeSeparator) {
+        if (($what == 'value') and $implodeSeparator) {
             return $implodeSeparator . implode($implodeSeparator, $returnList) . $implodeSeparator;
         }
         return $returnList;
     }
 
-    public static function decode_result($obj, $what, $lang = "ar")
+    public static function decode_result($obj, $what, $lang = 'ar')
     {
-        if ($what == "value") {
+        if ($what == 'value') {
             $return = $obj ? $obj->id : 0;
-        } elseif ($what == "decodeme") {
-            $return = $obj ? $obj->getDisplay($lang) : "";
+        } elseif ($what == 'decodeme') {
+            $return = $obj ? $obj->getDisplay($lang) : '';
         } else {
             $return = $obj;
         }
@@ -1934,7 +1930,7 @@ class AfwFormatHelper
         return $return;
     }
 
-    public static function pbm_result($err, $info, $warn = null, $sep = "<br>\n", $tech = "", $result_arr = [], $limitSize = null)
+    public static function pbm_result($err, $info, $warn = null, $sep = "<br>\n", $tech = '', $result_arr = [], $limitSize = null)
     {
         // die(" 1 ==> pbm_result($err, $info, $warn) warn = ".var_export($warn,true));
         if ($limitSize and (count($err) > $limitSize)) {
@@ -1975,43 +1971,44 @@ class AfwFormatHelper
         return [$err, $info, $warn, $tech, $result_arr];
     }
 
-    public static function getCategorizedAttribute(&$object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = "")
+    public static function getCategorizedAttribute(&$object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = '')
     {
         /*
-        if(($attribute=="customer_id"))
-        {
-            die("rafik shoof getCategorizedAttribute has been called for $attribute");
-        }
-        
-        
-        if (!$structure['NO-CACHE'] and isset($object->gotItemCache[$attribute][$what])) {
-
-            $return = $object->gotItemCache[$attribute][$what];
-            $log_getter = 'return from gotItemCache = ' . var_export($return, true);
-            if ($attribute == 'requestList0000') {
-                die($log_getter);
-            } else $afw_getter_log[] = "$log_getter";
-        }*/
+         * if(($attribute=="customer_id"))
+         * {
+         *     die("rafik shoof getCategorizedAttribute has been called for $attribute");
+         * }
+         *
+         *
+         * if (!$structure['NO-CACHE'] and isset($object->gotItemCache[$attribute][$what])) {
+         *
+         *     $return = $object->gotItemCache[$attribute][$what];
+         *     $log_getter = 'return from gotItemCache = ' . var_export($return, true);
+         *     if ($attribute == 'requestList0000') {
+         *         die($log_getter);
+         *     } else $afw_getter_log[] = "$log_getter";
+         * }
+         */
         $return = null;
-        if (! $return) {
+        if (!$return) {
             $this_id = $object->getId();
 
             $b_abstract = false;
 
             switch ($attribute_category) {
                 case 'ITEMS':
-                    $return = AfwFormatHelper::formatITEMS($object, $attribute, $structure, $object->getMyTable(), $call_method, $max_items, $structure["EAGER"]);
+                    $return = AfwFormatHelper::formatITEMS($object, $attribute, $structure, $object->getMyTable(), $call_method, $max_items, $structure['EAGER']);
                     break;
 
                 case 'FORMULA':
                     $lang = AfwLanguageHelper::getGlobalLanguage();
-                    if (! $lang) {
+                    if (!$lang) {
                         $lang = 'ar';
                     }
 
-                    $return          = AfwFormulaHelper::executeFormulaAttribute($object, $attribute, null, $lang, $what);
-                    $return_isset    = isset($return);
-                    $this_debugg     = "AfwFormulaHelper::executeFormulaAttribute(this, $attribute, NULL, $lang, $what) = [return=$return/isset=$return_isset]";
+                    $return = AfwFormulaHelper::executeFormulaAttribute($object, $attribute, null, $lang, $what);
+                    $return_isset = isset($return);
+                    $this_debugg = "AfwFormulaHelper::executeFormulaAttribute(this, $attribute, NULL, $lang, $what) = [return=$return/isset=$return_isset]";
                     $attribute_value = $return;
 
                     break;
@@ -2026,7 +2023,7 @@ class AfwFormatHelper
                     $return = AfwFormatHelper::formatSHORTCUT($object, $attribute, $what, $format, $object->getMyTable(), $integrity, $structure, $call_method);
                     break;
             }
-            if ((! $structure['NO-CACHE']) and $return) {
+            if ((!$structure['NO-CACHE']) and $return) {
                 // $object->gotItemCache[$attribute][$what] = $return;
                 // die("attribute=$attribute, attribute_category=$attribute_category set in gotItemCache = " . var_export($object->gotItemCache,true));
             }
@@ -2049,8 +2046,7 @@ class AfwFormatHelper
 
         $log_arr = [];
 
-        if(is_object($temp))
-        {
+        if (is_object($temp)) {
             $temp = (array) $temp;
         }
         // die("getElementFromArrayByPath keys = ".var_export($keys, true));
@@ -2059,11 +2055,11 @@ class AfwFormatHelper
             // Check if the current key exists in the current array level
             if (is_array($temp) and isset($temp[$key])) {
                 $temp = $temp[$key];
-                $log_arr[] = "getElementFromArrayByPath found key = $key element is ".var_export($temp, true);
+                $log_arr[] = "getElementFromArrayByPath found key = $key element is " . var_export($temp, true);
             } else {
                 // If any key in the path is missing, return null or a default value
                 return null;
-                $log_arr[] = "getElementFromArrayByPath not found key = $key element in ".var_export($temp, true);
+                $log_arr[] = "getElementFromArrayByPath not found key = $key element in " . var_export($temp, true);
             }
         }
 
@@ -2075,62 +2071,52 @@ class AfwFormatHelper
 
     public static function extractDataFromArray($arrResult, $dataPath, $recordPattern, $separator = '.')
     {
-        $context = "Context dataPath=$dataPath ($separator) from ".var_export($arrResult, true);
-        if(is_object($arrResult))
-        {
+        $context = "Context dataPath=$dataPath ($separator) from " . var_export($arrResult, true);
+        if (is_object($arrResult)) {
             $arrResult = (array) $arrResult;
         }
-        if((!$arrResult) or !is_array($arrResult))
-        {
+        if ((!$arrResult) or !is_array($arrResult)) {
             $log_arr[] = $context;
             $log_arr[] = "<b class='error'>IS EMPTY OR NOT ARRAY</b>";
             return [null, null, implode("\n<br>", $log_arr)];
         }
-        // else die("Recahed with rafik : arrResult = ".var_export($arrResult, true)); 
-        
-        list($data_rows, $log_arr)  = self::getElementFromArrayByPath($arrResult, $dataPath, $separator);
+        // else die("Recahed with rafik : arrResult = ".var_export($arrResult, true));
+
+        list($data_rows, $log_arr) = self::getElementFromArrayByPath($arrResult, $dataPath, $separator);
         $log_arr[] = $context;
-        if(!$data_rows) {
-            $log_arr[] = "getElementFromArrayByPath returned nothing";
+        if (!$data_rows) {
+            $log_arr[] = 'getElementFromArrayByPath returned nothing';
             return [null, null, implode("\n<br>", $log_arr)];
         }
-        if(is_object($data_rows))
-        {
+        if (is_object($data_rows)) {
             $data_rows = (array) $data_rows;
-        } 
-        if(!is_array($data_rows)) 
-        {
-            $log_arr[] = "getElementFromArrayByPath returned non array";
+        }
+        if (!is_array($data_rows)) {
+            $log_arr[] = 'getElementFromArrayByPath returned non array';
             return [null, null, implode("\n<br>", $log_arr)];
         }
         $first_row = reset($data_rows);
-        if(is_object($first_row))
-        {
+        if (is_object($first_row)) {
             $first_row = (array) $first_row;
         }
-        if(is_array($first_row)) $header_row = array_keys($first_row);
-        else 
-        {
+        if (is_array($first_row))
+            $header_row = array_keys($first_row);
+        else {
             $header_row = null;
-            $log_arr[] = "first element of data : ".var_export($data_rows);
-            $log_arr[] = "is not a row : ".var_export($first_row);
+            $log_arr[] = 'first element of data : ' . var_export($data_rows);
+            $log_arr[] = 'is not a row : ' . var_export($first_row);
         }
 
         $data_rows_ready = [];
-        foreach($data_rows as $data_row)
-        {
-            if(is_object($data_row))
-            {
+        foreach ($data_rows as $data_row) {
+            if (is_object($data_row)) {
                 $data_row = (array) $data_row;
-            } 
+            }
 
             $data_rows_ready[] = $data_row;
-        }        
-        // die("Oghzor with rafik : data_rows = ".var_export($data_rows, true)."\n<br>\n<br> data_rows_ready = ".var_export($data_rows_ready, true)."\n<br>\n<br>\n<br> header_row = ".var_export($header_row, true)); 
+        }
+        // die("Oghzor with rafik : data_rows = ".var_export($data_rows, true)."\n<br>\n<br> data_rows_ready = ".var_export($data_rows_ready, true)."\n<br>\n<br>\n<br> header_row = ".var_export($header_row, true));
 
         return [$header_row, $data_rows_ready, implode("\n<br>", $log_arr)];
     }
-
-
-    
 }
