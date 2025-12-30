@@ -39,7 +39,7 @@ class AfwDatabase extends AFWRoot
             // if($module_server=="nartaqi") throw new AfwRuntimeException("params of connection to server [$module_server] are [$hostname, $username, $password, $database] from : ".AfwSession::log_config());
             if (!$hostname or !$username) {
                 throw new AfwRuntimeException(
-                    "host or user name param not found in the database_config.php file for server [$module_server]" .
+                    "host or user name param not found in the_database_config.php file for server [$module_server]" .
                         AfwSession::log_config()
                 );
             }

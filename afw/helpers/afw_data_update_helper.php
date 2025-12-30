@@ -17,7 +17,7 @@ class AfwDataUpdateHelper
     {
             $table_name = $table_config["table_name"];
             $source_tstamp = $table_config["source_timestamp"];
-            $query_get_last_timestamp = "select max($source_tstamp) as source_tstamp from $table_name where SynchTimestamp <= '$forced_job_timestamp'";
+            $query_get_last_timestamp = "select max($source_tstamp) as source_tstamp from $table_name where $source_tstamp <= '$forced_job_timestamp'";
 
             $source_tstamp = AfwDB::getValueFromSQL($dbserver, $query_get_last_timestamp, "source_tstamp");
             if(!$source_tstamp) $source_tstamp = $default_timestamp;
@@ -212,17 +212,17 @@ class AfwDataUpdateHelper
     public static function consume_api($apiConfig, $url, $data = null, $recursive=true, $max_tentatives=20, $print_debugg=true, $force_mode=false, $lang="ar", $throwError=true)
     {
             $itemsAttribute = $apiConfig["items-attribute"];
-            if(!$itemsAttribute) throw new AfwRuntimeException("items-attribute missed in the apiConfig array");
+            if(!$itemsAttribute) throw new AfwRuntimeException("items-attribute missed in the apiConfig array : ".var_export($apiConfig, true));
             $inputPageAttribute = $apiConfig["input-page-attribute"];
-            if($recursive and !$inputPageAttribute) throw new AfwRuntimeException("in recursive mode we need the page-attribute to be configured in the apiConfig array");
+            if($recursive and !$inputPageAttribute) throw new AfwRuntimeException("in recursive mode we need the page-attribute to be configured in the apiConfig array : ".var_export($apiConfig, true));
             $apiConfigObject = new AfwConfigObject($apiConfig, $data);
             $metaAttribute = $apiConfig["meta-attribute"];
-            if(!$metaAttribute) throw new AfwRuntimeException("meta-attribute name missed in the apiConfig array");
+            if(!$metaAttribute) throw new AfwRuntimeException("meta-attribute name missed in the apiConfig array : ".var_export($apiConfig, true));
             $pageCountAttribute = $apiConfig["page-count-attribute"];
-            if($pageCountAttribute) throw new AfwRuntimeException("page-count-attribute name (to find in meta array) missed in the apiConfig array");
+            if(!$pageCountAttribute) throw new AfwRuntimeException("page-count-attribute name (to find in meta array) missed in the apiConfig array : ".var_export($apiConfig, true));
             
             $currentPageAttribute = $apiConfig["current-page-attribute"];
-            if(!$currentPageAttribute) throw new AfwRuntimeException("we need the current-page-attribute name (to find in meta array) to be configured in the apiConfig array");
+            if(!$currentPageAttribute) throw new AfwRuntimeException("we need the current-page-attribute name (to find in meta array) to be configured in the apiConfig array : ".var_export($apiConfig, true));
                      
             $max_pages = $apiConfig["max-pages"];
             if(!$max_pages) $max_pages = 60000;            

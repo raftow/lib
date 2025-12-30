@@ -92,7 +92,7 @@ class AfwMysql
         } 
     }
 
-    public static function connection($hostname, $username, $password, $database, $port=null)
+    public static function connection($hostname, $username, $password, $database, $port=3306)
     {
         if(self::php_is_old()) 
         {
@@ -106,7 +106,7 @@ class AfwMysql
             }
             catch(Exception $e)
             {
-                die("Failed to do connection <!-- ($hostname, $username, *****, $database) : ".$e->getMessage()." -->");
+                die("Failed to do connection <!-- ($hostname, $username, *****, $database, $port) : Exception Message : ".$e->getMessage()." -->");
                 // if you do throw new AfwRuntimeException it will show stack trace containing password
             }
             catch(Error $e)
