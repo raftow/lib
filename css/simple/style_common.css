@@ -84,6 +84,10 @@ form {
     /*old : 0px 19px 0 35px !important; old because with tool tip and unit and paddings nothing remain to input*/
 }
 
+.form-control>option {
+    color: black;
+}
+
 div.form-control>div.icheckbox_square-green {
     margin-top: 8px;
 }
