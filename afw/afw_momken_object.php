@@ -407,30 +407,52 @@ class AfwMomkenObject extends AFWObject
         return $arr_list_of_domain;
     }*/
 
-    
     public static function domain()
     {
-            $main_company = AfwSession::currentCompany();
-            $file_dir_name = dirname(__FILE__);        
-            $domains_file_name = $file_dir_name."/../../client-$main_company/extra/domains-$main_company.php";
-            if(file_exists($domains_file_name))
-            {
-                return include($domains_file_name);
-            }
-            
-            throw new AfwRuntimeException("Domain file missed : $domains_file_name");
+        $main_company = AfwSession::currentCompany();
+        $file_dir_name = dirname(__FILE__);
+        $domains_file_name = $file_dir_name . "/../../client-$main_company/extra/domains-$main_company.php";
+        if (file_exists($domains_file_name)) {
+            return include ($domains_file_name);
+        }
+
+        throw new AfwRuntimeException("Domain file missed : $domains_file_name");
     }
 
     public static function list_of_domain_enum()
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         $return = self::domain()[$lang];
-        if(!$return) throw new AfwRuntimeException("lang = AfwLanguageHelper::getGlobalLanguage()=$lang, self::domain()[$lang] failed");
+        if (!$return)
+            throw new AfwRuntimeException("lang = AfwLanguageHelper::getGlobalLanguage()=$lang, self::domain()[$lang] failed");
         return $return;
     }
 
     public static function domain_code($ansTabId)
     {
         return self::domain()['code'][$ansTabId];
+    }
+
+    public static function list_of_hierarchy_level_enum()
+    {
+        $lang = AfwLanguageHelper::getGlobalLanguage();
+        return self::hierarchy_level()[$lang];
+    }
+
+    public static function hierarchy_level()
+    {
+        $arr_list_of_hierarchy_level = array();
+
+        $main_company = AfwSession::currentCompany();
+        $current_domain = 25;
+        $file_dir_name = dirname(__FILE__);
+        include ($file_dir_name . "/../../client-$main_company/extra/hierarchy_level-$main_company.php");
+
+        foreach ($hierarchy_level as $id => $lookup_row) {
+            $arr_list_of_hierarchy_level['ar'][$id] = $lookup_row['ar'];
+            $arr_list_of_hierarchy_level['en'][$id] = $lookup_row['en'];
+        }
+
+        return $arr_list_of_hierarchy_level;
     }
 }
