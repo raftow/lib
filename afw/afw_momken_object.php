@@ -223,10 +223,10 @@ class AfwMomkenObject extends AFWObject
             return self::afield_type_by_code('Gdat');
         } elseif ($afwType == 'DATETIME') {
             return self::afield_type_by_code('Gdat');
-        } elseif ($afwType == 'INT') {
-            return self::afield_type_by_code('int');
+        } elseif ($afwType == 'SMLINT') {
+            return self::afield_type_by_code('smallnmbr');
         } elseif ($afwType == 'BIGINT') {
-            return self::afield_type_by_code('bigint');
+            return self::afield_type_by_code('bignmbr');
         } elseif ($afwType == 'INT') {
             return self::afield_type_by_code('nmbr');
         } elseif ($afwType == 'ENUM') {
@@ -249,99 +249,90 @@ class AfwMomkenObject extends AFWObject
     {
         $arr_list_of_afield_type = array();
 
-        // DATE -  هجري تاريخ
-        // AFIELD_TYPE_DATE = 2;
+        // 2 - DATE -  هجري تاريخ
         $arr_list_of_afield_type['en'][2] = 'Date hijri';
         $arr_list_of_afield_type['ar'][2] = 'تاريخ هجري';
         $arr_list_of_afield_type['code'][2] = 'date';
 
-        // AMNT - مبلغ من المال
-        // AFIELD_TYPE_AMNT = 3;
+        // 3 - AMNT - مبلغ من المال
         $arr_list_of_afield_type['en'][3] = 'Amount';
         $arr_list_of_afield_type['ar'][3] = 'مبلغ من المال';
         $arr_list_of_afield_type['code'][3] = 'amnt';
         $arr_list_of_afield_type['numeric'][3] = true;
 
-        // SMALLINT - قيمة عددية صغيرة
-        // AFIELD_TYPE_SMALLINT = 13;
+        // 13 - SMALLINT - قيمة عددية صغيرة
         $arr_list_of_afield_type['en'][13] = 'Small Numeric Value';
         $arr_list_of_afield_type['ar'][13] = 'قيمة عددية صغيرة';
         $arr_list_of_afield_type['code'][13] = 'smallnmbr';
         $arr_list_of_afield_type['numeric'][13] = true;
 
-        // BIGINT - قيمة عددية كبيرة
-        // AFIELD_TYPE_BIGINT = 14;
+        // 14 - BIGINT - قيمة عددية كبيرة
         $arr_list_of_afield_type['en'][14] = 'Big Numeric Value';
         $arr_list_of_afield_type['ar'][14] = 'قيمة عددية كبيرة';
         $arr_list_of_afield_type['code'][14] = 'bignmbr';
         $arr_list_of_afield_type['numeric'][14] = true;
 
-        // NMBR - قيمة عددية متوسطة
-        // AFIELD_TYPE_NMBR = 1;
+        // 1 = NMBR - قيمة عددية متوسطة  =
         $arr_list_of_afield_type['en'][1] = 'Medium Numeric Value';
         $arr_list_of_afield_type['ar'][1] = 'قيمة عددية متوسطة';
         $arr_list_of_afield_type['code'][1] = 'nmbr';
         $arr_list_of_afield_type['numeric'][1] = true;
 
-        // LIST - اختيار من قائمة
-        // AFIELD_TYPE_LIST = 5;
+        // 5 - LIST - اختيار من قائمة
         $arr_list_of_afield_type['en'][5] = 'Choose from list';
         $arr_list_of_afield_type['ar'][5] = 'اختيار من قائمة';
         $arr_list_of_afield_type['code'][5] = 'list';
         $arr_list_of_afield_type['need_decode'][5] = true;
 
-        // MFK - اختيار متعدد من قائمة
-        // AFIELD_TYPE_MLST = 6;
+        // 6 - MFK - اختيار متعدد من قائمة
         $arr_list_of_afield_type['en'][6] = 'multiple choice from list';
         $arr_list_of_afield_type['ar'][6] = 'اختيار متعدد من قائمة';
         $arr_list_of_afield_type['code'][6] = 'mfk';
         $arr_list_of_afield_type['need_decode'][6] = true;
 
-        // PCTG - نسبة مائوية
-        // AFIELD_TYPE_PCTG = 7;
+        // 7 - PCTG - نسبة مائوية
         $arr_list_of_afield_type['en'][7] = 'Percentage';
         $arr_list_of_afield_type['ar'][7] = 'نسبة مائوية';
         $arr_list_of_afield_type['code'][7] = 'pctg';
         $arr_list_of_afield_type['numeric'][7] = true;
 
-        // GDAT - تاريخ ميلادي
-        // AFIELD_TYPE_GDAT = 9;
+        // 9 - GDAT - تاريخ ميلادي
         $arr_list_of_afield_type['en'][9] = 'G. Date';
         $arr_list_of_afield_type['ar'][9] = 'تاريخ ميلادي';
         $arr_list_of_afield_type['code'][9] = 'Gdat';
 
-        // YN - نعم/لا
-        // AFIELD_TYPE_YN = 8;
+        // 8 - YN - نعم/لا
         $arr_list_of_afield_type['en'][8] = 'Yes/No';
         $arr_list_of_afield_type['ar'][8] = 'نعم/لا';
         $arr_list_of_afield_type['code'][8] = 'yn';
 
-        // ENUM - إختيار من قائمة قصيرة
-        // AFIELD_TYPE_ENUM = 12;
+        // 12 - ENUM - إختيار من قائمة قصيرة
         $arr_list_of_afield_type['en'][12] = 'Short list - one choice';
         $arr_list_of_afield_type['ar'][12] = 'إختيار من قائمة قصيرة';
         $arr_list_of_afield_type['code'][12] = 'enum';
         $arr_list_of_afield_type['need_decode'][12] = true;
 
-        // MENUM - إختيار متعدد من قائمة قصيرة
-        // AFIELD_TYPE_MENUM = 15;
+        // 15 - MENUM - إختيار متعدد من قائمة قصيرة
         $arr_list_of_afield_type['en'][15] = 'Short list - multiple choice';
         $arr_list_of_afield_type['ar'][15] = 'إختيار متعدد من قائمة قصيرة';
         $arr_list_of_afield_type['code'][15] = 'menum';
         $arr_list_of_afield_type['need_decode'][15] = true;
 
-        // FLOAT - قيمة عددية كسرية
-        // AFIELD_TYPE_FLOAT = 16;
+        // 16 - FLOAT - قيمة عددية كسرية
         $arr_list_of_afield_type['en'][16] = 'float value';
         $arr_list_of_afield_type['ar'][16] = 'قيمة عددية كسرية';
         $arr_list_of_afield_type['code'][16] = 'float';
         $arr_list_of_afield_type['numeric'][16] = true;
 
-        // 	10	نص قصير
-        // $afield_type_text = 10;
+        // 	10 - TEXT -	نص قصير
         $arr_list_of_afield_type['en'][10] = 'short text';
         $arr_list_of_afield_type['ar'][10] = 'نص قصير';
         $arr_list_of_afield_type['code'][10] = 'text';
+
+        // 	11	نص طويل
+        $arr_list_of_afield_type['en'][11] = 'long text';
+        $arr_list_of_afield_type['ar'][11] = 'نص طويل';
+        $arr_list_of_afield_type['code'][11] = 'mtext';
 
         return $arr_list_of_afield_type;
     }

@@ -8,30 +8,34 @@ class AfwStructureHelper extends AFWRoot
 {
     private static $shortNamesArray = [];
     private static $structuresArray = [];
+
     public static function dd($message, $to_die = true, $to_debugg = false, $trace = true, $light = false)
     {
-        if ($trace) $message = $message . "<br>" . AfwRunHelper::show_back_trace($light);
-        if ($to_debugg) AFWDebugg::log($message);
+        if ($trace)
+            $message = $message . '<br>' . AfwRunHelper::show_back_trace($light);
+        if ($to_debugg)
+            AFWDebugg::log($message);
         if ($to_die) {
             $html = ob_get_clean();
             die($html . $message);
         }
     }
 
-
     /**
      * @param AFWObject $object
      */
-    public static final function getStructureOf(&$object, $field_name, $repare = true, $technical_repare=true)
+    public static final function getStructureOf(&$object, $field_name, $repare = true, $technical_repare = true)
     {
         $cl = get_class($object);
         $struct = null;
-        if (!$repare and $technical_repare) $struct = self::$structuresArray[$cl][$field_name];
+        if (!$repare and $technical_repare)
+            $struct = self::$structuresArray[$cl][$field_name];
         if (!$struct) {
             // if($field_name=="level_enum") throw new RuntimeException("rafik 240927");
             $orig_field_name = $field_name;
             $field_name = AfwStructureHelper::shortNameToAttributeName($object, $field_name);
-            if (!$field_name) $field_name = $orig_field_name;
+            if (!$field_name)
+                $field_name = $orig_field_name;
             $struct = $object->getMyDbStructure(
                 $return_type = 'structure',
                 $field_name,
@@ -48,21 +52,21 @@ class AfwStructureHelper extends AFWRoot
 
             if ($struct and $technical_repare) {
                 $struct = AfwStructureHelper::technicalRepareMyStructure($object, $struct, $field_name);
-            }            
+            }
 
             // if($field_name == "birth_gdate") die("$field_name dbg struct after technicalRepareMyStructure =".var_export($struct,true));
 
-            if (($struct["CATEGORY"] == "SHORTCUT") /* or (($struct["CATEGORY"]=="FORMULA") and ($field_name != "tech_notes"))*/) {
+            if (($struct['CATEGORY'] == 'SHORTCUT') /* or (($struct["CATEGORY"]=="FORMULA") and ($field_name != "tech_notes")) */) {
                 if (!$object->shouldBeCalculatedField($field_name)) {
-                    throw new AfwRuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$field_name] is shortcut but not declared in overridden shouldBeCalculatedField method, do like this : <pre><code>" . self::suggestAllCalcFields($object) . "</code></pre>");
+                    throw new AfwRuntimeException("Momken 3.0 Error : [Class=$cl,Attribute=$field_name] is shortcut but not declared in overridden shouldBeCalculatedField method, do like this : <pre><code>" . self::suggestAllCalcFields($object) . '</code></pre>');
                 }
             }
 
-            if (!$repare and $technical_repare) self::$structuresArray[$cl][$field_name] = $struct;
+            if (!$repare and $technical_repare)
+                self::$structuresArray[$cl][$field_name] = $struct;
         }
         return $struct;
     }
-
 
     public static function getDbStructure(
         $module_code,
@@ -90,17 +94,14 @@ class AfwStructureHelper extends AFWRoot
             $this_formulas = [];
         }
 
-
-
         $got_first_time = false;
 
         if (!$module_code) {
             $module_code = AfwUrlManager::currentURIModule();
         }
 
-
         $debugg_db_structure = AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute, $step, $start_step, $end_step);
-        //if(($table_name=="invester") and ($attribute=="city_id")) die($table_name." AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute) returned debugg_db_structure = ".var_export($debugg_db_structure,true));
+        // if(($table_name=="invester") and ($attribute=="city_id")) die($table_name." AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute) returned debugg_db_structure = ".var_export($debugg_db_structure,true));
         if (isset($debugg_db_structure)) {
             foreach ($debugg_db_structure as $key => $value) {
                 if ($value['ANSWER'] and $value['TYPE'] != 'ANSWER') {
@@ -112,11 +113,10 @@ class AfwStructureHelper extends AFWRoot
                     $this_shortcuts[$key] = true;
                 }
 
-                if (($value['CATEGORY'] == "FORMULA") and $return_type == 'formulas') {
-                    if ($key != "tech_notes") $this_formulas[$key] = true;
+                if (($value['CATEGORY'] == 'FORMULA') and $return_type == 'formulas') {
+                    if ($key != 'tech_notes')
+                        $this_formulas[$key] = true;
                 }
-
-
 
                 if ($value['SHORTNAME'] and $return_type == 'shortnames') {
                     // first be sure the this short name is not already used as attribute
@@ -158,8 +158,7 @@ class AfwStructureHelper extends AFWRoot
             return $this_formulas;
         }
 
-
-        return ["momken" => "unknown-requested-return_type $return_type"];
+        return ['momken' => "unknown-requested-return_type $return_type"];
     }
 
     public static final function attributeBelongToStep($attribute, $desc, $step)
@@ -176,19 +175,17 @@ class AfwStructureHelper extends AFWRoot
     }
 
     /**
-     * @param string $moduleDomain 
-     * @param string $class_name 
-     * 
+     * @param string $moduleDomain
+     * @param string $class_name
+     *
      * @return AfwStructure
      */
-
     public static final function getStructureClassName($moduleDomain, $class_name)
     {
         return $moduleDomain . $class_name . 'AfwStructure';
     }
 
-
-    public static final function constructDBStructure($module_code, $class_name, $attribute, $step = "all", $start_step = null, $end_step = null)
+    public static final function constructDBStructure($module_code, $class_name, $attribute, $step = 'all', $start_step = null, $end_step = null)
     {
         // $start_m_time = microtime();
         $start_m_time = 0;
@@ -226,7 +223,7 @@ class AfwStructureHelper extends AFWRoot
                     $origin = " >= 8.0 from $class_name::DB_STRUCTURE";
                 }
             }
-            //if(($class_name=="Invester") and ($attribute=="city_id")) die("my structure => [$origin] => ".var_export($my_db_structure,true));
+            // if(($class_name=="Invester") and ($attribute=="city_id")) die("my structure => [$origin] => ".var_export($my_db_structure,true));
             if (STRUCTURE_IN_CACHE) {
                 if (class_exists('AfwAutoLoader') or class_exists('AfwCacheSystem')) {
                     AfwCacheSystem::getSingleton()->setStructureIntoCache(
@@ -238,26 +235,29 @@ class AfwStructureHelper extends AFWRoot
 
             $got_first_time = true;
         }
+
         /*
-        if(($class_name=="Invester") and ($attribute=="city_id"))
-        {
-            $my_db_structure2 = $my_db_structure; //LicenseLicenseAfwStructure::$DB_STRUCTURE;
-            $origin2 = $origin; // "raf-test";
-            $attribute_2 = 'city_id'; // "region_id";            
-            echo("my_db_structure => [$origin2] => ".var_export($my_db_structure2,true));
-            echo("\nmy_db_structure[$attribute_2] => [$origin2] => ".var_export($my_db_structure2[$attribute_2],true));
-            echo("\nmy_db_structure[$attribute] => [$origin2] => ".var_export($my_db_structure2["$attribute"],true));
-        } */
-        if ($step == "all") {
+         * if(($class_name=="Invester") and ($attribute=="city_id"))
+         * {
+         *     $my_db_structure2 = $my_db_structure; //LicenseLicenseAfwStructure::$DB_STRUCTURE;
+         *     $origin2 = $origin; // "raf-test";
+         *     $attribute_2 = 'city_id'; // "region_id";
+         *     echo("my_db_structure => [$origin2] => ".var_export($my_db_structure2,true));
+         *     echo("\nmy_db_structure[$attribute_2] => [$origin2] => ".var_export($my_db_structure2[$attribute_2],true));
+         *     echo("\nmy_db_structure[$attribute] => [$origin2] => ".var_export($my_db_structure2["$attribute"],true));
+         * }
+         */
+        if ($step == 'all') {
             if ($attribute == 'all') {
                 if ($start_step and $end_step) {
                     $debugg_db_structure = [];
                     foreach ($my_db_structure as $my_attrib => $my_struct) {
-                        if ($my_struct["STEP"] >= $start_step and $my_struct["STEP"] <= $end_step) {
+                        if ($my_struct['STEP'] >= $start_step and $my_struct['STEP'] <= $end_step) {
                             $debugg_db_structure[$my_attrib] = $my_struct;
                         }
                     }
-                } else $debugg_db_structure = $my_db_structure;
+                } else
+                    $debugg_db_structure = $my_db_structure;
             } else {
                 $debugg_db_structure = [];
                 $debugg_db_structure[$attribute] = $my_db_structure[$attribute];
@@ -295,8 +295,8 @@ class AfwStructureHelper extends AFWRoot
                 if ($tab_instances[$this_cl] == $max_calls_of_structure) {
                     //  and ($this_cl == "module_structure")
                     AfwRunHelper::lightSafeDie(
-                        "duree_ms=$duree_ms $this_cl reached " .
-                            $tab_instances[$this_cl],
+                        "duree_ms=$duree_ms $this_cl reached "
+                            . $tab_instances[$this_cl],
                         $tab_instances
                     );
                 }
@@ -322,7 +322,7 @@ class AfwStructureHelper extends AFWRoot
             $struct['SHOW'] = 'repare as RETRIEVE is true';
         }
 
-        if (self::structEnablesProperty($struct, 'RETRIEVE_FGROUP')) {    
+        if (self::structEnablesProperty($struct, 'RETRIEVE_FGROUP')) {
             $struct[strtoupper($struct['FGROUP']) . '-RETRIEVE'] = true;
         }
         if ($struct['ALL_FGROUP']) {
@@ -336,8 +336,6 @@ class AfwStructureHelper extends AFWRoot
                 $struct['READONLY'] = 'because DISPLAY property is not defined';
             }
         }
-
-
 
         if (!isset($struct['SEARCH-BY-ONE'])) {
             $struct['SEARCH-BY-ONE'] = $struct['QSEARCH'];
@@ -399,7 +397,7 @@ class AfwStructureHelper extends AFWRoot
             if (is_string($value_struct)) {
                 if (AfwStringHelper::stringStartsWith($value_struct, '>>config::')) {
                     $configStructEval = substr($value_struct, 10);
-                    list($configVar, $defaultValue) = explode($configStructEval, ",");
+                    list($configVar, $defaultValue) = explode($configStructEval, ',');
                     $struct[$col_struct] = AfwSession::config($configVar, $defaultValue);
                 }
             }
@@ -411,23 +409,24 @@ class AfwStructureHelper extends AFWRoot
     public static final function technicalRepareMyStructure(&$object, $struct, $field_name)
     {
         if (!($object instanceof AFWObject)) {
-            throw new AfwRuntimeException("repareMyStructure first parameter should be AFWObject instance");
+            throw new AfwRuntimeException('repareMyStructure first parameter should be AFWObject instance');
         }
 
-        if($object->UNIQUE_KEY and in_array($field_name, $object->UNIQUE_KEY)) {
-            if(!$struct['QEDIT']) $struct['QEDIT'] = 'reapred because in UNIQUE_KEY';
-            if(!$struct['EDIT']) $struct['EDIT'] = 'reapred because in UNIQUE_KEY';
+        if ($object->UNIQUE_KEY and in_array($field_name, $object->UNIQUE_KEY)) {
+            if (!$struct['QEDIT'])
+                $struct['QEDIT'] = 'reapred because in UNIQUE_KEY';
+            if (!$struct['EDIT'])
+                $struct['EDIT'] = 'reapred because in UNIQUE_KEY';
         }
 
-        //if($field_name == "nomcomplet") die("in getStructureOf($field_name) run of this->getMyDbStructure($return_type, $field_name) = ".var_export($struct,true));
+        // if($field_name == "nomcomplet") die("in getStructureOf($field_name) run of this->getMyDbStructure($return_type, $field_name) = ".var_export($struct,true));
         if (
             $object->editByStep and
             (!$object->disableTechnicalFieldsDefaultBehavior) and
             ($object->isAdminField($field_name) or $object->isTechField($field_name))
         ) {
             $struct['SHOW'] = 'admin or technical field';
-            if (!$struct['STEP-CUSTOMIZED']) 
-            {
+            if (!$struct['STEP-CUSTOMIZED']) {
                 $struct['STEP'] = 99;
                 $struct['STEP_REPARE'] = 'because admin or technical field';
             }
@@ -435,10 +434,9 @@ class AfwStructureHelper extends AFWRoot
             $struct['READONLY'] = 'admin or technical field';
         }
 
-        if (($struct["TYPE"] == "YN") and (strtoupper($struct["FORMAT"]) == "ICON") and (!$struct["SWITCHER"])) {
-            $struct["SWITCHER"] = "onoff";
+        if (($struct['TYPE'] == 'YN') and (strtoupper($struct['FORMAT']) == 'ICON') and (!$struct['SWITCHER'])) {
+            $struct['SWITCHER'] = 'onoff';
         }
-
 
         if ($struct['READONLY-AFTER-INSERT']) {
             if (!$object->isEmpty()) {
@@ -446,32 +444,29 @@ class AfwStructureHelper extends AFWRoot
             }
         }
 
-        
         return AfwStructureHelper::technicalRepareStructure($struct);
     }
 
     /**
      * @param AFWObject $object
-     * 
      */
-
     public static final function repareMyStructure(&$object, $struct, $field_name)
     {
         if (!($object instanceof AFWObject)) {
-            throw new AfwRuntimeException("repareMyStructure first parameter should be AFWObject instance");
+            throw new AfwRuntimeException('repareMyStructure first parameter should be AFWObject instance');
         }
 
         foreach ($struct as $col_struct => $value_struct) {
             if (is_string($value_struct)) {
                 if (AfwStringHelper::stringStartsWith($value_struct, '>>config::')) {
                     $configStructEval = substr($value_struct, 10);
-                    list($configVar, $defaultValue) = explode($configStructEval, ",");
+                    list($configVar, $defaultValue) = explode($configStructEval, ',');
                     $struct[$col_struct] = AfwSession::config($configVar, $defaultValue);
-                } elseif (AfwStringHelper::stringStartsWith($value_struct, '::')) {                    
+                } elseif (AfwStringHelper::stringStartsWith($value_struct, '::')) {
                     $methodStructEval = substr($value_struct, 2);
                     // if(($field_name=="qsearch") and ($col_struct=="READONLY")) die("rafik-20240916-field_name=$field_name col_struct=$col_struct value_struct=$value_struct methodStructEval=$methodStructEval");
                     $struct[$col_struct] = $object->$methodStructEval($field_name, $col_struct);
-                    $struct["$col_struct-from"] = get_class($object)."::method::$methodStructEval objectId=".$object->id;
+                    $struct["$col_struct-from"] = get_class($object) . "::method::$methodStructEval objectId=" . $object->id;
                     $objectClass = get_class($object);
                 }
             }
@@ -480,52 +475,61 @@ class AfwStructureHelper extends AFWRoot
         return $struct;
     }
 
-
     public static final function repareQEditAttributeStructure($col_name, $desc)
     {
         $cell_size = 11;
 
-        if (AfwStringHelper::stringStartsWith($col_name, "titre_short") && (!$desc["SIZE"])) $desc["SIZE"] = 40;
-        if (AfwStringHelper::stringStartsWith($col_name, "titre_short") && (!$desc["SIZE"])) $desc["SIZE"] = 40;
-        if (AfwStringHelper::stringStartsWith($col_name, "titre") && (!$desc["SIZE"])) $desc["SIZE"] = 255;
+        if (AfwStringHelper::stringStartsWith($col_name, 'titre_short') && (!$desc['SIZE']))
+            $desc['SIZE'] = 40;
+        if (AfwStringHelper::stringStartsWith($col_name, 'titre_short') && (!$desc['SIZE']))
+            $desc['SIZE'] = 40;
+        if (AfwStringHelper::stringStartsWith($col_name, 'titre') && (!$desc['SIZE']))
+            $desc['SIZE'] = 255;
 
-        if (!$desc["SIZE"]) {
-            if ($desc["TYPE"] == "YN") $desc["SIZE"] = 3 * $cell_size;
+        if (!$desc['SIZE']) {
+            if ($desc['TYPE'] == 'YN')
+                $desc['SIZE'] = 3 * $cell_size;
 
-            $desc["SIZE"] = 4 * $cell_size;
+            $desc['SIZE'] = 4 * $cell_size;
         }
 
-        if (intval($desc["SIZE"]) > 0) $desc["HZM-WIDTH"] = round(intval($desc["SIZE"]) / $cell_size);
-        if ($desc["SIZE"] == "AREA") $desc["HZM-WIDTH"] = 12;
-        if ($desc["SIZE"] == "AEREA") $desc["HZM-WIDTH"] = 12;
-        if ($desc["HZM-WIDTH"] > 12) $desc["HZM-WIDTH"] = 12;
-        if ($desc["TYPE"] == "MFK") $desc["HZM-WIDTH"] = 12;
+        if (intval($desc['SIZE']) > 0)
+            $desc['HZM-WIDTH'] = round(intval($desc['SIZE']) / $cell_size);
+        if ($desc['SIZE'] == 'AREA')
+            $desc['HZM-WIDTH'] = 12;
+        if ($desc['SIZE'] == 'AEREA')
+            $desc['HZM-WIDTH'] = 12;
+        if ($desc['HZM-WIDTH'] > 12)
+            $desc['HZM-WIDTH'] = 12;
+        if ($desc['TYPE'] == 'MFK')
+            $desc['HZM-WIDTH'] = 12;
 
-        return  $desc;
+        return $desc;
     }
 
     public static $allRealFields = null;
 
     /**
-     * @param AFWObject $object 
-     * @param boolean $structure 
+     * @param AFWObject $object
+     * @param boolean $structure
      * @return array
      */
-
     public static final function getAllRealFields(&$object, $returnStructure = false)
     {
         if (!$returnStructure) {
             $cls = $object->getMyClass();
-            if (self::$allRealFields[$cls]) return self::$allRealFields[$cls];
+            if (self::$allRealFields[$cls])
+                return self::$allRealFields[$cls];
         }
-
 
         $class_db_structure = $object->getMyDbStructure();
         $result_arr = [];
         foreach ($class_db_structure as $attribute => $desc) {
             if (AfwStructureHelper::attributeIsReel($object, $attribute, $desc)) {
-                if (!$returnStructure) $result_arr[] = $attribute;
-                else $result_arr[$attribute] = $desc;
+                if (!$returnStructure)
+                    $result_arr[] = $attribute;
+                else
+                    $result_arr[$attribute] = $desc;
             }
         }
         if (!$returnStructure) {
@@ -534,7 +538,6 @@ class AfwStructureHelper extends AFWRoot
 
         return $result_arr;
     }
-
 
     public static final function fixStructureOf(&$object, $attribute, $desc = null)
     {
@@ -545,14 +548,12 @@ class AfwStructureHelper extends AFWRoot
         }
     }
 
-
     public static final function editIfEmpty(&$object, $attribute, $desc = null)
     {
         $desc = AfwStructureHelper::fixStructureOf($object, $attribute, $desc);
 
         return $desc['READONLY'] and $desc['EDIT_IF_EMPTY'];
     }
-
 
     // attribute can be modified by user in standard HZM-UMS model
     public static function itemsEditableBy(&$object, $attribute, $user = null, $desc = null)
@@ -566,7 +567,6 @@ class AfwStructureHelper extends AFWRoot
         }
     }
 
-
     // attribute can be modified by user in standard HZM-UMS model
     public static final function attributeCanBeModifiedBy(&$object, $attribute, $user, $desc)
     {
@@ -575,7 +575,7 @@ class AfwStructureHelper extends AFWRoot
         // $objme = AfwSession::getUserConnected();
         $desc = AfwStructureHelper::fixStructureOf($object, $attribute, $desc);
 
-        //if($attribute == "orgunit_id") die("desc of $attribute ". var_export($desc,true));
+        // if($attribute == "orgunit_id") die("desc of $attribute ". var_export($desc,true));
 
         if (AfwStructureHelper::editIfEmpty($object, $attribute, $desc) and $object->isEmpty()) {
             // die("desc of $attribute ". var_export($desc,true));
@@ -632,15 +632,14 @@ class AfwStructureHelper extends AFWRoot
             } else {
                 return [
                     false,
-                    "the attribute $attribute is set readonly absolutely or for this user roles in the system, desc =" .
-                        var_export($desc, true),
+                    "the attribute $attribute is set readonly absolutely or for this user roles in the system, desc ="
+                        . var_export($desc, true),
                 ];
             }
         } else {
             return [true, ''];
         }
     }
-
 
     public static final function attributeIsWriteableBy(
         $object,
@@ -678,16 +677,18 @@ class AfwStructureHelper extends AFWRoot
         $reason_readonly = false
     ) {
         // AfwRunHelper::safeDie("attributeIsReadOnly($attribute)");
+
         /*
-        This is not logic attributes R/O or no it is not mandatory to have relation with user authenticated
-        $objme = AfwSession::getUserConnected();
-        if (!$objme) {
-            if (!$reason_readonly) {
-                return true;
-            } else {
-                return [true, 'no user connected'];
-            }
-        }*/
+         * This is not logic attributes R/O or no it is not mandatory to have relation with user authenticated
+         * $objme = AfwSession::getUserConnected();
+         * if (!$objme) {
+         *     if (!$reason_readonly) {
+         *         return true;
+         *     } else {
+         *         return [true, 'no user connected'];
+         *     }
+         * }
+         */
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
@@ -729,7 +730,7 @@ class AfwStructureHelper extends AFWRoot
 
         $is_attributeIsReadOnly = (!$attributeIsEditable or $attrIsSetReadonly);
 
-        //if($attribute=="trips_html") die("attributeIsReadOnly($attribute)=$is_attributeIsReadOnly : attributeIsEditable=$attributeIsEditable attrIsSetReadonly=$attrIsSetReadonly, the_reason_readonly=$the_reason_readonly");
+        // if($attribute=="trips_html") die("attributeIsReadOnly($attribute)=$is_attributeIsReadOnly : attributeIsEditable=$attributeIsEditable attrIsSetReadonly=$attrIsSetReadonly, the_reason_readonly=$the_reason_readonly");
 
         if (!$reason_readonly) {
             return $is_attributeIsReadOnly;
@@ -737,7 +738,6 @@ class AfwStructureHelper extends AFWRoot
             return [$is_attributeIsReadOnly, $the_reason_readonly];
         }
     }
-
 
     public final static function attributeIsAuditable(&$object, $attribute, $desc = '')
     {
@@ -747,7 +747,7 @@ class AfwStructureHelper extends AFWRoot
         $return = intval($desc['AUDIT']);
         if (!$return and $desc['AUDIT']) {
             $return = 1;
-        } // nb_months of audit
+        }  // nb_months of audit
 
         return $return;
     }
@@ -776,10 +776,10 @@ class AfwStructureHelper extends AFWRoot
                         return [false, ''];
                     } else {
                         $isROReason_arr[] =
-                            "stepIsReadOnly($step) for column name " .
-                            $nom_col .
-                            ' : ' .
-                            $isROReason;
+                            "stepIsReadOnly($step) for column name "
+                            . $nom_col
+                            . ' : '
+                            . $isROReason;
                     }
                 }
             }
@@ -799,16 +799,20 @@ class AfwStructureHelper extends AFWRoot
         $submode = '',
         $for_this_instance = true
     ) {
-        if (!$object) return false;
-        if (!$object->attributeIsApplicable($attribute)) return false;
-        global $display_in_edit_mode;
-        /*
-        This is not logic attributes editable or no it is not mandatory to have relation with user authenticated
-        $objme = AfwSession::getUserConnected();
-
-        if (!$objme) {
+        if (!$object)
             return false;
-        }*/
+        if (!$object->attributeIsApplicable($attribute))
+            return false;
+        global $display_in_edit_mode;
+
+        /*
+         * This is not logic attributes editable or no it is not mandatory to have relation with user authenticated
+         * $objme = AfwSession::getUserConnected();
+         *
+         * if (!$objme) {
+         *     return false;
+         * }
+         */
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
@@ -817,7 +821,7 @@ class AfwStructureHelper extends AFWRoot
 
         if ($display_in_edit_mode['*'] and $desc['SHOW']) {
             // <-- be careful getStructureOf make SHOW=true if RETRIEVE=true
-            //if($attribute=="response_date") throw new AfwRuntimeException("rafik here 20200310 desc= ".var_export($desc,true));
+            // if($attribute=="response_date") throw new AfwRuntimeException("rafik here 20200310 desc= ".var_export($desc,true));
             if (
                 !$desc['EDIT'] and
                 $desc['CATEGORY'] != 'FORMULA' and
@@ -842,22 +846,22 @@ class AfwStructureHelper extends AFWRoot
         $mode_activated_otherway =
             isset($desc["$mode_code-OTHERWAY"]) && $desc["$mode_code-OTHERWAY"];
 
-
         $is_attributeEditable =
             ($applicable and
                 ($mode_activated or
                     $mode_activated_otherway or
-                    (($objme = AfwSession::getUserConnected()) && $objme->isSuperAdmin() &&
+                    (($objme = AfwSession::getUserConnected()) &&
+                        $objme->isSuperAdmin() &&
                         isset($desc["$mode_code-ADMIN"]) &&
                         $desc["$mode_code-ADMIN"]) or
                     ($applicable and
-                        $desc["$mode_code-ROLES"] and ($objme = AfwSession::getUserConnected()) and
+                        $desc["$mode_code-ROLES"] and
+                        ($objme = AfwSession::getUserConnected()) and
                         $objme->i_have_one_of_roles($desc["$mode_code-ROLES"]))));
-        //if($attribute=="trips_html") die("attributeIsEditable($attribute) : is_attributeEditable=$is_attributeEditable : applicable=$applicable and <br>(mode_activated=$mode_activated or mode_activated_for_me_as_admin=$mode_activated_for_me_as_admin or mode_activated_for_me_as_i_have_role=$mode_activated_for_me_as_i_have_role)");
+        // if($attribute=="trips_html") die("attributeIsEditable($attribute) : is_attributeEditable=$is_attributeEditable : applicable=$applicable and <br>(mode_activated=$mode_activated or mode_activated_for_me_as_admin=$mode_activated_for_me_as_admin or mode_activated_for_me_as_i_have_role=$mode_activated_for_me_as_i_have_role)");
 
         return $is_attributeEditable;
     }
-
 
     public static final function isQuickEditableAttribute(
         &$object,
@@ -865,8 +869,6 @@ class AfwStructureHelper extends AFWRoot
         $desc = '',
         $submode = ''
     ) {
-
-
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
@@ -890,9 +892,10 @@ class AfwStructureHelper extends AFWRoot
             $submode,
             false
         ) and
-            ( /* !isset($desc[$qedit_mode_code]) or // Rafik This at left is old logic should be obsolete now and QEDIT mode should be explicit */
+            (  /* !isset($desc[$qedit_mode_code]) or // Rafik This at left is old logic should be obsolete now and QEDIT mode should be explicit */
                 $desc[$qedit_mode_code] or
-                ($desc["$qedit_mode_code-ADMIN"] and ($objme = AfwSession::getUserConnected()) and $objme->isAdmin()));
+                ($desc["$qedit_mode_code-ADMIN"] and ($objme = AfwSession::getUserConnected()) and $objme->isAdmin())
+            );
     }
 
     public static final function reasonWhyAttributeNotQuickEditable(
@@ -901,8 +904,10 @@ class AfwStructureHelper extends AFWRoot
         $desc = '',
         $submode = ''
     ) {
-        if (!$object) return "no object to quick edit";
-        if (!$object->attributeIsApplicable($attribute)) return "attribute $attribute is not applicable";
+        if (!$object)
+            return 'no object to quick edit';
+        if (!$object->attributeIsApplicable($attribute))
+            return "attribute $attribute is not applicable";
 
         // @todo rafik according to the above method
         // $objme = AfwSession::getUserConnected();
@@ -946,7 +951,6 @@ class AfwStructureHelper extends AFWRoot
         $desc = '',
         $submode = ''
     ) {
-
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
@@ -961,12 +965,11 @@ class AfwStructureHelper extends AFWRoot
             $mode_code = "SHOW_$submode";
         }
 
-        return $desc[$mode_code] or ($desc["$mode_code-ADMIN"]  && ($objme = AfwSession::getUserConnected()) && $objme->isAdmin());
+        return $desc[$mode_code] or ($desc["$mode_code-ADMIN"] && ($objme = AfwSession::getUserConnected()) && $objme->isAdmin());
     }
 
     public static final function isReadOnlyAttribute(&$object, $attribute, $desc = '', $submode = '')
     {
-
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
@@ -990,22 +993,24 @@ class AfwStructureHelper extends AFWRoot
     }
 
     /**
-     * 
      * @return AFWObject
      */
-
     public static function getEmptyObject(&$object, $attribute)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
 
-        list($fileName, $className, $ansTab, $ansModule,) = AfwStructureHelper::getFactoryForFk($object, $attribute);
+        list(
+            $fileName,
+            $className,
+            $ansTab,
+            $ansModule,
+        ) = AfwStructureHelper::getFactoryForFk($object, $attribute);
         if (!$className) {
             throw new AfwRuntimeException("Failed to getEmptyObject from this -> getFactoryForFk($attribute) => list($fileName, $className, $ansTab, $ansModule) with this = " . $object->getDefaultDisplay($lang));
         }
 
         return new $className();
     }
-
 
     public static function classIsLookupTable($className)
     {
@@ -1015,29 +1020,29 @@ class AfwStructureHelper extends AFWRoot
         return $ret;
     }
 
-    /** 
+    /**
      * @param AFWObject $object
      * @param string $attribute
      * @param array $desc
      * @return bool
      */
-
     public static function isLookupAttribute(&$object, $attribute, $desc = null)
     {
-        if (!$desc) $desc = AfwStructureHelper::getStructureOf($object, $attribute);
-        if ($desc["ANSWER-IS-LOOKUP"]) return true;
+        if (!$desc)
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        if ($desc['ANSWER-IS-LOOKUP'])
+            return true;
         list($fileName, $className) = AfwStructureHelper::getFactoryForFk($object, $attribute, $desc);
         return self::classIsLookupTable($className);
     }
 
-
-    /** getFactoryForFk
+    /**
+     * getFactoryForFk
      * @param AFWObject $object
      * @param string $attribute
      * @param array $desc
      * @return array
      */
-
     public static function getFactoryForFk(&$object, $attribute, $desc = null)
     {
         list($ansTab, $ansModule) = $object->getMyAnswerTableAndModuleFor($attribute, $desc);
@@ -1051,8 +1056,8 @@ class AfwStructureHelper extends AFWRoot
         return $return_arr;
     }
 
-
-    /** getAnswerModule
+    /**
+     * getAnswerModule
      * @param AFWObject $object
      * @param string $attribute
      * @param array $desc
@@ -1064,14 +1069,13 @@ class AfwStructureHelper extends AFWRoot
         return $ansModule;
     }
 
-
-    public static function allRealAttributes($className, $step = "all")
+    public static function allRealAttributes($className, $step = 'all')
     {
         $returnArr = [];
         $this_db_structure = $className::getDbStructure($return_type = 'structure', 'all');
         foreach ($this_db_structure as $attrib => $desc) {
-            if ((!$desc['CATEGORY']) and (($step == "all") or ($desc['STEP']== "all") or ($desc['STEP']==$step))) {
-                $returnArr[]=$attrib;
+            if ((!$desc['CATEGORY']) and (($step == 'all') or ($desc['STEP'] == 'all') or ($desc['STEP'] == $step))) {
+                $returnArr[] = $attrib;
             }
         }
 
@@ -1094,14 +1098,16 @@ class AfwStructureHelper extends AFWRoot
         return [null, null];
     }
 
-    /** getParentStruct
+    /**
+     * getParentStruct
      * @param AFWObject $object
      * @param string $attribute
      * @return array
      */
     public static function getParentStruct(&$object, $attribute, $struct)
     {
-        if (!$struct) $struct = AfwStructureHelper::getStructureOf($object, $attribute);
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($object, $attribute);
         $this_table = $object::$TABLE;
         list($fileName, $className) = AfwStructureHelper::getFactoryForFk($object, $attribute, $struct);
         list($attribParent, $structParent) = AfwStructureHelper::getParentOf($className, $this_table, $attribute);
@@ -1109,28 +1115,35 @@ class AfwStructureHelper extends AFWRoot
     }
 
     /*
-        really exists even if it is not real but virtual (category not empty)
-    */
+     * really exists even if it is not real but virtual (category not empty)
+     */
     public static function fieldReallyExists(&$object, $attribute, $structure = null)
     {
-        if (!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
-        return ($structure["TYPE"] or $object->isTechField($attribute)); //  or $this->getAfieldValue($attribute)
+        if (!$structure)
+            $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        return ($structure['TYPE'] or $object->isTechField($attribute));  //  or $this->getAfieldValue($attribute)
     }
 
     public static function structureIsNumericField($structure)
     {
-        return (($structure["TYPE"]=="FK") or ($structure["TYPE"]=="INT") or ($structure["TYPE"]=="PCT") or ($structure["TYPE"]=="FLOAT"));
+        return (($structure['TYPE'] == 'FK') or
+            ($structure['TYPE'] == 'ENUM') or
+            ($structure['TYPE'] == 'INT') or
+            ($structure['TYPE'] == 'BIGINT') or
+            ($structure['TYPE'] == 'AMNT') or
+            ($structure['TYPE'] == 'SMLINT') or
+            ($structure['TYPE'] == 'PCT') or
+            ($structure['TYPE'] == 'FLOAT'));
     }
-
 
     public static function attributeIsReel(&$object, $attribute, $structure = null)
     {
         if (is_numeric($attribute)) {
             return false;
         }
-        if ((!$structure) 
-            or (AfwStringHelper::stringStartsWith($structure['CATEGORY'], "::"))
-            or (AfwStringHelper::stringStartsWith($structure['OBSOLETE'], "::"))) {
+        if ((!$structure) or
+                (AfwStringHelper::stringStartsWith($structure['CATEGORY'], '::')) or
+                (AfwStringHelper::stringStartsWith($structure['OBSOLETE'], '::'))) {
             $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         }
         // if($attribute=="nomcomplet") die("structure of $attribute =".var_export($structure,true));
@@ -1151,10 +1164,10 @@ class AfwStructureHelper extends AFWRoot
         return $liste_rep;
     }
 
-
     public static final function getDefaultValue(&$object, $attribute, $struct = null)
     {
-        if (!$struct) $struct = AfwStructureHelper::getStructureOf($object, $attribute);
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($object, $attribute);
         return $struct['DEFAULT'];
     }
 
@@ -1175,7 +1188,7 @@ class AfwStructureHelper extends AFWRoot
             $obj = $object->het($attribute_original);
             if ($obj) {
                 $obj_id = $obj->getId();
-                $instance_help_text = $obj->translate("instance_" . $obj_id . "_help_text", $lang);
+                $instance_help_text = $obj->translate('instance_' . $obj_id . '_help_text', $lang);
                 $instance_help_text = $object->decodeTpl($instance_help_text);
                 $instance_help_text = $obj->decodeTpl($instance_help_text);
             }
@@ -1204,7 +1217,8 @@ class AfwStructureHelper extends AFWRoot
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         }
 
-        if (!$desc) return false;
+        if (!$desc)
+            return false;
 
         return !$desc['CATEGORY'];
     }
@@ -1229,14 +1243,16 @@ class AfwStructureHelper extends AFWRoot
 
         $shortcuts = $object::getShortcutFields();
         foreach ($shortcuts as $attribute => $is_shortcut) {
-            if ($is_shortcut) $result .= "   if(\$attribute==\"$attribute\") return true;\n";
+            if ($is_shortcut)
+                $result .= "   if(\$attribute==\"$attribute\") return true;\n";
         }
         $formulas = $object::getFormulaFields();
         foreach ($formulas as $attribute => $is_formula) {
-            if ($is_formula) $result .= "   if(\$attribute==\"$attribute\") return true;\n";
+            if ($is_formula)
+                $result .= "   if(\$attribute==\"$attribute\") return true;\n";
         }
         $result .= "   return false;\n";
-        $result .= "}";
+        $result .= '}';
 
         return $result;
     }
@@ -1250,7 +1266,7 @@ class AfwStructureHelper extends AFWRoot
             $result .= "   if(\$attribute==\"$short_name\") return \"$attribute\";\n";
         }
         $result .= "   return \$attribute;\n";
-        $result .= "}";
+        $result .= '}';
 
         return $result;
     }
@@ -1263,7 +1279,8 @@ class AfwStructureHelper extends AFWRoot
             $attribute_reel = $object->myShortNameToAttributeName($attribute);
         }
 
-        if (!$attribute_reel) $attribute_reel = $attribute;
+        if (!$attribute_reel)
+            $attribute_reel = $attribute;
 
         self::$shortNamesArray[$cl][$attribute] = $attribute_reel;
 
@@ -1281,7 +1298,7 @@ class AfwStructureHelper extends AFWRoot
         $attribute = AfwStructureHelper::shortNameToAttributeName($object, $attribute);
         $typeOfAtt = $object->getTypeOf($attribute);
         return AfwUmsPagHelper::isObjectType($typeOfAtt);
-        //return (array_key_exists($attribute, $this->AFIELD _VALUE) and (( == "MFK") or ($this->getTypeOf($attribute) == "FK")));
+        // return (array_key_exists($attribute, $this->AFIELD _VALUE) and (( == "MFK") or ($this->getTypeOf($attribute) == "FK")));
     }
 
     public static final function containData(&$object, $attribute)
@@ -1289,7 +1306,7 @@ class AfwStructureHelper extends AFWRoot
         $attribute = AfwStructureHelper::shortNameToAttributeName($object, $attribute);
         $typeOfAtt = $object->getTypeOf($attribute);
         return AfwUmsPagHelper::isValueType($typeOfAtt);
-        //return ((array_key_exists($attribute, $this->AFIELD _VALUE) or $this->attributeIsFormula($attribute)) and (($this->getTypeOf($attribute) != "MFK") and ($this->getTypeOf($attribute) != "FK")));
+        // return ((array_key_exists($attribute, $this->AFIELD _VALUE) or $this->attributeIsFormula($attribute)) and (($this->getTypeOf($attribute) != "MFK") and ($this->getTypeOf($attribute) != "FK")));
     }
 
     public static function isEasyAttribute(&$object, $attribute)
@@ -1303,13 +1320,13 @@ class AfwStructureHelper extends AFWRoot
 
     public static final function isEasyAttributeNotOptim(&$object, $attribute, $struct = null)
     {
-        if (!$struct) $struct = AfwStructureHelper::getStructureOf($object, $attribute);
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($object, $attribute);
         return $struct and
             !$struct['CATEGORY'] and
             $struct['TYPE'] != 'MFK' and
             $struct['TYPE'] != 'FK';
     }
-
 
     public static final function isFormulaEasyAttributeNotOptim(&$object, $attribute)
     {
@@ -1327,7 +1344,6 @@ class AfwStructureHelper extends AFWRoot
         }
     }
 
-
     public static function isObjectEasyAttribute(&$object, $attribute)
     {
         if (!$object->easyModeNotOptim()) {
@@ -1344,7 +1360,7 @@ class AfwStructureHelper extends AFWRoot
         $return =
             ($struct and !$struct['CATEGORY'] and $struct['TYPE'] == 'FK');
 
-        //if($attribute=="bus") die("isObjectEasy=$return getStructureOf($attribute) = ".var_export($struct,true));
+        // if($attribute=="bus") die("isObjectEasy=$return getStructureOf($attribute) = ".var_export($struct,true));
 
         return $return;
     }
@@ -1394,7 +1410,6 @@ class AfwStructureHelper extends AFWRoot
 
         return false;
     }
-
 
     public static function export($object)
     {

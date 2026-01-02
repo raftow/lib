@@ -238,7 +238,9 @@ class AfwSqlHelper extends AFWRoot
                     if (strlen($old_value_desc) > 100)
                         $old_value_desc = substr($old_value_desc, 0, 97) . '...';
 
-                    $isNum = is_numeric($value);
+                    $isNumericField = AfwStructureHelper::structureIsNumericField($structure);
+
+                    $isNum = is_numeric($value) and $isNumericField;
                     $isGDate = (($structure['TYPE'] == 'GDAT') or ($structure['TYPE'] == 'GDATE'));
                     $isSameDate = false;
                     $isSame = ((!$value and ($old_value == '@@empty@@')) or ($value == $old_value));

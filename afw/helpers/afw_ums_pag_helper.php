@@ -6,41 +6,51 @@ class AfwUmsPagHelper extends AFWRoot
 
     // 	6	اختيار متعدد من قائمة
     public static $afield_type_mlst = 6;
+
     // 	5	اختيار من قائمة
     public static $afield_type_list = 5;
+
     // 	12	إختيار من قائمة قصيرة
     public static $afield_type_enum = 12;
+
     // 	15	إختيار متعدد من قائمة قصيرة
     public static $afield_type_menum = 15;
 
     // 	2	تاريخ
     public static $afield_type_date = 2;
+
     // 	9	تاريخ ميلادي
     public static $afield_type_Gdat = 9;
+
     // 	4	وقت
     public static $afield_type_time = 4;
 
     // 	1	قيمة عددية متوسطة
-    public static $afield_type_nmbr = 1;
+    public static $afield_type_mediumint = 1;
+
     // 	13	قيمة عددية صغيرة
-    public static $afield_type_int = 13;
+    public static $afield_type_smallint = 13;
+
     // 	14	قيمة عددية كبيرة
     public static $afield_type_bigint = 14;
+
     // 	3	مبلغ من المال
     public static $afield_type_amnt = 3;
+
     // 	7	نسبة مائوية
     public static $afield_type_pctg = 7;
+
     // 	16	قيمة عددية كسرية
     public static $afield_type_float = 16;
 
     // 	11	نص طويل
     public static $afield_type_mtxt = 11;
+
     // 	10	نص قصير
     public static $afield_type_text = 10;
 
     // 	8	نعم/لا
     public static $afield_type_yn = 8;
-
 
     public static final function getAtableObj($module, $table)
     {
@@ -65,7 +75,6 @@ class AfwUmsPagHelper extends AFWRoot
 
         return $atb;
     }
-
 
     public static final function getMyModuleAndAtable(
         $id_main_sh,
@@ -130,7 +139,7 @@ class AfwUmsPagHelper extends AFWRoot
                     $val_is_entity = 'Y';
                     $val_is_lookup = 'N';
                     if ($tbl->IS_LOOKUP) {
-                        $val_is_lookup = 'Y';                        
+                        $val_is_lookup = 'Y';
                     }
 
                     if ($tbl->IS_SMALL_LOOKUP) {
@@ -150,16 +159,12 @@ class AfwUmsPagHelper extends AFWRoot
                     $tbl->set('utf8', 'Y');
                     $tbl->set('dbengine_id', 2);
                     $tbl->ignore_initial_translation_fields = true;
-                    if($tbl->insert())
-                    {
+                    if ($tbl->insert()) {
                         $tbl_id = $tbl->getId();
                         $tbl_new = true;
+                    } else {
+                        throw new AfwRuntimeException('::getMyAtable : failed to insert atable record : ' . $tbl->debugg_tech_notes);
                     }
-                    else
-                    {
-                        throw new AfwRuntimeException("::getMyAtable : failed to insert atable record : ".$tbl->debugg_tech_notes);
-                    }
-                    
                 } else {
                     $tbl_new = null;
                 }
@@ -168,7 +173,7 @@ class AfwUmsPagHelper extends AFWRoot
                 $tbl_new = false;
             }
         } else {
-            throw new AfwRuntimeException("::getMyAtable : Invalid Module Object (Seems Empty)");
+            throw new AfwRuntimeException('::getMyAtable : Invalid Module Object (Seems Empty)');
         }
 
         return [$mdl, $tbl, $mdl_id, $tbl_id, $mdl_new, $tbl_new];
@@ -176,11 +181,8 @@ class AfwUmsPagHelper extends AFWRoot
 
     /**
      * @param AFWObject $obj
-     * 
-     * 
      */
-
-    public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false, $restrictToField = "")
+    public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false, $restrictToField = '')
     {
         global $lang, $the_last_sql;
         $file_dir_name = dirname(__FILE__);
@@ -207,26 +209,27 @@ class AfwUmsPagHelper extends AFWRoot
                 "can't find or create table [$table_name] in module [$mcode/$mdl_id]."
             );
         }
-        if ($tbl_new) $restrictToField = "";
-        $fld_u = 0; // updated
+        if ($tbl_new)
+            $restrictToField = '';
+        $fld_u = 0;  // updated
         if ($tbl_new or $updateIfExists) {
             $tit_single_ar = $obj->transClassSingle('ar');
             $tit_plural_ar = $obj->transClassPlural('ar');
-            
+
             $tit_single_en = $obj->transClassSingle('en');
             $tit_plural_en = $obj->transClassPlural('en');
             $tit_single_s_ar = $obj->transClassSingle('ar', true);
             $tit_plural_s_ar = $obj->transClassPlural('ar', true);
             /*die("rafik 20250119 : <br>
-            
-            tit_single_en = $tit_single_en <br> 
+
+            tit_single_en = $tit_single_en <br>
             tit_plural_en = $tit_plural_en <br>
             tit_single_ar = $tit_single_ar <br>
             tit_plural_ar = $tit_plural_ar <br>
             tit_single_s_ar = $tit_single_s_ar <br>
             tit_plural_s_ar = $tit_plural_s_ar <br>
-            
-            
+
+
             for ".$tbl);*/
             $tbl->set('titre_short', $tit_plural_ar);
             $tbl->set('titre', $tit_plural_ar);
@@ -247,16 +250,11 @@ class AfwUmsPagHelper extends AFWRoot
                 $tbl->set('is_lookup', 'N');
             }
 
-            if(is_array($obj->DISPLAY_FIELD))
-            {
-                $display_field = implode("|", $obj->DISPLAY_FIELD);
-            }
-            elseif(is_array($obj->DISPLAY_FIELD_BY_LANG))
-            {
-                $display_field = "[".$obj->DISPLAY_FIELD_BY_LANG["ar"]."]:ByLang";
-            }
-            else
-            {
+            if (is_array($obj->DISPLAY_FIELD)) {
+                $display_field = implode('|', $obj->DISPLAY_FIELD);
+            } elseif (is_array($obj->DISPLAY_FIELD_BY_LANG)) {
+                $display_field = '[' . $obj->DISPLAY_FIELD_BY_LANG['ar'] . ']:ByLang';
+            } else {
                 $display_field = $obj->DISPLAY_FIELD;
             }
             $tbl->set('display_field', $display_field);
@@ -289,10 +287,9 @@ class AfwUmsPagHelper extends AFWRoot
             $tbl->createUpdateMySteps($lang);
         }
 
-
         $fnum = 10;
 
-        $fld_i = 0; // inserted
+        $fld_i = 0;  // inserted
 
         $fldObj = new Afield();
         $fldObj->where("atable_id = $tbl_id");
@@ -303,10 +300,12 @@ class AfwUmsPagHelper extends AFWRoot
         foreach ($this_db_structure as $attribute => $structr) {
             if ((!$restrictToField) or ($restrictToField == $attribute)) {
                 $structure = AfwStructureHelper::repareMyStructure($obj, $structr, $attribute);
+
                 /*
-                if ($attribute == 'value') {
-                    die("for attribute $attribute after repareMyStructure, $structure = ".var_export($structure,true));
-                }*/
+                 * if ($attribute == 'value') {
+                 *     die("for attribute $attribute after repareMyStructure, $structure = ".var_export($structure,true));
+                 * }
+                 */
                 list($toPag, $notToPagReason) = $obj->attributeIsToPag($attribute, $structure);
                 /* if($attribute=="attribute_5")
                 {
@@ -345,7 +344,7 @@ class AfwUmsPagHelper extends AFWRoot
                             }
                         }
 
-                        //$afw.... = $structure["...."];
+                        // $afw.... = $structure["...."];
                         $afwType = $structure['TYPE'];
                         $afwCat = $structure['CATEGORY'];
                         $afield_type_id = self::fromAFWtoAfieldType(
@@ -356,30 +355,29 @@ class AfwUmsPagHelper extends AFWRoot
 
                         if ($afield_type_id == $afwType) {
                             throw new AfwRuntimeException(
-                                "for attribute <b>[$attribute]</b> can not decode afw type <b>[$afwType]</b> to afield type : <br><b>struct</b> = " .
-                                    var_export($structure, true) .
-                                    "<br> <b>obj</b> = " . var_export($obj, true)
+                                "for attribute <b>[$attribute]</b> can not decode afw type <b>[$afwType]</b> to afield type : <br><b>struct</b> = "
+                                . var_export($structure, true)
+                                . '<br> <b>obj</b> = ' . var_export($obj, true)
                             );
                         }
 
-                        $titre       = trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = false)));
-                        $titre_short = trim(strip_tags($obj->getAttributeLabel($attribute, "ar", $short = true)));
-                        $titre_en    = trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = false)));
-                        $titre_short_en = trim(strip_tags($obj->getAttributeLabel($attribute, "en", $short = true)));
-                        /*
-                        if($attribute == "address_type_enum")
-                        {
-                            die("rafik ddbbgg : titre_short_en = $titre_short_en titre_short_en = $titre_short_en titre_en = $titre_en titre = $titre titre_short = $titre_short");
-                        }
-                        */
+                        $titre = trim(strip_tags($obj->getAttributeLabel($attribute, 'ar', $short = false)));
+                        $titre_short = trim(strip_tags($obj->getAttributeLabel($attribute, 'ar', $short = true)));
+                        $titre_en = trim(strip_tags($obj->getAttributeLabel($attribute, 'en', $short = false)));
+                        $titre_short_en = trim(strip_tags($obj->getAttributeLabel($attribute, 'en', $short = true)));
 
+                        /*
+                         * if($attribute == "address_type_enum")
+                         * {
+                         *     die("rafik ddbbgg : titre_short_en = $titre_short_en titre_short_en = $titre_short_en titre_en = $titre_en titre = $titre titre_short = $titre_short");
+                         * }
+                         */
 
                         $fld->set('titre', $titre);
                         $fld->set('titre_short', $titre_short);
 
                         $fld->set('titre_en', $titre_en);
                         $fld->set('titre_short_en', $titre_short_en);
-
 
                         $this_help_text_ar = $obj->translate(
                             $attribute . '_help_text',
@@ -421,16 +419,16 @@ class AfwUmsPagHelper extends AFWRoot
                         $row['obj'] = $obj;
 
                         $fld_att = Afield::to_afield_att($id_main_sh, $row);
-                        
+
                         /*
-                        if($attribute=="qualification_id")
-                        {
-                            unset($row["atable"]);
-                            unset($row["obj"]);
-                            die("row=". var_export($row,true) . " fld_att=" .var_export($fld_att,true));
-                        }
-                        */
-                        
+                         * if($attribute=="qualification_id")
+                         * {
+                         *     unset($row["atable"]);
+                         *     unset($row["obj"]);
+                         *     die("row=". var_export($row,true) . " fld_att=" .var_export($fld_att,true));
+                         * }
+                         */
+
                         foreach ($fld_att as $prop => $propvalue) {
                             $fld->set($prop, $propvalue);
                         }
@@ -448,18 +446,16 @@ class AfwUmsPagHelper extends AFWRoot
                             $fld->set('reel', 'Y');
                         }
 
-                        if (isset($obj->UNIQUE_KEY) and is_array($obj->UNIQUE_KEY)) 
-                        {
-                            if(!in_array($attribute, $obj->UNIQUE_KEY))
-                            {
+                        if (isset($obj->UNIQUE_KEY) and is_array($obj->UNIQUE_KEY)) {
+                            if (!in_array($attribute, $obj->UNIQUE_KEY)) {
                                 $fld->set('distinct_for_list', 'N');
                             } else {
                                 // if ($attribute == "original_name") throw new AfwRuntimeException("rafik-medali : obj->UNIQUE_KEY = " . var_export($obj->UNIQUE_KEY, true) . " obj = " . var_export($obj, true));
                                 $fld->set('distinct_for_list', 'Y');
                             }
                         } else {
-                            $fld->set('distinct_for_list', 'W'); // no index at the origine
-                        }  
+                            $fld->set('distinct_for_list', 'W');  // no index at the origine
+                        }
                     }
                     if ($fld->commit()) {
                         if ($field_to_create) {
@@ -592,14 +588,13 @@ class AfwUmsPagHelper extends AFWRoot
             return true;
         }
 
-
         return false;
     }
 
     public static function fromAFWtoAfieldType($afwType, $afwCat, $structure)
     {
         $file_dir_name = dirname(__FILE__);
-        // 
+        //
         $afwType = strtoupper($afwType);
         if ($afwType == 'FK') {
             if ($afwCat == 'ITEMS') {
@@ -629,11 +624,11 @@ class AfwUmsPagHelper extends AFWRoot
         } elseif ($afwType == 'DATETIME') {
             return AfwUmsPagHelper::$afield_type_Gdat;
         } elseif ($afwType == 'INT') {
-            return AfwUmsPagHelper::$afield_type_int;
+            return AfwUmsPagHelper::$afield_type_mediumint;
         } elseif ($afwType == 'BIGINT') {
             return AfwUmsPagHelper::$afield_type_bigint;
-        } elseif ($afwType == 'INT') {
-            return AfwUmsPagHelper::$afield_type_nmbr;
+        } elseif ($afwType == 'SMLINT') {
+            return AfwUmsPagHelper::$afield_type_smallint;
         } elseif ($afwType == 'ENUM') {
             return AfwUmsPagHelper::$afield_type_enum;
         } elseif ($afwType == 'AMNT') {
@@ -650,23 +645,21 @@ class AfwUmsPagHelper extends AFWRoot
     }
 
     /**
-     * @param AFWObject $object 
+     * @param AFWObject $object
      * @param Auser $auser
      */
-
     public static final function userCanDoOperationOnObject(
         $object,
         $auser,
         $operation,
         $log = true
     ) {
-
-
         if ($auser and $auser->isAdmin()) {
             return true;
         }
 
-        if(!$object->public_display) $object->public_display = $object->canBePublicDisplayed();
+        if (!$object->public_display)
+            $object->public_display = $object->canBePublicDisplayed();
 
         if ($operation == 'display' and $object->public_display) {
             return true;
@@ -678,12 +671,12 @@ class AfwUmsPagHelper extends AFWRoot
             return true;
         }
 
-        if ($operation == 'delete') 
-        {
+        if ($operation == 'delete') {
             list($canBeDeletedWithoutRole, $reasonBeDeletedWithoutRole) = $object->canBeDeletedWithoutRoleBy($auser);
-            if($canBeDeletedWithoutRole) return true;
+            if ($canBeDeletedWithoutRole)
+                return true;
         }
-        
+
         if (
             $operation == 'display' and
             $object->canBeSpeciallyDisplayedBy($auser)
@@ -753,38 +746,37 @@ class AfwUmsPagHelper extends AFWRoot
         if (!($auser and $auser->isSuperAdmin())) {
             $return_arr[] = "$auser is not SuperAdmin";
         } else {
-            $return_arr[] = "return = true";
+            $return_arr[] = 'return = true';
         }
 
-
         if (!($operation == 'display' and $object->public_display)) {
-            $return_arr[] = "object and case is not public_display object=" . var_export($object, true);
+            $return_arr[] = 'object and case is not public_display object=' . var_export($object, true);
         } else {
-            $return_arr[] = "return = true";
+            $return_arr[] = 'return = true';
         }
 
         if (!($operation == 'search' and $object->public_display)) {
-            $return_arr[] = "object and case is not public_display for search";
+            $return_arr[] = 'object and case is not public_display for search';
         } else {
-            $return_arr[] = "return = true";
+            $return_arr[] = 'return = true';
         }
 
         if (!($operation == 'qsearch' and $object->public_display)) {
-            $return_arr[] = "object and case is not public_display for qsearch";
+            $return_arr[] = 'object and case is not public_display for qsearch';
         } else {
-            $return_arr[] = "return = true";
+            $return_arr[] = 'return = true';
         }
 
         if (!($operation == 'display' and $object->canBePublicDisplayed())) {
-            $return_arr[] = "object->canBePublicDisplayed return false";
+            $return_arr[] = 'object->canBePublicDisplayed return false';
         } else {
-            $return_arr[] = "return = true";
+            $return_arr[] = 'return = true';
         }
 
         if (!($operation == 'display' and $object->canBeSpeciallyDisplayedBy($auser))) {
             $return_arr[] = "object->canBeSpeciallyDisplayedBy $auser return false";
         } else {
-            $return_arr[] = "return = true";
+            $return_arr[] = 'return = true';
         }
 
         if ($operation == 'edit') {
@@ -841,13 +833,13 @@ class AfwUmsPagHelper extends AFWRoot
         return implode("<br>\n", $return_arr);
     }
 
-    /* @todo later if needed 
+    /* @todo later if needed
     public static final function getAllActionsFromRow($row, $cl, $currmod, $colActive="active", $step=0, $takeViewIcon = true)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         // $objme = AfwSession::getUserConnected();
 
-        
+
 
         $actions_tpl_arr = $object->getSpecificActions($step);
         // die("$object : getSpecificActions = ".var_export($actions_tpl_arr,true));
@@ -855,12 +847,12 @@ class AfwUmsPagHelper extends AFWRoot
         list($displayAction, $displayFilename) = $object->displayAction($step);
         list($deleteAction, $deleteFilename) = $object->deleteAction($step);
 
-        if ($row[$colActive]!="Y") 
+        if ($row[$colActive]!="Y")
         {
             $viewIcon = 'view_off';
             $data_errors = 'سجل محذوف الكترونيا';
-        } 
-        elseif 
+        }
+        elseif
         (
             $object->showRetrieveErrors and
             (AfwSession::hasOption('CHECK_ERRORS') or $object->forceCheckErrors)
@@ -909,9 +901,8 @@ class AfwUmsPagHelper extends AFWRoot
         return $actions_tpl_arr;
     }*/
 
-
     /**
-     * @param AFWObject $object 
+     * @param AFWObject $object
      */
     public static final function getAllActions($object, $step = 0, $takeViewIcon = true)
     {
@@ -968,18 +959,15 @@ class AfwUmsPagHelper extends AFWRoot
             'img' => $images['modifier'],
             'framework_action' => $editAction,
         ];
-        //$actions_tpl_arr["delete"] = array("link"=>"Main_Page=$deleteFilename&cl=$cl&currmod=$currmod&id=[id]&popup=", "img"=>$images['delete'],"target"=>"_del_popup","framework_action"=>$deleteAction);
-        if($deleteAction)
-        {
+        // $actions_tpl_arr["delete"] = array("link"=>"Main_Page=$deleteFilename&cl=$cl&currmod=$currmod&id=[id]&popup=", "img"=>$images['delete'],"target"=>"_del_popup","framework_action"=>$deleteAction);
+        if ($deleteAction) {
             $actions_tpl_arr['delete'] = [
                 'link' => '#todo',
                 'img' => $images['delete'],
                 'framework_action' => $deleteAction,
                 'ajax_class' => 'trash',
             ];
-        }
-        else
-        {
+        } else {
             $actions_tpl_arr['delete'] = [
                 'link' => '',
                 'img' => $images['locked'],
@@ -1000,7 +988,7 @@ class AfwUmsPagHelper extends AFWRoot
 
         return $actions_tpl_matrix;
     }
-    
+
     /* to be used later for very quick search no eager no FKs decode etc ...
        but now it is not needed for current projects
     public static final function getActionsMatrixFromData($data, $cl, $currmod, $colActive = "active", $step = 0)
@@ -1012,7 +1000,6 @@ class AfwUmsPagHelper extends AFWRoot
 
         return $actions_tpl_matrix;
     }*/
-
 
     public static final function getRetrieveHeader(
         $object,
@@ -1051,8 +1038,8 @@ class AfwUmsPagHelper extends AFWRoot
                     if (
                         isset($desc['EXCEL']) && $desc['EXCEL'] or
                         !isset($desc['EXCEL']) &&
-                        isset($desc['RETRIEVE']) &&
-                        $desc['RETRIEVE']
+                            isset($desc['RETRIEVE']) &&
+                            $desc['RETRIEVE']
                     ) {
                         $cols_excel[$nom_col] = $object->translate(
                             $nom_col,
@@ -1065,7 +1052,7 @@ class AfwUmsPagHelper extends AFWRoot
             }
         }
 
-        //$object->simpleError(var_export($nonexcel_cols,true)."<br>".var_export($cols_excel,true));
+        // $object->simpleError(var_export($nonexcel_cols,true)."<br>".var_export($cols_excel,true));
 
         return $cols_excel;
     }
@@ -1092,27 +1079,25 @@ class AfwUmsPagHelper extends AFWRoot
 
     public function getAllObjUsingMe($object, $action = '', $mode = '', $nbMax = 5)
     {
-        //$className = AfwStringHelper::tableToClass(static::$TABLE);
+        // $className = AfwStringHelper::tableToClass(static::$TABLE);
         $fileName = 'fk_' . AfwStringHelper::tableToFile($object::$TABLE);
         include $fileName;
 
         $arr_ObjUsingMe = [];
         $count_arr_ObjUsingMe = 0;
-        //AFWDebugg::log("faika-const($mode) : ");
-        //AFWDebugg::log($FK_CONSTRAINTS,true);
+        // AFWDebugg::log("faika-const($mode) : ");
+        // AFWDebugg::log($FK_CONSTRAINTS,true);
         foreach (
-            $FK_CONSTRAINTS
-            as $fk_on_me_table => $FK_CONSTRAINT_ITEM_ARR
+            $FK_CONSTRAINTS as $fk_on_me_table => $FK_CONSTRAINT_ITEM_ARR
         ) {
-            //AFWDebugg::log("faika-arr : ");
-            //AFWDebugg::log($FK_CONSTRAINT_ITEM_ARR,true);
+            // AFWDebugg::log("faika-arr : ");
+            // AFWDebugg::log($FK_CONSTRAINT_ITEM_ARR,true);
             foreach (
-                $FK_CONSTRAINT_ITEM_ARR
-                as $fk_on_me_col => $FK_CONSTRAINT_COL_PROPS
+                $FK_CONSTRAINT_ITEM_ARR as $fk_on_me_col => $FK_CONSTRAINT_COL_PROPS
             ) {
-                //AFWDebugg::log("faika-props : ");
-                //AFWDebugg::log($FK_CONSTRAINT_COL_PROPS,true);
-                //AFWDebugg::log("faika mode=$mode vs props[$action] = ".$FK_CONSTRAINT_COL_PROPS[$action]);
+                // AFWDebugg::log("faika-props : ");
+                // AFWDebugg::log($FK_CONSTRAINT_COL_PROPS,true);
+                // AFWDebugg::log("faika mode=$mode vs props[$action] = ".$FK_CONSTRAINT_COL_PROPS[$action]);
 
                 if (!$action or $FK_CONSTRAINT_COL_PROPS[$action] == $mode) {
                     $limit = $nbMax - $count_arr_ObjUsingMe;
@@ -1120,7 +1105,7 @@ class AfwUmsPagHelper extends AFWRoot
                         $fk_className = AfwStringHelper::tableToClass($fk_on_me_table);
                         $fk_fileName = AfwStringHelper::tableToFile($fk_on_me_table);
 
-                        //AFWDebugg::log("faika-find obj using me : $fk_fileName");
+                        // AFWDebugg::log("faika-find obj using me : $fk_fileName");
 
                         require_once $fk_fileName;
 
@@ -1277,36 +1262,35 @@ class AfwUmsPagHelper extends AFWRoot
             $affected_rows += $fk_obj->update(false);
         }
 
-
         return $affected_rows;
     }
 
     public static function afieldTypeToAfwType($afield_type_id)
     {
         $return = "no-afwtype-for-afield_type_id=$afield_type_id";
-         
+
         if ($afield_type_id == AfwUmsPagHelper::$afield_type_date) {
-            $return = "DATE";
+            $return = 'DATE';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_yn) {
-            $return = "YN";
+            $return = 'YN';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_Gdat) {
-            $return = "GDAT";
+            $return = 'GDAT';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_mtxt) {
-            $return = "TEXT";
+            $return = 'TEXT';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_text) {
-            $return = "TEXT";
+            $return = 'TEXT';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_items) {
-            $return = "FK";
+            $return = 'FK';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_list) {
-            $return = "FK";
+            $return = 'FK';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_mlst) {
-            $return = "MFK";
+            $return = 'MFK';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_enum) {
-            $return = "ENUM";
+            $return = 'ENUM';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_menum) {
-            $return = "MENUM";
+            $return = 'MENUM';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_pctg) {
-            $return = "PCTG";
+            $return = 'PCTG';
         }
 
         return $return;
