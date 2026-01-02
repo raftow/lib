@@ -43,7 +43,7 @@ class AfwCodeHelper
                 $lines_start = 0;
 
             for ($i = $lines_start; $i <= $lines_end; $i++) {
-                if ($i > 0 && $i < count($lines)) {
+                if ($i >= 0 && $i < count($lines)) {
                     $line_num = $i + 1;
                     if ($i == $line - 1)
                         $class_line_focus = $focus_class;
