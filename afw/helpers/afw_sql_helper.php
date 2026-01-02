@@ -240,7 +240,7 @@ class AfwSqlHelper extends AFWRoot
 
                     $isNumericField = AfwStructureHelper::structureIsNumericField($structure);
 
-                    $isNum = is_numeric($value) and $isNumericField;
+                    $isNum = (is_numeric($value) and $isNumericField);
                     $isGDate = (($structure['TYPE'] == 'GDAT') or ($structure['TYPE'] == 'GDATE'));
                     $isSameDate = false;
                     $isSame = ((!$value and ($old_value == '@@empty@@')) or ($value == $old_value));
