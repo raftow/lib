@@ -15,6 +15,7 @@ class AfwCodeHelper
             $file = $file_or_lines;
             if (file_exists($file)) {
                 $lines = file($file);
+                $title .= '<i>modified at ' . date('F d Y H:i:s.', filemtime($file)) . '</i>';
             }
 
             if ($line)
