@@ -1,52 +1,56 @@
 <?php
 class AfwSqlHelper extends AFWRoot
 {
-    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol=[], $isScalarCol=[], $isNoEmptyString=[], $isDate=[], $isDatetime=[], $datetimeformat='MM/DD/YYYY HH24:MI')
+    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isNoEmptyString = [], $isDate = [], $isDatetime = [], $datetimeformat = 'MM/DD/YYYY HH24:MI')
     {
         $my_row_cols = array_keys($my_row);
-        $insert_cols = "";
-        $insert_vals = "";
-        $set_update_cols = "";
+        $insert_cols = '';
+        $insert_vals = '';
+        $set_update_cols = '';
         $pk_cols_where = "1=1\n";
-        foreach($tableColsArr as $row_col)
-        {
+        foreach ($tableColsArr as $row_col) {
             $row_val = $my_row[$row_col];
             $old_row_val = $row_val;
-            if($isNoEmptyString[$row_col] and (!$row_val or (strtoupper($row_val)=="NULL"))) $row_val_string = "null";
-            elseif($isDatetime[$row_col]) $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
-            elseif($isDate[$row_col]) $row_val_string = "TO_DATE('$row_val', 'yyyy-mm-dd')";
-            else 
-                {
-                    $row_val_cleaned = str_replace("'", "''", $row_val);
-                    $row_val_string = "'$row_val_cleaned'";
-                }
-            $insert_cols .= ", $row_col";
-            if($isScalarCol[$row_col] and ($row_val or ($row_val=='0'))) $insert_vals .= ", $row_val -- $row_col \n";
-            else  $insert_vals .= ", $row_val_string -- $row_col \n";
-
-            if(!$isPKCol[$row_col]) 
-            {
-                if((!$row_val) and ($row_val!==0) and ($row_val!=='0')) $row_val = "null";
-                if($isScalarCol[$row_col]) $set_update_cols .= "\n-- oldn=$old_row_val : \n $row_col=$row_val,";
-                // elseif($isDate[$row_col]) $set_update_cols .= " $row_col=TO_DATE('$row_val', 'yyyy-mm-dd'),\n";
-                else $set_update_cols .= "\n-- olds=$old_row_val : \n $row_col=$row_val_string,";
-
+            if ($isNoEmptyString[$row_col] and (!$row_val or (strtoupper($row_val) == 'NULL')))
+                $row_val_string = 'null';
+            elseif ($isDatetime[$row_col])
+                $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
+            elseif ($isDate[$row_col])
+                $row_val_string = "TO_DATE('$row_val', 'yyyy-mm-dd')";
+            else {
+                $row_val_cleaned = str_replace("'", "''", $row_val);
+                $row_val_string = "'$row_val_cleaned'";
             }
-            else 
-            {
-                if(!$isScalarCol[$row_col]) $pk_cols_where .= "   AND $row_col=$row_val_string\n";
-                else $pk_cols_where .= "   AND $row_col=$row_val\n";
+            $insert_cols .= ", $row_col";
+            if ($isScalarCol[$row_col] and ($row_val or ($row_val == '0')))
+                $insert_vals .= ", $row_val -- $row_col \n";
+            else
+                $insert_vals .= ", $row_val_string -- $row_col \n";
+
+            if (!$isPKCol[$row_col]) {
+                if ((!$row_val) and ($row_val !== 0) and ($row_val !== '0'))
+                    $row_val = 'null';
+                if ($isScalarCol[$row_col])
+                    $set_update_cols .= "\n-- oldn=$old_row_val : \n $row_col=$row_val,";
+                // elseif($isDate[$row_col]) $set_update_cols .= " $row_col=TO_DATE('$row_val', 'yyyy-mm-dd'),\n";
+                else
+                    $set_update_cols .= "\n-- olds=$old_row_val : \n $row_col=$row_val_string,";
+            } else {
+                if (!$isScalarCol[$row_col])
+                    $pk_cols_where .= "   AND $row_col=$row_val_string\n";
+                else
+                    $pk_cols_where .= "   AND $row_col=$row_val\n";
             }
         }
-        $insert_cols=trim($insert_cols);
-        $insert_cols=trim($insert_cols,",");
+        $insert_cols = trim($insert_cols);
+        $insert_cols = trim($insert_cols, ',');
 
-        $insert_vals=trim($insert_vals);
-        $insert_vals=trim($insert_vals,",");
+        $insert_vals = trim($insert_vals);
+        $insert_vals = trim($insert_vals, ',');
 
-        $set_update_cols=trim($set_update_cols);
-        $set_update_cols=trim($set_update_cols,",");
-        
+        $set_update_cols = trim($set_update_cols);
+        $set_update_cols = trim($set_update_cols, ',');
+
         $sql = "begin
                         insert into $table
                         (
@@ -61,145 +65,141 @@ class AfwSqlHelper extends AFWRoot
                         update $table set $set_update_cols
                         where $pk_cols_where;
                 end;";
-        
 
         return $sql;
     }
-    public static final function sqlInsertOrUpdate($table, $my_row, $pkCol_arr=null)
+
+    public static final function sqlInsertOrUpdate($table, $my_row, $pkCol_arr = null)
     {
         $my_row_cols = array_keys($my_row);
-        $set_insert_cols = "";
-        $set_update_cols = "";
-        $pk_cols_where = "1";
-        foreach($my_row_cols as $row_col)
-        {
+        $set_insert_cols = '';
+        $set_update_cols = '';
+        $pk_cols_where = '1';
+        foreach ($my_row_cols as $row_col) {
             $row_val = $my_row[$row_col];
             $set_insert_cols .= " $row_col='$row_val',";
-            if($pkCol_arr)
-            {
-                if(!$pkCol_arr[$row_col]) $set_update_cols .= " $row_col='$row_val',";
-                else $pk_cols_where = " AND $row_col='$row_val'";
+            if ($pkCol_arr) {
+                if (!$pkCol_arr[$row_col])
+                    $set_update_cols .= " $row_col='$row_val',";
+                else
+                    $pk_cols_where = " AND $row_col='$row_val'";
             }
-            
         }
 
-        $set_insert_cols=trim($set_insert_cols,",");
-        $set_update_cols=trim($set_update_cols,",");
-        
-        if($pkCol_arr)
-        {
+        $set_insert_cols = trim($set_insert_cols, ',');
+        $set_update_cols = trim($set_update_cols, ',');
+
+        if ($pkCol_arr) {
             $sql = "INSERT IGNORE INTO $table SET $set_insert_cols ON DUPLICATE KEY UPDATE $table SET $set_update_cols WHERE $pk_cols_where;";
-        }
-        else
-        {
+        } else {
             $sql = "INSERT INTO $table SET $set_insert_cols;";
         }
 
         return $sql;
-
     }
 
     /*
-    public static final function deduire _where($nom_col, $desc, $oper, $val_col, $val_col2 = null)
+     * public static final function deduire _where($nom_col, $desc, $oper, $val_col, $val_col2 = null)
+     * {
+     *     $server_db_prefix = AfwSession::currentDBPrefix();
+     *
+     *     if ($desc["UTF8"]) $codage = "_utf8";
+     *     else $codage = "";
+     *     if ($desc["FIELD-FORMULA"]) {
+     *         if ($desc["FORMULA_MODULE"]) {
+     *             $formula_module = $server_db_prefix . $desc["FORMULA_MODULE"] . ".";
+     *         } else {
+     *             $formula_module = "";
+     *         }
+     *         $nom_col = $formula_module . $desc["FIELD-FORMULA"];
+     *     } elseif ($desc["TYPE"] == 'TEXT') {
+     *         $nom_col = "IF(ISNULL($nom_col), '', $nom_col)";
+     *     }
+     *
+     *     switch ($desc["TYPE"]) {
+     *         case 'FK':
+     *         case 'ENUM':
+     *         case 'ANSWER':
+     *         case 'YN':
+     *             if (is_array($val_col)) {
+     *                 //AFWDebugg::log("val_col of $nom_col defined array");
+     *                 //AFWDebugg::log($val_col,true);
+     *                 if (count($val_col) == 1) {
+     *                     $val_col2 = $val_col[0];
+     *                     $oper2 = $oper;
+     *                     if ($oper2 == "in") {
+     *                         $oper2 = "=";
+     *                     }
+     *                     if (($oper2 == "=") and ($val_col2 && ($val_col2 != "0") && ($val_col2 != "W")) and (!$desc["FIELD-FORMULA"]))
+     *                     //if($oper2=="=")
+     *                     {
+     *                         $fixm = $nom_col . $oper2 . $val_col2;
+     *                     } else {
+     *                         $fixm = "";
+     *                     }
+     *                 }
+     *
+     *                 return array($nom_col . ' ' . $oper . " ($codage'" . implode("$codage','", $val_col) . "')", $fixm);
+     *             } else {
+     *                 //AFWDebugg::log("val_col of $nom_col defined not array : $val_col");
+     *             }
+     *             if (($oper == "=") and ($val_col && ($val_col != "0")))
+     *             //if($oper=="=")
+     *             {
+     *                 $fixm = $nom_col . $oper . $val_col;
+     *             } else {
+     *                 $fixm = "";
+     *             }
+     *
+     *             return array($nom_col . ' ' . $oper . " $codage'" . $val_col . "'", $fixm);
+     *         case 'MENUM':
+     *         case 'MFK':
+     *             $where = array();
+     *             foreach ($val_col as $val)
+     *                 $where[] = $nom_col . ' ' . str_replace(".", $val, $oper);
+     *             return array("(" . implode(" or ", $where) . ")", "");
+     *         case 'TEXT':
+     *
+     *             $cond_col = str_replace("X", $codage, $oper);
+     *             $cond_col = str_replace(".", $val_col, $cond_col);
+     *
+     *             return array($nom_col . ' ' . $cond_col, "");
+     *         case 'DATE':
+     *             if ($oper == 'between') {
+     *                 $val_col = str_replace("-", "", $val_col);
+     *                 $val_col2 = str_replace("-", "", $val_col2);
+     *                 if (!$val_col2) $val_col2 = '29991230';
+     *                 return  array($nom_col . ' between  \'' . $val_col . '\' and \'' . $val_col2 . '\'', "");
+     *             }
+     *             return array($nom_col . ' ' . $oper . ' \'' . $val_col . '\'', "");;
+     *         case 'PK':
+     *             if ($oper == 'in (.)') {
+     *                 return array($nom_col . ' in(' . $val_col . ')', "");
+     *             } else {
+     *                 return array($nom_col . ' ' . $oper . ' \'' . $val_col . '\'', "");
+     *             }
+     *         default:
+     *             return array($nom_col . ' ' . $oper . ' \'' . $val_col . '\'', "");
+     *     }
+     * }
+     */
+
+    public static final function getSQLUpdate($obj, $user_id = 0, $ver = 0, $id_updated = '', $nocote_fields = null)
     {
-        $server_db_prefix = AfwSession::currentDBPrefix();
-        
-        if ($desc["UTF8"]) $codage = "_utf8";
-        else $codage = "";
-        if ($desc["FIELD-FORMULA"]) {
-            if ($desc["FORMULA_MODULE"]) {
-                $formula_module = $server_db_prefix . $desc["FORMULA_MODULE"] . ".";
-            } else {
-                $formula_module = "";
-            }
-            $nom_col = $formula_module . $desc["FIELD-FORMULA"];
-        } elseif ($desc["TYPE"] == 'TEXT') {
-            $nom_col = "IF(ISNULL($nom_col), '', $nom_col)";
-        }
-
-        switch ($desc["TYPE"]) {
-            case 'FK':
-            case 'ENUM':
-            case 'ANSWER':
-            case 'YN':
-                if (is_array($val_col)) {
-                    //AFWDebugg::log("val_col of $nom_col defined array");
-                    //AFWDebugg::log($val_col,true);    
-                    if (count($val_col) == 1) {
-                        $val_col2 = $val_col[0];
-                        $oper2 = $oper;
-                        if ($oper2 == "in") {
-                            $oper2 = "=";
-                        }
-                        if (($oper2 == "=") and ($val_col2 && ($val_col2 != "0") && ($val_col2 != "W")) and (!$desc["FIELD-FORMULA"]))
-                        //if($oper2=="=")
-                        {
-                            $fixm = $nom_col . $oper2 . $val_col2;
-                        } else {
-                            $fixm = "";
-                        }
-                    }
-
-                    return array($nom_col . ' ' . $oper . " ($codage'" . implode("$codage','", $val_col) . "')", $fixm);
-                } else {
-                    //AFWDebugg::log("val_col of $nom_col defined not array : $val_col");
-                }
-                if (($oper == "=") and ($val_col && ($val_col != "0")))
-                //if($oper=="=")
-                {
-                    $fixm = $nom_col . $oper . $val_col;
-                } else {
-                    $fixm = "";
-                }
-
-                return array($nom_col . ' ' . $oper . " $codage'" . $val_col . "'", $fixm);
-            case 'MENUM':
-            case 'MFK':
-                $where = array();
-                foreach ($val_col as $val)
-                    $where[] = $nom_col . ' ' . str_replace(".", $val, $oper);
-                return array("(" . implode(" or ", $where) . ")", "");
-            case 'TEXT':
-
-                $cond_col = str_replace("X", $codage, $oper);
-                $cond_col = str_replace(".", $val_col, $cond_col);
-
-                return array($nom_col . ' ' . $cond_col, "");
-            case 'DATE':
-                if ($oper == 'between') {
-                    $val_col = str_replace("-", "", $val_col);
-                    $val_col2 = str_replace("-", "", $val_col2);
-                    if (!$val_col2) $val_col2 = '29991230';
-                    return  array($nom_col . ' between  \'' . $val_col . '\' and \'' . $val_col2 . '\'', "");
-                }
-                return array($nom_col . ' ' . $oper . ' \'' . $val_col . '\'', "");;
-            case 'PK':
-                if ($oper == 'in (.)') {
-                    return array($nom_col . ' in(' . $val_col . ')', "");
-                } else {
-                    return array($nom_col . ' ' . $oper . ' \'' . $val_col . '\'', "");
-                }
-            default:
-                return array($nom_col . ' ' . $oper . ' \'' . $val_col . '\'', "");
-        }
-    }*/
-
-    public static final function getSQLUpdate($obj, $user_id = 0, $ver = 0, $id_updated = '', $nocote_fields=null)
-    {
-        $report = "";
+        $report = '';
         $table_prefixed = $obj->getTableName($with_prefix = true);
         $query = 'UPDATE ' . $table_prefixed . ' me SET ';
         $query .=
-            $obj->fld_UPDATE_USER_ID() .
-            ' = ' .
-            $user_id .
-            ', ' .
-            $obj->fld_UPDATE_DATE() .
-            ' = ' .
-            $obj->get_UPDATE_DATE_value(true) .
-            ', ' .
-            $obj->fld_VERSION() .
-            " = $ver, ";
+            $obj->fld_UPDATE_USER_ID()
+            . ' = '
+            . $user_id
+            . ', '
+            . $obj->fld_UPDATE_DATE()
+            . ' = '
+            . $obj->get_UPDATE_DATE_value(true)
+            . ', '
+            . $obj->fld_VERSION()
+            . " = $ver, ";
         $fields_updated = [];
         // if($table_prefixed=="c 0license.license")  throw new AfwRuntimeException("obj->fieldsHasChanged() = ".var_export($obj->fieldsHasChanged(),true));
         // rafik : since version 2.0.1 we put FIELDS_UPDATED the old value
@@ -208,60 +208,61 @@ class AfwSqlHelper extends AFWRoot
         foreach ($obj->fieldsHasChanged() as $key => $old_value) {
             $value = $obj->getAfieldValue($key);
             if (is_array($value)) {
-                die("how to update value of afield $key when it is an array : " .
-                    var_export($value, true));
+                die("how to update value of afield $key when it is an array : "
+                    . var_export($value, true));
             }
             $isTechField = $obj->isTechField($key);
-            
+
             if (!$isTechField) {
                 $structure = AfwStructureHelper::getStructureOf($obj, $key);
-                if(($value==="") and AfwStructureHelper::structureIsNumericField($structure))
-                {
-                    $value=0;
+                if (($value === '') and AfwStructureHelper::structureIsNumericField($structure)) {
+                    $value = 0;
                 }
+
                 /*
-                if($obj->getMyClass()=='Afield' and $key=='avail') 
-                {
-                    throw new AfwRuntimeException("logicDelete after setting $key = $value and it was $old_value . hasChanged=".var_export($obj->hasChanged(),true)." fieldsHasChanged=".var_export($obj->fieldsHasChanged(),true));
-                }
-                */
+                 * if($obj->getMyClass()=='Afield' and $key=='avail')
+                 * {
+                 *     throw new AfwRuntimeException("logicDelete after setting $key = $value and it was $old_value . hasChanged=".var_export($obj->hasChanged(),true)." fieldsHasChanged=".var_export($obj->fieldsHasChanged(),true));
+                 * }
+                 */
 
                 if (
                     isset($structure) and
                     !$structure['CATEGORY'] and
                     !$structure['NO-SAVE']
-                ) 
-                {
+                ) {
                     $value_desc = implode('>>', explode("\n", $value));
-                    if(strlen($value_desc)>100) $value_desc = substr($value_desc,0,97)."...";
+                    if (strlen($value_desc) > 100)
+                        $value_desc = substr($value_desc, 0, 97) . '...';
                     $old_value_desc = implode('>>', explode("\n", $old_value));
-                    if(strlen($old_value_desc)>100) $old_value_desc = substr($old_value_desc,0,97)."...";
+                    if (strlen($old_value_desc) > 100)
+                        $old_value_desc = substr($old_value_desc, 0, 97) . '...';
 
                     $isNum = is_numeric($value);
-                    $isGDate = (($structure['TYPE']=='GDAT') or ($structure['TYPE']=='GDATE'));
+                    $isGDate = (($structure['TYPE'] == 'GDAT') or ($structure['TYPE'] == 'GDATE'));
                     $isSameDate = false;
-                    $isSame = ($value == $old_value);
-                    if($isGDate)
-                    {
+                    $isSame = ((!$value and ($old_value == '@@empty@@')) or ($value == $old_value));
+                    if ($isGDate) {
                         $isSameDate = ($isSame or ("$value 00:00:00" == $old_value) or ("$old_value 00:00:00" == $value));
                     }
-                    
-                    $isCompletelySame = (($value === $old_value) or ($isNum and $isSame) or ($isGDate and $isSameDate));
-                    
 
-                    if ($id_updated) 
-                    {
+                    $isCompletelySame = ((!$value and ($old_value == '@@empty@@')) or
+                        ($value === $old_value) or
+                        ($isNum and $isSame) or
+                        ($isGDate and $isSameDate));
+
+                    if ($id_updated) {
                         $valueExists = (!$obj->isEmpty() and $obj->isAfieldValueSetted($key));
                         $old_val_query_part .= " -- $key value = [$value_desc], old value = [$old_value_desc] isNum=$isNum isGDate=$isGDate isSame= $isSame isCompletelySame=$isCompletelySame valueExists=$valueExists\n";
                     }
 
-                    if(!$isCompletelySame)        
-                    {
+                    if (!$isCompletelySame) {
                         if (strcasecmp($value, 'now()') === 0) {
                             $query .= ' ' . $key . ' = now(),';
                         } else {
                             if ($structure['TYPE'] == 'GDAT') {
-                                if (!$value) $value = "0000-00-00";
+                                if (!$value)
+                                    $value = '0000-00-00';
                             }
                             $value_up = strtoupper($value);
                             if ((AfwStringHelper::stringStartsWith($value_up, 'REPLACE(')) or ($nocote_fields and in_array($key, $nocote_fields))) {
@@ -278,9 +279,12 @@ class AfwSqlHelper extends AFWRoot
                         $fields_updated[$key] = $value;
                     }
                 } else {
-                    if (!isset($structure)) $report .=  "structure of attribute $key is not defined, ";
-                    if ($structure['CATEGORY']) $report .=  "attribute $key is category field, ";
-                    if ($structure['NO-SAVE']) $report .=  "attribute $key is no-save field, ";
+                    if (!isset($structure))
+                        $report .= "structure of attribute $key is not defined, ";
+                    if ($structure['CATEGORY'])
+                        $report .= "attribute $key is category field, ";
+                    if ($structure['NO-SAVE'])
+                        $report .= "attribute $key is no-save field, ";
                 }
                 // awf V3.0 : NEW LOGIC OF :
                 //    * SETTER AND
@@ -289,10 +293,8 @@ class AfwSqlHelper extends AFWRoot
                 //    * SHORTNAMES
 
                 // else $obj->simpleError("field $key has value '$value' setted in FIELDS_UPDATED and can not be saved, DB_STRUCTURE : ".var_export($structure,true));
-            }
-            else
-            {
-                 $report .= "\n -- ignored tech field $key \n";
+            } else {
+                $report .= "\n -- ignored tech field $key \n";
             }
             // if($key=='my_exp') die($query);
         }
@@ -300,11 +302,11 @@ class AfwSqlHelper extends AFWRoot
         // if($table_prefixed=="sdd.jobrole_application") die($query);
 
         /*
-        if($table_prefixed=="c 0btb.travel_seat")
-        {
-            die("fu = ".$obj->showArr($fields_updated)."<br>FU = ".$obj->showArr($obj->fieldsHasChanged()));
-        }
-        */
+         * if($table_prefixed=="c 0btb.travel_seat")
+         * {
+         *     die("fu = ".$obj->showArr($fields_updated)."<br>FU = ".$obj->showArr($obj->fieldsHasChanged()));
+         * }
+         */
         $query = trim($query);
         $query = trim($query, ',');
         if ($id_updated) {
@@ -340,13 +342,9 @@ class AfwSqlHelper extends AFWRoot
         return [$query, $fields_updated, $report];
     }
 
-
     /**
-     * 
      * @return array like object [$result, $row_count, $affected_row_count]
-     * 
      */
-
     final public static function executeQuery(
         $module_server,
         $module,
@@ -354,14 +352,10 @@ class AfwSqlHelper extends AFWRoot
         $sql_query,
         $throw_error = true,
         $throw_analysis_crash = true
-    ) 
-    {
-        
+    ) {
         AfwBatch::print_sql("<br>\n ############################################################################# <br>\n");
         AfwBatch::print_sql("<br>\nexecQuery will execute : <br>\n");
         AfwBatch::print_sql("<br>\n$sql_query <br>\n");
-        
-
 
         list($result, $project_link_name) = AfwDatabase::db_query(
             $sql_query,
@@ -378,23 +372,24 @@ class AfwSqlHelper extends AFWRoot
             if (!$throw_error) {
                 $sql_error .= ' will not be throwed';
             } else {
-                $sql_error .= " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                $sql_error .= ' !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
              SHOULD BE THROWED. HOW I GET HERE 
              !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!";
+             !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!';
             }
 
             AfwBatch::print_sql("<br>\nexecQuery failed : <br>\n");
             AfwBatch::print_sql("<br>\n$sql_error <br>\n");
         } else {
-
             $affected_row_count = AfwMysql::affected_rows(AfwDatabase::getLinkByName($project_link_name));
+
             /*
-            if(AfwStringHelper::stringStartsWith($sql_query,"delete from"))
-            {
-                throw new AfwRuntimeException("$sql_query has been executed and $affected_row_count record(s) deleted");
-            }*/
+             * if(AfwStringHelper::stringStartsWith($sql_query,"delete from"))
+             * {
+             *     throw new AfwRuntimeException("$sql_query has been executed and $affected_row_count record(s) deleted");
+             * }
+             */
 
             $row_count = AfwMysql::rows_count($result);
             AfwBatch::print_sql("<br>\nexecQuery succeeded : <br>\n");
@@ -412,9 +407,7 @@ class AfwSqlHelper extends AFWRoot
         $val_col,
         $val_col2 = null,
         $lang
-    ) 
-    {
-        
+    ) {
         $server_db_prefix = AfwSession::currentDBPrefix();
 
         $all_oper_arr = [
@@ -438,38 +431,33 @@ class AfwSqlHelper extends AFWRoot
         list($prefix_col, $nom_col) = explode('.', $nom_col);
         if (!$nom_col) {
             $nom_col = $prefix_col;
-            $prefix_col = "";
+            $prefix_col = '';
         }
         $original_nom_col = $nom_col;
-        // if($val_col=="1007294216") die("getClauseWhere(object,$nom_col,$oper,$val_col,$val_col2,$lang)"); 
+        // if($val_col=="1007294216") die("getClauseWhere(object,$nom_col,$oper,$val_col,$val_col2,$lang)");
         $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
         $mode_clause_where_col = false;
-        if($desc["CLAUSE-WHERE-COL"])
-        {
+        if ($desc['CLAUSE-WHERE-COL']) {
             $can_switch = true;
-            if($desc["CLAUSE-WHERE-COL-VALUE-CONVERT-CLASS"] and $desc["CLAUSE-WHERE-COL-VALUE-CONVERT-METHOD"])
-            {
-                $theConvertClass = $desc["CLAUSE-WHERE-COL-VALUE-CONVERT-CLASS"];
-                $theConvertMethod = $desc["CLAUSE-WHERE-COL-VALUE-CONVERT-METHOD"];
+            if ($desc['CLAUSE-WHERE-COL-VALUE-CONVERT-CLASS'] and $desc['CLAUSE-WHERE-COL-VALUE-CONVERT-METHOD']) {
+                $theConvertClass = $desc['CLAUSE-WHERE-COL-VALUE-CONVERT-CLASS'];
+                $theConvertMethod = $desc['CLAUSE-WHERE-COL-VALUE-CONVERT-METHOD'];
                 $old_val_col = $val_col;
                 $val_col = $theConvertClass::$theConvertMethod($old_val_col);
-                if($val_col===null)
-                {
+                if ($val_col === null) {
                     $val_col = $old_val_col;
                     $can_switch = false;
                 }
             }
-            if($can_switch)
-            {
+            if ($can_switch) {
                 $mode_clause_where_col = true;
-                $nom_col = $desc["CLAUSE-WHERE-COL"];
+                $nom_col = $desc['CLAUSE-WHERE-COL'];
                 // die("CLAUSE-WHERE-COL : $original_nom_col => $nom_col");
                 $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
                 $original_nom_col = $nom_col;
             }
-            
         }
-        $desc["FIELD-FORMULA"] = $object->decodeText($desc["FIELD-FORMULA"]);
+        $desc['FIELD-FORMULA'] = $object->decodeText($desc['FIELD-FORMULA']);
         if (!$desc) {
             throw new AfwRuntimeException("can't find structure of field $nom_col");
         }
@@ -489,26 +477,19 @@ class AfwSqlHelper extends AFWRoot
             $nom_col = $formula_module . $desc['FIELD-FORMULA'];
             $prefixed_nom_col = $nom_col;
         } elseif ($desc['TYPE'] == 'TEXT') {
-            if($desc['MANDATORY'] or $desc['REQUIRED'])
-            {
-                $prefixed_nom_col = "me.".$nom_col;
-            }
-            else
-            {
+            if ($desc['MANDATORY'] or $desc['REQUIRED']) {
+                $prefixed_nom_col = 'me.' . $nom_col;
+            } else {
                 $prefixed_nom_col = "IF(ISNULL(me.$nom_col), '', me.$nom_col)";
             }
-            
-            
-        }
-        else {
+        } else {
             // $nom_col = $prefixed_nom_col;
-            $prefixed_nom_col = "me.".$nom_col;
+            $prefixed_nom_col = 'me.' . $nom_col;
         }
 
-        // if($val_col=="1007294216") die("nom_col=$nom_col prefixed_nom_col=$prefixed_nom_col"); 
+        // if($val_col=="1007294216") die("nom_col=$nom_col prefixed_nom_col=$prefixed_nom_col");
 
-        //if($original_nom_col=="cvalid") throw new AfwRuntimeException("nom_col = ".$nom_col." because structure=".var_export($desc,true));
-        
+        // if($original_nom_col=="cvalid") throw new AfwRuntimeException("nom_col = ".$nom_col." because structure=".var_export($desc,true));
 
         switch ($desc['TYPE']) {
             case 'FK':
@@ -516,8 +497,8 @@ class AfwSqlHelper extends AFWRoot
             case 'ANSWER':
             case 'YN':
                 if (is_array($val_col)) {
-                    //AFWDebugg::log("val_col of $nom_col defined array");
-                    //AFWDebugg::log($val_col,true);
+                    // AFWDebugg::log("val_col of $nom_col defined array");
+                    // AFWDebugg::log($val_col,true);
                     if (count($val_col) == 1) {
                         $val_col2 = $val_col[0];
                         $oper2 = $oper;
@@ -527,60 +508,60 @@ class AfwSqlHelper extends AFWRoot
                         if (
                             $oper2 == '=' and
                             $val_col2 &&
-                            $val_col2 != '0' &&
-                            $val_col2 != 'W' and
+                                $val_col2 != '0' &&
+                                $val_col2 != 'W' and
                             !$desc['FIELD-FORMULA']
                         ) {
-                            //if($oper2=="=")
+                            // if($oper2=="=")
                             $fixm = $nom_col . $oper2 . $val_col2;
                         } else {
                             $fixm = '';
                         }
                     }
                     $phraseLangWhere =
-                        "<span class='crit_field_name'>" .
-                        $object->translate($original_nom_col, $lang) .
-                        "</span> <span class='crit_field_oper'>" .
-                        $all_oper_arr[$oper] .
-                        "</span> : <span class='crit_field_value'>" .
-                        implode(', ', $object->decodeList($nom_col, $val_col)) .
-                        '</span>';
+                        "<span class='crit_field_name'>"
+                        . $object->translate($original_nom_col, $lang)
+                        . "</span> <span class='crit_field_oper'>"
+                        . $all_oper_arr[$oper]
+                        . "</span> : <span class='crit_field_value'>"
+                        . implode(', ', $object->decodeList($nom_col, $val_col))
+                        . '</span>';
                     return [
-                        $nom_col .
-                            ' ' .
-                            $oper .
-                            " ($codage'" .
-                            implode("$codage','", $val_col) .
-                            "')",
+                        $nom_col
+                            . ' '
+                            . $oper
+                            . " ($codage'"
+                            . implode("$codage','", $val_col)
+                            . "')",
                         $fixm,
                         $phraseLangWhere,
                     ];
                 } else {
-                    //AFWDebugg::log("val_col of $nom_col defined not array : $val_col");
+                    // AFWDebugg::log("val_col of $nom_col defined not array : $val_col");
                 }
                 if ($oper == '=' and $val_col && $val_col != '0') {
-                    //if($oper=="=")
+                    // if($oper=="=")
                     $fixm = $nom_col . $oper . $val_col;
                 } else {
                     $fixm = '';
                 }
                 // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " : " . $object->get Answer($nom_col,$val_col);
                 $phraseLangWhere =
-                    "<span class='crit_field_name'>" .
-                    $object->translate($original_nom_col, $lang) .
-                    "</span> <span class='crit_field_oper'>" .
-                    $all_oper_arr[$oper] .
-                    "</span> : <span class='crit_field_value'>" .
-                    AfwFormatHelper::decodeAnswerOfAttribute($object, $nom_col, $val_col) .
-                    '</span>';
+                    "<span class='crit_field_name'>"
+                    . $object->translate($original_nom_col, $lang)
+                    . "</span> <span class='crit_field_oper'>"
+                    . $all_oper_arr[$oper]
+                    . "</span> : <span class='crit_field_value'>"
+                    . AfwFormatHelper::decodeAnswerOfAttribute($object, $nom_col, $val_col)
+                    . '</span>';
 
                 return [
-                    $prefixed_nom_col .
-                        ' ' .
-                        $oper .
-                        " $codage'" .
-                        $val_col .
-                        "'",
+                    $prefixed_nom_col
+                        . ' '
+                        . $oper
+                        . " $codage'"
+                        . $val_col
+                        . "'",
                     $fixm,
                     $phraseLangWhere,
                 ];
@@ -592,19 +573,19 @@ class AfwSqlHelper extends AFWRoot
                         $prefixed_nom_col . ' ' . str_replace('.', $val, $oper);
                 }
                 $phraseLangWhere =
-                    $object->translate($original_nom_col, $lang) .
-                    ' ' .
-                    $all_oper_arr[$oper] .
-                    ' : ' .
-                    implode(', ', $object->decodeList($nom_col, $val_col));
+                    $object->translate($original_nom_col, $lang)
+                    . ' '
+                    . $all_oper_arr[$oper]
+                    . ' : '
+                    . implode(', ', $object->decodeList($nom_col, $val_col));
                 $phraseLangWhere =
-                    "<span class='crit_field_name'>" .
-                    $object->translate($original_nom_col, $lang) .
-                    "</span> <span class='crit_field_oper'>" .
-                    $all_oper_arr[$oper] .
-                    "</span> : <span class='crit_field_value'>" .
-                    implode(', ', $object->decodeList($nom_col, $val_col)) .
-                    '</span>';
+                    "<span class='crit_field_name'>"
+                    . $object->translate($original_nom_col, $lang)
+                    . "</span> <span class='crit_field_oper'>"
+                    . $all_oper_arr[$oper]
+                    . "</span> : <span class='crit_field_value'>"
+                    . implode(', ', $object->decodeList($nom_col, $val_col))
+                    . '</span>';
                 return [
                     '(' . implode(' or ', $where) . ')',
                     '',
@@ -619,13 +600,13 @@ class AfwSqlHelper extends AFWRoot
                     $cond_col = str_replace('.', $val_col, $cond_col);
                 }
 
-                //$phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
+                // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
                 $phraseLangWhere =
-                    "<span class='crit_field_name'>" .
-                    $object->translate($original_nom_col, $lang) .
-                    "</span> <span class='crit_field_oper'>" .
-                    $all_oper_arr[$oper] .
-                    "</span> : <span class='crit_field_value'> '$val_col' </span>";
+                    "<span class='crit_field_name'>"
+                    . $object->translate($original_nom_col, $lang)
+                    . "</span> <span class='crit_field_oper'>"
+                    . $all_oper_arr[$oper]
+                    . "</span> : <span class='crit_field_value'> '$val_col' </span>";
 
                 return [
                     $prefixed_nom_col . ' ' . $cond_col,
@@ -639,45 +620,45 @@ class AfwSqlHelper extends AFWRoot
                     if (!$val_col2) {
                         $val_col2 = '29991230';
                     }
-                    //$phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col,$val_col2] ";
+                    // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col,$val_col2] ";
                     $phraseLangWhere =
-                        "<span class='crit_field_name'>" .
-                        $object->translate($original_nom_col, $lang) .
-                        "</span> <span class='crit_field_oper'>" .
-                        $all_oper_arr[$oper] .
-                        "</span> : <span class='crit_field_value'> [$val_col -> $val_col2] </span>";
+                        "<span class='crit_field_name'>"
+                        . $object->translate($original_nom_col, $lang)
+                        . "</span> <span class='crit_field_oper'>"
+                        . $all_oper_arr[$oper]
+                        . "</span> : <span class='crit_field_value'> [$val_col -> $val_col2] </span>";
                     return [
-                        $prefixed_nom_col .
-                            ' between  \'' .
-                            $val_col .
-                            '\' and \'' .
-                            $val_col2 .
-                            '\'',
+                        $prefixed_nom_col
+                            . " between  '"
+                            . $val_col
+                            . "' and '"
+                            . $val_col2
+                            . "'",
                         '',
                         $phraseLangWhere,
                     ];
                 }
                 $phraseLangWhere =
-                    "<span class='crit_field_name'>" .
-                    $object->translate($original_nom_col, $lang) .
-                    "</span> <span class='crit_field_oper'>" .
-                    $all_oper_arr[$oper] .
-                    "</span> : <span class='crit_field_value'> '$val_col' </span>";
+                    "<span class='crit_field_name'>"
+                    . $object->translate($original_nom_col, $lang)
+                    . "</span> <span class='crit_field_oper'>"
+                    . $all_oper_arr[$oper]
+                    . "</span> : <span class='crit_field_value'> '$val_col' </span>";
                 // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
                 return [
-                    $prefixed_nom_col . ' ' . $oper . ' \'' . $val_col . '\'',
+                    $prefixed_nom_col . ' ' . $oper . " '" . $val_col . "'",
                     '',
                     $phraseLangWhere,
                 ];
             case 'PK':
                 if ($oper == 'in (.)') {
                     $phraseLangWhere =
-                        "<span class='crit_field_name'>" .
-                        $object->translate($original_nom_col, $lang) .
-                        "</span> <span class='crit_field_oper'>" .
-                        $all_oper_arr[$oper] .
-                        "</span> : <span class='crit_field_value'> [$val_col] </span>";
-                    //$phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
+                        "<span class='crit_field_name'>"
+                        . $object->translate($original_nom_col, $lang)
+                        . "</span> <span class='crit_field_oper'>"
+                        . $all_oper_arr[$oper]
+                        . "</span> : <span class='crit_field_value'> [$val_col] </span>";
+                    // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
                     return [
                         $prefixed_nom_col . ' in(' . $val_col . ')',
                         '',
@@ -685,46 +666,45 @@ class AfwSqlHelper extends AFWRoot
                     ];
                 } else {
                     $phraseLangWhere =
-                        "<span class='crit_field_name'>" .
-                        $object->translate($original_nom_col, $lang) .
-                        "</span> <span class='crit_field_oper'>" .
-                        $all_oper_arr[$oper] .
-                        "</span> : <span class='crit_field_value'> [$val_col] </span>";
-                    //$phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
+                        "<span class='crit_field_name'>"
+                        . $object->translate($original_nom_col, $lang)
+                        . "</span> <span class='crit_field_oper'>"
+                        . $all_oper_arr[$oper]
+                        . "</span> : <span class='crit_field_value'> [$val_col] </span>";
+                    // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
                     return [
-                        $prefixed_nom_col .
-                            ' ' .
-                            $oper .
-                            ' \'' .
-                            $val_col .
-                            '\'',
+                        $prefixed_nom_col
+                            . ' '
+                            . $oper
+                            . " '"
+                            . $val_col
+                            . "'",
                         '',
                         $phraseLangWhere,
                     ];
                 }
             default:
                 $phraseLangWhere =
-                    "<span class='crit_field_name'>" .
-                    $object->translate($original_nom_col, $lang) .
-                    "</span> <span class='crit_field_oper'>" .
-                    $all_oper_arr[$oper] .
-                    "</span> : <span class='crit_field_value'> [$val_col] </span>";
+                    "<span class='crit_field_name'>"
+                    . $object->translate($original_nom_col, $lang)
+                    . "</span> <span class='crit_field_oper'>"
+                    . $all_oper_arr[$oper]
+                    . "</span> : <span class='crit_field_value'> [$val_col] </span>";
                 // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
                 return [
-                    $prefixed_nom_col .
-                        ' zz ' .
-                        var_export($desc, true) .
-                        '  ' .
-                        $oper .
-                        ' \'' .
-                        $val_col .
-                        '\'',
+                    $prefixed_nom_col
+                        . ' zz '
+                        . var_export($desc, true)
+                        . '  '
+                        . $oper
+                        . " '"
+                        . $val_col
+                        . "'",
                     '',
                     $phraseLangWhere,
                 ];
         }
     }
-
 
     /**
      * getSQLMany
@@ -733,9 +713,8 @@ class AfwSqlHelper extends AFWRoot
      * @param string  $limit : Optional add limit to query
      * @param string  $order_by : Optional add order by to query
      * @param boolean $optim
-     * @param boolean  $eager_joins 
+     * @param boolean  $eager_joins
      */
-
     public static function getSQLMany(
         $object,
         $pk_field = '',
@@ -747,7 +726,7 @@ class AfwSqlHelper extends AFWRoot
         if (!$pk_field) {
             $pk_field = $object->getPKField();
         }
-        
+
         if (!$order_by) {
             $order_by = $object->getOrderByFields();
         }
@@ -757,12 +736,12 @@ class AfwSqlHelper extends AFWRoot
 
         if (!$optim and $pk_field) {
             $query =
-                "SELECT DISTINCT $pk_field as PK \n FROM " .
-                $object::_prefix_table($object::$TABLE) .
-                " me\n WHERE 1" .
-                $object->getSQL() .
-                "\n " .
-                ($limit ? ' LIMIT ' . $limit : '');
+                "SELECT DISTINCT $pk_field as PK \n FROM "
+                . $object::_prefix_table($object::$TABLE)
+                . " me\n WHERE 1"
+                . $object->getSQL()
+                . "\n "
+                . ($limit ? ' LIMIT ' . $limit : '');
         } else {
             $all_real_fields = AfwStructureHelper::getAllRealFields($object);
             if ($eager_joins) {
@@ -775,16 +754,16 @@ class AfwSqlHelper extends AFWRoot
                 $join_sentence = '';
             }
 
-            $query = "SELECT $pk_field as PK, me.*"; // . implode(', me.', $all_real_fields);
+            $query = "SELECT $pk_field as PK, me.*";  // . implode(', me.', $all_real_fields);
             if ($list_from_join_cols) {
                 $query .= ",\n" . $list_from_join_cols;
             }
             $this_class = get_class($object);
             $query .=
-                "\n FROM " .
-                $object::_prefix_table($object::$TABLE) .
-                ' me -- class : ' .
-                $this_class;
+                "\n FROM "
+                . $object::_prefix_table($object::$TABLE)
+                . ' me -- class : '
+                . $this_class;
             if ($join_sentence) {
                 $query .= "\n" . $join_sentence;
             }
@@ -793,8 +772,8 @@ class AfwSqlHelper extends AFWRoot
             $query .= $limit ? "\n LIMIT " . $limit : '';
         }
 
-        //die("getSQLMany : $query");
-        //AfwSession::sqlLog($query, "SQL-MANY");
+        // die("getSQLMany : $query");
+        // AfwSession::sqlLog($query, "SQL-MANY");
         return $query;
     }
 
@@ -804,7 +783,6 @@ class AfwSqlHelper extends AFWRoot
      * which make heavy the script, to be used only when needed because it increase memory loaded by those many objects as it load
      * FK objects as eager loaded objects as for LoadManyEager below method
      */
-
     public static function getOptimizedJoin($object)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
@@ -819,8 +797,7 @@ class AfwSqlHelper extends AFWRoot
             $mode = 'display',
             $lang,
             $all = false,
-            $type = 'FK'
-        );
+            $type = 'FK');
         $joint_count = 0;
         foreach ($colsRet as $col_ret) {
             $joint_count++;
@@ -835,12 +812,12 @@ class AfwSqlHelper extends AFWRoot
                     $moduleCol = 'ums';
                 }
 
-                $join_sentence_arr[] = "left join $server_db_prefix" . "$moduleCol.$tableCol join" . $col_ret . "00 on me.$col_ret = join" . $col_ret . "00.id";
-                //$join_retrieve_fields[] = "join$col_ret.id as join${col_ret}00_id";
+                $join_sentence_arr[] = "left join $server_db_prefix" . "$moduleCol.$tableCol join" . $col_ret . "00 on me.$col_ret = join" . $col_ret . '00.id';
+                // $join_retrieve_fields[] = "join$col_ret.id as join${col_ret}00_id";
                 $col_ret_obj = AfwStructureHelper::getEmptyObject($object, $col_ret);
                 $col_fk_retrieve_cols = AfwStructureHelper::getAllRealFields($col_ret_obj);
                 foreach ($col_fk_retrieve_cols as $col_fk_sub_ret) {
-                    $join_retrieve_fields[] = "join" . $col_ret . "00.$col_fk_sub_ret as join$col_ret" . "00_$col_fk_sub_ret";
+                    $join_retrieve_fields[] = 'join' . $col_ret . "00.$col_fk_sub_ret as join$col_ret" . "00_$col_fk_sub_ret";
                 }
             }
         }
@@ -849,8 +826,6 @@ class AfwSqlHelper extends AFWRoot
             implode("\n", $join_sentence_arr),
         ];
     }
-
-
 
     private static function beforeModification($object, $id, $fields_updated)
     {
@@ -869,22 +844,21 @@ class AfwSqlHelper extends AFWRoot
                     if ($auto_c_create) {
                         if ($desc['TYPE'] != 'FK') {
                             throw new AfwRuntimeException(
-                                "auto create should be only on FK attributes $attribute is " .
-                                    $desc['TYPE']
+                                "auto create should be only on FK attributes $attribute is "
+                                . $desc['TYPE']
                             );
                         }
                         $obj_at = AfwStructureHelper::getEmptyObject($object, $attribute);
 
-                        foreach ($auto_c_create
-                            as $attr => $auto_c_create_item) {
+                        foreach ($auto_c_create as $attr => $auto_c_create_item) {
                             $attr_val = '';
                             if ($auto_c_create_item['CONST']) {
                                 $attr_val .= $auto_c_create_item['CONST'];
                             }
                             if ($auto_c_create_item['FIELD']) {
                                 $attr_val .=
-                                    ' ' .
-                                    $object->getVal($auto_c_create_item['FIELD']);
+                                    ' '
+                                    . $object->getVal($auto_c_create_item['FIELD']);
                             }
                             if ($auto_c_create_item['CONST2']) {
                                 $attr_val .=
@@ -911,7 +885,6 @@ class AfwSqlHelper extends AFWRoot
         return true;
     }
 
-
     /**
      * _insert_id
      * Return last insert id
@@ -921,26 +894,25 @@ class AfwSqlHelper extends AFWRoot
         return AfwMysql::insert_id(AfwDatabase::getLinkByName($project_link_name));
     }
 
-
     /**
      * insert
      * Insert row
      * @param AFWObject $object
      * @param int $pk : Optional, specify the primary key
      */
-    public static function insertObject($object, $pk = '', $check_if_exists_by_uk = true, $disableAfterCommitDBEvent=false)
+    public static function insertObject($object, $pk = '', $check_if_exists_by_uk = true, $disableAfterCommitDBEvent = false)
     {
         global $lang, $print_debugg, $print_sql, $MODE_BATCH_LOURD;
 
         // if($object::$TABLE == "afield") die("object->insert on : ".var_export($object,true));
         if ($object->IS_VIRTUAL) {
             throw new AfwRuntimeException(
-                'Impossible to do call to the method insert() with the virtual table ' .
-                    $object::$TABLE .
-                    '.'
+                'Impossible to do call to the method insert() with the virtual table '
+                . $object::$TABLE
+                . '.'
             );
         } elseif ($object->isChanged()) {
-            //if($object::$TABLE == "practice_cher") die("will insert into ".$object::$TABLE);
+            // if($object::$TABLE == "practice_cher") die("will insert into ".$object::$TABLE);
             $user_id = AfwSession::getUserIdActing();
             if (!$user_id) {
                 $user_id = 0;
@@ -955,7 +927,7 @@ class AfwSqlHelper extends AFWRoot
                 $object->fld_UPDATE_DATE(),
                 $object->get_UPDATE_DATE_value()
             );
-            $object->set($object->fld_VERSION(), 1); // was setAfieldValue ??!!
+            $object->set($object->fld_VERSION(), 1);  // was setAfieldValue ??!!
 
             if ($pk) {
                 $object->set($object->getPKField(), $pk);
@@ -965,18 +937,19 @@ class AfwSqlHelper extends AFWRoot
             $fields_to_insert = $object->getAllfieldsToInsert();
 
             $dbg_rafik = false;
+
             /*
-            if ($dbg_rafik and ($object::$TABLE == "period")) {
-                die("afw.insert($pk) before before insert die : object->FIELDS_INITED = " . var_export($object->getAllfieldDefaultValues(), true) . ", 
-                              object -> FIELDS_UPDATED = " . var_export($object->fieldsHasChanged(), true) . " 
-                              after merge => " . var_export($fields_to_insert, true) . " 
-                              object -> AFIELD _VALUE =>" . var_export($object->getAllfieldValues(), true));
-            }*/
+             * if ($dbg_rafik and ($object::$TABLE == "period")) {
+             *     die("afw.insert($pk) before before insert die : object->FIELDS_INITED = " . var_export($object->getAllfieldDefaultValues(), true) . ",
+             *                   object -> FIELDS_UPDATED = " . var_export($object->fieldsHasChanged(), true) . "
+             *                   after merge => " . var_export($fields_to_insert, true) . "
+             *                   object -> AFIELD _VALUE =>" . var_export($object->getAllfieldValues(), true));
+             * }
+             */
 
             self::beforeModification($object,
                 $object->getAfieldValue($object->getPKField()),
-                $fields_to_insert
-            );
+                $fields_to_insert);
             $object->majTriggered();
             $can_insert = $object->beforeInsert(
                 $object->getAfieldValue($object->getPKField()),
@@ -985,8 +958,8 @@ class AfwSqlHelper extends AFWRoot
             // throw new AfwRuntimeException(var_export($object,true));
             if (!$can_insert) {
                 $debugg_tech_notes =
-                    'warning : beforeInsert refused insert operation. declined insert into ' .
-                    $object::$TABLE;
+                    'warning : beforeInsert refused insert operation. declined insert into '
+                    . $object::$TABLE;
                 if ($MODE_BATCH_LOURD) {
                     AfwBatch::print_warning($debugg_tech_notes);
                 }
@@ -998,20 +971,21 @@ class AfwSqlHelper extends AFWRoot
             // die("rafik 135001 : ".var_export($object,true));
             // may be has been changed in the previous before insert event
             $fields_to_insert = $object->getAllfieldsToInsert();
+
             /*
-            if($object::$TABLE == "academic_term") 
-            {
-                die("afw.insert($pk) after before insert die : object->FIELDS_ INITED = ".var_export($object->getAllfieldDefaultValues(),true).", 
-                            object -> FIELDS_UPDATED = ".var_export($object->fieldsHasChanged(),true)." 
-                            after merge fields_to_insert => ".var_export($fields_to_insert,true)." 
-                            object->AFIELD _VALUE =>".var_export($object->getAllfieldValues(),true));
-            } */
-            
+             * if($object::$TABLE == "academic_term")
+             * {
+             *     die("afw.insert($pk) after before insert die : object->FIELDS_ INITED = ".var_export($object->getAllfieldDefaultValues(),true).",
+             *                 object -> FIELDS_UPDATED = ".var_export($object->fieldsHasChanged(),true)."
+             *                 after merge fields_to_insert => ".var_export($fields_to_insert,true)."
+             *                 object->AFIELD _VALUE =>".var_export($object->getAllfieldValues(),true));
+             * }
+             */
 
             if (!count($fields_to_insert)) {
                 $debugg_tech_notes =
-                    'warning : insert operation aborted because no field filled to insert declined insert into ' .
-                    $object::$TABLE;
+                    'warning : insert operation aborted because no field filled to insert declined insert into '
+                    . $object::$TABLE;
                 if ($MODE_BATCH_LOURD) {
                     AfwBatch::print_warning($debugg_tech_notes);
                 }
@@ -1026,9 +1000,7 @@ class AfwSqlHelper extends AFWRoot
                 $myClass = $object->getMyClass();
                 // $this_copy = cl one $object;
                 // $this_copy->clearSelect();
-                /**
-                 * @var AFWObject $this_copy
-                 */
+                /** @var AFWObject $this_copy */
                 $this_copy = new $myClass();
                 foreach ($object->UNIQUE_KEY as $key_col) {
                     $unique_key_vals[] = $object->getVal($key_col);
@@ -1042,24 +1014,24 @@ class AfwSqlHelper extends AFWRoot
                     $object->debugg_tech_notes =
                         'has existing doublon id = ' . $this_copy->id;
                     $dbl_message =
-                        $object::$TABLE .
-                        ' UNIQUE-KEY-CONSTRAINT : (' .
-                        implode(',', $object->UNIQUE_KEY) .
-                        ") broken, This record with key ('" .
-                        implode("','", $unique_key_vals) .
-                        "') already exists (with ID=".$this_copy->id.") : " .
-                        var_export($this_copy, true);
-                    //die("rafik 135004 query($query) : ".var_export($object,true));
+                        $object::$TABLE
+                        . ' UNIQUE-KEY-CONSTRAINT : ('
+                        . implode(',', $object->UNIQUE_KEY)
+                        . ") broken, This record with key ('"
+                        . implode("','", $unique_key_vals)
+                        . "') already exists (with ID=" . $this_copy->id . ') : '
+                        . var_export($this_copy, true);
+                    // die("rafik 135004 query($query) : ".var_export($object,true));
                     if ($object->ignore_insert_doublon) {
                         $debugg_tech_notes =
-                            'doublon ignored declined insert into ' .
-                            $object::$TABLE;
+                            'doublon ignored declined insert into '
+                            . $object::$TABLE;
                         $information = "<div class='sql warning'> $debugg_tech_notes </div>";
                         AfwSession::sqlLog($information, 'HZM');
                         $object->debugg_tech_notes = $debugg_tech_notes;
                         return false;
                     } elseif ($object->isFromUI and false) {
-                        //die("rafik 135006 query($query) : ".var_export($object,true));
+                        // die("rafik 135006 query($query) : ".var_export($object,true));
                         // return AfwRunHelper::niceUserError($dbl_message);
                     } else {
                         throw new AfwRuntimeException($dbl_message);
@@ -1068,19 +1040,21 @@ class AfwSqlHelper extends AFWRoot
                     // $object->set($object->getPKField(), $this_copy->getId());
                     // $object->update();
                 }
-                //die("rafik 135003 query($query) : ".var_export($object,true));
+                // die("rafik 135003 query($query) : ".var_export($object,true));
             }
 
             $query = 'INSERT INTO ' . $object::_prefix_table($object::$TABLE) . ' SET';
+
             /*
-            if($object::$TABLE == "cher_file") 
-            {
-                die("before query=$query, fields_to_insert[] = ".var_export($fields_to_insert,true));
-            }*/
+             * if($object::$TABLE == "cher_file")
+             * {
+             *     die("before query=$query, fields_to_insert[] = ".var_export($fields_to_insert,true));
+             * }
+             */
             // rafik : since version 2.0.1 we put FIELDS_UPDATED the old value
 
-            $gdat_null_if_zeros = AfwSession::config("gdat_null_if_zeros",true);
-            
+            $gdat_null_if_zeros = AfwSession::config('gdat_null_if_zeros', true);
+
             foreach ($fields_to_insert as $key => $old_value) {
                 $cotes = true;
                 $value = $object->getAfieldValue($key);
@@ -1102,25 +1076,19 @@ class AfwSqlHelper extends AFWRoot
                             $value = '0';
                         }
                         $query .= " $key = $value,";
-                    }
-                    elseif ($structure['TYPE'] == 'MFK') {
+                    } elseif ($structure['TYPE'] == 'MFK') {
                         if (!$value) {
                             $value = ',';
                         }
                         $query .= " $key = '$value',";
                     } else {
-                        if (($structure['TYPE'] == 'GDAT') or ($structure['TYPE'] == 'GDATE')) 
-                        {
-                            if ((!$value) or ($value=="0000-00-00 00:00:00") or ($value=="0000-00-00"))
-                            {
-                                if($gdat_null_if_zeros)
-                                {
-                                        $value = "NULL";
-                                        $cotes = false;
-                                }
-                                else
-                                {
-                                        $value = "0000-00-00";
+                        if (($structure['TYPE'] == 'GDAT') or ($structure['TYPE'] == 'GDATE')) {
+                            if ((!$value) or ($value == '0000-00-00 00:00:00') or ($value == '0000-00-00')) {
+                                if ($gdat_null_if_zeros) {
+                                    $value = 'NULL';
+                                    $cotes = false;
+                                } else {
+                                    $value = '0000-00-00';
                                 }
                             }
                         }
@@ -1130,41 +1098,41 @@ class AfwSqlHelper extends AFWRoot
                             $_utf8 = '';
                         }
 
-                        if($cotes)
-                        {
+                        if ($cotes) {
                             $query .= ' ' . $key . " = $_utf8'" . AfwStringHelper::_real_escape_string($value) . "',";
+                        } else {
+                            $query .= ' ' . $key . ' = ' . AfwStringHelper::_real_escape_string($value) . ',';
                         }
-                        else
-                        {
-                            $query .= ' ' . $key . " = " . AfwStringHelper::_real_escape_string($value) . ",";
-                        }
-                        
                     }
                     $fields_updated[$key] = $value;
+
                     /*
-                    if($key=='field_width')
-                    {
-                       die("object->getAllfieldValues() = ".var_export($object->getAllfieldValues(),true)." fields_updated=".var_export($fields_updated,true)); 
-                    }*/
+                     * if($key=='field_width')
+                     * {
+                     *    die("object->getAllfieldValues() = ".var_export($object->getAllfieldValues(),true)." fields_updated=".var_export($fields_updated,true));
+                     * }
+                     */
                 }
             }
             $query = trim($query, ',');
-            //die("rafik 135002 query($query) : ".var_export($object,true));
-            //die($query);
+            // die("rafik 135002 query($query) : ".var_export($object,true));
+            // die($query);
             // throw new AfwRuntimeException("should not query : $query");
+
             /*
-            if(($object::$TABLE == "applicant") and 
-               (contient($query, "INSERT INTO"))) 
-            {
-                   die("INSERT INTO to be executed : $query, "."<br>fields_to_insert[] = ".var_export($fields_to_insert,true));
-            }*/
-            
-            //if(!contient($query, "SELECT")) die("query to be executed : $query");
+             * if(($object::$TABLE == "applicant") and
+             *    (contient($query, "INSERT INTO")))
+             * {
+             *        die("INSERT INTO to be executed : $query, "."<br>fields_to_insert[] = ".var_export($fields_to_insert,true));
+             * }
+             */
+
+            // if(!contient($query, "SELECT")) die("query to be executed : $query");
             $return = $object->execQuery($query);
 
             $my_pk = $object->getPKField();
             $curr_id = $object->getId();
-            //die("rafik 13/5 : $my_pk = $curr_id ");
+            // die("rafik 13/5 : $my_pk = $curr_id ");
 
             if ($return) {
                 if ($my_pk) {
@@ -1177,24 +1145,24 @@ class AfwSqlHelper extends AFWRoot
                     }
                 } else {
                     throw new AfwRuntimeException(
-                        'MOMKEN SQL Problem : PK is not defined for table :  ' .
-                            $object::$TABLE
+                        'MOMKEN SQL Problem : PK is not defined for table :  '
+                        . $object::$TABLE
                     );
                 }
                 $my_setted_id = $object->getId();
                 if (!$my_setted_id) {
                     throw new AfwRuntimeException(
-                        'MOMKEN SQL Problem : insert into ' .
-                            $object::$TABLE .
-                            " has not been done correctly as id recolted is null, query : $query"
+                        'MOMKEN SQL Problem : insert into '
+                        . $object::$TABLE
+                        . " has not been done correctly as id recolted is null, query : $query"
                     );
                 }
 
                 $object->debugg_tech_notes .= " value setted for PK($my_pk) = $my_setted_id ";
                 $object->majTriggered();
-                
+
                 $object->afterInsert($my_setted_id, $fields_updated, $disableAfterCommitDBEvent);
-                                
+
                 $object->majTriggerReset();
                 if ($print_debugg and $print_sql) {
                     echo "<br>\n ############################################################################# <br>\n";
@@ -1209,59 +1177,57 @@ class AfwSqlHelper extends AFWRoot
             }
         } else {
             throw new AfwRuntimeException(
-                "Insert declined because no fields updated, 
-                       AFIELD_ VALUE=" .
-                    var_export($object->getAllfieldValues(), true) .
-                    ", 
-                       FIELDS_UPDATED=" .
-                    var_export($object->fieldsHasChanged(), true) .
-                    ", 
-                       FIELDS_ INITED=" .
-                    var_export($object->getAllfieldDefaultValues(), true) .
-                    ", 
-                       object = " .
-                    var_export($object, true)
+                'Insert declined because no fields updated, 
+                       AFIELD_ VALUE='
+                . var_export($object->getAllfieldValues(), true)
+                . ', 
+                       FIELDS_UPDATED='
+                . var_export($object->fieldsHasChanged(), true)
+                . ', 
+                       FIELDS_ INITED='
+                . var_export($object->getAllfieldDefaultValues(), true)
+                . ', 
+                       object = '
+                . var_export($object, true)
             );
             return false;
         }
     }
-
 
     /**
      * @param AFWObject $object
      * update
      * commit attributes update to DB
      */
-    public static function updateObject(&$object, $only_me = true, $nocote_fields=null, $onlyReturnSQL=false, $disableAfterCommitDBEvent=false)
+    public static function updateObject(&$object, $only_me = true, $nocote_fields = null, $onlyReturnSQL = false, $disableAfterCommitDBEvent = false)
     {
-        if($object->IS_COMMITING) throw new AfwRuntimeException("To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods");
+        if ($object->IS_COMMITING)
+            throw new AfwRuntimeException('To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods');
         $object->IS_COMMITING = true;
-        
+
         // avoid these global variables
         // global $the_last_update_sql;
 
-        $AUDIT_DISABLED = AfwSession::config("AUDIT_DISABLED", false);
+        $AUDIT_DISABLED = AfwSession::config('AUDIT_DISABLED', false);
 
         $user_id = AfwSession::getUserIdActing();
 
         if ($object->IS_VIRTUAL) {
             throw new AfwRuntimeException(
-                'Impossible to do call to the method update() with the virtual table ' .
-                $object::$TABLE .
-                    '.'
+                'Impossible to do call to the method update() with the virtual table '
+                . $object::$TABLE
+                . '.'
             );
         } else {
-            //if((static::$TABLE=="student_session") and ($object->getVal("xxxxx")==102937)) throw new AfwRuntimeException("object-> FIELDS_UPDATED = ".var_export($object-> FIELDS_UPDATED,true));
-            //if((static::$TABLE=="student_session")) throw new AfwRuntimeException("object-> FIELDS_UPDATED = ".var_export($object-> FIELDS_UPDATED,true));
-
-
+            // if((static::$TABLE=="student_session") and ($object->getVal("xxxxx")==102937)) throw new AfwRuntimeException("object-> FIELDS_UPDATED = ".var_export($object-> FIELDS_UPDATED,true));
+            // if((static::$TABLE=="student_session")) throw new AfwRuntimeException("object-> FIELDS_UPDATED = ".var_export($object-> FIELDS_UPDATED,true));
 
             if ($only_me) {
                 $id_updated = $object->getId();
                 if (!$id_updated) {
                     throw new AfwRuntimeException(
-                        "$object : if update only one record mode, the Id should be specified ! obj = " .
-                            var_export($object, true)
+                        "$object : if update only one record mode, the Id should be specified ! obj = "
+                        . var_export($object, true)
                     );
                 }
             } else {
@@ -1276,15 +1242,16 @@ class AfwSqlHelper extends AFWRoot
                 if ($object->isChanged()) {
                     self::beforeModification($object,
                         $id_updated,
-                        $object->fieldsHasChanged()
-                    );
+                        $object->fieldsHasChanged());
                     $object->majTriggered();
-                    $can_update = $object->beforeUpdate($id_updated,$object->fieldsHasChanged());
+                    $can_update = $object->beforeUpdate($id_updated, $object->fieldsHasChanged());
+
                     /*
-                    if(static::$TABLE == "student_session") 
-                    {
-                        throw new AfwRuntimeException(static::$TABLE." updating ... fields updated count = ".count($object-> FIELDS_UPDATED)." / beforeUpdate accepted update ? = $can_update / FIELDS_UPDATED = " . var_export($object-> FIELDS_UPDATED,true));
-                    }*/
+                     * if(static::$TABLE == "student_session")
+                     * {
+                     *     throw new AfwRuntimeException(static::$TABLE." updating ... fields updated count = ".count($object-> FIELDS_UPDATED)." / beforeUpdate accepted update ? = $can_update / FIELDS_UPDATED = " . var_export($object-> FIELDS_UPDATED,true));
+                     * }
+                     */
                     if (!$can_update) {
                         $object->setTechnicalNotes('beforeUpdate refused update');
                     }
@@ -1298,13 +1265,13 @@ class AfwSqlHelper extends AFWRoot
 
             if ($can_update) {
                 if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
-                    //die("call to AfwAuditHelper::audit_before_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                    // die("call to AfwAuditHelper::audit_before_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
                     AfwAuditHelper::audit_before_update($object, $object->fieldsHasChanged());
                 } else {
                     // if(....) die("no call to AfwAuditHelper::audit_before_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
                 }
 
-                //if((!$arr_tables_without_technical_fields) or (array_search(static::$TABLE, $arr_tables_without_technical_fields) === false)) {
+                // if((!$arr_tables_without_technical_fields) or (array_search(static::$TABLE, $arr_tables_without_technical_fields) === false)) {
 
                 if (!$user_id) {
                     $user_id = 0;
@@ -1320,48 +1287,45 @@ class AfwSqlHelper extends AFWRoot
                 } else {
                     $ver = $object->fld_VERSION() . '+1';
                 }
-                //}
+                // }
 
                 /*
-                if(static::$TABLE == "student_session") 
-                {
-                    die(static::$TABLE." updating ... before get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($object-> FIELDS_UPDATED)." / can update = $can_update / FIELDS_UPDATED = " . var_export($object-> FIELDS_UPDATED,true));
-                }
-                */
-
-                
-        
+                 * if(static::$TABLE == "student_session")
+                 * {
+                 *     die(static::$TABLE." updating ... before get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($object-> FIELDS_UPDATED)." / can update = $can_update / FIELDS_UPDATED = " . var_export($object-> FIELDS_UPDATED,true));
+                 * }
+                 */
 
                 list($query, $fields_updated, $report) = AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated, $nocote_fields);
-                if($onlyReturnSQL) return $query." report ".$report;
-                /*
-                if(static::$TABLE == "student_session") 
-                {
-                    die(static::$TABLE." updating ... after get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($fields_updated)." / query = $query / report=$report/ fields_updated = " . var_export($fields_updated,true));
-                }
-                */
+                if ($onlyReturnSQL)
+                    return $query . ' report ' . $report;
 
+                /*
+                 * if(static::$TABLE == "student_session")
+                 * {
+                 *     die(static::$TABLE." updating ... after get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($fields_updated)." / query = $query / report=$report/ fields_updated = " . var_export($fields_updated,true));
+                 * }
+                 */
 
                 $return = 0;
                 if ($can_update) {
-
                     // if we concatenate sql like this it cause memory exhausted error we should find other way to do
                     // $the_last_update_sql .= " --> " . var_export($fields_updated, true) . " SQL = $query";
                     if ($object->showQueryAndHalt) {
                         throw new AfwRuntimeException(
-                            'showQueryAndHalt : updated fields = ' .
-                                $object->showArr($fields_updated) .
-                                '<br> report = ' .  $report .
-                                '<br> query = ' .  $query
+                            'showQueryAndHalt : updated fields = '
+                            . $object->showArr($fields_updated)
+                            . '<br> report = ' . $report
+                            . '<br> query = ' . $query
                         );
                     }
                     if (count($fields_updated) > 0) {
-
                         $object->execQuery($query);
                         $return = $object->_affected_rows($object->getProjectLinkName());
-                        if(!$return) $object->setTechnicalNotes('no affected rows for : '.$query);
+                        if (!$return)
+                            $object->setTechnicalNotes('no affected rows for : ' . $query);
                     } else {
-                        $object->setTechnicalNotes('no columns updated : '.$query);
+                        $object->setTechnicalNotes('no columns updated : ' . $query);
                         $return = 0;
                     }
 
@@ -1374,14 +1338,14 @@ class AfwSqlHelper extends AFWRoot
                     }
                     if ($only_me and $return > 1) {
                         throw new AfwRuntimeException(
-                            "MOMKEN error affected rows = $return, strang for query : ".
-                            $query .
-                                '///' .
-                                AfwMysql::get_error(
-                                    AfwDatabase::getLinkByName(
-                                        $object->getProjectLinkName()
-                                    )
+                            "MOMKEN error affected rows = $return, strang for query : "
+                            . $query
+                            . '///'
+                            . AfwMysql::get_error(
+                                AfwDatabase::getLinkByName(
+                                    $object->getProjectLinkName()
                                 )
+                            )
                         );
                     } else {
                         if ($only_me and $id_updated) {
@@ -1405,12 +1369,12 @@ class AfwSqlHelper extends AFWRoot
                 return $return;
             } else {
                 /*
-                if(static::$TABLE=="student_session")
-                {
-                   die("can not update, reason : ".$object->debugg_reason_non_update." : ".static::$TABLE." FIELDS_UPDATED : <br> ".$object->showArr($object-> FIELDS_UPDATED));
-                }
-                */
-                //throw new AfwRuntimeException();
+                 * if(static::$TABLE=="student_session")
+                 * {
+                 *    die("can not update, reason : ".$object->debugg_reason_non_update." : ".static::$TABLE." FIELDS_UPDATED : <br> ".$object->showArr($object-> FIELDS_UPDATED));
+                 * }
+                 */
+                // throw new AfwRuntimeException();
                 // if we concatenate sql like this it cause memory exhausted error we should find other way to do
                 // $the_last_update_sql .= " --> can not update : " . $object->debugg_reason_non_update;
                 $object->IS_COMMITING = false;
@@ -1423,7 +1387,6 @@ class AfwSqlHelper extends AFWRoot
         $object->IS_COMMITING = false;
     }
 
-
     /**
      * hide  different then logicDelete by 2 things
      *     1. hide operate on one record only  and logicDelete can operate many records
@@ -1432,13 +1395,13 @@ class AfwSqlHelper extends AFWRoot
      */
     public static function hideObject($object)
     {
-        $AUDIT_DISABLED = AfwSession::config("AUDIT_DISABLED", false);
+        $AUDIT_DISABLED = AfwSession::config('AUDIT_DISABLED', false);
         $me = AfwSession::getUserIdActing();
         if ($object->IS_VIRTUAL) {
             throw new AfwRuntimeException(
-                'Impossible to do call to the method hide() with the virtual table ' .
-                $object::$TABLE .
-                    '.'
+                'Impossible to do call to the method hide() with the virtual table '
+                . $object::$TABLE
+                . '.'
             );
         } else {
             if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
@@ -1462,22 +1425,22 @@ class AfwSqlHelper extends AFWRoot
                     'UPDATE ' . $object::_prefix_table($object::$TABLE) . ' SET ';
 
                 $query .=
-                    $object->fld_UPDATE_USER_ID() .
-                    ' = ' .
-                    $user_id .
-                    ', ' .
-                    $object->fld_UPDATE_DATE() .
-                    ' = now(), ' .
-                    $object->fld_VERSION() .
-                    " = $ver, ";
+                    $object->fld_UPDATE_USER_ID()
+                    . ' = '
+                    . $user_id
+                    . ', '
+                    . $object->fld_UPDATE_DATE()
+                    . ' = now(), '
+                    . $object->fld_VERSION()
+                    . " = $ver, ";
 
                 $query .=
-                    $object->fld_ACTIVE() .
-                    " = 'N' WHERE " .
-                    $object->getPKField() .
-                    " = '" .
-                    $object->getAfieldValue($object->getPKField()) .
-                    "'";
+                    $object->fld_ACTIVE()
+                    . " = 'N' WHERE "
+                    . $object->getPKField()
+                    . " = '"
+                    . $object->getAfieldValue($object->getPKField())
+                    . "'";
                 $return = $object->execQuery($query);
 
                 $object->afterHide($object->getAfieldValue($object->getPKField()));
@@ -1486,7 +1449,6 @@ class AfwSqlHelper extends AFWRoot
             return $return;
         }
     }
-
 
     public static function deleteOneByOneWhere($object, $where, $simul = false)
     {
@@ -1503,9 +1465,9 @@ class AfwSqlHelper extends AFWRoot
             list($can, $reason) = $ObjectsToDeleteItem->canBeDeleted();
             if (!$can) {
                 $delete_blocked_reasons[] =
-                    $ObjectsToDeleteItem->getShortDisplay($lang) .
-                    ' : ' .
-                    $reason;
+                    $ObjectsToDeleteItem->getShortDisplay($lang)
+                    . ' : '
+                    . $reason;
             }
         }
 
@@ -1524,8 +1486,8 @@ class AfwSqlHelper extends AFWRoot
                 $success = $ObjectsToDeleteItem->delete();
                 if (!$success) {
                     $delete_blocked_reasons[] =
-                        $ObjectsToDeleteItem->getShortDisplay($lang) .
-                        ' : فشلت عملية المسح';
+                        $ObjectsToDeleteItem->getShortDisplay($lang)
+                        . ' : فشلت عملية المسح';
                     return [
                         false,
                         $delete_blocked_reasons,
@@ -1586,7 +1548,6 @@ class AfwSqlHelper extends AFWRoot
         return $return;
     }
 
-
     public static function simulateUpdate($object, $only_me = true)
     {
         $user_id = AfwSession::getUserIdActing();
@@ -1597,13 +1558,13 @@ class AfwSqlHelper extends AFWRoot
         }
         $ver = $object->fld_VERSION() . '+1';
 
-        $can_update = $object->beforeUpdate($id_updated,$object->fieldsHasChanged());
+        $can_update = $object->beforeUpdate($id_updated, $object->fieldsHasChanged());
 
-        if (!$can_update) throw new AfwRuntimeException("can't update beforeUpdate refused : object-> FIELDS_UPDATED = " . var_export($object->fieldsHasChanged(), true));
+        if (!$can_update)
+            throw new AfwRuntimeException("can't update beforeUpdate refused : object-> FIELDS_UPDATED = " . var_export($object->fieldsHasChanged(), true));
 
         return AfwSqlHelper::getSQLUpdate($object, $user_id, $ver, $id_updated);
     }
-
 
     /**
      * old func on AFWObject become here and renamed as aggregFunction
@@ -1611,12 +1572,12 @@ class AfwSqlHelper extends AFWRoot
      * @param AFWObject $object
      * @param string $function
      */
-    public static function aggregFunction($object, 
+    public static function aggregFunction($object,
         $function,
         $group_by = '',
         $throw_error = true,
-        $throw_analysis_crash = true
-    ) {
+        $throw_analysis_crash = true)
+    {
         $module_server = $object->getModuleServer();
         if (!$function) {
             $function = 'count(*)';
@@ -1631,16 +1592,15 @@ class AfwSqlHelper extends AFWRoot
             $query_group_by = '';
         }
         $query =
-            'select ' .
-            $function .
-            ' as res' .
-            $query_select .
-            "\n from " .
-            $object->getMyTable(true).
-            " me\n where 1" .
-            $object->getSQL() .
-            $query_group_by;
-
+            'select '
+            . $function
+            . ' as res'
+            . $query_select
+            . "\n from "
+            . $object->getMyTable(true)
+            . " me\n where 1"
+            . $object->getSQL()
+            . $query_group_by;
 
         $object->clearSelect();
         if (count($group_by_tab)) {
@@ -1660,7 +1620,7 @@ class AfwSqlHelper extends AFWRoot
                 $module_server
             );
         }
-        
+
         return $return;
     }
 
@@ -1670,14 +1630,14 @@ class AfwSqlHelper extends AFWRoot
      * @param AFWObject $object
      * @param string $function
      */
-    public static function multipleAggregFunction($object, 
+    public static function multipleAggregFunction($object,
         $functions,
         $group_by = '',
         $throw_error = true,
-        $throw_analysis_crash = true
-    ) {
+        $throw_analysis_crash = true)
+    {
         $module_server = $object->getModuleServer();
-        $query = 'select '.$group_by;
+        $query = 'select ' . $group_by;
 
         if ($group_by) {
             $group_by_tab = explode(',', $group_by);
@@ -1686,25 +1646,21 @@ class AfwSqlHelper extends AFWRoot
             $group_by_tab = [];
             $query_group_by = '';
         }
-        
-        foreach ($functions as $functionCode => $function)
-        {
+
+        foreach ($functions as $functionCode => $function) {
             $query .= ", $function as $functionCode";
         }
-            
-        $query .= "\n from " .
-            $object->getMyTable(true).
-            " me\n where 1" .
-            $object->getSQL() .
-            $query_group_by;
 
+        $query .= "\n from "
+            . $object->getMyTable(true)
+            . " me\n where 1"
+            . $object->getSQL()
+            . $query_group_by;
 
         $object->clearSelect();
-        
+
         return [$query, AfwDatabase::db_recup_rows($query, $throw_error, $throw_analysis_crash, $module_server)];
-
     }
-
 
     /**
      * old count on AFWObject become here and renamed as aggregCount
@@ -1715,10 +1671,10 @@ class AfwSqlHelper extends AFWRoot
     public static function aggregCount($object, $throw_error = true, $throw_analysis_crash = true)
     {
         $query =
-            "select count(*) as cnt \n from " .
-            $object->getMyTable(true).
-            " me\n where 1" .
-            $object->getSQL();
+            "select count(*) as cnt \n from "
+            . $object->getMyTable(true)
+            . " me\n where 1"
+            . $object->getSQL();
 
         $object->clearSelect();
 
@@ -1730,25 +1686,21 @@ class AfwSqlHelper extends AFWRoot
             $module_server
         );
 
-        //if((!$return) or (static::$TABLE == "school_class"))
-        //die("query=$query return=$return");
+        // if((!$return) or (static::$TABLE == "school_class"))
+        // die("query=$query return=$return");
         return $return;
     }
-
 
     public static function concat_ifnull_implode($arr_cols, $sep)
     {
         $ifnull_df_arr = [];
-        foreach($arr_cols as $nom_col)
-        {
+        foreach ($arr_cols as $nom_col) {
             $nom_col = "IF(ISNULL($nom_col), '', $nom_col)";
             $ifnull_df_arr[] = $nom_col;
         }
-        
-        
-        return "concat(".implode(",'$sep',",$ifnull_df_arr).")";
-    }
 
+        return 'concat(' . implode(",'$sep',", $ifnull_df_arr) . ')';
+    }
 
     /* obso
 
@@ -1876,7 +1828,7 @@ class AfwSqlHelper extends AFWRoot
 
     private function getTheResultRowIndex($result_row=null)
     {
-        $loadByIndex = null; 
+        $loadByIndex = null;
         if (is_array($this->UNIQUE_KEY) and count($this->UNIQUE_KEY) > 0) {
             $uk_val_arr = [];
             $isLoadByIndex = true;
@@ -1896,8 +1848,4 @@ class AfwSqlHelper extends AFWRoot
 
         return $loadByIndex;
     }*/
-        
-
-    
-
 }
