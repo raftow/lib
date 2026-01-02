@@ -28,7 +28,7 @@ class AfwCodeHelper
         }
 
         $html = '';
-        $html .= "<code>$file ($title)</code>\n";
+        $html .= "<code><p>$file $title</p></code>\n";
         $html .= "<ul class=\"code $language\">";
 
         if ($lines) {
