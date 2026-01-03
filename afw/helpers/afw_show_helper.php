@@ -1237,11 +1237,15 @@ class AfwShowHelper
 
         // die($obj->getMyClass()." >> nowrap_cols for $obj = ".var_export($obj->nowrap_cols,true));
         list($categoryAttribute, $categoryAttributeCATEGORY) = explode(':', $obj->rowCategoryAttribute());
-        $html_table_id = $options['html_table_id'] ? $options['html_table_id'] : $obj->showAsDataTable;
+
+        if ($options['html_table_id']) {
+            $popupEditSettings['html_table_id'] = $options['html_table_id'];
+        }
+
         list($html, $ids) = self::tableToHtml(
             $data,
             $header_trad,
-            $html_table_id,
+            $obj->showAsDataTable,
             $isAvail,
             $nowrap_cols,
             $class_table,
@@ -1327,6 +1331,8 @@ class AfwShowHelper
             // if(!$showWidthedTable) $showWidthedTable = "85%";
         } else {
             $idTable = $popupEditSettings['parent'];
+            if (!$idTable)
+                $idTable = $popupEditSettings['html_table_id'];
             $id_prop = "id='$idTable'";
         }
 
