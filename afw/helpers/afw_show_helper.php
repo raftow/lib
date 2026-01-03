@@ -1334,6 +1334,8 @@ class AfwShowHelper
             if (!$idTable)
                 $idTable = $popupEditSettings['html_table_id'];
             $id_prop = "id='$idTable'";
+            $idTableBody = $idTable . 'Body';
+            $id_prop_body = "id='$idTableBody'";
         }
 
         if ($showWidthedTable) {
@@ -1371,7 +1373,7 @@ class AfwShowHelper
                 $the_header .= "      <th class='col-importance-$importance th-$nom_col' $width_th align='center'>$trad_col</th>\n";
             }
             $the_header .= "   </tr>\n";
-            $the_header .= "   </thead>\n";
+            $the_header .= "   </thead>\n<tbody $id_prop_body>";
         }
 
         $html_header .= $the_header;
@@ -1450,7 +1452,7 @@ class AfwShowHelper
 
                 $rows_count_table++;
                 if ($rows_count_table == $rows_by_table) {
-                    $html .= "</table><br>\n";
+                    $html .= "</body></table><br>\n";
                     $html_arr[] = str_replace(
                         '_XXX_',
                         count($html_arr) + 1,

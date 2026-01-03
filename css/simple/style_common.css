@@ -2354,6 +2354,18 @@ table.display.dataTable.display_ltr.back_trace {
     padding: 10px 6px !important;
 }
 
+.grid tr.addeditem td {
+    background-color: rgba(181, 212, 253, 0.47) !important;
+    font-family: 'title' !important;
+    padding: 10px 6px !important;
+}
+
+.grid tr.altaddeditem td {
+    background-color: rgba(208, 227, 252, 0.47) !important;
+    font-family: 'title' !important;
+    padding: 10px 6px !important;
+}
+
 .grid tr.item td {
     background-color: rgba(238, 238, 238, 0.47) !important;
     font-family: 'title' !important;
