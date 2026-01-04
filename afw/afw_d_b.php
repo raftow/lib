@@ -232,6 +232,8 @@ class AfwDB extends AFWRoot
             
     }
 
+    
+
     public static function execQuery($database, $query_txt, $titre="", $continueAndSendAlert=false)
     {
         // die("je suis la rafik");
@@ -303,5 +305,7 @@ class AfwDB extends AFWRoot
 
         return array('result'=>$res, 'affected_rows'=>$affected_rows, 'sql'=>$query_txt);
     }
+
+
 }
 ?>

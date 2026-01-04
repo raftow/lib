@@ -29,6 +29,8 @@ class AfwApiConsumeHelper
                 }
                 
                 $url = $p_url;
+                if($print_full_debugg) AfwBatch::print_comment("using params : " . var_export($data, true));
+                if($print_full_debugg) AfwBatch::print_comment("consuming url : " . $url);
                 $curl_options = array();
                 // echo "initilized\n";
                 $curl_options[CURLOPT_URL] = $url;
@@ -104,8 +106,8 @@ class AfwApiConsumeHelper
                 $curl_commands[] = "curl_setopt_array(\$curl, ".var_export($curl_options, true).");";
                 // echo "executing\n";
                 $error_msg = "";
-                // $response = curl_exec($curl);
-                $response = '{"data":[{"code":"0100","name":"Riyadh","region_code":"0001","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0101","name":"Makkah Al-Mukarramah","region_code":"0002","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0103","name":"Jeddah","region_code":"0002","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0104","name":"Taif","region_code":"0002","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0105","name":"Al-Madinah Al-Munawwarah","region_code":"0003","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0106","name":"Yanbu","region_code":"0003","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0107","name":"Buraidah","region_code":"0004","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0108","name":"Unaizah","region_code":"0004","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0109","name":"Khamis Mushait","region_code":"0006","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0110","name":"Tabuk","region_code":"0007","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null}],"meta":{"current_page":1,"from":1,"last_page":18,"per_page":10,"to":10,"total":177}}';
+                $response = curl_exec($curl);
+                // $response = '{"data":[{"code":"0100","name":"Riyadh","region_code":"0001","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0101","name":"Makkah Al-Mukarramah","region_code":"0002","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0103","name":"Jeddah","region_code":"0002","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0104","name":"Taif","region_code":"0002","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0105","name":"Al-Madinah Al-Munawwarah","region_code":"0003","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0106","name":"Yanbu","region_code":"0003","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0107","name":"Buraidah","region_code":"0004","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0108","name":"Unaizah","region_code":"0004","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0109","name":"Khamis Mushait","region_code":"0006","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0110","name":"Tabuk","region_code":"0007","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null}],"meta":{"current_page":1,"from":1,"last_page":18,"per_page":10,"to":10,"total":177}}';
                 $curl_commands[] = "\$response = curl_exec(\$curl);";       
                 if($print_full_debugg) AfwBatch::print_debugg("API RESULT :\n [$response]\n");
                 if(!trim($response))
@@ -147,17 +149,19 @@ class AfwApiConsumeHelper
     public static function consume_bearer_api($url, $token, $proxy = null , $data = null, 
                     $verify_host=false, $verify_pear=false, $return_transfer=true, 
                     $encoding='', $method='GET', $maxredirs=10, $timeout=0, $followlocation=true, $http_version=null,
-                    $http_header_array = ['accept: application/json', 'Content-Type: application/json'])
+                    $http_header_array = ['accept: application/json', 'Content-Type: application/json'],
+                    $print_full_debugg=false, $print_error=false)
     {
-        return self::consume_complex_api(true, $url, $token, $proxy, $data, $verify_host, $verify_pear, $return_transfer, $encoding, $method, $maxredirs, $timeout, $followlocation, $http_version, $http_header_array);
+        return self::consume_complex_api(true, $url, $token, $proxy, $data, $verify_host, $verify_pear, $return_transfer, $encoding, $method, $maxredirs, $timeout, $followlocation, $http_version, $http_header_array, $print_full_debugg, $print_error);
     }
 
     public static function consume_normal_api($url, $proxy = null, $data = null, 
                     $verify_host=false, $verify_pear=false, $return_transfer=true, 
                     $encoding='', $method='GET', $maxredirs=10, $timeout=0, $followlocation=true, $http_version=null,
-                    $http_header_array = ['accept: application/json', 'Content-Type: application/json'])
+                    $http_header_array = ['accept: application/json', 'Content-Type: application/json'],
+                    $print_full_debugg=false, $print_error=false)
     {
-        return self::consume_complex_api(false, $url, "",    $proxy, $data, $verify_host, $verify_pear, $return_transfer, $encoding, $method, $maxredirs, $timeout, $followlocation, $http_version, $http_header_array);
+        return self::consume_complex_api(false, $url, "",    $proxy, $data, $verify_host, $verify_pear, $return_transfer, $encoding, $method, $maxredirs, $timeout, $followlocation, $http_version, $http_header_array, $print_full_debugg, $print_error);
     }
 
 
@@ -175,7 +179,8 @@ class AfwApiConsumeHelper
         $followlocation = AfwSettingsHelper::readSettingValue($object,"followlocation",true);
         $http_version = AfwSettingsHelper::readSettingValue($object,"http_version",null);
         $encoding = AfwSettingsHelper::readSettingValue($object,"encoding",'');
-        
+        $print_full_debugg = AfwSettingsHelper::readSettingValue($object,"print_full_debugg",true);
+        $print_error = AfwSettingsHelper::readSettingValue($object,"print_error",true);
         
         // $xxxxx = AfwSettingsHelper::readSettingValue($object,"xxxxx",def-xxxxx);
         $http_header_array = AfwSettingsHelper::readSettingValue($object, "http_header", ['accept: application/json', 'Content-Type: application/json'],"settings",true);
@@ -195,7 +200,9 @@ class AfwApiConsumeHelper
                 $timeout,
                 $followlocation,
                 $http_version,
-                $http_header_array);
+                $http_header_array,
+                $print_full_debugg, 
+                $print_error);
         }
         else
         {
@@ -211,7 +218,9 @@ class AfwApiConsumeHelper
                 $timeout,
                 $followlocation,
                 $http_version,
-                $http_header_array);
+                $http_header_array,
+                $print_full_debugg, 
+                $print_error);
         }
 
         return $res;

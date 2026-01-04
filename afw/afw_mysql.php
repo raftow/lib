@@ -63,6 +63,9 @@ class AfwMysql
 
     }
 
+
+    
+
     public static function query($sql, $link, $is_update=false)
     {
         if(self::php_is_old()) return null; // mysql_query($sql, $link);    

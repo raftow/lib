@@ -27,10 +27,10 @@ class SmtpMailSystem  {
    * Concatenate and wrap the e-mail body for either
    * plain-text or HTML emails.
    *
-   * @param $message
+   * @param array $message
    *   A message array, as described in hook_mail_alter().
    *
-   * @return
+   * @return array
    *   The formatted $message.
    */
   public function format(array $message) {
@@ -193,8 +193,8 @@ class SmtpMailSystem  {
           $vars = explode(';', $value);
           foreach ($vars as $i => $var) {
             if ($cut = strpos($var, '=')) {
-              $new_var = trim(hzm_strtolower(hzm_substr($var, $cut + 1)));
-              $new_key = trim(hzm_substr($var, 0, $cut));
+              $new_var = trim(strtolower(substr($var, $cut + 1)));
+              $new_key = trim(substr($var, 0, $cut));
               unset($vars[$i]);
               $vars[$new_key] = $new_var;
             }

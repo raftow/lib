@@ -5,15 +5,25 @@ class AfwSettingsHelper
     public static function readParamsArray($object, $params_attribute)
     {
         $params = $object->getVal($params_attribute);
-        $return = [];
-        $params_arr = explode("\n", $params);
-        foreach($params_arr as $params_row)
+        if(is_string($params))
         {
-            list($param, $value) = explode(":", $params_row);
-            $value = trim($value);
-            $param = trim($param);
-            if($param) $return[$param] = $value;
+            $params_arr = explode("\n", $params);
+            $return = [];
+            foreach($params_arr as $params_row)
+            {
+                list($param, $value) = explode(":", $params_row);
+                $value = trim($value);
+                $param = trim($param);
+                if($param) $return[$param] = $value;
+            }
         }
+        elseif(is_array($params))
+        {
+            $return = $params;
+        }
+        else throw new AfwRuntimeException("AfwSettingsHelper::readParamsArray failed with strange params value : ".var_export($params, true));
+
+        
 
         return $return;
     }

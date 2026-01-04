@@ -454,10 +454,10 @@ function _mime_header_decode($matches) {
  * , not "<"). Be careful when using this function, as decode_entities can
  * revert previous sanitization efforts (&lt;script&gt; will become <script>).
  *
- * @param $text
+ * @param string $text
  *   The text to decode entities in.
  *
- * @return
+ * @return string
  *   The input $text, with all HTML entities decoded once.
  */
 function decode_entities($text) {
