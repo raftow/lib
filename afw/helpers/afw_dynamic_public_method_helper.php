@@ -96,6 +96,7 @@ class AfwDynamicPublicMethodHelper
                 'LABEL_AR' => $methodTitleAr,
                 'LABEL_EN' => $methodTitleEn,
                 'ADMIN-ONLY' => $adminOnly,
+                'ONLY-ADMIN' => $adminOnly,
                 'PUBLIC' => $public,
                 'BF-ID' => '',
                 'confirmation_needed' => $methodConfirmationNeeded,
