@@ -13,9 +13,7 @@ if (!defined('PHP_VERSION_ID')) {
 if (!defined('STRUCTURE_IN_CACHE')) {
     define('STRUCTURE_IN_CACHE', false);
 }
-/**
- * File that contains the AFWObject Class
- */
+/** File that contains the AFWObject Class */
 
 // @todo
 // 3. we can/need sub-modes of qedit in structure "QEDIT-[submode]"=>true and when accessed with the  qedit mode :
@@ -33,7 +31,6 @@ if (!defined('STRUCTURE_IN_CACHE')) {
 // old require of afw_ini
 
 /**
- *
  * @descr Basic AFW Framework Class
  * @package AFW
  * @authors rafik B + karim G
@@ -41,33 +38,28 @@ if (!defined('STRUCTURE_IN_CACHE')) {
 class AFWObject extends AFWRoot
 {
     /**
-     *
      * Package
      * @var string
      */
-
     public static $DATABASE = '____afw';
+
     public static $MODULE = 'afw';
     public static $TABLE = 'afw_object';
     public static $STATS_CONFIG = null;
     public static $copypast = false;
     private static $mfk_separator = ',';
-
     private static $my_debugg_db_structure = null;
 
     // params
 
-
     /**
-     *
      * Table name
      * @var string
      */
-
     public $AUDIT_DATA = false;
 
     public $arr_erros = [];
-    private $tech_notes = "";
+    private $tech_notes = '';
     private $PK_FIELD = '';
 
     // since v 3.0 merged with gotItemCache it is same purpose
@@ -75,36 +67,30 @@ class AFWObject extends AFWRoot
     // private $gotItemCache = null;
 
     /**
-     *
      * Fields values
      * @var array
      */
     private $AFIELD_VALUE = [];
 
     /**
-     *
      * Attrib values
      * @var array
      */
-
     private $ATTRIB_VALUE = [];
 
     /**
-     *
      * Options values
      * @var array
      */
     private $OPTIONS = [];
 
     /**
-     *
      * debuggs values
      * @var array
      */
     private $debuggs = [];
 
     /**
-     *
      * Updated Fields values
      * @var array
      */
@@ -113,14 +99,12 @@ class AFWObject extends AFWRoot
     private $FIELDS_INITED = [];
 
     /**
-     *
      * Search criteria
      * @var string
      */
     private $SEARCH = '';
 
     /**
-     *
      * Search criteria in array
      * @var array
      */
@@ -130,35 +114,30 @@ class AFWObject extends AFWRoot
     private $CONTEXT_COLS = [];
 
     /**
-     *
      * List of related objects
      * @var array of AFWObject objects
      */
     public $OBJECTS_CACHE = [];
 
     /**
-     *
      * DB_STRUCTURE
      * @var array
      */
     private $DB_STRUCTURE = [];
 
     /**
-     *
      * UNIQUE INDEXES
      * @var array
      */
     private $U_INDEXES = [];
 
     /**
-     *
      * MY_DEBUG
      * @var boolean
      */
     private $MY_DEBUG = false;
 
     /**
-     *
      * IS_VIRTUAL
      * @var boolean
      */
@@ -170,23 +149,23 @@ class AFWObject extends AFWRoot
 
     public static $all_data;
 
-    //private $force_mode = false;
+    // private $force_mode = false;
 
     private $maj_trig_count = 0;
 
     public function majTriggerReset()
     {
-        $this->maj_trig_count=0;
+        $this->maj_trig_count = 0;
     }
 
     public function majTriggered()
     {
         $this->maj_trig_count++;
-        if($this->maj_trig_count>50)
-        {
-            throw new AfwRuntimeException("Too much Update event triggered");
+        if ($this->maj_trig_count > 50) {
+            throw new AfwRuntimeException('Too much Update event triggered');
         }
     }
+
     /**
      * __construct
      * Constructor
@@ -198,7 +177,8 @@ class AFWObject extends AFWRoot
         $database_module = '',
         $module = ''
     ) {
-        if (!$table) return null;
+        if (!$table)
+            return null;
         if (!$module) {
             $module = $database_module;
         }
@@ -230,7 +210,7 @@ class AFWObject extends AFWRoot
             static::$TABLE = $table;
             $this->AUDIT_DATA = false;
             $this->IS_VIRTUAL = strtolower(substr(static::$TABLE, 0, 2)) == 'v_';
-            //$this_db_structure = static::getDbStructure($return_type="structure", $attribute = "all");
+            // $this_db_structure = static::getDbStructure($return_type="structure", $attribute = "all");
             $this->initValues();
             $this->PK_FIELD = $pk_field;
         } else {
@@ -252,15 +232,18 @@ class AFWObject extends AFWRoot
 
     private function attributeDefaults($table_name, $field_name)
     {
-        if (self::$attributeDefaultsArr[$table_name][$field_name]) return self::$attributeDefaultsArr[$table_name][$field_name];
+        if (self::$attributeDefaultsArr[$table_name][$field_name])
+            return self::$attributeDefaultsArr[$table_name][$field_name];
         $struct = AfwStructureHelper::getStructureOf($this, $field_name, false);
         $def_type = $struct['TYPE'];
         if ($def_type == 'MFK') {
-            if(!$struct['DEFAUT']) $struct['DEFAUT'] = ',';
+            if (!$struct['DEFAUT'])
+                $struct['DEFAUT'] = ',';
             $def_val = $struct['DEFAUT'];
             $def_val_force = true;
         } elseif ($def_type == 'FK') {
-            if(!$struct['DEFAUT']) $struct['DEFAUT'] = 0;
+            if (!$struct['DEFAUT'])
+                $struct['DEFAUT'] = 0;
             $def_val = $struct['DEFAUT'];
             $def_val_force = true;
         } elseif (
@@ -273,7 +256,7 @@ class AFWObject extends AFWRoot
         ) {
             if ($def_type == 'GDAT') {
                 if ($struct['MANDATORY']) {
-                    $def_val = date("Y-m-d H:i:s");
+                    $def_val = date('Y-m-d H:i:s');
                     $def_val_force = true;
                 } else {
                     $def_val = null;
@@ -284,7 +267,7 @@ class AFWObject extends AFWRoot
                 $def_val_force = true;
             }
         } else {
-            //if(($field_name=="active") and static::$TABLE == "bus_seat") die("struct = ".var_export($struct,true));
+            // if(($field_name=="active") and static::$TABLE == "bus_seat") die("struct = ".var_export($struct,true));
             $def_val = $struct['DEFAUT'];
             $def_val_force = $struct['DEFAULT_FORCE'];
         }
@@ -305,19 +288,18 @@ class AFWObject extends AFWRoot
             if ($def_val || $def_val_force) {
                 $this->setAfieldValue($field_name, $def_val);
                 $this->setAfieldDefaultValue($field_name, $def_val);
-                //if(($field_name=="active") and static::$TABLE == "bus_seat") die("this->FIELDS_INITED after setAfieldDefaultValue($field_name, $def_val) = ".var_export($this->FIELDS_INITED,true));
+                // if(($field_name=="active") and static::$TABLE == "bus_seat") die("this->FIELDS_INITED after setAfieldDefaultValue($field_name, $def_val) = ".var_export($this->FIELDS_INITED,true));
             }
         }
 
         $this->initObject();
-        //if(static::$TABLE == "bus_seat") die("this->FIELDS_INITED = ".var_export($this->FIELDS_INITED,true));
+        // if(static::$TABLE == "bus_seat") die("this->FIELDS_INITED = ".var_export($this->FIELDS_INITED,true));
     }
-
-
 
     public function getMyAnswerTableAndModuleFor($attribute, $struct = null)
     {
-        if (!$struct) $struct = $this->getMyDbStructure($return_type = 'structure', $attribute);
+        if (!$struct)
+            $struct = $this->getMyDbStructure($return_type = 'structure', $attribute);
 
         if (!$struct['ANSWER']) {
             throw new AfwRuntimeException("Missed ANSWER property for attribute $attribute : getMyDbStructure => structure = " . var_export($struct, true));
@@ -335,8 +317,6 @@ class AFWObject extends AFWRoot
         return [$struct['ANSWER'], $struct['ANSMODULE']];
     }
 
-
-
     public static function getShortNames()
     {
         return self::getDbStructure($return_type = 'shortnames');
@@ -352,15 +332,13 @@ class AFWObject extends AFWRoot
         return self::getDbStructure($return_type = 'formulas');
     }
 
-    
-
     public function getMyDbStructure(
         $return_type = 'structure',
-        $attribute = 'all', 
-        $repare=true
+        $attribute = 'all',
+        $repare = true
     ) {
         $return = self::getDbStructure($return_type, $attribute, 'all', null, null, $repare);
-        //if(!$return) die(static::$TABLE." getDbStructure($return_type, $attribute) returned empty value");
+        // if(!$return) die(static::$TABLE." getDbStructure($return_type, $attribute) returned empty value");
         return $return;
     }
 
@@ -369,24 +347,23 @@ class AFWObject extends AFWRoot
         $attribute = 'all',
         $step = 'all',
         $start_step = null,
-        $end_step = null, 
-        $repare=true
+        $end_step = null,
+        $repare = true
     ) {
         $class_name = static::class;
         $module_code = static::$MODULE;
         $table_name = static::$TABLE;
-        //static::$DB_STRUCTURE
+        // static::$DB_STRUCTURE
 
         return AfwStructureHelper::getDbStructure($module_code,
-                $class_name,
-                $table_name,
-                $return_type,
-                $attribute,
-                $step,
-                $start_step,
-                $end_step, 
-                $repare
-            );  
+            $class_name,
+            $table_name,
+            $return_type,
+            $attribute,
+            $step,
+            $start_step,
+            $end_step,
+            $repare);
     }
 
     public function getMyOwnerId()
@@ -466,7 +443,8 @@ class AFWObject extends AFWRoot
     public final function attributeCanBeUpdatedBy($attribute, $user, $desc)
     {
         list($can, $reason) = $this->attributeCanBeEditedBy($attribute, $user, $desc);
-        if (!$can) return [$can, $reason];
+        if (!$can)
+            return [$can, $reason];
 
         // but keep that by default we should use standard HZM-UMS model
         return AfwStructureHelper::attributeCanBeModifiedBy($this, $attribute, $user, $desc);
@@ -493,15 +471,14 @@ class AFWObject extends AFWRoot
     public static final function executeQuery($sql_query, $throw_error = true, $throw_analysis_crash = true)
     {
         /*
-        if(AfwStringHelper::stringStartsWith($sql_query,"delete from"))
-        {
-            throw new AfwRuntimeException("delete from is being executed");
-        }*/
+         * if(AfwStringHelper::stringStartsWith($sql_query,"delete from"))
+         * {
+         *     throw new AfwRuntimeException("delete from is being executed");
+         * }
+         */
         $module_server = self::myModuleServer();
         return AfwSqlHelper::executeQuery($module_server, static::$MODULE, static::$TABLE, $sql_query, $throw_error, $throw_analysis_crash);
     }
-
-
 
     protected function debuggTableQueries($sql)
     {
@@ -510,7 +487,8 @@ class AFWObject extends AFWRoot
 
     protected function tableQueried($sql, $row_count, $affected_row_count)
     {
-        if ($this->debuggTableQueries($sql)) die("tableQueried : $sql, row_count=$row_count, affected_row_count=$affected_row_count");
+        if ($this->debuggTableQueries($sql))
+            die("tableQueried : $sql, row_count=$row_count, affected_row_count=$affected_row_count");
         // or @toReImplement in subclasses
     }
 
@@ -525,7 +503,6 @@ class AFWObject extends AFWRoot
         $this->tableQueried($sql_query, $row_count, $affected_row_count);
         return $result;
     }
-
 
     /**
      * _affected_rows
@@ -560,21 +537,22 @@ class AFWObject extends AFWRoot
     {
         if (strpos($table, '.') === false) {
             $dbse = static::getDatabase();
-            //list($dbse, $ooo) = $this->getDatabase();
-            $return =  $dbse . '.' . $table;
+            // list($dbse, $ooo) = $this->getDatabase();
+            $return = $dbse . '.' . $table;
         } else {
             $return = $table;
         }
+
         /*
-        if($table == "date_system")
-        {
-            throw new AfwRuntimeException("_prefix_table($table) > (db=$dbse) (ooo=$ooo) => $return this=>".var_export($this,true)." static::DATABASE = ".static::$DATABASE);
-        }*/
+         * if($table == "date_system")
+         * {
+         *     throw new AfwRuntimeException("_prefix_table($table) > (db=$dbse) (ooo=$ooo) => $return this=>".var_export($this,true)." static::DATABASE = ".static::$DATABASE);
+         * }
+         */
         return $return;
     }
 
     /**
-     *
      * setMyDebugg
      * Set MY_DEBUG to true or false
      * @param boolean $bool
@@ -583,8 +561,6 @@ class AFWObject extends AFWRoot
     {
         $this->MY_DEBUG = $bool ? true : false;
     }
-
-
 
     public function repareExistingObjectForEdit()
     {
@@ -653,7 +629,7 @@ class AFWObject extends AFWRoot
         $where_clause = '',
         $sets_arr = []
     ) {
-        //if((static::$TABLE=="user_story") and (!$only_me)) throw new AfwRuntimeException("this->FIELDS_UPDATED = ".var_export($this->FIELDS_UPDATED,true));
+        // if((static::$TABLE=="user_story") and (!$only_me)) throw new AfwRuntimeException("this->FIELDS_UPDATED = ".var_export($this->FIELDS_UPDATED,true));
         if (!$only_me) {
             foreach ($sets_arr as $col_name => $col_value) {
                 $this->set($col_name, $col_value);
@@ -667,7 +643,6 @@ class AFWObject extends AFWRoot
             $this->set($this->fld_ACTIVE(), 'N');
 
             if ($commit) {
-
                 return $this->update($only_me);
             }
         } else {
@@ -696,14 +671,12 @@ class AFWObject extends AFWRoot
      * technical field is updated automically with AFW Framework no need (and no effect) to manage its update by developer
      * @param string $attribute
      */
-
     public function isFrameworkDesignedField($attribute)
     {
         return (($this->isValidationField($attribute)) or
-                ($this->isTechField($attribute)) or
-                ($this->isAdminField($attribute)) or
-                ($this->isSystemField($attribute))
-            ); 
+            ($this->isTechField($attribute)) or
+            ($this->isAdminField($attribute)) or
+            ($this->isSystemField($attribute)));
     }
 
     /**
@@ -712,11 +685,10 @@ class AFWObject extends AFWRoot
      * technical field is updated automically with AFW Framework no need (and no effect) to manage its update by developer
      * @param string $attribute
      */
-
     public function isValidationField($attribute)
     {
-        return (($attribute==$this->fld_VALIDATION_USER_ID()) or
-             ($attribute==$this->fld_VALIDATION_DATE())); 
+        return (($attribute == $this->fld_VALIDATION_USER_ID()) or
+            ($attribute == $this->fld_VALIDATION_DATE()));
     }
 
     /**
@@ -725,7 +697,6 @@ class AFWObject extends AFWRoot
      * technical field is updated automically with AFW Framework no need (and no effect) to manage its update by developer
      * @param string $attribute
      */
-
     public function isTechField($attribute)
     {
         return $attribute == $this->fld_CREATION_USER_ID() or
@@ -734,7 +705,6 @@ class AFWObject extends AFWRoot
             $attribute == $this->fld_UPDATE_DATE() or
             /*($attribute==$this->fld_VALIDATION_USER_ID()) or
              ($attribute==$this->fld_VALIDATION_DATE()) or   rafik : 4/7/2021 validation fields update is not managed by AFW */
-
             $attribute == $this->fld_VERSION();
     }
 
@@ -758,10 +728,8 @@ class AFWObject extends AFWRoot
         return $attribute == $this->fld_ACTIVE() or
             $attribute == 'draft';
         // it is mistake to consider lookup_code as system field as major tables doenst contain it and it should be paggable
-        // $attribute == 'lookup_code' or    
+        // $attribute == 'lookup_code' or
     }
-
-
 
     /**
      * liste
@@ -770,12 +738,12 @@ class AFWObject extends AFWRoot
     public function liste($throw_error = true, $throw_analysis_crash = true)
     {
         $query =
-            'select ' .
-            $this->getPKField() .
-            "\n from " .
-            self::_prefix_table(static::$TABLE) .
-            " me\n where 1" .
-            $this->SEARCH;
+            'select '
+            . $this->getPKField()
+            . "\n from "
+            . self::_prefix_table(static::$TABLE)
+            . " me\n where 1"
+            . $this->SEARCH;
         $this->clearSelect();
         $module_server = $this->getModuleServer();
         $rows = AfwDatabase::db_recup_rows(
@@ -863,42 +831,43 @@ class AFWObject extends AFWRoot
         return $this->getVal($this->OBJECT_CODE);
     }
 
-
     /**
      * @param AFWObject $obj
      * @param array $avoid_if_filled_fields
-     * 
+     *
      * syncSameFieldsWith :
      *   I (this) take from him (obj) only what I need
      *   but after
-     *   He (obj) take from me (this) all my fields 
+     *   He (obj) take from me (this) all my fields
      *   except primary key and unique index columns and filled columns if they are specified in $avoid_if_filled_fields
      *   so (this) is the master
      */
-
-
     public function syncSameFieldsWith($obj, $commit_obj = true, $commit_this = false, $avoid_if_filled_fields = [])
     {
         $logActive = true;
         $exception_fields = null;
         // I take from him only what I need (all fields not filled except primary key and unique index columns);
-        $fields1 = $this->copyDataFrom($obj, $exception_fields, $avoid_if_filled_fields0 = "all", true, $logActive);
+        $fields1 = $this->copyDataFrom($obj, $exception_fields, $avoid_if_filled_fields0 = 'all', true, $logActive);
         // and after he take from me all my fields (except primary key and unique index columns)
         $fields0 = $obj->copyDataFrom($this, $exception_fields, $avoid_if_filled_fields, true, $logActive);
+
         /*
-        if($obj->id == '1114138306')
-        {
-            die("rafik for 1114138306 : avoid_if_filled_fields = ".var_export($avoid_if_filled_fields,true)." fields0 = ".var_export($fields0,true));
-        }*/
+         * if($obj->id == '1114138306')
+         * {
+         *     die("rafik for 1114138306 : avoid_if_filled_fields = ".var_export($avoid_if_filled_fields,true)." fields0 = ".var_export($fields0,true));
+         * }
+         */
 
-        if ($commit_obj) $obj->commit();
-        if ($commit_this) $this->commit();
+        if ($commit_obj)
+            $obj->commit();
+        if ($commit_this)
+            $this->commit();
 
-        if (in_array("xxxxxx", $fields1) or (trim($this->getVal("lastname")) == "-----xxxx")) {
-            die("syncSameFieldsWith :::: obj=" . var_export($obj, true) .
-                "<br>\n<br>\n<br>\n<br>\n<br>\n this=" . var_export($this, true) .
-                "<br>\n<br>\n<br>\n<br>\n<br>\n fields0=" . var_export($fields0, true) .
-                "<br>\n<br>\n<br>\n<br>\n<br>\n fields1=" . var_export($fields1, true));
+        if (in_array('xxxxxx', $fields1) or (trim($this->getVal('lastname')) == '-----xxxx')) {
+            die('syncSameFieldsWith :::: obj=' . var_export($obj, true)
+                . "<br>\n<br>\n<br>\n<br>\n<br>\n this=" . var_export($this, true)
+                . "<br>\n<br>\n<br>\n<br>\n<br>\n fields0=" . var_export($fields0, true)
+                . "<br>\n<br>\n<br>\n<br>\n<br>\n fields1=" . var_export($fields1, true));
         }
 
         return [$fields1, $fields0];
@@ -912,15 +881,12 @@ class AFWObject extends AFWRoot
         $logHistory = false
     ) {
         $this_class = get_class($this);
-        if($this_class == "Student")
-        {
-            $field_name_to_debugg = "firstname";
+        if ($this_class == 'Student') {
+            $field_name_to_debugg = 'firstname';
+        } else {
+            $field_name_to_debugg = 'xxxx';
         }
-        else
-        {
-            $field_name_to_debugg = "xxxx";
-        }
-        
+
         $fields_updated = [];
         $all_real_fields = AfwStructureHelper::getAllRealFields($this);
         foreach ($all_real_fields as $field_name) {
@@ -941,32 +907,39 @@ class AFWObject extends AFWRoot
                 }
                 if (!$ex_u_i) {
                     $old_val = $this->getVal($field_name);
-                    if($old_val == "--") $old_val = "";
-                    $erase_even_if_filled = (($avoid_if_filled_fields != "all") and (!$avoid_if_filled_fields[$field_name]));
+                    if ($old_val == '--')
+                        $old_val = '';
+                    $erase_even_if_filled = (($avoid_if_filled_fields != 'all') and (!$avoid_if_filled_fields[$field_name]));
 
                     if ((!$old_val) or $erase_even_if_filled) {
                         if ($old_val) {
-                            $erase_even_if_filled_log = ($avoid_if_filled_fields != "all") ? "old_val=$old_val erase_even_if_filled=$erase_even_if_filled because " . var_export($avoid_if_filled_fields, true) . "=> $field_name is not to avoid if filled" : "strange : all is to avoid if filled and $field_name is filled";
-                        } else $erase_even_if_filled_log = "NO-OLD-VAL";
-
+                            $erase_even_if_filled_log = ($avoid_if_filled_fields != 'all') ? "old_val=$old_val erase_even_if_filled=$erase_even_if_filled because " . var_export($avoid_if_filled_fields, true) . "=> $field_name is not to avoid if filled" : "strange : all is to avoid if filled and $field_name is filled";
+                        } else
+                            $erase_even_if_filled_log = 'NO-OLD-VAL';
 
                         $val = $obj->getVal($field_name);
                         if (($val and ($val !== $old_val)) or (!$old_val)) {
                             $this->setForce($field_name, null);
                             $this->setForce($field_name, $val);
-                            if (!$logHistory) $fields_updated[] = $field_name;
-                            else $fields_updated[] = $field_name . " was '$old_val' become '$val' explanation : $erase_even_if_filled_log";
-                        } else if ($field_name == $field_name_to_debugg) die("val=$val empty or same as old_val=$old_val ");
-                    } else if ($field_name == $field_name_to_debugg) die("old_val=$old_val is filled or $field_name is in avoid_if_filled_fields=" . var_export($avoid_if_filled_fields, true) . " ??");
-                } else if ($field_name == $field_name_to_debugg) die("$field_name_to_debugg is in UNIQUE_KEY");
+                            if (!$logHistory)
+                                $fields_updated[] = $field_name;
+                            else
+                                $fields_updated[] = $field_name . " was '$old_val' become '$val' explanation : $erase_even_if_filled_log";
+                        } else if ($field_name == $field_name_to_debugg)
+                            die("val=$val empty or same as old_val=$old_val ");
+                    } else if ($field_name == $field_name_to_debugg)
+                        die("old_val=$old_val is filled or $field_name is in avoid_if_filled_fields=" . var_export($avoid_if_filled_fields, true) . ' ??');
+                } else if ($field_name == $field_name_to_debugg)
+                    die("$field_name_to_debugg is in UNIQUE_KEY");
             } else {
-                if ($field_name == $field_name_to_debugg) die("is_settable=$is_settable except_fields[$field_name]=" . $exception_fields[$field_name]);
+                if ($field_name == $field_name_to_debugg)
+                    die("is_settable=$is_settable except_fields[$field_name]=" . $exception_fields[$field_name]);
             }
         }
 
-        //$this->set($this->fld_VERSION(), -1);
+        // $this->set($this->fld_VERSION(), -1);
         // rafik : not clear why this below
-        //$this->set($this->fld_VERSION(), 1);
+        // $this->set($this->fld_VERSION(), 1);
 
         return $fields_updated;
     }
@@ -988,7 +961,7 @@ class AFWObject extends AFWRoot
         $this->authorize_empty_of_id = true;
         $this->set($this->getPKField(), '');
 
-        //$this->set($this->fld_VERSION(), -1);
+        // $this->set($this->fld_VERSION(), -1);
         $this->set($this->fld_VERSION(), 1);
     }
 
@@ -1002,8 +975,6 @@ class AFWObject extends AFWRoot
     {
         return true;
     }
-
-
 
     public final function isAfieldValueSetted($field_name)
     {
@@ -1029,9 +1000,8 @@ class AFWObject extends AFWRoot
 
     private function detectUpdatedFields()
     {
-        foreach($this->AFIELD_VALUE as $attribute => $value)
-        {
-            $this->nativeSet($attribute,$value);
+        foreach ($this->AFIELD_VALUE as $attribute => $value) {
+            $this->nativeSet($attribute, $value);
         }
     }
 
@@ -1044,14 +1014,14 @@ class AFWObject extends AFWRoot
     }
 
     /*
-    private function isAfieldDefaultValueSetted($field_name)
-    {
-        return isset($this->FIELDS_INITED[$field_name]);
-    }*/
+     * private function isAfieldDefaultValueSetted($field_name)
+     * {
+     *     return isset($this->FIELDS_INITED[$field_name]);
+     * }
+     */
 
     private function setAfieldDefaultValue($field_name, $value, $reset = false)
     {
-
         /* if (static::$TABLE == "period") {
             if (($field_name == "validated_at") and (!$value)) throw new AfwRuntimeException("rafik dbg : $field_name inited as = [$value] into " . static::$TABLE);
         }*/
@@ -1070,20 +1040,20 @@ class AFWObject extends AFWRoot
     {
         unset($this->FIELDS_INITED[$field_name]);
     }
+
     /*
-    private function deleteAfieldDefaultValues()
-    {
-        unset($this->FIELDS_INITED);
-        $this->FIELDS_INITED = [];
-    }*/
+     * private function deleteAfieldDefaultValues()
+     * {
+     *     unset($this->FIELDS_INITED);
+     *     $this->FIELDS_INITED = [];
+     * }
+     */
 
     public function getAllfieldDefaultValues()
     {
         // if(!isset($this->AFIELD _VALUE)) $this->AFIELD _VALUE = array();
         return $this->FIELDS_INITED;
     }
-
-
 
     protected function getSpecialWhereOfAttribute($field_name)
     {
@@ -1134,8 +1104,10 @@ class AFWObject extends AFWRoot
     public static function loadBrotherWithUniqueKey($ukey_array)
     {
         $obj = new static();
-        if($obj->loadWithUniqueKey($ukey_array)) return $obj;
-        else return null;
+        if ($obj->loadWithUniqueKey($ukey_array))
+            return $obj;
+        else
+            return null;
     }
 
     public function loadWithUniqueKey($ukey_array)
@@ -1188,12 +1160,10 @@ class AFWObject extends AFWRoot
         return AfwSqlHelper::getSQLMany($this, $pk_field, $limit, $order_by, $optim, $eager_joins);
     }
 
-
     public function comptageBeforeLoadMany()
     {
         return false;
     }
-
 
     /**
      * Rafik 10/6/2021 : use joins on lookup tables and any answer table of FK retrieved field
@@ -1201,7 +1171,6 @@ class AFWObject extends AFWRoot
      * which make heavy the script, to be used only when needed because it increase memory loaded by those many objects as it load
      * FK objects as eager
      */
-
     public function loadManyEager(
         $limit = '',
         $order_by = '',
@@ -1268,8 +1237,8 @@ class AFWObject extends AFWRoot
     public function loadCol($col_name,
         $distinct = false,
         $limit = '',
-        $order_by = ''
-    ) {
+        $order_by = '')
+    {
         return AfwLoadHelper::loadCol($this, $col_name, $distinct, $limit, $order_by);
     }
 
@@ -1309,7 +1278,8 @@ class AFWObject extends AFWRoot
 
     public function setMultiplePK($pk_fields, $sep = '-')
     {
-        if (($this->PK_MULTIPLE == "+") and ($sep == '-')) AfwStructureHelper::dd("strange setMultiplePK sep=+ to sep=- again. why ?");
+        if (($this->PK_MULTIPLE == '+') and ($sep == '-'))
+            AfwStructureHelper::dd('strange setMultiplePK sep=+ to sep=- again. why ?');
         $this->PK_MULTIPLE = $sep;
         $pk_multiple_arr = explode(',', $pk_fields);
         foreach ($pk_multiple_arr as $pk_col_order => $pk_col) {
@@ -1321,7 +1291,6 @@ class AFWObject extends AFWRoot
             $this->ORDER_BY_FIELDS = $pk_fields;
         }
     }
-
 
     public function getVirtualPKField()
     {
@@ -1340,7 +1309,7 @@ class AFWObject extends AFWRoot
     public function getPKField($add_me = '')
     {
         if (!$this->PK_FIELD and !$this->PK_MULTIPLE) {
-            $return = $add_me . "id";
+            $return = $add_me . 'id';
         } elseif ($this->PK_FIELD and !$this->PK_MULTIPLE) {
             $return = $add_me . $this->PK_FIELD;
         } elseif ($this->PK_MULTIPLE) {
@@ -1393,8 +1362,8 @@ class AFWObject extends AFWRoot
             $prefix_me = '';
         }
         if ($this->PK_MULTIPLE) {
-            return $prefix_me .
-                implode(', ' . $prefix_me, $this->PK_MULTIPLE_ARR);
+            return $prefix_me
+                . implode(', ' . $prefix_me, $this->PK_MULTIPLE_ARR);
         } else {
             $all_real_fields = AfwStructureHelper::getAllRealFields($this);
             return isset($all_real_fields[1])
@@ -1410,23 +1379,24 @@ class AFWObject extends AFWRoot
     public function getId()
     {
         /*
-        global $boucle_inf, $boucle_inf_arr;
-        
-        if(!$boucle_inf)
-        {
-           $boucle_inf = 0;
-           $boucle_inf_arr = array();
-        }
-        $this_getId = $this->getAfieldValue($this->getPKField());
-        $this_table = $this->getTableName();
-        $boucle_inf_arr[$boucle_inf] = "getId from object [$this_table,$this_getId]";
-        $boucle_inf++;
-
-        
-        if($boucle_inf > 10000)
-        {
-              throw new AfwRuntimeException("heavy page halted after $boucle_inf enter to getId() method in one request, ".var_export($boucle_inf_arr,true));
-        } */
+         * global $boucle_inf, $boucle_inf_arr;
+         *
+         * if(!$boucle_inf)
+         * {
+         *    $boucle_inf = 0;
+         *    $boucle_inf_arr = array();
+         * }
+         * $this_getId = $this->getAfieldValue($this->getPKField());
+         * $this_table = $this->getTableName();
+         * $boucle_inf_arr[$boucle_inf] = "getId from object [$this_table,$this_getId]";
+         * $boucle_inf++;
+         *
+         *
+         * if($boucle_inf > 10000)
+         * {
+         *       throw new AfwRuntimeException("heavy page halted after $boucle_inf enter to getId() method in one request, ".var_export($boucle_inf_arr,true));
+         * }
+         */
 
         if ($this->PK_MULTIPLE) {
             $pk_val_arr = [];
@@ -1436,12 +1406,13 @@ class AFWObject extends AFWRoot
                 $pk_val_arr[] = $pk_val_i;
                 // if($pk_val_i) $all_null = false;
             }
+
             /*
-            if((!$all_null) and count($this->PK_MULTIPLE_ARR)==8) 
-            {
-                die("pk_val_arr = ".var_export($pk_val_arr,true)."<br> MPK = ".var_export($this->PK_MULTIPLE_ARR,true)."<br> FVAL = ".var_export($this->getAllfieldValues(),true));
-            }    
-            */
+             * if((!$all_null) and count($this->PK_MULTIPLE_ARR)==8)
+             * {
+             *     die("pk_val_arr = ".var_export($pk_val_arr,true)."<br> MPK = ".var_export($this->PK_MULTIPLE_ARR,true)."<br> FVAL = ".var_export($this->getAllfieldValues(),true));
+             * }
+             */
             if ($this->PK_MULTIPLE === true) {
                 $sep = '-';
             } else {
@@ -1449,7 +1420,7 @@ class AFWObject extends AFWRoot
             }
             return implode($sep, $pk_val_arr);
         } else {
-            //if(static::$TABLE == "auser") $this->lightSafeDie("get ID : this->getAfieldValue(".$this->getPKField().") = ".$this->getAfieldValue($this->getPKField()) ." this->getAllfieldValues() = ".var_export($this->getAllfieldValues(),true));
+            // if(static::$TABLE == "auser") $this->lightSafeDie("get ID : this->getAfieldValue(".$this->getPKField().") = ".$this->getAfieldValue($this->getPKField()) ." this->getAllfieldValues() = ".var_export($this->getAllfieldValues(),true));
             return $this->getAfieldValue($this->getPKField());
         }
     }
@@ -1501,7 +1472,7 @@ class AFWObject extends AFWRoot
 
     public function mayBe($attribute, $struct = null)
     {
-        return $this->is($attribute,true, $struct);
+        return $this->is($attribute, true, $struct);
     }
 
     public function may($attribute, $struct = null)
@@ -1517,13 +1488,14 @@ class AFWObject extends AFWRoot
     public function is($attribute, $w = true, $struct = null)
     {
         // work with shortcuts and shortnames
-        if (!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
         if (!$struct) {
             $def_val = null;
             $open_options = false;
         } else {
             $def_val = $struct['DEFAULT'];
-            $open_options = $struct['OPEN_OPTIONS']; // means field YN can contain other choices than Y,N,W so then all other options will be conisdered here like W
+            $open_options = $struct['OPEN_OPTIONS'];  // means field YN can contain other choices than Y,N,W so then all other options will be conisdered here like W
         }
         $stored_val = $this->getVal($attribute);
         // if($struct["CATEGORY"]) $stored_val = $this->calc($attribute);
@@ -1551,8 +1523,9 @@ class AFWObject extends AFWRoot
      */
     public function reloadMe()
     {
-        if($this->id) return $this->load($this->id);
-        return null;        
+        if ($this->id)
+            return $this->load($this->id);
+        return null;
     }
 
     /**
@@ -1567,16 +1540,15 @@ class AFWObject extends AFWRoot
 
     /**
      * @return AFWRelation
-     * 
      */
-
     public function getRelation($attribute, $struct = null)
     {
         $attribute_old = $attribute;
         $attribute = AfwStructureHelper::shortNameToAttributeName($this, $attribute_old);
         // die("attribute_old=$attribute_old, $attribute = $attribute_old");
 
-        if (!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
 
         return new AFWRelation(
             $struct['ANSMODULE'],
@@ -1588,116 +1560,97 @@ class AFWObject extends AFWRoot
         );
     }
 
-
-    public function getJsonMe($options=[])
+    public function getJsonMe($options = [])
     {
         $impFields = AfwPrevilegeHelper::getAfwImportantFields($this);
 
         $result = [];
 
-        foreach($impFields as $attribute)
-        {
-            if(!$options["except-$attribute"]) 
-            {
+        foreach ($impFields as $attribute) {
+            if (!$options["except-$attribute"]) {
                 $struct = AfwStructureHelper::getStructureOf($this, $attribute);
-                if(!$struct["NO-JSON"])
-                {
-                    $result[$attribute] = $this->getVal($attribute);                
-                    if($options["decode_fk"]=="all")
-                    {
-                        $decode = (($struct["TYPE"]=="FK") or ($struct["TYPE"]=="MFK") or ($struct["TYPE"]=="ENUM") or ($struct["TYPE"]=="MENUM"));
-                    }
-                    else
-                    {
-                        $decode = ($options["decode_fk"][$attribute]);
-                    }
-                    
-                    if($decode and (!$struct["NO-JSON-DECODE"]) and (!$struct["NO-JSON-DETAILS"]))
-                    {
-                        $result[$attribute."_display"] = $this->showAttribute($attribute);
-                        $result[$attribute."_ar"] = $this->showAttribute($attribute,null,true,"ar");
-                        $result[$attribute."_en"] = $this->showAttribute($attribute,null,true,"en");
+                if (!$struct['NO-JSON']) {
+                    $result[$attribute] = $this->getVal($attribute);
+                    if ($options['decode_fk'] == 'all') {
+                        $decode = (($struct['TYPE'] == 'FK') or ($struct['TYPE'] == 'MFK') or ($struct['TYPE'] == 'ENUM') or ($struct['TYPE'] == 'MENUM'));
+                    } else {
+                        $decode = ($options['decode_fk'][$attribute]);
                     }
 
-                    if(($struct["TYPE"]=="FK") and $struct["JSON-EXPAND"])
-                    {
-                        if(AfwStringHelper::stringEndsWith($attribute, "_id"))
-                        {
-                            $attribute_expand = substr($attribute,0,strlen($attribute)-3);
-                        }
-                        else
-                        {
+                    if ($decode and (!$struct['NO-JSON-DECODE']) and (!$struct['NO-JSON-DETAILS'])) {
+                        $result[$attribute . '_display'] = $this->showAttribute($attribute);
+                        $result[$attribute . '_ar'] = $this->showAttribute($attribute, null, true, 'ar');
+                        $result[$attribute . '_en'] = $this->showAttribute($attribute, null, true, 'en');
+                    }
+
+                    if (($struct['TYPE'] == 'FK') and $struct['JSON-EXPAND']) {
+                        if (AfwStringHelper::stringEndsWith($attribute, '_id')) {
+                            $attribute_expand = substr($attribute, 0, strlen($attribute) - 3);
+                        } else {
                             $attribute_expand = $attribute;
                         }
-                        
+
                         $objExpand = $this->het($attribute);
-                        if($objExpand) $result[$attribute_expand] = $objExpand->getJsonMe();    
-                        else $result[$attribute_expand] = null;
+                        if ($objExpand)
+                            $result[$attribute_expand] = $objExpand->getJsonMe();
+                        else
+                            $result[$attribute_expand] = null;
                     }
                 }
-                
-
             }
-            
-            
         }
 
         return $result;
     }
 
-    public function getAnswerTableJsonArrayWithDetails ($attribute, $lang=null)
+    public function getAnswerTableJsonArrayWithDetails($attribute, $lang = null)
     {
-        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
-        return AfwLoadHelper::getAnswerTableJsonArrayWithDetails ($this, $attribute, $lang);
+        if (!$lang)
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+        return AfwLoadHelper::getAnswerTableJsonArrayWithDetails($this, $attribute, $lang);
     }
 
-    public function getAnswerTableJsonArray($attribute, $lang=null)
+    public function getAnswerTableJsonArray($attribute, $lang = null)
     {
-        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+        if (!$lang)
+            $lang = AfwLanguageHelper::getGlobalLanguage();
         return AfwLoadHelper::getAnswerTableJsonArray($this, $attribute, $lang);
     }
 
-    public function showObjectAsJsonArray($attribute, $lang=null)
+    public function showObjectAsJsonArray($attribute, $lang = null)
     {
-        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+        if (!$lang)
+            $lang = AfwLanguageHelper::getGlobalLanguage();
         return AfwLoadHelper::showObjectAsJsonArray($this, $attribute, $lang);
     }
 
-
-    
-
-    public function getJsonArray($attribute, $options=null)
+    public function getJsonArray($attribute, $options = null)
     {
-        if(!$options) 
-        {
+        if (!$options) {
             $struct = AfwStructureHelper::getStructureOf($this, $attribute);
-            $options = $struct["JSON-OPTIONS"];
+            $options = $struct['JSON-OPTIONS'];
         }
-        
-        if(!$options) $options = [];
+
+        if (!$options)
+            $options = [];
         $hetted = $this->het($attribute);
-        if(!$hetted) return $hetted;
-        
-        if(is_array($hetted))
-        {
+        if (!$hetted)
+            return $hetted;
+
+        if (is_array($hetted)) {
             $result = [];
-            $k=-1;
-            foreach($hetted as $hettedItem)
-            {
-                if(is_object($hettedItem) and ($hettedItem instanceof AFWObject))
-                {
-                    if($options["index-by-id"]) $k = $hettedItem->id;
-                    else $k++;
+            $k = -1;
+            foreach ($hetted as $hettedItem) {
+                if (is_object($hettedItem) and ($hettedItem instanceof AFWObject)) {
+                    if ($options['index-by-id'])
+                        $k = $hettedItem->id;
+                    else
+                        $k++;
                     $result[$k] = $hettedItem->getJsonMe($options);
-        
-                } 
+                }
             }
-
-        }
-        elseif(is_object($hetted) and ($hetted instanceof AFWObject))
-        {
+        } elseif (is_object($hetted) and ($hetted instanceof AFWObject)) {
             $result = $hetted->getJsonMe($options);
-
         }
 
         return $result;
@@ -1705,9 +1658,12 @@ class AFWObject extends AFWRoot
 
     public function hetWhat($attribute, $what)
     {
-        if($what=="object") return $this->het($attribute);
-        if($what=="value") return $this->getVal($attribute);
-        if($what=="decodeme") return $this->decode($attribute);
+        if ($what == 'object')
+            return $this->het($attribute);
+        if ($what == 'value')
+            return $this->getVal($attribute);
+        if ($what == 'decodeme')
+            return $this->decode($attribute);
 
         return "$attribute.$what ???";
     }
@@ -1736,10 +1692,14 @@ class AFWObject extends AFWRoot
 
     public final function seemsCalculatedField($attribute)
     {
-        if ((!$this->isEmpty()) and ($attribute != "id") and !isset($this->AFIELD_VALUE[$attribute])) return true;
-        if (strpos($attribute, '.') !== false) return true;
-        if (strpos($attribute, '_') === 0) return true;
-        if ($this->shouldBeCalculatedField($attribute)) return true;
+        if ((!$this->isEmpty()) and ($attribute != 'id') and !isset($this->AFIELD_VALUE[$attribute]))
+            return true;
+        if (strpos($attribute, '.') !== false)
+            return true;
+        if (strpos($attribute, '_') === 0)
+            return true;
+        if ($this->shouldBeCalculatedField($attribute))
+            return true;
 
         return false;
     }
@@ -1759,7 +1719,7 @@ class AFWObject extends AFWRoot
         $integrity = true,
         $max_items = false,
         $optim_lookup = true,
-        $lang = "ar"
+        $lang = 'ar'
     ) {
         return AfwLoadHelper::getAttributeData(
             $this,
@@ -1772,7 +1732,6 @@ class AFWObject extends AFWRoot
             $lang
         );
     }
-
 
     public final function dbdb_recup_value(
         $query,
@@ -1812,44 +1771,46 @@ class AFWObject extends AFWRoot
         return '';
     }
 
-    public function showErrorsAsSessionWarnings($mode = "display")
+    public function showErrorsAsSessionWarnings($mode = 'display')
     {
-        return "all";
+        return 'all';
     }
 
     public final function isOk($force = false, $returnErrors = false, $langue = null, $ignore_fields_arr = null, $start_step = null, $end_step = null)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        if (!$langue) $langue = $lang;
+        if (!$langue)
+            $langue = $lang;
         // $objme = AfwSession::getUserConnected();
         if (!$force and !AfwSession::hasOption('CHECK_ERRORS') and !$this->forceCheckErrors) {
             $is_ok = (count($this->arr_erros) == 0);
-            if (!$returnErrors) return $is_ok;
-            else return [$is_ok, $this->arr_erros];
+            if (!$returnErrors)
+                return $is_ok;
+            else
+                return [$is_ok, $this->arr_erros];
         }
         $stop_on_first_error = (!$returnErrors);
-        $returnErrorsStep = "all";
-        if ($returnErrors != "all") {
+        $returnErrorsStep = 'all';
+        if ($returnErrors != 'all') {
             $start_step = $returnErrors;
             $end_step = $returnErrors;
         }
 
-
-
         $this->arr_erros = AfwDataQualityHelper::getDataErrors($this, $langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step);
         // die("showErrorsAsSessionWarnings:: getDataErrors($langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step) => ".var_export($dataErr,true));
         $is_ok = (count($this->arr_erros) == 0);
-        if (!$returnErrors) return $is_ok;
-        else return [$is_ok, $this->arr_erros];
+        if (!$returnErrors)
+            return $is_ok;
+        else
+            return [$is_ok, $this->arr_erros];
     }
 
-    public static final function mfkValueToOrderedList($mfk_value, $start_from=0)
+    public static final function mfkValueToOrderedList($mfk_value, $start_from = 0)
     {
         $result = [];
-        $id_arr = explode(",", trim($mfk_value,","));
-        foreach($id_arr as $num => $id)
-        {
-            $result[$start_from+$num] = $id;
+        $id_arr = explode(',', trim($mfk_value, ','));
+        foreach ($id_arr as $num => $id) {
+            $result[$start_from + $num] = $id;
         }
 
         return $result;
@@ -1870,7 +1831,8 @@ class AFWObject extends AFWRoot
             $old_val_arr = [];
         }
 
-        if (!$boolIndex) return $old_val_arr;
+        if (!$boolIndex)
+            return $old_val_arr;
 
         $bool_index_arr = [];
 
@@ -1896,7 +1858,8 @@ class AFWObject extends AFWRoot
 
     public final function findInMfk($attribute, $id_to_find, $mfk_empty_so_found = false, $struct = null)
     {
-        if (!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
         if ($struct['TYPE'] != 'MFK' and $struct['TYPE'] != 'MENUM') {
             throw new AfwRuntimeException(
                 "Only MFK Fields can use this method, $attribute is not MFK"
@@ -1916,16 +1879,16 @@ class AFWObject extends AFWRoot
      * @param array $ids_to_remove_arr is the array of ids to remove
      * @param array $struct is optional and if specified contain the attribute strcuture array
      */
-
     public function addRemoveInMfk($attribute, $ids_to_add_arr, $ids_to_remove_arr, $struct = null)
     {
         $old_val = $this->getVal($attribute);
         if (!$old_val) {
             $old_val = AfwStructureHelper::getDefaultValue($this, $attribute);
         }
-        //if(!$old_val) return $old_val;
+        // if(!$old_val) return $old_val;
 
-        if (!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
         if ($struct['TYPE'] != 'MFK') {
             throw new AfwRuntimeException(
                 get_class($this) . " : Only MFK Fields can use this method, $attribute is not MFK but look strcuture " . var_export($struct, true)
@@ -2021,7 +1984,7 @@ class AFWObject extends AFWRoot
      * Return Value of Formule Attribute
      * @param string $attribute
      */
-    public function getFormuleResult($attribute, $what = "value")
+    public function getFormuleResult($attribute, $what = 'value')
     {
         return AfwFormulaHelper::calculateFormulaResult($this, $attribute, $what);
     }
@@ -2041,7 +2004,6 @@ class AFWObject extends AFWRoot
         return $this->get($attribute, 'calc', $format, $integrity);
     }
 
-
     public function v($attribute)
     {
         return $this->getVal($attribute);
@@ -2059,12 +2021,13 @@ class AFWObject extends AFWRoot
 
     public function translateMyYesNo($attribute, $format, $lang)
     {
-        if($format=="value") return ["Y","N","W"];
-        $yes = $this->translate($attribute.".YES", $lang);
-        $no = $this->translate($attribute.".NO", $lang);
-        $euh = $this->translate($attribute.".EUH", $lang);
+        if ($format == 'value')
+            return ['Y', 'N', 'W'];
+        $yes = $this->translate($attribute . '.YES', $lang);
+        $no = $this->translate($attribute . '.NO', $lang);
+        $euh = $this->translate($attribute . '.EUH', $lang);
 
-        return [$yes,$no,$euh];
+        return [$yes, $no, $euh];
     }
 
     /**
@@ -2073,7 +2036,7 @@ class AFWObject extends AFWRoot
      * @param string $attribute
      * @param string $format
      */
-    public function decode($attribute, $format = '', $integrity = false, $lang="ar")
+    public function decode($attribute, $format = '', $integrity = false, $lang = 'ar')
     {
         // if($attribute == "session_status_id") die("decode($attribute, $format, $integrity)");
         if (strtolower($format) == 'value') {
@@ -2090,15 +2053,15 @@ class AFWObject extends AFWRoot
 
     /**
      * superNativeSet
-     * light native set of attribute's value without 
+     * light native set of attribute's value without
      * it doen't make :
-     *                 neither the check if attribute is shortname 
-     *                 neither the structure check 
-     *                 neither the format value even if needed 
+     *                 neither the check if attribute is shortname
+     *                 neither the structure check
+     *                 neither the format value even if needed
      *                 nor the trigger of events like beforeSet afterSet etc...
      * @param string $attribute
      * @param string $value
-     * 
+     *
      * It is developed for performance purposes but to be used very carefully and only
      * with experienced developers because of explanation above
      */
@@ -2107,27 +2070,27 @@ class AFWObject extends AFWRoot
         $this->setAfieldValue($field_name, $value);
     }
 
-
-
     private function setAfieldValue($field_name, $value)
     {
         // if(!isset($this->AFIELD _VALUE)) $this->AFIELD _VALUE = array();
+
         /*
-        if(static::$TABLE == "academic_term") 
-        {
-            if(($field_name == "active") and ($value=="N")) throw new AfwRuntimeException("case Medali found for debugg");
-        }*/
+         * if(static::$TABLE == "academic_term")
+         * {
+         *     if(($field_name == "active") and ($value=="N")) throw new AfwRuntimeException("case Medali found for debugg");
+         * }
+         */
         $this->AFIELD_VALUE[$field_name] = $value;
         return $value;
     }
 
     /**
      * nativeSet
-     * light native set of attribute's value without 
+     * light native set of attribute's value without
      * it doen't make :
-     *                 neither the check if attribute is shortname 
-     *                 neither the structure check 
-     *                 nor the format value even if needed 
+     *                 neither the check if attribute is shortname
+     *                 neither the structure check
+     *                 nor the format value even if needed
      * but it trigger events like beforeSet afterSet etc...
      * @param string $attribute
      * @param string $value
@@ -2161,28 +2124,30 @@ class AFWObject extends AFWRoot
 
         $value_exists_and_same_and_no_force =
             ($value_exists and $value_same and !$forceSet);
+
         /*
-        if (
-            !$value_exists_and_same_and_no_force and
-            $value == $old_value and
-            AfwStringHelper::stringContain($value, 'ر')
-        ) {
-            die(
-                "value_exists=$value_exists,value_same=$value_same,old_value=" .
-                    var_export($old_value, true) .
-                    ',value=' .
-                    var_export($value, true)
-            );
-        }*/
+         * if (
+         *     !$value_exists_and_same_and_no_force and
+         *     $value == $old_value and
+         *     AfwStringHelper::stringContain($value, 'ر')
+         * ) {
+         *     die(
+         *         "value_exists=$value_exists,value_same=$value_same,old_value=" .
+         *             var_export($old_value, true) .
+         *             ',value=' .
+         *             var_export($value, true)
+         *     );
+         * }
+         */
 
         $value_doesnt_exist_and_set_to_empty_and_no_force =
-            !$old_value && (!$value and !$forceSet); // obsolete kharabit and (!$value_zero_int)
+            !$old_value && (!$value and !$forceSet);  // obsolete kharabit and (!$value_zero_int)
 
         if ($value_exists_and_same_and_no_force) {
-            //$this->debugg_value_exists_and_same_and_no_force = true;
+            // $this->debugg_value_exists_and_same_and_no_force = true;
             $return = false;
         } elseif ($value_doesnt_exist_and_set_to_empty_and_no_force) {
-            //$this->debugg_value_doesnt_exist_and_set_to_empty_and_no_force = true;
+            // $this->debugg_value_doesnt_exist_and_set_to_empty_and_no_force = true;
             $return = false;
         } else {
             // rafik : for qedit '' != 0 and we dont want record to be inserted
@@ -2194,26 +2159,27 @@ class AFWObject extends AFWRoot
             if ($this->beforeSetAttribute($attribute, $value)) {
                 $this->setAfieldValue($attribute, $value);
                 $this->afterSetOfAttribute($attribute, $value);
-                $this->UPDATE_DATE_val = null; // then it will take now when the commit is performed
+                $this->UPDATE_DATE_val = null;  // then it will take now when the commit is performed
             } else {
                 // $this->debugg_before_set_attrib_rejected_the_set = true;
             }
+
             /*
-            if(($attribute=="email")) 
-            {
-                die(" nothing_updated = $nothing_updated, simul_do_not_save = $simul_do_not_save id=".$this->getId().", attribute=$attribute, value = $value, this->getAfieldValue($attribute) = ".$this->getAfieldValue($attribute));
-            }
-            */
+             * if(($attribute=="email"))
+             * {
+             *     die(" nothing_updated = $nothing_updated, simul_do_not_save = $simul_do_not_save id=".$this->getId().", attribute=$attribute, value = $value, this->getAfieldValue($attribute) = ".$this->getAfieldValue($attribute));
+             * }
+             */
             if ($nothing_updated) {
                 // just init fields to default values
                 $this->setAfieldDefaultValue($attribute, $value);
                 // $this->debugg_nothing_updated_init_to = $value;
             } elseif ($simul_do_not_save) {
-                //$this->debugg_simul_do_not_save_to = $value;
+                // $this->debugg_simul_do_not_save_to = $value;
                 // it means it is simulation only
                 // if(($attribute=="email")) die(" nothing_updated = $nothing_updated, simul_do_not_save = $simul_do_not_save id=".$this->getId().", attribute=$attribute, value = $value, this->FIELDS_UPDATED=".var_export($this->FIELDS_UPDATED,true));
             } elseif ($this->FIELDS_UPDATED[$attribute]) {
-                // it means updated twice we keep storing the first value before first update                 
+                // it means updated twice we keep storing the first value before first update
             } else {
                 // rafik : since version 2.0.1 if we are updating existing record
                 // we put in FIELDS_UPDATED the old values
@@ -2231,10 +2197,10 @@ class AFWObject extends AFWRoot
                     $this->FIELDS_UPDATED[$attribute] = $old_value_changed;
                     // $this->debugg_field_updated_for_insert_from = $old_value_changed;
                 } else {
-                    $this->FIELDS_UPDATED[$attribute] = '@@nov@@'; // ie. no old value as empty object example if we work on empty object to do an update not only on me
+                    $this->FIELDS_UPDATED[$attribute] = '@@nov@@';  // ie. no old value as empty object example if we work on empty object to do an update not only on me
                     // $this->debugg_field_updated_from = $value;
                 }
-                //if(($attribute=="status_id")) throw new AfwRuntimeException(" nothing_updated = $nothing_updated, simul_do_not_save = $simul_do_not_save id=".$this->getId().", attribute=$attribute, value = $value, this->FIELDS_UPDATED=".var_export($this->FIELDS_UPDATED,true));
+                // if(($attribute=="status_id")) throw new AfwRuntimeException(" nothing_updated = $nothing_updated, simul_do_not_save = $simul_do_not_save id=".$this->getId().", attribute=$attribute, value = $value, this->FIELDS_UPDATED=".var_export($this->FIELDS_UPDATED,true));
             }
 
             $return = true;
@@ -2244,21 +2210,21 @@ class AFWObject extends AFWRoot
         return $return;
     }
 
-    public function multipleSet($rowAttributeValues, $commit=false)
+    public function multipleSet($rowAttributeValues, $commit = false)
     {
-        foreach($rowAttributeValues as $attribute => $value)
-        {
+        foreach ($rowAttributeValues as $attribute => $value) {
             $this->set($attribute, $value);
         }
 
-        if($commit) $this->commit(); 
+        if ($commit)
+            $this->commit();
     }
 
     /**
      * set
      * Set attribute's value for next insert or update
-     * it make the check if attribute is shortname and check structure and format value if needed 
-     * it also trigger events like beforeSet afterSet etc... 
+     * it make the check if attribute is shortname and check structure and format value if needed
+     * it also trigger events like beforeSet afterSet etc...
      * @param string $attribute
      * @param string $value
      * @param boolean $check
@@ -2268,7 +2234,7 @@ class AFWObject extends AFWRoot
         if ($forceSet === null) {
             $forceSet = $this->force_mode;
         }
-        //$call_method = "set(attribute = $attribute, value = $value)";
+        // $call_method = "set(attribute = $attribute, value = $value)";
         if ($attribute == 'id' and $this->id and !$value and !$this->authorize_empty_of_id) {
             throw new AfwRuntimeException($this->class . ' : trying to empty id ... it was id=' . $this->id);
         }
@@ -2285,9 +2251,8 @@ class AFWObject extends AFWRoot
         }
 
         if ($structure['TYPE'] == 'TEXT') {
-            if((!$value) or ($value=="0"))
-            {
-                $forceSet = true; 
+            if ((!$value) or ($value == '0')) {
+                $forceSet = true;
             }
         }
 
@@ -2302,7 +2267,7 @@ class AFWObject extends AFWRoot
         }
 
         if ($structure['WRITE_PRIVATE']) {
-            throw new AfwRuntimeException("cannot set the attribute $attribute of table " . static::$TABLE . " protected by property [WRITE_PRIVATE]");
+            throw new AfwRuntimeException("cannot set the attribute $attribute of table " . static::$TABLE . ' protected by property [WRITE_PRIVATE]');
         } else {
             $return = $this->nativeSet(
                 $attribute,
@@ -2326,18 +2291,20 @@ class AFWObject extends AFWRoot
     protected function beforeSetAttribute($attribute, $newvalue)
     {
         $oldvalue = $this->getVal($attribute);
+
         /*
-          if($attribute=="capproval")
-          {
-           throw new AfwRuntimeException("before set attribute $attribute from '$oldvalue' to '$newvalue'");
-          }
-          */
+         * if($attribute=="capproval")
+         * {
+         *  throw new AfwRuntimeException("before set attribute $attribute from '$oldvalue' to '$newvalue'");
+         * }
+         */
         return true;
     }
 
     final public function afterSetOfAttribute($attribute, $newvalue, $struct = null)
     {
-        if (!$struct) $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
 
         // if($attribute=="nasrani_birth_date") die("afterSetOfAttribute($attribute) -> struct : ".var_export($struct,true));
         if ($struct['DATE_CONVERT'] == 'NASRANI') {
@@ -2362,8 +2329,8 @@ class AFWObject extends AFWRoot
     protected function afterSetAttribute($attribute)
     {
         // It is to be rewritten in sub classes
-        /* ca be useful for some debugg 
-        if(($attribute=="id") and $this->id == 300 0000002) 
+        /* ca be useful for some debugg
+        if(($attribute=="id") and $this->id == 300 0000002)
         {
             throw new AfwRuntimeException("Here the bug");
         }*/
@@ -2390,8 +2357,6 @@ class AFWObject extends AFWRoot
         );
     }
 
-
-
     public function isChanged()
     {
         // $this->debugg_has_changed = implode(',', $this->FIELDS_UPDATED);
@@ -2400,15 +2365,16 @@ class AFWObject extends AFWRoot
 
     public function changedNewValues()
     {
-        $result = "";
+        $result = '';
         $flds = array_keys($this->FIELDS_UPDATED);
-        foreach($flds as $fld) $result .= " >> $fld=".$this->getVal($fld);
+        foreach ($flds as $fld)
+            $result .= " >> $fld=" . $this->getVal($fld);
         return $result;
     }
 
     public function whatHasBeenChanged()
     {
-        $debugg_has_changed = implode(',', array_keys($this->FIELDS_UPDATED))." " .var_export($this->FIELDS_UPDATED, true)." >>>>> ".$this->changedNewValues();
+        $debugg_has_changed = implode(',', array_keys($this->FIELDS_UPDATED)) . ' ' . var_export($this->FIELDS_UPDATED, true) . ' >>>>> ' . $this->changedNewValues();
         // $this->debugg_has_changed = $debugg_has_changed;
         return $debugg_has_changed;
     }
@@ -2425,14 +2391,11 @@ class AFWObject extends AFWRoot
         return true;
     }
 
-
-    public function fieldsHasChanged($newValues=false)
+    public function fieldsHasChanged($newValues = false)
     {
         $return_arr = $this->FIELDS_UPDATED;
-        if($newValues)
-        {
-            foreach($return_arr as $col => $oldVal)
-            {
+        if ($newValues) {
+            foreach ($return_arr as $col => $oldVal) {
                 $newVal = $this->getVal($col);
                 $return_arr["$col-new"] = $newVal;
             }
@@ -2450,15 +2413,13 @@ class AFWObject extends AFWRoot
         return $attribute;
     }
 
-
-
     /* obsoleted
     public final function stdShortNameToAttributeName($attribute)
     {
-        // use of short names in strcucture 
-        // will be obsoleted except if we override 
+        // use of short names in strcucture
+        // will be obsoleted except if we override
         // myShortNameToAttributeName method in sub-classes
-        
+
         $short_names = self::getShortNames();
         if ($short_names[$attribute]) {
             $attribute = $short_names[$attribute];
@@ -2474,7 +2435,8 @@ class AFWObject extends AFWRoot
 
     final public function isSpecialOption($attribute)
     {
-        if (AfwUmsPagHelper::attributeIsAfwKnownOption($attribute)) return true;
+        if (AfwUmsPagHelper::attributeIsAfwKnownOption($attribute))
+            return true;
         return $this->isSpecificOption($attribute);
     }
 
@@ -2512,14 +2474,14 @@ class AFWObject extends AFWRoot
 
     final public function getDebuggAttributeValue($attribute)
     {
-        //if(AfwStringHelper::stringStartsWith($attribute,"mfk_val_city1_hotel_mfk")) die("getDebuggAttributeValue($attribute) : this->debuggs => ".var_export($this->debuggs,true));
+        // if(AfwStringHelper::stringStartsWith($attribute,"mfk_val_city1_hotel_mfk")) die("getDebuggAttributeValue($attribute) : this->debuggs => ".var_export($this->debuggs,true));
         return $this->debuggs[$attribute];
     }
 
     public final function setDebuggAttributeValue($attribute, $value)
     {
         $this->debuggs[$attribute] = $value;
-        //if(AfwStringHelper::stringStartsWith($attribute,"mfk_val_city1_hotel_mfk")) die("setDebuggAttributeValue($attribute, $value) : this->debuggs => ".var_export($this->debuggs,true));
+        // if(AfwStringHelper::stringStartsWith($attribute,"mfk_val_city1_hotel_mfk")) die("setDebuggAttributeValue($attribute, $value) : this->debuggs => ".var_export($this->debuggs,true));
     }
 
     public function easyModeNotOptim()
@@ -2569,8 +2531,6 @@ class AFWObject extends AFWRoot
             return $this->het($attribute);
         }
 
-
-
         if ($this->isOption($attribute)) {
             return $this->getOptionValue($attribute);
         } elseif ($this->isDebugg($attribute)) {
@@ -2610,8 +2570,6 @@ class AFWObject extends AFWRoot
             $this->isSetDebuggAttribute($attribute);
     }
 
-
-
     public function __call($name, $arguments)
     {
         if (substr($name, 0, 11) == 'my_list_of_') {
@@ -2627,46 +2585,52 @@ class AFWObject extends AFWRoot
                 return $this->getRelation($attribute_firstlower);
                 break;
             case 'get':
-                if (!AfwStructureHelper::fieldReallyExists($this, $attribute)) throw new AfwRuntimeException("call to unknown method $name from " . static::class);
+                if (!AfwStructureHelper::fieldReallyExists($this, $attribute))
+                    throw new AfwRuntimeException("call to unknown method $name from " . static::class);
                 return $this->get($attribute);
                 break;
             case 'het':
-                if (!AfwStructureHelper::fieldReallyExists($this, $attribute)) throw new AfwRuntimeException("call to unknown method $name from " . static::class);
+                if (!AfwStructureHelper::fieldReallyExists($this, $attribute))
+                    throw new AfwRuntimeException("call to unknown method $name from " . static::class);
                 return $this->het($attribute);
                 break;
             case '__v':
-                return $this->getAfieldValue($attribute); // to obsolete may be
+                return $this->getAfieldValue($attribute);  // to obsolete may be
                 break;
-            
+
             /*case 'cal':
                 return $this->calc($attribute);
-                break; never do this because if developper doesnt implement calcXXXXX method no exception is thrown*/ 
+                break; never do this because if developper doesnt implement calcXXXXX method no exception is thrown*/
             case 'val':
                 return $this->getVal($attribute);
                 break;
             case 'shw':
-                if (!AfwStructureHelper::fieldReallyExists($this, $attribute_firstlower)) throw new AfwRuntimeException("unknown attribute $attribute_firstlower when call to method $name from " . static::class);
+                if (!AfwStructureHelper::fieldReallyExists($this, $attribute_firstlower))
+                    throw new AfwRuntimeException("unknown attribute $attribute_firstlower when call to method $name from " . static::class);
                 return $this->showAttribute($attribute_firstlower);
                 break;
             case '_is':
-                if (!AfwStructureHelper::fieldReallyExists($this, $attribute)) throw new AfwRuntimeException("unknown attribute $attribute when call to method $name from " . static::class);
+                if (!AfwStructureHelper::fieldReallyExists($this, $attribute))
+                    throw new AfwRuntimeException("unknown attribute $attribute when call to method $name from " . static::class);
                 return $this->is($attribute);
                 break;
             case 'est':
-                if (!AfwStructureHelper::fieldReallyExists($this, $attribute)) throw new AfwRuntimeException("unknown attribute $attribute when call to method $name from " . static::class);
+                if (!AfwStructureHelper::fieldReallyExists($this, $attribute))
+                    throw new AfwRuntimeException("unknown attribute $attribute when call to method $name from " . static::class);
                 return $this->sureIs($attribute);
                 break;
             case 'dec':
-                if (!AfwStructureHelper::fieldReallyExists($this, $attribute)) throw new AfwRuntimeException("unknown attribute $attribute when call to method $name from " . static::class);
+                if (!AfwStructureHelper::fieldReallyExists($this, $attribute))
+                    throw new AfwRuntimeException("unknown attribute $attribute when call to method $name from " . static::class);
                 if (count($arguments) <= 1) {
                     $this->decode($attribute, $arguments[0]);
                 } else {
                     throw new AfwRuntimeException(
-                        "call to the method decode() avec plus d'un argument : decode('" .
-                            $attribute .
-                            "', '" .
-                            implode("', '", $arguments) .
-                            "')."
+                        "call to the method decode() avec plus d'un argument : decode('"
+                        . $attribute
+                        . "', '"
+                        . implode("', '", $arguments)
+                        . "')."
                     );
                 }
                 break;
@@ -2675,11 +2639,11 @@ class AFWObject extends AFWRoot
                     return $this->set($attribute, $arguments[0]);
                 } else {
                     throw new AfwRuntimeException(
-                        "call to the method set() avec plus d'un argument : set('" .
-                            $attribute .
-                            "', '" .
-                            implode("', '", $arguments) .
-                            "')."
+                        "call to the method set() avec plus d'un argument : set('"
+                        . $attribute
+                        . "', '"
+                        . implode("', '", $arguments)
+                        . "')."
                     );
                 }
                 break;
@@ -2688,9 +2652,9 @@ class AFWObject extends AFWRoot
                 if ($returnAfwCall === false) {
                     $this_table = static::$TABLE;
                     throw new AfwRuntimeException(
-                        "afw 'magic' method afwCall : class $this_table make a call to a non exisiting method : '" .
-                            $name .
-                            "'."
+                        "afw 'magic' method afwCall : class $this_table make a call to a non exisiting method : '"
+                        . $name
+                        . "'."
                     );
                 }
                 return $returnAfwCall;
@@ -2748,7 +2712,7 @@ class AFWObject extends AFWRoot
         $sql_select1 = $this->select($attribute1, $value1, true);
         $sql_select2 = $this->select($attribute2, $value2, true);
 
-        $this->SEARCH .= " and (($sql_select1) or ($sql_select2))";                
+        $this->SEARCH .= " and (($sql_select1) or ($sql_select2))";
         return true;
     }
 
@@ -2761,18 +2725,15 @@ class AFWObject extends AFWRoot
     public function selectOneOfListOfCritirea($arrSelects)
     {
         $sql_select_arr = [];
-        foreach($arrSelects as $attribute => $value)
-        {
-            $sql_select_arr[] =  $this->select($attribute, $value, true);
+        foreach ($arrSelects as $attribute => $value) {
+            $sql_select_arr[] = $this->select($attribute, $value, true);
         }
-        
-        
 
-        $this->SEARCH .= " and ((".implode(") or (",$sql_select_arr)."))";                
+        $this->SEARCH .= ' and ((' . implode(') or (', $sql_select_arr) . '))';
         return true;
     }
 
-    public function whereEqual($attribute, $value, $returnSQLOnly=false)
+    public function whereEqual($attribute, $value, $returnSQLOnly = false)
     {
         return $this->select($attribute, $value, $returnSQLOnly);
     }
@@ -2783,19 +2744,18 @@ class AFWObject extends AFWRoot
      * @param string $attribute
      * @param string $value
      */
-    public function select($attribute, $value, $returnSQLOnly=false)
+    public function select($attribute, $value, $returnSQLOnly = false)
     {
-        if ((self::$TABLE == "acondition_origin") and ($attribute == "cvalid")) {
+        if ((self::$TABLE == 'acondition_origin') and ($attribute == 'cvalid')) {
             throw new AfwRuntimeException(self::$TABLE . "->select($attribute, $value) ya rafik !!!!");
         }
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
-                'Impossible faire call to the method select() with the virtual table ' .
-                    static::$TABLE .
-                    '.'
+                'Impossible faire call to the method select() with the virtual table '
+                . static::$TABLE
+                . '.'
             );
         } else {
-
             $attribute = AfwStructureHelper::shortNameToAttributeName($this, $attribute);
             $structure = AfwStructureHelper::getStructureOf($this, $attribute);
             if ($structure['UTF8']) {
@@ -2803,12 +2763,11 @@ class AFWObject extends AFWRoot
             } else {
                 $_utf8 = '';
             }
-            
-            if(!$returnSQLOnly)
-            {
+
+            if (!$returnSQLOnly) {
                 $this->SEARCH_TAB[$attribute] = AfwStringHelper::_real_escape_string($value);
                 $this->afterSelect($attribute, $value);
-            }    
+            }
 
             if ($structure['FIELD-FORMULA']) {
                 $attribute_sql = $structure['FIELD-FORMULA'];
@@ -2818,12 +2777,9 @@ class AFWObject extends AFWRoot
 
             $sql_select = $attribute_sql . " = $_utf8'" . AfwStringHelper::_real_escape_string($value) . "'";
 
-            if($returnSQLOnly)
-            {
+            if ($returnSQLOnly) {
                 return $sql_select;
-            }
-            else
-            {
+            } else {
                 $this->SEARCH .= ' and ' . $sql_select;
                 // if($attribute=="cvalid") throw new AfwRuntimeException("this->SEARCH = ".$this->SEARCH." because structure=".var_export($structure,true));
                 return true;
@@ -2839,7 +2795,7 @@ class AFWObject extends AFWRoot
      */
     public function selectIn($attribute, $values)
     {
-        return $this->selectInside($attribute, $values, $not="");
+        return $this->selectInside($attribute, $values, $not = '');
     }
 
     /**
@@ -2850,7 +2806,7 @@ class AFWObject extends AFWRoot
      */
     public function selectNotIn($attribute, $values)
     {
-        return $this->selectInside($attribute, $values, $not="not");
+        return $this->selectInside($attribute, $values, $not = 'not');
     }
 
     /**
@@ -2859,13 +2815,13 @@ class AFWObject extends AFWRoot
      * @param string $attribute
      * @param Array $values
      */
-    private function selectInside($attribute, $values, $not="")
+    private function selectInside($attribute, $values, $not = '')
     {
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
-                'Impossible faire call to the method selectInside() with the virtual table ' .
-                    static::$TABLE .
-                    '.'
+                'Impossible faire call to the method selectInside() with the virtual table '
+                . static::$TABLE
+                . '.'
             );
         } else {
             $attribute = AfwStructureHelper::shortNameToAttributeName($this, $attribute);
@@ -2883,12 +2839,12 @@ class AFWObject extends AFWRoot
             }
 
             $this->SEARCH .=
-                ' and ' .
-                $attribute_sql .
-                " $not in ('" .
-                implode("','", $values) .
-                "')";
-            //if($attribute=="parent_module_id") throw new AfwRuntimeException("this->SEARCH = ".$this->SEARCH);
+                ' and '
+                . $attribute_sql
+                . " $not in ('"
+                . implode("','", $values)
+                . "')";
+            // if($attribute=="parent_module_id") throw new AfwRuntimeException("this->SEARCH = ".$this->SEARCH);
             return true;
         }
     }
@@ -2902,9 +2858,9 @@ class AFWObject extends AFWRoot
     {
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
-                'Impossible faire call to the method where() with the virtual table ' .
-                    static::$TABLE .
-                    '.'
+                'Impossible faire call to the method where() with the virtual table '
+                . static::$TABLE
+                . '.'
             );
         } else {
             // ajouter " and " seulement si elle n'est pas dans $sql
@@ -2921,8 +2877,8 @@ class AFWObject extends AFWRoot
                 // if($val_to_keep==107895) throw new AfwRuntimeException("rafik 107895 ici");
             }
             $this->SEARCH .= " and ($sql)";
-            //if($sql=="me.system_id '1273' and me.parent_module_id '1274' and me.avail 'Y'")
-            //throw new AfwRuntimeException("this->SEARCH = ".$this->SEARCH);
+            // if($sql=="me.system_id '1273' and me.parent_module_id '1274' and me.avail 'Y'")
+            // throw new AfwRuntimeException("this->SEARCH = ".$this->SEARCH);
 
             return true;
         }
@@ -2937,9 +2893,9 @@ class AFWObject extends AFWRoot
     {
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
-                'Impossible faire call to the method where() with the virtual table ' .
-                    static::$TABLE .
-                    '.'
+                'Impossible faire call to the method where() with the virtual table '
+                . static::$TABLE
+                . '.'
             );
         } else {
             // ajouter " and " seulement si elle n'est pas dans $sql
@@ -2985,11 +2941,6 @@ class AFWObject extends AFWRoot
         return self::$all_data[static::$TABLE];
     }
 
-
-
-
-
-
     /**
      * clearSelect
      * Empty Search criteria
@@ -3005,8 +2956,6 @@ class AFWObject extends AFWRoot
      * initValues
      * Empty Fields and Objects cache
      */
-
-
     private function initValues()
     {
         $all_real_fields = AfwStructureHelper::getAllRealFields($this);
@@ -3024,7 +2973,6 @@ class AFWObject extends AFWRoot
      * resetValues
      * Empty Fields and Objects cache
      */
-
     public function resetValues()
     {
         $all_real_fields = array_keys($this->getAllfieldValues());
@@ -3054,16 +3002,16 @@ class AFWObject extends AFWRoot
         }
     }
 
-    public function getFixmSearchCols($request=[], $qsearch=true)
+    public function getFixmSearchCols($request = [], $qsearch = true)
     {
         $result = [];
-        if($qsearch) $arrCols = AfwFrameworkHelper::getColsByMode($this, "QSEARCH");
-        else $arrCols = AfwFrameworkHelper::getColsByMode($this, "SEARCH");
+        if ($qsearch)
+            $arrCols = AfwFrameworkHelper::getColsByMode($this, 'QSEARCH');
+        else
+            $arrCols = AfwFrameworkHelper::getColsByMode($this, 'SEARCH');
 
-        foreach($arrCols as $col)
-        {
-            if($request[$col])
-            {
+        foreach ($arrCols as $col) {
+            if ($request[$col]) {
                 $result[$col] = $request[$col];
             }
         }
@@ -3113,8 +3061,6 @@ class AFWObject extends AFWRoot
         $this->select($attribute, $value);
     }
 
-
-
     final public function setSilent($attribute, $value)
     {
         $this->set($attribute, $value);
@@ -3125,7 +3071,7 @@ class AFWObject extends AFWRoot
     {
         $creation_date = $this->CREATION_DATE_val;
         if (!$creation_date) {
-            $creation_date = date("Y-m-d H:i:s");
+            $creation_date = date('Y-m-d H:i:s');
         }
 
         if ($add_cote_if_needed) {
@@ -3138,8 +3084,8 @@ class AFWObject extends AFWRoot
     {
         $update_date = $this->UPDATE_DATE_val;
         if (!$update_date) {
-            $update_date = date("Y-m-d H:i:s");
-        } 
+            $update_date = date('Y-m-d H:i:s');
+        }
 
         if ($add_cote_if_needed) {
             $update_date = "'$update_date'";
@@ -3157,14 +3103,16 @@ class AFWObject extends AFWRoot
      * Insert row
      * @param int $pk : Optional, specify the primary key
      */
-    public function insert($pk = '', $check_if_exists_by_uk = true, $disableAfterCommitDBEvent=false)
+    public function insert($pk = '', $check_if_exists_by_uk = true, $disableAfterCommitDBEvent = false)
     {
         return AfwSqlHelper::insertObject($this, $pk, $check_if_exists_by_uk, $disableAfterCommitDBEvent);
     }
+
     public function getVersion()
     {
         $return = $this->getVal($this->fld_VERSION());
-        if (!$return) $return = 0;
+        if (!$return)
+            $return = 0;
         return $return;
     }
 
@@ -3181,7 +3129,7 @@ class AFWObject extends AFWRoot
     public function getUpdateUserId()
     {
         $return = $this->getVal($this->fld_UPDATE_USER_ID());
-        //if(!$return) die(var_export($this,true));
+        // if(!$return) die(var_export($this,true));
         return $return;
     }
 
@@ -3190,14 +3138,15 @@ class AFWObject extends AFWRoot
         return $this->getVal($this->fld_CREATION_USER_ID());
     }
 
-    public function commit($reload_if_failed=false, $onlyReturnSQL = false, $disableAfterCommitDBEvent=false)
+    public function commit($reload_if_failed = false, $onlyReturnSQL = false, $disableAfterCommitDBEvent = false)
     {
         if ($this->getId() > 0) {
-            $return = $this->update(true,null,$onlyReturnSQL, $disableAfterCommitDBEvent);
-            if($reload_if_failed and (!$return)) $this->reloadMe();
+            $return = $this->update(true, null, $onlyReturnSQL, $disableAfterCommitDBEvent);
+            if ($reload_if_failed and (!$return))
+                $this->reloadMe();
             return $return;
         } else {
-            return $this->insert('',true, $disableAfterCommitDBEvent);
+            return $this->insert('', true, $disableAfterCommitDBEvent);
         }
     }
 
@@ -3213,7 +3162,7 @@ class AFWObject extends AFWRoot
         return false;
     }
 
-    public static final function updateWhere($sets_arr, $where_clause, $nocote=false)
+    public static final function updateWhere($sets_arr, $where_clause, $nocote = false)
     {
         $obj = new static();
         foreach ($sets_arr as $col_name => $col_value) {
@@ -3225,12 +3174,11 @@ class AFWObject extends AFWRoot
         return $obj->update(false, $nocote_fields);
     }
 
-
     /**
      * update
      * Update row
      */
-    public function update($only_me = true, $nocote_fields=null, $onlyReturnSQL = false, $disableAfterCommitDBEvent=false)
+    public function update($only_me = true, $nocote_fields = null, $onlyReturnSQL = false, $disableAfterCommitDBEvent = false)
     {
         return AfwSqlHelper::updateObject($this, $only_me, $nocote_fields, $onlyReturnSQL, $disableAfterCommitDBEvent);
     }
@@ -3251,25 +3199,21 @@ class AFWObject extends AFWRoot
         return AfwSqlHelper::hideObject($this);
     }
 
-
-
-
     /**
      * popupEditConfig
      * @param string $col
      * @param Auser $auser
      * should be overridden in subclasses if more columns should be switchable
      * return array[$switcher_authorized, $switcher_title, $switcher_text]
-     * 
+     *
      * $switcher_authorized : if true means the column $col should be switchable
      * $switcher_title, $switcher_text are the title and warning that will be shown by the confirmation popup before do the switch
      */
-
     public function popupEditConfig($col, $auser = null)
     {
         $authorized = false;
-        $title = "";
-        $text = "";
+        $title = '';
+        $text = '';
 
         return [$authorized, $title, $text];
     }
@@ -3280,16 +3224,15 @@ class AFWObject extends AFWRoot
      * @param Auser $auser
      * should be overridden in subclasses if more columns should be switchable
      * return array[$switcher_authorized, $switcher_title, $switcher_text]
-     * 
+     *
      * $switcher_authorized : if true means the column $col should be switchable
      * $switcher_title, $switcher_text are the title and warning that will be shown by the confirmation popup before do the switch
      */
-
     public function switcherConfig($col, $auser = null)
     {
         $switcher_authorized = false;
-        $switcher_title = "";
-        $switcher_text = "";
+        $switcher_title = '';
+        $switcher_text = '';
 
         if ($col == $this->fld_ACTIVE()) {
             $switcher_authorized = true;
@@ -3298,35 +3241,29 @@ class AFWObject extends AFWRoot
         return [$switcher_authorized, $switcher_title, $switcher_text];
     }
 
-
-
     /**
      * moveConfig
      * @param string $col
      * @param Auser $auser
-     * should be overridden in subclasses 
+     * should be overridden in subclasses
      * return array[$move_authorized, $move_title, $move_text]
-     * 
+     *
      * $move_authorized : if true means object is moveable
      * $move_title, $move_text are the title and warning that will be shown by the confirmation popup before do the move
      */
-
     public function moveConfig($col, $sens, $auser = null)
     {
         $move_authorized = false;
-        $no_move_title = "";
-        $no_move_reason = "";
+        $no_move_title = '';
+        $no_move_reason = '';
         $move_limit = $this->moveLimit($col);
 
-        if ($this->getVal($col)+$sens >= $move_limit) {
+        if ($this->getVal($col) + $sens >= $move_limit) {
             $move_authorized = true;
-        }
-        else {
-            $no_move_title = "limit reached";
+        } else {
+            $no_move_title = 'limit reached';
             $no_move_reason = "move_limit=$move_limit reached";
         }
-
-
 
         return [$move_authorized, $no_move_title, $no_move_reason];
     }
@@ -3334,13 +3271,15 @@ class AFWObject extends AFWRoot
     public final function userCanMoveMe($auser, $sens)
     {
         $col = $this->moveColumn();
-        if(!$col) return [false, 'move rejected', 'no move column defined'];
+        if (!$col)
+            return [false, 'move rejected', 'no move column defined'];
         $desc = AfwStructureHelper::getStructureOf($this, $col);
-        if (!$this->attributeCanBeEditedBy($col, $auser, $desc)) return [false, 'move rejected', 'move column is readonly for you'];
-        if ($auser->isSuperAdmin()) return [true, '', ''];
+        if (!$this->attributeCanBeEditedBy($col, $auser, $desc))
+            return [false, 'move rejected', 'move column is readonly for you'];
+        if ($auser->isSuperAdmin())
+            return [true, '', ''];
         return $this->moveConfig($col, $sens, $auser);
     }
-
 
     public function getMyIndexArray()
     {
@@ -3350,13 +3289,13 @@ class AFWObject extends AFWRoot
                 $uk_arr[$key] = $this->getVal($key);
             }
             return $uk_arr;
-        }
-        else throw new AfwRuntimeException("No UNIQUE_KEY index defined for ".get_class($this));
+        } else
+            throw new AfwRuntimeException('No UNIQUE_KEY index defined for ' . get_class($this));
     }
 
     public function moveColumn()
     {
-        return null; // to be overridden
+        return null;  // to be overridden
     }
 
     public function moveLimit($col)
@@ -3367,36 +3306,33 @@ class AFWObject extends AFWRoot
     public final function getMoveOrder()
     {
         $col = $this->moveColumn();
-        if(!$col) return $this->id;
+        if (!$col)
+            return $this->id;
         return $this->getVal($col);
     }
 
     public final function moveMe($sens)
     {
-        try
-        {
-            
+        try {
             $secondObjSwitched = null;
             $newId = 0;
             $col = $this->moveColumn();
             $limitDown = $this->moveLimit($col);
-            if(!$col) return [false, "No move column defined", null];
+            if (!$col)
+                return [false, 'No move column defined', null];
             $colVal = $this->getVal($col);
             $newVal = $this->getVal($col) + $sens;
-            if($newVal<$limitDown) 
-            {
-                return [false, "LIMIT-REACHED", null];
+            if ($newVal < $limitDown) {
+                return [false, 'LIMIT-REACHED', null];
             }
             $isInIndex = $this->isIndexAttribute($col);
-            if($isInIndex)
-            {                
+            if ($isInIndex) {
                 $newArrIndex = $this->getMyIndexArray();
                 $newArrIndex[$col] = $newVal;
                 $secondObjSwitched = $this->loadBrotherWithUniqueKey($newArrIndex);
             }
 
-            if($secondObjSwitched)
-            {
+            if ($secondObjSwitched) {
                 $secondObjSwitched->set($col, -1);
                 $secondObjSwitched->commit();
             }
@@ -3404,60 +3340,57 @@ class AFWObject extends AFWRoot
             $this->set($col, $newVal);
             $this->commit();
 
-            if($secondObjSwitched)
-            {
+            if ($secondObjSwitched) {
                 $secondObjSwitched->set($col, $colVal);
                 $secondObjSwitched->commit();
                 $newId = $secondObjSwitched->id;
             }
-            $status = "NOTHING-DONE";
-            if($sens<0) $status = "MOVED-UP-$newId-$limitDown-$col-$newVal";
-            elseif($sens>0) $status = "MOVED-DOWN-$newId-$limitDown-$col-$newVal";
+            $status = 'NOTHING-DONE';
+            if ($sens < 0)
+                $status = "MOVED-UP-$newId-$limitDown-$col-$newVal";
+            elseif ($sens > 0)
+                $status = "MOVED-DOWN-$newId-$limitDown-$col-$newVal";
 
             return [true, $status, $secondObjSwitched];
-        }
-        catch(Exception $e)
-        {
+        } catch (Exception $e) {
             return [false, $e->getMessage(), null];
         }
-
-        
-
     }
-    
-
 
     /**
      * @param Auser $auser
      * @param string $col
-     * 
      */
-
     public final function userCanPopupEditCol($auser, $col)
     {
-        if ($auser->isSuperAdmin()) return true;
+        if ($auser->isSuperAdmin())
+            return true;
         $desc = AfwStructureHelper::getStructureOf($this, $col);
-        if (!$this->attributeCanBeEditedBy($col, $auser, $desc)) return false;
-        
-        list($popup_edit_authorized,) = $this->popupEditConfig($col, $auser);
+        if (!$this->attributeCanBeEditedBy($col, $auser, $desc))
+            return false;
+
+        list(
+            $popup_edit_authorized,
+        ) = $this->popupEditConfig($col, $auser);
 
         return $popup_edit_authorized;
     }
-    
 
     /**
      * @param Auser $auser
      * @param string $col
-     * 
      */
-
     public final function userCanSwitchCol($auser, $col)
     {
-        if ($auser->isSuperAdmin()) return true;
+        if ($auser->isSuperAdmin())
+            return true;
         $desc = AfwStructureHelper::getStructureOf($this, $col);
-        if (!$this->attributeCanBeEditedBy($col, $auser, $desc)) return false;
-        
-        list($switcher_authorized,) = $this->switcherConfig($col, $auser);
+        if (!$this->attributeCanBeEditedBy($col, $auser, $desc))
+            return false;
+
+        list(
+            $switcher_authorized,
+        ) = $this->switcherConfig($col, $auser);
 
         return $switcher_authorized;
     }
@@ -3467,12 +3400,12 @@ class AFWObject extends AFWRoot
         try {
             $switch_mess = 'SWITCH FAILED ';
             $swc_col_old_val = $this->getVal($swc_col);
-            if ($swc_col_old_val == "N") {
-                $this->set($swc_col, "Y");
-                $switch_mess = "SWITCHED-ON";
+            if ($swc_col_old_val != 'Y') {
+                $this->set($swc_col, 'Y');
+                $switch_mess = 'SWITCHED-ON';
             } else {
-                $this->set($swc_col, "N");
-                $switch_mess = "SWITCHED-OFF";
+                $this->set($swc_col, 'N');
+                $switch_mess = 'SWITCHED-OFF';
             }
 
             $this->commit();
@@ -3482,23 +3415,17 @@ class AFWObject extends AFWRoot
             $switch_mess .= $e->__toString();
         }
 
-
         return $switch_mess;
     }
 
-
-    /** APPROVED *** */
-
+    /**
+     * APPROVED ***
+     */
     public function singleTranslation($lang = 'ar')
     {
         // can be overrridden
         return $this->transClassSingle($lang);
     }
-
-
-
-
-
 
     public function transClassSingle($lang = 'ar', $short = false)
     {
@@ -3532,7 +3459,6 @@ class AFWObject extends AFWRoot
      * $maksour = false ex المسلمون
      * $maksour = true ex المسلمين
      */
-
     public function transClassPlural($lang = 'ar', $short = false, $maksour = false)
     {
         $tableLowerOrigin = strtolower(static::$TABLE);
@@ -3545,7 +3471,7 @@ class AFWObject extends AFWRoot
 
         if ($maksour) {
             $tableLowerNotMaksour = $tableLower;
-            $tableLower = $tableLower . "_";
+            $tableLower = $tableLower . '_';
         }
 
         $return = $this->translate($tableLower, $lang);
@@ -3579,40 +3505,34 @@ class AFWObject extends AFWRoot
 
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
-                'can not call delete() method with virtual table : ' .
-                    static::$TABLE .
-                    '.'
+                'can not call delete() method with virtual table : '
+                . static::$TABLE
+                . '.'
             );
-        } elseif (($delReturn=$this->userCanDeleteMe($objme)) <= 0) {
+        } elseif (($delReturn = $this->userCanDeleteMe($objme)) <= 0) {
             $delReturnDecoded = self::decodeDeleteReturn($delReturn);
             throw new AfwRuntimeException(
-                "the user [$objme] is not allowed to do delete operation on [" .
-                    $this->getShortDisplay($lang)."] DEL-RETURN=$delReturnDecoded"
+                "the user [$objme] is not allowed to do delete operation on ["
+                . $this->getShortDisplay($lang) . "] DEL-RETURN=$delReturnDecoded"
             );
         } else {
-            
-
             $return = false;
             $this->majTriggered();
             if ($this->beforeDelete($this->id, $id_replace)) {
-                $AUDIT_DISABLED = AfwSession::config("AUDIT_DISABLED", false);
-                // for audit 
-                if($this->AUDIT_DATA and !$AUDIT_DISABLED)
-                {
-                    $this->logicDelete();        
+                $AUDIT_DISABLED = AfwSession::config('AUDIT_DISABLED', false);
+                // for audit
+                if ($this->AUDIT_DATA and !$AUDIT_DISABLED) {
+                    $this->logicDelete();
                 }
-                $query = 'DELETE FROM ' . self::_prefix_table(static::$TABLE) . " WHERE 1 ";
-                if($this->getPKIsMultiple())       
-                {
+                $query = 'DELETE FROM ' . self::_prefix_table(static::$TABLE) . ' WHERE 1 ';
+                if ($this->getPKIsMultiple()) {
                     foreach ($this->PK_MULTIPLE_ARR as $pk_field) {
-                        $query .= "and $pk_field = '" . $this->getAfieldValue($pk_field) ."'";    
+                        $query .= "and $pk_field = '" . $this->getAfieldValue($pk_field) . "'";
                     }
+                } else {
+                    $query .= 'and ' . $this->getPKField() . " = '" . $this->getAfieldValue($this->getPKField()) . "'";
                 }
-                else
-                {
-                    $query .= "and " . $this->getPKField() . " = '" . $this->getAfieldValue($this->getPKField()) ."'";
-                }
-                       
+
                 $return = $this->execQuery($query);
                 $this->majTriggered();
                 // die("query : $query");
@@ -3621,8 +3541,6 @@ class AFWObject extends AFWRoot
                     $id_replace
                 );
             }
-
-            
         }
         return $return;
     }
@@ -3644,9 +3562,8 @@ class AFWObject extends AFWRoot
      */
     final public static function deleteWhere($where)
     {
-
         if (!static::$TABLE) {
-            throw new AfwRuntimeException('Impossible to call deleteWhere() with virtual entity for class '.get_called_class());
+            throw new AfwRuntimeException('Impossible to call deleteWhere() with virtual entity for class ' . get_called_class());
         } else {
             if ($where) {
                 if (static::beforeDeleteWhere($where)) {
@@ -3662,19 +3579,16 @@ class AFWObject extends AFWRoot
         }
     }
 
-    
-
-    
     public function getDisplay($lang = 'ar')
     {
         return $this->getDefaultDisplay($lang);
     }
 
-    final public function initDISPLAY_FIELD($lang="")
+    final public function initDISPLAY_FIELD($lang = '')
     {
-        if((!$this->DISPLAY_FIELD) and isset($this->DISPLAY_FIELD_BY_LANG)) 
-        {
-            if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+        if ((!$this->DISPLAY_FIELD) and isset($this->DISPLAY_FIELD_BY_LANG)) {
+            if (!$lang)
+                $lang = AfwLanguageHelper::getGlobalLanguage();
             $this->DISPLAY_FIELD = $this->DISPLAY_FIELD_BY_LANG[$lang];
             // die(var_export($this->DISPLAY_FIELD, true)."=this->DISPLAY_FIELD = this->DISPLAY_FIELD_BY_LANG[$lang] this->DISPLAY_FIELD_BY_LANG=" . var_export($this->DISPLAY_FIELD_BY_LANG,true));
         }
@@ -3682,27 +3596,26 @@ class AFWObject extends AFWRoot
         return $this->DISPLAY_FIELD;
     }
 
-        
-
-    final public function getDefaultDisplay($lang = 'ar', $implodeChar = " ")
+    final public function getDefaultDisplay($lang = 'ar', $implodeChar = ' ')
     {
-        $return = "";
+        $return = '';
 
         $this->initDISPLAY_FIELD($lang);
         $sep = $this->DISPLAY_SEPARATOR;
-        if(!$sep) $sep = $implodeChar;
-        //if ($this instanceof Applicant) die("df is ".var_export($this->DISPLAY_FIELD,true));
+        if (!$sep)
+            $sep = $implodeChar;
+        // if ($this instanceof Applicant) die("df is ".var_export($this->DISPLAY_FIELD,true));
         if (!$this->id) {
             $return = $this->insertNewLabel($lang);
 
             // if ($this instanceof StudentFileStatus) $return .= "<!-- ".var_export($this,true)." -->";
+
             /*
-            $return = $this->transClassSingle($lang) .
-                ' ' .
-                $this->translate('NEW', $lang, true);*/
-        } 
-        else
-        {
+             * $return = $this->transClassSingle($lang) .
+             *     ' ' .
+             *     $this->translate('NEW', $lang, true);
+             */
+        } else {
             if (is_array($this->DISPLAY_FIELD) and count($this->DISPLAY_FIELD) > 0) {
                 // if ($this instanceof Applicant) die("df is an array : ".var_export($this->DISPLAY_FIELD,true));
                 $disp_decoded = [];
@@ -3710,7 +3623,7 @@ class AFWObject extends AFWRoot
                     $disp_decoded[] = $this->decode($key);
                 }
                 $return = implode($sep, $disp_decoded);
-                //if ($this instanceof Application) die("for instanceof Application return = $return because disp_decoded = ".var_export($disp_decoded,true)." from decode of this->DISPLAY_FIELD = ".var_export($this->DISPLAY_FIELD,true));
+                // if ($this instanceof Application) die("for instanceof Application return = $return because disp_decoded = ".var_export($disp_decoded,true)." from decode of this->DISPLAY_FIELD = ".var_export($this->DISPLAY_FIELD,true));
             } elseif ($this->DISPLAY_FIELD) {
                 $return = $this->getVal($this->DISPLAY_FIELD);
             }
@@ -3723,15 +3636,14 @@ class AFWObject extends AFWRoot
                     $uk_decoded[] = $this->decode($key);
                 }
                 $return = implode($sep, $uk_decoded);
-                //if(AfwStringHelper::stringContain($return,"sara_4238_@hotmail.com")) throw new AfwRuntimeException("This is case of stange key display");
+                // if(AfwStringHelper::stringContain($return,"sara_4238_@hotmail.com")) throw new AfwRuntimeException("This is case of stange key display");
             } else {
                 $return = $this->transClassSingle($lang) . ' ' . AfwStringHelper::arrow($lang) . ' ' . $this->id;
             }
         }
 
-
         if (!$return) {
-            $return = $this->getMyClass() . " id " . $this->id;
+            $return = $this->getMyClass() . ' id ' . $this->id;
         }
         return $return;
     }
@@ -3784,14 +3696,14 @@ class AFWObject extends AFWRoot
         $all_real_fields = AfwStructureHelper::getAllRealFields($this);
         foreach ($all_real_fields as $attribute) {
             $debug .=
-                $indent .
-                $attribute .
-                ' : ' .
-                ($this->getTypeOf($attribute) == 'FK' ||
+                $indent
+                . $attribute
+                . ' : '
+                . ($this->getTypeOf($attribute) == 'FK' ||
                     $this->getTypeOf($attribute) == 'MFK'
-                    ? $this->decode($attribute)
-                    : $this->getVal($attribute)) .
-                "\n";
+                        ? $this->decode($attribute)
+                        : $this->getVal($attribute))
+                . "\n";
             if (isset($this->OBJECTS_CACHE[$attribute]) && $childrens) {
                 $debug .= $this->OBJECTS_CACHE[$attribute]->debug(
                     true,
@@ -3802,20 +3714,16 @@ class AFWObject extends AFWRoot
         return $debug;
     }
 
-    
-
-
     public function decodeTpl(
-            $text_to_decode,
-            $trad_erase = [],
-            $lang = 'ar',
-            $token_arr = []
-    ) 
-    {
+        $text_to_decode,
+        $trad_erase = [],
+        $lang = 'ar',
+        $token_arr = []
+    ) {
         $token_arr = AfwPrevilegeHelper::prepareAfwTokens($this, $text_to_decode, $lang, $trad_erase, $token_arr);
         // if(get_class($this)=="CrmCustomer") die("token_arr=".var_export($token_arr,true));
         foreach ($token_arr as $token => $val_token) {
-            //if($token=="[travelStationList.no_icons]") die("for the token $token value is $val_token , token_arr = ".var_export($token_arr,true)." text_to_decode=$text_to_decode");
+            // if($token=="[travelStationList.no_icons]") die("for the token $token value is $val_token , token_arr = ".var_export($token_arr,true)." text_to_decode=$text_to_decode");
             $text_to_decode = str_replace($token, $val_token, $text_to_decode);
         }
 
@@ -3858,12 +3766,12 @@ class AFWObject extends AFWRoot
         return $this->tf($tvf_code, $lang);
     }
 
-
     public function showUsingPhpTemplate($html_template, $data)
     {
         $html_template_file = AfwStringHelper::getFileNameFullPath($html_template, static::$MODULE);
         if (file_exists($html_template_file)) {
-            foreach ($data as $key => $kval) $$key = $kval;
+            foreach ($data as $key => $kval)
+                $$key = $kval;
             ob_start();
             include $html_template_file;
             $html_content = ob_get_clean();
@@ -3881,7 +3789,7 @@ class AFWObject extends AFWRoot
         $token_arr = []
     ) {
         // throw new AfwRuntimeException("token_arr = ".var_export($token_arr,true)." html_template=$html_template");
-        //die("html_template=$html_template");
+        // die("html_template=$html_template");
         $html_template_file = AfwStringHelper::getFileNameFullPath($html_template, static::$MODULE);
         if (file_exists($html_template_file)) {
             ob_start();
@@ -3917,7 +3825,7 @@ class AFWObject extends AFWRoot
     public function myDisplayStatus()
     {
         // to be overrridden in sublasses it allow to show panels, or boxes or frames that show me in a spcific css look
-        return "nothing";
+        return 'nothing';
     }
 
     public function showMe($style = '', $lang = 'ar')
@@ -3961,8 +3869,6 @@ class AFWObject extends AFWRoot
         return AfwShowHelper::showMinibox($this, '', $lang);
     }
 
-    
-
     public function tr($message, $lang = '')
     {
         if (!$lang) {
@@ -3980,13 +3886,13 @@ class AFWObject extends AFWRoot
 
         return $tr_message;
     }
+
     /**
      * translate
      * @param  string  $nom_col
      * @param  string  $langue
      * @return string
      */
-
     public function translate0($nom_col, $langue = 'ar', $operator = null)
     {
         return $nom_col;
@@ -3995,10 +3901,11 @@ class AFWObject extends AFWRoot
     public static function gtr($nom_col, $langue = 'ar', $tokens = [])
     {
         $operator = null;
-        $nom_table = "all";            
-        $module = "lib/afw";
+        $nom_table = 'all';
+        $module = 'lib/afw';
 
-        if(!$nom_col) $nom_col = $nom_table; // plural translation
+        if (!$nom_col)
+            $nom_col = $nom_table;  // plural translation
 
         $return = AfwLanguageHelper::tarjem(
             $nom_col,
@@ -4007,11 +3914,9 @@ class AFWObject extends AFWRoot
             $nom_table,
             $module
         );
-        
-        if(AfwStringHelper::stringStartsWith(trim($return), "??")
-           and 
-           AfwStringHelper::stringEndsWith(trim($return), "??"))
-        {
+
+        if (AfwStringHelper::stringStartsWith(trim($return), '??') and
+                AfwStringHelper::stringEndsWith(trim($return), '??')) {
             $return = AfwStringHelper::methodToTitle($nom_col);
         }
         $return_before = $return;
@@ -4021,10 +3926,9 @@ class AFWObject extends AFWRoot
             throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem(col=$nom_col, lng=$langue, oper=$operator, tbl=$nom_table, module=$module) (intermediaire = $return_before)");
         }*/
 
-        foreach($tokens as $token => $val_token)
-        {
+        foreach ($tokens as $token => $val_token) {
             $return = str_replace($token, $val_token, $return);
-        }    
+        }
 
         return $return;
     }
@@ -4034,7 +3938,8 @@ class AFWObject extends AFWRoot
         $nom_table = static::$TABLE;
         $module = static::$MODULE;
 
-        if(!$nom_col) $nom_col = $nom_table; // plural translation
+        if (!$nom_col)
+            $nom_col = $nom_table;  // plural translation
 
         $return = AfwLanguageHelper::tarjem(
             $nom_col,
@@ -4043,11 +3948,9 @@ class AFWObject extends AFWRoot
             $nom_table,
             $module
         );
-        
-        if(AfwStringHelper::stringStartsWith(trim($return), "??")
-           and 
-           AfwStringHelper::stringEndsWith(trim($return), "??"))
-        {
+
+        if (AfwStringHelper::stringStartsWith(trim($return), '??') and
+                AfwStringHelper::stringEndsWith(trim($return), '??')) {
             $return = AfwStringHelper::methodToTitle($nom_col);
         }
         $return_before = $return;
@@ -4057,14 +3960,12 @@ class AFWObject extends AFWRoot
             throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem(col=$nom_col, lng=$langue, oper=$operator, tbl=$nom_table, module=$module) (intermediaire = $return_before)");
         }*/
 
-        if($langue == 'en')    
-        {
-            $pos1 = strpos($return, "_");
-            $pos2 = strpos($return, ".");
-            if(($pos1===false) and ($pos2===false) and ((strtoupper($return) === $return) or (strtolower($return) === $return)))
-            {
+        if ($langue == 'en') {
+            $pos1 = strpos($return, '_');
+            $pos2 = strpos($return, '.');
+            if (($pos1 === false) and ($pos2 === false) and ((strtoupper($return) === $return) or (strtolower($return) === $return))) {
                 // $return_before = $return;
-                $return = AfwStringHelper::firstCharUpper(strtolower($return)); // ." [$return_before/$pos1/$pos2]";
+                $return = AfwStringHelper::firstCharUpper(strtolower($return));  // ." [$return_before/$pos1/$pos2]";
             }
         }
 
@@ -4084,14 +3985,13 @@ class AFWObject extends AFWRoot
     public function translateOperator($operator, $langue = 'ar')
     {
         $return = $this->translate($operator, $langue, true);
-        if($return==$operator)
-        {
+        if ($return == $operator) {
             $return = $this->translate(strtoupper($operator), $langue, true);
         }
         return $return;
     }
 
-    public function tm($message, $langue = '', $company = "")
+    public function tm($message, $langue = '', $company = '')
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$langue) {
@@ -4118,17 +4018,19 @@ class AFWObject extends AFWRoot
         return $message_tm;
     }
 
-    public function translateMessage($message, $lang = 'ar', $company = "")
+    public function translateMessage($message, $lang = 'ar', $company = '')
     {
         $module = static::$MODULE;
-        if (!$module) throw new AfwRuntimeException("static::\$MODULE should be defined in class : " . get_class($this));
+        if (!$module)
+            throw new AfwRuntimeException('static::$MODULE should be defined in class : ' . get_class($this));
         return AfwLanguageHelper::translateCompanyMessage($message, $module, $lang, $company);
     }
 
-    public static function transMess($message, $lang = 'ar', $company = "")
+    public static function transMess($message, $lang = 'ar', $company = '')
     {
         $module = static::$MODULE;
-        if (!$module) throw new AfwRuntimeException("static::\$MODULE should be defined in class : " . static::class);
+        if (!$module)
+            throw new AfwRuntimeException('static::$MODULE should be defined in class : ' . static::class);
         return AfwLanguageHelper::translateCompanyMessage($message, $module, $lang, $company);
     }
 
@@ -4162,7 +4064,6 @@ class AFWObject extends AFWRoot
             'hide_retrieve_cols' => $hide_retrieve_cols,
         ];
     }
-    
 
     /**
      * beforeDeleteWhere
@@ -4181,8 +4082,6 @@ class AFWObject extends AFWRoot
      */
     protected static function afterDeleteWhere($where) {}
 
-    
-
     final public function canBeDeleted()
     {
         // 0,0 below to simulate delete not really delete (beforeDelete should be regenerated for old classes (before 13/3/2020) to generate simul param inside beforeDelete
@@ -4195,8 +4094,8 @@ class AFWObject extends AFWRoot
             $objme->isAdmin()
         ) {
             throw new AfwRuntimeException(
-                "[$this] object can't be deleted without any reason specified" .
-                    var_export($this, true)
+                "[$this] object can't be deleted without any reason specified"
+                . var_export($this, true)
             );
         }
         return [$can, $this->deleteNotAllowedReason];
@@ -4210,8 +4109,8 @@ class AFWObject extends AFWRoot
     public function beforeDelete($id, $id_replace)
     {
         $this->deleteNotAllowedReason =
-            'beforeDelete should be implemented in the afw sub class : ' .
-            static::$TABLE;
+            'beforeDelete should be implemented in the afw sub class : '
+            . static::$TABLE;
         return false;
     }
 
@@ -4246,10 +4145,8 @@ class AFWObject extends AFWRoot
 
     public function afterMaj($id, $fields_updated)
     {
-        //to be implemented in sub-classes
+        // to be implemented in sub-classes
     }
-
-
 
     /**
      * beforeInsert
@@ -4268,10 +4165,9 @@ class AFWObject extends AFWRoot
      * @param string $id
      * @param array $fields_updated
      */
-    public function afterInsert($id, $fields_updated, $disableAfterCommitDBEvent=false)
+    public function afterInsert($id, $fields_updated, $disableAfterCommitDBEvent = false)
     {
-        if(!$disableAfterCommitDBEvent)
-        {
+        if (!$disableAfterCommitDBEvent) {
             $this->afterMaj($id, $fields_updated);
         }
     }
@@ -4293,10 +4189,9 @@ class AFWObject extends AFWRoot
      * @param string $id
      * @param array $fields_updated
      */
-    public function afterUpdate($id, $fields_updated, $disableAfterCommitDBEvent=false)
+    public function afterUpdate($id, $fields_updated, $disableAfterCommitDBEvent = false)
     {
-        if(!$disableAfterCommitDBEvent)
-        {
+        if (!$disableAfterCommitDBEvent) {
             $this->afterMaj($id, $fields_updated);
         }
     }
@@ -4341,32 +4236,33 @@ class AFWObject extends AFWRoot
         $dropdown = false,
         $selects = []
     ) {
-
-
         if ($dropdown or $this->hideNonActiveRowsFor($objme = AfwSession::getUserConnected())) {
-            $selects[$this->fld_ACTIVE()] = 'Y'; // get_class($this).".".
+            $selects[$this->fld_ACTIVE()] = 'Y';  // get_class($this).".".
         }
+
         /*
-        if(static::$TABLE == "school_employee")
-        { 
-            echo "selects : <br>";
-            echo var_export($selects,true);
-            die();
-        }*/
+         * if(static::$TABLE == "school_employee")
+         * {
+         *     echo "selects : <br>";
+         *     echo var_export($selects,true);
+         *     die();
+         * }
+         */
         foreach ($selects as $colselect => $valselect) {
             if (AfwStructureHelper::fieldExists($this, $colselect)) {
-                //if($colselect == "employee_id") die("$this this->select($colselect,$valselect);");
+                // if($colselect == "employee_id") die("$this this->select($colselect,$valselect);");
                 $this->select($colselect, $valselect);
             } else {
-                throw new AfwRuntimeException(get_class($this)." : trying to sql-select the field '$colselect' but does not exist, selects =" . var_export($selects, true));
+                throw new AfwRuntimeException(get_class($this) . " : trying to sql-select the field '$colselect' but does not exist, selects =" . var_export($selects, true));
             }
         }
+
         /*
-        if(static::$TABLE == "practice")
-        { 
-            die($this->SEARCH);
-        }
-        */
+         * if(static::$TABLE == "practice")
+         * {
+         *     die($this->SEARCH);
+         * }
+         */
     }
 
     public function get_visibilite_horizontale($dropdown = false)
@@ -4383,8 +4279,10 @@ class AFWObject extends AFWRoot
 
     public function getMyTable($prefix = false)
     {
-        if ($prefix) return self::_prefix_table(static::$TABLE);
-        else return static::$TABLE;
+        if ($prefix)
+            return self::_prefix_table(static::$TABLE);
+        else
+            return static::$TABLE;
     }
 
     public function getMyClass()
@@ -4394,7 +4292,7 @@ class AFWObject extends AFWRoot
 
     public function getMyModule()
     {
-        //if(static::$TABLE=="acondition") die("for ".static::$TABLE." module is ".static::$MODULE);
+        // if(static::$TABLE=="acondition") die("for ".static::$TABLE." module is ".static::$MODULE);
         return static::$MODULE;
     }
 
@@ -4402,8 +4300,6 @@ class AFWObject extends AFWRoot
     {
         return AfwStringHelper::getHisFactory(static::$TABLE, static::$MODULE);
     }
-
-
 
     public function getSeparatorFor($attribute)
     {
@@ -4422,17 +4318,18 @@ class AFWObject extends AFWRoot
 
     protected function userCanDeleteMeSpecial($auser)
     {
-        // This is an example of business rules and conditions 
+        // This is an example of business rules and conditions
         // needed to be authorized to delete this record additional to UMS role/bf
+
         /*
-        if ($auser->isAdmin()) {
-            return true;
-        }
-        if ($auser->id == $this->getVal($this->fld_CREATION_USER_ID())) {
-            return true;
-        }
-        return false;
-        */
+         * if ($auser->isAdmin()) {
+         *     return true;
+         * }
+         * if ($auser->id == $this->getVal($this->fld_CREATION_USER_ID())) {
+         *     return true;
+         * }
+         * return false;
+         */
 
         // by default no specific rule for records
         // if UMS role/bf authorize delete so he can delete
@@ -4441,12 +4338,14 @@ class AFWObject extends AFWRoot
 
     private static function decodeDeleteReturn($ret)
     {
-        if($ret==-1) return "UMS implementation does not allow this user to delete this record, see userCanDeleteMeStandard";
-        if($ret==-2) return "The business rules and conditions of this afw-sub-class does not allow this user to delete this record see userCanDeleteMeSpecial";
-        if($ret<=0) return "unknown no-delete reason $ret";
+        if ($ret == -1)
+            return 'UMS implementation does not allow this user to delete this record, see userCanDeleteMeStandard';
+        if ($ret == -2)
+            return 'The business rules and conditions of this afw-sub-class does not allow this user to delete this record see userCanDeleteMeSpecial';
+        if ($ret <= 0)
+            return "unknown no-delete reason $ret";
 
-        return "YOU CAN DELETE !! so why get here ?";
-        
+        return 'YOU CAN DELETE !! so why get here ?';
     }
 
     final public function userCanDeleteMe($auser, $log = true)
@@ -4458,11 +4357,11 @@ class AFWObject extends AFWRoot
             $return = -1;
         }
         // Business rules check
-        if (($return > 0) and (!$this->userCanDeleteMeSpecial($auser))) {            
+        if (($return > 0) and (!$this->userCanDeleteMeSpecial($auser))) {
             // throw new AfwRuntimeException("return was $return and ".get_class($this)." -> userCanDeleteMeSpecial ($auser) failed ");
             $return = -2;
         }
-        
+
         if ($log) {
             if ($return <= 0) {
                 $returnDecoded = self::decodeDeleteReturn($return);
@@ -4491,12 +4390,12 @@ class AFWObject extends AFWRoot
         return $return;
     }
 
-    
-
     protected function userCanEditMeWithoutRole($auser)
     {
-        if($auser and $auser->isAdmin()) return $this->adminCanEditMe();
-        if($auser and $auser->isSupervisor()) return $this->supervisorCanEditMe();
+        if ($auser and $auser->isAdmin())
+            return $this->adminCanEditMe();
+        if ($auser and $auser->isSupervisor())
+            return $this->supervisorCanEditMe();
         return [false, 'userCanEditMeWithoutRole not implemented for non admin users'];
     }
 
@@ -4521,15 +4420,16 @@ class AFWObject extends AFWRoot
         return [false, ''];
     }
 
-
     final public function userCanEditMe($auser)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         if ($auser) {
-            if($auser->isAdmin()) return $this->adminCanEditMe();
-            if($auser->isSupervisor()) return $this->supervisorCanEditMe();
+            if ($auser->isAdmin())
+                return $this->adminCanEditMe();
+            if ($auser->isSupervisor())
+                return $this->supervisorCanEditMe();
         }
-        
+
         list(
             $editWithoutRole,
             $editWithoutRoleReason,
@@ -4548,11 +4448,11 @@ class AFWObject extends AFWRoot
         // $mau = $auser->getMyModulesAndRoles($this->getMyModule());
         return [
             false,
-            '1. ' .
-                $editWithoutRoleReason .
-                "<br>2. $auser_disp لا يملك صلاحية التحرير على " .
-                $this_disp,
-        ]; // ." mau = ".var_export($mau,true)
+            '1. '
+                . $editWithoutRoleReason
+                . "<br>2. $auser_disp لا يملك صلاحية التحرير على "
+                . $this_disp,
+        ];  // ." mau = ".var_export($mau,true)
     }
 
     public function getVisibilteSpeciale($attribute)
@@ -4567,9 +4467,9 @@ class AFWObject extends AFWRoot
 
     public function displayMyLinkMode($mode = 'edit', $lang = 'ar')
     {
-        return $this->getDisplay($lang) .
-            ' ' .
-            $this->showAttribute($mode, ['TYPE' => strtoupper($mode)]);
+        return $this->getDisplay($lang)
+            . ' '
+            . $this->showAttribute($mode, ['TYPE' => strtoupper($mode)]);
     }
 
     public function displayAttribute(
@@ -4590,7 +4490,8 @@ class AFWObject extends AFWRoot
 
     public function showYNValueForAttribute($ynCode, $key, $langue = '')
     {
-        if(!$ynCode) return "";
+        if (!$ynCode)
+            return '';
         $lang = AfwLanguageHelper::getGlobalLanguage();
         // $objme = AfwSession::getUserConnected();
         if (!$langue) {
@@ -4601,24 +4502,19 @@ class AFWObject extends AFWRoot
         }
         $ynCodeForThis = "$key.$ynCode";
         $ynTranslationForThis = $this->translate($ynCodeForThis, $langue);
-        
+
         // if($key=="attribute_1" and (!$ynCode)) throw new AfwRuntimeException("showYNValueForAttribute($ynCode, $key, $langue) : $ynTranslationForThis = this->translate($ynCodeForThis,$langue)");
         if ($ynTranslationForThis and $ynTranslationForThis != $ynCodeForThis) {
             return $ynTranslationForThis;
         }
 
-        $return = $this->translateOperator($ynCode, $langue); // ." translation [$key][$lang][".$this->decode($key)."]"
-        if($key=="attribute_1" and (!$ynCode)) throw new AfwRuntimeException("showYNValueForAttribute($ynCode, $key, $langue) : $return = this->translateOperator($ynCode,$langue)");
+        $return = $this->translateOperator($ynCode, $langue);  // ." translation [$key][$lang][".$this->decode($key)."]"
+        if ($key == 'attribute_1' and (!$ynCode))
+            throw new AfwRuntimeException("showYNValueForAttribute($ynCode, $key, $langue) : $return = this->translateOperator($ynCode,$langue)");
         return $return;
     }
 
-
-
-
-
-
-
-    public function showMyLink($step = 0, $target = '', $what = "icon", $whatis = "view_ok", $mode = "edit")
+    public function showMyLink($step = 0, $target = '', $what = 'icon', $whatis = 'view_ok', $mode = 'edit')
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         $val_id = $this->getId();
@@ -4635,9 +4531,12 @@ class AFWObject extends AFWRoot
             $step_param = '';
         }
 
-        if ($what == "icon") $what = "<img src='../lib/images/$whatis.png' width='24' heigth='24'>";
-        elseif ($what == "short") $what = $this->getShortDisplay($lang);
-        elseif ($what == "long") $what = $this->getDisplay($lang);
+        if ($what == 'icon')
+            $what = "<img src='../lib/images/$whatis.png' width='24' heigth='24'>";
+        elseif ($what == 'short')
+            $what = $this->getShortDisplay($lang);
+        elseif ($what == 'long')
+            $what = $this->getDisplay($lang);
 
         return "<div class='my_link'><a $target href='main.php?Main_Page=afw_mode_$mode.php$step_param&popup=&cl=$val_class&currmod=$currmod&id=$val_id' >$what</a></div>";
     }
@@ -4652,7 +4551,7 @@ class AFWObject extends AFWRoot
     ) {
         $val_class = $this->getMyClass();
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        //$objme = AfwSession::getUserConnected();
+        // $objme = AfwSession::getUserConnected();
         if (!$langue) {
             $langue = $lang;
         }
@@ -4676,7 +4575,7 @@ class AFWObject extends AFWRoot
             $module_origin = $this->module_origin;
         }
         $key = $attribute;
-        //if(($structure["TYPE"] == "ENUM") and ($structure["HZM-CSS"])) die("key=$key, TYPE=".$structure["TYPE"].", HZM-CSS=".$structure["HZM-CSS"]);
+        // if(($structure["TYPE"] == "ENUM") and ($structure["HZM-CSS"])) die("key=$key, TYPE=".$structure["TYPE"].", HZM-CSS=".$structure["HZM-CSS"]);
 
         $intelligent_category = $structure['SUPER_CATEGORY'];
         if (!$intelligent_category) {
@@ -4688,25 +4587,29 @@ class AFWObject extends AFWRoot
 
         if (($intelligent_category == 'ITEMS') or ($intelligent_category == 'FORMULA')) {
             $value = '';
-            if($intelligent_category == 'FORMULA') $value = $this->calc($key);
+            if ($intelligent_category == 'FORMULA')
+                $value = $this->calc($key);
             $formatted = false;
         } else {
             // in case of we use shortname
             // ?? be more clear in your comments please, what means above (RB 21/02/2025)
 
             // in case of we use calcuated field
-            if($this->shouldBeCalculatedField($key))
+            if ($this->shouldBeCalculatedField($key))
                 $value = $this->calc($key);
             else
                 $value = $this->getVal($key);
             // if($key == "adm_orgunit_id") die("$value = this->getVal($key)");
-            list($formatted, $data_to_display, $link_to_display,) = AfwFormatHelper::formatValue($value, $key, $structure, $getFormatLink, $this);
+            list(
+                $formatted,
+                $data_to_display,
+                $link_to_display,
+            ) = AfwFormatHelper::formatValue($value, $key, $structure, $getFormatLink, $this);
             // if($key == "adm_orgunit_id") die("dbg 55477 rafik : list($formatted, $data_to_display, $link_to_display,) = AfwFormatHelper::formatValue($value, $key, ..)");
         }
 
-
         if ($formatted) {
-            //if($key=="price5") throw new AfwRuntimeException("how we get here ???? data_to_display = $data_to_display = AfwFormatHelper::formatValue($value,$key, $structure, $getFormatLink)");
+            // if($key=="price5") throw new AfwRuntimeException("how we get here ???? data_to_display = $data_to_display = AfwFormatHelper::formatValue($value,$key, $structure, $getFormatLink)");
             // done
         } elseif ($structure['TYPE'] == 'FK') {
             if (empty($structure['CATEGORY'])) {
@@ -4714,12 +4617,13 @@ class AFWObject extends AFWRoot
                 // $data_to_display .= " comes from showFK";
             } else {
                 list($data_to_display, $link_to_display) = AfwShowHelper::showVirtualAttribute($this, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $langue, $structure, $getlink);
+
                 /*
-                if($key == "adm_orgunit_id" and $getlink) throw new AfwRuntimeException("dbg 44599925 rafik : list($data_to_display, $link_to_display) = AfwShowHelper::showVirtualAttribute($this, attribute=$attribute, <br>
-                                 intelligent_category=$intelligent_category, value=$value, id_origin=$id_origin, class_origin=$class_origin, module_origin=$module_origin, <br>
-                                 langue=$langue, structure=$structure, getlink=$getlink)");*/
+                 * if($key == "adm_orgunit_id" and $getlink) throw new AfwRuntimeException("dbg 44599925 rafik : list($data_to_display, $link_to_display) = AfwShowHelper::showVirtualAttribute($this, attribute=$attribute, <br>
+                 *                  intelligent_category=$intelligent_category, value=$value, id_origin=$id_origin, class_origin=$class_origin, module_origin=$module_origin, <br>
+                 *                  langue=$langue, structure=$structure, getlink=$getlink)");
+                 */
             }
-            
         } elseif ($structure['TYPE'] == 'MFK') {
             list($data_to_display, $link_to_display) = AfwShowHelper::showMFK($this, $attribute, $langue, $structure, $getlink);
         } elseif ($structure['TYPE'] == 'YN') {
@@ -4742,22 +4646,21 @@ class AFWObject extends AFWRoot
             {
                 $data_to_display = "AfwShowHelper::showEnum(this, $attribute, $value, $langue, ".var_export($structure,true).")";
             }
-            else*/ 
-                list($data_to_display, $link_to_display) = AfwShowHelper::showEnum($this, $attribute, $value, $langue, $structure);
-        }         
-        else {
-            $data_to_display = $this->decode($key,'',false,$langue);
-            //if($key=="response_templates") die("data_to_display of ($key val:$value) is $data_to_display");
+            else*/
+            list($data_to_display, $link_to_display) = AfwShowHelper::showEnum($this, $attribute, $value, $langue, $structure);
+        } else {
+            $data_to_display = $this->decode($key, '', false, $langue);
+            // if($key=="response_templates") die("data_to_display of ($key val:$value) is $data_to_display");
         }
 
-        //if($attribute=="warning_nb") die("Rafik CSSED($cssed_to_class) : data_to_display of ($key) is $data_to_display");
+        // if($attribute=="warning_nb") die("Rafik CSSED($cssed_to_class) : data_to_display of ($key) is $data_to_display");
 
         if (!$merge) {
             // if($key == "response_templates") throw new AfwRuntimeException("no merge we will return [$data_to_display, $link_to_display]");
             return [$data_to_display, $link_to_display];
-        } else {            
-            $return = AfwShowHelper::mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class, "", $key);
-            //if($key == "response_templates") throw new AfwRuntimeException("need merge we will return AfwShowHelper::mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class) = $return");
+        } else {
+            $return = AfwShowHelper::mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class, '', $key);
+            // if($key == "response_templates") throw new AfwRuntimeException("need merge we will return AfwShowHelper::mergeDisplayWithLinks($data_to_display, $link_to_display, $structure, $val_class) = $return");
             return $return;
         }
     }
@@ -4766,14 +4669,12 @@ class AFWObject extends AFWRoot
     {
         $arrMySpecialFields = [];
 
-        foreach($_GET as $key => $val)
-        {
-            $arrMySpecialFields["getted_".$key] = $val;
+        foreach ($_GET as $key => $val) {
+            $arrMySpecialFields['getted_' . $key] = $val;
         }
 
-        foreach($_POST as $key => $val)
-        {
-            $arrMySpecialFields["posted_".$key] = $val;
+        foreach ($_POST as $key => $val) {
+            $arrMySpecialFields['posted_' . $key] = $val;
         }
 
         return $arrMySpecialFields;
@@ -4811,7 +4712,6 @@ class AFWObject extends AFWRoot
                 $arr_tokens[$special_token] = $hijri_current_date;
             }
 
-
             $arr_tokens[$sepBefore . 'DBPREFIX' . $sepAfter] = $server_db_prefix;
             $arr_tokens[$sepBefore . 'ME' . $sepAfter] = $me;
 
@@ -4842,7 +4742,7 @@ class AFWObject extends AFWRoot
             /* @rafik obsolete rahoo 3ib
             if($mySemplObj) $sme = $mySemplObj->getId();
             else $sme = 0;
-            
+
             $arr_tokens[$sepBefore."SME".$sepAfter] = $sme;*/
             $this_db_structure = static::getDbStructure(
                 $return_type = 'structure',
@@ -4874,8 +4774,7 @@ class AFWObject extends AFWRoot
 
             $arr_spec_fields = $this->getMySpecialFields();
             foreach (
-                $arr_spec_fields
-                as $spec_field_name => $spec_field_value
+                $arr_spec_fields as $spec_field_name => $spec_field_value
             ) {
                 $token = $sepBefore . $spec_field_name . $sepAfter;
 
@@ -4889,15 +4788,15 @@ class AFWObject extends AFWRoot
                     $arr_tokens[$token] = $val_token;
                 }
             }
-            //die(var_export($module_config_token,true));
+            // die(var_export($module_config_token,true));
             foreach ($module_config_token as $mc_token => $mc_token_value) {
                 $arr_tokens[$sepBefore . 'module_config_token_' . $mc_token . $sepAfter] = $mc_token_value;
 
-                //if($mc_token=="file_types") die("arr_tokens = ".var_export($arr_tokens,true));
+                // if($mc_token=="file_types") die("arr_tokens = ".var_export($arr_tokens,true));
             }
 
             $file_types = AfwFileUploader::getDocTypes($this->getMyModule());
-            $arr_tokens[$sepBefore ."file_types". $sepAfter] = implode(",",$file_types);
+            $arr_tokens[$sepBefore . 'file_types' . $sepAfter] = implode(',', $file_types);
 
             // we start now the decode
             foreach ($arr_tokens as $token_item => $token_val) {
@@ -4940,15 +4839,15 @@ class AFWObject extends AFWRoot
         if ($step_link === true) {
             $step_link = '';
         }
-        //@todo cela ne suffit pas car pour les modes par id=$id il faut tester la visibilite horizontale aussi
+        // @todo cela ne suffit pas car pour les modes par id=$id il faut tester la visibilite horizontale aussi
         if (
             !$check_authorized or
             $objme and $objme->iCanDoOperation($module_code, $table, $operation)
         ) {
             $return =
-                "main.php?Main_Page=afw_mode_$operation.php&cl=$classe&currmod=$module_code&id=" .
-                $id .
-                $step_link;
+                "main.php?Main_Page=afw_mode_$operation.php&cl=$classe&currmod=$module_code&id="
+                . $id
+                . $step_link;
         }
 
         return $return;
@@ -4958,22 +4857,22 @@ class AFWObject extends AFWRoot
         $mode,
         $auser,
         $genereLog = false,
-        $step = "all"
+        $step = 'all'
     ) {
         $final_other_links_arr = [];
-        if (!$auser) return $final_other_links_arr;
+        if (!$auser)
+            return $final_other_links_arr;
         $other_links_arr = $this->getOtherLinksArray($mode, $genereLog, $step);
         // if($mode=="mode_responseList") die("Maintenance is ongoing : this->getOtherLinksArray($mode, $genereLog, $step) => other_links_arr = ".var_export($other_links_arr,true));
         $count_other_links_arr = count($other_links_arr);
 
         if ($genereLog) {
             AfwSession::contextLog(
-                "for mode $mode count other_links_arr = $count_other_links_arr other_links_arr = " .
-                    var_export($other_links_arr, true),
+                "for mode $mode count other_links_arr = $count_other_links_arr other_links_arr = "
+                    . var_export($other_links_arr, true),
                 'otherLink'
             );
         }
-
 
         foreach ($other_links_arr as $other_link) {
             $other_link_authorized = false;
@@ -4998,7 +4897,8 @@ class AFWObject extends AFWRoot
                 // put provide your other_link with BF-ID
                 $create_not_found_bf = $other_link['CRE-NOT-FOUND-BF'];
 
-                if (!$other_link['MODULE']) $other_link['MODULE'] = static::$MODULE;
+                if (!$other_link['MODULE'])
+                    $other_link['MODULE'] = static::$MODULE;
 
                 list($bf_id, $params) = AfwUrlManager::decomposeUrl(
                     $other_link['MODULE'],
@@ -5026,18 +4926,17 @@ class AFWObject extends AFWRoot
                     !$other_link['ADMIN-ONLY'] and !$other_link['SUPER-ADMIN-ONLY']
                 ) {
                     /*
-                    if($other_link["OWNER"])
-                    {
-                    die("$this : uid = ".$auser->getId()." oid = ".$this->getMyOwnerId());
-                    }
-                    */
+                     * if($other_link["OWNER"])
+                     * {
+                     * die("$this : uid = ".$auser->getId()." oid = ".$this->getMyOwnerId());
+                     * }
+                     */
                     $public = $other_link['PUBLIC'];
                     if (true) {
-                        if(!$public)
-                        {
+                        if (!$public) {
                             $ican_do_bf =
-                            ($other_link['BF-ID'] and
-                                $auser->iCanDoBF($other_link['BF-ID']));
+                                ($other_link['BF-ID'] and
+                                    $auser->iCanDoBF($other_link['BF-ID']));
                             // not like for data records where if ugroups are not defined we authorize
                             // here for links user group(s) or at least 1 should be defined and user should belongs to one of this user groups
                             $belongs_to_ugroup =
@@ -5049,20 +4948,16 @@ class AFWObject extends AFWRoot
                             $user_is_owner =
                                 ($other_link['OWNER'] and
                                     $auser->getId() == $this->getMyOwnerId());
-                        }
-                        else
-                        {
+                        } else {
                             $ican_do_bf = null;
                             $belongs_to_ugroup = null;
                             $user_is_owner = null;
                         }
-                        
 
                         if ($public or
-                            $ican_do_bf or
-                            $belongs_to_ugroup or
-                            $user_is_owner
-                        ) {
+                                $ican_do_bf or
+                                $belongs_to_ugroup or
+                                $user_is_owner) {
                             $attribute_related = $other_link['ATTRIBUTE_WRITEABLE'];
                             if ($ican_do_bf) {
                                 $other_link['AUTH_TYPE'] = 'i-can-do-bf';
@@ -5081,11 +4976,14 @@ class AFWObject extends AFWRoot
                             if (!$attribute_related) {
                                 $other_link_authorized = true;
                             } else {
-                                list($other_link_authorized, $reason,) = AfwStructureHelper::attributeIsWriteableBy($this, $attribute_related, $auser);
+                                list(
+                                    $other_link_authorized,
+                                    $reason,
+                                ) = AfwStructureHelper::attributeIsWriteableBy($this, $attribute_related, $auser);
                                 if ($other_link_authorized) {
                                     $other_link['AUTH_TYPE'] .=
-                                        "-$attribute_related-writeable-by-user" .
-                                        $auser->id;
+                                        "-$attribute_related-writeable-by-user"
+                                        . $auser->id;
                                 } else {
                                     $other_link['AUTH_TYPE'] = '';
                                 }
@@ -5111,8 +5009,8 @@ class AFWObject extends AFWRoot
                         } else {
                             if ($genereLog) {
                                 AfwSession::contextLog(
-                                    'authorised only for super-admin : ' .
-                                        var_export($other_link, true),
+                                    'authorised only for super-admin : '
+                                        . var_export($other_link, true),
                                     'otherLink'
                                 );
                             }
@@ -5126,8 +5024,8 @@ class AFWObject extends AFWRoot
                         } else {
                             if ($genereLog) {
                                 AfwSession::contextLog(
-                                    'authorised only for admin : ' .
-                                        var_export($other_link, true),
+                                    'authorised only for admin : '
+                                        . var_export($other_link, true),
                                     'otherLink'
                                 );
                             }
@@ -5145,9 +5043,8 @@ class AFWObject extends AFWRoot
                 $other_link_authorized = false;
                 $reason = "condition $condition failed";
             }
-            
-            if($other_link['CODE']=="stop.and.debugg")
-            {
+
+            if ($other_link['CODE'] == 'stop.and.debugg') {
                 // die("other_link_authorized=$other_link_authorized reason=$reason AUTH_TYPE=".$other_link['AUTH_TYPE']);
             }
 
@@ -5155,8 +5052,7 @@ class AFWObject extends AFWRoot
                 if (!$other_link['AUTH_TYPE']) {
                     $other_link['AUTH_TYPE'] = 'unknown-authorisation-type';
                 }
-                if($other_link['URL'] != "@help")
-                {
+                if ($other_link['URL'] != '@help') {
                     $other_link['URL'] = AfwUrlManager::encodeMainUrl($other_link['URL']);
                     $other_link['URL'] = $this->decodeText(
                         $other_link['URL'],
@@ -5167,28 +5063,24 @@ class AFWObject extends AFWRoot
 
                 $final_other_links_arr[] = $other_link;
 
-                if($other_link['CODE']=="stop.and.debugg")
-                {
+                if ($other_link['CODE'] == 'stop.and.debugg') {
                     // die("stop.and.debugg final_other_links_arr=".var_export($final_other_links_arr,true));
                 }
-                
             }
         }
         // die("final_other_links_arr=".var_export($final_other_links_arr,true));
         return $final_other_links_arr;
     }
 
-    protected function getOtherLinksArray($mode, $genereLog = false, $step = "all")
+    protected function getOtherLinksArray($mode, $genereLog = false, $step = 'all')
     {
         return $this->getOtherLinksArrayStandard($mode, $genereLog, $step);
     }
 
-
-    protected final function getOtherLinksArrayStandard($mode, $genereLog = false, $step = "all")
+    protected final function getOtherLinksArrayStandard($mode, $genereLog = false, $step = 'all')
     {
         return AfwWizardHelper::getOtherLinksArrayStandard($this, $mode, $genereLog, $step);
     }
-    
 
     final public function getPublicMethodsForUser($auser, $mode = 'display')
     {
@@ -5223,16 +5115,17 @@ class AFWObject extends AFWRoot
     ) {
         $pMethod = $this->getPublicMethodForUser($auser, $pMethodCode);
         if (!$pMethod) {
-            return ["Error : codem invalid : [A$pMethodCode" . "B]", ''];
+            return ["Error : codem invalid : [A$pMethodCode" . 'B]', ''];
         }
         $pMethodName = $pMethod['METHOD'];
         if (!$pMethodName) {
-            return ["Error : codem incomplete : [A$pMethodCode" . "B]", ''];
+            return ["Error : codem incomplete : [A$pMethodCode" . 'B]', ''];
         }
 
         if ($pMethod['MAIN_PARAM']) {
             $pMethodParams = ['main_param' => $this->pbmethod_main_param];
-        } else $pMethodParams = $pMethod['SEND_PARAMS'];
+        } else
+            $pMethodParams = $pMethod['SEND_PARAMS'];
 
         if ($pMethodParams) {
             return $this->$pMethodName($pMethodParams, $lang);
@@ -5245,11 +5138,11 @@ class AFWObject extends AFWRoot
     {
         $cl = $this->getMyClass();
 
-        return $this->translate('INSERT', $lang, true) .
-            ' ' .
-            $this->singleTranslation($lang) .
-            ' ' .
-            $this->translate(strtolower("$cl.new"), $lang);
+        return $this->translate('INSERT', $lang, true)
+            . ' '
+            . $this->singleTranslation($lang)
+            . ' '
+            . $this->translate(strtolower("$cl.new"), $lang);
     }
 
     public function operationLabel($operation, $lang, $table_id)
@@ -5290,15 +5183,14 @@ class AFWObject extends AFWRoot
     }
 
     /*
-          userCan return if yes or no the user $auser who accessed module $from_module can do $operation on $this object
-     
+     * userCan return if yes or no the user $auser who accessed module $from_module can do $operation on $this object
      */
 
     public function userCan($auser, $from_module, $operation)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
 
-        $from_module = ''; // car obsolete
+        $from_module = '';  // car obsolete
 
         $file_dir_name = dirname(__FILE__);
 
@@ -5394,7 +5286,6 @@ class AFWObject extends AFWRoot
         return [false, 'canBeDeletedWithoutRoleBy - not implemented'];
     }
 
-
     public function getStructureObject($class, $id)
     {
         return self::getServerStructureObject($class, $id);
@@ -5414,19 +5305,13 @@ class AFWObject extends AFWRoot
 
     public function setServerStructureObject($class, $id, $obj)
     {
-        global $_SERVER; 
+        global $_SERVER;
         $_SERVER['STR-OBJECTS'][$class][$id] = $obj;
     }
 
-
-
-
-
-
-
     public function getThisModuleAndAtable($id_main_sh = 0)
     {
-        //$id_main_sh not needed anymore
+        // $id_main_sh not needed anymore
         list(
             $mdl,
             $tbl,
@@ -5445,8 +5330,6 @@ class AFWObject extends AFWRoot
         return [$mdl, $tbl];
     }
 
-
-
     public function getTokenVal($token)
     {
         $me = AfwSession::getUserIdActing();
@@ -5458,9 +5341,9 @@ class AFWObject extends AFWRoot
 
     public function showObjTech()
     {
-        return "<pre style='text-align: left;float: left;direction: ltr'>" .
-            var_export($this, true) .
-            '</pre>';
+        return "<pre style='text-align: left;float: left;direction: ltr'>"
+            . var_export($this, true)
+            . '</pre>';
     }
 
     public function debuggObj($obj)
@@ -5511,13 +5394,11 @@ class AFWObject extends AFWRoot
         return $html;
     }
 
-
-
     public function dataFollowConstraint($val_attr, $constraint)
     {
         if ($val_attr == '') {
             return true;
-        } // in this case MANDATORY property that will reject
+        }  // in this case MANDATORY property that will reject
         list($operator, $params) = explode(';', $constraint);
         $param_arr = explode(',', $params);
 
@@ -5551,25 +5432,16 @@ class AFWObject extends AFWRoot
         return null;
     }
 
-
     /**
      * @description
      *  to be overridden to implement when attribute input is readonly and/or disabled
-     * 
      */
-
     public function disableOrReadonlyForInput($field_name, $col_struct)
     {
         return '';
     }
 
     // NO-ERROR-CHECK : option to disable error check on attribute
-
-    
-
-    
-
-    
 
     public function isComplete(
         $lang = 'ar',
@@ -5619,7 +5491,8 @@ class AFWObject extends AFWRoot
 
     final public function stepContainAttribute($step, $attribute, $desc = null)
     {
-        if($step=='all') return true; // optimisation
+        if ($step == 'all')
+            return true;  // optimisation
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($this, $attribute);
         } else {
@@ -5670,7 +5543,6 @@ class AFWObject extends AFWRoot
             $start_step,
             $end_step);
     }
-    
 
     // Action :
     // Check specific not known errors
@@ -5687,8 +5559,6 @@ class AFWObject extends AFWRoot
         return [];
     }
 
-    
-
     public function getDataErrorForAttribute($attribute)
     {
         return $this->arr_erros['all'][$attribute];
@@ -5702,7 +5572,7 @@ class AFWObject extends AFWRoot
     protected function paggableAttribute($attribute, $structure)
     {
         // can be overridden in subclasses
-        return [true, ""];
+        return [true, ''];
     }
 
     public function attributeIsToPag($attribute, $structure = null)
@@ -5727,20 +5597,19 @@ class AFWObject extends AFWRoot
             return [false, 'isSystemField'];
         }
 
-        // get structure or force repare if needed 
-        if ((!$structure) or AfwStringHelper::stringStartsWith($structure["OBSOLETE"],"::")) 
-        {
+        // get structure or force repare if needed
+        if ((!$structure) or AfwStringHelper::stringStartsWith($structure['OBSOLETE'], '::')) {
             $structure = AfwStructureHelper::getStructureOf($this, $attribute, true);
         }
 
-        if ($structure["OBSOLETE"]) {
+        if ($structure['OBSOLETE']) {
             return [false, 'obsolete'];
         }
 
         return [true, ''];
     }
 
-    public function pagMe($id_main_sh, $updateIfExists = false, $restrictToField = "")
+    public function pagMe($id_main_sh, $updateIfExists = false, $restrictToField = '')
     {
         $this_db_structure = static::getDbStructure(
             $return_type = 'structure',
@@ -5748,8 +5617,6 @@ class AFWObject extends AFWRoot
         );
         return AfwUmsPagHelper::pagObject($this, $this_db_structure, static::$MODULE, static::$TABLE, $id_main_sh, $updateIfExists, $restrictToField);
     }
-
-
 
     public function setContextAndPartitionCols($part_cols, $context_cols)
     {
@@ -5804,8 +5671,6 @@ class AFWObject extends AFWRoot
         return !$auser or !$auser->isAdmin();
     }
 
-    
-
     // هنا نتكلم  عن البيانات في العمود بحسب السجل
     final public function answerTableForAttributeIsPublic(
         $attribute,
@@ -5813,26 +5678,26 @@ class AFWObject extends AFWRoot
     ) {
         $mycls = $this->getMyClass();
         if (!$structure) {
-            $case = "getStructureOf";
+            $case = 'getStructureOf';
             $structure = AfwStructureHelper::getStructureOf($this, $attribute);
         } else {
-            $case = "repareMyStructure";
+            $case = 'repareMyStructure';
             $structure = AfwStructureHelper::repareMyStructure($this, $structure, $attribute);
         }
-        if ((!$structure) or (!$structure["ANSWER"])) {
+        if ((!$structure) or (!$structure['ANSWER'])) {
             throw new AfwRuntimeException("$mycls : No asnwer table for attribute $attribute (case $case) : str = " . var_export($structure, true));
         }
-        $cl = AfwStringHelper::tableToClass($structure["ANSWER"]);
+        $cl = AfwStringHelper::tableToClass($structure['ANSWER']);
         if (!$cl) {
             throw new AfwRuntimeException("$mycls : No asnwer class for attribute $attribute (case $case) : str = " . var_export($structure, true));
         }
         $obj = new $cl();
 
-        if ($obj) return $obj->public_display;
-        else return null;
+        if ($obj)
+            return $obj->public_display;
+        else
+            return null;
     }
-
-    
 
     public function quickRetrieveMethod()
     {
@@ -5861,33 +5726,31 @@ class AFWObject extends AFWRoot
     }
 
     /**
-     *  the overridden version should be generated by command genere-php
-     *  */
+     * the overridden version should be generated by command genere-php
+     */
     public function getScenarioItemId($currstep)
     {
-        return $currstep; // obsolete 
+        return $currstep;  // obsolete
     }
-
 
     public function setLastEditedStep($currstep)
     {
-        //$sci_id = $this->getScenarioItemId($currstep);
+        // $sci_id = $this->getScenarioItemId($currstep);
         $this->set('sci_id', $currstep);
     }
 
     public function getDoneSteps($error_offset = 0)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        //die("getDoneSteps for static::$TABLE ");
+        // die("getDoneSteps for static::$TABLE ");
         if ($this->editByStep) {
             for ($istep = 1; $istep <= $this->editNbSteps; $istep++) {
                 // die("istep=$istep before getStepErrors ");
-                $err_arr = AfwDataQualityHelper::getStepErrors($this, 
+                $err_arr = AfwDataQualityHelper::getStepErrors($this,
                     $istep,
                     $lang,
                     $show_val = true,
-                    $recheck = true
-                );
+                    $recheck = true);
                 // die(var_export($err_arr,true));
                 if (count($err_arr) > 0) {
                     return $istep + $error_offset;
@@ -5900,18 +5763,10 @@ class AFWObject extends AFWRoot
         }
     }
 
-    
-
-    
-
-    
-
     public function getHLClass()
     {
         return '';
     }
-
-
 
     public function editAction()
     {
@@ -5978,29 +5833,22 @@ class AFWObject extends AFWRoot
         return "$moduleName-$className-$myId-$modeView";
     }
 
-
-
     public function getSQL()
     {
         return $this->SEARCH;
     }
-
 
     public function getSelectedValueForAttribute($attribute)
     {
         return $this->SEARCH_TAB[$attribute];
     }
 
-
     /*
-    public function getSQLConditionsArray()
-    {
-        return $this->SEARCH_TAB;
-    }*/
-
-
-
-
+     * public function getSQLConditionsArray()
+     * {
+     *     return $this->SEARCH_TAB;
+     * }
+     */
 
     protected function optimizeMyMemory()
     {
@@ -6012,8 +5860,8 @@ class AFWObject extends AFWRoot
     protected function unOptimizeMyMemory()
     {
         // should be overriden in sub class to un-optimize specific sub class data
-        //@todo : restore $this->PARTITION_COLS if exists;
-        //@todo : restore $this->CONTEXT_COLS if exists;
+        // @todo : restore $this->PARTITION_COLS if exists;
+        // @todo : restore $this->CONTEXT_COLS if exists;
     }
 
     // used to remove non utile data before strage of big number of afw objects in memory
@@ -6060,8 +5908,6 @@ class AFWObject extends AFWRoot
         $this->unOptimizeMyMemory();
     }
 
-    
-
     public function createCopy($lang = 'ar', $field_vals = [])
     {
         $this->resetAsCopy($field_vals);
@@ -6083,8 +5929,6 @@ class AFWObject extends AFWRoot
         return 0;
     }
 
-
-
     public function getMiniBoxTemplateArr($mode = 'qedit')
     {
         // should be rewritten in sub classes
@@ -6099,7 +5943,8 @@ class AFWObject extends AFWRoot
     public function isIndexAttribute($key_col)
     {
         foreach ($this->UNIQUE_KEY as $key_item) {
-            if ($key_item == $key_col) return true;
+            if ($key_item == $key_col)
+                return true;
         }
 
         return false;
@@ -6140,37 +5985,34 @@ class AFWObject extends AFWRoot
 
     public final function canInsert()
     {
-        if(count($this->UNIQUE_KEY)>0)
-        {
+        if (count($this->UNIQUE_KEY) > 0) {
             $needed_to_insert_fields = $this->UNIQUE_KEY;
-        }
-        else
-        {
+        } else {
             $needed_to_insert_fields = [];
             $lang = AfwLanguageHelper::getGlobalLanguage();
-            $this->initDISPLAY_FIELD("ar");
-            if($this->DISPLAY_FIELD) $needed_to_insert_fields[] = $this->DISPLAY_FIELD;
-            $this->initDISPLAY_FIELD("en");
-            if($this->DISPLAY_FIELD) $needed_to_insert_fields[] = $this->DISPLAY_FIELD;
+            $this->initDISPLAY_FIELD('ar');
+            if ($this->DISPLAY_FIELD)
+                $needed_to_insert_fields[] = $this->DISPLAY_FIELD;
+            $this->initDISPLAY_FIELD('en');
+            if ($this->DISPLAY_FIELD)
+                $needed_to_insert_fields[] = $this->DISPLAY_FIELD;
             $this->initDISPLAY_FIELD($lang);
 
-            if(count($needed_to_insert_fields)==0)
-            {
+            if (count($needed_to_insert_fields) == 0) {
                 $needed_to_insert_fields = AfwStructureHelper::allRealAttributes(get_class($this), 1);
             }
         }
 
         foreach ($needed_to_insert_fields as $attribute) {
-            if($this->attributeIsRequired($attribute))
-            {
-                if(!$this->getVal($attribute)) return false;
+            if ($this->attributeIsRequired($attribute)) {
+                if (!$this->getVal($attribute))
+                    return false;
             }
         }
-        
+
         return true;
     }
 
-    
     public function canSaveOnly($current_step)
     {
         return false;
@@ -6186,8 +6028,6 @@ class AFWObject extends AFWRoot
     {
         return true;
     }
-
-    
 
     protected function getNextTabButtonCodes($step)
     {
@@ -6227,8 +6067,7 @@ class AFWObject extends AFWRoot
         return AfwWizardHelper::getFinishButtonLabelDefault($this,
             $lang,
             $nextStep,
-            $form_readonly
-        );
+            $form_readonly);
     }
 
     public function canFinishOnCurrentStep()
@@ -6244,14 +6083,10 @@ class AFWObject extends AFWRoot
         return AfwWizardHelper::classIsDisplayedInEditMode($className);
     }
 
-    
-
     public function getReadOnlyFormFinishButtonLabel()
     {
         return '';
     }
-
-    
 
     public function getNextStepAfterFinish($current_step)
     {
@@ -6279,14 +6114,10 @@ class AFWObject extends AFWRoot
         return AfwWizardHelper::getFieldGroupDefaultInfos($fgroup);
     }
 
-    
-
     public function getMyTheme()
     {
         return 'default';
     }
-
-
 
     // By default you have a wizard and steps should be ordered it means that you can
     // not go to step 3 if step 2 is not completed,
@@ -6354,7 +6185,6 @@ class AFWObject extends AFWRoot
 
     final public function connectedUserConvenientForAction($action, $connectedUser = null)
     {
-
         if (!$connectedUser) {
             $objme = AfwSession::getUserConnected();
             return $this->userConvenientForAction($objme, $action);
@@ -6362,8 +6192,6 @@ class AFWObject extends AFWRoot
             return $this->userConvenientForAction($connectedUser, $action);
         }
     }
-
-    
 
     public function previewAttribute($attribute, $desc = '', $max_length = 56)
     {
@@ -6386,8 +6214,6 @@ class AFWObject extends AFWRoot
         return $this->showAttribute($attribute, $structure);
     }
 
-
-
     public function enabledIcon($attribute, $icon, $structure = null)
     {
         return AfwWizardHelper::standardEnabledIcon($this, $attribute, $icon, $structure);
@@ -6398,13 +6224,10 @@ class AFWObject extends AFWRoot
         return '';
     }
 
-    
-
     /**
      * This function should be overridden in sub classes if needed
      * if this fucntion return an attribute name the value of this attribute will css-style the <tr> row
      * in retrieve mode display if this object is in ITEMS category field
-     *
      */
     public function rowCategoryAttribute()
     {
@@ -6415,8 +6238,6 @@ class AFWObject extends AFWRoot
     {
         return substr($this->getTableName(), 0, 5);
     }
-
-
 
     public function getCurrentFrontStep()
     {
@@ -6466,7 +6287,6 @@ class AFWObject extends AFWRoot
         return true;
     }
 
-
     public final function canCheckErrors($small_liste, $option_CHECK_ERRORS)
     {
         return (
@@ -6482,14 +6302,13 @@ class AFWObject extends AFWRoot
         );
     }
 
-
-    public function optimizeQEditLookups($submode = "", $fgroup = "")
+    public function optimizeQEditLookups($submode = '', $fgroup = '')
     {
         // return true; // suceeded to load and optimize
-        return false; // failed because not overrridden yet
+        return false;  // failed because not overrridden yet
     }
 
-    public function qeditHeaderFooterEmbedded($submode = "", $fgroup = "")
+    public function qeditHeaderFooterEmbedded($submode = '', $fgroup = '')
     {
         return false;
     }
@@ -6499,17 +6318,17 @@ class AFWObject extends AFWRoot
         $this->OBJECTS_CACHE[$attribute] = $return;
     }
 
-
-    /** APPROVE-DELAYED *** */
+    /**
+     * APPROVE-DELAYED ***
+     */
     public function iAcceptAction($action)
     {
-        //throw new AfwRuntimeException("i will AcceptAction");
+        // throw new AfwRuntimeException("i will AcceptAction");
         return true;
     }
 
     /**
      * override editToDisplay() method to use edit for display mode
-     * 
      */
     public function editToDisplay()
     {
@@ -6528,17 +6347,17 @@ class AFWObject extends AFWRoot
 
     public function applyFilter($filter)
     {
-        if (!$filter) return true;
-        else return false;
+        if (!$filter)
+            return true;
+        else
+            return false;
     }
 
-    /*************************     private methods       ************************/
-
+    /* private methods */
 
     /****************************************************************************/
 
-
-    public function getCategorizedAttribute($attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = "")
+    public function getCategorizedAttribute($attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = '')
     {
         return AfwFormatHelper::getCategorizedAttribute($this, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method);
     }
@@ -6549,21 +6368,17 @@ class AFWObject extends AFWRoot
             $return = $this->getAfieldValue($attribute);
         } else {
             throw new AfwRuntimeException(
-                "attribute '" .
-                    $attribute .
-                    "' does not exist in structure of entity : " .
-                    static::$TABLE .
-                    ' : DB_STRUCTURE = ' .
-                    var_export(self::getDbStructure(), true)
+                "attribute '"
+                . $attribute
+                . "' does not exist in structure of entity : "
+                . static::$TABLE
+                . ' : DB_STRUCTURE = '
+                . var_export(self::getDbStructure(), true)
             );
         }
 
         return $return;
     }
-
-
-
-
 
     public function getMfkArray($attribute)
     {
@@ -6591,16 +6406,14 @@ class AFWObject extends AFWRoot
         return AfwSqlHelper::aggregFunction($this, $function, $group_by, $throw_error, $throw_analysis_crash);
     }
 
-
     public function getTechnicalNotes()
     {
-            return $this->tech_notes;
+        return $this->tech_notes;
     }
-
 
     public function setTechnicalNotes($notes)
     {
-            $this->tech_notes = $notes;
+        $this->tech_notes = $notes;
     }
 
     public function repeatRetrieveHeader()
@@ -6608,50 +6421,46 @@ class AFWObject extends AFWRoot
         return 0;
     }
 
-    /*********************************XXXXXXXXXXXXXXXXXXXXXXXX**************************** */
+    /* XXXXXXXXXXXXXXXXXXXXXXXX**************************** */
 
-
-    public static function code_of_boolean($lkp_id=null)
+    public static function code_of_boolean($lkp_id = null)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        if($lkp_id) return self::boolean()['code'][$lkp_id];
-        else return self::boolean()['code'];
+        if ($lkp_id)
+            return self::boolean()['code'][$lkp_id];
+        else
+            return self::boolean()['code'];
     }
 
-    public static function name_of_boolean($boolean, $lang="ar")
+    public static function name_of_boolean($boolean, $lang = 'ar')
     {
-        return self::boolean()[$lang][$boolean];            
+        return self::boolean()[$lang][$boolean];
     }
-
 
     public static function list_of_boolean($lang = null)
     {
-        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+        if (!$lang)
+            $lang = AfwLanguageHelper::getGlobalLanguage();
         return self::boolean()[$lang];
     }
-    
+
     public static function boolean()
     {
-            $arr_list_of_boolean = array();
-            
-            $arr_list_of_boolean["code"][0] = "N";
-            $arr_list_of_boolean["ar"][0] = 'لا';
-            $arr_list_of_boolean["en"][0] = 'no';
-            
-            $arr_list_of_boolean["code"][1] = "Y";
-            $arr_list_of_boolean["ar"][1] = 'نعم';
-            $arr_list_of_boolean["en"][1] = 'yes';
-            
-            return $arr_list_of_boolean;
-    }
+        $arr_list_of_boolean = array();
 
+        $arr_list_of_boolean['code'][0] = 'N';
+        $arr_list_of_boolean['ar'][0] = 'لا';
+        $arr_list_of_boolean['en'][0] = 'no';
+
+        $arr_list_of_boolean['code'][1] = 'Y';
+        $arr_list_of_boolean['ar'][1] = 'نعم';
+        $arr_list_of_boolean['en'][1] = 'yes';
+
+        return $arr_list_of_boolean;
+    }
 
     public function debuggExport()
     {
         return AfwStructureHelper::export($this);
     }
-
-
-    
-
 }
