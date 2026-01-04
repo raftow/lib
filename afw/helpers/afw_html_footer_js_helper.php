@@ -1,26 +1,27 @@
 <?php
 class AfwHtmlFooterJsHelper
 {
-  public static function render($objme, $lang, $options=[])
+  public static function render($objme, $lang, $options = [])
   {
-      if($objme)
-      {
-        $are_you_sure = $objme->translateMessage("ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECORD",$lang);
-        $once_deleted = $objme->translateMessage("ONCE_DELETED_YOU_WILL_NOT_BE_ABLE_TO_GO_BACK",$lang);
-        $once_moved = $objme->translateMessage("This operation can affect the process work",$lang);        
-        $are_you_sure_move_up = $objme->translateMessage("Are you sure you want to move up this item ?",$lang);
-        $are_you_sure_move_down = $objme->translateMessage("Are you sure you want to move down this item ?",$lang);
-        $has_been_deleted = $objme->translateMessage("THE_FOLLOWING_RECORD_HAS_BEEN_DELETED",$lang);
-        $you_dont_have_rights_todelete = $objme->translateMessage("CANT_DELETE_THE_ROW",$lang);
-        $you_dont_have_rights = $objme->translateMessage("CANT_DO_THIS",$lang);
-        $safely_cancelled = $objme->translateMessage("DELETE_HAVE_BEEN_SAFELY_CANCELLED",$lang);
-        $move_safely_cancelled = $objme->translateMessage("Move action canceled safely",$lang);
-      }
+    if ($objme) {
+      $are_you_sure = $objme->translateMessage('ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECORD', $lang);
+      $once_deleted = $objme->translateMessage('ONCE_DELETED_YOU_WILL_NOT_BE_ABLE_TO_GO_BACK', $lang);
+      $once_moved = $objme->translateMessage('This operation can affect the process work', $lang);
+      $are_you_sure_move_up = $objme->translateMessage('Are you sure you want to move up this item ?', $lang);
+      $are_you_sure_move_down = $objme->translateMessage('Are you sure you want to move down this item ?', $lang);
+      $has_been_deleted = $objme->translateMessage('THE_FOLLOWING_RECORD_HAS_BEEN_DELETED', $lang);
+      $you_dont_have_rights_todelete = $objme->translateMessage('CANT_DELETE_THE_ROW', $lang);
+      $you_dont_have_rights = $objme->translateMessage('CANT_DO_THIS', $lang);
+      $safely_cancelled = $objme->translateMessage('DELETE_HAVE_BEEN_SAFELY_CANCELLED', $lang);
+      $move_safely_cancelled = $objme->translateMessage('Move action canceled safely', $lang);
+    }
 
-      if((!$objme) or (!$objme->isAdmin())) $response_data_format = "data = '';\n";
-      else $response_data_format = "";
+    if ((!$objme) or (!$objme->isAdmin()))
+      $response_data_format = "data = '';\n";
+    else
+      $response_data_format = '';
 
-      ob_start();
+    ob_start();
 ?>
 <script>
 
@@ -29,7 +30,7 @@ function save_popup(mod, cls, idobj, col, val)
     $.ajax({
             type:'POST',
             url:'../lib/api/afw_col_saver.php',
-            data:{cls:cls, currmod:mod, idobj:idobj, col:col, val:val},
+            data:{cls:cls, currmod:mod, idobj:idobj, col:col, val:val, lang:'<?php echo $lang; ?>'},
             dataType: 'json',
             success: function(data)
             {
@@ -41,7 +42,7 @@ function save_popup(mod, cls, idobj, col, val)
                 else
                 {
                     <?php echo $response_data_format ?>
-                    swal("<?php echo $you_dont_have_rights?>["+data.message+"]"); // 
+                    swal("<?php echo $you_dont_have_rights ?>["+data.message+"]"); // 
                     return [false, null];
                 }
             }
@@ -142,7 +143,7 @@ function moveRun(cl, md, mv_id, mv_ord, mv_sens,limitd)
                 else
                 {
                     <?php echo $response_data_format ?>
-                    swal("<?php echo $you_dont_have_rights?>["+data+"]"); // 
+                    swal("<?php echo $you_dont_have_rights ?>["+data+"]"); // 
                 }
             }
 
@@ -174,7 +175,7 @@ function switchRun(cl, md, swc_id, swc_col)
                 else
                 {
                     <?php echo $response_data_format ?>
-                    swal("<?php echo $you_dont_have_rights?>["+data+"]"); // 
+                    swal("<?php echo $you_dont_have_rights ?>["+data+"]"); // 
                 }
             }
 
@@ -198,8 +199,8 @@ function move_triggers()
                             if(bswal==1)
                             {
                                 swal({
-                                  title: "<?php echo $are_you_sure_move_up?> : "+lbl,
-                                  text: "<?php echo $once_moved?>", // +div_to_del+" / "+$ele.id,
+                                  title: "<?php echo $are_you_sure_move_up ?> : "+lbl,
+                                  text: "<?php echo $once_moved ?>", // +div_to_del+" / "+$ele.id,
                                   icon: "warning",
                                   buttons: true,
                                   dangerMode: true,
@@ -211,7 +212,7 @@ function move_triggers()
                                   } 
                                   else 
                                   {
-                                    swal("<?php echo $move_safely_cancelled?>");
+                                    swal("<?php echo $move_safely_cancelled ?>");
                                   }
                                 });
                             }
@@ -238,8 +239,8 @@ function move_triggers()
                             if(bswal==1)
                             {
                                 swal({
-                                      title: "<?php echo $are_you_sure_move_down?> : "+lbl,
-                                      text: "<?php echo $once_moved?>", // +div_to_del+" / "+$ele.id,
+                                      title: "<?php echo $are_you_sure_move_down ?> : "+lbl,
+                                      text: "<?php echo $once_moved ?>", // +div_to_del+" / "+$ele.id,
                                       icon: "warning",
                                       buttons: true,
                                       dangerMode: true,
@@ -251,7 +252,7 @@ function move_triggers()
                                       } 
                                       else 
                                       {
-                                        swal("<?php echo $move_safely_cancelled?>");
+                                        swal("<?php echo $move_safely_cancelled ?>");
                                       }
                                     });
                             }
@@ -265,9 +266,8 @@ function move_triggers()
 
 $(document).ready(function(){
 <?php
-  
-  if($options["ivviewer_activate"]) 
-  {
+
+    if ($options['ivviewer_activate']) {
 ?>  
      $('.gallery-items').on('click', function() {
           $('#overlay')
@@ -276,8 +276,8 @@ $(document).ready(function(){
             .one('click', function() { $(this).removeClass('open'); });
      });
 <?php
-  }
-?>
+    }
+    ?>
 
     /*$(document).ready(function() {
         $(".hasCalendarsPicker").datepicker({ 
@@ -413,8 +413,8 @@ $(document).ready(function(){
             }
             $(".alert.messages").fadeOut().remove();
             swal({
-                  title: "<?php echo $are_you_sure?> : "+lbl,
-                  text: "<?php echo $once_deleted?>", // +div_to_del+" / "+$ele.id,
+                  title: "<?php echo $are_you_sure ?> : "+lbl,
+                  text: "<?php echo $once_deleted ?>", // +div_to_del+" / "+$ele.id,
                   icon: "warning",
                   buttons: true,
                   dangerMode: true,
@@ -425,7 +425,7 @@ $(document).ready(function(){
                     $.ajax({
                                 type:'POST',
                                 url:'../lib/api/afw_trash.php',
-                                data:{cl:cl, currmod:md, del_id:del_id, lang:'<?php echo $lang?>'},
+                                data:{cl:cl, currmod:md, del_id:del_id, lang:'<?php echo $lang ?>'},
                                 success: function(data)
                                 {
                                     data = data.trimLeft();
@@ -436,14 +436,14 @@ $(document).ready(function(){
                                         if($ele != null) $ele.fadeOut().remove();
                                         else $("#"+div_to_del).fadeOut().remove();
                                         
-                                        swal("<?php echo $has_been_deleted?> : "+lbl, {
+                                        swal("<?php echo $has_been_deleted ?> : "+lbl, {
                                               icon: "success",
                                             });
                                     }
                                     else
                                     {
                                         <?php echo $response_data_format ?>
-                                            swal("<?php echo $you_dont_have_rights_todelete?>["+data+"]");
+                                            swal("<?php echo $you_dont_have_rights_todelete ?>["+data+"]");
                                     }
                                 }
         
@@ -453,7 +453,7 @@ $(document).ready(function(){
                   } 
                   else 
                   {
-                    swal("<?php echo $safely_cancelled?>");
+                    swal("<?php echo $safely_cancelled ?>");
                   }
                 });
        }

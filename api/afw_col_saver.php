@@ -4,7 +4,6 @@ $file_dir_name = dirname(__FILE__);
 require_once ('../afw/afw_autoloader.php');
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
-$lang = 'en';
 
 AfwSession::startSession();
 $update_context = 'afw object column value change with network api';
@@ -21,7 +20,7 @@ $currmod = trim($_POST['currmod']);
 $idobj = trim($_POST['idobj']);
 $col = trim($_POST['col']);
 $val = trim($_POST['val']);
-
+$lang = trim($_POST['lang']);
 $data = [];
 
 if ((!$currmod) or (!$idobj) or (!$cls) or (!$col)) {
@@ -32,7 +31,8 @@ if ((!$currmod) or (!$idobj) or (!$cls) or (!$col)) {
 
 $MODULE = $currmod;
 include ("$file_dir_name/../lib/afw/afw_check_member.php");
-$lang = AfwLanguageHelper::getGlobalLanguage();
+if (!$lang)
+    $lang = AfwLanguageHelper::getGlobalLanguage();
 
 // echo "here3";
 AfwAutoLoader::addMainModule($currmod);
@@ -75,7 +75,7 @@ if ($old_val != $val) {
 if ($done) {
     $data['status'] = 'success';
     $data['message'] = '';
-    $data['aff'] = "$myObj => decode($col) = " . $myObj->decode($col);
+    $data['aff'] = $myObj->decode($col);  // "$myObj => decode($col) = " .
 } else {
     $data['status'] = 'fail';
     $data['message'] = "check the beforeUpdate/beforeMaj methods in $cls, because the update has been rejected";
