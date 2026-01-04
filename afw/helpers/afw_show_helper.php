@@ -2452,7 +2452,7 @@ class AfwShowHelper
                         $classpopup = $options['POPUP-EDIT-SETTINGS']['class'] = $an_item->getMyClass();
                     }
                     foreach ($structure['RETRIEVE-POPUP-EDITOR'] as $colpopup) {
-                        $data_to_display .= AfwInputHelper::popupEditor($modulepopup, $classpopup, $colpopup, $lang);
+                        $data_to_display .= AfwInputHelper::popupEditor($modulepopup, $classpopup, $colpopup, $lang, $object);
                     }
                 }
                 break;

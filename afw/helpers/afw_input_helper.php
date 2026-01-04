@@ -964,11 +964,11 @@ class AfwInputHelper extends AFWRoot
                 return ob_get_clean();
         }
 
-        public static function popupEditor($module, $classe, $attribute, $lang)
+        public static function popupEditor($module, $classe, $attribute, $lang, $obj)
         {
                 $desc = AfwStructureHelper::getDbStructure($module, $classe, '', 'structure', $attribute);
                 $desc['READONLY'] = false;
-                $input_html = self::simpleEditInputForAttribute($attribute, '', $desc);
+                $input_html = self::simpleEditInputForAttribute($attribute, '', $desc, $obj);
                 $input_old_name = "\"$attribute\"";
                 $input_new_name = "\"popup_edit_$attribute\"";
                 $input_html = str_replace($input_old_name, $input_new_name, $input_html);
