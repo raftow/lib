@@ -1874,15 +1874,32 @@ class AfwShowHelper
                     $pk = $desc['ANSWER-PK'];
                     if (!$pk)
                         $pk = '((id))';
+
                     $val = $objItem->getVal($col);
-                    $emptyMessage = $objItem->translate('obj-empty', $lang);
-                    $return = AfwLoadHelper::decodeLookupValue($nom_module_fk, $nom_table_fk, $val, $separator = $newline, $emptyMessage, $pk, $small_lookup);
-                    if ($val and (!$return))
-                        $return = $val . '<!-- val only -->';
-                    /* $htr_e = hrtime()[1];
-                    $htr = $htr_e - $htr_s;
-                    if($htr < 4000000) $htr = "";*/
-                    $return .= "<!-- quickShowAttribute case FK $nom_module_fk / $nom_table_fk -->";  //  / htr = $htr
+
+                    if (!$val) {
+                        if ($desc['EMPTY_IS_ALL'] or ($desc['FORMAT'] == 'EMPTY_IS_ALL')) {
+                            $all_code = "ALL-$col";
+                            $return = $objItem->translate($all_code, $lang);
+                            if ($return == $all_code) {
+                                $return = $objItem->translateOperator('ALL', $lang);
+                            }
+                            $empty_case = 'EMPTY_IS_ALL';
+                        } else {
+                            $return = '';
+                            $empty_case = '';
+                        }
+                        $return .= "<!-- quickShowAttribute case FK no value :  $empty_case -->";
+                    } else {
+                        $emptyMessage = $objItem->translate('obj-empty', $lang);
+                        $return = AfwLoadHelper::decodeLookupValue($nom_module_fk, $nom_table_fk, $val, $separator = $newline, $emptyMessage, $pk, $small_lookup);
+                        if ($val and (!$return))
+                            $return = $val . '<!-- val only -->';
+                        /* $htr_e = hrtime()[1];
+                        $htr = $htr_e - $htr_s;
+                        if($htr < 4000000) $htr = "";*/
+                        $return .= "<!-- quickShowAttribute case FK $nom_module_fk / $nom_table_fk -->";  //  / htr = $htr
+                    }
                 }
 
                 break;
