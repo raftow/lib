@@ -5985,7 +5985,7 @@ class AFWObject extends AFWRoot
 
     public final function canInsert()
     {
-        if (count($this->UNIQUE_KEY) > 0) {
+        if ($this->UNIQUE_KEY and count($this->UNIQUE_KEY) > 0) {
             $needed_to_insert_fields = $this->UNIQUE_KEY;
         } else {
             $needed_to_insert_fields = [];
