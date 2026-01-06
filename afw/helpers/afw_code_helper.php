@@ -65,9 +65,9 @@ class AfwCodeHelper
     {
         $php_generation_folder = AfwSession::config("php_generation_folder", "C:/gen/php");
         $dir_sep = AfwSession::config("dir_sep", "/");
-        $root_www_path = AfwSession::config("parent_project_path", "C:/dev-folder");
+        $root_www_path = AfwSession::config("root_www_path", AfwSession::config("parent_project_path", "C:/dev-folder"));
         $merge_tool = AfwSession::config("merge_tool", "ex winmerge");
-        $mv_command = AfwSession::config("mv_command", "mv");
+        $mv_command = AfwSession::config("mv_command", "mv ");
         $command_lines_arr = [];
         if ($php_generation_folder != "no-gen") {
             $generated_fileName = $php_generation_folder . $dir_sep . $fileName;
@@ -84,8 +84,8 @@ class AfwCodeHelper
                 $command_lines_arr[] = AfwUtils::hzm_format_command_line("info", "  if the file is not new use your merge tool $merge_tool and do the following command to merge manually : ");
                 $command_lines_arr[] = AfwUtils::hzm_format_command_line("help", "  $merge_tool $generated_fileName $destination_fileName <br>\n");
                 $command_lines_arr[] = AfwUtils::hzm_format_command_line("info", "  if the file not do the following command line manually : ");
-                $command_lines_arr[] = AfwUtils::hzm_format_command_line("help-mv", "  $mv_command $generated_fileName $root_module_path <br>\n");
-                $mv_command_line = "$mv_command $generated_fileName $root_module_path";
+                $command_lines_arr[] = AfwUtils::hzm_format_command_line("help-mv", "  $mv_command$generated_fileName $root_module_path <br>\n");
+                $mv_command_line = "$mv_command$generated_fileName $root_module_path";
             }
         } else {
             $command_lines_arr[] = AfwUtils::hzm_format_command_line("warning", "  file generation disable");
