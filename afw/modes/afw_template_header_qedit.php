@@ -14,6 +14,10 @@ define("LIMIT_INPUT_SELECT", 30);
 global $TMP_DIR,$TMP_ROOT,$cl,$pack,$sub_pack,$id,$aligntd, $Main_Page, $qedit_trad;
 $objme = AfwSession::getUserConnected();
 
+/**
+ * @var AfwObject $obj
+ */
+
 $qedit_trad = array();
 $fixm_input = array();
 $fixm_array       = $obj->fixm_array;
@@ -142,7 +146,7 @@ foreach($class_db_structure as $nom_col => $desc)
 
 /*if(!$obj->HIDE_DISPLAY_MODE) */ 
 
-if($obj->ENABLE_DISPLAY_MODE_IN_QEDIT)
+if($obj->ENABLE_DISPLAY_MODE_IN_QEDIT or (!$obj->IS_LOOKUP))
 {
    $qedit_trad["show"] = AfwLanguageHelper::translateKeyword("show", $lang);
 }
