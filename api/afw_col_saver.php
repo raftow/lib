@@ -48,21 +48,25 @@ $myObj_loaded = $myObj->load($idobj);
 
 if (!$myObj_loaded) {
     $data['status'] = 'error';
-    $data['message'] = $myObj->tm('OBJECT_NOT_FOUND', $lang) . " : currmod=$currmod idobj=$idobj cls=$cls";
+    $data['message_client'] = $myObj->tm('OBJECT_NOT_FOUND', $lang);
+    $data['message'] = "Failed to load load (current-module=$currmod id-object=$idobj class=$cls)";
     die(json_encode($data));
 }
 
 $can_popupEditCol = $myObj->userCanPopupEditCol($objme, $col);
 if (!$can_popupEditCol) {
     $data['status'] = 'error';
-    $data['message'] = 'المعذرة عملية التعديل السريع على هذا الحقل باستخدام البوباب تحتاج صلاحية خاصة ! ';
+    $data['message'] = 'You need to override popupEditConfig method in class ' . $cls . ' to allow popup quick edit on this column ' . $col;
+    $data['message_client'] = 'المعذرة عملية التعديل السريع على هذا الحقل باستخدام البوباب تحتاج صلاحية خاصة ! ';
     die(json_encode($data));
 }
 
 list($can_edit_me, $can_t_edit_me_reason) = $myObj->userCanEditMe($objme);
 if (!$can_edit_me) {
     $data['status'] = 'error';
-    $data['message'] = 'المعذرة هذه العملية للتعديل على هذا السجل تحتاج صلاحية : ' . $can_t_edit_me_reason;
+    $data['message_client'] = 'المعذرة هذه العملية للتعديل على هذا السجل تحتاج صلاحية خاصة ! ';
+    $data['message'] = $can_t_edit_me_reason;
+    die(json_encode($data));
 }
 
 $old_val = $myObj->getVal($col);
