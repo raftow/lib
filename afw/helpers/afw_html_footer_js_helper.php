@@ -38,6 +38,7 @@ function save_popup(mod, cls, idobj, col, val)
                 if(data.status=="success")
                 {
                     $("#span-"+mod+"-"+cls+"-"+idobj+"-"+col).text(data.aff);                    
+                    save_popup_done_on(mod, cls, idobj, col, val, data.aff);
                 }
                 else
                 {
@@ -167,19 +168,22 @@ function switchRun(cl, md, swc_id, swc_col)
                 if(data=="SWITCHED-OFF")
                 {
                     $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/off.png' width='30' heigth='20'>");                                     
+                    switch_done_on(md, cl, swc_id, swc_col, 'N');
                 }
                 else if(data=="SWITCHED-ON")
                 {
                     $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/on.png' width='30' heigth='20'>");                                     
+                    switch_done_on(md, cl, swc_id, swc_col, 'Y');
                 }
                 else if(data=="SWITCHED-OFN")
                 {
                     $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/ofn.png' width='30' heigth='20'>");                                     
+                    switch_done_on(md, cl, swc_id, swc_col, 'W');
                 }
                 else
                 {
                     <?php echo $response_data_format ?>
-                    swal("<?php echo $you_dont_have_rights ?>["+data+"]"); // 
+                    swal("<?php echo $you_dont_have_rights ?>["+data+"]"); //                     
                 }
             }
 
