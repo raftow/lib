@@ -1,15 +1,15 @@
 <?php
 
 $file_dir_name = dirname(__FILE__);
-require_once ('../afw/afw_autoloader.php');
-include_once ("../afw/afw_error_handler.php");
+require_once('../afw/afw_autoloader.php');
+include_once("../afw/afw_error_handler.php");
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 
 AfwSession::startSession();
 $update_context = 'afw object column value change with network api';
 // echo "here5";
-require_once ("$file_dir_name/../../config/global_config.php");
+require_once("$file_dir_name/../../config/global_config.php");
 // echo "here6";
 // old include of afw.php
 $only_members = true;
@@ -31,7 +31,7 @@ if ((!$currmod) or (!$idobj) or (!$cls) or (!$col)) {
 }
 
 $MODULE = $currmod;
-include ("$file_dir_name/../lib/afw/afw_check_member.php");
+include("$file_dir_name/../lib/afw/afw_check_member.php");
 if (!$lang)
     $lang = AfwLanguageHelper::getGlobalLanguage();
 
@@ -55,7 +55,7 @@ if (!$myObj_loaded) {
 $can_popupEditCol = $myObj->userCanPopupEditCol($objme, $col);
 if (!$can_popupEditCol) {
     $data['status'] = 'error';
-    $data['message'] = 'المعذرة هذه عملية تعديل بوباب سريع جدا على هذا الحقل تحتاج صلاحية ! ';
+    $data['message'] = 'المعذرة عملية التعديل السريع على هذا الحقل باستخدام البوباب تحتاج صلاحية خاصة ! ';
     die(json_encode($data));
 }
 
