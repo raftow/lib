@@ -572,8 +572,7 @@ class AfwInputHelper extends AFWRoot
                         case 'TEXT':
                                 $utf8 = $desc['UTF8'];
                                 $dir = $desc['DIR'];
-                                if (!$dir)
-                                        ($lang != 'ar') ? $dir = 'ltr' : $dir = 'rtl';
+                                if (!$dir) ($lang != 'ar') ? $dir = 'ltr' : $dir = 'rtl';
                                 if ($dir == 'auto')
                                         $dir = ($utf8 ? 'rtl' : 'ltr');
                                 if ($desc['INPUT-FORMATTING'] == 'addslashes')
@@ -950,12 +949,17 @@ class AfwInputHelper extends AFWRoot
                 return '';
         }
 
-        public static function simpleEditInputForAttribute($nom_col, $col_val, $desc = null, $obj = null, $separator = ':')
+        public static function simpleEditInputForAttribute($nom_col, $col_val, $desc = null, $obj = null, $separator = ':', $desc_erase = [])
         {
                 ob_start();
                 $data_loaded = false;
                 if (!$desc and $obj)
                         $desc = AfwStructureHelper::getStructureOf($obj, $nom_col);
+
+                foreach ($desc_erase as $key => $value) {
+                        $desc[$key] = $value;
+                }
+
                 if (($desc['TYPE'] == 'PK') && empty($col_val)) {
                         AfwEditMotor::type_input($nom_col, $desc, $col_val, $obj, $separator, $data_loaded);
                 } else {
