@@ -3398,14 +3398,31 @@ class AFWObject extends AFWRoot
     public final function switchCol($swc_col)
     {
         try {
+            $structure = AfwStructureHelper::getStructureOf($this, $swc_col);
             $switch_mess = 'SWITCH FAILED ';
             $swc_col_old_val = $this->getVal($swc_col);
-            if ($swc_col_old_val != 'Y') {
-                $this->set($swc_col, 'Y');
-                $switch_mess = 'SWITCHED-ON';
-            } else {
-                $this->set($swc_col, 'N');
-                $switch_mess = 'SWITCHED-OFF';
+
+            if($structure['W-IS-VALUE'])
+            {
+                if ($swc_col_old_val == 'N') {
+                    $this->set($swc_col, 'W');
+                    $switch_mess = 'SWITCHED-OFN';
+                } elseif ($swc_col_old_val == 'W') {
+                    $this->set($swc_col, 'Y');
+                    $switch_mess = 'SWITCHED-ON';
+                } else {
+                    $this->set($swc_col, 'N');
+                    $switch_mess = 'SWITCHED-OFF';
+                }
+            }
+            else {
+                if ($swc_col_old_val != 'Y') {
+                    $this->set($swc_col, 'Y');
+                    $switch_mess = 'SWITCHED-ON';
+                } else {
+                    $this->set($swc_col, 'N');
+                    $switch_mess = 'SWITCHED-OFF';
+                }
             }
 
             $this->commit();

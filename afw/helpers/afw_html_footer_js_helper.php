@@ -172,6 +172,10 @@ function switchRun(cl, md, swc_id, swc_col)
                 {
                     $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/on.png' width='30' heigth='20'>");                                     
                 }
+                else if(data=="SWITCHED-OFN")
+                {
+                    $('#'+md+'-'+cl+'-'+swc_id+'-'+swc_col).html("<img src='../lib/images/ofn.png' width='30' heigth='20'>");                                     
+                }
                 else
                 {
                     <?php echo $response_data_format ?>

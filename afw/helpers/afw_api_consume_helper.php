@@ -138,8 +138,8 @@ class AfwApiConsumeHelper
         {
                 $decoded_response = new stdClass();
                 $curl_commands[] = "\$curl = curl_init(); // failed";               
-                $error_msg = "Error while doing curl_init";
-                return array('url' => null, 'success' => false, 'message' => $error_msg, 'result' => $decoded_response, 'commands'=>$curl_commands);
+                $response = $error_msg = "Error while doing curl_init";
+                return array('url' => null, 'success' => false, 'message' => $error_msg, 'result' => $decoded_response, 'commands'=>$curl_commands, 'response'=>$response);
         }
         
     

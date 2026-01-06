@@ -231,7 +231,7 @@ function hzm_xml_parser_create(&$data) {
  * @param $encoding
  *   The encoding that the data is in.
  *
- * @return
+ * @return mixed
  *   Converted data or FALSE.
  */
 function hzm_convert_to_utf8($data, $encoding) {

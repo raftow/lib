@@ -329,6 +329,19 @@ class AfwDataUpdateHelper
             throw new AfwRuntimeException('in recursive mode we need the page-attribute to be configured in the apiConfig array : ' . var_export($apiConfig, true));
         }
 
+        $data_api_id = $apiConfig['data_api_id'];
+        $mapping_job_id = $apiConfig['mapping_job_id'];
+        $executionLog = $apiConfig['executionLog'];
+
+        if($executionLog)
+        {
+            if(!$mapping_job_id) throw new AfwRuntimeException("consume_api : mapping_job_id is mandatory field in apiConfig when executionLog is true");
+            if(!$data_api_id) throw new AfwRuntimeException("consume_api : data_api_id is mandatory field in apiConfig when executionLog is true");
+
+            AfwAutoLoader::addModule("etl");
+        }
+        
+
         $apiConfigObject = new AfwConfigObject($apiConfig, $data);
         $metaAttribute   = $apiConfig['meta-attribute'];
         if (! $metaAttribute) {
@@ -363,9 +376,24 @@ class AfwDataUpdateHelper
             $result = AfwApiConsumeHelper::runAPI($url, $apiConfigObject, 'data', $lang);
 
             if ($result['success'] and isset($result['result']->$itemsAttribute)) {
+                $title_o = "TEN$tentative URL=" . $result['url'] . ' COUNT=' . count($result['result']->$itemsAttribute);
                 if ($print_debugg) {
-                    AfwBatch::print_debugg("tentative $tentative > url success : " . $result['url'] . ' got record count : ' . count($result['result']->$itemsAttribute));
+                    AfwBatch::print_debugg($title_o);
                 }
+
+                if($mapping_job_id && $data_api_id && $executionLog)
+                {
+                    ExecutionLog::loadByMainIndex( 
+                        $mapping_job_id,
+                        $data_api_id,
+                        date("Y-m-d H:i:s"),
+                        json_encode($data),
+                        $result['response'],
+                        $title_o,
+                        true
+                    );
+                }
+                
 
                 $tentative = $max_tentatives;
             } else {
@@ -378,7 +406,20 @@ class AfwDataUpdateHelper
         $ok = true;
 
         if (! $result['success']) {
-            $error_msg = "after $max_tentatives tentatives the url : " . $result['url'] . ' failed and  got result : ' . var_export($result);
+            $title_o = "After $max_tentatives tentatives the url : " . $result['url'] . ' failed';
+            $error_msg = "$title_o and got response : " . $result['response'];
+            if($mapping_job_id && $data_api_id && $executionLog)
+            {
+                ExecutionLog::loadByMainIndex( 
+                    $mapping_job_id,
+                    $data_api_id,
+                    date("Y-m-d H:i:s"),
+                    json_encode($data),
+                    $result['response'],
+                    $title_o,
+                    true
+                );
+            }
             AfwBatch::print_error($error_msg);
             if ($throwError) {
                 throw new AfwRuntimeException($error_msg);
@@ -402,7 +443,13 @@ class AfwDataUpdateHelper
                     if (! $force_mode) {
                         throw new AfwRuntimeException("too much pages ($pageCount) max of page $max_pages please use force mode (to-implement)");
                     }
-                    $pageCount = $currentPage + $max_pages - 1;
+                    elseif ($force_mode=="do-max-pages") {
+                        $pageCount = $currentPage + $max_pages - 1;
+                    }
+                    else {
+                        // do all pages keep $pageCount as is
+                    }
+                    
                 }
 
                 for ($page = $currentPage + 1; $page <= $pageCount; $page++) {
@@ -411,7 +458,26 @@ class AfwDataUpdateHelper
                     while ($tentative <= $max_tentatives) {
                         $result_2 = AfwApiConsumeHelper::runAPI($url, $apiConfigObject, 'data', $lang);
 
-                        if ($result_2['success'] and isset($result_2['result']->$itemsAttribute)) {
+                        if ($result_2['success'] and isset($result_2['result']->$itemsAttribute)) 
+                        {
+                            $title_o = "PAGE$page/$pageCount TEN$tentative URL=" . $result_2['url'] . ' COUNT=' . count($result_2['result']->$itemsAttribute);
+                            if ($print_debugg) {
+                                AfwBatch::print_debugg($title_o);
+                            }
+
+                            if($mapping_job_id && $data_api_id && $executionLog)
+                            {
+                                ExecutionLog::loadByMainIndex( 
+                                    $mapping_job_id,
+                                    $data_api_id,
+                                    date("Y-m-d H:i:s"),
+                                    json_encode($data),
+                                    $result_2['response'],
+                                    $title_o,
+                                    true
+                                );
+                            }
+
                             $items_2 = $result_2['result']->$itemsAttribute;
                             // die( var_export( $result_2, true ) );
                             // echo 'merging \n';
@@ -428,7 +494,7 @@ class AfwDataUpdateHelper
                             $items = array_merge($items, $items_2);
                             $after = count($items);
                             if ($print_debugg) {
-                                AfwBatch::print_debugg("tentative $tentative > url success : " . $result_2['url'] . " (page $page/$pageCount) got record count : " . count($result_2['result']->$itemsAttribute) . " after merge : $after record(s)");
+                                AfwBatch::print_debugg("$title_o after merge : $after record(s)");
                             }
 
                             $tentative = $max_tentatives;
@@ -438,7 +504,20 @@ class AfwDataUpdateHelper
                     }
 
                     if (! $result_2['success']) {
-                        $error_msg = "Processing page $page/$pageCount after $max_tentatives tentatives the url : " . $result_2['url'] . ' failed and  got result : ' . var_export($result_2);
+                        $title_o = "Processing page $page/$pageCount After $max_tentatives tentatives the url : " . $result_2['url'] . ' failed';
+                        $error_msg = "$title_o and got response : " . $result_2['response'];
+                        if($mapping_job_id && $data_api_id && $executionLog)
+                        {
+                            ExecutionLog::loadByMainIndex( 
+                                $mapping_job_id,
+                                $data_api_id,
+                                date("Y-m-d H:i:s"),
+                                json_encode($data),
+                                $result_2['response'],
+                                $title_o,
+                                true
+                            );
+                        }
                         AfwBatch::print_error($error_msg);
                         if ($throwError) {
                             throw new AfwRuntimeException($error_msg);

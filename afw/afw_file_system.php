@@ -42,12 +42,18 @@ class AfwFileSystem {
 
         switch ($append) {
             case 'append':
-                return file_put_contents($file, $content, FILE_APPEND);
+                $return = file_put_contents($file, $content, FILE_APPEND);
             case 'prepend':
-                return file_put_contents($file, $content . self::read($file));
+                $return = file_put_contents($file, $content . self::read($file));
             default:
-                return file_put_contents($file, $content);
+                $return = file_put_contents($file, $content);
         }
+
+        if(!$return) {
+            throw new AfwRuntimeException("unable to write file (mode $append), cleaned path : $file , original path : $file_target");
+        }
+
+        return $return;
     }
 
     public static function getFiles($path) {
