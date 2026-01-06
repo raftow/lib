@@ -19,7 +19,7 @@ class AfwHtmlFooterJsHelper
     if ((!$objme) or (!$objme->isAdmin()))
       $response_data_format = "mess = data.message_client;\n";
     else
-      $response_data_format = 'mess = data.message_client + \' > \' + data.message;\n';
+      $response_data_format = "mess = data.message_client + ' > ' + data.message;\n";
 
     ob_start();
 ?>
