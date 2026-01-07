@@ -302,6 +302,12 @@ foreach ($class_db_structure as $nom_col => $desc) {
   </script>";
                                 }
 
+                                if ($desc["LOCATION"] == "bottom") {
+                                        if (!$data["bottom-items"]) $data["bottom-items"] = array();
+                                        $data["bottom-items"][$nom_col] = $data[$nom_col]["input"];
+                                        $data[$nom_col]["input"] = "";
+                                }
+
                                 $data[$nom_col]["tooltip"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "TOOLTIP", $lang, $desc));
                                 if (!$data[$nom_col]["tooltip"]) {
                                         $tltp = AfwInputHelper::getAttributeTooltip($obj, $nom_col, $lang);
@@ -611,16 +617,16 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 } else {
                                                                 ?>
                                                                         <!-- <?= "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
-                                                                        <?
+                                                                <?
                                                                 }
                                                         } else  // not edit by step
                                                         {
-                                                                        ?>
-                                                                        <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                <?
-                                                        }
                                                                 ?>
+                                                                <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                        <?
+                                                        }
+                                                        ?>
                                                 </p>
                                         </div>
                                 </div>
@@ -738,22 +744,23 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 } else {
                                                                 ?>
                                                                         <!-- <?= "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
-                                                                        <?
+                                                                <?
                                                                 }
                                                         } else  // not edit by step
                                                         {
-                                                                        ?>
-                                                                        <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                <?
-                                                        }
                                                                 ?>
+                                                                <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                        <?
+                                                        }
+                                                        ?>
                                                 </p>
                                         </div>
                                         <!-- Other links -->
                                         <!-- old was here -->
                                         <!-- Other links -->
                                 </div>
+
                         </div> <!-- form_right -->
                         <?
                         // calculate form_left
@@ -822,6 +829,16 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                 </table>
                         </div>
                         <!-- Other links -->
+
+                        <!-- Form footers -->
+                        <div class="form_footers">
+                                <?php
+                                foreach ($data["bottom-items"] as $nom_col => $bottomItem) {
+                                        echo $bottomItem . "<br>\n";
+                                }
+                                ?>
+                        </div>
+                        <!-- Form footers end -->
                         <?php
 
                         if (false) { // $form_right_width == 100
@@ -852,7 +869,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
         if (file_exists($file_js_path)) {
         ?>
                 <script src='<?php echo $file_js ?>'></script>
-<?php
+        <?php
         } else {
                 echo "<!-- script js $md / $file_js not found in module/js path $file_js_path -->";
         }
