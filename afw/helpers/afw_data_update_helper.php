@@ -60,6 +60,20 @@ class AfwDataUpdateHelper
         $lastOperationUpdate = $lastOperationValues['update'];
         $lastOperationDelete = $lastOperationValues['delete'];
 
+
+        $data_api_id = $table_config['data_api_id'];
+        $mapping_job_id = $table_config['mapping_job_id'];
+        $executionLog = $table_config['executionLog'];
+        $run_date = $table_config['run_date'];
+
+        if($executionLog)
+        {
+            if(!$mapping_job_id) throw new AfwRuntimeException("data_update : mapping_job_id is mandatory field in table_config when executionLog is true");
+            if(!$data_api_id) throw new AfwRuntimeException("data_update : data_api_id is mandatory field in table_config when executionLog is true");
+
+            AfwAutoLoader::addModule("etl");
+        }
+
         if (! $table_name) {
             throw new AfwRuntimeException('to execute standard etl data_update table_name should be provided see your table config : ' . var_export($table_config, true));
         }
@@ -114,8 +128,10 @@ class AfwDataUpdateHelper
         $errors               = [];
         $continueAndSendAlert = true;
         $items_count          = count($items);
+        $item = null;
         foreach ($items as $ii => $item) {
             $pkey_cond = '1';
+            $record_definition = '';
             foreach ($pkey_arr as $pkey_col) {
                 $table_column = $mapping_cols[$pkey_col];
                 //if ( strlen( $table_column )<10 ) $table_column = "not mapped [$pkey_col]";
@@ -125,7 +141,10 @@ class AfwDataUpdateHelper
 
                 //$pkey_cond .= " and $table_column = ".$item->$pkey_col.';';
                 $pkey_cond .= " and $table_column = '" . $item->$pkey_col . "'";
+                $record_definition .= "$pkey_col:" . $item->$pkey_col;
             }
+            $record_json = json_encode($item);
+            
             /*
             if ($pkey2_arr) {
                 $reset_pk2  = '';
@@ -247,6 +266,7 @@ class AfwDataUpdateHelper
                     // insert record
                     $set_sentence = '';
                     $title        = 'insert record';
+                    $reason = "";
 
                     foreach ($mapping_cols as $json_column => $table_column) {
                         if (AfwStringHelper::stringContain($json_column, '(')) {
@@ -267,7 +287,8 @@ class AfwDataUpdateHelper
                                     $ignored_record .= "$table_column : " . $item->$json_column;
                                 }
                                 $title     = 'ignore record';
-                                $queries[] = ['title' => "$title", 'sql' => "-- $table_name record ignored : $ignored_record because IDN of student is bad", 'type' => 'error'];
+                                $reason = "because IDN of student is bad";
+                                $queries[] = ['title' => "$title", 'sql' => "-- $table_name record ignored : $ignored_record $reason", 'type' => 'error'];
                                 $ignored++;
 
                             } else {
@@ -298,16 +319,46 @@ class AfwDataUpdateHelper
                         $queries[] = ['title' => $title, 'sql' => $query_insert_record, 'type' => 'sql'];
                         $inserted++;
                     }
+                    else
+                    {
+                        $log_title = "Update ignored";
+                        $log_details = $reason;
+                        if($mapping_job_id && $data_api_id && $executionLog)
+                        {
+                            RecordLog::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, 
+                            $record_definition, $record_json, 
+                            $log_title, $log_details, true);
+                        }
+                        else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
+                    }
 
                 }
             } catch (Exception $e) {
+                $log_title = "Update failed with thrown Exception";
+                $log_details = $e->getMessage();
+                if($mapping_job_id && $data_api_id && $executionLog)
+                {
+                    RecordLog::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, 
+                      $record_definition, $record_json, 
+                      $log_title, $log_details, true);
+                }
+                else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
                 $ignored++;
-                $error_title = "For record $pkey_cond failed with Exception : " . $e->getMessage();
+                $error_title = $log_title . " : " . $log_details;
                 AfwBatch::print_error($error_title);
                 $errors[] = $error_title;
             } catch (Error $e) {
-                $error_title = "For record $pkey_cond failed with Error : " . $e->__toString();
+                $log_title = "Update failed with thrown Error";
+                $log_details = $e->getMessage();
+                if($mapping_job_id && $data_api_id && $executionLog)
+                {
+                    RecordLog::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, 
+                      $record_definition, $record_json, 
+                      $log_title, $log_details, true);
+                }
+                else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
                 $ignored++;
+                $error_title = $log_title . " : " . $log_details;
                 AfwBatch::print_error($error_title);
                 $errors[] = $error_title;
 
@@ -386,7 +437,7 @@ class AfwDataUpdateHelper
                     ExecutionLog::loadByMainIndex( 
                         $mapping_job_id,
                         $data_api_id,
-                        date("Y-m-d H:i:s"),
+                        $apiConfig['run_date'],
                         json_encode($data),
                         $result['response'],
                         $title_o,
