@@ -1,13 +1,13 @@
 <?php
-ini_set("upload_max_filesize","40M");
+ini_set("upload_max_filesize", "40M");
 $file_dir_name = dirname(__FILE__);
 
 try {
         $module = $_POST["module"];
         $doc_type_id = $_POST["doc_type_id"];
-        if(!$doc_type_id) $doc_type_id = 1;
+        if (!$doc_type_id) $doc_type_id = 1;
         $doc_attach_id = $_POST["doc_attach_id"];
-        if(!$doc_attach_id) $doc_attach_id = 0;
+        if (!$doc_attach_id) $doc_attach_id = 0;
         $after_upload = $_POST["afup"];
         $after_upload_obj_id = $_POST["afup_objid"];
         if (isset($_POST["afup_obj_categ_id"])) $after_upload_obj_categ_id = $_POST["afup_obj_categ_id"];
@@ -68,7 +68,7 @@ try {
         if (!$allowed_exention_list) {
                 list($allowed, $ft_allowed, $ft_used) = DocType::getExentionsAllowed($file_types, $upper = false);
                 $ft_used_names = implode(" / ", array_keys($ft_used));
-                $allowed_policy = "حسب أنواع المستندات : ".$ft_used_names." [$module]";
+                $allowed_policy = "حسب أنواع المستندات : " . $ft_used_names . " [$module]";
         } else {
                 $allowed = explode(",", $allowed_exention_list);
                 $allowed_policy = "حسب سياسة رفع المستندات";
@@ -80,7 +80,7 @@ try {
 
                 $extension = pathinfo($_FILES['upl']['name'], PATHINFO_EXTENSION);
                 if (!in_array(strtolower($extension), $allowed)) {
-                        echo '{"status":"error", "message":"صيغة الملف ' . strtolower($extension) . ' غير مسموح بها يسمح فقط بـ  :' . implode(",", $allowed) . ' '.$allowed_policy.'"}';
+                        echo '{"status":"error", "message":"صيغة الملف ' . strtolower($extension) . ' غير مسموح بها يسمح فقط بـ  :' . implode(",", $allowed) . ' ' . $allowed_policy . '"}';
                         exit;
                 }
                 $afile_original_name = $_FILES['upl']['name'];
@@ -106,34 +106,37 @@ try {
                         $af->set("afile_size", $afile_size);
                 } elseif ($AfileClass == "WorkflowFile") {
                         AfwAutoLoader::addModule("workflow");
-                        $owner_type = $after_upload;
-                        $owner_id = $after_upload_obj_id;
-                        $af = WorkflowFile::loadByMainIndex($afile_original_name, $owner_type, $owner_id, $afile_size,$create_obj_if_not_found=true);
-                        if(!$af->is_new)
-                        {
-                                echo '{"status":"error","message":"تم تحميل هذا الملف مسبقا يرجى استخدامه من القائمة وعدم تكرار التحميل"}';        
+                        if (!$after_upload or !$after_upload_obj_id) {
+                                $owner_type = 'user';
+                                $owner_id = $me;
+                        } else {
+                                $owner_type = $after_upload;
+                                $owner_id = $after_upload_obj_id;
+                        }
+                        $af = WorkflowFile::loadByMainIndex($afile_original_name, $owner_type, $owner_id, $afile_size, $create_obj_if_not_found = true);
+                        if (!$af->is_new) {
+                                echo '{"status":"error","message":"تم تحميل هذا الملف مسبقا يرجى استخدامه من القائمة وعدم تكرار التحميل"}';
                                 exit;
                         }
-                        
                 } else {
                         throw new AfwRuntimeException("use of AfileClass $AfileClass is not implemented in AfwMyUpload api service");
                 }
 
                 $af->set("afile_name", $afile_name);
                 $af->set("afile_type", $afile_type);
-                $af->set("afile_ext", strtolower($extension)); 
+                $af->set("afile_ext", strtolower($extension));
                 $new_name =  $af->getNewName();
-                $af->set("stored_file_name", $af->getNewName());               
+                $af->set("stored_file_name", $af->getNewName());
                 $af->set("picture", $afile_pic);
                 $af->set("doc_type_id", $doc_type_id);
-                
+
 
                 $error = "";
 
-                if ($af->commit()) {                        
+                if ($af->commit()) {
                         $mv_from_file = $_FILES['upl']['tmp_name'];
                         $uploads_root_path = AfwSession::config("uploads_root_path", "");
-                        if(!$uploads_root_path) throw new AfwRuntimeException("uploads_root_path is not defined correctly in system config");
+                        if (!$uploads_root_path) throw new AfwRuntimeException("uploads_root_path is not defined correctly in system config");
                         // $upld_path = AfwSession::config("uploads_http_path","");
                         $mv_to_file = $uploads_root_path . $new_name;
                         // array ( 'upl' => array ( 'name' => 'normalLeaveRamadan1436.jpg', 'type' => 'image/jpeg', 'tmp_name' => 'C:\\wamp\\tmp\\php942C.tmp', 'error' => 0, 'size' => 79454, ), )
@@ -151,17 +154,14 @@ try {
                                         echo '{"status":"error","message":"' . $error . '"}';
                                         exit;
                                 } else {
-                                        if(!$devMode)                                         
-                                        {
+                                        if (!$devMode) {
                                                 $mv_from_file0 = "***";
                                                 $mv_to_file0 = "***";
+                                        } else {
+                                                $mv_from_file0 = str_replace('\\', '/', $mv_from_file);
+                                                $mv_to_file0 = str_replace('\\', '/', $mv_from_file);
                                         }
-                                        else
-                                        {
-                                                $mv_from_file0 = str_replace('\\','/', $mv_from_file);
-                                                $mv_to_file0 = str_replace('\\','/', $mv_from_file);
-                                        }
-                                        
+
                                         echo '{"status":"success",' . "\n" . '"size":"' . $afile_size . '",' . "\n" . '"message":"success",' . "\n" . '"debugg": "file moved successfully from ' . $mv_from_file0 . ' to ' . $mv_to_file0 . '"}';
                                         exit;
                                 }
