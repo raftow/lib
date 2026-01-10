@@ -5127,23 +5127,36 @@ class AFWObject extends AFWRoot
                 if ($methodCan === true) $methodCan = "can" . AfwStringHelper::firstCharUpper($pbm_item["METHOD"]);
                 if (method_exists($this, $methodCan)) {
                     $user_can_run = $this->$methodCan($auser, $mode);
-                } else $user_can_run = false;
+                    if (!$user_can_run) $user_cant_reason = "$methodCan method have not permitted user od this PBM";
+                } else {
+                    $user_can_run = false;
+                    $user_cant_reason = "$methodCan method not implemented";
+                }
             }
 
             if ($pbm_item['ROLES']) {
-                $user_can_run = false;
                 list($module_code, $roles) = explode('/', $pbm_item['ROLES']);
+                $user_can_run = false;
+                $user_cant_reason = "roles $roles not permitted for this user";
+
                 $rolesArr = explode(",", $roles);
                 foreach ($rolesArr as $role_id) {
                     if ($auser->hasRole($module_code, $role_id)) {
                         $user_can_run = true;
+                        $user_cant_reason = "";
                         break;
                     }
                 }
             }
 
 
-            if ($user_can_run) $final_pbm_arr[$pbm_code] = $pbm_item;
+            if (!$user_can_run) {
+                $pbm_item["COLOR"] = "denied";
+                $pbm_item["METHOD"] = $pbm_item["METHOD"] . "_denied";
+                $pbm_item["LOG"] = $user_cant_reason;
+            }
+
+            $final_pbm_arr[$pbm_code] = $pbm_item;
         }
 
         return $final_pbm_arr;
