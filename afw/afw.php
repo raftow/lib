@@ -5116,6 +5116,8 @@ class AFWObject extends AFWRoot
 
         $allowed_pbm_arr = UmsManager::getAllowedBFMethods($pbm_arr, $auser, $mode);
 
+        if ($auser->isAdmin()) return $allowed_pbm_arr;
+
         $final_pbm_arr = [];
         foreach ($allowed_pbm_arr as $pbm_code => $pbm_item) {
             $user_can_run = true;
