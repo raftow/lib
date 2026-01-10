@@ -355,7 +355,8 @@ class AFWObject extends AFWRoot
         $table_name = static::$TABLE;
         // static::$DB_STRUCTURE
 
-        return AfwStructureHelper::getDbStructure($module_code,
+        return AfwStructureHelper::getDbStructure(
+            $module_code,
             $class_name,
             $table_name,
             $return_type,
@@ -363,7 +364,8 @@ class AFWObject extends AFWRoot
             $step,
             $start_step,
             $end_step,
-            $repare);
+            $repare
+        );
     }
 
     public function getMyOwnerId()
@@ -1234,11 +1236,12 @@ class AFWObject extends AFWRoot
      * @param string  $limit : Optional add limit to query
      * @param string  $order_by : Optional add order by to query
      */
-    public function loadCol($col_name,
+    public function loadCol(
+        $col_name,
         $distinct = false,
         $limit = '',
-        $order_by = '')
-    {
+        $order_by = ''
+    ) {
         return AfwLoadHelper::loadCol($this, $col_name, $distinct, $limit, $order_by);
     }
 
@@ -2627,10 +2630,10 @@ class AFWObject extends AFWRoot
                 } else {
                     throw new AfwRuntimeException(
                         "call to the method decode() avec plus d'un argument : decode('"
-                        . $attribute
-                        . "', '"
-                        . implode("', '", $arguments)
-                        . "')."
+                            . $attribute
+                            . "', '"
+                            . implode("', '", $arguments)
+                            . "')."
                     );
                 }
                 break;
@@ -2640,10 +2643,10 @@ class AFWObject extends AFWRoot
                 } else {
                     throw new AfwRuntimeException(
                         "call to the method set() avec plus d'un argument : set('"
-                        . $attribute
-                        . "', '"
-                        . implode("', '", $arguments)
-                        . "')."
+                            . $attribute
+                            . "', '"
+                            . implode("', '", $arguments)
+                            . "')."
                     );
                 }
                 break;
@@ -2653,8 +2656,8 @@ class AFWObject extends AFWRoot
                     $this_table = static::$TABLE;
                     throw new AfwRuntimeException(
                         "afw 'magic' method afwCall : class $this_table make a call to a non exisiting method : '"
-                        . $name
-                        . "'."
+                            . $name
+                            . "'."
                     );
                 }
                 return $returnAfwCall;
@@ -2752,8 +2755,8 @@ class AFWObject extends AFWRoot
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
                 'Impossible faire call to the method select() with the virtual table '
-                . static::$TABLE
-                . '.'
+                    . static::$TABLE
+                    . '.'
             );
         } else {
             $attribute = AfwStructureHelper::shortNameToAttributeName($this, $attribute);
@@ -2820,8 +2823,8 @@ class AFWObject extends AFWRoot
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
                 'Impossible faire call to the method selectInside() with the virtual table '
-                . static::$TABLE
-                . '.'
+                    . static::$TABLE
+                    . '.'
             );
         } else {
             $attribute = AfwStructureHelper::shortNameToAttributeName($this, $attribute);
@@ -2859,8 +2862,8 @@ class AFWObject extends AFWRoot
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
                 'Impossible faire call to the method where() with the virtual table '
-                . static::$TABLE
-                . '.'
+                    . static::$TABLE
+                    . '.'
             );
         } else {
             // ajouter " and " seulement si elle n'est pas dans $sql
@@ -2894,8 +2897,8 @@ class AFWObject extends AFWRoot
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
                 'Impossible faire call to the method where() with the virtual table '
-                . static::$TABLE
-                . '.'
+                    . static::$TABLE
+                    . '.'
             );
         } else {
             // ajouter " and " seulement si elle n'est pas dans $sql
@@ -3402,8 +3405,7 @@ class AFWObject extends AFWRoot
             $switch_mess = 'SWITCH FAILED ';
             $swc_col_old_val = $this->getVal($swc_col);
 
-            if($structure['W-IS-VALUE'])
-            {
+            if ($structure['W-IS-VALUE']) {
                 if ($swc_col_old_val == 'N') {
                     $this->set($swc_col, 'W');
                     $switch_mess = 'SWITCHED-OFN';
@@ -3414,8 +3416,7 @@ class AFWObject extends AFWRoot
                     $this->set($swc_col, 'N');
                     $switch_mess = 'SWITCHED-OFF';
                 }
-            }
-            else {
+            } else {
                 if ($swc_col_old_val != 'Y') {
                     $this->set($swc_col, 'Y');
                     $switch_mess = 'SWITCHED-ON';
@@ -3523,14 +3524,14 @@ class AFWObject extends AFWRoot
         if ($this->IS_VIRTUAL) {
             throw new AfwRuntimeException(
                 'can not call delete() method with virtual table : '
-                . static::$TABLE
-                . '.'
+                    . static::$TABLE
+                    . '.'
             );
         } elseif (($delReturn = $this->userCanDeleteMe($objme)) <= 0) {
             $delReturnDecoded = self::decodeDeleteReturn($delReturn);
             throw new AfwRuntimeException(
                 "the user [$objme] is not allowed to do delete operation on ["
-                . $this->getShortDisplay($lang) . "] DEL-RETURN=$delReturnDecoded"
+                    . $this->getShortDisplay($lang) . "] DEL-RETURN=$delReturnDecoded"
             );
         } else {
             $return = false;
@@ -3718,8 +3719,8 @@ class AFWObject extends AFWRoot
                 . ' : '
                 . ($this->getTypeOf($attribute) == 'FK' ||
                     $this->getTypeOf($attribute) == 'MFK'
-                        ? $this->decode($attribute)
-                        : $this->getVal($attribute))
+                    ? $this->decode($attribute)
+                    : $this->getVal($attribute))
                 . "\n";
             if (isset($this->OBJECTS_CACHE[$attribute]) && $childrens) {
                 $debug .= $this->OBJECTS_CACHE[$attribute]->debug(
@@ -3932,8 +3933,10 @@ class AFWObject extends AFWRoot
             $module
         );
 
-        if (AfwStringHelper::stringStartsWith(trim($return), '??') and
-                AfwStringHelper::stringEndsWith(trim($return), '??')) {
+        if (
+            AfwStringHelper::stringStartsWith(trim($return), '??') and
+            AfwStringHelper::stringEndsWith(trim($return), '??')
+        ) {
             $return = AfwStringHelper::methodToTitle($nom_col);
         }
         $return_before = $return;
@@ -3966,8 +3969,10 @@ class AFWObject extends AFWRoot
             $module
         );
 
-        if (AfwStringHelper::stringStartsWith(trim($return), '??') and
-                AfwStringHelper::stringEndsWith(trim($return), '??')) {
+        if (
+            AfwStringHelper::stringStartsWith(trim($return), '??') and
+            AfwStringHelper::stringEndsWith(trim($return), '??')
+        ) {
             $return = AfwStringHelper::methodToTitle($nom_col);
         }
         $return_before = $return;
@@ -4112,7 +4117,7 @@ class AFWObject extends AFWRoot
         ) {
             throw new AfwRuntimeException(
                 "[$this] object can't be deleted without any reason specified"
-                . var_export($this, true)
+                    . var_export($this, true)
             );
         }
         return [$can, $this->deleteNotAllowedReason];
@@ -4971,10 +4976,12 @@ class AFWObject extends AFWRoot
                             $user_is_owner = null;
                         }
 
-                        if ($public or
-                                $ican_do_bf or
-                                $belongs_to_ugroup or
-                                $user_is_owner) {
+                        if (
+                            $public or
+                            $ican_do_bf or
+                            $belongs_to_ugroup or
+                            $user_is_owner
+                        ) {
                             $attribute_related = $other_link['ATTRIBUTE_WRITEABLE'];
                             if ($ican_do_bf) {
                                 $other_link['AUTH_TYPE'] = 'i-can-do-bf';
@@ -5099,11 +5106,45 @@ class AFWObject extends AFWRoot
         return AfwWizardHelper::getOtherLinksArrayStandard($this, $mode, $genereLog, $step);
     }
 
+
+    /**
+     * @param Auser $auser
+     */
     final public function getPublicMethodsForUser($auser, $mode = 'display')
     {
         $pbm_arr = $this->getPublicMethods();
 
-        return UmsManager::getAllowedBFMethods($pbm_arr, $auser, $mode);
+        $allowed_pbm_arr = UmsManager::getAllowedBFMethods($pbm_arr, $auser, $mode);
+
+        $final_pbm_arr = [];
+        foreach ($allowed_pbm_arr as $pbm_code => $pbm_item) {
+            $user_can_run = true;
+
+            if ($pbm_item['CAN_IF']) {
+                $methodCan = $pbm_item['CAN_IF'];
+                if ($methodCan === true) $methodCan = "can" . AfwStringHelper::firstCharUpper($pbm_item["METHOD"]);
+                if (method_exists($this, $methodCan)) {
+                    $user_can_run = $this->$methodCan($auser, $mode);
+                } else $user_can_run = false;
+            }
+
+            if ($pbm_item['ROLES']) {
+                $user_can_run = false;
+                list($module_code, $roles) = explode('/', $pbm_item['ROLES']);
+                $rolesArr = explode(",", $roles);
+                foreach ($rolesArr as $role_id) {
+                    if ($auser->hasRole($module_code, $role_id)) {
+                        $user_can_run = true;
+                        break;
+                    }
+                }
+            }
+
+
+            if ($user_can_run) $final_pbm_arr[$pbm_code] = $pbm_item;
+        }
+
+        return $final_pbm_arr;
     }
 
     final public function getPublicMethodForUser($auser, $pMethodCode)
@@ -5544,21 +5585,24 @@ class AFWObject extends AFWRoot
         }
     }
 
-    public function getMySpecificDataErrors($lang = 'ar',
+    public function getMySpecificDataErrors(
+        $lang = 'ar',
         $show_val = true,
         $step = 'all',
         $erroned_attribute = null,
         $stop_on_first_error = false,
         $start_step = null,
-        $end_step = null)
-    {
-        return $this->getSpecificDataErrors($lang,
+        $end_step = null
+    ) {
+        return $this->getSpecificDataErrors(
+            $lang,
             $show_val,
             $step,
             $erroned_attribute,
             $stop_on_first_error,
             $start_step,
-            $end_step);
+            $end_step
+        );
     }
 
     // Action :
@@ -5763,11 +5807,13 @@ class AFWObject extends AFWRoot
         if ($this->editByStep) {
             for ($istep = 1; $istep <= $this->editNbSteps; $istep++) {
                 // die("istep=$istep before getStepErrors ");
-                $err_arr = AfwDataQualityHelper::getStepErrors($this,
+                $err_arr = AfwDataQualityHelper::getStepErrors(
+                    $this,
                     $istep,
                     $lang,
                     $show_val = true,
-                    $recheck = true);
+                    $recheck = true
+                );
                 // die(var_export($err_arr,true));
                 if (count($err_arr) > 0) {
                     return $istep + $error_offset;
@@ -6081,10 +6127,12 @@ class AFWObject extends AFWRoot
         $nextStep,
         $form_readonly = 'RO'
     ) {
-        return AfwWizardHelper::getFinishButtonLabelDefault($this,
+        return AfwWizardHelper::getFinishButtonLabelDefault(
+            $this,
             $lang,
             $nextStep,
-            $form_readonly);
+            $form_readonly
+        );
     }
 
     public function canFinishOnCurrentStep()
@@ -6386,11 +6434,11 @@ class AFWObject extends AFWRoot
         } else {
             throw new AfwRuntimeException(
                 "attribute '"
-                . $attribute
-                . "' does not exist in structure of entity : "
-                . static::$TABLE
-                . ' : DB_STRUCTURE = '
-                . var_export(self::getDbStructure(), true)
+                    . $attribute
+                    . "' does not exist in structure of entity : "
+                    . static::$TABLE
+                    . ' : DB_STRUCTURE = '
+                    . var_export(self::getDbStructure(), true)
             );
         }
 

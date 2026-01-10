@@ -79,6 +79,9 @@ class AfwDynamicPublicMethodHelper
             $methodTitleEn = str_replace('[item]', $itemTitleEn, $methodTitleEn);
             $methodTooltipEn = $object->getMethodTooltip($methodName0, 'ar');
             $methodColor = $publicDynamicMethodProps['color'];
+            $can_if = $publicDynamicMethodProps['can_if'];
+            $roles = $publicDynamicMethodProps['roles'];
+
             if (!$methodColor)
                 $methodColor = 'yellow';  // @todo make random on colors
             $methodConfirmationNeeded = $publicDynamicMethodProps["'confirmation_needed'"];
@@ -98,6 +101,8 @@ class AfwDynamicPublicMethodHelper
                 'ADMIN-ONLY' => $adminOnly,
                 'ONLY-ADMIN' => $adminOnly,
                 'PUBLIC' => $public,
+                'CAN_IF' => $can_if,
+                'ROLES' => $roles,
                 'BF-ID' => '',
                 'confirmation_needed' => $methodConfirmationNeeded,
                 'CONFIRMATION_WARNING' => array('ar' => $methodConfirmationWarning, 'en' => $methodConfirmationWarningEn),
