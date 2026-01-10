@@ -356,8 +356,8 @@ class AfwUmsPagHelper extends AFWRoot
                         if ($afield_type_id == $afwType) {
                             throw new AfwRuntimeException(
                                 "for attribute <b>[$attribute]</b> can not decode afw type <b>[$afwType]</b> to afield type : <br><b>struct</b> = "
-                                . var_export($structure, true)
-                                . '<br> <b>obj</b> = ' . var_export($obj, true)
+                                    . var_export($structure, true)
+                                    . '<br> <b>obj</b> = ' . var_export($obj, true)
                             );
                         }
 
@@ -530,6 +530,11 @@ class AfwUmsPagHelper extends AFWRoot
         if ($attribute == 'after_save_edit') {
             return true;
         }
+
+        if ($attribute == 'after_save_edit_cases') {
+            return true;
+        }
+
         if ($attribute == 'public_display') {
             return true;
         }
@@ -1038,8 +1043,8 @@ class AfwUmsPagHelper extends AFWRoot
                     if (
                         isset($desc['EXCEL']) && $desc['EXCEL'] or
                         !isset($desc['EXCEL']) &&
-                            isset($desc['RETRIEVE']) &&
-                            $desc['RETRIEVE']
+                        isset($desc['RETRIEVE']) &&
+                        $desc['RETRIEVE']
                     ) {
                         $cols_excel[$nom_col] = $object->translate(
                             $nom_col,

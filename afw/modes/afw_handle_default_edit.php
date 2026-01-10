@@ -9,7 +9,7 @@ $posted_currmod = $_POST["currmod"];
 if (!$lang) $lang = "ar";
 $file_dir_name = dirname(__FILE__);
 
-if(!$objme) $objme = AfwSession::getUserConnected();
+if (!$objme) $objme = AfwSession::getUserConnected();
 
 //AFWDebugg::setEnabled(true);
 ////AFWObject::setDebugg(true);
@@ -42,8 +42,7 @@ if (!$is_loaded_from_db) {
             $id = $obj->getId();
             //if((!$id) and $objme and $objme->isSuperAdmin()) die("rafik loadWithUniqueKey failed object still without ID ".var_export($obj,true));
             $is_loaded_from_db = true;
-        }
-        else{
+        } else {
             // die("loadWithUniqueKey failed to found record and has used ukey_array = ".var_export($ukey_array,true)." obj=".var_export($obj,true));
         }
     }
@@ -86,7 +85,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
             //if(($nom_col=="mode_search") and ($i==3)) die("for col [$nom_col] i=$i : posted_val[$qedit_nom_col]=[$val] from ".var_export($_POST,true));
             // case ($val == "1") checkbox
             // case ($val == "Y") new switcher component
-            if(($val == "1") or ($val == "Y")) $val = "Y";
+            if (($val == "1") or ($val == "Y")) $val = "Y";
             else $val = "N";
         }
 
@@ -135,8 +134,8 @@ foreach ($class_db_structure as $nom_col => $desc) {
         {
             die("before set $nom_col val = $val -> _POST : ".var_export($_POST,true));                
         }*/
-                 
-                
+
+
         if ($nom_col != $obj->getPK()) $obj->set($nom_col, $val);
 
         //if(($nom_col=="lastname_en") and ($val!="")) die("after set $nom_col val = $val -> obj : ".var_export($obj,true));
@@ -163,13 +162,14 @@ if ($obj->editByStep) {
     }
 
     $les = $obj->getLastEditedStep(false);
-    if($obj->id and !$les) $les = 1;
+    if ($obj->id and !$les) $les = 1;
 
     if (($obj->stepsAreOrdered() and ($currstep > $les)) or
-        ($currstep == $les+1)) // if steps aren't ordered we should enter steps by order to update sci_id
+        ($currstep == $les + 1)
+    ) // if steps aren't ordered we should enter steps by order to update sci_id
     {
         $obj->setLastEditedStep($currstep);
-    } 
+    }
 }
 $new_label = $obj->insertNewLabel($lang);
 $successful_save = AfwLanguageHelper::translateKeyword("save_with_sucess", $lang) . " " . AfwLanguageHelper::translateKeyword("changes", $lang);
@@ -265,7 +265,7 @@ if ($_POST["pbmon"]) {
                 $pbm_confirmed = true;
             }
 
-            
+
 
             // die("pbm_confirmed=$pbm_confirmed");
             if ($pbm_confirmed) {
@@ -279,13 +279,11 @@ if ($_POST["pbmon"]) {
                     // die("pbmp_$pbMethodCode and pbmpbis_$pbMethodCode not found in pbmethod_main_param__POST = ".var_export($_POST,true));
                 }
                 //if($obj->pbmethod_main_param) die("obj->pbmethod_main_param = ".$obj->pbmethod_main_param.", _POST = ".var_export($_POST,true));
-                if($pMethodItem['TIMER']) 
-                {
+                if ($pMethodItem['TIMER']) {
                     $start_m_time = date('Y-m-d H:i:s');
                 }
                 list($error, $info, $warn, $technical) = $obj->executePublicMethodForUser($objme, $pbMethodCode, $lang);
-                if($pMethodItem['TIMER']) 
-                {
+                if ($pMethodItem['TIMER']) {
                     $end_m_time = date('Y-m-d H:i:s');
                     $duree_pbm = AfwDateHelper::timeDiffInSeconds($end_m_time, $start_m_time);
                     $warn .= "<div class='timer'>$start_m_time &rarr; $end_m_time &rarr; $duree_pbm sec</div>";
@@ -334,6 +332,10 @@ if ($global_after_save_edit[$class]) {
 }
 
 if ($save_update and $obj->after_save_edit) {
+    if ($obj->after_save_edit_cases) {
+        $aseCase = $obj->afterEditSaveCase();
+        $obj->after_save_edit = $obj->after_save_edit_cases["case-$aseCase"];
+    }
     $file = $obj->after_save_edit["file"];
     $cl = $obj->after_save_edit["class"];
     $mode = $obj->after_save_edit["mode"];
