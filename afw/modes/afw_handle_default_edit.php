@@ -331,7 +331,7 @@ if ($global_after_save_edit[$class]) {
     $obj->after_save_edit = $global_after_save_edit[$class];
 }
 
-if ($save_update and $obj->after_save_edit) {
+if ($save_update and ($obj->after_save_edit or $obj->after_save_edit_cases)) {
     if ($obj->after_save_edit_cases) {
         $aseCase = $obj->afterEditSaveCase();
         $obj->after_save_edit = $obj->after_save_edit_cases["case-$aseCase"];
