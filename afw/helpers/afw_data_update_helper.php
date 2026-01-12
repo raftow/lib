@@ -260,6 +260,15 @@ class AfwDataUpdateHelper
                         }
                         $title     = 'ignore record';
                         $queries[] = ['title' => "$title", 'sql' => "-- $table_name record ignored : $ignored_record :: API record tmstamp=" . $item->$source_api_timestamp_field . ' vs DB record tmstmp : ' . $record_dest_tstamp . ", job_param_timestamp = $job_param_source_tstamp", 'type' => 'error'];
+                        $log_title = $title;
+                        $log_details = $reason;
+                        if($mapping_job_id && $data_api_id && $executionLog)
+                        {
+                            RecordLog::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, 
+                            $record_definition, $record_json, 
+                            $log_title, $log_details, true);
+                        }
+                        else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
                         $ignored++;
                     }
                 } else {
@@ -277,7 +286,7 @@ class AfwDataUpdateHelper
 
                             $set_sentence .= "$table_column = " . $json_column;
                         } else {
-                            if (($table_column == 'STUDENT_ID') and strlen($item->$json_column) <= 3) {
+                            if (($table_column == 'STUDENT_ID') and (strlen($item->$json_column) <= 3)) {
                                 $ignored_record = '';
                                 foreach ($mapping_cols as $json_column => $table_column) {
                                     if ($ignored_record) {
@@ -289,6 +298,16 @@ class AfwDataUpdateHelper
                                 $title     = 'ignore record';
                                 $reason = "because IDN of student is bad";
                                 $queries[] = ['title' => "$title", 'sql' => "-- $table_name record ignored : $ignored_record $reason", 'type' => 'error'];
+
+                                $log_title = $title;
+                                $log_details = $reason;
+                                if($mapping_job_id && $data_api_id && $executionLog)
+                                {
+                                    RecordLog::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, 
+                                    $record_definition, $record_json, 
+                                    $log_title, $log_details, true);
+                                }
+                                else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
                                 $ignored++;
 
                             } else {
