@@ -3165,11 +3165,12 @@ class AFWObject extends AFWRoot
         return false;
     }
 
-    public static final function updateWhere($sets_arr, $where_clause, $nocote = false)
+    public static final function updateWhere($sets_arr, $where_clause, $nocote = false, $force = false, $is_numeric_field = false)
     {
         $obj = new static();
         foreach ($sets_arr as $col_name => $col_value) {
-            $obj->set($col_name, $col_value);
+            if ($force) $obj->setForce($col_name, $col_value, $is_numeric_field);
+            else $obj->set($col_name, $col_value);
         }
 
         $obj->where($where_clause);
