@@ -48,7 +48,7 @@ class AfwHtmlHelper extends AFWRoot {
         public static function array_keysToHeader($row)
         {
                 $header_trad = [];
-                if($row and (count($row)>0))
+                if($row and is_array($row) and (count($row)>0))
                 {
                         $header_keys = array_keys($row);
                         foreach($header_keys as $header_col)

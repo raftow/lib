@@ -178,10 +178,10 @@ if (!class_exists('AfwAutoLoader')) {
                                 list($found, $path, $failed_loadings_log_arr) = self::getClassPath($class);
 
                                 if (!$found) {
-                                        throw new RuntimeException('Unable to locate the class [' . $class . '] in configured paths : <!-- failed_loadings_arr = ' . var_export($failed_loadings_log_arr, true) . ' modules_autoload_by_prio = ' . var_export(self::$modules_autoload_by_prio, true) . ' -->');
                                         // rafik : I commented this below because not clear for me what other possible autoloaders ?
                                         // should not throw exception but give the hand to other possible autoloaders ...
-                                        // return FALSE;
+                                        // throw new RuntimeException('Unable to locate the class [' . $class . '] in configured paths : <!-- failed_loadings_arr = ' . var_export($failed_loadings_log_arr, true) . ' modules_autoload_by_prio = ' . var_export(self::$modules_autoload_by_prio, true) . ' -->');
+                                        return FALSE;
                                 }
                         }
 

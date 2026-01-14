@@ -9,13 +9,18 @@ class AfwShowHelper
     //                       "ALL-BY-TAB" => to see all retieve columns but splitted into tabs each fgroup in a special tab,
     // it is very useful for afield for example which have ITEMS attribute in atable but we can't see all attributes (too much)
 
+    /**
+     * @param AFWObject $obj
+     */
     public static function showMany($obj, $cols, $objme, $lang, $options = [])
     {
         foreach ($options as $option => $option_value) {
             ${$option} = $option_value;
         }
 
-        $liste_obj = $obj->loadMany();
+        if(!$LIMIT) $LIMIT = "";
+
+        $liste_obj = $obj->loadMany($LIMIT);
 
         $arr_col = explode(',', $cols);
 
@@ -2009,6 +2014,7 @@ class AfwShowHelper
      */
     public static function showVirtualAttribute($object, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $lang = 'ar', $structure = null, $getlink = false)
     {
+        if(!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         switch ($intelligent_category) {
             case 'VIRTUAL':
                 $data_to_display = $object->getVirtual($attribute, 'value', '');
@@ -2024,7 +2030,7 @@ class AfwShowHelper
 
             case 'ITEMS':
                 if (($structure['SHOW_DATA'] != 'EXAMPLE') and (!$structure['SHOW_MAX_DATA'])) {
-                    $items_objs = $object->get($attribute, 'object', '', false);
+                    $items_objs = $object->get($attribute, 'object', '', false, $structure['LIMIT']);
                     // if($attribute=="attendanceList") throw new AfwRuntimeException("$object - > get($attribute) = ".var_export($items_objs,true));
                 } else {
                     $max_items_to_show = $structure['SHOW_MAX_DATA'];

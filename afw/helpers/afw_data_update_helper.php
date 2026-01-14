@@ -72,7 +72,9 @@ class AfwDataUpdateHelper
             if(!$data_api_id) throw new AfwRuntimeException("data_update : data_api_id is mandatory field in table_config when executionLog is true");
 
             AfwAutoLoader::addModule("etl");
+            $apiExecObj = ApiExecution::loadByMainIndex($mapping_job_id, $data_api_id, $run_date);
         }
+
 
         if (! $table_name) {
             throw new AfwRuntimeException('to execute standard etl data_update table_name should be provided see your table config : ' . var_export($table_config, true));
@@ -141,8 +143,9 @@ class AfwDataUpdateHelper
 
                 //$pkey_cond .= " and $table_column = ".$item->$pkey_col.';';
                 $pkey_cond .= " and $table_column = '" . $item->$pkey_col . "'";
-                $record_definition .= "$pkey_col:" . $item->$pkey_col;
+                $record_definition .= "$pkey_col:" . $item->$pkey_col."+";
             }
+            $record_definition = trim($record_definition,'+');
             $record_json = json_encode($item);
             
             /*
@@ -182,7 +185,8 @@ class AfwDataUpdateHelper
                         }
 
                     } else {
-                        $not_recent_reason = $item->$source_api_timestamp_field ." > " . $record_dest_tstamp;
+                        $not_recent_reason = "received record time stamp : ".$item->$source_api_timestamp_field ." vs existing record time stamp  " . $record_dest_tstamp;
+                        $not_recent_reason .= "<br>It may be malfunction in the source giving the records duplicated or the defined Primay key defined in settings is not correct";
                         $recently_updated = false;
                     }
                 }
@@ -235,10 +239,12 @@ class AfwDataUpdateHelper
                         if($item->$source_api_deleted_at_field)
                         {
                             $lastOperationHere = $lastOperationDelete;
+                            $status = 'delete';
                         }
                         else
                         {
                             $lastOperationHere = $lastOperationUpdate;
+                            $status = 'update';
                         }
                         AfwBatch::print_info($title);
                         $query_update_record = "update $table_name set $set_sentence, $rowVersionCol=$rowVersionCol+1, $lastOperationCol='$lastOperationHere' \nwhere $pkey_cond";
@@ -248,6 +254,15 @@ class AfwDataUpdateHelper
 
                         $queries[] = ['title' => $title, 'sql' => $query_update_record, 'type' => 'warning'];
                         $updated++;
+                        $log_title = $title;
+                        $log_details = $query_update_record;
+                        if($mapping_job_id && $data_api_id && $executionLog && $apiExecObj)
+                        {
+                            RecordLog::loadByMainIndex($apiExecObj->id, $ii+1, $item->page, $status,
+                                                        $record_definition, $record_json, 
+                                                        $log_title, $log_details, true);
+                        }
+                        else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
                     } else {
                         AfwBatch::print_warning("record will be ignored reason : $not_recent_reason");
                         $ignored_record = '';
@@ -260,16 +275,17 @@ class AfwDataUpdateHelper
                         }
                         $title     = 'ignore record';
                         $queries[] = ['title' => "$title", 'sql' => "-- $table_name record ignored : $ignored_record :: API record tmstamp=" . $item->$source_api_timestamp_field . ' vs DB record tmstmp : ' . $record_dest_tstamp . ", job_param_timestamp = $job_param_source_tstamp", 'type' => 'error'];
+                        $ignored++;
                         $log_title = $title;
-                        $log_details = $reason;
-                        if($mapping_job_id && $data_api_id && $executionLog)
+                        $log_details = $not_recent_reason;
+                        if($mapping_job_id && $data_api_id && $executionLog and $apiExecObj)
                         {
-                            RecordLog::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, 
-                            $record_definition, $record_json, 
-                            $log_title, $log_details, true);
+                            RecordLog::loadByMainIndex($apiExecObj->id, $ii+1, $item->page, 'ignore',
+                                                        $record_definition, $record_json, 
+                                                        $log_title, $log_details, true);
                         }
                         else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
-                        $ignored++;
+                        
                     }
                 } else {
                     // insert record
@@ -298,17 +314,17 @@ class AfwDataUpdateHelper
                                 $title     = 'ignore record';
                                 $reason = "because IDN of student is bad";
                                 $queries[] = ['title' => "$title", 'sql' => "-- $table_name record ignored : $ignored_record $reason", 'type' => 'error'];
-
+                                $ignored++;
                                 $log_title = $title;
                                 $log_details = $reason;
-                                if($mapping_job_id && $data_api_id && $executionLog)
+                                if($mapping_job_id && $data_api_id && $executionLog && $apiExecObj)
                                 {
-                                    RecordLog::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, 
-                                    $record_definition, $record_json, 
-                                    $log_title, $log_details, true);
+                                    RecordLog::loadByMainIndex($apiExecObj->id, $ii+1, $item->page, 'ignore',
+                                                        $record_definition, $record_json, 
+                                                        $log_title, $log_details, true);
                                 }
                                 else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
-                                $ignored++;
+                                
 
                             } else {
                                 if ($set_sentence) {
@@ -325,10 +341,12 @@ class AfwDataUpdateHelper
                         if($item->$source_api_deleted_at_field)
                         {
                             $lastOperationHere = $lastOperationDelete;
+                            $status = 'delete';
                         }
                         else
                         {
                             $lastOperationHere = $lastOperationInsert;
+                            $status = 'insert';
                         }
                         $query_insert_record = "insert into $table_name set $set_sentence, $rowVersionCol=1, $lastOperationCol='$lastOperationHere'";
                         if (! $simul) {
@@ -337,16 +355,25 @@ class AfwDataUpdateHelper
 
                         $queries[] = ['title' => $title, 'sql' => $query_insert_record, 'type' => 'sql'];
                         $inserted++;
+                        $log_title = $title;
+                        $log_details = $query_insert_record;
+                        if($mapping_job_id && $data_api_id && $executionLog && $apiExecObj)
+                        {
+                            RecordLog::loadByMainIndex($apiExecObj->id, $ii+1, $item->page, $status,
+                                                        $record_definition, $record_json, 
+                                                        $log_title, $log_details, true);
+                        }
+                        else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
                     }
                     else
                     {
                         $log_title = "Update ignored";
                         $log_details = $reason;
-                        if($mapping_job_id && $data_api_id && $executionLog)
+                        if($mapping_job_id && $data_api_id && $executionLog && $apiExecObj)
                         {
-                            RecordLog::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, 
-                            $record_definition, $record_json, 
-                            $log_title, $log_details, true);
+                            RecordLog::loadByMainIndex($apiExecObj->id, $ii+1, $item->page, 'ignore',
+                                                        $record_definition, $record_json, 
+                                                        $log_title, $log_details, true);
                         }
                         else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
                     }
@@ -355,11 +382,11 @@ class AfwDataUpdateHelper
             } catch (Exception $e) {
                 $log_title = "Update failed with thrown Exception";
                 $log_details = $e->getMessage();
-                if($mapping_job_id && $data_api_id && $executionLog)
+                if($mapping_job_id && $data_api_id && $executionLog && $apiExecObj)
                 {
-                    RecordLog::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, 
-                      $record_definition, $record_json, 
-                      $log_title, $log_details, true);
+                    RecordLog::loadByMainIndex($apiExecObj->id, $ii+1, $item->page, 'error',
+                                                        $record_definition, $record_json, 
+                                                        $log_title, $log_details, true);
                 }
                 else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
                 $ignored++;
@@ -369,11 +396,11 @@ class AfwDataUpdateHelper
             } catch (Error $e) {
                 $log_title = "Update failed with thrown Error";
                 $log_details = $e->getMessage();
-                if($mapping_job_id && $data_api_id && $executionLog)
+                if($mapping_job_id && $data_api_id && $executionLog && $apiExecObj)
                 {
-                    RecordLog::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, 
-                      $record_definition, $record_json, 
-                      $log_title, $log_details, true);
+                    RecordLog::loadByMainIndex($apiExecObj->id, $ii+1, $item->page, 'error',
+                                                        $record_definition, $record_json, 
+                                                        $log_title, $log_details, true);
                 }
                 else AfwBatch::print_warning("ETL executionLog disabled : case $log_title : mapping_job_id=$mapping_job_id && data_api_id=$data_api_id && executionLog=$executionLog");
                 $ignored++;
@@ -385,6 +412,17 @@ class AfwDataUpdateHelper
         }
 
         return [$inserted, $updated, $ignored, $queries, $new_stamp, $errors];
+    }
+
+
+    private static function paginate($items_arr, $page_number)
+    {
+        foreach($items_arr as $indx => $an_item)
+        {
+            $items_arr[$indx]->page = $page_number;
+        }
+
+        return $items_arr;
     }
 
     public static function consume_api($apiConfig, $url, $data = null, $recursive = true, $max_tentatives = 20, $print_debugg = true, $force_mode = false, $lang = 'ar', $throwError = true)
@@ -402,6 +440,9 @@ class AfwDataUpdateHelper
         $data_api_id = $apiConfig['data_api_id'];
         $mapping_job_id = $apiConfig['mapping_job_id'];
         $executionLog = $apiConfig['executionLog'];
+        $run_date = $apiConfig['run_date'];
+
+        $apiExecObj = null;
 
         if($executionLog)
         {
@@ -409,6 +450,8 @@ class AfwDataUpdateHelper
             if(!$data_api_id) throw new AfwRuntimeException("consume_api : data_api_id is mandatory field in apiConfig when executionLog is true");
 
             AfwAutoLoader::addModule("etl");
+
+            $apiExecObj = ApiExecution::loadByMainIndex($mapping_job_id, $data_api_id, $run_date, json_encode($data),"see log details ...", "see log details ...",true);
         }
         
 
@@ -453,10 +496,7 @@ class AfwDataUpdateHelper
 
                 if($mapping_job_id && $data_api_id && $executionLog)
                 {
-                    ExecutionLog::loadByMainIndex( 
-                        $mapping_job_id,
-                        $data_api_id,
-                        $apiConfig['run_date'],
+                    ExecutionLog::loadByMainIndex($apiExecObj->id, 1,
                         json_encode($data),
                         $result['response'],
                         $title_o,
@@ -475,20 +515,18 @@ class AfwDataUpdateHelper
 
         $ok = true;
 
-        if (! $result['success']) {
+        if (!$result['success']) {
             $title_o = "After $max_tentatives tentatives the url : " . $result['url'] . ' failed';
             $error_msg = "$title_o and got response : " . $result['response'];
             if($mapping_job_id && $data_api_id && $executionLog)
             {
-                ExecutionLog::loadByMainIndex( 
-                    $mapping_job_id,
-                    $data_api_id,
-                    date("Y-m-d H:i:s"),
-                    json_encode($data),
-                    $result['response'],
-                    $title_o,
-                    true
-                );
+                ExecutionLog::loadByMainIndex($apiExecObj->id, 1,
+                        json_encode($data),
+                        $result['response'],
+                        $title_o,
+                        true
+                    );
+                
             }
             AfwBatch::print_error($error_msg);
             if ($throwError) {
@@ -499,14 +537,18 @@ class AfwDataUpdateHelper
 
         }
 
+        
+
         $items = [];
 
         if ($ok) {
-            $items     = $result['result']->$itemsAttribute;
-            $pageCount = $result['result']->$metaAttribute->$pageCountAttribute;
-
             $currentPage = $result['result']->$metaAttribute->$currentPageAttribute;
             $page        = $currentPage;
+            $items     = self::paginate($result['result']->$itemsAttribute, $page);
+            $pageTotal = $pageCount = $result['result']->$metaAttribute->$pageCountAttribute;
+
+            
+            
             if ($recursive) {
 
                 if ($pageCount > $currentPage + $max_pages - 1) {
@@ -537,18 +579,16 @@ class AfwDataUpdateHelper
 
                             if($mapping_job_id && $data_api_id && $executionLog)
                             {
-                                ExecutionLog::loadByMainIndex( 
-                                    $mapping_job_id,
-                                    $data_api_id,
-                                    date("Y-m-d H:i:s"),
+                                ExecutionLog::loadByMainIndex($apiExecObj->id, $page,
                                     json_encode($data),
                                     $result_2['response'],
                                     $title_o,
                                     true
                                 );
+                               
                             }
 
-                            $items_2 = $result_2['result']->$itemsAttribute;
+                            $items_2 = self::paginate($result_2['result']->$itemsAttribute, $page);
                             // die( var_export( $result_2, true ) );
                             // echo 'merging \n';
                             if (! is_array($items)) {
@@ -578,15 +618,13 @@ class AfwDataUpdateHelper
                         $error_msg = "$title_o and got response : " . $result_2['response'];
                         if($mapping_job_id && $data_api_id && $executionLog)
                         {
-                            ExecutionLog::loadByMainIndex( 
-                                $mapping_job_id,
-                                $data_api_id,
-                                date("Y-m-d H:i:s"),
-                                json_encode($data),
-                                $result_2['response'],
-                                $title_o,
-                                true
-                            );
+                            ExecutionLog::loadByMainIndex($apiExecObj->id, $page,
+                                    json_encode($data),
+                                    $result_2['response'],
+                                    $title_o,
+                                    true
+                                );
+                            
                         }
                         AfwBatch::print_error($error_msg);
                         if ($throwError) {
@@ -603,6 +641,11 @@ class AfwDataUpdateHelper
             }
 
         }
+
+        $items_count = count($items);
+
+        $apiExecObj->set("output", "REACHED=$page, TOTAL=$pageTotal, LOADED=$pageCount, RECORDS=$items_count");
+        $apiExecObj->commit();
 
         return ['ok' => $ok, 'current_page' => $page, 'last_page' => $pageCount, 'items' => $items];
 
