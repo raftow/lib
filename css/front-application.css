@@ -1603,6 +1603,11 @@ a.hzm3-button.hzm3-light-grey.hzm3-block {
     padding-top: 4px;
 }
 
+.bf.bf-denied {
+    display: none;
+    visibility: hidden;
+}
+
 .hzm-otherlink.theme-new {
     float: left;
     margin-right: 10px;

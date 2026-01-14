@@ -54,7 +54,7 @@ class AfwDynamicPublicMethodHelper
         return self::splitMethodWithItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $itemsList, $adminOnly, $public);
     }
 
-    public static function splitMethodWithItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $itemsList, $adminOnly = true, $public = false)
+    public static function splitMethodWithItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $itemsList, $adminOnly = true, $public = false, $step = "all")
     {
         foreach ($itemsList as $itemId => $itemPbm) {
             if ($itemId != 'none')
@@ -103,6 +103,7 @@ class AfwDynamicPublicMethodHelper
                 'PUBLIC' => $public,
                 'CAN_IF' => $can_if,
                 'ROLES' => $roles,
+                'STEP' => $step,
                 'BF-ID' => '',
                 'confirmation_needed' => $methodConfirmationNeeded,
                 'CONFIRMATION_WARNING' => array('ar' => $methodConfirmationWarning, 'en' => $methodConfirmationWarningEn),

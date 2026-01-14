@@ -6453,8 +6453,8 @@ class AFWObject extends AFWRoot
                     . $attribute
                     . "' does not exist in structure of entity : "
                     . static::$TABLE
-                    . ' : DB_STRUCTURE = '
-                    . var_export(self::getDbStructure(), true)
+                    . '<!-- : DB_STRUCTURE = '
+                    . var_export(self::getDbStructure(), true) . ' -->'
             );
         }
 

@@ -6581,10 +6581,12 @@ div.afwerr h1 {
 
 div.afwerr h3 {
     text-align: left;
-    padding: 0px 15px;
+    padding: 8px 15px;
     font-family: arial, tahoma, sans-serif !important;
     font-size: 15px;
     direction: ltr;
+    background-color: #db2e1d;
+    color: white;
 }
 
 div.afwerr h2 {
