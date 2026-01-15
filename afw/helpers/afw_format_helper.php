@@ -2119,4 +2119,11 @@ class AfwFormatHelper
 
         return [$header_row, $data_rows_ready, implode("\n<br>", $log_arr)];
     }
+
+    public static function isDataRowsFormat($data)
+    {
+        if(!is_array($data)) return false;
+        foreach($data as $row) if(!is_array($row)) return false;
+        return true;
+    }
 }

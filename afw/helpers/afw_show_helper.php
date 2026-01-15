@@ -1307,6 +1307,8 @@ class AfwShowHelper
         $decoderArr = null,
         $popupEditSettings = []
     ) {
+        if(!AfwFormatHelper::isDataRowsFormat($data))
+            return [var_export($data), ""];
         // die("dataImportance=".var_export($dataImportance,true));
         global $datatable_on_components,
             $datatable_on,
