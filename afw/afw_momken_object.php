@@ -121,6 +121,8 @@ class AfwMomkenObject extends AFWObject
         return $arr_list_of_gender;
     }
 
+
+
     public static function list_of_stars()
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
@@ -404,7 +406,7 @@ class AfwMomkenObject extends AFWObject
         $file_dir_name = dirname(__FILE__);
         $domains_file_name = $file_dir_name . "/../../client-$main_company/extra/domains-$main_company.php";
         if (file_exists($domains_file_name)) {
-            return include ($domains_file_name);
+            return include($domains_file_name);
         }
 
         throw new AfwRuntimeException("Domain file missed : $domains_file_name");
@@ -437,7 +439,7 @@ class AfwMomkenObject extends AFWObject
         $main_company = AfwSession::currentCompany();
         $current_domain = 25;
         $file_dir_name = dirname(__FILE__);
-        include ($file_dir_name . "/../../client-$main_company/extra/hierarchy_level-$main_company.php");
+        include($file_dir_name . "/../../client-$main_company/extra/hierarchy_level-$main_company.php");
 
         foreach ($hierarchy_level as $id => $lookup_row) {
             $arr_list_of_hierarchy_level['ar'][$id] = $lookup_row['ar'];
