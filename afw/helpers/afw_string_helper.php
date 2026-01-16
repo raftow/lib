@@ -1,42 +1,38 @@
 <?php
 
-class AfwStringHelper 
+class AfwStringHelper
 {
-        public static function duplicateName($the_name, $prefix="_", $the_name2, $prefix2=" ", $the_name3, $prefix3=" ", $maxK=20)
+        public static function duplicateName($the_name, $prefix = "_", $the_name2, $prefix2 = " ", $the_name3, $prefix3 = " ", $maxK = 20)
         {
-                for($k=1; $k<=$maxK; $k++)
-                {
-                        $tok = $prefix.$k;
-                        $kk = $k+1;
-                        $newTok = $prefix.$kk;
+                for ($k = 1; $k <= $maxK; $k++) {
+                        $tok = $prefix . $k;
+                        $kk = $k + 1;
+                        $newTok = $prefix . $kk;
                         $new_name = str_replace($tok, $newTok, $the_name);
-                        if($new_name!=$the_name) 
-                        {
-                                $tok2 = $prefix2.$k;
-                                $newTok2 = $prefix2.$kk;
+                        if ($new_name != $the_name) {
+                                $tok2 = $prefix2 . $k;
+                                $newTok2 = $prefix2 . $kk;
                                 $new_name2 = str_replace($tok2, $newTok2, $the_name2);
-                                $tok3 = $prefix3.$k;
-                                $newTok3 = $prefix3.$kk;
+                                $tok3 = $prefix3 . $k;
+                                $newTok3 = $prefix3 . $kk;
                                 $new_name3 = str_replace($tok3, $newTok3, $the_name3);
                                 break;
                         }
                 }
-                if($new_name==$the_name) 
-                {
-                        $new_name = "cp".$prefix.$the_name;
-                        $new_name2 = "cp".$prefix2.$the_name2;
-                        $new_name3 = "cp".$prefix3.$the_name3;
+                if ($new_name == $the_name) {
+                        $new_name = "cp" . $prefix . $the_name;
+                        $new_name2 = "cp" . $prefix2 . $the_name2;
+                        $new_name3 = "cp" . $prefix3 . $the_name3;
                 }
                 return [$new_name, $new_name2, $new_name3];
         }
-        
+
 
         public static function stringStartsWith($stringbody, $string_start)
         {
-                if(!$stringbody) $stringbody = "";
-                if(!is_string($stringbody))
-                {
-                        throw new AfwRuntimeException(var_export($stringbody,true)." is not a valid string for stringStartsWith($stringbody, $string_start)");
+                if (!$stringbody) $stringbody = "";
+                if (!is_string($stringbody)) {
+                        throw new AfwRuntimeException(var_export($stringbody, true) . " is not a valid string for stringStartsWith($stringbody, $string_start)");
                 }
                 return (strpos($stringbody, $string_start) === 0);
         }
@@ -53,11 +49,11 @@ class AfwStringHelper
 
         public static function titleNotGood($title)
         {
-                if(!$title) return true;
-                if(self::stringStartsWith($title, "??")) return true;
-                if(self::stringEndsWith($title, "????")) return true;
-                if(self::stringStartsWith($title, "xxx")) return true;
-                if(self::stringEndsWith($title, "xxx")) return true;
+                if (!$title) return true;
+                if (self::stringStartsWith($title, "??")) return true;
+                if (self::stringEndsWith($title, "????")) return true;
+                if (self::stringStartsWith($title, "xxx")) return true;
+                if (self::stringEndsWith($title, "xxx")) return true;
                 return false;
         }
         public static function stringEndsWith($string, $endString)
@@ -150,7 +146,7 @@ class AfwStringHelper
         public static function dividePhraseToNStrings($phrase, $max_len, $n)
         {
                 $string = str_replace("'", "", $phrase);
-                $string = str_replace("\"", " ", $string);                
+                $string = str_replace("\"", " ", $string);
                 $string = str_replace("[", " ", $string);
                 $string = str_replace("]", " ", $string);
                 $string = str_replace("(", " ", $string);
@@ -264,7 +260,7 @@ class AfwStringHelper
                 return $result;
         }*/
 
-        
+
         public static function is_latin($str, $seuil_pct = 0.6)
         {
                 if (mb_detect_encoding($str) !== 'UTF-8') {
@@ -303,13 +299,13 @@ class AfwStringHelper
         }
 
 
-        public static function uniord($u) 
+        public static function uniord($u)
         {
-            // i just copied this function fron the php.net comments, but it should work fine!
-            $k = mb_convert_encoding($u, 'UCS-2LE', 'UTF-8');
-            $k1 = ord(substr($k, 0, 1));
-            $k2 = ord(substr($k, 1, 1));
-            return $k2 * 256 + $k1;
+                // i just copied this function fron the php.net comments, but it should work fine!
+                $k = mb_convert_encoding($u, 'UCS-2LE', 'UTF-8');
+                $k1 = ord(substr($k, 0, 1));
+                $k2 = ord(substr($k, 1, 1));
+                return $k2 * 256 + $k1;
         }
 
         public static function is_arabic($str, $seuil_pct = 0.6)
@@ -380,14 +376,12 @@ class AfwStringHelper
                 $arr_result = [];
                 $arr_result[] = $str;
                 $str2 = self::arabic_unchakl($str);
-                if($str2 != $str) $arr_result[] = $str2;
+                if ($str2 != $str) $arr_result[] = $str2;
                 $arr_result2 = [];
-                do
-                {
-                        if(count($arr_result2)>0) $arr_result = $arr_result2;
+                do {
+                        if (count($arr_result2) > 0) $arr_result = $arr_result2;
                         $arr_result2 = self::similarArabicWordsGenerator($arr_result);
-                } 
-                while(count($arr_result2)>count($arr_result));
+                } while (count($arr_result2) > count($arr_result));
 
                 return $arr_result;
         }
@@ -395,31 +389,27 @@ class AfwStringHelper
         public static function similarArabicWordsGenerator($arr_str)
         {
                 $arr_similar_chars = [
-                        'ة'=>'ه',
-                        'ه'=>'ة',
-                        'ا'=>'أ',
-                        'أ'=>'ا',
-                        'ا'=>'إ',
-                        'إ'=>'ا',
-                        'ي'=>'ى',
-                        'ى'=>'ي',
+                        'ة' => 'ه',
+                        'ه' => 'ة',
+                        'ا' => 'أ',
+                        'أ' => 'ا',
+                        'ا' => 'إ',
+                        'إ' => 'ا',
+                        'ي' => 'ى',
+                        'ى' => 'ي',
                 ];
                 $arr_result = $arr_str;
-                foreach($arr_str as $str)
-                {
-                        foreach($arr_similar_chars as $c1 => $c2)
-                        {
+                foreach ($arr_str as $str) {
+                        foreach ($arr_similar_chars as $c1 => $c2) {
                                 $str2 = str_replace($c1, $c2, $str);
-                                if($str2 != $str)
-                                {
-                                        if(!in_array($str2,$arr_result))
-                                        {
-                                                $arr_result[] = $str2; 
+                                if ($str2 != $str) {
+                                        if (!in_array($str2, $arr_result)) {
+                                                $arr_result[] = $str2;
                                         }
                                 }
-                        }  
+                        }
                 }
-                
+
                 return $arr_result;
         }
 
@@ -521,9 +511,8 @@ class AfwStringHelper
                 $val_to_parse,
                 $lang,
                 $set_to_object = true
-        ) 
-        {
-                $desc = AfwStructureHelper::getStructureOf($object,$attribute);
+        ) {
+                $desc = AfwStructureHelper::getStructureOf($object, $attribute);
 
                 if ($desc['TYPE'] == 'GDAT' or $desc['TYPE'] == 'DATE') {
                         $alt_separator = '/';
@@ -618,171 +607,148 @@ class AfwStringHelper
                 return strlen(mb_convert_encoding($str, 'ISO-8859-1', 'UTF-8'));
         }
 
-        public static function truncateArabicJomla($jomla, $maxlen, $etc="...")
+        public static function truncateArabicJomla($jomla, $maxlen, $etc = "...")
         {
-             $jomla = trim($jomla);
-             
-             $jomlaWords = explode(" ", $jomla);
-             
-             $result = "";
-             $jomla_broken = false;
-             
-             foreach($jomlaWords as $word)
-             {
-                //if($word == "بناء") die("jomla=$jomla,  jomlaWords = ".var_export($jomlaWords,true));
-                if($result)
-                 {
-                     $pref = " ";
-                     $pref_len = 1;
-                 }
-                 else
-                 {
-                     $pref = "";
-                     $pref_len = 0;
-                 }
-                  
-                 if($maxlen>=(self::strlen_ar($result)+self::strlen_ar($word)+$pref_len))
-                 {
-                       $result .= $pref . $word;
-                 }
-                 else
-                 {
-                       $jomla_broken = true;
-                       break; 
-                 }
-             
-             }
-             
-             if($jomla_broken) $result .= $etc;
-             
-             return $result;
-        
+                $jomla = trim($jomla);
+
+                $jomlaWords = explode(" ", $jomla);
+
+                $result = "";
+                $jomla_broken = false;
+
+                foreach ($jomlaWords as $word) {
+                        //if($word == "بناء") die("jomla=$jomla,  jomlaWords = ".var_export($jomlaWords,true));
+                        if ($result) {
+                                $pref = " ";
+                                $pref_len = 1;
+                        } else {
+                                $pref = "";
+                                $pref_len = 0;
+                        }
+
+                        if ($maxlen >= (self::strlen_ar($result) + self::strlen_ar($word) + $pref_len)) {
+                                $result .= $pref . $word;
+                        } else {
+                                $jomla_broken = true;
+                                break;
+                        }
+                }
+
+                if ($jomla_broken) $result .= $etc;
+
+                return $result;
         }
 
         public static function arrow($lang)
         {
-                if($lang=="ar") return "&raquo;";
+                if ($lang == "ar") return "&raquo;";
                 else return "&laquo;";
         }
 
-        public static function nbWordsInJomla($jomla, $empty_is_counted=false)
+        public static function nbWordsInJomla($jomla, $empty_is_counted = false)
         {
-             $jomla = str_replace("\n", " ",$jomla);
-             $jomla = trim($jomla);
-             
-             $jomlaWords = explode(" ", $jomla);
-             
-             $result = 0;
-             
-             foreach($jomlaWords as $word)
-             {
-                 $word = trim($word);
-                 if($word or $empty_is_counted)
-                 {
-                     $result++;
-                 }
-             }
-             
-             return $result;
-        
+                $jomla = str_replace("\n", " ", $jomla);
+                $jomla = trim($jomla);
+
+                $jomlaWords = explode(" ", $jomla);
+
+                $result = 0;
+
+                foreach ($jomlaWords as $word) {
+                        $word = trim($word);
+                        if ($word or $empty_is_counted) {
+                                $result++;
+                        }
+                }
+
+                return $result;
         }
 
-        public static function intelligentArabicPlural($word, $plural_word, $nb, $female=false, $add_wahid_word = true)
+        public static function intelligentArabicPlural($word, $plural_word, $nb, $female = false, $add_wahid_word = true)
         {
-            if($add_wahid_word)
-            {
-                if($female) $wahid = "واحدة";
-                else $wahid = "واحد";
-            }
-            else $wahid = "";
-            
-            if($nb == 1) return trim($word." ".$wahid);
-            if($nb == 2) return trim($word)."ين";
-            if($nb > 10) return $nb." ".trim($word);
-            return $nb." ".trim($plural_word);
+                if ($add_wahid_word) {
+                        if ($female) $wahid = "واحدة";
+                        else $wahid = "واحد";
+                } else $wahid = "";
+
+                if ($nb == 1) return trim($word . " " . $wahid);
+                if ($nb == 2) return trim($word) . "ين";
+                if ($nb > 10) return $nb . " " . trim($word);
+                return $nb . " " . trim($plural_word);
         }
 
         public static function isNameOfAllah($first_name)
         {
-                return (($first_name=="الله") or ($first_name=="الرحمن") or ($first_name=="الكريم") or ($first_name=="الرحيم") or ($first_name=="العزيز"));            
+                return (($first_name == "الله") or ($first_name == "الرحمن") or ($first_name == "الكريم") or ($first_name == "الرحيم") or ($first_name == "العزيز"));
         }
 
 
-        public static function intelligentDecodeName($string) 
+        public static function intelligentDecodeName($string)
         {
-            $string = trim($string, " ");
-            $string = str_replace("  ", " ", $string);
-            $string = str_replace("  ", " ", $string);
-            $string = str_replace("  ", " ", $string);
-            $name_arr = explode(" ", $string);
+                $string = trim($string, " ");
+                $string = str_replace("  ", " ", $string);
+                $string = str_replace("  ", " ", $string);
+                $string = str_replace("  ", " ", $string);
+                $name_arr = explode(" ", $string);
 
-            $first_name = $name_arr[0];
-            // die("intelligentDecodeName 00 ($string) = [$first_name]"); 
-            unset($name_arr[0]);
+                $first_name = $name_arr[0];
+                // die("intelligentDecodeName 00 ($string) = [$first_name]"); 
+                unset($name_arr[0]);
 
-            if(($name_arr[1]=="بن") or ($name_arr[1]=="بنت") or ($name_arr[1]=="ابن"))
-            {
-                $father_name = $name_arr[1]." ".$name_arr[2];
-                unset($name_arr[1]);
-                unset($name_arr[2]);
-            }
-            elseif(self::isNameOfAllah($name_arr[1]))
-            {                
-                $first_name = trim($first_name, " ");
-                //$first_name = ltrim($first_name,$name_arr[1]);
-                // die("intelligentDecodeName 11 ($string) = [$first_name]");
-                $first_name .= " ".$name_arr[1];
-                $father_name = "";
-                unset($name_arr[1]);
-                if(($name_arr[2]=="بن") or ($name_arr[2]=="بنت") or ($name_arr[2]=="ابن"))
-                {
-                        $father_name = $name_arr[2]." ".$name_arr[3];
+                if (($name_arr[1] == "بن") or ($name_arr[1] == "بنت") or ($name_arr[1] == "ابن")) {
+                        $father_name = $name_arr[1] . " " . $name_arr[2];
+                        unset($name_arr[1]);
                         unset($name_arr[2]);
-                        unset($name_arr[3]);
+                } elseif (self::isNameOfAllah($name_arr[1])) {
+                        $first_name = trim($first_name, " ");
+                        //$first_name = ltrim($first_name,$name_arr[1]);
+                        // die("intelligentDecodeName 11 ($string) = [$first_name]");
+                        $first_name .= " " . $name_arr[1];
+                        $father_name = "";
+                        unset($name_arr[1]);
+                        if (($name_arr[2] == "بن") or ($name_arr[2] == "بنت") or ($name_arr[2] == "ابن")) {
+                                $father_name = $name_arr[2] . " " . $name_arr[3];
+                                unset($name_arr[2]);
+                                unset($name_arr[3]);
+                        } else {
+                                $father_name = $name_arr[2];
+                                unset($name_arr[2]);
+                        }
+                } else {
+                        $father_name = $name_arr[1];
+                        unset($name_arr[1]);
                 }
-                else
-                {
-                        $father_name = $name_arr[2];
-                        unset($name_arr[2]);
-                }
-                
-            }
-            else
-            {
-                $father_name = $name_arr[1];
-                unset($name_arr[1]);
-            }
 
-            $last_name = implode(" ", $name_arr);
-            // die("intelligentDecodeName($string) = [$first_name-$father_name-$last_name]");
-            return [$first_name, $father_name, $last_name];
-
+                $last_name = implode(" ", $name_arr);
+                // die("intelligentDecodeName($string) = [$first_name-$father_name-$last_name]");
+                return [$first_name, $father_name, $last_name];
         }
 
         /**
-	 * tableToClass
-	 * Converts tableName to className
-	 * @param string $tableName
-	 */
-	public static final function tableToClass($tableName) {
-		$dot_position = strpos($tableName, ".");
-		if($dot_position !== false) {
-			$tableName = substr($tableName, $dot_position);
-		}
-		$str = str_replace('_', ' ', strtolower($tableName));
-		$str = ucwords(strtolower($str));
-		$str = str_replace(' ', '', $str);
-		return $str;
-	}
+         * tableToClass
+         * Converts tableName to className
+         * @param string $tableName
+         */
+        public static final function tableToClass($tableName)
+        {
+                $dot_position = strpos($tableName, ".");
+                if ($dot_position !== false) {
+                        $tableName = substr($tableName, $dot_position);
+                }
+                $str = str_replace('_', ' ', strtolower($tableName));
+                $str = ucwords(strtolower($str));
+                $str = str_replace(' ', '', $str);
+                return $str;
+        }
 
 
-        public static final function classToTable($className) 
+        public static final function classToTable($className)
         {
                 $critere = 'A-Z';
                 ini_set("pcre.jit", 0);
-                $cl_chaines = preg_split('/(?=['.$critere.'])/', $className, -1, PREG_SPLIT_NO_EMPTY);
-		$table       = strtolower(implode('_',$cl_chaines));
-                
+                $cl_chaines = preg_split('/(?=[' . $critere . '])/', $className, -1, PREG_SPLIT_NO_EMPTY);
+                $table       = strtolower(implode('_', $cl_chaines));
+
                 return $table;
         }
 
@@ -790,52 +756,53 @@ class AfwStringHelper
         {
                 $str = strtolower(self::fileTotable(AfwStringHelper::classToFile($methodName)));
                 $str = str_replace('_', ' ', $str);
-                if(AfwStringHelper::stringEndsWith($str, " id"))
-                {
-                        $str = "The ".substr($str, 0, strlen($str)-3);   
+                if (AfwStringHelper::stringEndsWith($str, " id")) {
+                        $str = "The " . substr($str, 0, strlen($str) - 3);
                 }
                 return $str;
         }
 
 
         /**
-	 * classToFile
-	 * Convert tableName to PHP FileName
-	 * @param string $tableName
-	 */
-	public static final function classToFile($className) 
+         * classToFile
+         * Convert tableName to PHP FileName
+         * @param string $tableName
+         */
+        public static final function classToFile($className)
         {
                 $critere = 'A-Z';
                 ini_set("pcre.jit", 0);
-                $cl_chaines = preg_split('/(?=['.$critere.'])/', $className, -1, PREG_SPLIT_NO_EMPTY);
-		$file       = strtolower(implode('_',$cl_chaines).'.php');
-                
+                $cl_chaines = preg_split('/(?=[' . $critere . '])/', $className, -1, PREG_SPLIT_NO_EMPTY);
+                $file       = strtolower(implode('_', $cl_chaines) . '.php');
+
                 return $file;
-	}
+        }
 
         /**
-	 * fileToTable
-	 * Convert fileName to PHP tableName
-	 * @param string $fileName
-	 */
-	public static function fileTotable($fileName) {
-		return substr(strtolower($fileName), 0, strlen($fileName)-4);
-	}
+         * fileToTable
+         * Convert fileName to PHP tableName
+         * @param string $fileName
+         */
+        public static function fileTotable($fileName)
+        {
+                return substr(strtolower($fileName), 0, strlen($fileName) - 4);
+        }
 
 
         /**
-	 * tableToFile
-	 * Convert tableName to PHP FileName
-	 * @param string $tableName
-	 */
-	public static function tableToFile($tableName) {
+         * tableToFile
+         * Convert tableName to PHP FileName
+         * @param string $tableName
+         */
+        public static function tableToFile($tableName)
+        {
                 $dot_position = strpos($tableName, ".");
-                if($dot_position === false) {
+                if ($dot_position === false) {
                         return strtolower($tableName) . '.php';
                 } else {
                         return strtolower(substr($tableName, $dot_position)) . '.php';
                 }
-	}
+        }
 
 
         public static function afw_explode($answer, $sep1 = '|', $sep2 = ',')
@@ -844,38 +811,32 @@ class AfwStringHelper
                 $rows = explode($sep1, $answer);
                 $mypk_counter = 1;
                 foreach ($rows as $row) {
-                list($mypk, $myval) = explode($sep2, $row);
+                        list($mypk, $myval) = explode($sep2, $row);
 
-                if (!$myval) {
-                        $myval = $mypk;
-                        $mypk = $mypk_counter;
-                        $mypk_counter++;
-                }
+                        if (!$myval) {
+                                $myval = $mypk;
+                                $mypk = $mypk_counter;
+                                $mypk_counter++;
+                        }
 
-                $return[$mypk] = $myval;
+                        $return[$mypk] = $myval;
                 }
 
                 return $return;
         }
 
 
-        public static function afw_export($arr, $object_class_and_display_only=true)
+        public static function afw_export($arr, $object_class_and_display_only = true)
         {
                 $return = "(";
-                foreach($arr as $ind => $arr_item)
-                {
-                        $return .= " $ind => ";  
-                        if(is_array($arr_item))      
-                        {
+                foreach ($arr as $ind => $arr_item) {
+                        $return .= " $ind => ";
+                        if (is_array($arr_item)) {
                                 $arr_item_desc = AfwStringHelper::afw_export($arr_item, $object_class_and_display_only);
-                        }
-                        elseif(is_object($arr_item))
-                        {
-                                $arr_item_desc = get_class($arr_item)."->id = ".$arr_item->id;
-                        }
-                        else
-                        {
-                                $arr_item_desc = var_export($arr_item,true);
+                        } elseif (is_object($arr_item)) {
+                                $arr_item_desc = get_class($arr_item) . "->id = " . $arr_item->id;
+                        } else {
+                                $arr_item_desc = var_export($arr_item, true);
                         }
                         $return .= " $arr_item_desc ,";
                 }
@@ -887,152 +848,153 @@ class AfwStringHelper
 
         public static function firstCharLower($str)
         {
-                $fc = substr($str,0,1);
-                $rest_str = substr($str,1);
-		return strtolower($fc).$rest_str;
+                $fc = substr($str, 0, 1);
+                $rest_str = substr($str, 1);
+                return strtolower($fc) . $rest_str;
         }
 
         public static function firstCharUpper($str)
         {
-                $fc = substr($str,0,1);
-                $rest_str = substr($str,1);
-		return strtoupper($fc).$rest_str;
+                $fc = substr($str, 0, 1);
+                $rest_str = substr($str, 1);
+                return strtoupper($fc) . $rest_str;
         }
 
-        public static function javaNaming($text) 
+        public static function javaNaming($text)
         {
-		$str = str_replace('_', ' ', strtolower($text));
-		$str = ucwords(strtolower($str));
-		$str = str_replace(' ', '', $str);
-                
+                $str = str_replace('_', ' ', strtolower($text));
+                $str = ucwords(strtolower($str));
+                $str = str_replace(' ', '', $str);
+
                 return AfwStringHelper::firstCharLower($str);
-	}
-        
-        public static function initialsOfName($text) 
+        }
+
+        public static function initialsOfName($text)
         {
+                $text = strtoupper($text);
                 list($str,) = explode('@', $text);
-		$str = str_replace('_', ' ', strtolower($str));
+                $str = str_replace('_', ' ', strtolower($str));
                 $str = str_replace('.', ' ', strtolower($str));
                 $str = str_replace('-', ' ', strtolower($str));
 
                 $str_arr = explode(" ", $str);
-                $fc0 = substr($str_arr[0],0,1);
-                if($str_arr[1])
-                {
-                        $fc1 = substr($str_arr[1],0,1);
-                }
-                else
-                {
-                        $fc1 = substr($str_arr[0],1,1);
+                $fc0 = substr($str_arr[0], 0, 1);
+                if ($str_arr[1]) {
+                        $word2 = $str_arr[1];
+                } else {
+                        $word2 = substr($str_arr[0], 1);
                         // $fc1 = substr($str_arr[0],strlen($str_arr[1])-1,1);
                 }
-                
-		
-                
-                return strtoupper($fc0.$fc1);
-	}
+
+                if (self::stringStartsWith($word2, "AL")) {
+                        $word2 = substr($word2, 2);
+                        if (!$word2) $word2 = "X";
+                }
+
+                $fc1 = substr($word2, 0, 1);
+
+
+
+                return $fc0 . $fc1;
+        }
 
 
 
         public static function hzmArrayStringFormat($arr)
         {
-              return str_replace(" ", '',str_replace("\n", ' ', var_export($arr,true)));
-        
+                return str_replace(" ", '', str_replace("\n", ' ', var_export($arr, true)));
         }
 
-        public static function codeNaming($text,$length_max=24) 
+        public static function codeNaming($text, $length_max = 24)
         {
-		$str = str_replace('_', ' ', strtolower($text));
-		$str = strtoupper($str);
-		$str = str_replace(' ', '-', $str);
-                $str = substr($str,0,$length_max);
+                $str = str_replace('_', ' ', strtolower($text));
+                $str = strtoupper($str);
+                $str = str_replace(' ', '-', $str);
+                $str = substr($str, 0, $length_max);
                 return $str;
-	}
+        }
 
-        public static function to_valid_code($text) 
+        public static function to_valid_code($text)
         {
-		$str = str_replace(' ', '_', $text);
-		$str = str_replace('-', '_', $str);
+                $str = str_replace(' ', '_', $text);
+                $str = str_replace('-', '_', $str);
                 return $str;
-	}
+        }
 
         public static function is_valid_code($text)
         {
-                return (($text!="FUNCTION") and ($text!="DEFAULT") and ($text==AfwStringHelper::to_valid_code($text)));
+                return (($text != "FUNCTION") and ($text != "DEFAULT") and ($text == AfwStringHelper::to_valid_code($text)));
         }
 
-        public static function toEnglishText($text, $upperCaseFirst=true) 
+        public static function toEnglishText($text, $upperCaseFirst = true)
         {
-		if((AfwStringHelper::stringStartsWith($text,"name")) and (!AfwStringHelper::stringStartsWith($text,"_name")))
-                {
-                    $text = substr($text, 0, strlen($text)-4)."_name";;
+                if ((AfwStringHelper::stringStartsWith($text, "name")) and (!AfwStringHelper::stringStartsWith($text, "_name"))) {
+                        $text = substr($text, 0, strlen($text) - 4) . "_name";;
                 }
-                
-                $text = " " .str_replace('_', ' ', strtolower($text))." ";
+
+                $text = " " . str_replace('_', ' ', strtolower($text)) . " ";
                 $text = str_replace(' id ', ' ', $text);
-                if($upperCaseFirst) $text = AfwStringHelper::firstCharUpper(trim($text));
+                if ($upperCaseFirst) $text = AfwStringHelper::firstCharUpper(trim($text));
 
                 return trim($text);
-	}
+        }
 
-        public static function hzmNaming($text) 
+        public static function hzmNaming($text)
         {
-		$str = str_replace('_id', '', $text);
+                $str = str_replace('_id', '', $text);
                 $str = str_replace('_', ' ', $str);
                 $str = str_replace('.', ' ', $str);
-		$str = ucwords(strtolower($str));
-		$str = str_replace(' ', '', $str);
-                
-                return AfwStringHelper::firstCharLower($str);
-	}
+                $str = ucwords(strtolower($str));
+                $str = str_replace(' ', '', $str);
 
-        public static function constNaming($text) 
+                return AfwStringHelper::firstCharLower($str);
+        }
+
+        public static function constNaming($text)
         {
                 $str = str_replace(' ', '_', $text);
                 $str = str_replace('.', '_', $str);
-                
-                return strtoupper($str);
-	}
 
-        public static function hzm_array_merge($arr1,$arr2)
+                return strtoupper($str);
+        }
+
+        public static function hzm_array_merge($arr1, $arr2)
         {
-               $result = array();
-               foreach($arr1 as $index1 => $val1)
-               {
-                    $result[$index1] = $val1;
-               }
-               
-               foreach($arr2 as $index2 => $val2)
-               {
-                    $result[$index2] = $val2;
-               }
-               
-               return $result;
+                $result = array();
+                foreach ($arr1 as $index1 => $val1) {
+                        $result[$index1] = $val1;
+                }
+
+                foreach ($arr2 as $index2 => $val2) {
+                        $result[$index2] = $val2;
+                }
+
+                return $result;
         }
 
         public static function inverseRelation($relation)
         {
-             if($relation=="parent") return "child";
-             if($relation=="father") return "child";
-             if($relation=="mother") return "child";
-             if($relation=="child") return "parent";
-             if($relation=="sub") return "parent";
-        
-        
-             return "inv".ucwords($relation);
+                if ($relation == "parent") return "child";
+                if ($relation == "father") return "child";
+                if ($relation == "mother") return "child";
+                if ($relation == "child") return "parent";
+                if ($relation == "sub") return "parent";
+
+
+                return "inv" . ucwords($relation);
         }
 
-        public static final function hzmEncode($string,$key1="a",$key2="x")
+        public static final function hzmEncode($string, $key1 = "a", $key2 = "x")
         {
-                $mdfive = md5($key1.$string.$key2);   
-                return substr($mdfive,11,2)."a".substr($mdfive,22,2)."b".substr($mdfive,1,3);
+                $mdfive = md5($key1 . $string . $key2);
+                return substr($mdfive, 11, 2) . "a" . substr($mdfive, 22, 2) . "b" . substr($mdfive, 1, 3);
         }
 
         public static final function hzmArabicToLatinRepresentation($string)
         {
                 $matrixEncrypt = array();
                 $matrixEncrypt["إ"] = "e";
-                $matrixEncrypt["أ"] = "a";    
+                $matrixEncrypt["أ"] = "a";
                 $matrixEncrypt["ا"] = "i";
                 $matrixEncrypt["ب"] = "b";
                 $matrixEncrypt["ت"] = "t";
@@ -1071,14 +1033,13 @@ class AfwStringHelper
                 $matrixEncrypt["*"] = "";
                 $matrixEncrypt["/"] = "";
 
-                
+
                 $string_enc = $string;
-                
-                foreach($matrixEncrypt as $cc => $cce)
-                {
+
+                foreach ($matrixEncrypt as $cc => $cce) {
                         $string_enc = str_replace($cc, $cce, $string_enc);
                 }
-                
+
                 return $string_enc;
         }
 
@@ -1144,16 +1105,15 @@ class AfwStringHelper
                 $matrixEncrypt["B"] = "I";
                 $matrixEncrypt["N"] = "O";
                 $matrixEncrypt["M"] = "P";
-                
+
                 $string_enc = "";
-                
-                for($i=0;$i<strlen($string);$i++)
-                {
+
+                for ($i = 0; $i < strlen($string); $i++) {
                         $cenc = $matrixEncrypt[$string[$i]];
-                        if(!$cenc) $cenc = $string[$i];
+                        if (!$cenc) $cenc = $string[$i];
                         $string_enc .= $cenc;
                 }
-                
+
                 return $string_enc;
         }
 
@@ -1193,7 +1153,7 @@ class AfwStringHelper
                 $matrixDecrypt["+"] = "-";
                 $matrixDecrypt["/"] = "*";
                 $matrixDecrypt["*"] = "/";
-                                        
+
                 $matrixDecrypt["A"] = "Q";
                 $matrixDecrypt["S"] = "W";
                 $matrixDecrypt["D"] = "E";
@@ -1220,76 +1180,72 @@ class AfwStringHelper
                 $matrixDecrypt["I"] = "B";
                 $matrixDecrypt["O"] = "N";
                 $matrixDecrypt["P"] = "M";
-                
+
                 $string_dec = "";
-                
-                for($i=0;$i<strlen($string);$i++)
-                {
+
+                for ($i = 0; $i < strlen($string); $i++) {
                         $cenc = $matrixDecrypt[$string[$i]];
-                        if(!$cenc) $cenc = $string[$i];
+                        if (!$cenc) $cenc = $string[$i];
                         $string_dec .= $cenc;
                 }
-                
-                return $string_dec; 
+
+                return $string_dec;
         }
 
-        public static function hardSecureCleanString($string, $urldecode=false)         
+        public static function hardSecureCleanString($string, $urldecode = false)
         {
-             return AfwStringHelper::clean_input($string, $soft=false, $string_is_secure=false, $urldecode);
+                return AfwStringHelper::clean_input($string, $soft = false, $string_is_secure = false, $urldecode);
         }
 
 
-        public static function clean_input($string, $soft=true, $string_is_secure=false, $urldecode=false) 
+        public static function clean_input($string, $soft = true, $string_is_secure = false, $urldecode = false)
         {
-                if(self::is_arabic($string, 0.9)) return $string;
-                if(is_array($string)) return $string;
-                $string2 = stripslashes($string);                
-                if($urldecode) $string2 = urldecode($string2);
+                if (self::is_arabic($string, 0.9)) return $string;
+                if (is_array($string)) return $string;
+                $string2 = stripslashes($string);
+                if ($urldecode) $string2 = urldecode($string2);
                 $string1 = $string3 = strtolower($string2);
-                if(!$string_is_secure) 
-                {
-                        $string1 = str_replace('<script>', '', $string1);  
-                        $string1 = str_replace('<script ', '', $string1);  
-                        $string1 = str_replace('</script>', '', $string1);  
-                        $string1 = str_replace('script', '', $string1); 
-                        $string1 = str_replace('onchange', '', $string1); 
-                        $string1 = str_replace('onclick', '', $string1); 
-                        $string1 = str_replace('onerror', '', $string1); 
-                        $string1 = str_replace('onmouseover', '', $string1); 
-                        $string1 = str_replace('onmouseout', '', $string1); 
-                        $string1 = str_replace('onkeydown', '', $string1); 
-                        $string1 = str_replace('onload', '', $string1); 
-                        $string1 = str_replace('onblur', '', $string1); 
-                        $string1 = str_replace('onfocus', '', $string1); 
+                if (!$string_is_secure) {
+                        $string1 = str_replace('<script>', '', $string1);
+                        $string1 = str_replace('<script ', '', $string1);
+                        $string1 = str_replace('</script>', '', $string1);
+                        $string1 = str_replace('script', '', $string1);
+                        $string1 = str_replace('onchange', '', $string1);
+                        $string1 = str_replace('onclick', '', $string1);
+                        $string1 = str_replace('onerror', '', $string1);
+                        $string1 = str_replace('onmouseover', '', $string1);
+                        $string1 = str_replace('onmouseout', '', $string1);
+                        $string1 = str_replace('onkeydown', '', $string1);
+                        $string1 = str_replace('onload', '', $string1);
+                        $string1 = str_replace('onblur', '', $string1);
+                        $string1 = str_replace('onfocus', '', $string1);
                 }
 
-                if($string1 != $string3)
-                {
-                        $string2 = 'not-allowed-string';     
+                if ($string1 != $string3) {
+                        $string2 = 'not-allowed-string';
+                } else {
+                        if (!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
+                        if (!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
+                        if (!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
+                        if (!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
+                        if (!$string_is_secure) $string2 = str_replace('</script>', '', $string2);
+                        if (!$string_is_secure) $string2 = str_replace('<script', '', $string2);
+                        if (!$string_is_secure) $string2 = str_replace('/script>', '', $string2);
+                        if (!$string_is_secure) $string2 = str_replace('java', 'j a v a', $string2);
+                        if (!$string_is_secure) $string2 = str_replace('script', 's c r i p t', $string2);
+                        if (!$soft) $string2 = preg_replace("/[`~^²¨%\"]/", '', $string2);
+
+                        if (!$soft) $string2 = str_replace('(', '', $string2);
+                        if (!$soft) $string2 = str_replace(')', '', $string2);
                 }
-                else
-                {
-                        if(!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
-                        if(!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
-                        if(!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
-                        if(!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
-                        if(!$string_is_secure) $string2 = str_replace('</script>', '', $string2);
-                        if(!$string_is_secure) $string2 = str_replace('<script', '', $string2);
-                        if(!$string_is_secure) $string2 = str_replace('/script>', '', $string2);
-                        if(!$string_is_secure) $string2 = str_replace('java', 'j a v a', $string2);
-                        if(!$string_is_secure) $string2 = str_replace('script', 's c r i p t', $string2);
-                        if(!$soft) $string2 = preg_replace("/[`~^²¨%\"]/", '', $string2);
-        
-                        if(!$soft) $string2 = str_replace('(', '', $string2);
-                        if(!$soft) $string2 = str_replace(')', '', $string2);
-                }
-                
+
                 return $string2;
         }
 
         public static function Allah_names($unchakl = true, $indexed = true)
         {
-             $arr = array("اللَّه",
+                $arr = array(
+                        "اللَّه",
                         "الرَّحْمَنُ",
                         "الرَّحِيمُ",
                         "المَلِكُ",
@@ -1387,285 +1343,261 @@ class AfwStringHelper
                         "البَاقِي",
                         "الوَارِثُ",
                         "الرَّشِيدُ",
-                        "الصَّبُورُ");
-                
-                if($unchakl)
-                {
+                        "الصَّبُورُ"
+                );
+
+                if ($unchakl) {
                         $arr_final = array();
-                        
-                        foreach($arr as $name)
-                        {
-                            $arr_final[] = self::arabic_unchakl($name);
+
+                        foreach ($arr as $name) {
+                                $arr_final[] = self::arabic_unchakl($name);
                         }
+                } else {
+                        $arr_final = $arr;
                 }
-                else
-                {
-                   $arr_final = $arr;
-                }
-                
-                if($indexed)
-                {
+
+                if ($indexed) {
                         $arr_indexed = array();
-                        
-                        foreach($arr_final as $name)
-                        {
-                            $arr_indexed[$name] = true;
+
+                        foreach ($arr_final as $name) {
+                                $arr_indexed[$name] = true;
                         }
-                        
+
                         $arr_final = $arr_indexed;
                 }
-                
-                return $arr_final;        
+
+                return $arr_final;
         }
 
-        public static function arabic_full_name_explode($full_name, $gfather=false)
+        public static function arabic_full_name_explode($full_name, $gfather = false)
         {
-            $full_name_arr = explode(" ",$full_name);
-            
-            $prefix_items = array("عبد"=>true,
-                                  "عبيد"=>true,
-                                  "آل"=>true,
-                                  "ال"=>true,
-                                  "ابو"=>true,
-                                  "ابا"=>true,
-                                  "ابي"=>true,
-                                  "أبو"=>true,
-                                  "أبا"=>true,
-                                  "أبي"=>true,
-                                   
-                                   );
-                                   
-            $suffix_items = array("الدين"=>true,
-                                   
-                                   );                       
-                                   
-                                   
-                                   
-            $Allah_names = self::Allah_names();                       
-            
-            
-            $full_name_list = array();
-            $k = 0;
-            for($i = 0; $i < count($full_name_arr); $i++)
-            {
-                 if($full_name_arr[$i])
-                 {
-                         // is prefix
-                         if($prefix_items[$full_name_arr[$i]])
-                         {
-                            $full_name_arr[$i] .= " " . $full_name_arr[$i+1]; 
-                            $full_name_arr[$i+1] = "";
-                            
-                            $full_name_list[$k] = $full_name_arr[$i];
-                            $k++;
-                         }
-                         elseif($Allah_names[$full_name_arr[$i]] or $suffix_items[$full_name_arr[$i]])
-                         {
-                            // is suffix
-                            if($k) $full_name_list[$k-1] = $full_name_list[$k-1]." ".$full_name_arr[$i];
-                         }
-                         else
-                         {
-                            // is word
-                            $full_name_list[$k] = $full_name_arr[$i];
-                            $k++;
-                         }
-                 }
-            }
-            
-            $first_name = "";
-            $father_name = "";
-            $last_name = "";
-            
-            switch(count($full_name_list))
-            {
-                  case 0 :
-                     break;
-                  case 1 : 
-                     $first_name = $full_name_list[0];
-                     break;
-                  case 2 : 
-                     $first_name = $full_name_list[0];
-                     $last_name = $full_name_list[1];
-                     break; 
-                  case 3 : 
-                     $first_name = $full_name_list[0];
-                     $father_name = $full_name_list[1];
-                     $last_name = $full_name_list[2];
-                     break;
-                  case 4 : 
-                     $first_name = $full_name_list[0];
-                     if(!$gfather) 
-                     {
-                        $father_name = $full_name_list[1]." ".$full_name_list[2];
-                        $gfather_name = "";
-                     }
-                     else
-                     {
-                        $father_name = $full_name_list[1];
-                        $gfather_name = $full_name_list[2];
-                     }
-                     $last_name = $full_name_list[3];
-                     break;
-                  case 5 : 
-                    if(!$gfather) 
-                    {
-                        $first_name = $full_name_list[0]." ".$full_name_list[1];
-                        $father_name = $full_name_list[2]." ".$full_name_list[3];
-                        $gfather_name = "";
-                        
-                    }
-                    else
-                    {
-                        $first_name = $full_name_list[0]." ".$full_name_list[1];
-                        $father_name = $full_name_list[2];
-                        $gfather_name = $full_name_list[3];
-                    }
-                    $last_name = $full_name_list[4]; 
-                     break;
-                  default :
-                    if(!$gfather) 
-                    {
-                        $first_name = $full_name_list[0]." ".$full_name_list[1];
-                        $father_name = $full_name_list[2]." ".$full_name_list[3];
-                        $gfather_name = "";
-                        
-                    }
-                    else
-                    {
-                        $first_name = $full_name_list[0]." ".$full_name_list[1];
-                        $father_name = $full_name_list[2];
-                        $gfather_name = $full_name_list[3];
-                    }
-                     for($ii=0;$ii<4;$ii++) unset($full_name_list[$ii]);
-                     $last_name = implode(" ",$full_name_list);
-                     break;          
-            } 
-        
-            if(!$gfather) return array($first_name, $father_name, $last_name);
-            else return array($first_name, $father_name, $gfather_name, $last_name);
+                $full_name_arr = explode(" ", $full_name);
+
+                $prefix_items = array(
+                        "عبد" => true,
+                        "عبيد" => true,
+                        "آل" => true,
+                        "ال" => true,
+                        "ابو" => true,
+                        "ابا" => true,
+                        "ابي" => true,
+                        "أبو" => true,
+                        "أبا" => true,
+                        "أبي" => true,
+
+                );
+
+                $suffix_items = array(
+                        "الدين" => true,
+
+                );
+
+
+
+                $Allah_names = self::Allah_names();
+
+
+                $full_name_list = array();
+                $k = 0;
+                for ($i = 0; $i < count($full_name_arr); $i++) {
+                        if ($full_name_arr[$i]) {
+                                // is prefix
+                                if ($prefix_items[$full_name_arr[$i]]) {
+                                        $full_name_arr[$i] .= " " . $full_name_arr[$i + 1];
+                                        $full_name_arr[$i + 1] = "";
+
+                                        $full_name_list[$k] = $full_name_arr[$i];
+                                        $k++;
+                                } elseif ($Allah_names[$full_name_arr[$i]] or $suffix_items[$full_name_arr[$i]]) {
+                                        // is suffix
+                                        if ($k) $full_name_list[$k - 1] = $full_name_list[$k - 1] . " " . $full_name_arr[$i];
+                                } else {
+                                        // is word
+                                        $full_name_list[$k] = $full_name_arr[$i];
+                                        $k++;
+                                }
+                        }
+                }
+
+                $first_name = "";
+                $father_name = "";
+                $last_name = "";
+
+                switch (count($full_name_list)) {
+                        case 0:
+                                break;
+                        case 1:
+                                $first_name = $full_name_list[0];
+                                break;
+                        case 2:
+                                $first_name = $full_name_list[0];
+                                $last_name = $full_name_list[1];
+                                break;
+                        case 3:
+                                $first_name = $full_name_list[0];
+                                $father_name = $full_name_list[1];
+                                $last_name = $full_name_list[2];
+                                break;
+                        case 4:
+                                $first_name = $full_name_list[0];
+                                if (!$gfather) {
+                                        $father_name = $full_name_list[1] . " " . $full_name_list[2];
+                                        $gfather_name = "";
+                                } else {
+                                        $father_name = $full_name_list[1];
+                                        $gfather_name = $full_name_list[2];
+                                }
+                                $last_name = $full_name_list[3];
+                                break;
+                        case 5:
+                                if (!$gfather) {
+                                        $first_name = $full_name_list[0] . " " . $full_name_list[1];
+                                        $father_name = $full_name_list[2] . " " . $full_name_list[3];
+                                        $gfather_name = "";
+                                } else {
+                                        $first_name = $full_name_list[0] . " " . $full_name_list[1];
+                                        $father_name = $full_name_list[2];
+                                        $gfather_name = $full_name_list[3];
+                                }
+                                $last_name = $full_name_list[4];
+                                break;
+                        default:
+                                if (!$gfather) {
+                                        $first_name = $full_name_list[0] . " " . $full_name_list[1];
+                                        $father_name = $full_name_list[2] . " " . $full_name_list[3];
+                                        $gfather_name = "";
+                                } else {
+                                        $first_name = $full_name_list[0] . " " . $full_name_list[1];
+                                        $father_name = $full_name_list[2];
+                                        $gfather_name = $full_name_list[3];
+                                }
+                                for ($ii = 0; $ii < 4; $ii++) unset($full_name_list[$ii]);
+                                $last_name = implode(" ", $full_name_list);
+                                break;
+                }
+
+                if (!$gfather) return array($first_name, $father_name, $last_name);
+                else return array($first_name, $father_name, $gfather_name, $last_name);
         }
 
         public static function arabicSpecialTrim($string)
         {
-             $string = self::arTrim($string,"السلام عليكم");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"وعليكم السلام");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"ورحمة الله");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"ورحمه الله");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"وبركاته");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"أما بعد");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"أما بعد");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"تحية طيبة");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"تحية طيبه");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"تحيه طيبه");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"تحيه طيبة");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"وبعد");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"بعد التحيه");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"بعد التحية");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"شكرا لك على تواصلك");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"شكرا لك");
-             $string = self::trimSpecialChars($string);
-             
-             $string = self::arTrim($string,"نشكرك على تواصلك");
-             $string = self::trimSpecialChars($string);
-             $string = self::arTrim($string,"نشكرك");
-             $string = self::trimSpecialChars($string);
-             
-             return $string;
+                $string = self::arTrim($string, "السلام عليكم");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "وعليكم السلام");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "ورحمة الله");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "ورحمه الله");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "وبركاته");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "أما بعد");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "أما بعد");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "تحية طيبة");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "تحية طيبه");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "تحيه طيبه");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "تحيه طيبة");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "وبعد");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "بعد التحيه");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "بعد التحية");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "شكرا لك على تواصلك");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "شكرا لك");
+                $string = self::trimSpecialChars($string);
+
+                $string = self::arTrim($string, "نشكرك على تواصلك");
+                $string = self::trimSpecialChars($string);
+                $string = self::arTrim($string, "نشكرك");
+                $string = self::trimSpecialChars($string);
+
+                return $string;
         }
-        
-        public static function arabicSpecialJomlaTrim($string, $counter=30)
+
+        public static function arabicSpecialJomlaTrim($string, $counter = 30)
         {
-             for($c=1;$c<=$counter;$c++) $string = self::arabicSpecialTrim($string);
-             
-             return $string;
+                for ($c = 1; $c <= $counter; $c++) $string = self::arabicSpecialTrim($string);
+
+                return $string;
         }
-        
-        public static function arabicStartOfJomlaTrim($jomla, $maxlen=64, $counter=30, $etc="...")
+
+        public static function arabicStartOfJomlaTrim($jomla, $maxlen = 64, $counter = 30, $etc = "...")
         {
-            $trimmed = self::arabicSpecialJomlaTrim($jomla, $counter);
-            //return "tt=".$trimmed; 
-            return self::truncateArabicJomla($trimmed, $maxlen, $etc);
+                $trimmed = self::arabicSpecialJomlaTrim($jomla, $counter);
+                //return "tt=".$trimmed; 
+                return self::truncateArabicJomla($trimmed, $maxlen, $etc);
         }
-        
-        public static function arabicCounter($cnt, $genre="M", $prefix="ال", $suffix="")
+
+        public static function arabicCounter($cnt, $genre = "M", $prefix = "ال", $suffix = "")
         {
-              $array_of_arabicCounters = array();
-              
-              $array_of_arabicCounters["M"] = array(
-                1=>"أول",
-                2=>"ثاني",
-                3=>"ثالث",
-                4=>"رابع",
-                5=>"خامس",
-                6=>"سادس",
-                7=>"سابع",
-                8=>"ثامن",
-                9=>"تاسع",
-                10=>"عاشر",
-              );
-              
-              $array_of_arabicCounters["F"] = array(
-                1=>"أولى",
-                2=>"ثانية",
-                3=>"ثالثة",
-                4=>"رابعة",
-                5=>"خامسة",
-                6=>"سادسة",
-                7=>"سابعة",
-                8=>"ثامنة",
-                9=>"تاسعة",
-                10=>"عاشرة",
-              );
-              
-              $word = $array_of_arabicCounters[$genre][$cnt];
-              if($word) $word = $prefix . $word . $suffix;
-              else $word = "رقم ". $cnt;
-        
-        
-              return $word;
+                $array_of_arabicCounters = array();
+
+                $array_of_arabicCounters["M"] = array(
+                        1 => "أول",
+                        2 => "ثاني",
+                        3 => "ثالث",
+                        4 => "رابع",
+                        5 => "خامس",
+                        6 => "سادس",
+                        7 => "سابع",
+                        8 => "ثامن",
+                        9 => "تاسع",
+                        10 => "عاشر",
+                );
+
+                $array_of_arabicCounters["F"] = array(
+                        1 => "أولى",
+                        2 => "ثانية",
+                        3 => "ثالثة",
+                        4 => "رابعة",
+                        5 => "خامسة",
+                        6 => "سادسة",
+                        7 => "سابعة",
+                        8 => "ثامنة",
+                        9 => "تاسعة",
+                        10 => "عاشرة",
+                );
+
+                $word = $array_of_arabicCounters[$genre][$cnt];
+                if ($word) $word = $prefix . $word . $suffix;
+                else $word = "رقم " . $cnt;
+
+
+                return $word;
         }
-        
+
         public static function arTrim($string, $strTrimmed)
         {
-            $string_after = $string;
-            // rafik this below is bugged do not use and we may create another self::arTrim function later
-            // preg_replace('/^['.$strTrimmed.'\s]+|['.$strTrimmed.'\s]+$/u', '', $string);
-            //echo "strTrimmed=$strTrimmed   :::: string=$string   => <br>\n string_after = $string_after<br>\n";
-            return $string_after;
-        }        
+                $string_after = $string;
+                // rafik this below is bugged do not use and we may create another self::arTrim function later
+                // preg_replace('/^['.$strTrimmed.'\s]+|['.$strTrimmed.'\s]+$/u', '', $string);
+                //echo "strTrimmed=$strTrimmed   :::: string=$string   => <br>\n string_after = $string_after<br>\n";
+                return $string_after;
+        }
 
         public static function trimSpecialChars($string)
         {
-             $string = trim($string);
-             $string = trim($string,"\n");
-             $string = trim($string,",");
-             $string = trim($string,".");
-             
-             $string = trim($string,":");
-             $string = trim($string,"/");
-             $string = trim($string,"*");
-             $string = trim($string,"-");
-             $string = trim($string,"+");
-             //$string = arTrim($string,"،");
-             
-             return $string;
+                $string = trim($string);
+                $string = trim($string, "\n");
+                $string = trim($string, ",");
+                $string = trim($string, ".");
+
+                $string = trim($string, ":");
+                $string = trim($string, "/");
+                $string = trim($string, "*");
+                $string = trim($string, "-");
+                $string = trim($string, "+");
+                //$string = arTrim($string,"،");
+
+                return $string;
         }
-
-
 }
