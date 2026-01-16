@@ -54,7 +54,7 @@ class AfwDynamicPublicMethodHelper
         return self::splitMethodWithItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $itemsList, $adminOnly, $public);
     }
 
-    public static function splitMethodWithItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $itemsList, $adminOnly = true, $public = false, $step = "all")
+    public static function splitMethodWithItems($pbms, $publicDynamicMethodProps, $methodName0, $object, $log, $itemsList, $adminOnly = true, $public = false, $step = "all", $defined_color = 'yellow')
     {
         foreach ($itemsList as $itemId => $itemPbm) {
             if ($itemId != 'none')
@@ -82,8 +82,15 @@ class AfwDynamicPublicMethodHelper
             $can_if = $publicDynamicMethodProps['can_if'];
             $roles = $publicDynamicMethodProps['roles'];
 
-            if (!$methodColor)
-                $methodColor = 'yellow';  // @todo make random on colors
+            if (!$methodColor) {
+                if (AfwStringHelper::stringStartsWith($defined_color, '::')) {
+                    if (is_object($itemPbm)) {
+                        $methodToGetColor = substr($defined_color, 2);
+                        $methodColor = $itemPbm->$methodToGetColor();
+                    }
+                }
+            }
+            if (!$methodColor) $methodColor = $defined_color;
             $methodConfirmationNeeded = $publicDynamicMethodProps["'confirmation_needed'"];
             $methodConfirmationWarning = $object->decodeTpl($publicDynamicMethodProps['confirmation_warning']);
             $methodConfirmationWarningEn = $object->decodeTpl(AfwLanguageHelper::tt($publicDynamicMethodProps['confirmation_warning']), 'en');
