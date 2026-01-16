@@ -873,9 +873,9 @@ class AfwStringHelper
         {
                 $text = strtoupper($text);
                 list($str,) = explode('@', $text);
-                $str = str_replace('_', ' ', strtolower($str));
-                $str = str_replace('.', ' ', strtolower($str));
-                $str = str_replace('-', ' ', strtolower($str));
+                $str = str_replace('_', ' ', $str);
+                $str = str_replace('.', ' ', $str);
+                $str = str_replace('-', ' ', $str);
 
                 $str_arr = explode(" ", $str);
                 $fc0 = substr($str_arr[0], 0, 1);
