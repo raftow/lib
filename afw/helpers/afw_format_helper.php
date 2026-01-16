@@ -1,6 +1,7 @@
 <?php
 class AfwFormatHelper
 {
+    public static $COLORS = ['gray', 'blue', 'cyan', 'purple', 'green', 'yellow', 'orange', 'red', 'white', 'black'];
     final public static function isGoodFormat($val, $type)
     {
         if ($type == 'integer') {
@@ -261,7 +262,8 @@ class AfwFormatHelper
         $formatted = true;
 
         if (($structure['TYPE'] == 'GDAT') or
-                ($structure['TYPE'] == 'GDATE')) {
+            ($structure['TYPE'] == 'GDATE')
+        ) {
             // list($data_to_display,) = explode(" ",$value);
             $data_to_display = $value;
             // $data_to_display = AfwDateHelper::justDecodeValue($value, $structure);
@@ -409,7 +411,7 @@ class AfwFormatHelper
             if ($structure['FORMAT'] == 'TOOLTIP_NASRANI') {
                 $help_nasrani = htmlentities(
                     'الموافق  '
-                    . AfwDateHelper::hijriToGreg($old_data_to_display)
+                        . AfwDateHelper::hijriToGreg($old_data_to_display)
                 );
                 if ($data_to_display) {
                     $data_to_display =
@@ -505,7 +507,8 @@ class AfwFormatHelper
             ]
         )) {
             if (($structure['TYPE'] == 'FLOAT') and
-                    AfwStringHelper::stringStartsWith($structure['FORMAT'], '*.')) {
+                AfwStringHelper::stringStartsWith($structure['FORMAT'], '*.')
+            ) {
                 list($a, $b) = explode('.', $structure['FORMAT']);
                 // if($attribute) die("$attribute : list($a,$b) = ".$structure["FORMAT"]);
                 if (!$data_to_display) {
@@ -1583,12 +1586,12 @@ class AfwFormatHelper
                             if ($integrity) {
                                 throw new AfwRuntimeException(
                                     'Impossible to get ['
-                                    . $fields[$i]
-                                    . "] à cause d'une valeur NULL of object "
-                                    . $fields[$i - 1]
-                                    . ', veuillez vérifier attribute '
-                                    . $attribute
-                                    . ' de type SHORTCUT.'
+                                        . $fields[$i]
+                                        . "] à cause d'une valeur NULL of object "
+                                        . $fields[$i - 1]
+                                        . ', veuillez vérifier attribute '
+                                        . $attribute
+                                        . ' de type SHORTCUT.'
                                 );
                             } else {
                                 break;
@@ -1597,8 +1600,8 @@ class AfwFormatHelper
                             if ($object->MY_DEBUG and false) {
                                 AFWDebugg::log(
                                     'object['
-                                    . ($i - 1)
-                                    . ']'
+                                        . ($i - 1)
+                                        . ']'
                                 );
                             }
                             if ($object->MY_DEBUG and false) {
@@ -1610,7 +1613,7 @@ class AfwFormatHelper
                             if ($object->MY_DEBUG and false) {
                                 AFWDebugg::log(
                                     "befor get fields[$i]="
-                                    . $fields[$i]
+                                        . $fields[$i]
                                 );
                             }
 
@@ -1710,13 +1713,13 @@ class AfwFormatHelper
                     if ($integrity) {
                         throw new AfwRuntimeException(
                             'Impossible to get ['
-                            . $fields[1]
-                            . "] à cause d'une valeur NULL of object "
-                            . $fields[0]
-                            . ', veuillez vérifier attribute '
-                            . $attribute
-                            . ' de type SHORTCUT. '
-                            . $call_method
+                                . $fields[1]
+                                . "] à cause d'une valeur NULL of object "
+                                . $fields[0]
+                                . ', veuillez vérifier attribute '
+                                . $attribute
+                                . ' de type SHORTCUT. '
+                                . $call_method
                         );
                     } else {
                         $return = $forced_value
@@ -1827,9 +1830,9 @@ class AfwFormatHelper
 
                 throw new AfwRuntimeException(
                     "Erreur : no-return defined for get : what=$what,attribut=$attribute, format=$format, attr_categ=$attr_categ ($suggest), gettype="
-                    . $attribute_type
-                    . ' STRUCTURE = '
-                    . var_export($structure, true)
+                        . $attribute_type
+                        . ' STRUCTURE = '
+                        . var_export($structure, true)
                 );
             }
         }
@@ -2122,8 +2125,8 @@ class AfwFormatHelper
 
     public static function isDataRowsFormat($data)
     {
-        if(!is_array($data)) return false;
-        foreach($data as $row) if(!is_array($row)) return false;
+        if (!is_array($data)) return false;
+        foreach ($data as $row) if (!is_array($row)) return false;
         return true;
     }
 }

@@ -93,6 +93,11 @@ class AfwDynamicPublicMethodHelper
                 }
             }
             if (!$methodColor) $methodColor = $defined_color;
+
+            if ($methodColor == 'random') {
+                $rd =  $itemPbm->id % count(AfwFormatHelper::$COLORS);
+                $methodColor = AfwFormatHelper::$COLORS[$rd];
+            }
             $methodConfirmationNeeded = $publicDynamicMethodProps["'confirmation_needed'"];
             $methodConfirmationWarning = $object->decodeTpl($publicDynamicMethodProps['confirmation_warning']);
             $methodConfirmationWarningEn = $object->decodeTpl(AfwLanguageHelper::tt($publicDynamicMethodProps['confirmation_warning']), 'en');
