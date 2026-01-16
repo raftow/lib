@@ -87,6 +87,8 @@ class AfwDynamicPublicMethodHelper
                     if (is_object($itemPbm)) {
                         $methodToGetColor = substr($defined_color, 2);
                         $methodColor = $itemPbm->$methodToGetColor();
+
+                        die("$methodColor = $itemPbm -> $methodToGetColor()");
                     }
                 }
             }
