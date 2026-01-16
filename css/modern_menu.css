@@ -114,6 +114,7 @@ button.bf.hzm-specialmethod {
     margin: 1%;
     border: none;
     padding: 10px !important;
+    border-radius: 19px;
 }
 
 
@@ -128,7 +129,7 @@ button.bf.hzm-specialmethod {
 .bf.bf-green {
     border: none !important;
     color: white !important;
-    background-color: #0f700f !important;
+    background-color: #01C851 !important;
 }
 
 
@@ -180,13 +181,13 @@ button.bf.hzm-specialmethod {
 .bf.bf-yellow {
     border: none !important;
     color: white !important;
-    background-color: #95D03A !important;
+    background-color: #33B5E7 !important;
 }
 
 .bf.bf-yellow:hover {
     border: none !important;
     color: #f6f8c5 !important;
-    background-color: #669620 !important;
+    background-color: #22A5E7 !important;
 }
 
 
