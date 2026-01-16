@@ -88,8 +88,8 @@ class AfwDynamicPublicMethodHelper
                         $methodToGetColor = substr($defined_color, 2);
                         $methodColor = $itemPbm->$methodToGetColor();
 
-                        die("$methodColor = $itemPbm -> $methodToGetColor()");
-                    } else die('itemPbm = ' . var_export($itemPbm, true) . ' defined_color=' . $defined_color);
+                        // die("$methodColor = $itemPbm -> $methodToGetColor()");
+                    } //else die('itemPbm = ' . var_export($itemPbm, true) . ' defined_color=' . $defined_color);
                 }
             }
             if (!$methodColor) $methodColor = $defined_color;
