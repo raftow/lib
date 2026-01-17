@@ -106,7 +106,7 @@ class AfwDynamicPublicMethodHelper
             $methodConfirmationQuestion = $object->decodeTpl($publicDynamicMethodProps['confirmation_question']);
             $methodConfirmationQuestionEn = $object->decodeTpl(AfwLanguageHelper::tt($publicDynamicMethodProps['confirmation_question']), 'en');
 
-            $pbms[substr(md5($methodName . $itemId), 1, 5)] = array(
+            $pbmDynItem = array(
                 'METHOD' => $methodName,
                 'TOOLTIP_AR' => $methodTooltipAr,
                 'TOOLTIP_EN' => $methodTooltipEn,
@@ -117,9 +117,10 @@ class AfwDynamicPublicMethodHelper
                 'ADMIN-ONLY' => $adminOnly,
                 'ONLY-ADMIN' => $adminOnly,
                 'PUBLIC' => $public,
+                'STEP' => $step,
+
                 'CAN_IF' => $can_if,
                 'ROLES' => $roles,
-                'STEP' => $step,
                 'PUBLISHED' => $published,
 
                 'BF-ID' => '',
@@ -127,6 +128,13 @@ class AfwDynamicPublicMethodHelper
                 'CONFIRMATION_WARNING' => array('ar' => $methodConfirmationWarning, 'en' => $methodConfirmationWarningEn),
                 'CONFIRMATION_QUESTION' => array('ar' => $methodConfirmationQuestion, 'en' => $methodConfirmationQuestionEn),
             );
+
+            if (!$pbmDynItem['ROLES']) unset($pbmDynItem['ROLES']);
+            if (!$pbmDynItem['CAN_IF']) unset($pbmDynItem['CAN_IF']);
+            if (!$pbmDynItem['PUBLISHED']) unset($pbmDynItem['PUBLISHED']);
+
+
+            $pbms[substr(md5($methodName . $itemId), 1, 5)] = $pbmDynItem;
         }
 
         return $pbms;
