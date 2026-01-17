@@ -100,7 +100,7 @@ class AfwDynamicPublicMethodHelper
                 $rd =  $itemPbm->id % count(AfwFormatHelper::$COLORS);
                 $methodColor = AfwFormatHelper::$COLORS[$rd];
             }
-            $methodConfirmationNeeded = $publicDynamicMethodProps["'confirmation_needed'"];
+            $methodConfirmationNeeded = $publicDynamicMethodProps["confirmation_needed"];
             $methodConfirmationWarning = $object->decodeTpl($publicDynamicMethodProps['confirmation_warning']);
             $methodConfirmationWarningEn = $object->decodeTpl(AfwLanguageHelper::tt($publicDynamicMethodProps['confirmation_warning']), 'en');
             $methodConfirmationQuestion = $object->decodeTpl($publicDynamicMethodProps['confirmation_question']);
