@@ -610,6 +610,7 @@ class AfwShowHelper
      */
     public static function showManyObj($liste_obj, $obj, $objme, $lang, $options = [])
     {
+        $mode_force_cols = null;
         $images = AfwThemeHelper::loadTheme();
         foreach ($images as $theme => $themeValue) {
             $$theme = $themeValue;
@@ -680,10 +681,12 @@ class AfwShowHelper
                 $hide_retrieve_cols,
                 $force_retrieve_cols
             );
-            $mode_force_cols = false;
+            if ($mode_force_cols === null) $mode_force_cols = false;
         } else {
-            $mode_force_cols = true;
+            if ($mode_force_cols === null) $mode_force_cols = true;
         }
+
+
 
         // debugg some column hidden and should not
         // if($obj instanceof ApplicationModelBranch) die("arr_col = getRetrieveCols($mode) = ".var_export($arr_col,true)." force_retrieve_cols :".var_export($force_retrieve_cols,true));
@@ -2958,17 +2961,24 @@ class AfwShowHelper
     }
 
 
-    public static function showRetrieveTable($object, $lang = 'ar')
+    public static function showRetrieveTable(&$mixed, $lang = 'ar', $options = ['mode_force_cols' => true])
     {
         $objme = AfwSession::getUserConnected();
-        $objectList = [];
-        $objectList[$object->id] = $object;
+        if (is_object($mixed)) {
+            $object = $mixed;
+            $objectList = [];
+            $objectList[$object->id] = $object;
+        } elseif (is_array($mixed)) {
+            $objectList = $mixed;
+            $object = reset($objectList);
+        }
+
         list($html_table, $objectList, $ids,) = AfwShowHelper::showManyObj(
             $objectList,
             $object,
             $objme,
             $lang,
-            $options = []
+            $options
         );
 
         return $html_table;
