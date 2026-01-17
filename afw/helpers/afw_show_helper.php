@@ -18,7 +18,7 @@ class AfwShowHelper
             ${$option} = $option_value;
         }
 
-        if(!$LIMIT) $LIMIT = "";
+        if (!$LIMIT) $LIMIT = "";
 
         $liste_obj = $obj->loadMany($LIMIT);
 
@@ -314,7 +314,7 @@ class AfwShowHelper
                     if (
                         $structure['MINIBOX-HEADER'] == 'all_open' or
                         $structure['MINIBOX-HEADER'] == 'first_open' and
-                            $is_first_minibox
+                        $is_first_minibox
                     ) {
                         $status_collapsed = '';
                         $collapse_in = 'in';
@@ -670,14 +670,16 @@ class AfwShowHelper
         }
 
         if (!$arr_col) {
-            $arr_col = AfwPrevilegeHelper::getRetrieveCols($obj,
+            $arr_col = AfwPrevilegeHelper::getRetrieveCols(
+                $obj,
                 $mode,
                 $lang,
                 $all = false,
                 $type = 'all',
                 $debugg = true,
                 $hide_retrieve_cols,
-                $force_retrieve_cols);
+                $force_retrieve_cols
+            );
             $mode_force_cols = false;
         } else {
             $mode_force_cols = true;
@@ -726,7 +728,7 @@ class AfwShowHelper
             } else {
                 throw new AfwRuntimeException(
                     "column $nom_col is not to display for me="
-                    . var_export($objme, true)
+                        . var_export($objme, true)
                 );
                 // die("UGROUPS = '".$desc["UGROUPS"]."'");
             }
@@ -910,8 +912,10 @@ class AfwShowHelper
                                                         $force_check = true
                                                     )
                                                 ) {
-                                                    $data_errors_arr = AfwDataQualityHelper::getDataErrors($objListItem,
-                                                        $lang);
+                                                    $data_errors_arr = AfwDataQualityHelper::getDataErrors(
+                                                        $objListItem,
+                                                        $lang
+                                                    );
                                                     $data_errors = implode(
                                                         ' / ',
                                                         $data_errors_arr
@@ -922,7 +926,7 @@ class AfwShowHelper
                                                         count(
                                                             $data_errors_arr
                                                         ) >
-                                                            18
+                                                        18
                                                     ) {
                                                         $data_errors =
                                                             'أخطاء كثيرة';
@@ -989,7 +993,7 @@ class AfwShowHelper
                                                         if (
                                                             $desc['EMPTY_IS_ALL'] or
                                                             $desc['FORMAT'] ==
-                                                                'EMPTY_IS_ALL'
+                                                            'EMPTY_IS_ALL'
                                                         ) {
                                                             $all_code = "ALL-$col";
                                                             $return = $objListItem->translate(
@@ -1045,7 +1049,7 @@ class AfwShowHelper
                                                         if (
                                                             $desc['EMPTY_IS_ALL'] or
                                                             $desc['FORMAT'] ==
-                                                                'EMPTY_IS_ALL'
+                                                            'EMPTY_IS_ALL'
                                                         ) {
                                                             $all_code = "ALL-$col";
                                                             $return = $objListItem->translate(
@@ -1067,10 +1071,10 @@ class AfwShowHelper
                                                     } else {
                                                         throw new AfwRuntimeException(
                                                             "strange value for FK field : $col => "
-                                                            . var_export(
-                                                                $obj_col,
-                                                                true
-                                                            )
+                                                                . var_export(
+                                                                    $obj_col,
+                                                                    true
+                                                                )
                                                         );
                                                     }
                                                 }
@@ -1172,7 +1176,7 @@ class AfwShowHelper
                                             if (
                                                 $display_val and
                                                 $desc['FORMAT-INPUT'] ==
-                                                    'hzmtoggle'
+                                                'hzmtoggle'
                                             ) {
                                                 // if(!$display_val) $display_val = "...";
                                                 // die("key=$attribute, val=$objListItem, display_val=$display_val, HZM-CSS=".$structure["HZM-CSS"]);
@@ -1266,7 +1270,11 @@ class AfwShowHelper
             $rows_by_table,
             $obj->detailModeWidthedTable,
             $categoryAttribute,
-            $obj->getCssClassName(), 'off', $order_key, null, $popupEditSettings
+            $obj->getCssClassName(),
+            'off',
+            $order_key,
+            null,
+            $popupEditSettings
         );
 
         if (!$mode_show_all_records) {
@@ -1307,7 +1315,7 @@ class AfwShowHelper
         $decoderArr = null,
         $popupEditSettings = []
     ) {
-        if(!AfwFormatHelper::isDataRowsFormat($data))
+        if (!AfwFormatHelper::isDataRowsFormat($data))
             return [var_export($data), ""];
         // die("dataImportance=".var_export($dataImportance,true));
         global $datatable_on_components,
@@ -2016,7 +2024,7 @@ class AfwShowHelper
      */
     public static function showVirtualAttribute($object, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $lang = 'ar', $structure = null, $getlink = false)
     {
-        if(!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        if (!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         switch ($intelligent_category) {
             case 'VIRTUAL':
                 $data_to_display = $object->getVirtual($attribute, 'value', '');
@@ -2494,8 +2502,10 @@ class AfwShowHelper
                 }
 
                 if (strtoupper($structure['DISPLAY']) == 'MINIBOX') {
-                    $data_to_display = AfwShowHelper::showMinibox($object->get($attribute),
-                        $structure['STYLE']);
+                    $data_to_display = AfwShowHelper::showMinibox(
+                        $object->get($attribute),
+                        $structure['STYLE']
+                    );
                     $link_to_display = '';
                 } else {
                     $data_to_display = $object->decode($attribute);
@@ -2635,8 +2645,10 @@ class AfwShowHelper
             } elseif (strtoupper($structure['DISPLAY']) === 'MINIBOX') {
                 $valObj = $object->get($attribute);
                 if ($valObj) {
-                    $data_to_display = AfwShowHelper::showMinibox($valObj,
-                        $structure['STYLE']);
+                    $data_to_display = AfwShowHelper::showMinibox(
+                        $valObj,
+                        $structure['STYLE']
+                    );
                     if ($debugg)
                         $data_to_display .= ' from valObj::showMinibox';
                 } else {
@@ -2644,7 +2656,8 @@ class AfwShowHelper
                 }
                 $link_to_display = '';
             } elseif ((strtoupper($structure['DISPLAY']) === 'DISPLAY') or
-                    (strtoupper($structure['DISPLAY']) === true)) {
+                (strtoupper($structure['DISPLAY']) === true)
+            ) {
                 $valObj = $object->get($attribute);
                 if ($valObj) {
                     $data_to_display = $valObj->getDisplay($lang);
@@ -2944,13 +2957,32 @@ class AfwShowHelper
         return $return;
     }
 
-    public static function showMinibox($object,
+
+    public static function showRetrieveTable($object, $lang = 'ar')
+    {
+        $objme = AfwSession::getUserConnected();
+        $objectList = [];
+        $objectList[$object->id] = $object;
+        list($html_table, $objectList, $ids,) = AfwShowHelper::showManyObj(
+            $objectList,
+            $object,
+            $objme,
+            $lang,
+            $options = []
+        );
+
+        return $html_table;
+    }
+
+
+    public static function showMinibox(
+        $object,
         $structure = '',
         $lang = 'ar',
         $token_arr = null,
         $objme = null,
-        $public_show = false)
-    {
+        $public_show = false
+    ) {
         //
 
         $obj_table = $object->getTableName();
