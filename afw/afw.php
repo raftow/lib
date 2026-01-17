@@ -5108,6 +5108,17 @@ class AFWObject extends AFWRoot
     }
 
 
+    final public function getPublishedMethodsFor($auser, $context)
+    {
+        $pbm_arr = $this->getPublicMethodsForUser($auser);
+        $final_pbm_arr = [];
+        foreach ($pbm_arr as $pbm_code => $pbm_item) {
+            if ($pbm_item["PUBLISHED"][$context]) $final_pbm_arr[$pbm_code] = $pbm_item;
+        }
+
+        return $final_pbm_arr;
+    }
+
     /**
      * @param Auser $auser
      */

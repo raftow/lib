@@ -81,6 +81,8 @@ class AfwDynamicPublicMethodHelper
             $methodColor = $publicDynamicMethodProps['color'];
             $can_if = $publicDynamicMethodProps['can_if'];
             $roles = $publicDynamicMethodProps['roles'];
+            $published = $publicDynamicMethodProps['published'];
+
 
             if (!$methodColor) {
                 if (AfwStringHelper::stringStartsWith($defined_color, '::')) {
@@ -118,6 +120,8 @@ class AfwDynamicPublicMethodHelper
                 'CAN_IF' => $can_if,
                 'ROLES' => $roles,
                 'STEP' => $step,
+                'PUBLISHED' => $published,
+
                 'BF-ID' => '',
                 'confirmation_needed' => $methodConfirmationNeeded,
                 'CONFIRMATION_WARNING' => array('ar' => $methodConfirmationWarning, 'en' => $methodConfirmationWarningEn),
