@@ -207,7 +207,7 @@ class AfwHtmlHelper extends AFWRoot
 
                 if ($action_lourde) $action_lourde = "action_lourde";
                 else $action_lourde = "";
-                if ($obj->editByStep and $pbm_item["STEP"] and ($obj->currentStep != $pbm_item["STEP"])) {
+                if ($obj->editByStep and $pbm_item["STEP"] and (strtoupper($pbm_item["STEP"]) != "ALL") and ($obj->currentStep != $pbm_item["STEP"])) {
                         if ((!$pbm_item["STEP2"]) or ($obj->currentStep != $pbm_item["STEP2"])) {
                                 if ((!$pbm_item["STEPS"]) or (!in_array($obj->currentStep, $pbm_item["STEPS"]))) {
                                         $show_pbm = false;
