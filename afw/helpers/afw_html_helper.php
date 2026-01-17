@@ -2,39 +2,36 @@
 
 // old require of afw_root 
 
-class AfwHtmlHelper extends AFWRoot {
+class AfwHtmlHelper extends AFWRoot
+{
 
         public static function hzmTplPath()
         {
-                return dirname(__FILE__)."/../../hzm/web"; 
+                return dirname(__FILE__) . "/../../hzm/web";
         }
 
         public static function arrayToSelectOptions($arr, $selection)
         {
                 $html_options = '';
-                foreach ($arr as $option) 
-                {
+                foreach ($arr as $option) {
                         $selected = "";
-                        if($selection==$option) $selected = "selected";
+                        if ($selection == $option) $selected = "selected";
                         $html_options .= "<option value='$option' $selected>$option</option>";
                 }
 
                 return $html_options;
         }
 
-        public static function arrayToHtml($arr_key_vals, $keyDecodeArr=null, $wdKey="1", $wdVal="3", $odd="odd", $even="even")
+        public static function arrayToHtml($arr_key_vals, $keyDecodeArr = null, $wdKey = "1", $wdVal = "3", $odd = "odd", $even = "even")
         {
                 $html_rows = '';
                 $cls = $odd;
-                foreach ($arr_key_vals as $key => $val) 
-                {
-                        if($keyDecodeArr)
-                        {
+                foreach ($arr_key_vals as $key => $val) {
+                        if ($keyDecodeArr) {
                                 $key_disp = $keyDecodeArr[$key];
-                        }
-                        else $key_disp = $key;
+                        } else $key_disp = $key;
                         $html_rows .= "   <div class='cols3 cols3_title hzm_wd$wdKey $cls fright'><b>$key_disp</b> :</div> <div class='cols3 cols3_value hzm_wd$wdVal $cls fright'>$val</div>\n";
-                        if($cls == $odd) $cls = $even;
+                        if ($cls == $odd) $cls = $even;
                         else $cls = $odd;
                 }
 
@@ -48,11 +45,9 @@ class AfwHtmlHelper extends AFWRoot {
         public static function array_keysToHeader($row)
         {
                 $header_trad = [];
-                if($row and is_array($row) and (count($row)>0))
-                {
+                if ($row and is_array($row) and (count($row) > 0)) {
                         $header_keys = array_keys($row);
-                        foreach($header_keys as $header_col)
-                        {
+                        foreach ($header_keys as $header_col) {
                                 $header_trad[$header_col] = $header_col;
                         }
                 }
@@ -60,15 +55,15 @@ class AfwHtmlHelper extends AFWRoot {
                 return $header_trad;
         }
 
-        public static function tableToHtml($data, $header_trad=null, $decoderArr=null)
+        public static function tableToHtml($data, $header_trad = null, $decoderArr = null)
         {
                 $data = self::resetIndexesToDataArray($data);
                 // die("tableToHtml data = ".var_export($data, true));
                 // echo("tableToHtml old header_trad = ".var_export($header_trad, true));
                 // $header_trad=null;
-                if(!$header_trad) $header_trad = self::array_keysToHeader($data[0]);
+                if (!$header_trad) $header_trad = self::array_keysToHeader($data[0]);
                 // die("tableToHtml new header_trad = ".var_export($header_trad, true));
-                list($html, $ids) = AfwShowHelper::tableToHtml($data, $header_trad, $showAsDataTable=false, $isAvail=null, $nowrap_cols=null, $class_table="grid", $class_tr1="altitem", $class_tr2="item", $class_td_off="asttdoff", $lang="ar", $dir="rtl", $bigtitle="", $bigtitle_tr_class="bigtitle", $width_th_arr=array(),$img_width="", $rows_by_table=0, $showWidthedTable="",$row_class_key="",$col_class_key="",$class_td_off = 'off', $order_key = '', $decoderArr);
+                list($html, $ids) = AfwShowHelper::tableToHtml($data, $header_trad, $showAsDataTable = false, $isAvail = null, $nowrap_cols = null, $class_table = "grid", $class_tr1 = "altitem", $class_tr2 = "item", $class_td_off = "asttdoff", $lang = "ar", $dir = "rtl", $bigtitle = "", $bigtitle_tr_class = "bigtitle", $width_th_arr = array(), $img_width = "", $rows_by_table = 0, $showWidthedTable = "", $row_class_key = "", $col_class_key = "", $class_td_off = 'off', $order_key = '', $decoderArr);
                 return $html;
         }
 
@@ -84,31 +79,26 @@ class AfwHtmlHelper extends AFWRoot {
                                 </tr>
                                 ";
                 $odd                = "";
-                foreach($backtrace as $entry) 
-                {
+                foreach ($backtrace as $entry) {
                         $args_desc = "Disabled <!-- to enable use change config attribute advanced-back-trace to `true` value -->";
                         $object_desc = "Disabled <!-- to enable use change config attribute advanced-back-trace to `true` value -->";
-                        if($advanced)
-                        {
-                                if($entry['object']) $object_desc = get_class($entry['object'])."-".$entry['object']->id;
+                        if ($advanced) {
+                                if ($entry['object']) $object_desc = get_class($entry['object']) . "-" . $entry['object']->id;
                                 else $object_desc = "N/A";
-                                if(count($entry['args']))
-                                {
-                                        $args_desc = AfwStringHelper::afw_export($entry['args'],true);
-                                }
-                                else
-                                {
+                                if (count($entry['args'])) {
+                                        $args_desc = AfwStringHelper::afw_export($entry['args'], true);
+                                } else {
                                         $args_desc = "()";
                                 }
                         }
                         $message .= "<tr class='btrace $odd'>";
-                        $message .= "<td>" . $entry['function']."</td>"; 
-                        $message .= "<td>" . $entry['file']."</td>"; 
-                        $message .= "<td>" . $entry['line']."</td>";
-                        $message .= "<td>" . $object_desc."</td>";
-                        $message .= "<td class='params'>" . $args_desc."</td>";
+                        $message .= "<td>" . $entry['function'] . "</td>";
+                        $message .= "<td>" . $entry['file'] . "</td>";
+                        $message .= "<td>" . $entry['line'] . "</td>";
+                        $message .= "<td>" . $object_desc . "</td>";
+                        $message .= "<td class='params'>" . $args_desc . "</td>";
                         $message .= "</tr>";
-                        if(!$odd) $odd                = "odd";
+                        if (!$odd) $odd                = "odd";
                         else      $odd                = "";
                 }
                 $message .= "</table>";
@@ -121,8 +111,7 @@ class AfwHtmlHelper extends AFWRoot {
         public static function resetIndexesToDataArray($arr)
         {
                 $data_arr = array();
-                foreach($arr as $index => $row)
-                {
+                foreach ($arr as $index => $row) {
                         $data_arr[] = $row;
                 }
                 return $data_arr;
@@ -133,25 +122,22 @@ class AfwHtmlHelper extends AFWRoot {
          * 
          */
 
-        public static function showHelpPicture($obj, $currentStep, $modulo=2)
+        public static function showHelpPicture($obj, $currentStep, $modulo = 2)
         {
                 $id = $obj->id;
                 $ii = date("ss");
                 $num = $ii % $modulo;
-                if(!$currentStep) $currentStep = 1;
-                $helppic = $obj->getMyTable()."_".$currentStep."_".$num;
+                if (!$currentStep) $currentStep = 1;
+                $helppic = $obj->getMyTable() . "_" . $currentStep . "_" . $num;
                 $moduleCode = $obj->getMyModule();
                 $picFile = "pic/$helppic.png";
                 $file_dir_name = dirname(__FILE__);
-                $picture_path = "$file_dir_name/../../../$moduleCode/".$picFile;
+                $picture_path = "$file_dir_name/../../../$moduleCode/" . $picFile;
                 $showAlways = false; // put true to debugg why picture doesn't appear
                 $picture_help_html = "<img class='helppic pic$id' src='$picFile'>";
-                if(file_exists($picture_path) or $showAlways)
-                {
-                        return [$picture_help_html,""];
-                }
-                else return ["", $picture_help_html];
-                
+                if (file_exists($picture_path) or $showAlways) {
+                        return [$picture_help_html, ""];
+                } else return ["", $picture_help_html];
         }
 
 
@@ -159,8 +145,7 @@ class AfwHtmlHelper extends AFWRoot {
         {
                 $pre_html = "";
                 $bulle_num = 1;
-                foreach($arr_bulles as $bulle)
-                {
+                foreach ($arr_bulles as $bulle) {
                         $pre_html .= "+$bulle_num+ $bulle\n";
                         $bulle_num++;
                 }
@@ -168,34 +153,31 @@ class AfwHtmlHelper extends AFWRoot {
                 return $pre_html;
         }
 
-        
-        public static function genereAccordion($html, $title, $div_id="")
+
+        public static function genereAccordion($html, $title, $div_id = "")
         {
-                if(!$div_id) $div_id = "accord_".date("YmdHis");
-                return 
-                "<div class='hzm_label object_status_ok greentitle expand collapsed' data-toggle='collapse' data-target='#$div_id'>
+                if (!$div_id) $div_id = "accord_" . date("YmdHis");
+                return
+                        "<div class='hzm_label object_status_ok greentitle expand collapsed' data-toggle='collapse' data-target='#$div_id'>
                         $title   
                 </div>
                 <div id='$div_id' class='hzm_wd4 collapse hzm_minibox_body' aria-expanded='true' style=''> 
                         $html
                 </div>";
-
         }
 
-        public static function genereAccordionForLogArray($arr_logs, $title, $div_id="")
+        public static function genereAccordionForLogArray($arr_logs, $title, $div_id = "")
         {
-                return self::genereAccordion(implode("<br>\n",$arr_logs), $title, $div_id);
+                return self::genereAccordion(implode("<br>\n", $arr_logs), $title, $div_id);
         }
 
 
-        public static function getHtmlMethodsButtons($obj, $pbm_arr, $lang, $action_lourde=true, $isAdmin=false)
+        public static function getHtmlMethodsButtons($obj, $pbm_arr, $lang, $action_lourde = true, $isAdmin = false)
         {
                 $html_buttons_spec_methods = "";
-                
-                foreach($pbm_arr as $pbm_code => $pbm_item)
-                {
-                        if(!$pbm_item["HIDE"])
-                        {
+
+                foreach ($pbm_arr as $pbm_code => $pbm_item) {
+                        if (!$pbm_item["HIDE"]) {
                                 $action_lourde = true;
                                 $html_buttons_spec_methods .= self::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $isAdmin, "bis");
                         }
@@ -205,78 +187,69 @@ class AfwHtmlHelper extends AFWRoot {
         }
 
 
-        
-        public static function showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde=true, $isAdmin=false, $ver="")
+
+        public static function showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde = true, $isAdmin = false, $ver = "")
         {
                 // global $next_color_arr;
 
                 $theme = $pbm_item['THEME'];
-                if(!$theme) $theme = "default";
+                if (!$theme) $theme = "default";
                 $condition = $pbm_item['CONDITION'];
-                if($condition)
-                {
-                    $show_pbm = $obj->$condition();
-                    if($show_pbm) $pbm_item['LOG'] .= " > $condition applied successfully";
-                    else $pbm_item['LOG'] .= " > $condition not applied successfully";
+                if ($condition) {
+                        $show_pbm = $obj->$condition();
+                        if ($show_pbm) $pbm_item['LOG'] .= " > $condition applied successfully";
+                        else $pbm_item['LOG'] .= " > $condition not applied successfully";
+                } else {
+                        $pbm_item['LOG'] .= " No condition";
+                        $show_pbm = true;
                 }
-                else
-                {
-                    $show_pbm = true;
-                }
-                
 
-                if($action_lourde) $action_lourde = "action_lourde";
+
+                if ($action_lourde) $action_lourde = "action_lourde";
                 else $action_lourde = "";
-                if($obj->editByStep and $pbm_item["STEP"] and ($obj->currentStep != $pbm_item["STEP"])) 
-                {
-                        if((!$pbm_item["STEP2"]) or ($obj->currentStep != $pbm_item["STEP2"]))
-                        {
-                                if((!$pbm_item["STEPS"]) or (!in_array($obj->currentStep, $pbm_item["STEPS"])))
-                                {
+                if ($obj->editByStep and $pbm_item["STEP"] and ($obj->currentStep != $pbm_item["STEP"])) {
+                        if ((!$pbm_item["STEP2"]) or ($obj->currentStep != $pbm_item["STEP2"])) {
+                                if ((!$pbm_item["STEPS"]) or (!in_array($obj->currentStep, $pbm_item["STEPS"]))) {
                                         $show_pbm = false;
                                 }
                         }
                 }
                 $last_color = "green";
-                if($show_pbm and $pbm_item["METHOD"])
-                {
+                if ($show_pbm and $pbm_item["METHOD"]) {
                         // if(!$pbm_item["COLOR"]) $pbm_item["COLOR"] = $next_color_arr[$last_color];
                         $last_color = $pbm_item["COLOR"];
                         $method_name = $pbm_item["METHOD"];
                         $method_icon = $pbm_item["ICON"];
-                        if(!$method_icon) $method_icon = "run";
+                        if (!$method_icon) $method_icon = "run";
 
                         // tooltip or help
-                        $method_tooltip = $pbm_item["TOOLTIP_".strtoupper($lang)];
-                        if(!$method_tooltip) $method_tooltip = $pbm_item["HELP_".strtoupper($lang)];
-                        if(!$method_tooltip) $method_tooltip = $pbm_item["TOOLTIP"];
-                        if(!$method_tooltip) $method_tooltip = $pbm_item["HELP"];
-                        
-                        $method_log = $pbm_item["LOG"];                        
-                        $pbm_item_tr = $pbm_item["LABEL_".strtoupper($lang)];
-                        
+                        $method_tooltip = $pbm_item["TOOLTIP_" . strtoupper($lang)];
+                        if (!$method_tooltip) $method_tooltip = $pbm_item["HELP_" . strtoupper($lang)];
+                        if (!$method_tooltip) $method_tooltip = $pbm_item["TOOLTIP"];
+                        if (!$method_tooltip) $method_tooltip = $pbm_item["HELP"];
+
+                        $method_log = $pbm_item["LOG"];
+                        $pbm_item_tr = $pbm_item["LABEL_" . strtoupper($lang)];
+
                         // translation
-                        $pbm_item_translation = $obj->translate($method_name, $lang);                        
-                        if(($pbm_item_translation==$method_name) or (!$pbm_item_translation)) $pbm_item_translation = $pbm_item_tr;
-                        if(!$pbm_item_translation) 
-                        {
+                        $pbm_item_translation = $obj->translate($method_name, $lang);
+                        if (($pbm_item_translation == $method_name) or (!$pbm_item_translation)) $pbm_item_translation = $pbm_item_tr;
+                        if (!$pbm_item_translation) {
                                 $pbm_item_translation = AfwStringHelper::methodToTitle($method_name);
                         }
                         $pbm_original_translation = $pbm_item_translation;
-                        if(strlen($pbm_item_translation)>38) $pbm_item_translation = AfwStringHelper::truncateArabicJomla($pbm_item_translation,38);
+                        if (strlen($pbm_item_translation) > 38) $pbm_item_translation = AfwStringHelper::truncateArabicJomla($pbm_item_translation, 38);
 
-                        $method_help = $pbm_original_translation." : ".$method_tooltip;                        
-                        if($isAdmin) $method_help .= " [$method_name]";
-                        
+                        $method_help = $pbm_original_translation . " : " . $method_tooltip;
+                        if ($isAdmin) $method_help .= " [$method_name]";
+
                         $input_main_param_html = "";
-                        if($pbm_item["MAIN_PARAM"])
-                        {
-                                $obj->input_main_param = $pbm_item["DEFAULT"]; 
-                                list($input_main_param_html,) = AfwInputHelper::text_input("pbmp$ver"."_$pbm_code",$pbm_item["MAIN_PARAM"]["structure"],$obj->input_main_param,$obj,"<br>");
+                        if ($pbm_item["MAIN_PARAM"]) {
+                                $obj->input_main_param = $pbm_item["DEFAULT"];
+                                list($input_main_param_html,) = AfwInputHelper::text_input("pbmp$ver" . "_$pbm_code", $pbm_item["MAIN_PARAM"]["structure"], $obj->input_main_param, $obj, "<br>");
                         }
 
-                        if($theme=="default")
-                        {
+                        if ($theme == "default") {
                                 return "$input_main_param_html \n 
                                 <button name=\"submit-$pbm_code\" id=\"submit-$pbm_code\" data-toggle=\"tooltip\" data-placement=\"bottom\" type=\"submit\" class=\"bf bf-$last_color $action_lourde new-specialmethod hzm-$method_name theme-new\">                                
                                         <div class=\"hzm-width-100 hzm-text-center hzm_margin_bottom theme-new\">                                      
@@ -294,11 +267,9 @@ class AfwHtmlHelper extends AFWRoot {
                                         });
                                 });
                                 </script>";
-                        }
-                        else
-                        {
+                        } else {
                                 return "$input_main_param_html \n 
-                                                <button name=\"submit-$pbm_code\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"".$method_tooltip."\" id=\"submit-$pbm_code\" type=\"submit\" class=\"bf bf-$last_color $action_lourde hzm-specialmethod hzm-$method_name\">                                
+                                                <button name=\"submit-$pbm_code\" data-toggle=\"tooltip\" data-placement=\"left\" title=\"" . $method_tooltip . "\" id=\"submit-$pbm_code\" type=\"submit\" class=\"bf bf-$last_color $action_lourde hzm-specialmethod hzm-$method_name\">                                
                                                                 <div class=\"hzm-width-100 hzm-text-center hzm_margin_bottom \">                                      
                                                                         <div class=\"hzm-vertical-align hzm-container-center hzm-otherlink-$method_name hzm-otherlink hzm-otherlink-icon-container only-border border-primary\">                                        
                                                                                 <i class=\"hzm-container-center hzm-vertical-align-middle hzm-icon-$method_icon\"></i>                                      
@@ -307,88 +278,76 @@ class AfwHtmlHelper extends AFWRoot {
                                                                 $pbm_item_translation                                
                                                 </button><!-- method $method_name enabled, reason-log : $method_log -->";
                         }
-                        
-                        
-                        
-                }
-                else
-                {
+                } else {
+                        $method_name0 = $pbm_item["METHOD"];
                         $method_name = $pbm_item["LOG-FOR-METHOD"];
-                        $method_log = $pbm_item["LOG"];
-                        return "<!-- method $method_name disabled, reason-log : $method_log -->";
-
+                        $method_log = $pbm_item['LOG'];
+                        return "<!-- method $method_name/$method_name0 disabled, reason-log : $method_log -->";
                 }
         }
 
-        public static function showSimpleAttributeMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde=true, $isAdmin=false)
+        public static function showSimpleAttributeMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde = true, $isAdmin = false)
         {
                 global $next_color_arr;
-                
+
                 $show_pbm = true;
-                if($action_lourde) $action_lourde = "action_lourde";
+                if ($action_lourde) $action_lourde = "action_lourde";
                 else $action_lourde = "";
-                if($obj->editByStep and $pbm_item["STEP"] and ($obj->currentStep != $pbm_item["STEP"]))  $show_pbm = false;
+                if ($obj->editByStep and $pbm_item["STEP"] and ($obj->currentStep != $pbm_item["STEP"]))  $show_pbm = false;
                 $last_color = "green";
-                if($show_pbm)
-                {
-                        if(!$pbm_item["COLOR"]) $pbm_item["COLOR"] = $next_color_arr[$last_color];
+                if ($show_pbm) {
+                        if (!$pbm_item["COLOR"]) $pbm_item["COLOR"] = $next_color_arr[$last_color];
                         $last_color = $pbm_item["COLOR"];
                         $method_name = $pbm_item["METHOD"];
                         $method_icon = $pbm_item["ICON"];
                         $method_tooltip = $pbm_item["TOOLTIP"];
-                        
-                        if(!$method_icon) $method_icon = "run";
-                        $pbm_item_translation = $obj->translate($method_name,$lang);
-                        $pbm_item_help = $pbm_item["LABEL_".strtoupper($lang)];
-                        if(($pbm_item_translation==$method_name) or (!$pbm_item_translation)) $pbm_item_translation = $pbm_item_help;
+
+                        if (!$method_icon) $method_icon = "run";
+                        $pbm_item_translation = $obj->translate($method_name, $lang);
+                        $pbm_item_help = $pbm_item["LABEL_" . strtoupper($lang)];
+                        if (($pbm_item_translation == $method_name) or (!$pbm_item_translation)) $pbm_item_translation = $pbm_item_help;
                         $method_name_help = $method_tooltip;
-                        if($isAdmin) $method_name_help .= " [$method_name]";
-                        
-                
+                        if ($isAdmin) $method_name_help .= " [$method_name]";
+
+
                         return "<button name=\"submit-$pbm_code\" title=\"$method_name_help\" id=\"submit-$pbm_code\" type=\"submit\" class=\"bf bf-$last_color $action_lourde hzm-simplemethod hzm-$method_name\">                                                        
                                 $pbm_item_translation                                
                                 </button>";
-                        
                 }
-
         }
         /**
          * @param AFWObject $obj
          */
 
-        public static function showOtherLinkButton($obj, $other_link, $lang, $action_lourde=true, $isAdmin=false)
+        public static function showOtherLinkButton($obj, $other_link, $lang, $action_lourde = true, $isAdmin = false)
         {
                 global $next_color_arr;
 
                 $show_link = true;
-                if($obj->editByStep and $other_link["STEP"] and ($obj->currentStep != $other_link["STEP"]))  $show_link = false;
+                if ($obj->editByStep and $other_link["STEP"] and ($obj->currentStep != $other_link["STEP"]))  $show_link = false;
                 $last_color = "green";
-                if($show_link)
-                {
+                if ($show_link) {
                         $bf_id = $other_link["BF-ID"];
                         $auth_type = $other_link["AUTH_TYPE"];
-                        if(!$bf_id) $bf_id = 0;
-                        if(!$other_link["COLOR"]) $other_link["COLOR"] = $next_color_arr[$last_color];
+                        if (!$bf_id) $bf_id = 0;
+                        if (!$other_link["COLOR"]) $other_link["COLOR"] = $next_color_arr[$last_color];
                         $last_color = $other_link["COLOR"];
                         $ol_url = $other_link["URL"];
                         $ol_code = $other_link["CODE"];
                         $lang_u = strtoupper($lang);
-                        if($lang=="ar") 
-                        {
+                        if ($lang == "ar") {
                                 $ol_title = $other_link["TITLE_AR"];
-                                if(!$ol_title) $ol_title = $obj->tm($other_link["TITLE"],"ar");
-                        }
-                        else 
-                        {
+                                if (!$ol_title) $ol_title = $obj->tm($other_link["TITLE"], "ar");
+                        } else {
                                 $ol_title = $other_link["TITLE_$lang_u"];
-                                if(!$ol_title) $ol_title = $obj->tm($other_link["TITLE"],$lang);                 
+                                if (!$ol_title) $ol_title = $obj->tm($other_link["TITLE"], $lang);
                         }
                         $ol_icon = $other_link["ICON"];
-                        if(!$ol_icon) $ol_icon = "link";
-                        
-                        
+                        if (!$ol_icon) $ol_icon = "link";
+
+
                         $ol_help = $other_link["HELP"];
-                
+
                         return "<button name=\"link-$ol_code\" title=\"$ol_help\" id=\"link-$ol_code\" type=\"button\" class=\"bf bf-$bf_id hzm-otherlink hzm-$ol_code\">                                
                                 <a class=\"auth-$auth_type\" href='$ol_url'>$ol_title</a> 
                                 <div class=\"hzm-width-100 hzm-text-center hzm_margin_top \">                                      
@@ -398,12 +357,10 @@ class AfwHtmlHelper extends AFWRoot {
                                 </div>  
                                                         
                 </button>";
-                        
                 }
-
         }
 
-        
+
 
         public static final function objToLIForTree(
                 $object,
@@ -412,137 +369,139 @@ class AfwHtmlHelper extends AFWRoot {
                 $feuille_cond_method,
                 $lang = 'ar',
                 $tabs = "\t"
-            ) {
+        ) {
                 $feuilleObjs = $object->get($feuille_col);
                 $detailObjs = $object->get($items_col);
                 $html_tree = '';
                 $disp_me = $object->getNodeDisplay($lang);
-        
+
                 $iconType = $object->getIconType();
                 $full_id = $object->getFullId();
                 if (count($detailObjs) + count($feuilleObjs) > 0) {
-                    $html_tree .= "$tabs<li id=\"$full_id\" data-jstree='{\"type\" : \"$iconType\" }'>$disp_me\n";
-        
-                    $html_tree .= "$tabs\t<ul>\n";
-                    $firstNode = true;
-                    $valid_SubFolderCount = 0;
-                    foreach ($detailObjs as $detailObjId => $detailObj) {
-                        if (
-                            $items_col != $feuille_col or
-                            $feuille_cond_method and !$detailObj->$feuille_cond_method()
-                        ) {
-                            $html_tree .= self::objToLIForTree($detailObj,
-                                $items_col,
-                                $feuille_col,
-                                $feuille_cond_method,
-                                $lang,
-                                $tabs . "\t"
-                            );
-                            $firstNode = false;
-                            $valid_SubFolderCount++;
+                        $html_tree .= "$tabs<li id=\"$full_id\" data-jstree='{\"type\" : \"$iconType\" }'>$disp_me\n";
+
+                        $html_tree .= "$tabs\t<ul>\n";
+                        $firstNode = true;
+                        $valid_SubFolderCount = 0;
+                        foreach ($detailObjs as $detailObjId => $detailObj) {
+                                if (
+                                        $items_col != $feuille_col or
+                                        $feuille_cond_method and !$detailObj->$feuille_cond_method()
+                                ) {
+                                        $html_tree .= self::objToLIForTree(
+                                                $detailObj,
+                                                $items_col,
+                                                $feuille_col,
+                                                $feuille_cond_method,
+                                                $lang,
+                                                $tabs . "\t"
+                                        );
+                                        $firstNode = false;
+                                        $valid_SubFolderCount++;
+                                }
                         }
-                    }
-                    $valid_feuillesCount = 0;
-                    foreach ($feuilleObjs as $feuilleObjId => $feuilleObj) {
-                        if (
-                            !$feuille_cond_method or $feuilleObj->$feuille_cond_method()
-                        ) {
-                            // if(!$firstNode) $js_array .= ", ";
-                            $feuilleFullId = $feuilleObj->getFullId();
-        
-                            $disp_feuille = $feuilleObj->getNodeDisplay($lang);
-                            $iconType = $feuilleObj->getIconType();
-                            $html_tree .= "<li id=\"$feuilleFullId\" data-jstree='{\"type\" : \"$iconType\" }'>$disp_feuille</li>";
-                            $firstNode = false;
-                            $valid_feuillesCount++;
+                        $valid_feuillesCount = 0;
+                        foreach ($feuilleObjs as $feuilleObjId => $feuilleObj) {
+                                if (
+                                        !$feuille_cond_method or $feuilleObj->$feuille_cond_method()
+                                ) {
+                                        // if(!$firstNode) $js_array .= ", ";
+                                        $feuilleFullId = $feuilleObj->getFullId();
+
+                                        $disp_feuille = $feuilleObj->getNodeDisplay($lang);
+                                        $iconType = $feuilleObj->getIconType();
+                                        $html_tree .= "<li id=\"$feuilleFullId\" data-jstree='{\"type\" : \"$iconType\" }'>$disp_feuille</li>";
+                                        $firstNode = false;
+                                        $valid_feuillesCount++;
+                                }
                         }
-                    }
-        
-                    if (!$valid_SubFolderCount and !$valid_feuillesCount) {
-                        $html_tree .= '<li>no valid feuille<li>';
-                    }
-                    $html_tree .= "$tabs\t</ul>\n";
-                    $html_tree .= "$tabs</li>";
+
+                        if (!$valid_SubFolderCount and !$valid_feuillesCount) {
+                                $html_tree .= '<li>no valid feuille<li>';
+                        }
+                        $html_tree .= "$tabs\t</ul>\n";
+                        $html_tree .= "$tabs</li>";
                 } else {
-                    $html_tree .= "$tabs<li id=\"$full_id\" data-jstree='{\"type\" : \"$iconType\" }'>$disp_me\n";
-                    $html_tree .= "$tabs</li>";
-                    //$html_tree .= "$tabs : no child found for me [$disp_me] with items_col=$items_col, feuille_col=$feuille_col\n";
+                        $html_tree .= "$tabs<li id=\"$full_id\" data-jstree='{\"type\" : \"$iconType\" }'>$disp_me\n";
+                        $html_tree .= "$tabs</li>";
+                        //$html_tree .= "$tabs : no child found for me [$disp_me] with items_col=$items_col, feuille_col=$feuille_col\n";
                 }
-        
+
                 return $html_tree;
-            }
+        }
 
 
-            public static final function phpArrayToJsArray($phpArr)
-            {
-                return "['".implode("','",$phpArr)."']";
-            }
+        public static final function phpArrayToJsArray($phpArr)
+        {
+                return "['" . implode("','", $phpArr) . "']";
+        }
 
-            public static final function toJsArray(
+        public static final function toJsArray(
                 $object,
                 $items_col,
                 $feuille_col,
                 $feuille_cond_method,
                 $lang = 'ar',
                 $tabs = "\t"
-            ) {
+        ) {
                 $feuilleObjs = $object->get($feuille_col);
                 $detailObjs = $object->get($items_col);
                 $js_array = '';
                 $disp_me = $object->getShortDisplay($lang);
-        
+
                 if (count($detailObjs) + count($feuilleObjs) > 0) {
-                    $js_array .= "$tabs{\tname: '$disp_me'";
-        
-                    $js_array .= ",\n$tabs\tchildren: [\n";
-                    $firstNode = true;
-                    $valid_SubFolderCount = 0;
-                    foreach ($detailObjs as $detailObjId => $detailObj) {
-                        if (
-                            $items_col != $feuille_col or
-                            $feuille_cond_method and !$detailObj->$feuille_cond_method()
-                        ) {
-                            if (!$firstNode) {
-                                $js_array .= ', ';
-                            }
-                            $js_array .= self::toJsArray($detailObj,
-                                $items_col,
-                                $feuille_col,
-                                $feuille_cond_method,
-                                $lang,
-                                $tabs . "\t"
-                            );
-                            $firstNode = false;
-                            $valid_SubFolderCount++;
+                        $js_array .= "$tabs{\tname: '$disp_me'";
+
+                        $js_array .= ",\n$tabs\tchildren: [\n";
+                        $firstNode = true;
+                        $valid_SubFolderCount = 0;
+                        foreach ($detailObjs as $detailObjId => $detailObj) {
+                                if (
+                                        $items_col != $feuille_col or
+                                        $feuille_cond_method and !$detailObj->$feuille_cond_method()
+                                ) {
+                                        if (!$firstNode) {
+                                                $js_array .= ', ';
+                                        }
+                                        $js_array .= self::toJsArray(
+                                                $detailObj,
+                                                $items_col,
+                                                $feuille_col,
+                                                $feuille_cond_method,
+                                                $lang,
+                                                $tabs . "\t"
+                                        );
+                                        $firstNode = false;
+                                        $valid_SubFolderCount++;
+                                }
                         }
-                    }
-                    $valid_feuillesCount = 0;
-                    foreach ($feuilleObjs as $feuilleObjId => $feuilleObj) {
-                        if (
-                            !$feuille_cond_method or $feuilleObj->$feuille_cond_method()
-                        ) {
-                            if (!$firstNode) {
-                                $js_array .= ', ';
-                            }
-                            $disp_feuille = $feuilleObj->getShortDisplay($lang);
-                            $js_array .= "{ name: '$disp_feuille' }";
-                            $firstNode = false;
-                            $valid_feuillesCount++;
+                        $valid_feuillesCount = 0;
+                        foreach ($feuilleObjs as $feuilleObjId => $feuilleObj) {
+                                if (
+                                        !$feuille_cond_method or $feuilleObj->$feuille_cond_method()
+                                ) {
+                                        if (!$firstNode) {
+                                                $js_array .= ', ';
+                                        }
+                                        $disp_feuille = $feuilleObj->getShortDisplay($lang);
+                                        $js_array .= "{ name: '$disp_feuille' }";
+                                        $firstNode = false;
+                                        $valid_feuillesCount++;
+                                }
                         }
-                    }
-        
-                    if (!$valid_SubFolderCount and !$valid_feuillesCount) {
-                        $js_array .= "{ name: 'no valid feuille' }";
-                    }
-        
-                    $js_array .= "$tabs]\n";
-                    $js_array .= "$tabs\n";
-                    $js_array .= " }\n\n\n";
+
+                        if (!$valid_SubFolderCount and !$valid_feuillesCount) {
+                                $js_array .= "{ name: 'no valid feuille' }";
+                        }
+
+                        $js_array .= "$tabs]\n";
+                        $js_array .= "$tabs\n";
+                        $js_array .= " }\n\n\n";
                 } else {
-                    //die(" for me [$disp_me] no details neither feuilles for toJsArray(items_col=$items_col, feuille_col=$feuille_col, feuille_cond_method=$feuille_cond_method)");
-                    $js_array .= "$tabs{\tname: '$disp_me', children: [{name: 'no child found for me [$disp_me] with items_col=$items_col, feuille_col=$feuille_col'},] }\n";
+                        //die(" for me [$disp_me] no details neither feuilles for toJsArray(items_col=$items_col, feuille_col=$feuille_col, feuille_cond_method=$feuille_cond_method)");
+                        $js_array .= "$tabs{\tname: '$disp_me', children: [{name: 'no child found for me [$disp_me] with items_col=$items_col, feuille_col=$feuille_col'},] }\n";
                 }
-        
+
                 return $js_array;
         }
 
@@ -550,12 +509,11 @@ class AfwHtmlHelper extends AFWRoot {
         {
                 $html_notification  = "";
 
-                if($err or $war or $inf) $html_notification .=  "<div class='notification_message_container'>";  
+                if ($err or $war or $inf) $html_notification .=  "<div class='notification_message_container'>";
 
-                if($err)
-                {
+                if ($err) {
 
-                                $html_notification .=  "
+                        $html_notification .=  "
                                 <div class='alert messages messages--error alert-dismissable' role='alert' >
                                 <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
                                 <div class='swal2-hzm swal2-icon swal2-error swal2-icon-show' style='display: flex;'>
@@ -568,10 +526,9 @@ class AfwHtmlHelper extends AFWRoot {
                                 </div>\n";
                 }
 
-                if($war)
-                {
-                
-                                $html_notification .=  "
+                if ($war) {
+
+                        $html_notification .=  "
                                 <div class='alert messages messages--warning alert-dismissable' role='alert' >
                                 <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
                                 <!--<div class='swal2-hzm swal2-icon swal2-warning swal2-icon-show' style='display: flex;color: orange;border-color: transparent !important;'>
@@ -579,12 +536,10 @@ class AfwHtmlHelper extends AFWRoot {
                                 </div>-->
                                 $war
                                 </div>\n";
-
                 }
 
-                if($inf)
-                {
-                                $html_notification .=  "
+                if ($inf) {
+                        $html_notification .=  "
                                 <div class='alert messages messages--status alert-dismissable' role='alert' >
                                 <a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
                                 <!--<div class='swal2-hzm swal2-icon swal2-info swal2-icon-show' style='display: flex;'>
@@ -592,59 +547,50 @@ class AfwHtmlHelper extends AFWRoot {
                                 </div>-->
                                 $inf
                                 </div>\n";
-
                 }
-                
-                if($err or $war or $inf) $html_notification .=  "</div>";
+
+                if ($err or $war or $inf) $html_notification .=  "</div>";
 
 
                 return $html_notification;
-        
         }
 
         public static function decodeHzmTemplate($tpl_content, $data_tokens, $lang)
         {
                 $token_arr = $data_tokens;
-                
+
                 $token_arr["[lang]"] = $lang;
-                
+
                 $text_to_decode = $tpl_content;
-                
-                foreach($token_arr as $token => $val_token)
-		{
-                     if((!isset($val_token)) or ($val_token===null))
-                     {
-                        $val_token = "";
-                     }   
-                     if(is_array($val_token))   
-                     {
-                        throw new AfwRuntimeException("Any token of tpl should be a string, found token [$token] value is : ".var_export($val_token, true));
-                     }
-                     $text_to_decode = str_replace("[".$token."]",$val_token,$text_to_decode);
+
+                foreach ($token_arr as $token => $val_token) {
+                        if ((!isset($val_token)) or ($val_token === null)) {
+                                $val_token = "";
+                        }
+                        if (is_array($val_token)) {
+                                throw new AfwRuntimeException("Any token of tpl should be a string, found token [$token] value is : " . var_export($val_token, true));
+                        }
+                        $text_to_decode = str_replace("[" . $token . "]", $val_token, $text_to_decode);
                 }
-                
+
                 return $text_to_decode;
-                
-        } 
-        
-        
-        public static function showUsingHzmTemplate($html_template_file, $data_tokens, $lang)
-        {
-               ob_start();
-               if(file_exists($html_template_file))
-               {
-                       include($html_template_file);
-                       $tpl_content = ob_get_clean();
-            
-                       return self::decodeHzmTemplate($tpl_content, $data_tokens, $lang);
-               }
-               else
-               {
-                       return "showUsingHzmTemplate : file $html_template_file not found";
-               }        
         }
 
-        public static function getLightDownloadUrl($file_path, $extension, $icon_size="")
+
+        public static function showUsingHzmTemplate($html_template_file, $data_tokens, $lang)
+        {
+                ob_start();
+                if (file_exists($html_template_file)) {
+                        include($html_template_file);
+                        $tpl_content = ob_get_clean();
+
+                        return self::decodeHzmTemplate($tpl_content, $data_tokens, $lang);
+                } else {
+                        return "showUsingHzmTemplate : file $html_template_file not found";
+                }
+        }
+
+        public static function getLightDownloadUrl($file_path, $extension, $icon_size = "")
         {
                 return "<a target='_download' href='$file_path' class='download-icon $icon_size download-$extension fright' title='[title]'>&nbsp;</a>";
         }
@@ -658,16 +604,14 @@ class AfwHtmlHelper extends AFWRoot {
         public static function importanceCss($object, $fieldname, $desc)
         {
                 $uk_arr = $object->UNIQUE_KEY ? $object->UNIQUE_KEY : [];
-                if(is_array($desc))
-                {
+                if (is_array($desc)) {
                         $importance = strtolower($desc["IMPORTANT"]);
                         if (!$importance) $importance = "in";
                         if (($importance == "in") and in_array($fieldname, $uk_arr)) $importance = "high";
                         elseif (($importance == "in") and ($desc['TYPE'] == 'PK' or $desc['PILLAR'] or $desc['POLE'])) $importance = "normal";
                         elseif ($importance == "in") $importance = "small";
-                }                
-                else $importance = "in";
-                
+                } else $importance = "in";
+
                 if (($fieldname == "عرض") or ($fieldname == "view") or ($fieldname == "display")) $importance = "small";
                 if (($fieldname == "تعديل") or ($fieldname == "edit") or ($fieldname == "update")) $importance = "high";
 
@@ -675,7 +619,7 @@ class AfwHtmlHelper extends AFWRoot {
         }
 
 
-/*
+        /*
         
         public static function addActionMatrixToRowData($obj)
         {
@@ -825,5 +769,4 @@ class AfwHtmlHelper extends AFWRoot {
                 }
         }
         */
-        
-}        
+}
