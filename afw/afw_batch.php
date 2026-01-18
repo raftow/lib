@@ -31,7 +31,7 @@
         public static function debugg($string)
         {
             // -- hzmc
-            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "white")."\n";
+            $echo_text = AfwBatchColors::getColoredString($string, $foreground_color = "white")."\n";
             self::echo_batch($echo_text);
             return $echo_text; 
         }
@@ -71,7 +71,7 @@
         public static function print_comment($string, $prefix_comment="-- ")
         {
             // -- hzmc
-            $echo_text = AfwBatchColors::singleton()->getColoredString($prefix_comment.$string, $foreground_color = "black", $background_color = "green")."\n";
+            $echo_text = AfwBatchColors::getColoredString($prefix_comment.$string, $foreground_color = "black", $background_color = "green")."\n";
             self::echo_batch($echo_text);
             return $echo_text; 
         }
@@ -79,7 +79,7 @@
         public static function print_hard_sql($string)
         {
             // -- hzmc
-            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "light_green")."\n";
+            $echo_text = AfwBatchColors::getColoredString($string, $foreground_color = "light_green")."\n";
             self::echo_batch($echo_text);
             return $echo_text; 
         }
@@ -87,7 +87,7 @@
         public static function print_sql($string)
         {
             // -- hzmc
-            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "yellow")."\n";
+            $echo_text = AfwBatchColors::getColoredString($string, $foreground_color = "yellow")."\n";
             self::echo_batch($echo_text);
             return $echo_text; 
         }
@@ -96,7 +96,7 @@
         {
             self::$errors_arr[] = $string;
             // -- hzmc
-            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "white", $background_color = "red")."\n";
+            $echo_text = AfwBatchColors::getColoredString($string, $foreground_color = "white", $background_color = "red")."\n";
             self::echo_batch($echo_text);
             return $echo_text;
         }
@@ -106,7 +106,7 @@
         {
             self::$warnings_arr[] = $string;
             // -- hzmc
-            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "light_purple")."\n";
+            $echo_text = AfwBatchColors::getColoredString($string, $foreground_color = "light_purple")."\n";
             self::echo_batch($echo_text);
             return $echo_text;
         }
@@ -115,7 +115,7 @@
         {
             self::$infos_arr[] = $string;
             // -- hzmc
-            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "light_green")."\n";
+            $echo_text = AfwBatchColors::getColoredString($string, $foreground_color = "light_green")."\n";
             self::echo_batch($echo_text);
             return $echo_text;
         }
@@ -141,7 +141,7 @@
         public static function print_important($string)
         {
             // -- hzmc
-            $echo_text = AfwBatchColors::singleton()->getColoredString($string, $foreground_color = "white", $background_color = "blue")."\n";
+            $echo_text = AfwBatchColors::getColoredString($string, $foreground_color = "white", $background_color = "blue")."\n";
             self::echo_batch($echo_text);
             return $echo_text;
         }
@@ -188,7 +188,7 @@
             }
             $row_text .= "|";
             
-            if($color_row) echo AfwBatchColors::singleton()->getColoredString($row_text, $color_row, $bg_color_row)."\n";
+            if($color_row) echo AfwBatchColors::getColoredString($row_text, $color_row, $bg_color_row)."\n";
             else echo $row_text."\n";
         }
 
@@ -223,37 +223,36 @@
                     $bg_color = isset($color_rule["bg_colors"][$val_coloring]) ? $color_rule["bg_colors"][$val_coloring] : $bg_color;
                 }
                 
-                if($color_rule["code"]=="min_val_of_col")
+                if(($color_rule["code"]=="min_val_to_color") or ($color_rule["code"]=="borne_sup"))
                 {
                     
-                    foreach($color_rule["bg_colors"] as $minval_for_color => $minval_color)
+                    foreach($color_rule["bg_colors"] as $borne_sup => $triggered_color)
                     {
-                        if($val_coloring >= $minval_for_color) 
+                        if($val_coloring >= $borne_sup) 
                         {
-                            $bg_color = $minval_color;
+                            $bg_color = $triggered_color;
                         }
                     }
                     
-                    foreach($color_rule["colors"] as $minval_for_color => $minval_color)
+                    foreach($color_rule["colors"] as $borne_sup => $triggered_color)
                     {
-                        if($val_coloring >= $minval_for_color) 
+                        if($val_coloring >= $borne_sup) 
                         {
-                            $color = $minval_color;
+                            $color = $triggered_color;
                         }
                     }
                 }
                 
-                if($color_rule["code"]=="max_val_of_col")
+                if(($color_rule["code"]=="max_val_to_col") or ($color_rule["code"]=="borne_inf"))
                 {
-                    foreach($color_rule["bg_colors"] as $maxval_for_color => $maxval_color)
+                    foreach($color_rule["bg_colors"] as $borne_inf => $triggered_color)
                     {
-                        if($val_coloring <= $maxval_for_color) $bg_color = $maxval_color;
+                        if($val_coloring <= $borne_inf) $bg_color = $triggered_color;
                     }
                     
-                    foreach($color_rule["colors"] as $maxval_for_color => $maxval_color)
+                    foreach($color_rule["colors"] as $borne_inf => $triggered_color)
                     {
-                        if($val_coloring <= $maxval_for_color) $color = $maxval_color;
-                        
+                        if($val_coloring <= $borne_inf) $color = $triggered_color;
                     }
                 }
             }
@@ -293,7 +292,7 @@
             
             list($color_row, $bg_color_row) = self::get_row_color_from_color_rules($colors, $row);
             
-            $row_text = "<tr style='color=[color];background-color:[bgcolor]'>";
+            $row_text = "<tr style='color=[color] !important;background-color:[bgcolor] !important;'>";
             
             foreach($header as $col => $size)
             {
@@ -302,7 +301,7 @@
             }
             $row_text .= "</tr>";
             
-            if($color_row or $bg_color_row) $row_text = AfwBatchColors::singleton()->getColoredHtml($row_text, $color_row, $bg_color_row);
+            if($color_row or $bg_color_row) $row_text = AfwBatchColors::getColoredHtml($row_text, $color_row, $bg_color_row);
             
             return $row_text;
             
