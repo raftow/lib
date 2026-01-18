@@ -186,12 +186,14 @@ class AfwHtmlHelper extends AFWRoot
                 return $html_buttons_spec_methods;
         }
 
+        /**
+         * @param AFWObject $obj
+         */
 
-
-        public static function showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde = true, $isAdmin = false, $ver = "")
+        public static function showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde = true, $isAdmin = false, $ver = "", $max_pbm_title = 38)
         {
                 // global $next_color_arr;
-
+                $cls = $obj ? $obj->getMyClass() : "";
                 $theme = $pbm_item['THEME'];
                 if (!$theme) $theme = "default";
                 $condition = $pbm_item['CONDITION'];
@@ -238,7 +240,7 @@ class AfwHtmlHelper extends AFWRoot
                                 $pbm_item_translation = AfwStringHelper::methodToTitle($method_name);
                         }
                         $pbm_original_translation = $pbm_item_translation;
-                        if (strlen($pbm_item_translation) > 38) $pbm_item_translation = AfwStringHelper::truncateArabicJomla($pbm_item_translation, 38);
+                        if (strlen($pbm_item_translation) > $max_pbm_title) $pbm_item_translation = AfwStringHelper::truncateArabicJomla($pbm_item_translation, $max_pbm_title);
 
                         $method_help = $pbm_original_translation . " : " . $method_tooltip;
                         if ($isAdmin) $method_help .= " [$method_name]";
@@ -251,7 +253,7 @@ class AfwHtmlHelper extends AFWRoot
 
                         if ($theme == "default") {
                                 return "$input_main_param_html \n 
-                                <button name=\"submit-$pbm_code\" id=\"submit-$pbm_code\" data-toggle=\"tooltip\" data-placement=\"bottom\" type=\"submit\" class=\"bf bf-$last_color $action_lourde new-specialmethod hzm-$method_name theme-new\">                                
+                                <button name=\"submit-$pbm_code\" id=\"submit-$pbm_code\" data-toggle=\"tooltip\" data-placement=\"bottom\" type=\"submit\" class=\"bf bf-$last_color $cls $action_lourde new-specialmethod hzm-$method_name theme-new\">                                
                                         <div class=\"hzm-width-100 hzm-text-center hzm_margin_bottom theme-new\">                                      
                                                 <div class=\"hzm-vertical-align hzm-container-center hzm-otherlink-$method_name hzm-otherlink hzm-otherlink-icon-container border-primary theme-new\">                                        
                                                         <i class=\"hzm-container-center hzm-vertical-align-middle hzm-icon-$method_icon theme-new\"></i>                                      

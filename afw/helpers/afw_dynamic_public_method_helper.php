@@ -84,6 +84,7 @@ class AfwDynamicPublicMethodHelper
             $can_if = $publicDynamicMethodProps['can_if'];
             $roles = $publicDynamicMethodProps['roles'];
             $published = $publicDynamicMethodProps['published'];
+            $titlelength = $publicDynamicMethodProps['title-length'];
 
 
             if (!$methodColor) {
@@ -120,6 +121,7 @@ class AfwDynamicPublicMethodHelper
                 'ONLY-ADMIN' => $adminOnly,
                 'PUBLIC' => $public,
                 'STEP' => $step,
+                'TITLE-LENGTH' => $titlelength,
 
                 'CAN_IF' => $can_if,
                 'ROLES' => $roles,
