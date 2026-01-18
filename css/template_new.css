@@ -168,6 +168,12 @@ tr.item {
     border-top: 1px solid silver;
 }
 
+tr.item {
+    background-color: white;
+    border-top: 1px solid silver;
+}
+
+
 tr.off {
     background-color: white;
     border-top: 1px solid silver;
