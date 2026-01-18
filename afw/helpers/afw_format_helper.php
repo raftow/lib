@@ -1,7 +1,7 @@
 <?php
 class AfwFormatHelper
 {
-    public static $COLORS = ['gray', 'blue', 'cyan', 'purple', 'green', 'yellow', 'orange', 'red', 'white', 'black'];
+    public static $COLORS = ['gray', 'blue', 'cyan', 'purple', 'green', 'yellow', 'orange', 'red']; // , 'white', 'black'
     final public static function isGoodFormat($val, $type)
     {
         if ($type == 'integer') {
