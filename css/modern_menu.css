@@ -459,3 +459,8 @@ nav span.orgunit {
 .hzm-user-account.admin>a>div {
     color: #e7f851;
 }
+
+.pbm-tr {
+    text-align: center !important;
+    width: 90%;
+}
