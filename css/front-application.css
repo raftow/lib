@@ -3102,13 +3102,14 @@ screen and (max-width: 1279px) {
     }
 }
 
+/*
 @media print,
 screen and (max-width: 1030px) {
     .form_left {
         display: none !important;
     }
 }
-
+*/
 
 @media print,
 screen and (max-width: 1260px) {
