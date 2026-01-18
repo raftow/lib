@@ -135,7 +135,7 @@ button.bf.hzm-specialmethod {
 
 .bf.bf-green:hover {
     border: none !important;
-    color: #d8f5ce !important;
+    color: white !important;
     background-color: #37a137 !important;
 }
 
@@ -175,7 +175,7 @@ button.bf.hzm-specialmethod {
 .bf.bf-blue:hover {
     border: none !important;
     background-color: rgb(27, 134, 192) !important;
-    color: rgb(170 203 245) !important;
+    color: white !important;
     text-shadow: 1px 1px 1px #1795c3;
 }
 
@@ -188,7 +188,7 @@ button.bf.hzm-specialmethod {
 .bf.bf-cyan:hover {
     border: none !important;
     background-color: #20B0A0 !important;
-    color: rgb(170 203 245) !important;
+    color: white !important;
     text-shadow: 1px 1px 1px #20B0A0;
 }
 
@@ -201,7 +201,7 @@ button.bf.hzm-specialmethod {
 
 .bf.bf-yellow:hover {
     border: none !important;
-    color: #f6f8c5 !important;
+    color: white !important;
     background-color: #22A5E7 !important;
 }
 
@@ -227,7 +227,7 @@ button.bf.hzm-specialmethod {
 
 .bf.bf-purple:hover {
     border: none !important;
-    color: #e5cfee !important;
+    color: white !important;
     color: #8d20bd !important;
 }
 
