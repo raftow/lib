@@ -74,8 +74,10 @@ class AfwDynamicPublicMethodHelper
 
             $methodTitleAr = $object->getMethodTitle($methodName0, 'ar');
             $methodTitleAr = str_replace('[item]', $itemTitleAr, $methodTitleAr);
+            $methodTitleAr = AfwReplacement::trans_replace($methodTitleAr, "workflow", "ar");
             $methodTooltipAr = $object->getMethodTooltip($methodName0, 'ar');
             $methodTitleEn = $object->getMethodTitle($methodName0, 'en');
+            $methodTitleEn = AfwReplacement::trans_replace($methodTitleEn, "workflow", "en");
             $methodTitleEn = str_replace('[item]', $itemTitleEn, $methodTitleEn);
             $methodTooltipEn = $object->getMethodTooltip($methodName0, 'ar');
             $methodColor = $publicDynamicMethodProps['color'];
