@@ -769,6 +769,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                 $html_buttons_spec_methods_arr = [];
 
                                 // $html_buttons_spec_methods_bis = "";
+                                $empty_mgroup = [];
                                 foreach ($pbm_arr as $pbm_code => $pbm_item) {
                                         if (!$pbm_item["HIDE"]) {
                                                 // if we click on the button and have action_lourde css class 
@@ -777,21 +778,30 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 $max_pbm_title = $pbm_item["TITLE-LENGTH"];
                                                 $mgroup = $pbm_item["MGROUP"];
                                                 if (!$mgroup) $mgroup = "Orders to execute";
+                                                if (!isset($empty_mgroup[$mgroup])) $empty_mgroup[$mgroup] = true;
                                                 if (!$max_pbm_title) $max_pbm_title = 40;
                                                 $action_lourde = (($check_error_activated) and (count($obj_errors) == 0));
                                                 if (!$html_buttons_spec_methods_arr[$mgroup]) $html_buttons_spec_methods_arr[$mgroup] = "";
-                                                $html_buttons_spec_methods_arr[$mgroup] .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin(), '', $max_pbm_title);
+                                                $pbm_html = trim(AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin(), '', $max_pbm_title));
+                                                if (AfwStringHelper::stringStartsWith($pbm_html, "<!--") and AfwStringHelper::stringEndsWith($pbm_html, "-->")) {
+                                                        $html_buttons_spec_methods_arr[$mgroup] .= $pbm_html;
+                                                } else {
+                                                        $empty_mgroup[$mgroup] = false;
+                                                        $html_buttons_spec_methods_arr[$mgroup] .= $pbm_html;
+                                                }
                                                 // $html_buttons_spec_methods_bis .= AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin(), "bis");
                                         }
                                 }
                                 $html_buttons_spec_methods = "";
-                                $mgroup_current = "";
+                                // $mgroup_current = "";
                                 foreach ($html_buttons_spec_methods_arr as $mgroup => $html_buttons_spec_methods_group) {
-                                        if ($mgroup != $mgroup_current) {
-                                                $mgroup_title = $obj->translateMessage($mgroup, $lang);
+                                        $mgroup_title = $obj->translateMessage($mgroup, $lang);
+                                        if (!$empty_mgroup[$mgroup]) {
                                                 $html_buttons_spec_methods .= "<h5 class='greentitle'><i></i>$mgroup_title</h5>";
-                                                $html_buttons_spec_methods .= $html_buttons_spec_methods_group;
+                                        } else {
+                                                $html_buttons_spec_methods .= "<!-- <h5 class='greentitle'><i></i>$mgroup_title</h5> -->";
                                         }
+                                        $html_buttons_spec_methods .= $html_buttons_spec_methods_group;
                                 }
 
 
