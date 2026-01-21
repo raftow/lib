@@ -87,6 +87,8 @@ class AfwDynamicPublicMethodHelper
             $roles = $publicDynamicMethodProps['roles'];
             $published = $publicDynamicMethodProps['published'];
             $titlelength = $publicDynamicMethodProps['title-length'];
+            $mgroup = $publicDynamicMethodProps['mgroup'];
+
 
 
             if (!$methodColor) {
@@ -124,6 +126,7 @@ class AfwDynamicPublicMethodHelper
                 'PUBLIC' => $public,
                 'STEP' => $step,
                 'TITLE-LENGTH' => $titlelength,
+                'MGROUP' => $mgroup,
 
                 'CAN_IF' => $can_if,
                 'ROLES' => $roles,

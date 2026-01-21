@@ -63,6 +63,12 @@ class AfwFormatHelper
             }
         }
 
+        if ($desc['FORMAT'] == 'WORLD-MOBILE') {
+            if (!self::isCorrectMobileNum($val_attr, 'WORLD')) {
+                return [false, 'FORMAT-WORLD-MOBILE'];
+            }
+        }
+
         if ($desc['FORMAT'] == 'SA-TRADENUM') {
             if (!self::isCorrectTradeNumber($val_attr)) {
                 return [false, 'FORMAT-SA-TRADENUM'];
@@ -1394,6 +1400,15 @@ class AfwFormatHelper
     {
         if ($country == 'SA') {
             return preg_match('/^05[0-9]{8}$/', $mobile_num);
+        } else if ($country == 'WORLD') {
+            $mobile_num = str_replace(' ', '', $mobile_num);
+            $mobile_num = str_replace('(', '', $mobile_num);
+            $mobile_num = str_replace(')', '', $mobile_num);
+            $mobile_num = str_replace('+', '', $mobile_num);
+            $mobile_num = str_replace('[', '', $mobile_num);
+            $mobile_num = str_replace(']', '', $mobile_num);
+            $mobile_num = str_replace('-', '', $mobile_num);
+            return is_numeric($mobile_num);
         } else {
             return false;
         }

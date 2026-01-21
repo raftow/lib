@@ -139,6 +139,7 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['FORMAT-ARABIC-TEXT'] = 'لا بد أن يكون غالب النص كلاما باللغة العربية';
         $trad['OPERATOR']['FORMAT-HTTP'] = 'رابط غير صحيح';
         $trad['OPERATOR']['FORMAT-SA-MOBILE'] = 'رقم جوال غير صحيح';
+        $trad['OPERATOR']['FORMAT-WORLD-MOBILE'] = 'رقم جوال غير صحيح';
         $trad['OPERATOR']['FORMAT-SA-TRADENUM'] = 'رقم سجل تجاري غير صحيح';
         $trad['OPERATOR']['FORMAT-SA-NATIONAL-UNIFIED-NUMBER'] = 'رقم غير صحيح تأكد منه في السجل التجاري أو وثيقة الموارد البشرية';
         $trad['OPERATOR']['FORMAT-SA-IDN'] = 'رقم هوية غير صحيح حسب مواصفات المملكة العربية السعودية';
