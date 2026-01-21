@@ -1859,6 +1859,11 @@ class AFWObject extends AFWRoot
         return count($old_val_arr);
     }
 
+    public final function countFKItems($attribute)
+    {
+        return $this->getRelation($attribute)->count();
+    }
+
     public final function findInMfk($attribute, $id_to_find, $mfk_empty_so_found = false, $struct = null)
     {
         if (!$struct)
@@ -6555,4 +6560,6 @@ class AFWObject extends AFWRoot
     {
         return AfwStructureHelper::export($this);
     }
+
+    
 }

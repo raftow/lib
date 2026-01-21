@@ -33,4 +33,9 @@ class AfwConfigObject extends AFWRoot
     {
         return $this->data[$attribute];
     }
+
+    public function getAllData()
+    {
+        return $this->data;
+    }
 }

@@ -3,6 +3,9 @@ class AfwEditMotor
 {
     public static function hidden_input($col_name, $desc, $val, &$obj)
     {
+        if ($desc['INPUT-FORMATTING'] == 'addslashes') {
+                    $val = addslashes($val);
+        }
         $type_input_ret = 'hidden';
         include 'tpl/helper_edit_hidden.php';
         return $type_input_ret;

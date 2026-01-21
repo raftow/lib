@@ -76,8 +76,11 @@ foreach ($class_db_structure as $nom_col => $desc) {
         // if($nom_col=="arole_mfk") die("arole_mfk -> ".var_export($_POST[$nom_col],true));
         if (is_array($_POST[$nom_col]))
             $val = ',' . implode(',', $_POST[$nom_col]) . ',';
-        else
+        else {
             $val = $_POST[$nom_col];
+            if ($desc['INPUT-FORMATTING'] == 'addslashes') $val = stripslashes($val);
+        }
+            
 
         //if($nom_col=="active") die("switcher val=$val");        
         // This below fix the bug of switcher 

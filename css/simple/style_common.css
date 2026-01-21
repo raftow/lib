@@ -17,6 +17,17 @@ p {
     padding: 0;
 }
 
+p.filter {
+    width: auto !important;
+    color: #177bab;
+    text-shadow: none;
+    display: inline;
+    font-size: 100%;
+    font-weight: normal;
+    background-color: #cef3ff;
+    padding: 3px 9px;
+}
+
 h6 {
     margin: 0;
     padding: 0;
@@ -7276,4 +7287,45 @@ table.stats_table th {
 
 p.display {
     font-size: 80%;
+}
+
+
+.run-status {
+    background-color: black;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    margin-left: 45px;
+    text-align: center;
+}
+
+.run-status.green {
+    color: white;
+    background-color: #51c751;
+}
+
+.run-status.green>a {
+    color: white;
+    margin-top: -3px !important;
+    display: ruby-text;
+}
+
+
+.run-status.yellow {
+    color: black;
+    background-color: #f7c025;
+}
+
+.run-status.yellow> a {
+    color: black;
+}
+
+
+
+.run-status.red {
+    background-color: #f76e6e;
+}
+
+.run-status.red>a {
+    color: white;
 }
