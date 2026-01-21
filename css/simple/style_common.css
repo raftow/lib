@@ -7305,27 +7305,58 @@ p.display {
 }
 
 .run-status.green>a {
-    color: white;
+    color: white !important;
     margin-top: -3px !important;
-    display: ruby-text;
+    display: ruby-text !important;
 }
 
 
 .run-status.yellow {
-    color: black;
-    background-color: #f7c025;
+    color: black !important;
+    background-color: #f7c025 !important;
 }
 
 .run-status.yellow> a {
-    color: black;
+    color: black !important;
 }
 
 
 
 .run-status.red {
-    background-color: #f76e6e;
+    background-color: #f76e6e !important;
 }
 
 .run-status.red>a {
-    color: white;
+    color: white !important;
+}
+
+.link.run-status.yellow> a {
+    color: black !important;
+    font-size: 14px;
+    font-weight: bold;
+    font-family: math  !important;
+    margin-left: 3px !important;
+    margin-top:  2px !important;
+    display: ruby-text !important;
+}
+
+.link.run-status.red {
+    margin: 0;
+    display: inline-flex;
+    width: 18px;
+    padding-left: 5px;
+}
+
+.link.run-status.red>a {
+    color: white !important;
+    text-decoration: none !important;
+    text-shadow: none !important;
+    margin-top: -2px !important;
+    display: ruby-text !important;
+    width: auto;
+}
+
+input.inputqe.xqe_data_notloaded {
+    background-color: #ebebeb00 !important;
+    border: 1px solid #c0c0c066 !important;
 }

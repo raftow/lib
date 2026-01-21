@@ -5212,7 +5212,11 @@ span.cms-title {
 
 input.form-control.lang_ar,
 textarea.form-control.lang_ar, 
-select.form-control.lang_ar {
+select.form-control.lang_ar,
+input.inputqe.lang_ar,
+textarea.inputqe.lang_ar, 
+select.inputqe.lang_ar
+{
     font-family: menu;
 }
 

@@ -548,6 +548,13 @@ class AfwStructureHelper extends AFWRoot
         }
     }
 
+    public static final function canBeForced(&$object, $attribute, $desc = null)
+    {
+        $desc = AfwStructureHelper::fixStructureOf($object, $attribute, $desc);
+
+        return $desc['CAN-BE-FORCED'];
+    }
+
     public static final function editIfEmpty(&$object, $attribute, $desc = null)
     {
         $desc = AfwStructureHelper::fixStructureOf($object, $attribute, $desc);
