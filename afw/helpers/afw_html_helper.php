@@ -260,7 +260,7 @@ class AfwHtmlHelper extends AFWRoot
                                                 </div>                                    
                                                 <div class='pbm-tr'>$pbm_item_translation</div>
                                         </div>  
-                                </button><!-- method $method_name enabled, reason-log : $method_log -->
+                                </button><!-- method $method_name status-log : $method_log -->
                                 <script>
                                         $(document).ready(function(){
                                                 $('#submit-$pbm_code').tooltip({
@@ -278,7 +278,7 @@ class AfwHtmlHelper extends AFWRoot
                                                                         </div>                                    
                                                                 </div>  
                                                                 $pbm_item_translation                                
-                                                </button><!-- method $method_name enabled, reason-log : $method_log -->";
+                                                </button><!-- method $method_name status-log : $method_log -->";
                         }
                 } else {
                         $method_name0 = $pbm_item["METHOD"];

@@ -783,7 +783,9 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 $action_lourde = (($check_error_activated) and (count($obj_errors) == 0));
                                                 if (!$html_buttons_spec_methods_arr[$mgroup]) $html_buttons_spec_methods_arr[$mgroup] = "";
                                                 $pbm_html = trim(AfwHtmlHelper::showHtmlPublicMethodButton($obj, $pbm_code, $pbm_item, $lang, $action_lourde, $objme->isSuperAdmin(), '', $max_pbm_title));
-                                                if (AfwStringHelper::stringStartsWith($pbm_html, "<!--") and AfwStringHelper::stringEndsWith($pbm_html, "-->")) {
+                                                if ((AfwStringHelper::stringStartsWith($pbm_html, "<!--") and AfwStringHelper::stringEndsWith($pbm_html, "-->")) or
+                                                        (AfwStringHelper::stringContain($pbm_html, "bf-denied"))
+                                                ) {
                                                         $html_buttons_spec_methods_arr[$mgroup] .= $pbm_html;
                                                 } else {
                                                         $empty_mgroup[$mgroup] = false;
