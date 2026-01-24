@@ -65,8 +65,8 @@ class AfwDynamicPublicMethodHelper
                 $itemTitleAr = $itemPbm['ar'];
                 $itemTitleEn = $itemPbm['en'];
             } elseif ($itemPbm and is_object($itemPbm)) {
-                $itemTitleAr = $itemPbm->getDisplay('ar');
-                $itemTitleEn = $itemPbm->getDisplay('en');
+                $itemTitleAr = $itemPbm->getNodeDisplay('ar');
+                $itemTitleEn = $itemPbm->getNodeDisplay('en');
             } else {
                 $itemTitleAr = '???';
                 $itemTitleEn = '???';
