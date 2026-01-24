@@ -91,7 +91,7 @@ class AfwLoadHelper extends AFWRoot
         elseif ($what == "decodeme") {
             $lang = AfwLanguageHelper::getGlobalLanguage();
             return $object->getDisplay($lang);
-        } else throw new AfwRuntimeException("giveWhat :: error :: unknown what = $what");
+        } else throw new AfwRuntimeException("giveWhat method error : unknown value for parameter what=[$what]");
     }
 
 
