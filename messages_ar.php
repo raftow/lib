@@ -104,7 +104,7 @@ $messages["Please enter correct login information"] = "الرجاء إدخال �
 $messages["customers"] = "العملاء";
 $messages["Customers Login"] = "دخول العملاء";
 
-$messages["Orders to execute"] = "أوامر للتنفيذ";
+$messages["Orders to execute"] = "عمليات أخرى";
 $messages["There are errors in data, process can not be completed"] = "يوجد أخطاء في البيانات لا يمكن استكمال الاجراء";
 $messages["The empolyee account creation has been failed, contact your administrator"] = "فشلت عملية انشاء حساب الموظف، من فضلك تواصل مع المشرف";
 $messages["The user account creation has been failed, contact your administrator"] = "فشلت عملية انشاء حساب المستخدم، من فضلك تواصل مع المشرف";
