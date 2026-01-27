@@ -7579,6 +7579,11 @@ th.categ_stats_cross_col div.stats-header {
     white-space: nowrap;
 }
 
+table.stats_table th {
+    height: 180px;
+    width: 42px !important;
+}
+
 th.stats_workflow_scope_id div.stats-header,
 td.stats_workflow_scope_id div.stats-header {
     width: 220px;
