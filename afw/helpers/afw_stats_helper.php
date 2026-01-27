@@ -760,7 +760,7 @@ class AfwStatsHelper
                     $class_xqe_prop = "class = '$bloc_col_end_class stats_$col categ_$col_categ'";
                 }
 
-                AfwMainPage::addOutput("      <th $class_xqe_prop align = '$aligntd'><div class='stats-header'>$footer_total_val</div></th>");
+                AfwMainPage::addOutput("      <th $class_xqe_prop align = '$aligntd'><div class='stats-footer'>$footer_total_val</div></th>");
             }
 
             AfwMainPage::addOutput("   </tr>");
