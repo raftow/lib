@@ -25,14 +25,16 @@ if (! $cl) {
 
 }
 
+$myClass = $cl;
+
 /**
- * @var AFWObject $myObj
+ * @var AFWObject $myClassInstance
  */
 
-$myObj = new $cl();
+$myClassInstance = new $cl();
 
 if (! $stc) {
-    $stc = $myObj->STATS_DEFAULT_CODE;
+    $stc = $myClassInstance->STATS_DEFAULT_CODE;
 }
 
 if (! $stc) {
@@ -41,9 +43,15 @@ if (! $stc) {
 
 }
 
-$stats_config = $myObj::$STATS_CONFIG[$stc];
-//echo( "myObj::STATS_CONFIG[$stc] = stats_config = ".var_export( $stats_config, true ).'<br>\n' );
+$stats_config = $myClassInstance::$STATS_CONFIG[$stc];
+//echo( "myClassInstance::STATS_CONFIG[$stc] = stats_config = ".var_export( $stats_config, true ).'<br>\n' );
 // die();
+$config_stats_options      = $stats_config['OPTIONS'];
+global $MAX_MEMORY_BY_REQUEST, $MODE_BATCH_LOURD;
+$MAX_MEMORY_BY_REQUEST = $config_stats_options['MAX_MEMORY_BY_REQUEST'];
+$MODE_BATCH_LOURD      = $config_stats_options['MODE_BATCH_LOURD'];
+
+
 
 if (! $stats_config) {
     AfwMainPage::addOutput( 'Mode Stat : no defined stat config : ' . $stc);
@@ -51,634 +59,51 @@ if (! $stats_config) {
 
 }
 
-if (! $lang) {
-    $lang = 'ar';
-}
+$stats_code = $stc;
+
+if (! $lang) $lang = 'ar';
+
+// 
+
 
 $stats_where           = $stats_config['STATS_WHERE'];
-$url_settings          = $stats_config['URL_SETTINGS'];
-$chart_url          = $stats_config['CHART_URL'];
-$footer_titles         = $stats_config['FOOTER_TITLES'];
-$repeat_titles_nb_rows = $stats_config['REPEAT_TITLES_NB_ROWS'];
-if(!$repeat_titles_nb_rows) $repeat_titles_nb_rows = 20;
-$show_pie              = $stats_config['SHOW_PIE'];
-$pie_mode              = $stats_config['PIE_MODE'];
-if(!$pie_mode) $pie_mode = "TOTAL";
-$chart_mode              = $stats_config['CHART_MODE'];
-if(!$chart_mode) $chart_mode = "IFRAME";
-
-$filter                = $stats_config['FILTER'];
-$global_footer_sum     = $stats_config['FOOTER_SUM'];
-$stats_where           = $myObj->decodeText($stats_where, $prefix = '', $add_cotes = true, $sepBefore = '[', $sepAfter = ']');
-$myObj->where($stats_where);
-// die( "stats_where=$stats_where" );
+$stats_where           = $myClassInstance->decodeText($stats_where, $prefix = '', $add_cotes = true, $sepBefore = '[', $sepAfter = ']');
+// where of the stats-report itself
+$myClassInstance->where($stats_where);
+// where of the horizontal visibility
 if (! $stats_config['DISABLE-VH']) {
-    $myObj->select_visibilite_horizontale();
+    $myClassInstance->select_visibilite_horizontale();
 }
+// where of stats filter
+list($arr_sql_conds, $cond_phrase_arr) = AfwSearchHelper::prepareSQLWhereFromPostedFilter($myClassInstance, $lang);
+// die("arr_sql_conds=".var_export($arr_sql_conds, true));
+$sql_conds = implode(" and ", $arr_sql_conds);
+$sql_conds = trim($sql_conds);
+if (preg_match('and$', $sql_conds)) $sql_conds = substr($sql_conds, 0, -2);
+if($sql_conds) $myClassInstance->where($sql_conds);
 
-$group_sep = $stats_config['GROUP_SEP'];
-if (! $group_sep) {
-    $group_sep = '/';
-}
+$allSql = $myClassInstance->getSQL();
 
-$config_sql_group_by    = $stats_config['SQL_GROUP_BY'];
-$stats_data_from    = $stats_config['STATS_DATA_FROM'];
-$config_group_cols      = $stats_config['GROUP_COLS'];
-$stats_data_arr         = [];
-$stats_row_code_arr     = [];
-$stats_row_code_arr_len = 0;
-$footer_total_arr       = [];
-$footer_sum_title_arr   = [];
-$sum_by_col_arr         = [];
-$count_by_col_arr       = [];
-$stat_trad              = [];
+AfwMainPage::addOutput("<!-- sql_conds=$sql_conds allSql=$allSql -->");
 
-$config_stats_display_cols = $stats_config['DISPLAY_COLS'];
-$config_stats_formula_cols = $stats_config['FORMULA_COLS'];
-$config_stats_options      = $stats_config['OPTIONS'];
-//die( 'stats_config[OPTIONS] = config_stats_options = '.var_export( $config_stats_options, true ) );
 
-global $MAX_MEMORY_BY_REQUEST, $MODE_BATCH_LOURD;
 
-$MAX_MEMORY_BY_REQUEST = $config_stats_options['MAX_MEMORY_BY_REQUEST'];
-$MODE_BATCH_LOURD      = $config_stats_options['MODE_BATCH_LOURD'];
+list($stat_trad, $stats_data_arr, $case, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr) = AfwStatsHelper::modeStatsInitialization($myClassInstance, $stats_config, $config_stats_options, $lang, $curropt);
 
-$config_stats_super_header = $stats_config['SUPER_HEADER'];
+AfwStatsHelper::outputModeStatsHeaderAndFilterPanel($myClassInstance, $stats_config, $stats_code, $currmod, $lang);
 
-$group_cols_arr = [];
+// AfwMainPage::addOutput("<pre class='php'>case=$case stat_trad = ".var_export($stat_trad,true)." stats_data_arr = ".var_export($stats_data_arr,true)."</pre>");
+AfwStatsHelper::outputModeStatsTable(
+        $myClassInstance,
+        $stats_config,
+        $stat_trad,
+        $stats_data_arr,
+        $footer_sum_title_arr,
+        $footer_total_arr,
+        $bloc_col_end = [],
+        $url_to_show_arr = [],
+        $lang
+    );
 
-foreach ($config_group_cols as $group_col_index => $group_col_item) {
-    $group_cols_arr[] = $group_col_item['COLUMN'];
-}
 
-$group_cols_list_sql = implode(',', $group_cols_arr);
-
-
-$stats_title = $myObj->translate('stats.' . $stc, $lang);
-$stats_title = $myObj->decodeText($stats_title, $prefix = '', $add_cotes = false, $sepBefore = '[', $sepAfter = ']');
-
-if($stats_data_from)
-{
-    $params_list = $stats_config["PARAMS"];
-    if(!$params_list) $params_list = [];
-    $params_arr = [];
-    foreach($params_list as $param_name)
-    {
-        if(isset($_REQUEST[$param_name])) $params_arr[$param_name] = $_REQUEST[$param_name];
-    }
-
-    $dataFromClass = $stats_data_from['class'];
-    $dataFromMethod = $stats_data_from['method'];
-
-    list($stats_data_arr, $stat_trad) = $dataFromClass::$dataFromMethod($params_arr);
-
-}
-elseif ($config_sql_group_by) {
-    $arrAggregFunctions = [];
-    foreach ($config_stats_display_cols as $display_col) {
-        $aggCol                      = $display_col['COLUMN'];
-        $aggSqlFormula               = $display_col['SQL_FORMULA'];
-        $arrAggregFunctions[$aggCol] = $aggSqlFormula;
-    }
-    list($sql, $statsData) = AfwSqlHelper::multipleAggregFunction($myObj, $arrAggregFunctions, $group_cols_list_sql);
-
-    // die( "sql=$sql => res=".var_export( $statsData, true ) );
-
-    foreach ($statsData as $stats_curr_row => $statsRow) {
-        $group_value = '';
-        unset($group_col_show_arr);
-        $group_col_show_arr = [];
-        foreach ($config_group_cols as $group_col_index => $group_col_item) {
-            $group_col          = $group_col_item['COLUMN'];
-            $col_display_format = $group_col_item['DISPLAY-FORMAT'];
-            if ($col_display_format == 'show') {
-                $col_display_format = 'decode';
-            }
-
-            $group_col_val = $statsRow[$group_col];
-
-            if ($col_display_format == 'val') {
-                $group_col_display = $group_col_val;
-            } elseif ($col_display_format == 'decode') {
-                $group_col_display = AfwLoadHelper::decodeFkAttribute($myObj, $group_col, $group_col_val);
-            }
-
-            $group_col_show_arr[$group_col]            = $group_col_display;
-            $group_col_show_arr[$group_col . '_value'] = $group_col_val;
-            $group_value .= $group_sep . $group_col_val;
-        }
-
-        $stats_row_code_arr[$group_value] = $stats_curr_row;
-
-        foreach ($config_group_cols as $group_col_index => $group_col_item) {
-            $group_col                                   = $group_col_item['COLUMN'];
-            $footer_sum_title_arr[$group_col]            = $group_col_item['FOOTER_SUM_TITLE'];
-            $stats_data_arr[$stats_curr_row][$group_col] = $group_col_show_arr[$group_col];
-            $stats_data_arr[$stats_curr_row][$group_col. '_value'] = $group_col_show_arr[$group_col. '_value'];
-            if (! $stat_trad[$group_col]) {
-                $nom_col_short  = "$group_col.stat";
-                $trad_col_short = $myObj->translate($nom_col_short, $lang);
-                if ($trad_col_short == $nom_col_short) {
-                    $nom_col_short  = "$group_col.short";
-                    $trad_col_short = $myObj->translate($nom_col_short, $lang);
-                }
-
-                if ($trad_col_short == $nom_col_short) {
-                    $stat_trad[$group_col] = $myObj->translate($group_col, $lang);
-                } else {
-                    $stat_trad[$group_col] = $trad_col_short;
-                }
-
-            }
-
-        }
-
-        $bloc_col_end    = [];
-        $url_to_show_arr = [];
-
-        foreach ($config_stats_display_cols as $config_stats_display_col_index => $config_stats_display_col_item) {
-            $stats_display_col = $config_stats_display_col_item['COLUMN'];
-
-            $myobj_struct = AfwStructureHelper::getStructureOf($myObj, $stats_display_col);
-            $unit         = $myobj_struct['UNIT'];
-
-            $footer_sum = $config_stats_display_col_item['FOOTER_SUM'];
-
-            $show_unit_header = $config_stats_display_col_item['SHOW-UNIT-HEADER'];
-            if ($show_unit) {
-                $show_unit_val = ' ' . $unit;
-            } else {
-                $show_unit_val = '';
-            }
-
-            $show_unit = $config_stats_display_col_item['SHOW-UNIT'];
-
-            $show_name = $config_stats_display_col_item['SHOW-NAME'];
-            if (! $show_name) {
-                $show_name = $stats_display_col;
-            }
-
-            $url_to_show                 = $config_stats_display_col_item['URL'];
-            $url_to_show_arr[$show_name] = $url_to_show;
-
-            if ((! $curropt) or $config_stats_options[$curropt][$show_name]) {
-
-                $bloc_col_end[$show_name]         = $config_stats_display_col_item['BLOC-COL-END'];
-                $footer_sum_title_arr[$show_name] = $config_stats_display_col_item['FOOTER_SUM_TITLE'];
-
-                $stats_display_col_val = $statsRow[$stats_display_col];
-
-                if (! $stat_trad[$show_name]) {
-                    $nom_col_short  = "$show_name.stat";
-                    $trad_col_short = $myObj->translate($nom_col_short, $lang);
-                    if ($trad_col_short == $nom_col_short) {
-                        $nom_col_short  = "$show_name.short";
-                        $trad_col_short = $myObj->translate($nom_col_short, $lang);
-                    }
-                    if ($trad_col_short == $nom_col_short) {
-                        $stat_trad[$show_name] = $myObj->translate($show_name, $lang);
-                    } else {
-                        $stat_trad[$show_name] = $trad_col_short;
-                    }
-
-                }
-
-                $stats_data_arr[$stats_curr_row][$show_name] = $stats_display_col_val;
-
-                if ($footer_sum) {
-                    if (! $footer_total_arr[$show_name]) {
-                        $footer_total_arr[$show_name] = 0;
-                    }
-
-                    $footer_total_arr[$show_name] += $stats_display_col_val;
-                    // $footer_total_arr[ 'log'.$show_name ] .= '+'.$stats_data_arr[ $stats_curr_row ][ $show_name ];
-
-                }
-            }
-        }
-
-    }
-} else {
-
-    
-
-    $myObj_list = $myObj->loadMany('', $group_cols_list_sql);
-
-    foreach ($myObj_list as $myObj_id => $myObj_item) {
-        $group_value = '';
-        unset($group_col_show_arr);
-        $group_col_show_arr = [];
-        foreach ($config_group_cols as $group_col_index => $group_col_item) {
-            $group_col          = $group_col_item['COLUMN'];
-            $col_display_format = $group_col_item['DISPLAY-FORMAT'];
-            $group_col_val      = $myObj_item->getVal($group_col);
-            $group_col_dec      = $myObj_item->decode($group_col);
-            $group_col_shw      = $myObj_item->showAttribute($group_col);
-            if ($col_display_format == 'val') {
-                $group_col_display = $group_col_val;
-            } elseif ($col_display_format == 'decode') {
-                $group_col_display = $group_col_dec;
-            } elseif ($col_display_format == 'show') {
-                $group_col_display = $group_col_shw;
-            }
-
-            $group_col_show_arr[$group_col]            = $group_col_display;
-            $group_col_show_arr[$group_col . '_value'] = $group_col_val;
-            $group_value .= $group_sep . $group_col_val;
-        }
-
-        if (! isset($stats_row_code_arr[$group_value])) {
-            $stats_row_code_arr[$group_value] = $stats_row_code_arr_len;
-            $stats_row_code_arr_len++;
-        }
-
-        $stats_curr_row = $stats_row_code_arr[$group_value];
-
-        foreach ($config_group_cols as $group_col_index => $group_col_item) {
-            $group_col                                   = $group_col_item['COLUMN'];
-            $footer_sum_title_arr[$group_col]            = $group_col_item['FOOTER_SUM_TITLE'];
-            $stats_data_arr[$stats_curr_row][$group_col] = $group_col_show_arr[$group_col];
-            $stats_data_arr[$stats_curr_row][$group_col. '_value'] = $group_col_show_arr[$group_col. '_value'];
-            
-            if (! $stat_trad[$group_col]) {
-                $nom_col_short  = "$group_col.stat";
-                $trad_col_short = $myObj_item->translate($nom_col_short, $lang);
-                if ($trad_col_short == $nom_col_short) {
-                    $nom_col_short  = "$group_col.short";
-                    $trad_col_short = $myObj_item->translate($nom_col_short, $lang);
-                }
-                if ($trad_col_short == $nom_col_short) {
-                    $stat_trad[$group_col] = $myObj_item->translate($group_col, $lang);
-                } else {
-                    $stat_trad[$group_col] = $trad_col_short;
-                }
-
-            }
-
-        }
-
-        $bloc_col_end    = [];
-        $url_to_show_arr = [];
-        foreach ($config_stats_display_cols as $config_stats_display_col_index => $config_stats_display_col_item) {
-            $stats_display_col = $config_stats_display_col_item['COLUMN'];
-
-            $myobj_item_struct = AfwStructureHelper::getStructureOf($myObj_item, $stats_display_col);
-            $unit              = $myobj_item_struct['UNIT'];
-            $gf                = $config_stats_display_col_item['GROUP-FUNCTION'];
-            $footer_sum        = $config_stats_display_col_item['FOOTER_SUM'];
-
-            $show_unit_header = $config_stats_display_col_item['SHOW-UNIT-HEADER'];
-            if ($show_unit) {
-                $show_unit_val = ' ' . $unit;
-            } else {
-                $show_unit_val = '';
-            }
-
-            $show_unit = $config_stats_display_col_item['SHOW-UNIT'];
-
-            $show_name = $config_stats_display_col_item['SHOW-NAME'];
-            if (! $show_name) {
-                $show_name = $stats_display_col;
-            }
-
-            $url_to_show                 = $config_stats_display_col_item['URL'];
-            $url_to_show_arr[$show_name] = $url_to_show;
-
-            if ((! $curropt) or $config_stats_options[$curropt][$show_name]) {
-
-                $bloc_col_end[$show_name]         = $config_stats_display_col_item['BLOC-COL-END'];
-                $footer_sum_title_arr[$show_name] = $config_stats_display_col_item['FOOTER_SUM_TITLE'];
-
-                if ($config_stats_display_col_item['COLUMN_IS_FORMULA']) {
-                    $stats_display_col_val = $myObj_item->calc($stats_display_col);
-                } else {
-                    $stats_display_col_val = $myObj_item->getVal($stats_display_col);
-                }
-
-                if (! $stat_trad[$show_name]) {
-                    $nom_col_short  = "$show_name.stat";
-                    $trad_col_short = $myObj_item->translate($nom_col_short, $lang);
-                    if ($trad_col_short == $nom_col_short) {
-                        $nom_col_short  = "$show_name.short";
-                        $trad_col_short = $myObj_item->translate($nom_col_short, $lang);
-                    }
-                    if ($trad_col_short == $nom_col_short) {
-                        $stat_trad[$show_name] = $myObj_item->translate($show_name, $lang);
-                    } else {
-                        $stat_trad[$show_name] = $trad_col_short;
-                    }
-
-                }
-                $new_val = 0;
-                if ($gf == 'sum') {
-                    if (! $sum_by_col_arr[$group_value][$stats_display_col]) {
-                        $sum_by_col_arr[$group_value][$stats_display_col] = 0;
-                    }
-
-                    $new_val = $stats_display_col_val;
-
-                    $sum_by_col_arr[$group_value][$stats_display_col] += $new_val;
-
-                    // if ( !$new_val ) die( "for $myObj_item value of col $stats_display_col = $new_val, so stats sum_by_col_arr[$group_value][$stats_display_col] = ".$sum_by_col_arr[ $group_value ][ $stats_display_col ] );
-                    $stats_data_arr[$stats_curr_row][$show_name] = $sum_by_col_arr[$group_value][$stats_display_col] . $show_unit_val;
-
-                }
-
-                if ($gf == 'count') {
-                    if (! $count_by_col_arr[$group_value][$stats_display_col]) {
-                        $count_by_col_arr[$group_value][$stats_display_col] = 0;
-                    }
-
-                    $new_val = 1;
-                    $count_by_col_arr[$group_value][$stats_display_col]++;
-                    $stats_data_arr[$stats_curr_row][$show_name] = $count_by_col_arr[$group_value][$stats_display_col];
-
-                }
-
-                if ($footer_sum) {
-                    if (! $footer_total_arr[$show_name]) {
-                        $footer_total_arr[$show_name] = 0;
-                    }
-
-                    $footer_total_arr[$show_name] += $new_val;
-                    // $footer_total_arr[ 'log'.$show_name ] .= '+'.$stats_data_arr[ $stats_curr_row ][ $show_name ];
-
-                }
-            }
-        }
-
-    }
-}
-
-/*************************************************************************/
-// show statistics doesn't matter the source of data is php, sql or whatever
-
-// preapre stat_trad and calc value for formula columns
-foreach ($stats_data_arr as $stats_curr_row => $stats_data_row) {
-    foreach ($config_stats_formula_cols as $config_stats_formula_col_index => $config_stats_formula_col_item) {
-        $show_name = $config_stats_formula_col_item["SHOW-NAME"];
-        if ((! $curropt) or $config_stats_options[$curropt][$show_name]) {
-            $method_formula                              = $config_stats_formula_col_item["METHOD"];
-            $stats_data_arr[$stats_curr_row][$show_name] = $cl::$method_formula($stats_data_row, $formatted = true);
-            if (! $stat_trad[$show_name]) {
-                $stat_trad[$show_name] = AfwLanguageHelper::translateStatsColumn($show_name, $cl, $myObj,  $lang);
-            }
-        }
-    }
-}
-
-// die(var_export($stat_trad,true));
-
-// display stats
-
-$settings_label = AfwLanguageHelper::translateKeyword("SETTINGS", $lang);
-$url_settings = "$url_settings&stc=$stc&stccl=$cl&stccurrmod=$currmod";
-$stats_title = str_replace('[seturl]', $url_settings, $stats_title);
-
-AfwMainPage::addOutput( "<h3 class='centertitle bluetitle'>$stats_title</h3>");
-AfwMainPage::addOutput( "<h3 class='righttitle specialtitle'><a target='_settings' href='$url_settings'>$settings_label</a></h3>");
-
-AfwMainPage::addOutput( "<br>
-<table class='display dataTable stats_table' cellspacing='3' cellpadding='4'>");
-
-$class_xqe_col = "x";
-
-if ($config_stats_super_header) {
-    AfwMainPage::addOutput( "   <tr>");
-    foreach ($config_stats_super_header as $config_stats_super_header_col) {
-        $config_stats_super_header_col_colspan = $config_stats_super_header_col["colspan"];
-        $config_stats_super_header_col_title   = $myObj->translate($config_stats_super_header_col["title"], $lang);
-
-        AfwMainPage::addOutput( "      <th colspan='$config_stats_super_header_col_colspan' class='xqe_hf_$class_xqe_col xqe_super_header'>$config_stats_super_header_col_title</th>");
-        if ($class_xqe_col == "x") {
-            $class_xqe_col = "z";
-        } else {
-            $class_xqe_col = "x";
-        }
-
-    }
-    AfwMainPage::addOutput( "   </tr>");
-}
-
-$aligntd       = "center";
-$class_xqe_col = "x";
-$thead_html    = "";
-$thead_html .= "<thead>
-   <tr>";
-foreach ($stat_trad as $col => $info) {
-    if ($class_xqe_col == "x") {
-        $class_xqe_col = "z";
-    } else {
-        $class_xqe_col = "x";
-    }
-
-    if ($bloc_col_end[$col]) {
-        $bloc_col_end_class = "xqe_bloc_col_separator";
-    } else {
-        $bloc_col_end_class = "";
-    }
-
-    if ($class_xqe_col) {
-        $class_xqe      = "xqe_hf_${class_xqe_col}";
-        $class_xqe_prop = "class='$class_xqe $bloc_col_end_class stats_$col'";
-    } else {
-        $class_xqe_prop = "$bloc_col_end_class stats_$col";
-    }
-
-    $thead_html .= "      <th $class_xqe_prop align='$aligntd'>$info</th>";
-
-}
-
-$thead_html .= "   </tr>
-</thead>";
-
-AfwMainPage::addOutput( $thead_html);
-
-$odd_even                    = "odd";
-$nb_rows_before_repeat_thead = 0;
-// die('RAFIK DEBUGG STATS 16/09/25 stats_data_arr = '.var_export($stats_data_arr, true));
-foreach ($stats_data_arr as $stats_curr_row => $stats_data_item) {
-    if ($nb_rows_before_repeat_thead > $repeat_titles_nb_rows) {
-        $nb_rows_before_repeat_thead = 0;
-        AfwMainPage::addOutput( $thead_html);
-    }
-    $class_xqe_col = "x";
-    AfwMainPage::addOutput( "   <tr>");
-    foreach ($stat_trad as $col => $info) {
-        $val_stat           = $stats_data_item[$col];
-        $url_to_show_before = $url_to_show_arr[$col];
-        $url_to_show        = AfwHtmlHelper::decodeHzmTemplate($url_to_show_before, $stats_data_item, $lang);
-        /* if ($url_to_show_before and $url_to_show) {
-            die("url_to_show_before=$url_to_show_before and url_to_show=$url_to_show decodeHzmTemplate from stats_data_item=" . var_export($stats_data_item, true));
-        }*/
-
-        if ($url_to_show) {
-            $val_stat_show = "<a class='stats-cell' target='_stats_details' href='$url_to_show'>" . $val_stat . "</a>";
-        } else {
-            $val_stat_show = $val_stat;
-        }
-
-        if ($class_xqe_col == "x") {
-            $class_xqe_col = "z";
-        } else {
-            $class_xqe_col = "x";
-        }
-
-        if ($bloc_col_end[$col]) {
-            $bloc_col_end_class = "xqe_bloc_col_separator";
-        } else {
-            $bloc_col_end_class = "";
-        }
-
-        if ($class_xqe_col) {
-            $class_xqe      = "xqe_${odd_even}_${class_xqe_col}";
-            $class_xqe_prop = "class='stats-td $class_xqe $bloc_col_end_class stats_$col'";
-        } else {
-            $class_xqe_prop = "class='stats-td $bloc_col_end_class stats_$col'";
-        }
-
-        AfwMainPage::addOutput( "      <td $class_xqe_prop align = '$aligntd'>$val_stat_show</td>");
-
-    }
-    AfwMainPage::addOutput( "   </tr>");
-    if ($odd_even == "odd") {
-        $odd_even = "even";
-    } else {
-        $odd_even = "odd";
-    }
-
-    $nb_rows_before_repeat_thead++;
-}
-
-$class_xqe_col = "x";
-
-AfwMainPage::addOutput( "<tfoot>");
-
-if ($global_footer_sum) {
-    AfwMainPage::addOutput("\n<tr>");
-    foreach ($stat_trad as $col => $info) {
-        if ($class_xqe_col == "x") {
-            $class_xqe_col = "z";
-        } else {
-            $class_xqe_col = "x";
-        }
-
-        if ($footer_sum_title_arr[$col]) {
-            $footer_total_val = $footer_sum_title_arr[$col];
-        } else {
-            $footer_total_val = $footer_total_arr[$col];
-        }
-
-        if ($bloc_col_end[$col]) {
-            $bloc_col_end_class = "xqe_bloc_col_separator";
-        } else {
-            $bloc_col_end_class = "";
-        }
-
-        if ($class_xqe_col) {
-            $class_xqe      = "xqe_hf_${class_xqe_col} xqe_sum_footer_$class_xqe_col";
-            $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class stats_$col'";
-        } else {
-            $class_xqe_prop = "class = '$bloc_col_end_class stats_$col'";
-        }
-
-        AfwMainPage::addOutput( "      <th $class_xqe_prop align = '$aligntd'>$footer_total_val</th>");
-
-    }
-
-    AfwMainPage::addOutput( "   </tr>");
-
-    // AfwMainPage::addOutput( "log = ".$footer_total_arr["logcount_pp_reg"];
-
-}
-
-if ($footer_titles) {
-    AfwMainPage::addOutput( "\n<tr>");
-    foreach ($stat_trad as $col => $info) {
-        if ($class_xqe_col == "x") {
-            $class_xqe_col = "z";
-        } else {
-            $class_xqe_col = "x";
-        }
-
-        if ($bloc_col_end[$col]) {
-            $bloc_col_end_class = "xqe_bloc_col_separator";
-        } else {
-            $bloc_col_end_class = "";
-        }
-
-        if ($class_xqe_col) {
-            $class_xqe      = "xqe_hf_${class_xqe_col}";
-            $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class stats_$col'";
-        } else {
-            $class_xqe_prop = "class = '$bloc_col_end_class stats_$col'";
-        }
-
-        AfwMainPage::addOutput( "      <th $class_xqe_prop align = '$aligntd'>$info</th>");
-
-    }
-
-    AfwMainPage::addOutput( "   </tr>\n");
-}
-AfwMainPage::addOutput( "</tfoot>");
-AfwMainPage::addOutput( "</table>");
-
-$stats_bottom_help_code = "stats." . $stc . ".help";
-
-$stats_bottom_help = $myObj->translate($stats_bottom_help_code, $lang);
-$stats_bottom_help = $myObj->decodeText($stats_bottom_help, $prefix = "", $add_cotes = false, $sepBefore = "[ ", $sepAfter = " ]");
-
-if ($stats_bottom_help != $stats_bottom_help_code) {
-    AfwMainPage::addOutput( "<div class = 'stats_bottom_help'>$stats_bottom_help</div>");
-}
-    
-$data_pie = [];
-
-if ($show_pie == "FOOTER") {
-    if ($pie_mode=="TOTAL") 
-    {
-        foreach ($stat_trad as $col => $info) 
-        {
-            if (!$footer_sum_title_arr[$col]) {
-                $data_pie[$info] = $footer_total_arr[$col];
-            }
-
-        }
-        $file_dir_name = dirname(__FILE__);
-        $statsClass    = $cl;
-        require_once "$file_dir_name/../graphic/afw_gpie_header.php";
-        require_once "$file_dir_name/../graphic/afw_gpie_body.php";
-    }
-    elseif ($pie_mode=="FILTER") {
-
-        list($colFilter, $colFilterValue) = explode("=", $filter);
-        foreach ($stat_trad as $col => $info) 
-        {
-            foreach ($stats_data_arr as $stats_curr_row => $stats_data_item) {
-                if($stats_data_item[$colFilter]==$colFilterValue)
-                {
-                    if(is_numeric($stats_data_item[$col])) $data_pie[$info] = $stats_data_item[$col];
-                }
-            }
-        }
-        $file_dir_name = dirname(__FILE__);
-        $statsClass    = $cl;
-        // AfwMainPage::initOutput("<div class='var_export'> data_pie = ".var_export($data_pie, true)."</div>");
-        // AfwMainPage::addOutput( AfwChartHelper::pieChart($data_pie, "dipe", []);
-        if($chart_mode=="IFRAME")
-        {
-                AfwMainPage::addOutput( AfwChartHelper::modeChartInIFrame($chart_url));
-        }
-        else
-        {
-                AfwMainPage::addOutput( "chart mode $chart_mode is not implemented");
-        }
-        
-        
-        /*
-        ob_start();
-        require_once "$file_dir_name/../graphic/afw_gpie_header.php";
-        require_once "$file_dir_name/../graphic/afw_gpie_body.php";
-        AfwMainPage::addOutput( ob_get_clean();*/
-    }
-}
+AfwStatsHelper::outputModeStatsFooter($myClassInstance, $stats_config, $stat_trad, $stats_data_arr, $stats_code, $footer_sum_title_arr, $footer_total_arr, $currmod, $lang);

@@ -121,7 +121,7 @@ class AfwLoadHelper extends AFWRoot
 
 
 
-    public static function getAnswerTableJsonArrayWithDetails(&$object, $attribute, $lang, $throwException = false)
+    public static function getAnswerTable(&$object, $attribute, $lang, $throwException = false)
     {
         $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         $nom_table_fk   = $desc["ANSWER"];
@@ -140,7 +140,13 @@ class AfwLoadHelper extends AFWRoot
         $objRep  = new $nom_class_fk;
         $desc["WHERE"] = $object->decodeText($desc["WHERE"]);
         if ($desc["WHERE"]) $objRep->where($desc["WHERE"]);
-        $dataObjectArr = $objRep->loadMany('', $desc['ORDERBY'], $optim = true);
+        return $objRep->loadMany('', $desc['ORDERBY'], $optim = true);
+    }
+
+    
+    public static function getAnswerTableJsonArrayWithDetails(&$object, $attribute, $lang, $throwException = false)
+    {    
+        $dataObjectArr = self::getAnswerTable($object, $attribute, $lang, $throwException);
         $jsonArray = [];
         if (count($dataObjectArr) > 0) {
             foreach ($dataObjectArr as $iditem => $item) {

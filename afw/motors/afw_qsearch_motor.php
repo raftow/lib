@@ -313,8 +313,7 @@ class AfwQsearchMotor {
 				);
 				break;
 			case 'DATE':
-			?>
-				<table style="border: 1px silver solid;width:100%">
+			?><!-- between table --><table style="border: 1px silver solid;width:100%">
 					<tr>
 						<td style='padding:5px;'>
 							من
@@ -339,7 +338,7 @@ class AfwQsearchMotor {
 							</script>
 						</td>
 					</tr>
-				</table>
+				</table><!-- end between table -->
 		<?php break;
 			default:
 				break;

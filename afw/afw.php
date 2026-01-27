@@ -3451,6 +3451,23 @@ class AFWObject extends AFWRoot
         return $this->transClassSingle($lang);
     }
 
+    public function transStatsAttribute($attribute, $lang) {
+        $nom_col_short  = "$attribute.stat";
+        $trad_col_short = $this->translate($nom_col_short, $lang);
+        if ($trad_col_short == $nom_col_short) {
+            $nom_col_short  = "$attribute.short";
+            $trad_col_short = $this->translate($nom_col_short, $lang);
+        }
+
+        if ($trad_col_short == $nom_col_short) {
+            $stat_trad = $this->translate($attribute, $lang);
+        } else {
+            $stat_trad = $trad_col_short;
+        }
+
+        return $stat_trad;
+    }
+
     public function transClassSingle($lang = 'ar', $short = false)
     {
         $tableLower = strtolower(static::$TABLE);

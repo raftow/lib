@@ -717,6 +717,29 @@ class AfwPrevilegeHelper
         return $desc['TYPE'] == 'FK' and $desc['INTERNAL_QSEARCH'];
     }
 
+    public static final function isSFilterCol($object, $attribute, $desc = '')
+    {
+        // $objme = AfwSession::getUserConnected();
+        if(!$object->attributeIsApplicable($attribute)) return false;
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+        $can_sfilter = $desc['SFILTER'];
+        $is_sfilterable =
+            ($can_sfilter and
+                ($desc['TYPE'] == 'PK' or
+                    $desc['TYPE'] == 'FK' or
+                    $desc['TYPE'] == 'ENUM' or
+                    $desc['TYPE'] == 'YN' or
+                    $desc['TYPE'] == 'DATE'
+                ));
+        // if($attribute=="academic_program_id") die("attribute $attribute is_searchable=$is_searchable, can_qsearch=$can_qsearch, is_qsearchable=$is_qsearchable, desc=".var_export($desc,true));
+        $return = $is_sfilterable;
+        return $return;
+    }
+
     public static final function isQSearchCol($object, $attribute, $desc = '')
     {
         // $objme = AfwSession::getUserConnected();

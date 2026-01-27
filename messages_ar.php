@@ -62,6 +62,8 @@ $messages["has been disabled"] = "تم تعطيله";
 $messages["Return to main page"] = "العودة إلى الصفحة الرئيسية";
 $messages["Return back"] = "العودة إلى الخلف";
 
+$messages["Total"] = "الإجمــالـي";
+
 $messages["There are more technical details with administrator"] = "يوجد المزيد من التفاصيل الفنية مع المشرف";
 
 

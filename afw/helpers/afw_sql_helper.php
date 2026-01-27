@@ -1636,7 +1636,8 @@ class AfwSqlHelper extends AFWRoot
         $functions,
         $group_by = '',
         $throw_error = true,
-        $throw_analysis_crash = true)
+        $throw_analysis_crash = true,
+        $filter_arr=[])
     {
         $module_server = $object->getModuleServer();
         $query = 'select ' . $group_by;
