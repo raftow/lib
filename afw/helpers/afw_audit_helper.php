@@ -31,18 +31,17 @@ class AfwAuditHelper extends AFWRoot
     {
         $table_name = $object->getTableName();
         if ($object->IS_VIRTUAL) {
-            throw new AfwRuntimeException('Impossible to do call to the method audit_before_update() with the virtual table ' .$table_name .'.');
+            throw new AfwRuntimeException('Impossible to do call to the method audit_before_update() with the virtual table ' . $table_name . '.');
         } else {
             global $update_context;
 
-            
+
 
             if (!$update_context) {
                 $objme = AfwSession::getUserConnected();
                 if (
                     $objme and
-                    $objme->isAdmin() and
-                    true /*$MODE_DEVELOPMENT*/
+                    $objme->isAdmin()
                 ) {
                     throw new AfwRuntimeException(
                         "update context not specified when auditing table $table_name"

@@ -112,4 +112,9 @@ $messages["Are you sure you want to reset the password ?"] = "هل أنت متأ
 $messages["This action can not be canceled !"] = "هذا الاجراء غير قابل للتراجع !";
 $messages["Password has been resetted. The new password has been sent by"] = "تمت إعادة تعيين كلمة المرور. تم إرسال كلمة المرور الجديدة بواسطة";
 $messages["to"] = "إلى";
+$messages["The system seems has refused this insert operation"] = "يبدو أن النظام قد رفض عملية الإدخال هذه";
+
+// 
+// $messages[""] = "";
+// $messages[""] = "";
 // $messages[""] = "";

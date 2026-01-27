@@ -22,8 +22,7 @@ class AfwQueryAnalyzer
     public static function preAnalyseQuery($sql_query, $is_update)
     {
         global $MODE_BATCH_LOURD,
-                $MODE_SQL_PROCESS_LOURD,
-                $MODE_DEVELOPMENT;
+            $MODE_SQL_PROCESS_LOURD;
         // coming bad from outside so I will reparse
         $this_module = 'hzm';
         $this_table = 'hzm';
@@ -115,8 +114,8 @@ class AfwQueryAnalyzer
             '_sql_analysis_seuil_calls',
             1200
         );
-        
-        
+
+
 
         /*try {*/
 
@@ -126,8 +125,7 @@ class AfwQueryAnalyzer
 
         $this_table_lower = strtolower($this_table);
 
-        if(!self::$excluded_tables[$this_table_lower])
-        {
+        if (!self::$excluded_tables[$this_table_lower]) {
             if (!self::$nb_queries_executed) {
                 self::$nb_queries_executed = 1;
             } else {
@@ -135,17 +133,18 @@ class AfwQueryAnalyzer
             }
         }
 
+
+
         $we_can_not_throw_analysis_exception = ($MODE_SQL_PROCESS_LOURD or $MODE_BATCH_LOURD);
-        $we_should_throw_analysis_exception = ($MODE_DEVELOPMENT and (self::$nb_queries_executed > $_sql_analysis_seuil_calls));
-        if ($we_should_throw_analysis_exception and !$we_can_not_throw_analysis_exception)
-        {
+        $we_should_throw_analysis_exception = (AfwSession::config('MODE_DEVELOPMENT', false) and (self::$nb_queries_executed > $_sql_analysis_seuil_calls));
+        if ($we_should_throw_analysis_exception and !$we_can_not_throw_analysis_exception) {
             throw new AfwRuntimeException("Too much queries executed when mode is not MODE_BATCH_LOURD or MODE_SQL_PROCESS_LOURD !<br>
-                                           Nb Queries Executed = ".self::$nb_queries_executed." > $_sql_analysis_seuil_calls = Max <br> 
+                                           Nb Queries Executed = " . self::$nb_queries_executed . " > $_sql_analysis_seuil_calls = Max <br> 
                                            Sql Picture = " . var_export(self::$sql_picture_arr, true));
         }
 
         $sql_info_class = 'sqlinfo';
-        if($is_update) $sql_info_class .= ' sqlupdate';
+        if ($is_update) $sql_info_class .= ' sqlupdate';
         $start_q_time = date('Y-m-d H:i:s');
         $start_m_time = microtime();
 
@@ -158,8 +157,7 @@ class AfwQueryAnalyzer
         list($this_module, $this_table, $sql_info_class, $start_q_time, $start_m_time, $row_count, $affected_row_count) = $preArr;
 
         global $MODE_BATCH_LOURD,
-                $MODE_SQL_PROCESS_LOURD,
-                $MODE_DEVELOPMENT;
+            $MODE_SQL_PROCESS_LOURD;
         $end_m_time = 0;
         $end_m_time = microtime();
         $end_q_time = date('Y-m-d H:i:s');
@@ -168,25 +166,25 @@ class AfwQueryAnalyzer
         if ($duree_q < 0) {
             $duree_q += 1000;
         } // because counter microtime() return to 0 after each 1 second
-        
+
         self::$duree_sql_total += $duree_q;
-        
+
         $title_duration = '';
         $this_table_lower = strtolower($this_table);
 
-        if ((!self::$excluded_tables[$this_table_lower]) and $MODE_DEVELOPMENT and (!$MODE_BATCH_LOURD) and (!$MODE_SQL_PROCESS_LOURD) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
+        if ((!self::$excluded_tables[$this_table_lower]) and AfwSession::config('MODE_DEVELOPMENT', false) and (!$MODE_BATCH_LOURD) and (!$MODE_SQL_PROCESS_LOURD) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
             if (!self::$_sql_analysis[$this_module][$this_table][$sql_query]) {
                 self::$_sql_analysis[$this_module][$this_table][$sql_query] = 1;
             } else {
                 self::$_sql_analysis[$this_module][$this_table][$sql_query]++;
                 if (self::$_sql_analysis[$this_module][$this_table][$sql_query] > 50) {
-                    if ($MODE_DEVELOPMENT) {
+                    if (AfwSession::config('MODE_DEVELOPMENT', false)) {
                         throw new AfwRuntimeException(
                             "Query Analysis Crash for : $this_module / $this_table / $sql_query : has been called more than 50 times, <br>
                             May be because the result is empty so no cache working, You can below un-hide <b>the TECHNICAL SQL analysis :</b> <br><hr><pre class='technical sql'>"
-                            . var_export(self::$_sql_analysis, true).
-                            "</pre><br> Or if should be managed by AfwLoadHelper::getLookupMatrix(), You can below un-hide <b>the TECHNICAL CACHE OF Lookup-Matrix :</b> : <br><hr><pre class='technical php'>"
-                            . var_export(AfwLoadHelper::getLookupMatrix(), true)."</pre>"
+                                . var_export(self::$_sql_analysis, true) .
+                                "</pre><br> Or if should be managed by AfwLoadHelper::getLookupMatrix(), You can below un-hide <b>the TECHNICAL CACHE OF Lookup-Matrix :</b> : <br><hr><pre class='technical php'>"
+                                . var_export(AfwLoadHelper::getLookupMatrix(), true) . "</pre>"
                         );
                     }
                 }
@@ -204,14 +202,15 @@ class AfwQueryAnalyzer
             }
             $this_table_lower = strtolower($this_table);
             $_sql_analysis_seuil_calls_by_table = AfwSession::config(
-                "$this_table_lower-sql-analysis-max-calls", AfwSession::config(
-                                                                    '_sql_analysis_seuil_calls_by_table',
-                                                                    600)
+                "$this_table_lower-sql-analysis-max-calls",
+                AfwSession::config(
+                    '_sql_analysis_seuil_calls_by_table',
+                    600
+                )
             );
 
             if (self::$sql_picture_arr[$this_module][$this_table] > $_sql_analysis_seuil_calls_by_table) {
-                if(!self::$excluded_tables[$this_table_lower])
-                {
+                if (!self::$excluded_tables[$this_table_lower]) {
                     throw new AfwRuntimeException(
                         "<p>static analysis crash : The table $this_module-$this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times ($this_table_lower-sql-analysis-max-calls)</p>
                              <h5>$sql_query</h5><br> 
@@ -222,16 +221,15 @@ class AfwQueryAnalyzer
                             "</div>"
                     );
                 }
-                    
             }
         }
 
         $sql_time_max_in_milli_sec = AfwSession::config(
-                'sql_time_max_in_milli_sec',
-                50.0
-            );
+            'sql_time_max_in_milli_sec',
+            50.0
+        );
 
-        $sql_capture_and_backtrace = AfwSession::config("sql_to_capture","");
+        $sql_capture_and_backtrace = AfwSession::config("sql_to_capture", "");
 
         if (((!$MODE_BATCH_LOURD) and (!$MODE_SQL_PROCESS_LOURD)) or $sql_capture_and_backtrace) {
             if (!$sql_time_max_in_milli_sec) {
@@ -244,13 +242,13 @@ class AfwQueryAnalyzer
 
             if (self::$duree_sql_total > 500 * $sql_time_max_in_milli_sec) {
                 $sql_info_class .= ' stop';
-                $title_duration = "heavy stop ".self::$duree_sql_total." > 500*[$sql_time_max_in_milli_sec]";
+                $title_duration = "heavy stop " . self::$duree_sql_total . " > 500*[$sql_time_max_in_milli_sec]";
             }
 
             $backtrace = debug_backtrace(1, 20);
 
 
-            $backtrace_html = AfwHtmlHelper::htmlBackTrace($backtrace, AfwSession::config("advanced-back-trace",false)); 
+            $backtrace_html = AfwHtmlHelper::htmlBackTrace($backtrace, AfwSession::config("advanced-back-trace", false));
             $nb_queries_exec = self::$nb_queries_executed;
             $duree_total = self::$duree_sql_total;
 
@@ -258,7 +256,6 @@ class AfwQueryAnalyzer
             <b>end_time</b> : $end_q_time,\n
             <b>duration $title_duration</b> : $duree_q milli-sec
             <b>duration total</b> : $duree_total milli-sec";
-            
         } else {
             $analyses_log = "";
         }
@@ -275,16 +272,16 @@ class AfwQueryAnalyzer
                                                     
                                                     </div>";
         // die("will sql log :<br>$information, $this_module");
-        
+
         AfwSession::sqlLog($information, $this_module);
         /*
         if($this_table=="APPLICANT")
         {
             die("has sql logged :<br>$sql_query <br>Table : $this_table<br> log = ".AfwSession::getLog());
         }*/
-        
 
-        
+
+
         /*
         $log_end = '_qry end (' . date('H:i:s') . ')';
         $log_end .= "\n row count = $row_count";
