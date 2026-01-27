@@ -32,7 +32,7 @@ class AfwStatsHelper
         $footer_sum_title_arr   = [];
         $stat_trad              = [];
 
-        
+
 
 
         $col_key = $config_cross_stats_cols["col"];
@@ -40,7 +40,7 @@ class AfwStatsHelper
         $val_key = $config_cross_stats_cols["val"];
 
         $footer_sum = $config_stats_display_cols[$val_key]['ROW_SUM'];
-        if(!$footer_sum) $footer_sum = $config_stats_display_cols[$val_key]['FOOTER_SUM'];
+        if (!$footer_sum) $footer_sum = $config_stats_display_cols[$val_key]['FOOTER_SUM'];
 
         $col_sum = $config_stats_display_cols[$val_key]['COL_SUM'];
 
@@ -51,16 +51,15 @@ class AfwStatsHelper
 
         $objColList = AfwLoadHelper::getAnswerTable($myClassInstance, $col_key, $lang);
         foreach ($objColList as $objColItemId => $objColItem) {
-            if($objColItem->id and $objColItem->getShortDisplay($lang)) {
+            if ($objColItem->id and $objColItem->getShortDisplay($lang)) {
                 $cross_col = "cross_col_" . $objColItemId;
-                $stat_trad[$cross_col] = $objColItem->getShortDisplay($lang);                
+                $stat_trad[$cross_col] = $objColItem->getShortDisplay($lang);
             }
-            
         }
 
-        
 
-        
+
+
         $bloc_col_end    = [];
         $url_to_show_arr = [];
 
@@ -71,13 +70,13 @@ class AfwStatsHelper
             $col_id = $group_col_show_arr[$col_key . "_value"];
             if (!$stats_data_arr[$row_id]) {
                 $stats_data_arr[$row_id] = array();
-                $stats_data_arr[$row_id][$row_key] = $group_col_show_arr[$row_key];                
+                $stats_data_arr[$row_id][$row_key] = $group_col_show_arr[$row_key];
             }
             reset($objColList);
-            foreach ($objColList as $objColItemId => $objColItem) {  
-                if(($col_id==$objColItemId) and $objColItem->id and $objColItem->getShortDisplay($lang)) {                  
+            foreach ($objColList as $objColItemId => $objColItem) {
+                if (($col_id == $objColItemId) and $objColItem->id and $objColItem->getShortDisplay($lang)) {
                     $cross_col = "cross_col_" . $objColItemId;
-                    $stats_value = $stats_data_arr[$row_id][$cross_col] = $statsRow[$val_key];                        
+                    $stats_value = $stats_data_arr[$row_id][$cross_col] = $statsRow[$val_key];
                     // die("col_key=$col_key row_key=$row_key val_key=$val_key statsRow[$val_key] = $stats_value statsRow=" . var_export($statsRow, true) . "<br> stats_data_arr=" . var_export($stats_data_arr, true));
                     if ($footer_sum) {
                         if (! $footer_total_arr[$cross_col]) {
@@ -87,7 +86,7 @@ class AfwStatsHelper
                         // $footer_total_arr[ 'log'.$show_name ] .= '+'.$stats_data_arr[ $stats_curr_row ][ $show_name ];
                     }
 
-                    if($col_sum) {
+                    if ($col_sum) {
                         if (!$stats_data_arr[$row_id]["cross_total"]) {
                             $stats_data_arr[$row_id]["cross_total"] = 0;
                         }
@@ -95,8 +94,6 @@ class AfwStatsHelper
                     }
                 }
             }
-
-            
         }
 
         // die("statsData=" . var_export($statsData, true) . "<br> group_col_show_arr=" . var_export($group_col_show_arr, true) . "<br> stats_data_arr=" . var_export($stats_data_arr, true));
@@ -171,7 +168,7 @@ class AfwStatsHelper
                 $unit         = $myobj_struct['UNIT'];
 
                 $footer_sum = $config_stats_display_col_item['ROW_SUM'];
-                if(!$footer_sum) $footer_sum = $config_stats_display_col_item['FOOTER_SUM'];
+                if (!$footer_sum) $footer_sum = $config_stats_display_col_item['FOOTER_SUM'];
 
                 $show_unit_header = $config_stats_display_col_item['SHOW-UNIT-HEADER'];
                 if ($show_unit) {
@@ -476,14 +473,14 @@ class AfwStatsHelper
     }
 
 
-    public static function outputModeStatsHeaderAndFilterPanel($myClassInstance, $stats_config, $stats_code, $currmod, $lang = "ar", $r=0)
+    public static function outputModeStatsHeaderAndFilterPanel($myClassInstance, $stats_config, $stats_code, $currmod, $lang = "ar", $r = 0)
     {
-        $please_wait = AFWObject::gtr("PLEASE_WAIT",$lang);
-        $loading = AFWObject::gtr("LOADING",$lang);
-        $please_wait_loading = $please_wait." ".$loading;
+        $please_wait = AFWObject::gtr("PLEASE_WAIT", $lang);
+        $loading = AFWObject::gtr("LOADING", $lang);
+        $please_wait_loading = $please_wait . " " . $loading;
         $myClass = get_class($myClassInstance);
         $url_settings          = $stats_config['URL_SETTINGS'];
-        if($url_settings) $url_settings .= "&stc=$stats_code&stccl=$myClass&stccurrmod=$currmod";
+        if ($url_settings) $url_settings .= "&stc=$stats_code&stccl=$myClass&stccurrmod=$currmod";
         $stats_title = $myClassInstance->translate('stats.' . $stats_code, $lang);
         $stats_title = $myClassInstance->decodeText($stats_title, $prefix = '', $add_cotes = false, $sepBefore = '[', $sepAfter = ']');
 
@@ -507,18 +504,18 @@ class AfwStatsHelper
             AfwMainPage::addOutput(AfwShowHelper::showObject($myClassInstance, "HTML", "afw_template_default_sfilter.php"));
         }
 
-        AfwMainPage::addOutput( '<input type="hidden" name="cl" value="'.$myClass.'"/>');
-        AfwMainPage::addOutput( '<input type="hidden" name="currmod" value="'.$currmod.'"/>');
-        AfwMainPage::addOutput( '<input type="hidden" name="stc" value="'.$stats_code.'"/>');
-        AfwMainPage::addOutput( '<input type="hidden" name="r" value="'.$r.'"/>');
-        AfwMainPage::addOutput( '<input type="hidden" id="Main_Page" name="Main_Page" value="afw_mode_stats.php"/>');
+        AfwMainPage::addOutput('<input type="hidden" name="cl" value="' . $myClass . '"/>');
+        AfwMainPage::addOutput('<input type="hidden" name="currmod" value="' . $currmod . '"/>');
+        AfwMainPage::addOutput('<input type="hidden" name="stc" value="' . $stats_code . '"/>');
+        AfwMainPage::addOutput('<input type="hidden" name="r" value="' . $r . '"/>');
+        AfwMainPage::addOutput('<input type="hidden" id="Main_Page" name="Main_Page" value="afw_mode_stats.php"/>');
 
-        AfwMainPage::addOutput( '<script type="text/javascript">
+        AfwMainPage::addOutput('<script type="text/javascript">
                 $(document).ready(function() {       
                         $("#qsearch-submit-form").click(function(){
                                 $(".alert-dismissable").fadeOut().remove();
                                 $("#search_result_div").html(\'<div class="footer1 hzm-relative-loader-div" id="mySQLloader"><div class="relative hzm-loading-div" id="myloading">
-                                '.$please_wait_loading.'
+                                ' . $please_wait_loading . '
                                 </div></div>\');
                         });
                 });
@@ -526,8 +523,8 @@ class AfwStatsHelper
         </script>');
         $execute_btn = 'EXECUTE';
         AfwMainPage::addOutput("<div class='btn-group' role='group' aria-label='...'>
-                                        <input id='sfilter-submit-form' type='submit' name='submit' class='simple-btn smallbtn fright' value='".$myClassInstance->translate($execute_btn,$lang,true)."'>                        
-                                </div>");  
+                                        <input id='sfilter-submit-form' type='submit' name='submit' class='simple-btn smallbtn fright' value='" . $myClassInstance->translate($execute_btn, $lang, true) . "'>                        
+                                </div>");
 
 
         AfwMainPage::addOutput('</div>');
@@ -617,6 +614,7 @@ class AfwStatsHelper
         AfwMainPage::addOutput("<br><table class='display dataTable stats_table' cellspacing='3' cellpadding='4'>");
         $config_stats_super_header = $stats_config['SUPER_HEADER'];
 
+
         $class_xqe_col = "x";
 
         if ($config_stats_super_header) {
@@ -652,14 +650,16 @@ class AfwStatsHelper
                 $bloc_col_end_class = "";
             }
 
+            $col_categ = $myClassInstance->statsColCategory($col);
+
             if ($class_xqe_col) {
                 $class_xqe      = "xqe_hf_${class_xqe_col}";
-                $class_xqe_prop = "class='$class_xqe $bloc_col_end_class stats_$col'";
+                $class_xqe_prop = "class='$class_xqe $bloc_col_end_class stats_$col categ_$col_categ'";
             } else {
-                $class_xqe_prop = "$bloc_col_end_class stats_$col";
+                $class_xqe_prop = "$bloc_col_end_class stats_$col categ_$col_categ";
             }
 
-            $thead_html .= "      <th $class_xqe_prop align='$aligntd'>$info</th>";
+            $thead_html .= "      <th $class_xqe_prop align='$aligntd'><div class='stats-header'>$info</div></th>";
         }
 
         $thead_html .= "   </tr></thead>";
@@ -704,14 +704,16 @@ class AfwStatsHelper
                     $bloc_col_end_class = "";
                 }
 
+                $col_categ = $myClassInstance->statsColCategory($col);
+
                 if ($class_xqe_col) {
                     $class_xqe      = "xqe_${odd_even}_${class_xqe_col}";
-                    $class_xqe_prop = "class='stats-td $class_xqe $bloc_col_end_class stats_$col'";
+                    $class_xqe_prop = "class='stats-td $class_xqe $bloc_col_end_class stats_$col categ_$col_categ'";
                 } else {
-                    $class_xqe_prop = "class='stats-td $bloc_col_end_class stats_$col'";
+                    $class_xqe_prop = "class='stats-td $bloc_col_end_class stats_$col categ_$col_categ'";
                 }
 
-                AfwMainPage::addOutput("      <td $class_xqe_prop align = '$aligntd'>$val_stat_show</td>");
+                AfwMainPage::addOutput("      <td $class_xqe_prop align = '$aligntd'><div class='stats-header'>$val_stat_show</div></td>");
             }
             AfwMainPage::addOutput("   </tr>");
             if ($odd_even == "odd") {
@@ -727,7 +729,7 @@ class AfwStatsHelper
 
         AfwMainPage::addOutput("<tfoot>");
         $global_footer_sum     = $stats_config['FOOTER_SUM'];
-        if(!$global_footer_sum)    $global_footer_sum = $stats_config['ROW_SUM'];
+        if (!$global_footer_sum)    $global_footer_sum = $stats_config['ROW_SUM'];
         if ($global_footer_sum) {
             AfwMainPage::addOutput("\n<tr>");
             foreach ($stat_trad as $col => $info) {
@@ -749,14 +751,16 @@ class AfwStatsHelper
                     $bloc_col_end_class = "";
                 }
 
+                $col_categ = $myClassInstance->statsColCategory($col);
+
                 if ($class_xqe_col) {
                     $class_xqe      = "xqe_hf_${class_xqe_col} xqe_sum_footer_$class_xqe_col";
-                    $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class stats_$col'";
+                    $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class stats_$col categ_$col_categ'";
                 } else {
-                    $class_xqe_prop = "class = '$bloc_col_end_class stats_$col'";
+                    $class_xqe_prop = "class = '$bloc_col_end_class stats_$col categ_$col_categ'";
                 }
 
-                AfwMainPage::addOutput("      <th $class_xqe_prop align = '$aligntd'>$footer_total_val</th>");
+                AfwMainPage::addOutput("      <th $class_xqe_prop align = '$aligntd'><div class='stats-header'>$footer_total_val</div></th>");
             }
 
             AfwMainPage::addOutput("   </tr>");
@@ -780,14 +784,16 @@ class AfwStatsHelper
                     $bloc_col_end_class = "";
                 }
 
+                $col_categ = $myClassInstance->statsColCategory($col);
+
                 if ($class_xqe_col) {
                     $class_xqe      = "xqe_hf_${class_xqe_col}";
-                    $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class stats_$col'";
+                    $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class stats_$col categ_$col_categ'";
                 } else {
-                    $class_xqe_prop = "class = '$bloc_col_end_class stats_$col'";
+                    $class_xqe_prop = "class = '$bloc_col_end_class stats_$col categ_$col_categ'";
                 }
 
-                AfwMainPage::addOutput("      <th $class_xqe_prop align = '$aligntd'>$info</th>");
+                AfwMainPage::addOutput("      <th $class_xqe_prop align = '$aligntd'><div class='stats-header'>$info</div></th>");
             }
 
             AfwMainPage::addOutput("   </tr>\n");

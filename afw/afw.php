@@ -3451,7 +3451,8 @@ class AFWObject extends AFWRoot
         return $this->transClassSingle($lang);
     }
 
-    public function transStatsAttribute($attribute, $lang) {
+    public function transStatsAttribute($attribute, $lang)
+    {
         $nom_col_short  = "$attribute.stat";
         $trad_col_short = $this->translate($nom_col_short, $lang);
         if ($trad_col_short == $nom_col_short) {
@@ -6578,5 +6579,9 @@ class AFWObject extends AFWRoot
         return AfwStructureHelper::export($this);
     }
 
-    
+    public function statsColCategory($col)
+    {
+        if (AfwStringHelper::stringStartsWith($col, "stats_cross_")) return "stats_cross";
+        else return 'stats-row';
+    }
 }
