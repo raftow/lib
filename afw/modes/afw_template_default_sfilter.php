@@ -62,7 +62,7 @@ foreach($class_db_structure as $nom_col => $desc)
                         $data[$nom_col]["trad"]  = $obj->translate($nom_col, $lang);
         
                         $data[$nom_col]["qsize"] = $desc["QSIZE"];
-                        if(!$data[$nom_col]["qsize"]) $data[$nom_col]["qsize"] = 3;
+                        if(!$data[$nom_col]["qsize"]) $data[$nom_col]["qsize"] = 6;
                         $total_qsize += $data[$nom_col]["qsize"];
         
                         $desc["SEARCH-BY-ONE"] = true;
