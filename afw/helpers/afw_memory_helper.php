@@ -1,5 +1,5 @@
 <?php
-class AfwMemoryHelper extends AFWRoot 
+class AfwMemoryHelper extends AFWRoot
 {
     public static final function memReport($mm = '')
     {
@@ -35,7 +35,7 @@ class AfwMemoryHelper extends AFWRoot
             $html_log .= "\n created : $nb_instances_total, should be used in memory : $nb_instances object(s)";
             $html_log .= "\n average-memory-by afw object : $average_used_by_object";
             $html_log .= '</pre>';
-            
+
 
             return $html_log;
         }
@@ -44,7 +44,7 @@ class AfwMemoryHelper extends AFWRoot
 
     public static final function checkMemoryBeforeInstanciating($objInstanciating)
     {
-        global $nb_instances_total, $nb_instances,$tab_instances, $MODE_DEVELOPMENT, $MODE_BATCH_LOURD;
+        global $nb_instances_total, $nb_instances, $tab_instances, $MODE_BATCH_LOURD;
         if (!$tab_instances) {
             $tab_instances = [];
         }
@@ -65,23 +65,21 @@ class AfwMemoryHelper extends AFWRoot
         } else {
             $nb_instances_total++;
         }
-        $MAX_MEMORY_BY_REQUEST = AfwSession::config('MAX_MEMORY_BY_REQUEST',2000000000);
-        $MAX_INSTANCES_BY_REQUEST = AfwSession::config('MAX_INSTANCES_BY_REQUEST',20000);
+        $MAX_MEMORY_BY_REQUEST = AfwSession::config('MAX_MEMORY_BY_REQUEST', 2000000000);
+        $MAX_INSTANCES_BY_REQUEST = AfwSession::config('MAX_INSTANCES_BY_REQUEST', 20000);
         $mm = memory_get_usage(true);
-        if (($mm > $MAX_MEMORY_BY_REQUEST) and $MODE_DEVELOPMENT) 
-        {
+        if (($mm > $MAX_MEMORY_BY_REQUEST) and AfwSession::config('MODE_DEVELOPMENT', false)) {
             // @rafik.framework.v2.0 obsolete until we found a more professional way to do it
             gc_collect_cycles();
             $mm = memory_get_usage(true);
-            
+
             if ($mm > $MAX_MEMORY_BY_REQUEST) {
-                die("PHP OUT OF MEMORY ($mm > $MAX_MEMORY_BY_REQUEST)".var_export($tab_instances,true));
+                die("PHP OUT OF MEMORY ($mm > $MAX_MEMORY_BY_REQUEST)" . var_export($tab_instances, true));
                 //throw new AfwRuntimeException("MOMKEN OUT OF MEMORY", $throwed_arr=array("ALL"=>true, "FIELDS_UPDATED"=>true, "SQL"=>true, "DEBUGG"=>true, "CACHE"=>true));
             }
         }
-        if ($nb_instances > $MAX_INSTANCES_BY_REQUEST and (!$MODE_BATCH_LOURD)) 
-        {
-            die("too much objects created : $nb_instances > $MAX_INSTANCES_BY_REQUEST : " .var_export($tab_instances, true)."\n and MODE_BATCH_LOURD=".var_export($MODE_BATCH_LOURD,true));
+        if ($nb_instances > $MAX_INSTANCES_BY_REQUEST and (!$MODE_BATCH_LOURD)) {
+            die("too much objects created : $nb_instances > $MAX_INSTANCES_BY_REQUEST : " . var_export($tab_instances, true) . "\n and MODE_BATCH_LOURD=" . var_export($MODE_BATCH_LOURD, true));
         }
     }
 }

@@ -222,7 +222,7 @@ for ($i = 0; $i < $nb_objs; $i++) {
                         if ($obj->canInsert()) {
                                 $inserted = $obj->insert();
                                 if (!$inserted) {
-                                        if (($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) throw new AfwModeException($obj->sql_info . " insert failed : " . $obj->tech_notes, array("FIELDS_UPDATED" => true));
+                                        if ((AfwSession::config('MODE_DEVELOPMENT', false)) and ($objme) and ($objme->isSuperAdmin())) throw new AfwModeException($obj->sql_info . " insert failed : " . $obj->tech_notes, array("FIELDS_UPDATED" => true));
                                 }
 
                                 $id = $obj->getId();

@@ -80,7 +80,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
             $val = $_POST[$nom_col];
             if ($desc['INPUT-FORMATTING'] == 'addslashes') $val = stripslashes($val);
         }
-            
+
 
         //if($nom_col=="active") die("switcher val=$val");        
         // This below fix the bug of switcher 
@@ -154,7 +154,7 @@ if ($obj->editByStep) {
         $old_currstep = $currstep;
         $currstep = AfwFrameworkHelper::findNextEditableStep($obj, $currstep, "after save_next", true);
         if ($currstep < 0) {
-            if (($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) echo ("$obj -> findNextEditableStep($old_currstep,after save_next) = $currstep");
+            if ((AfwSession::config('MODE_DEVELOPMENT', false)) and ($objme) and ($objme->isSuperAdmin())) echo ("$obj -> findNextEditableStep($old_currstep,after save_next) = $currstep");
             $currstep = $old_currstep;
         }
     }
@@ -195,10 +195,11 @@ if (!$is_loaded_from_db) {
 
             $case_of_handle = "insert new and goto other step";
         }
-    } elseif (($MODE_DEVELOPMENT) and ($objme) and ($objme->isSuperAdmin())) {
+    } elseif ((AfwSession::config('MODE_DEVELOPMENT', false)) and ($objme) and ($objme->isSuperAdmin())) {
         AfwSession::pushError("وقع خطأ أثناء الاضافة : " . var_export($obj, true));
         $case_of_handle = "error inserting new : " . $obj->tech_notes;
     } else {
+        AfwSession::pushError($obj->tm("The system seems has refused this insert operation", $lang) . "<!-- check beforeMaj beforeInsert events -->");
         $case_of_handle = "hidden error inserting new : " . $obj->tech_notes;
     }
 } else {

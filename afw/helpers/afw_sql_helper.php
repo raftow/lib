@@ -510,8 +510,8 @@ class AfwSqlHelper extends AFWRoot
                         if (
                             $oper2 == '=' and
                             $val_col2 &&
-                                $val_col2 != '0' &&
-                                $val_col2 != 'W' and
+                            $val_col2 != '0' &&
+                            $val_col2 != 'W' and
                             !$desc['FIELD-FORMULA']
                         ) {
                             // if($oper2=="=")
@@ -795,11 +795,13 @@ class AfwSqlHelper extends AFWRoot
         $server_db_prefix = AfwSession::currentDBPrefix();
 
         // add left joins for all retrieved fields with type = FK and category empty (real fields)
-        $colsRet = AfwPrevilegeHelper::getRetrieveCols($object,
+        $colsRet = AfwPrevilegeHelper::getRetrieveCols(
+            $object,
             $mode = 'display',
             $lang,
             $all = false,
-            $type = 'FK');
+            $type = 'FK'
+        );
         $joint_count = 0;
         foreach ($colsRet as $col_ret) {
             $joint_count++;
@@ -847,7 +849,7 @@ class AfwSqlHelper extends AFWRoot
                         if ($desc['TYPE'] != 'FK') {
                             throw new AfwRuntimeException(
                                 "auto create should be only on FK attributes $attribute is "
-                                . $desc['TYPE']
+                                    . $desc['TYPE']
                             );
                         }
                         $obj_at = AfwStructureHelper::getEmptyObject($object, $attribute);
@@ -896,13 +898,32 @@ class AfwSqlHelper extends AFWRoot
         return AfwMysql::insert_id(AfwDatabase::getLinkByName($project_link_name));
     }
 
+
+    public static function IAlreadyExistsWithMyUK(&$object)
+    {
+        $unique_key_vals = [];
+        $myClass = $object->getMyClass();
+        // $this_copy = cl one $object;
+        // $this_copy->clearSelect();
+        /** @var AFWObject $this_copy */
+        $this_copy = new $myClass();
+        foreach ($object->UNIQUE_KEY as $key_col) {
+            $unique_key_vals[] = $object->getVal($key_col);
+            $this_copy->select($key_col, $object->getVal($key_col));
+        }
+        $load_result = $this_copy->load();
+        $this_copy_id = $this_copy->id;
+        unset($this_copy);
+        return [$load_result, $this_copy_id, $unique_key_vals];
+    }
+
     /**
      * insert
      * Insert row
      * @param AFWObject $object
      * @param int $pk : Optional, specify the primary key
      */
-    public static function insertObject($object, $pk = '', $check_if_exists_by_uk = true, $disableAfterCommitDBEvent = false)
+    public static function insertObject(&$object, $pk = '', $check_if_exists_by_uk = true, $disableAfterCommitDBEvent = false)
     {
         global $lang, $print_debugg, $print_sql, $MODE_BATCH_LOURD;
 
@@ -910,8 +931,8 @@ class AfwSqlHelper extends AFWRoot
         if ($object->IS_VIRTUAL) {
             throw new AfwRuntimeException(
                 'Impossible to do call to the method insert() with the virtual table '
-                . $object::$TABLE
-                . '.'
+                    . $object::$TABLE
+                    . '.'
             );
         } elseif ($object->isChanged()) {
             // if($object::$TABLE == "practice_cher") die("will insert into ".$object::$TABLE);
@@ -949,9 +970,11 @@ class AfwSqlHelper extends AFWRoot
              * }
              */
 
-            self::beforeModification($object,
+            self::beforeModification(
+                $object,
                 $object->getAfieldValue($object->getPKField()),
-                $fields_to_insert);
+                $fields_to_insert
+            );
             $object->majTriggered();
             $can_insert = $object->beforeInsert(
                 $object->getAfieldValue($object->getPKField()),
@@ -998,31 +1021,24 @@ class AfwSqlHelper extends AFWRoot
             }
 
             if ($object->UNIQUE_KEY and $check_if_exists_by_uk) {
-                $unique_key_vals = [];
-                $myClass = $object->getMyClass();
-                // $this_copy = cl one $object;
-                // $this_copy->clearSelect();
-                /** @var AFWObject $this_copy */
-                $this_copy = new $myClass();
-                foreach ($object->UNIQUE_KEY as $key_col) {
-                    $unique_key_vals[] = $object->getVal($key_col);
-                    $this_copy->select($key_col, $object->getVal($key_col));
-                }
-                $load_result = $this_copy->load();
+
+                /*
                 if ($load_result and ($this_copy->id == 3000000002)) {
                     throw new AfwRuntimeException("3000000002 loaded here load_result = $load_result");
-                }
-                if ($load_result and ($this_copy->id > 0)) {
+                }*/
+
+                list($load_result, $already_exists_id, $unique_key_vals) = self::IAlreadyExistsWithMyUK($object);
+
+                if ($load_result and $already_exists_id) {
                     $object->debugg_tech_notes =
-                        'has existing doublon id = ' . $this_copy->id;
+                        'has existing doublon id = ' . $already_exists_id;
                     $dbl_message =
                         $object::$TABLE
                         . ' UNIQUE-KEY-CONSTRAINT : ('
                         . implode(',', $object->UNIQUE_KEY)
                         . ") broken, This record with key ('"
                         . implode("','", $unique_key_vals)
-                        . "') already exists (with ID=" . $this_copy->id . ') : '
-                        . var_export($this_copy, true);
+                        . "') already exists (with ID=" . $already_exists_id . ')';
                     // die("rafik 135004 query($query) : ".var_export($object,true));
                     if ($object->ignore_insert_doublon) {
                         $debugg_tech_notes =
@@ -1148,15 +1164,15 @@ class AfwSqlHelper extends AFWRoot
                 } else {
                     throw new AfwRuntimeException(
                         'MOMKEN SQL Problem : PK is not defined for table :  '
-                        . $object::$TABLE
+                            . $object::$TABLE
                     );
                 }
                 $my_setted_id = $object->getId();
                 if (!$my_setted_id) {
                     throw new AfwRuntimeException(
                         'MOMKEN SQL Problem : insert into '
-                        . $object::$TABLE
-                        . " has not been done correctly as id recolted is null, query : $query"
+                            . $object::$TABLE
+                            . " has not been done correctly as id recolted is null, query : $query"
                     );
                 }
 
@@ -1181,16 +1197,16 @@ class AfwSqlHelper extends AFWRoot
             throw new AfwRuntimeException(
                 'Insert declined because no fields updated, 
                        AFIELD_ VALUE='
-                . var_export($object->getAllfieldValues(), true)
-                . ', 
+                    . var_export($object->getAllfieldValues(), true)
+                    . ', 
                        FIELDS_UPDATED='
-                . var_export($object->fieldsHasChanged(), true)
-                . ', 
+                    . var_export($object->fieldsHasChanged(), true)
+                    . ', 
                        FIELDS_ INITED='
-                . var_export($object->getAllfieldDefaultValues(), true)
-                . ', 
+                    . var_export($object->getAllfieldDefaultValues(), true)
+                    . ', 
                        object = '
-                . var_export($object, true)
+                    . var_export($object, true)
             );
             return false;
         }
@@ -1217,8 +1233,8 @@ class AfwSqlHelper extends AFWRoot
         if ($object->IS_VIRTUAL) {
             throw new AfwRuntimeException(
                 'Impossible to do call to the method update() with the virtual table '
-                . $object::$TABLE
-                . '.'
+                    . $object::$TABLE
+                    . '.'
             );
         } else {
             // if((static::$TABLE=="student_session") and ($object->getVal("xxxxx")==102937)) throw new AfwRuntimeException("object-> FIELDS_UPDATED = ".var_export($object-> FIELDS_UPDATED,true));
@@ -1229,7 +1245,7 @@ class AfwSqlHelper extends AFWRoot
                 if (!$id_updated) {
                     throw new AfwRuntimeException(
                         "$object : if update only one record mode, the Id should be specified ! obj = "
-                        . var_export($object, true)
+                            . var_export($object, true)
                     );
                 }
             } else {
@@ -1242,9 +1258,11 @@ class AfwSqlHelper extends AFWRoot
                 }
 
                 if ($object->isChanged()) {
-                    self::beforeModification($object,
+                    self::beforeModification(
+                        $object,
                         $id_updated,
-                        $object->fieldsHasChanged());
+                        $object->fieldsHasChanged()
+                    );
                     $object->majTriggered();
                     $can_update = $object->beforeUpdate($id_updated, $object->fieldsHasChanged());
 
@@ -1316,9 +1334,9 @@ class AfwSqlHelper extends AFWRoot
                     if ($object->showQueryAndHalt) {
                         throw new AfwRuntimeException(
                             'showQueryAndHalt : updated fields = '
-                            . $object->showArr($fields_updated)
-                            . '<br> report = ' . $report
-                            . '<br> query = ' . $query
+                                . $object->showArr($fields_updated)
+                                . '<br> report = ' . $report
+                                . '<br> query = ' . $query
                         );
                     }
                     if (count($fields_updated) > 0) {
@@ -1341,13 +1359,13 @@ class AfwSqlHelper extends AFWRoot
                     if ($only_me and $return > 1) {
                         throw new AfwRuntimeException(
                             "MOMKEN error affected rows = $return, strang for query : "
-                            . $query
-                            . '///'
-                            . AfwMysql::get_error(
-                                AfwDatabase::getLinkByName(
-                                    $object->getProjectLinkName()
+                                . $query
+                                . '///'
+                                . AfwMysql::get_error(
+                                    AfwDatabase::getLinkByName(
+                                        $object->getProjectLinkName()
+                                    )
                                 )
-                            )
                         );
                     } else {
                         if ($only_me and $id_updated) {
@@ -1402,8 +1420,8 @@ class AfwSqlHelper extends AFWRoot
         if ($object->IS_VIRTUAL) {
             throw new AfwRuntimeException(
                 'Impossible to do call to the method hide() with the virtual table '
-                . $object::$TABLE
-                . '.'
+                    . $object::$TABLE
+                    . '.'
             );
         } else {
             if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
@@ -1574,12 +1592,13 @@ class AfwSqlHelper extends AFWRoot
      * @param AFWObject $object
      * @param string $function
      */
-    public static function aggregFunction($object,
+    public static function aggregFunction(
+        $object,
         $function,
         $group_by = '',
         $throw_error = true,
-        $throw_analysis_crash = true)
-    {
+        $throw_analysis_crash = true
+    ) {
         $module_server = $object->getModuleServer();
         if (!$function) {
             $function = 'count(*)';
@@ -1632,7 +1651,8 @@ class AfwSqlHelper extends AFWRoot
      * @param AFWObject $object
      * @param string $function
      */
-    public static function multipleAggregFunction($object,
+    public static function multipleAggregFunction(
+        $object,
         $functions,
         $group_by = '',
         $throw_error = true,
