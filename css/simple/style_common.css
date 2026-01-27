@@ -7432,6 +7432,47 @@ input.inputqe.xqe_data_notloaded {
     border-radius: 50%;
 }
 
+
+/************* FOR RETIRIEVE AND GRID DEFAULT STYLES *************/
+
+table.dataTable {
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+table.dataTable thead th.xqe_hf_z, table.dataTable tfoot th.xqe_hf_z {
+    background-color: #b9dff9 !important;
+}
+
+table.dataTable thead th {
+    background-color: #7cc7fb !important;
+}
+
+table.dataTable thead th, table.dataTable tfoot th {
+    background-color: #70b6e5 !important;
+}
+
+
+table.stats_table .xqe_odd_x {
+    background: rgb(124 199 251 / 53%) !important;
+}
+
+table.stats_table .xqe_odd_z {
+    background: #fff !important;
+}
+
+table.stats_table .xqe_even_x {
+    background: rgba(85, 161, 216, 0.53) !important;
+}
+
+table.stats_table .xqe_even_z {
+    background: #c5d7e7cb !important;
+}
+
+table.stats_table td {    
+    text-align: center !important;
+}
+
 table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z, table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z {
     background-color: #53a5e1 !important;
     color: white !important;
@@ -7527,3 +7568,5 @@ a.stats-cell {
     background-color: #0e456a;
     color: white;
 }
+
+/************* END OF FOR RETIRIEVE AND GRID DEFAULT STYLES *************/
