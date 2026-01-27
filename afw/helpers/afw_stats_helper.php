@@ -483,7 +483,7 @@ class AfwStatsHelper
         $please_wait_loading = $please_wait." ".$loading;
         $myClass = get_class($myClassInstance);
         $url_settings          = $stats_config['URL_SETTINGS'];
-        $url_settings .= "&stc=$stats_code&stccl=$myClass&stccurrmod=$currmod";
+        if($url_settings) $url_settings .= "&stc=$stats_code&stccl=$myClass&stccurrmod=$currmod";
         $stats_title = $myClassInstance->translate('stats.' . $stats_code, $lang);
         $stats_title = $myClassInstance->decodeText($stats_title, $prefix = '', $add_cotes = false, $sepBefore = '[', $sepAfter = ']');
 
