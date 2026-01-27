@@ -7330,7 +7330,7 @@ p.display {
     background-color: #f7c025 !important;
 }
 
-.run-status.yellow> a {
+.run-status.yellow>a {
     color: black !important;
 }
 
@@ -7344,13 +7344,13 @@ p.display {
     color: white !important;
 }
 
-.link.run-status.yellow> a {
+.link.run-status.yellow>a {
     color: black !important;
     font-size: 14px;
     font-weight: bold;
-    font-family: math  !important;
+    font-family: math !important;
     margin-left: 3px !important;
-    margin-top:  2px !important;
+    margin-top: 2px !important;
     display: ruby-text !important;
 }
 
@@ -7440,7 +7440,8 @@ table.dataTable {
     margin: 0 !important;
 }
 
-table.dataTable thead th.xqe_hf_z, table.dataTable tfoot th.xqe_hf_z {
+table.dataTable thead th.xqe_hf_z,
+table.dataTable tfoot th.xqe_hf_z {
     background-color: #b9dff9 !important;
 }
 
@@ -7448,7 +7449,8 @@ table.dataTable thead th {
     background-color: #7cc7fb !important;
 }
 
-table.dataTable thead th, table.dataTable tfoot th {
+table.dataTable thead th,
+table.dataTable tfoot th {
     background-color: #70b6e5 !important;
 }
 
@@ -7469,50 +7471,52 @@ table.stats_table .xqe_even_z {
     background: #c5d7e7cb !important;
 }
 
-table.stats_table td {    
+table.stats_table td {
     text-align: center !important;
 }
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z, table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z {
     background-color: #53a5e1 !important;
     color: white !important;
     font-weight: normal;
 }
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x, table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x {
     background-color: #165e91 !important;
     color: white !important;
     font-weight: normal;
 }
 
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_noresponse, 
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_noresponse,
 table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_noresponse {
     background-color: rgb(27, 26, 24) !important;
     font-size: 13px !important;
 }
 
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_veryunsatisfied, 
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_veryunsatisfied,
 table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_veryunsatisfied {
     background-color: rgb(230, 72, 9) !important;
     font-size: 13px !important;
 }
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_unsatisfied, 
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_unsatisfied,
 table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_unsatisfied {
     background-color: #eb740e !important;
     font-size: 13px !important;
 }
 
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_indifferent, 
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_indifferent,
 table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_indifferent {
     background-color: rgb(155, 153, 19) !important;
     font-size: 13px !important;
 }
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_verysatisfied, 
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_verysatisfied,
 table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_verysatisfied {
     background-color: green !important;
     font-size: 13px !important;
@@ -7520,46 +7524,46 @@ table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_verysatisfied {
 
 
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_noresponse{
-    background-color:rgba(121, 120, 117, 0.53) !important;
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_noresponse {
+    background-color: rgba(121, 120, 117, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_noresponse{
-    background-color:rgba(68, 67, 65, 0.53) !important;
-}
-
-
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_veryunsatisfied{
-    background-color:rgba(243, 185, 178, 0.53) !important;
-}
-
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_veryunsatisfied{
-    background-color:rgba(206, 96, 84, 0.53) !important;
-}
-
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_unsatisfied{
-    background-color:rgba(235, 207, 50, 0.53) !important;
-}
-
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_unsatisfied{
-    background-color:rgba(206, 154, 41, 0.53) !important;
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_noresponse {
+    background-color: rgba(68, 67, 65, 0.53) !important;
 }
 
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_indifferent{
-    background-color:rgba(248, 253, 181, 0.53) !important;
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_veryunsatisfied {
+    background-color: rgba(243, 185, 178, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_indifferent{
-    background-color:rgba(229, 233, 30, 0.53) !important;
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_veryunsatisfied {
+    background-color: rgba(206, 96, 84, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_verysatisfied{
-    background-color:rgb(185 247 140 / 53%) !important;
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_unsatisfied {
+    background-color: rgba(235, 207, 50, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_verysatisfied{
-    background-color:rgb(102 197 33 / 53%) !important;
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_unsatisfied {
+    background-color: rgba(206, 154, 41, 0.53) !important;
+}
+
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_indifferent {
+    background-color: rgba(248, 253, 181, 0.53) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_indifferent {
+    background-color: rgba(229, 233, 30, 0.53) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_verysatisfied {
+    background-color: rgb(185 247 140 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_verysatisfied {
+    background-color: rgb(102 197 33 / 53%) !important;
 }
 
 a.stats-cell {
@@ -7567,6 +7571,21 @@ a.stats-cell {
     border-radius: 50%;
     background-color: #0e456a;
     color: white;
+}
+
+th.categ_stats_cross_col div.stats-header {
+    rotate: 90deg;
+    height: 36px !important;
+    white-space: nowrap;
+}
+
+th.stats_workflow_scope_id div.stats-header,
+td.stats_workflow_scope_id div.stats-header {
+    width: 220px;
+}
+
+table.stats_table td {
+    height: 36px;
 }
 
 /************* END OF FOR RETIRIEVE AND GRID DEFAULT STYLES *************/
