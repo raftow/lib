@@ -7536,6 +7536,13 @@ table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_gray {
     font-size: 13px !important;
 }
 
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_silver, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_silver {
+    background-color: #76a2c3 !important;
+    color: black !important;
+    font-size: 13px !important;
+}
+
 
 table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_black,
 table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_black {
@@ -7586,6 +7593,14 @@ table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_white {
 table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_gray, 
 table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_gray {
     background-color: rgb(175 175 175) !important;
+    color: black !important;
+    font-size: 13px !important;
+}
+
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_silver, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_silver {
+    background-color: #76a2c3 !important;
     color: black !important;
     font-size: 13px !important;
 }
@@ -7733,6 +7748,22 @@ table.stats_table th.stats_gray {
     border: 1px solid #a7a2a2 !important;
 }
 
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_silver {
+    background-color: #c5d7e7cb !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_silver {
+    background-color: #f0f8ffcb !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_silver {
+    background-color: #c5d7e7cb !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_silver {
+    background-color: #f0f8ffcb !important;
+    
+}
 
 
 a.stats-cell {
@@ -7762,8 +7793,10 @@ td.stats_workflow_scope_id div.stats-header {
     width: 220px;
 }
 
-table.stats_table td {
-    height: 36px;
+
+table.stats_table tbody td {
+    border: 1px solid white !important;
+    height: 36px !important;
 }
 
 /************* END OF FOR RETIRIEVE AND GRID DEFAULT STYLES *************/
