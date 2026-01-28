@@ -88,15 +88,19 @@ AfwMainPage::addOutput("<!-- sql_conds=$sql_conds allSql=$allSql -->");
 
 
 
-list($stat_trad, $stats_data_arr, $case, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr) = AfwStatsHelper::modeStatsInitialization($myClassInstance, $stats_config, $config_stats_options, $lang, $curropt);
+list($stat_trad, $stats_data_arr, $stats_big_header, $case, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr) =
+   AfwStatsHelper::modeStatsInitialization($myClassInstance, $stats_config, $config_stats_options, $lang, $curropt);
 
 AfwStatsHelper::outputModeStatsHeaderAndFilterPanel($myClassInstance, $stats_config, $stats_code, $currmod, $lang);
 
 // AfwMainPage::addOutput("<pre class='php'>case=$case stat_trad = ".var_export($stat_trad,true)." stats_data_arr = ".var_export($stats_data_arr,true)."</pre>");
+if($stats_config['REMOVE-BIG-HEADER'])  $stats_big_header = null;   
+
 AfwStatsHelper::outputModeStatsTable(
         $myClassInstance,
         $stats_config,
         $stat_trad,
+        $stats_big_header,
         $stats_data_arr,
         $stats_code,
         $footer_sum_title_arr,

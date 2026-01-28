@@ -31,13 +31,17 @@ class AfwStatsHelper
         $footer_total_arr       = [];
         $footer_sum_title_arr   = [];
         $stat_trad              = [];
+        $stats_big_header       = [];
 
 
 
 
+        $big_col_key = $config_cross_stats_cols["bigcol"];
         $col_key = $config_cross_stats_cols["col"];
         $row_key = $config_cross_stats_cols["row"];
         $val_key = $config_cross_stats_cols["val"];
+        $big_color = $config_cross_stats_cols["big_color"];
+        if (!$big_color) $big_color = 'blue';
 
         $footer_sum = $config_stats_display_cols[$val_key]['ROW_SUM'];
         if (!$footer_sum) $footer_sum = $config_stats_display_cols[$val_key]['FOOTER_SUM'];
@@ -46,16 +50,45 @@ class AfwStatsHelper
 
         $stat_trad[$row_key] = $myClassInstance->transStatsAttribute($row_key, $lang);
         $stat_trad["cross_total"] = $myClassInstance->tm("Total", $lang);
+        $stats_big_header[] = ['col_span' => 2, 'title' => '', 'color' => $big_color];
         $footer_sum_title_arr[$row_key]            = $stat_trad["cross_total"];
 
+
+        $big_category = 0;
+        $big_category_display = '';
+        $big_category_col_span = 0;
+        $big_obj_color = '';
 
         $objColList = AfwLoadHelper::getAnswerTable($myClassInstance, $col_key, $lang);
         foreach ($objColList as $objColItemId => $objColItem) {
             if ($objColItem->id and $objColItem->getShortDisplay($lang)) {
                 $cross_col = "cross_col_" . $objColItemId;
                 $stat_trad[$cross_col] = $objColItem->getShortDisplay($lang);
+                /**
+                 * @var AFWObject $bigObj
+                 */
+                $bigObj = null;
+                if ($big_col_key) $bigObj = $objColItem->het($big_col_key);
+                if ($bigObj and $bigObj->id) {
+                    if (($bigObj->id != $big_category)) {
+                        if ($big_category and $big_category_display) { // previous group exists close it and create new
+
+                            $stats_big_header[] = ['col_span' => $big_category_col_span, 'title' => $big_category_display, 'color' => $big_obj_color];
+                            $big_category_col_span = 0;
+                        }
+                        $big_obj_color = $bigObj->colorOfMe();
+                        $big_category_display = $bigObj->getShortDisplay($lang);
+                        $big_category = $bigObj->id;
+                    }
+                    $big_category_col_span++;
+                }
             }
         }
+
+        if ($big_category_col_span and $big_category_display) {
+            $stats_big_header[] = ['col_span' => $big_category_col_span, 'title' => $big_category_display, 'color' => $big_obj_color];
+        }
+
 
 
 
@@ -99,7 +132,7 @@ class AfwStatsHelper
         // die("statsData=" . var_export($statsData, true) . "<br> group_col_show_arr=" . var_export($group_col_show_arr, true) . "<br> stats_data_arr=" . var_export($stats_data_arr, true));
 
 
-        return [$stat_trad, $stats_data_arr, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr];
+        return [$stat_trad, $stats_data_arr, $stats_big_header, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr];
     }
 
 
@@ -434,9 +467,9 @@ class AfwStatsHelper
             list($sql, $statsData) = AfwSqlHelper::multipleAggregFunction($myClassInstance, $arrAggregFunctions, $group_cols_list_sql, true, true, $filter_arr);
             $case = "multipleAggregFunction";
             // die( "sql=$sql => res=".var_export( $statsData, true ) );
-
+            $stats_big_header = null;
             if ($config_cross_stats_cols) {
-                list($stat_trad, $stats_data_arr, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr) =
+                list($stat_trad, $stats_data_arr, $stats_big_header, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr) =
                     self::statsDataToStatsCrossArrays($myClassInstance, $statsData, $config_stats_display_cols, $config_cross_stats_cols, $config_group_cols, $group_sep, $config_stats_options, $lang, $curropt);
                 // die("rafik cross stat_trad=" . var_export($stat_trad, true) . ", stats_data_arr=" . var_export($stats_data_arr, true));
             } else { // standard
@@ -469,7 +502,7 @@ class AfwStatsHelper
             }
         }
 
-        return [$stat_trad, $stats_data_arr, $case, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr];
+        return [$stat_trad, $stats_data_arr, $stats_big_header, $case, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr];
     }
 
 
@@ -604,7 +637,8 @@ class AfwStatsHelper
         $myClassInstance,
         $stats_config,
         $stat_trad,
-        $stats_data_arr, 
+        $stats_big_header,
+        $stats_data_arr,
         $stats_code,
         $footer_sum_title_arr,
         $footer_total_arr,
@@ -613,11 +647,10 @@ class AfwStatsHelper
         $lang = "ar"
     ) {
         AfwMainPage::addOutput("<br><table class='display dataTable stats_table' cellspacing='3' cellpadding='4'>");
+
+        // super header
         $config_stats_super_header = $stats_config['SUPER_HEADER'];
-
-
         $class_xqe_col = "x";
-
         if ($config_stats_super_header) {
             AfwMainPage::addOutput("   <tr>");
             foreach ($config_stats_super_header as $config_stats_super_header_col) {
@@ -634,6 +667,25 @@ class AfwStatsHelper
             AfwMainPage::addOutput("   </tr>");
         }
 
+        // big header
+        if ($stats_big_header) {
+            AfwMainPage::addOutput("   <tr>");
+            foreach ($stats_big_header as $stats_big_header_group) {
+                $col_span = $stats_big_header_group['col_span'];
+                $title = $stats_big_header_group['title'];
+                $color = $stats_big_header_group['color'];
+                AfwMainPage::addOutput("      <th colspan='$col_span' class='xqe_hf_$class_xqe_col big_header $color'>$title</th>");
+                if ($class_xqe_col == "x") {
+                    $class_xqe_col = "z";
+                } else {
+                    $class_xqe_col = "x";
+                }
+            }
+            AfwMainPage::addOutput("   </tr>");
+        }
+
+
+        // Data
         $aligntd       = "center";
         $class_xqe_col = "x";
         $thead_html    = "";
