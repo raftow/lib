@@ -675,7 +675,7 @@ class AfwStatsHelper
                 $col_span = $stats_big_header_group['col_span'];
                 $title = $stats_big_header_group['title'];
                 $color = $stats_big_header_group['color'];
-                AfwMainPage::addOutput("      <th colspan='$col_span' class='xqe_hf_$class_xqe_col big_header $color'>$title</th>");
+                AfwMainPage::addOutput("      <th colspan='$col_span' class='xqe_hf_$class_xqe_col big_header stats_$color'>$title</th>");
                 if ($class_xqe_col == "x") {
                     $class_xqe_col = "z";
                 } else {
