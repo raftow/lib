@@ -7684,19 +7684,28 @@ table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_green 
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_white {
     background-color: rgb(225 225 225 / 53%) !important;
+    border: solid 1px silver;
+    border-right: solid 1px #cdc9c9;
+    border-left: solid 1px #cdc9c9;
 }
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_white {
     background-color: rgb(255 255 255 / 53%) !important;
+    border-right: solid 1px #cdc9c9;
+    border-left: solid 1px #cdc9c9;
 }
 
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_white {
     background-color: rgb(225 225 225 / 53%) !important;
+    border-right: solid 1px #cdc9c9;
+    border-left: solid 1px #cdc9c9;
 }
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_white {
     background-color: rgb(255 255 255 / 53%) !important;
+    border-right: solid 1px #cdc9c9;
+    border-left: solid 1px #cdc9c9;
 }
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_gray {
@@ -7707,16 +7716,13 @@ table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_gray {
     background-color: rgb(225 225 225 / 53%) !important;
 }
 
-
-
-
-
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_gray {
     background-color: rgb(195 195 195 / 53%) !important;
 }
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_gray {
     background-color: rgb(225 225 225 / 53%) !important;
+    
 }
 
 
