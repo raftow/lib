@@ -98,6 +98,7 @@ AfwStatsHelper::outputModeStatsTable(
         $stats_config,
         $stat_trad,
         $stats_data_arr,
+        $stats_code,
         $footer_sum_title_arr,
         $footer_total_arr,
         $bloc_col_end = [],

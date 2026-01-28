@@ -7490,81 +7490,116 @@ table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x {
 }
 
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_noresponse,
-table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_noresponse {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_black,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_black {
     background-color: rgb(27, 26, 24) !important;
     font-size: 13px !important;
 }
 
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_veryunsatisfied,
-table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_veryunsatisfied {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_red,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_red {
     background-color: rgb(230, 72, 9) !important;
     font-size: 13px !important;
 }
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_unsatisfied,
-table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_unsatisfied {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_orange,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_orange {
     background-color: #eb740e !important;
     font-size: 13px !important;
 }
 
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_indifferent,
-table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_indifferent {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_gold,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_gold {
     background-color: rgb(155, 153, 19) !important;
     font-size: 13px !important;
 }
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_verysatisfied,
-table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_verysatisfied {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_green,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_green {
     background-color: green !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_white, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_white {
+    background-color: rgb(195 195 195) !important;
+    color: black !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_gray, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_gray {
+    background-color: rgb(175 175 175) !important;
+    color: black !important;
     font-size: 13px !important;
 }
 
 
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_noresponse {
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_black {
     background-color: rgba(121, 120, 117, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_noresponse {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_black {
     background-color: rgba(68, 67, 65, 0.53) !important;
 }
 
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_veryunsatisfied {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_red {
     background-color: rgba(243, 185, 178, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_veryunsatisfied {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_red {
     background-color: rgba(206, 96, 84, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_unsatisfied {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_orange {
     background-color: rgba(235, 207, 50, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_unsatisfied {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_orange {
     background-color: rgba(206, 154, 41, 0.53) !important;
 }
 
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_indifferent {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_gold {
     background-color: rgba(248, 253, 181, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_indifferent {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_gold {
     background-color: rgba(229, 233, 30, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_verysatisfied {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_green {
     background-color: rgb(185 247 140 / 53%) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_verysatisfied {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_green {
     background-color: rgb(102 197 33 / 53%) !important;
 }
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_white {
+    background-color: rgb(225 225 225 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_white {
+    background-color: rgb(255 255 255 / 53%) !important;
+}
+
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_gray {
+    background-color: rgb(195 195 195 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_gray {
+    background-color: rgb(225 225 225 / 53%) !important;
+}
+
+
+
 
 a.stats-cell {
     padding: 3px 7px;

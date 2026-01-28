@@ -604,7 +604,8 @@ class AfwStatsHelper
         $myClassInstance,
         $stats_config,
         $stat_trad,
-        $stats_data_arr,
+        $stats_data_arr, 
+        $stats_code,
         $footer_sum_title_arr,
         $footer_total_arr,
         $bloc_col_end = [],
@@ -650,7 +651,7 @@ class AfwStatsHelper
                 $bloc_col_end_class = "";
             }
 
-            $col_categ = $myClassInstance->statsColCategory($col);
+            $col_categ = $myClassInstance->statsColCategory($col, $stats_code);
 
             if ($class_xqe_col) {
                 $class_xqe      = "xqe_hf_${class_xqe_col}";
