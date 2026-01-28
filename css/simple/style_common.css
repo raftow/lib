@@ -7498,7 +7498,7 @@ table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_black {
 
 table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_orange,
 table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_orange {
-    background-color: #eb740e !important;
+    background-color: #ff9b46 !important;
     font-size: 13px !important;
 }
 
@@ -7560,7 +7560,7 @@ table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_black {
 
 table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_orange,
 table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_orange {
-    background-color: #eb740e !important;
+    background-color: #ff9b46 !important;
     font-size: 13px !important;
 }
 
@@ -7642,19 +7642,19 @@ table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_black 
 
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_orange {
-    background-color: rgba(235, 207, 50, 0.53) !important;
+    background-color: rgb(255 196 69 / 53%) !important;
 }
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_orange {
-    background-color: rgba(206, 154, 41, 0.53) !important;
+    background-color: rgb(255 195 65 / 77%) !important;
 }
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_orange {
-    background-color: rgba(235, 207, 50, 0.53) !important;
+    background-color: rgb(255 196 69 / 53%) !important;
 }
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_orange {
-    background-color: rgba(206, 154, 41, 0.53) !important;
+    background-color: rgb(255 195 65 / 77%) !important;
 }
 
 
