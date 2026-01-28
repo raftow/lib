@@ -705,7 +705,7 @@ class AfwStatsHelper
                     $bloc_col_end_class = "";
                 }
 
-                $col_categ = $myClassInstance->statsColCategory($col);
+                $col_categ = $myClassInstance->statsColCategory($col, $stats_code);
 
                 if ($class_xqe_col) {
                     $class_xqe      = "xqe_${odd_even}_${class_xqe_col}";
@@ -752,7 +752,7 @@ class AfwStatsHelper
                     $bloc_col_end_class = "";
                 }
 
-                $col_categ = $myClassInstance->statsColCategory($col);
+                $col_categ = $myClassInstance->statsColCategory($col, $stats_code);
 
                 if ($class_xqe_col) {
                     $class_xqe      = "xqe_hf_${class_xqe_col} xqe_sum_footer_$class_xqe_col";
@@ -785,7 +785,7 @@ class AfwStatsHelper
                     $bloc_col_end_class = "";
                 }
 
-                $col_categ = $myClassInstance->statsColCategory($col);
+                $col_categ = $myClassInstance->statsColCategory($col, $stats_code);
 
                 if ($class_xqe_col) {
                     $class_xqe      = "xqe_hf_${class_xqe_col}";
