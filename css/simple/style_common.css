@@ -7708,6 +7708,10 @@ table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_white 
     border-left: solid 1px #cdc9c9;
 }
 
+table.stats_table th.stats_white {
+    border: 1px solid #a7a2a2 !important;
+}
+
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_gray {
     background-color: rgb(195 195 195 / 53%) !important;
 }
@@ -7725,6 +7729,9 @@ table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_gray {
     
 }
 
+table.stats_table th.stats_gray {
+    border: 1px solid #a7a2a2 !important;
+}
 
 
 
@@ -7741,9 +7748,13 @@ th.categ_stats_cross_col div.stats-header.rotate {
     white-space: nowrap;
 }
 
+table.stats_table.rotate-header  th {
+    height: 180px;    
+}
+
 table.stats_table th {
-    height: 180px;
     width: 42px !important;
+    border: 1px solid white;
 }
 
 th.stats_workflow_scope_id div.stats-header,
