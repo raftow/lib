@@ -648,7 +648,7 @@ class AfwStatsHelper
     ) {
         AfwMainPage::addOutput("<br><table class='display dataTable stats_table' cellspacing='3' cellpadding='4'>");
 
-        // super header
+        // STEP 1.0 super header
         $config_stats_super_header = $stats_config['SUPER_HEADER'];
         $class_xqe_col = "x";
         if ($config_stats_super_header) {
@@ -667,7 +667,8 @@ class AfwStatsHelper
             AfwMainPage::addOutput("   </tr>");
         }
 
-        // big header
+        AfwMainPage::addOutput("<thead>");
+        // STEP 2.0 big header
         if ($stats_big_header) {
             AfwMainPage::addOutput("   <tr>");
             foreach ($stats_big_header as $stats_big_header_group) {
@@ -685,11 +686,11 @@ class AfwStatsHelper
         }
 
 
-        // Data
+        // STEP 3.0  The columns header
         $aligntd       = "center";
         $class_xqe_col = "x";
         $thead_html    = "";
-        $thead_html .= "<thead><tr>";
+        $thead_html .= "<tr>";
         foreach ($stat_trad as $col => $info) {
             if ($class_xqe_col == "x") {
                 $class_xqe_col = "z";
@@ -715,10 +716,13 @@ class AfwStatsHelper
             $thead_html .= "      <th $class_xqe_prop align='$aligntd'><div class='stats-header'>$info</div></th>";
         }
 
-        $thead_html .= "   </tr></thead>";
+        $thead_html .= "   </tr>";
 
         AfwMainPage::addOutput($thead_html);
+        AfwMainPage::addOutput("</thead>");
+        
 
+        // STEP 4.0 Data
         $repeat_titles_nb_rows = $stats_config['REPEAT_TITLES_NB_ROWS'];
         if (!$repeat_titles_nb_rows) $repeat_titles_nb_rows = 20;
         $odd_even                    = "odd";
