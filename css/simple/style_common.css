@@ -2829,6 +2829,11 @@ table.display.dataTable.display_ltr.back_trace {
     /* display: block !important; */
 }
 
+.row-sfilter.row.row-buttons {
+    max-height: 99px;
+    margin-bottom: 20px;
+}
+
 #announce_pic,
 #news_pic {
     margin-top: 10px
@@ -4549,7 +4554,6 @@ div.filebox.editcard>.panel-heading {
 }
 
 .btn-group>input#sfilter-submit-form {
-    margin-top: 57px;
     font-size: 120% !important;
     padding: 8px;
 }

@@ -141,7 +141,7 @@ foreach($class_db_structure as $nom_col => $desc)
                             $need_to_close_div = true;
                 ?>
 </div>
-<div class="row">                
+<div class="row-sfilter row row-buttons">                
                 <?                           
                         }
                 } 
