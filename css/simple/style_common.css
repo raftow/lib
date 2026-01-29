@@ -1824,7 +1824,7 @@ table.dataTable.display tbody tr.odd.selected {
 
 table.dataTable.hover tbody tr:hover,
 table.dataTable.display tbody tr:hover {
-    background-color: rgba(206, 240, 255, 0.15)
+    background-color: rgb(2 176 253 / 31%);
 }
 
 table.dataTable.hover tbody tr:hover.selected,
@@ -7744,19 +7744,19 @@ table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_white 
 }*/
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_gray {
-    background-color: rgb(195 195 195 / 53%) !important;
+    background-color: rgb(225 225 225 / 53%) !important;
 }
 
 table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_gray {
-    background-color: rgb(225 225 225 / 53%) !important;
-}
-
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_gray {
     background-color: rgb(195 195 195 / 53%) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_gray {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_gray {
     background-color: rgb(225 225 225 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_gray {
+    background-color: rgb(195 195 195 / 53%) !important;
     
 }
 
