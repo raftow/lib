@@ -37,6 +37,7 @@ class AfwStatsHelper
 
 
         $big_col_key = $config_cross_stats_cols["bigcol"];
+        $big_col_is_formula = $config_cross_stats_cols["bigcolisformula"];
         $col_key = $config_cross_stats_cols["col"];
         $row_key = $config_cross_stats_cols["row"];
         $val_key = $config_cross_stats_cols["val"];
@@ -60,25 +61,29 @@ class AfwStatsHelper
         $big_obj_color = '';
 
         $objColList = AfwLoadHelper::getAnswerTable($myClassInstance, $col_key, $lang);
+        /**
+         * @var AFWObject $objColItem
+         */
         foreach ($objColList as $objColItemId => $objColItem) {
             if ($objColItem->id and $objColItem->getShortDisplay($lang)) {
                 $cross_col = "cross_col_" . $objColItemId;
                 $stat_trad[$cross_col] = $objColItem->getShortDisplay($lang);
-                /**
-                 * @var AFWObject $bigObj
-                 */
-                $bigObj = null;
-                if ($big_col_key) $bigObj = $objColItem->het($big_col_key);
-                if ($bigObj and $bigObj->id) {
-                    if (($bigObj->id != $big_category)) {
+                $bigDisplay = null;
+                $bigValue = null;
+                if ($big_col_key) {
+                    $bigDisplay = $objColItem->decode($big_col_key, '', false, $lang);
+                    $bigValue = $big_col_is_formula ? $objColItem->calc($big_col_key) : $objColItem->getVal($big_col_key);
+                } 
+                if ($bigDisplay and $bigValue) {
+                    if (($bigValue != $big_category)) {
                         if ($big_category and $big_category_display) { // previous group exists close it and create new
 
                             $stats_big_header[] = ['col_span' => $big_category_col_span, 'title' => $big_category_display, 'color' => $big_obj_color];
                             $big_category_col_span = 0;
                         }
-                        $big_obj_color = $bigObj->colorOfMe();
-                        $big_category_display = $bigObj->getShortDisplay($lang);
-                        $big_category = $bigObj->id;
+                        $big_obj_color = $myClassInstance->colorOf($big_col_key, $bigValue);
+                        $big_category_display = $bigDisplay;
+                        $big_category = $bigValue;
                     }
                     $big_category_col_span++;
                 }
