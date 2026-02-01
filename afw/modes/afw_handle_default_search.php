@@ -85,16 +85,16 @@ if (!$liste_obj) {
         if (!$lang) $lang = 'ar';
         
 
-        list($arr_sql_conds, $cond_phrase_arr) = AfwSearchHelper::prepareSQLWhereFromPostedFilter($obj, $lang);
+        list($arr_sql_conds, $cond_phrase_arr) = AfwSearchHelper::prepareSQLWhereFromPostedFilter($obj, $arr_sql_conds, $lang);
 
-        // die("final debugg the criteria = ".var_export($arr_sql_conds,true));
+        //die("final debugg the criteria : arr_sql_conds = ".var_export($arr_sql_conds,true)." cond_phrase_arr = ".var_export($cond_phrase_arr,true));
         if (!empty($arr_sql_conds)) {
                 $sql_conds = implode(" and ", $arr_sql_conds);
                 $sql_conds = trim($sql_conds);
                 if (preg_match('and$', $sql_conds))
                         $sql_conds = substr($sql_conds, 0, -2);
                 $obj->where($sql_conds);
-                // die("DBG-where special sql_conds = $sql_conds arr_sql_conds = ".var_export($arr_sql_conds,true));
+                // die("please try later ... IT Team is debugging ... (2) DBG-where special sql_conds = $sql_conds arr_sql_conds = ".var_export($arr_sql_conds,true));
                 $obj->select_visibilite_horizontale();
                 $count_liste_obj = $obj->func("count(*)");
                 $obj->where($sql_conds);

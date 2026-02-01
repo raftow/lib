@@ -75,7 +75,7 @@ if (! $stats_config['DISABLE-VH']) {
     $myClassInstance->select_visibilite_horizontale();
 }
 // where of stats filter
-list($arr_sql_conds, $cond_phrase_arr) = AfwSearchHelper::prepareSQLWhereFromPostedFilter($myClassInstance, $lang);
+list($arr_sql_conds, $cond_phrase_arr) = AfwSearchHelper::prepareSQLWhereFromPostedFilter($myClassInstance, [], $lang);
 // die("arr_sql_conds=".var_export($arr_sql_conds, true));
 $sql_conds = implode(" and ", $arr_sql_conds);
 $sql_conds = trim($sql_conds);
