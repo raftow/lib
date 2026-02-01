@@ -589,11 +589,12 @@ class AfwStatsHelper
             AfwMainPage::addOutput("<div class = 'stats_bottom_help'>$stats_bottom_help</div>");
         }
         $myClass = get_class($myClassInstance);
-        $settings_label = AfwLanguageHelper::translateKeyword("SETTINGS", $lang);
         $url_settings          = $stats_config['URL_SETTINGS'];
-        $url_settings = "$url_settings&stc=$stats_code&stccl=$myClass&stccurrmod=$currmod";
-
-        AfwMainPage::addOutput("<h3 class='righttitle specialtitle'><a target='_settings' href='$url_settings'>$settings_label</a></h3>");
+        if($url_settings) {
+            $settings_label = AfwLanguageHelper::translateKeyword("SETTINGS", $lang);
+            $url_settings = "$url_settings&stc=$stats_code&stccl=$myClass&stccurrmod=$currmod";
+            AfwMainPage::addOutput("<h3 class='righttitle specialtitle'><a target='_settings' href='$url_settings'>$settings_label</a></h3>");
+        }
 
         $data_pie = [];
 
