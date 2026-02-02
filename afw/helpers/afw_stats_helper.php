@@ -755,9 +755,9 @@ class AfwStatsHelper
 
                 if ($class_xqe_col) {
                     $class_xqe      = "xqe_hf_${class_xqe_col} xqe_sum_footer_$class_xqe_col";
-                    $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class stats_$col categ_$col_categ'";
+                    $class_xqe_prop = "class = '$class_xqe $bloc_col_end_class stats_$col categ_$col_categ footer'";
                 } else {
-                    $class_xqe_prop = "class = '$bloc_col_end_class stats_$col categ_$col_categ'";
+                    $class_xqe_prop = "class = '$bloc_col_end_class stats_$col categ_$col_categ footer'";
                 }
 
                 AfwMainPage::addOutput("      <th $class_xqe_prop align = '$aligntd'><div class='stats-footer'>$footer_total_val</div></th>");
