@@ -1824,7 +1824,7 @@ table.dataTable.display tbody tr.odd.selected {
 
 table.dataTable.hover tbody tr:hover,
 table.dataTable.display tbody tr:hover {
-    background-color: rgba(206, 240, 255, 0.15)
+    background-color: rgb(2 176 253 / 31%);
 }
 
 table.dataTable.hover tbody tr:hover.selected,
@@ -2827,6 +2827,11 @@ table.display.dataTable.display_ltr.back_trace {
     margin-left: 20% !important;
     float: right;
     /* display: block !important; */
+}
+
+.row-sfilter.row.row-buttons {
+    max-height: 99px;
+    margin-bottom: 20px;
 }
 
 #announce_pic,
@@ -4549,7 +4554,6 @@ div.filebox.editcard>.panel-heading {
 }
 
 .btn-group>input#sfilter-submit-form {
-    margin-top: 57px;
     font-size: 120% !important;
     padding: 8px;
 }
@@ -7490,81 +7494,315 @@ table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x {
 }
 
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_noresponse,
-table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_noresponse {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_black,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_black {
     background-color: rgb(27, 26, 24) !important;
     font-size: 13px !important;
 }
 
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_orange,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_orange {
+    background-color: #ff9b46 !important;
+    font-size: 13px !important;
+}
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_veryunsatisfied,
-table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_veryunsatisfied {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_red,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_red {
     background-color: rgb(230, 72, 9) !important;
     font-size: 13px !important;
 }
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_unsatisfied,
-table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_unsatisfied {
-    background-color: #eb740e !important;
-    font-size: 13px !important;
-}
 
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_indifferent,
-table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_indifferent {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_gold,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_gold {
     background-color: rgb(155, 153, 19) !important;
     font-size: 13px !important;
 }
 
-table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_verysatisfied,
-table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_verysatisfied {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_green,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_green {
     background-color: green !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_white, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_white {
+    color: rgb(195 195 195) !important;
+    background-color: #5c5c5c !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_gray, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_gray {
+    background-color: rgb(175 175 175) !important;
+    color: black !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_silver, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_silver {
+    background-color: #76a2c3 !important;
+    color: white !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_z.stats_blue, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_z.stats_blue {
+    background-color: #53a5e1 !important;
+    color: white !important;
     font-size: 13px !important;
 }
 
 
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_noresponse {
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_black,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_black {
+    background-color: rgb(27, 26, 24) !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_orange,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_orange {
+    background-color: #ff9b46 !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_red,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_red {
+    background-color: rgb(230, 72, 9) !important;
+    font-size: 13px !important;
+}
+
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_red,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_red {
+    background-color: rgb(230, 72, 9) !important;
+    font-size: 13px !important;
+}
+
+
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_gold,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_gold {
+    background-color: rgb(155, 153, 19) !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_green,
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_green {
+    background-color: green !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_white, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_white {
+    color: rgb(195 195 195) !important;
+    background-color: #5c5c5c !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_gray, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_gray {
+    background-color: rgb(175 175 175) !important;
+    color: black !important;
+    font-size: 13px !important;
+}
+
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_silver, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_silver {
+    background-color: #76a2c3 !important;
+    color: white !important;
+    font-size: 13px !important;
+}
+
+table.dataTable.display.stats_table>thead>tr>th.xqe_hf_x.stats_blue, 
+table.dataTable.display.stats_table>tfoot>tr>th.xqe_hf_x.stats_blue {
+    background-color: #53a5e1 !important;
+    color: white !important;
+    font-size: 13px !important;
+}
+
+
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_black {
     background-color: rgba(121, 120, 117, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_noresponse {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_black {
+    background-color: rgba(68, 67, 65, 0.53) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_black {
+    background-color: rgba(121, 120, 117, 0.53) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_black {
     background-color: rgba(68, 67, 65, 0.53) !important;
 }
 
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_veryunsatisfied {
+
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_orange {
+    background-color: rgb(255 196 69 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_orange {
+    background-color: rgb(255 195 65 / 77%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_orange {
+    background-color: rgb(255 196 69 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_orange {
+    background-color: rgb(255 195 65 / 77%) !important;
+}
+
+
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_red {
     background-color: rgba(243, 185, 178, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_veryunsatisfied {
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_red {
     background-color: rgba(206, 96, 84, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_unsatisfied {
-    background-color: rgba(235, 207, 50, 0.53) !important;
-}
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_unsatisfied {
-    background-color: rgba(206, 154, 41, 0.53) !important;
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_red {
+    background-color: rgba(243, 185, 178, 0.53) !important;
 }
 
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_indifferent {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_red {
+    background-color: rgba(206, 96, 84, 0.53) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_gold {
     background-color: rgba(248, 253, 181, 0.53) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_indifferent {
-    background-color: rgba(229, 233, 30, 0.53) !important;
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_gold {
+    background-color: rgb(209 213 3 / 49%) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_verysatisfied {
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_gold {
+    background-color: rgba(248, 253, 181, 0.53) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_gold {
+    background-color: rgb(209 213 3 / 49%) !important;
+}
+
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_green {
     background-color: rgb(185 247 140 / 53%) !important;
 }
 
-table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_verysatisfied {
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_green {
     background-color: rgb(102 197 33 / 53%) !important;
 }
+
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_green {
+    background-color: rgb(185 247 140 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_green {
+    background-color: rgb(102 197 33 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_white {
+    background-color: rgb(225 225 225 / 53%) !important;
+    border: solid 1px silver;
+    border-right: solid 1px #cdc9c9;
+    border-left: solid 1px #cdc9c9;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_white {
+    background-color: rgb(209 209 209 / 53%) !important;
+    border-right: solid 1px #cdc9c9;
+    border-left: solid 1px #cdc9c9;
+}
+
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_white {
+    background-color: rgb(225 225 225 / 53%) !important;
+    border-right: solid 1px #cdc9c9;
+    border-left: solid 1px #cdc9c9;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_white {
+    background-color: rgb(209 209 209 / 53%) !important;
+    border-right: solid 1px #cdc9c9;
+    border-left: solid 1px #cdc9c9;
+}
+
+/* table.stats_table th.stats_white {
+    border: 1px solid #a7a2a2 !important;
+}*/
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_gray {
+    background-color: rgb(225 225 225 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_gray {
+    background-color: rgb(195 195 195 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_gray {
+    background-color: rgb(225 225 225 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_gray {
+    background-color: rgb(195 195 195 / 53%) !important;
+    
+}
+
+/* table.stats_table th.stats_gray {
+    border: 1px solid #a7a2a2 !important;
+}*/
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_silver {
+    background-color: #f0f8ffcb !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_silver {
+    background-color: #c5d7e7cb !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_silver {
+    background-color: #f0f8ffcb !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_silver {
+    background-color: #c5d7e7cb !important;
+    
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_z.stats_blue {
+    background-color: rgb(188 225 251 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_z.stats_blue {
+    background-color: rgb(124 199 251 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_odd_x.stats_blue {
+    background-color: rgb(188 225 251 / 53%) !important;
+}
+
+table.dataTable.display.stats_table>tbody>tr>td.stats-td.xqe_even_x.stats_blue {
+    background-color: rgb(124 199 251 / 53%) !important;
+    
+}
+
+
 
 a.stats-cell {
     padding: 3px 7px;
@@ -7573,15 +7811,19 @@ a.stats-cell {
     color: white;
 }
 
-th.categ_stats_cross_col div.stats-header {
+th.categ_stats_cross_col div.stats-header.rotate {
     rotate: 90deg;
     height: 36px !important;
     white-space: nowrap;
 }
 
+table.stats_table.rotate-header  th {
+    height: 180px;    
+}
+
 table.stats_table th {
-    height: 180px;
     width: 42px !important;
+    border: 1px solid white;
 }
 
 th.stats_workflow_scope_id div.stats-header,
@@ -7589,8 +7831,10 @@ td.stats_workflow_scope_id div.stats-header {
     width: 220px;
 }
 
-table.stats_table td {
-    height: 36px;
+
+table.stats_table tbody td {
+    border: 1px solid white !important;
+    height: 36px !important;
 }
 
 /************* END OF FOR RETIRIEVE AND GRID DEFAULT STYLES *************/

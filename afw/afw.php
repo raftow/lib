@@ -6579,7 +6579,7 @@ class AFWObject extends AFWRoot
         return AfwStructureHelper::export($this);
     }
 
-    public function statsColCategory($col)
+    public function statsColCategory($col, $stats_code)
     {
         if (AfwStringHelper::stringStartsWith($col, "cross_col")) return "stats_cross_col";
         else return 'stats_cross_row';

@@ -128,7 +128,7 @@ td.col-qe.col-qe-100 {
     overflow: hidden;
 }
 
-td.col-qe>input {
+td.col-qe>input, td.col-qe>select, td.col-qe>textarea {
     min-height: 37px !important;
     border: none !important;
     background-color: transparent !important;

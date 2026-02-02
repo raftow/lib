@@ -193,7 +193,11 @@ table.dataTable.display tbody th,
 table.dataTable.display tbody td {
     border-top: 1px solid rgb(51 102 133 / 37%);
     color: black !important;
-    font-size: 90%;
+    font-size: 110%;
+}
+
+table.dataTable.display.stats_table tbody td {
+    font-weight: bold;
 }
 
 

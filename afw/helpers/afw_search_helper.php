@@ -2,7 +2,7 @@
 
 class AfwSearchHelper
 {
-    public static function prepareSQLWhereFromPostedFilter(&$object, $lang="ar") {
+    public static function prepareSQLWhereFromPostedFilter(&$object, $arr_sql_conds = array(), $lang="ar") {
         $cond_phrase_arr = array();
         $myClass = get_class($object);
         $class_db_structure = $object->getMyDbStructure($return_type = "structure", $attribute = "all");
@@ -12,9 +12,10 @@ class AfwSearchHelper
         // $newo = $newo_qedit;
         // if (!$newo) $newo = 10;
         // récupération des critères du formulaire
-        if (!isset($arr_sql_conds)) {
+        
+        if (true) {
                 $cond_phrase_arr[] = "تم البحث بالمعايير التالية : ";
-                $arr_sql_conds = array();
+                
                 $fixms = array();
                 // AFWDebugg::print_str('foreach  '.__LINE__);
                 foreach ($class_db_structure as $nom_col => $desc) {
@@ -112,11 +113,7 @@ class AfwSearchHelper
                                 //if($fixm) AFWDebugg::log(" new fixm $fixm\n");
                         }
                 }
-        } else {
-                // cas des critères du filtre specifique
-                // die("cas des critères du filtre specifique = ".var_export($arr_sql_conds,true));
-
-        }
+        } 
 
         return [$arr_sql_conds, $cond_phrase_arr];
 
