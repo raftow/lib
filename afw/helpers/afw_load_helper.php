@@ -121,7 +121,7 @@ class AfwLoadHelper extends AFWRoot
 
 
 
-    public static function getAnswerTable(&$object, $attribute, $lang, $throwException = false)
+    public static function getAnswerTable(&$object, $attribute, $lang, $throwException = false, $where='')
     {
         $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         $nom_table_fk   = $desc["ANSWER"];
@@ -138,8 +138,16 @@ class AfwLoadHelper extends AFWRoot
 
         $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
         $objRep  = new $nom_class_fk;
-        $desc["WHERE"] = $object->decodeText($desc["WHERE"]);
-        if ($desc["WHERE"]) $objRep->where($desc["WHERE"]);
+        if ($desc["WHERE"]) {
+            $desc["WHERE"] = $object->decodeText($desc["WHERE"]);
+            $objRep->where($desc["WHERE"]);
+        }
+        
+        if ($where)  {
+            $objRep->where($where);
+            $where = $object->decodeText($where);
+        }
+
         return $objRep->loadMany('', $desc['ORDERBY'], $optim = true);
     }
 

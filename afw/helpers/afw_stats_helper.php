@@ -39,6 +39,7 @@ class AfwStatsHelper
         $big_col_key = $config_cross_stats_cols["bigcol"];
         $big_col_is_formula = $config_cross_stats_cols["bigcolisformula"];
         $col_key = $config_cross_stats_cols["col"];
+        $filtercol = $config_cross_stats_cols["filtercol"];
         $row_key = $config_cross_stats_cols["row"];
         $val_key = $config_cross_stats_cols["val"];
         $big_color = $config_cross_stats_cols["big_color"];
@@ -60,7 +61,7 @@ class AfwStatsHelper
         $big_category_col_span = 0;
         $big_obj_color = '';
 
-        $objColList = AfwLoadHelper::getAnswerTable($myClassInstance, $col_key, $lang);
+        $objColList = AfwLoadHelper::getAnswerTable($myClassInstance, $col_key, $lang, false, $filtercol);
         /**
          * @var AFWObject $objColItem
          */
