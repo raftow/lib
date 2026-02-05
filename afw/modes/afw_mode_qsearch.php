@@ -42,11 +42,13 @@ if ($migration_on) $datatable_on = true;
 if (!$action) $action = "retrieve";
 if (!$action_params) $action_params = "";
 
-$session_previous_search = AfwSession::getSessionVar("search-$cl");
+if ($fixed_criterea_arr) $session_previous_search = $fixed_criterea_arr;
+else $session_previous_search = AfwSession::getSessionVar("search-$cl");
 
+/*
 if ($session_previous_search and ($cl == "WorkflowRequest")) {
         die("DBG-session_previous_search=" . var_export($session_previous_search, true));
-}
+}*/
 
 
 if (($session_previous_search) and (!$datatable_on)) {
