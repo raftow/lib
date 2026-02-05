@@ -482,8 +482,8 @@ AfwMainPage::addOutput('<input type="hidden" name="action" value="' . $action . 
 AfwMainPage::addOutput('<input type="hidden" name="action_params" value="' . $action_params . '"/>');
 AfwMainPage::addOutput('<input type="hidden" name="r" value="' . $r . '"/>');
 AfwMainPage::addOutput('<input type="hidden" name="limite"    value="0"/>');
-
-AfwMainPage::addOutput('<input type="hidden" id="Main_Page" name="Main_Page" value="afw_mode_qsearch.php"/>');
+if (!$current_page) $current_page = "afw_mode_qsearch.php";
+AfwMainPage::addOutput('<input type="hidden" id="Main_Page" name="Main_Page" value="' . $current_page . '"/>');
 /*
 AfwMainPage::addOutput( '<script type="text/javascript">
     function avancedSubmitToggle()
