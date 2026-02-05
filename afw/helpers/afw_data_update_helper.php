@@ -574,6 +574,7 @@ class AfwDataUpdateHelper
             $pageTotal = $pageCount = $result['result']->$metaAttribute->$pageCountAttribute;
 
 
+            $warning = "";
 
             if ($recursive) {
 
@@ -581,7 +582,9 @@ class AfwDataUpdateHelper
                     if (! $force_mode) {
                         throw new AfwRuntimeException("too much pages ($pageCount) max of page $max_pages please use force mode (to-implement)");
                     } elseif ($force_mode == "do-max-pages") {
+                        $oldPageCount = $pageCount;
                         $pageCount = $currentPage + $max_pages - 1;
+                        $warning = "page count was $oldPageCount and become $pageCount = $currentPage >> $max_pages pages ";
                     } else {
                         // do all pages keep $pageCount as is
                     }
@@ -671,7 +674,7 @@ class AfwDataUpdateHelper
         if ($items and is_array($items)) $items_count = count($items);
         else $items_count = 0;
 
-        $apiExecObj->set("output", "REACHED=$page, TOTAL=$pageTotal, LOADED=$pageCount, RECORDS=$items_count");
+        $apiExecObj->set("output", "REACHED=$page, TOTAL=$pageTotal, LOADED=$pageCount, RECORDS=$items_count, $warning");
         $apiExecObj->commit();
 
         return ['ok' => $ok, 'current_page' => $page, 'last_page' => $pageCount, 'items' => $items];

@@ -693,18 +693,15 @@ class AfwSqlHelper extends AFWRoot
                     . $all_oper_arr[$oper]
                     . "</span> : <span class='crit_field_value'> [$val_col] </span>";
                 // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
-                return [
+                throw new AfwRuntimeException(
                     $prefixed_nom_col
-                        . ' zz '
+                        . ' has type ' . $desc['TYPE'] .' witch is not managed by SQLHelper::getClauseWhere desc='
                         . var_export($desc, true)
-                        . '  '
+                        . ' oper= '
                         . $oper
-                        . " '"
+                        . " value='"
                         . $val_col
-                        . "'",
-                    '',
-                    $phraseLangWhere,
-                ];
+                        . "'");
         }
     }
 
