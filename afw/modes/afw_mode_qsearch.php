@@ -405,6 +405,9 @@ $cl_short = strtolower(substr($myClassInstance->getMyClass(), 0, 10));
 
 AfwMainPage::addOutput('<div class="row row-' . $cl_short . '">');
 
+if ($formColumns) {
+        $myClassInstance->formColumns = $formColumns;
+}
 
 AfwMainPage::addOutput(AfwShowHelper::showObject($myClassInstance, "HTML", "afw_template_default_qsearch.php"));
 
