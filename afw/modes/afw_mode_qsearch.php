@@ -179,11 +179,11 @@ if ($datatable_on) {
         $btns_display["lookup"] = (($newo > 0) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin()) ? 1 : 0;
         $btns_total += $btns_display["lookup"];
 
+        $btns_display["excel"] = ($myClassInstance->excelExport and ($ids_count > 0) and $objme) ? 1 : 0;
+        $btns_total += $btns_display["excel"];
 
-        if ((!AfwSession::config('MODE_DEVELOPMENT', false)) or (AfwSession::config('MODE_EXCEL_EXPORT', false))) {
-                $btns_display["excel"] = (($ids_count > 0) and $objme) ? 1 : 0;
-                $btns_total += $btns_display["excel"];
-        } else {
+
+        if (AfwSession::config('MODE_DEVELOPMENT', false)) {
                 $btns_display["migration"] = (($ids_count > 0) and $objme) ? 1 : 0;
                 $btns_total += $btns_display["migration"];
         }
