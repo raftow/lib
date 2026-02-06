@@ -1006,6 +1006,10 @@ class AfwUmsPagHelper extends AFWRoot
         return $actions_tpl_matrix;
     }*/
 
+    /**
+     * @param AFWObject $object
+     **/
+
     public static final function getRetrieveHeader(
         $object,
         $mode = 'display',
@@ -1019,12 +1023,12 @@ class AfwUmsPagHelper extends AFWRoot
         $cols_retrieve = [];
 
         foreach ($cols as $nom_col) {
-            $cols_retrieve[$nom_col] = $object->translate($nom_col, $lang);
+            $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang);
         }
 
         foreach ($forced_cols as $nom_col) {
             if (!isset($cols_retrieve[$nom_col])) {
-                $cols_retrieve[$nom_col] = $object->translate($nom_col, $lang);
+                $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang);
             }
         }
 
