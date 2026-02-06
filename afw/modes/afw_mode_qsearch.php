@@ -328,8 +328,12 @@ if ($datatable_on) {
         $out_scr_btns .= '<br><br>';
 }
 
-
-if ($action == "retrieve") {
+if ($qsearch_page_title) {
+        $page_title = $qsearch_page_title;
+        $page_sub_title = null;
+        $page_action_description = null;
+        $execute_btn = 'SUBMIT-SEARCH';
+} elseif ($action == "retrieve") {
         $page_title = $myClassInstance->translate('QSEARCH', $lang, true) . " " . $single_obj_name;
         $page_sub_title = null;
         $page_action_description = null;
