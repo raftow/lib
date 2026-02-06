@@ -67,10 +67,10 @@ if (($session_previous_search) and (!$datatable_on)) {
 
         $datatable_on = 1;
 }
-
+/*
 if ($_POST and ($cl == "WorkflowRequest")) {
         die("DBG-_POST=" . var_export($_POST, true));
-}
+}*/
 
 if (!$currmod) {
         $currmod = $uri_module;
