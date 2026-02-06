@@ -1010,7 +1010,9 @@ class AfwUmsPagHelper extends AFWRoot
         $object,
         $mode = 'display',
         $lang = 'ar',
-        $all = false
+        $all = false,
+        $forced_cols = [],
+        $hide_cols = []
     ) {
         $cols = AfwPrevilegeHelper::getRetrieveCols($object, $mode, $lang, $all);
 
@@ -1018,6 +1020,16 @@ class AfwUmsPagHelper extends AFWRoot
 
         foreach ($cols as $nom_col) {
             $cols_retrieve[$nom_col] = $object->translate($nom_col, $lang);
+        }
+
+        foreach ($forced_cols as $nom_col) {
+            if (!isset($cols_retrieve[$nom_col])) {
+                $cols_retrieve[$nom_col] = $object->translate($nom_col, $lang);
+            }
+        }
+
+        foreach ($hide_cols as $nom_col) {
+            unset($cols_retrieve[$nom_col]);
         }
 
         return $cols_retrieve;

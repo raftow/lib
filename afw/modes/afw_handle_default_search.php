@@ -1,12 +1,11 @@
 <?php
 // die("DBG-mode handle search");
 require_once(dirname(__FILE__) . "/../../../config/global_config.php");
-require_once(dirname(__FILE__).'/../modes/afw_rights.php');
+require_once(dirname(__FILE__) . '/../modes/afw_rights.php');
 
 $themeArr = AfwThemeHelper::loadTheme("handle-qsearch");
-foreach($themeArr as $theme => $themeValue)
-{
-    $$theme = $themeValue;    
+foreach ($themeArr as $theme => $themeValue) {
+        $$theme = $themeValue;
 }
 $images = AfwThemeHelper::loadTheme();
 
@@ -47,14 +46,15 @@ if ($qsearchview and ($qsearchview != "all") and ($action == "retrieve")) $mode_
 $obj  = new $cl();
 
 $tentative = "first";
-$header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang);
+$header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang, false, $forced_retrieve_cols, $hide_retrieve_cols);
+
 
 // die("AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang) = ".var_export($header_retrieve,true));
 
 if (count($header_retrieve) == 0) {
         $tentative = "second";
         // echo "header_retrieve is empty try all :<br>";   
-        $header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang, true);
+        $header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang, true, $forced_retrieve_cols, $hide_retrieve_cols);
 }
 
 // @doc : to make the id or any other attribute is shown for qsearch with view TECH_FIELDS, just put "TECH_FIELDS-RETRIEVE" => true in structure of attribute
@@ -83,7 +83,7 @@ if (!$liste_obj) {
         // require_once $file_obj;
         //die("genere_xls=[$genere_xls]");
         if (!$lang) $lang = 'ar';
-        
+
 
         list($arr_sql_conds, $cond_phrase_arr) = AfwSearchHelper::prepareSQLWhereFromPostedFilter($obj, $arr_sql_conds, $lang);
 
@@ -154,12 +154,9 @@ AfwSession::log("End of Data retrieve in afw_handle_default_search");
 //$liste_count = count($dataRetrive);
 $liste_count = count($liste_obj);
 $too_much_records = AfwSession::config("too_much_records", 500);
-if($liste_count>$too_much_records)
-{
-        foreach ($header as $col => $titre) 
-        {
-                if($obj->seemsCalculatedField($col))
-                {
+if ($liste_count > $too_much_records) {
+        foreach ($header as $col => $titre) {
+                if ($obj->seemsCalculatedField($col)) {
                         unset($header[$col]);
                         AfwSession::pushWarning("تم حجب العمود [$titre] لأجل تسريع الصفحة التي تحتوي على سجلات كثيرة جدا");
                 }
@@ -173,7 +170,7 @@ if($liste_count>$too_much_records)
 // $ddtt_s = date("H:i:s.u");
 // list($data, $isAvail) = AfwLoadHelper::formatRetrievedDataForRetrieveMode($dataRetrive, $header, $obj->fld_ACTIVE(), $lang);
 AfwSession::log("Before execute LoadHelper::getRetrieveDataFromObjectList in afw_handle_default_search");
-list($data, $isAvail) = AfwLoadHelper::getRetrieveDataFromObjectList($liste_obj, $header, $lang, $newline = "\n<br>",true);
+list($data, $isAvail) = AfwLoadHelper::getRetrieveDataFromObjectList($liste_obj, $header, $lang, $newline = "\n<br>", true);
 AfwSession::log("After execute LoadHelper::getRetrieveDataFromObjectList in afw_handle_default_search");
 // die("data = ".var_export($data,true)." when liste_obj= ".var_export($liste_obj,true));
 // $ddtt_e = date("H:i:s.u");
@@ -192,8 +189,7 @@ $getActionsMatrix_time_end = hrtime(true); // nano sec
 $getActionsMatrix_time_t = round(($getActionsMatrix_time_end - $getActionsMatrix_time_start) / 1000000);
 die("getActionsMatrix_time_t=$getActionsMatrix_time_t");
 */
-if ($genere_xls) 
-{
+if ($genere_xls) {
         AfwSession::log("Before execute getRetrieveDataFromObjectList for excel generation in afw_handle_default_search");
         list($data_excel, $isAvail_excel) = AfwLoadHelper::getRetrieveDataFromObjectList($liste_obj, $header_excel, $lang, $newline = "\n");
         AfwSession::log("After execute getRetrieveDataFromObjectList for excel generation in afw_handle_default_search");
@@ -202,11 +198,10 @@ if ($genere_xls)
 
 
 
-if ($action and ($action != "retrieve") and ($qsearchview == "exec")) 
-{
+if ($action and ($action != "retrieve") and ($qsearchview == "exec")) {
         AfwSession::log("Before execute action $action in afw_handle_default_search");
         $actions_tpl_arr = array();
-        $methodAction = $action."RetrieveAction";
+        $methodAction = $action . "RetrieveAction";
         if ($action_params) $actionParamsArr = explode(",", $action_params);
         else $actionParamsArr = array();
         $actionParamsTranslator = implode(".", $actionParamsArr);
@@ -262,9 +257,8 @@ if ($genere_migration) {
 //AFWDebugg::print_str('foreach  '.__LINE__);
 ob_start();
 
-if (!$result_page_title) 
-{
-        $tr_ = $obj->transClassPlural($lang, false, $maksour = true); 
+if (!$result_page_title) {
+        $tr_ = $obj->transClassPlural($lang, false, $maksour = true);
         if ($action == "retrieve")
                 $result_page_title = $obj->translate('SEARCH_RESULT', $lang, true) . " " . $tr_;
         elseif ($qsearchview == "exec")
@@ -277,7 +271,7 @@ if (!$result_page_title)
 
 if (true) {
 ?>
-        
+
         <table id="search_result_table" width="<?= $pct_tab_search_result ?>" class="search_result_table">
                 <tr>
                         <td>
@@ -327,8 +321,7 @@ if (true) {
 
                                                                 // echo "actions_tpl_arr = ".var_export($actions_tpl_arr,true);
 
-                                                                foreach ($actions_tpl_arr as $action_item => $action_item_props) 
-                                                                {
+                                                                foreach ($actions_tpl_arr as $action_item => $action_item_props) {
                                                                         $frameworkAction = $action_item_props["framework_action"];
                                                                         $importance = $action_item_props["importance"];
                                                                         if (!$importance) {
@@ -343,18 +336,15 @@ if (true) {
                                                                         $datatable_header .= "<th width='1%' class='col-importance-$importance bfc$bf_code fwa$frameworkAction' id='fwa-$frameworkAction'>" . $obj->translate($action_item, $lang) . "</th>";
                                                                         if (!$frameworkAction) $frameworkAction = $action_item;
 
-                                                                        if ($bf_code) 
-                                                                        {
+                                                                        if ($bf_code) {
                                                                                 $can_action_arr[$action_item] = ($objme and $objme->iCanDoBFCode($bf_system, $bf_code));
                                                                                 $can_case = "objme->iCanDoBFCode($bf_system, $bf_code)";
-                                                                        } 
-                                                                        else 
-                                                                        {
-                                                                                $can_action_arr[$action_item] = ($objme and $objme->iCanDoOperationOnObjClass($obj, $frameworkAction));                                                                                
+                                                                        } else {
+                                                                                $can_action_arr[$action_item] = ($objme and $objme->iCanDoOperationOnObjClass($obj, $frameworkAction));
                                                                                 $can_case = "objme->iCanDoOperationOnObjClass(obj, $frameworkAction)";
                                                                         }
                                                                         if ($objme and (!$can_action_arr[$action_item])) $cant_do_action_log_arr[$action_item] = $objme->getICantDoReason();
-                                                                        if(!$cant_do_action_log_arr[$action_item]) $cant_do_action_log_arr[$action_item] = "but reason not explained";
+                                                                        if (!$cant_do_action_log_arr[$action_item]) $cant_do_action_log_arr[$action_item] = "but reason not explained";
                                                                         $cant_do_action_log_arr[$action_item] .= " ($can_case)";
                                                                 }
                                                         }
@@ -371,8 +361,7 @@ if (true) {
                                                                         </tr>
                                                                 </thead>
                                                                 <?php
-                                                                if (count($data) > 50) 
-                                                                {
+                                                                if (count($data) > 50) {
                                                                 ?>
                                                                         <tfoot>
                                                                                 <tr>
@@ -391,22 +380,20 @@ if (true) {
                                                                         $repeat_retrieve_header = $obj->repeatRetrieveHeader();
                                                                         $umsCheckDisabledInRetrieveMode = $obj->umsCheckDisabledInRetrieveMode();
                                                                         if ($maxRecordsUmsCheck > 100) $maxRecordsUmsCheck = 100;
-                                                                        foreach ($data as $id => $tuple) 
-                                                                        {
+                                                                        foreach ($data as $id => $tuple) {
                                                                                 //if($ids_count<50)
                                                                                 //{
                                                                                 if ($ids) $ids .= ",";
                                                                                 $ids .= $id;
                                                                                 $ids_count++;
-                                                                                if($repeat_retrieve_header and (($ids_count % $repeat_retrieve_header) == 0))
-                                                                                {
-                                                                                        ?>
+                                                                                if ($repeat_retrieve_header and (($ids_count % $repeat_retrieve_header) == 0)) {
+                                                                        ?>
                                                                                         <thead>
                                                                                                 <tr>
                                                                                                         <?= $datatable_header ?>
                                                                                                 </tr>
                                                                                         </thead>
-                                                                                        <?php
+                                                                                <?php
                                                                                 }
                                                                                 //}
                                                                                 if ($cl_tr == $class_td2) $cl_tr = $class_td1;
@@ -414,7 +401,7 @@ if (true) {
                                                                                 if (!$isAvail[$id]) $cl_tr = $class_td_off;
 
                                                                                 $lbl = addslashes($tuple["display_object"]);
-                                                                        ?>
+                                                                                ?>
                                                                                 <tr>
                                                                                         <?
                                                                                         foreach ($header as $nom_col => $tr_col) {
@@ -434,7 +421,7 @@ if (true) {
 
                                                                                         // die(var_export($actions_tpl_arr,true));
                                                                                         if ($ids_count < 3000) {
-                                                                                                
+
                                                                                                 foreach ($actions_tpl_arr as $action_item => $action_item_props) {
                                                                                                         if ($actions_tpl_matrix[$id][$action_item]) $action_item_props = $actions_tpl_matrix[$id][$action_item];
 
@@ -476,61 +463,44 @@ if (true) {
 
                                                                                                         $cant_do_action_log = "action $action_item not allowed ";
 
-                                                                                                        if (!$can) 
-                                                                                                        {                                                                                                                
-                                                                                                                $cant_do_action_log .= $cant_do_action_log_arr[$action_item]." ";
+                                                                                                        if (!$can) {
+                                                                                                                $cant_do_action_log .= $cant_do_action_log_arr[$action_item] . " ";
                                                                                                         }
 
-                                                                                                        if(($frameworkAction == "display") and AfwFrameworkHelper::displayInEditMode($cl)) $frameworkConsideredAction = "edit";
+                                                                                                        if (($frameworkAction == "display") and AfwFrameworkHelper::displayInEditMode($cl)) $frameworkConsideredAction = "edit";
                                                                                                         else $frameworkConsideredAction = $frameworkAction;
 
-                                                                                                        if ($can) 
-                                                                                                        {
-                                                                                                                
-                                                                                                                if ((!$maxRecordsUmsCheck) or ($umsCheckDisabledInRetrieveMode))
-                                                                                                                {
+                                                                                                        if ($can) {
+
+                                                                                                                if ((!$maxRecordsUmsCheck) or ($umsCheckDisabledInRetrieveMode)) {
                                                                                                                         $canOnMe = true;
-                                                                                                                } 
-                                                                                                                elseif ($objme and ($ids_count <= $maxRecordsUmsCheck)) 
-                                                                                                                {
-                                                                                                                        if (($frameworkConsideredAction == "edit") or ($frameworkConsideredAction == "update")) 
-                                                                                                                        {
+                                                                                                                } elseif ($objme and ($ids_count <= $maxRecordsUmsCheck)) {
+                                                                                                                        if (($frameworkConsideredAction == "edit") or ($frameworkConsideredAction == "update")) {
                                                                                                                                 //die("frameworkConsideredAction=$frameworkConsideredAction");
                                                                                                                                 list($canOnMe, $edit_not_allowed_reason) = $liste_obj[$id]->userCanEditMe($objme);
-                                                                                                                                if(!$canOnMe) 
-                                                                                                                                {
-                                                                                                                                        if(!$edit_not_allowed_reason) $edit_not_allowed_reason = "userCanEditMe has not returned reason";
-                                                                                                                                        $cant_do_action_log .= $edit_not_allowed_reason." ";
+                                                                                                                                if (!$canOnMe) {
+                                                                                                                                        if (!$edit_not_allowed_reason) $edit_not_allowed_reason = "userCanEditMe has not returned reason";
+                                                                                                                                        $cant_do_action_log .= $edit_not_allowed_reason . " ";
                                                                                                                                         // die("DBG-2 202504061900 - ".$liste_obj[$id]->getDisplay("ar")." canOnMe=$canOnMe, edit_not_allowed_reason=$edit_not_allowed_reason");
-                                                                                                                                }
-                                                                                                                                else
-                                                                                                                                {
+                                                                                                                                } else {
                                                                                                                                         // die("DBG-1 202504061900 - ".$liste_obj[$id]->getDisplay("ar")." canOnMe=$canOnMe, edit_not_allowed_reason=$edit_not_allowed_reason");
                                                                                                                                 }
-                                                                                                                        } 
-                                                                                                                        elseif (($frameworkConsideredAction == "delete")) 
-                                                                                                                        {
+                                                                                                                        } elseif (($frameworkConsideredAction == "delete")) {
                                                                                                                                 //die("frameworkConsideredAction=$frameworkConsideredAction");
                                                                                                                                 $canOnMe = ($liste_obj[$id]->userCanDeleteMe($objme, $notify = false) > 0);
-                                                                                                                                if(!$canOnMe) $cant_do_action_log .= "see userCanDeleteMe IMP ";
-                                                                                                                        } 
-                                                                                                                        else 
-                                                                                                                        {
+                                                                                                                                if (!$canOnMe) $cant_do_action_log .= "see userCanDeleteMe IMP ";
+                                                                                                                        } else {
                                                                                                                                 $canOnMe = AfwUmsPagHelper::userCanDoOperationOnObject($liste_obj[$id], $objme, $frameworkConsideredAction);
-                                                                                                                                if(!$canOnMe) $cant_do_action_log .= "see userCanDoOperationOnObject IMP ";
+                                                                                                                                if (!$canOnMe) $cant_do_action_log .= "see userCanDoOperationOnObject IMP ";
                                                                                                                         }
-                                                                                                                } 
-                                                                                                                else 
-                                                                                                                {
+                                                                                                                } else {
                                                                                                                         $canOnMe = null;
                                                                                                                         $cant_do_action_log .= "Too much records. count=$ids_count > $maxRecordsUmsCheck ";
                                                                                                                 }
-                                                                                                                
-
                                                                                                         }
                                                                                                         if ($can and (!$canOnMe)) {
                                                                                                                 if ($cant_do_action_log) $cant_do_action_log .= "\n<br>";
-                                                                                                                $cant_do_action_log .= $liste_obj[$id]->user_have_access_log." ";
+                                                                                                                $cant_do_action_log .= $liste_obj[$id]->user_have_access_log . " ";
                                                                                                                 //die("case can and ! canOnMe exists : ".$liste_obj[$id]. " log = $cant_do_action_log");
                                                                                                         }
                                                                                                         // $canOnMe = true;
@@ -561,7 +531,7 @@ if (true) {
                                                                                                                                         </td>
                                                                                                                                 <?
                                                                                                                                 } else {
-                                                                                                                                        if($link) $the_action_link = "main.php" . "?" . $link;
+                                                                                                                                        if ($link) $the_action_link = "main.php" . "?" . $link;
                                                                                                                                         else $the_action_link = "#";
                                                                                                                                 ?>
                                                                                                                                         <td class='action-link col-importance-<?= $importance ?> <?= $frameworkAction ?>'><a <?= $target_action ?> href="<?php echo $the_action_link; ?>">
@@ -573,10 +543,10 @@ if (true) {
                                                                                                                                 }
 
                                                                                                                                 // die("DBG-after ajax test\n"); 
-                                                                                                                        } else echo "<td  class='col-importance-$importance $frameworkAction no-image'>no_image_for_mode_$frameworkAction action_item_props=".var_export($action_item_props,true)."</td>";
+                                                                                                                        } else echo "<td  class='col-importance-$importance $frameworkAction no-image'>no_image_for_mode_$frameworkAction action_item_props=" . var_export($action_item_props, true) . "</td>";
                                                                                                                         // die("DBG-accept_HimSelf true finished\n"); 
                                                                                                                 } else {
-                                                                                                                        $rejectHimSelfReason = AfwStringHelper::stripCotes(AfwFrameworkHelper::rejectHimSelfReason($liste_obj[$id],$frameworkAction));
+                                                                                                                        $rejectHimSelfReason = AfwStringHelper::stripCotes(AfwFrameworkHelper::rejectHimSelfReason($liste_obj[$id], $frameworkAction));
                                                                                                                         $tooltip_text = "locked him self on $frameworkAction, the reason is : $rejectHimSelfReason";
                                                                                                                         if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) {
                                                                                                                                 // die("DBG-accept_HimSelf false => $tooltip_text\n");  
@@ -591,14 +561,14 @@ if (true) {
                                                                                                                 }
                                                                                                         } elseif ($can and (!$canOnMe)) {
                                                                                                                 if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='عندما تكون نتائج البحث كثيرة يتم ايقاف التعديلات على جزء من السجلات. قم باختيار معايير اكثر دقة للبحث' data-original-title='$action_item -> $cant_do_action_log - Tooltip on bottom 2' class='red-tooltip'";
-                                                                                                                if($canOnMe===null) {
-                                                                                                                        $canCss = 'off';                                                                                                                        
+                                                                                                                if ($canOnMe === null) {
+                                                                                                                        $canCss = 'off';
                                                                                                                 } else {
-                                                                                                                        $canCss = 'locked_on_me';                                                                                                                        
+                                                                                                                        $canCss = 'locked_on_me';
                                                                                                                 }
                                                                                                                 $canImage = $images[$canCss];
                                                                                                                 ?>
-                                                                                                                <td class='col-importance-<?php echo $importance." " .$canCss ?>'><img src="<?= $canImage ?>" width="24" heigth="24" <?= $tooltip ?>></td>
+                                                                                                                <td class='col-importance-<?php echo $importance . " " . $canCss ?>'><img src="<?= $canImage ?>" width="24" heigth="24" <?= $tooltip ?>></td>
                                                                                                         <?
                                                                                                         } else { // means can't ($can is false)
                                                                                                                 if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='لا يمكنك التعديل على هذا السجل راجع المشرف للتأكد من الصلاحيات وسياسة التعديل' data-original-title='You have not authorization to do $frameworkAction on this entity : [$action_item -> $cant_do_action_log] - Tooltip on bottom 3' class='red-tooltip'";
@@ -626,12 +596,12 @@ if (true) {
                         </td>
                 </tr>
         </table>
-        
+
 <?php
 }
 if ($genere_xls) {
 
-        $link = AfwExcel::genereExcel($header_excel, $data_excel,$xls_page_title = 'نتائج البحث', "search-result-".date("YmdHis"));
+        $link = AfwExcel::genereExcel($header_excel, $data_excel, $xls_page_title = 'نتائج البحث', "search-result-" . date("YmdHis"));
         echo $link;
 }
 
