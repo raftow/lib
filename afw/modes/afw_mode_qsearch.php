@@ -51,6 +51,7 @@ if ($session_previous_search and ($cl == "WorkflowRequest")) {
 }
 
 
+
 if (($session_previous_search) and (!$datatable_on)) {
         foreach ($session_previous_search as $criteria_arr) {
                 $nom_col = $criteria_arr["col"];
