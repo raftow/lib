@@ -45,11 +45,11 @@ if (!$action_params) $action_params = "";
 if ($fixed_criterea_arr) $session_previous_search = $fixed_criterea_arr;
 else $session_previous_search = AfwSession::getSessionVar("search-$cl");
 
-
+/*
 if ($session_previous_search and ($cl == "WorkflowRequest")) {
         die("DBG-session_previous_search=" . var_export($session_previous_search, true));
 }
-
+*/
 
 
 if (($session_previous_search) and (!$datatable_on)) {
@@ -62,6 +62,10 @@ if (($session_previous_search) and (!$datatable_on)) {
         }
 
         $datatable_on = 1;
+}
+
+if ($_POST and ($cl == "WorkflowRequest")) {
+        die("DBG-_POST=" . var_export($_POST, true));
 }
 
 if (!$currmod) {
