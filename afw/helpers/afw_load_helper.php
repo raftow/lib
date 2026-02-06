@@ -121,7 +121,7 @@ class AfwLoadHelper extends AFWRoot
 
 
 
-    public static function getAnswerTable(&$object, $attribute, $lang, $throwException = false, $where='')
+    public static function getAnswerTable(&$object, $attribute, $lang, $throwException = false, $where = '')
     {
         $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         $nom_table_fk   = $desc["ANSWER"];
@@ -140,20 +140,20 @@ class AfwLoadHelper extends AFWRoot
         $objRep  = new $nom_class_fk;
         if ($desc["WHERE"]) {
             $desc["WHERE"] = $object->decodeText($desc["WHERE"]);
-            $objRep->where($desc["WHERE"]);
+            $objRep->where($desc["WHERE"] . " -- by momken framework from strcuture of $attribute attribute \n");
         }
-        
-        if ($where)  {
-            $objRep->where($where);
+
+        if ($where) {
             $where = $object->decodeText($where);
+            $objRep->where($where . " -- added by programmer not momken \n");
         }
 
         return $objRep->loadMany('', $desc['ORDERBY'], $optim = true);
     }
 
-    
+
     public static function getAnswerTableJsonArrayWithDetails(&$object, $attribute, $lang, $throwException = false)
-    {    
+    {
         $dataObjectArr = self::getAnswerTable($object, $attribute, $lang, $throwException);
         $jsonArray = [];
         if (count($dataObjectArr) > 0) {
