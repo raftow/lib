@@ -298,9 +298,14 @@ if (true) {
                                                                 foreach ($header as $nom_col => $tr_col) {
                                                                         // if(!is_array($desc)) throw new AfwRun timeException("desc is not an array : ".var_export($desc,true));
                                                                         $nom_col_short = "$nom_col.short";
-                                                                        $trad_col_short  = $obj->translate($nom_col_short, $lang);
-                                                                        if ($trad_col_short == $nom_col_short) $col_trad = $obj->translate($nom_col, $lang);
-                                                                        else $col_trad = $trad_col_short;
+                                                                        if (!$tr_col or ($nom_col == $tr_col) or ($nom_col_short == $tr_col)) {
+                                                                                $col_trad = $obj->getAttributeLabel($nom_col, $lang, true);
+                                                                                /*                                                                                
+                                                                                $trad_col_short  = $obj->translate($nom_col_short, $lang);
+                                                                                if ($trad_col_short == $nom_col_short) $col_trad = $obj->translate($nom_col, $lang);
+                                                                                else $col_trad = $trad_col_short;*/
+                                                                        } else $col_trad = $tr_col;
+
                                                                         $desc = $class_db_structure[$nom_col];
                                                                         $show_unit_in_header = AfwSession::config("show_unit_in_header", false);
                                                                         $show_unit_here_in_header = AfwSession::config("show_unit_in_header_for_" . $cl, $show_unit_in_header);

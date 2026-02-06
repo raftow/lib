@@ -1023,12 +1023,12 @@ class AfwUmsPagHelper extends AFWRoot
         $cols_retrieve = [];
 
         foreach ($cols as $nom_col) {
-            $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang);
+            $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang, true);
         }
 
         foreach ($forced_cols as $nom_col) {
             if (!isset($cols_retrieve[$nom_col])) {
-                $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang);
+                $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang, true);
             }
         }
 
