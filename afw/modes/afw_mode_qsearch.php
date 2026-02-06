@@ -53,9 +53,9 @@ if ($session_previous_search and ($cl == "WorkflowRequest")) {
 
 
 if (($session_previous_search) and (!$datatable_on)) {
-        if ($session_previous_search and ($cl == "WorkflowRequest")) {
+        /*if ($session_previous_search and ($cl == "WorkflowRequest")) {
                 die("DBG-session_previous_search=" . var_export($session_previous_search, true));
-        }
+        }*/
         foreach ($session_previous_search as $criteria_arr) {
 
                 $nom_col = $criteria_arr["col"];
