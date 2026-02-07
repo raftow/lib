@@ -13,7 +13,7 @@ class AfwQsearchMotor
 
 	public static function type_input($col_name, $desc, $obj, $selected = false, $readonly = false, $required = false)
 	{
-		//global $lang, $class_inputSelect_multi_big, $class_inputInt, $class_inputText, $class_inputSelected;
+		//global $lang, , $class_inputInt, $class_inputText, $class_inputSelected;
 		$lang = AfwLanguageHelper::getGlobalLanguage();
 		// obsolete require_once(dirname(__FILE__).'/../modes/afw_rights.php');
 
@@ -30,12 +30,13 @@ class AfwQsearchMotor
 		$images = AfwThemeHelper::loadTheme();
 		$maxlength_input = 1000;
 		$class_inputSearch = "";
+		$class_inputSelect_multi_big = "";
 		$class_inputSmallSearch = "input_small_search";
 		if ($selected)
 			$inp_selected = $images["class_inputSelected"];
 		else  $inp_selected = "";
 
-		$class_select = $images["class_inputSelect"];
+		$class_select = ""; // $images["class_inputSelect"];
 
 		$col_placeholder = "";
 		if ($desc["PLACEHOLDER"]) $col_placeholder = $obj->translate($desc["PLACEHOLDER"], $lang);
