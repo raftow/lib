@@ -434,6 +434,14 @@ if ($formColumns) {
         $myClassInstance->formColumns = $formColumns;
 }
 
+if ($requiredColumns) {
+        $myClassInstance->requiredColumns = $requiredColumns;
+}
+
+if ($readOnlyColumns) {
+        $myClassInstance->readOnlyColumns = $readOnlyColumns;
+}
+
 AfwMainPage::addOutput(AfwShowHelper::showObject($myClassInstance, "HTML", "afw_template_default_qsearch.php"));
 
 

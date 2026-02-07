@@ -48,6 +48,18 @@ if ($obj->formColumns) {
         $formColumns = array_keys($class_db_structure);
 }
 
+if ($obj->readOnlyColumns) {
+        $readOnlyColumns = $obj->readOnlyColumns;
+} else {
+        $readOnlyColumns = [];
+}
+
+if ($obj->requiredColumns) {
+        $requiredColumns = $obj->requiredColumns;
+} else {
+        $requiredColumns = [];
+}
+
 foreach ($formColumns as $nom_col) {
         $desc = $class_db_structure[$nom_col];
         if (AfwPrevilegeHelper::isQSearchCol($obj, $nom_col, $desc)) {
