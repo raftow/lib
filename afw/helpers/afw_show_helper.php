@@ -3074,7 +3074,7 @@ class AfwShowHelper
             // Create a form and submit
             var form = document.createElement('form');
             form.method = 'POST';
-            form.action = 'index.php?Main_Page=afw_mode_pdf.php';
+            form.action = 'main.php?Main_Page=afw_mode_pdf.php';
             
             var input = document.createElement('input');
             input.type = 'hidden';
