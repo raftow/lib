@@ -1,7 +1,7 @@
 <?php
 $file_dir_name = dirname(__FILE__);
 
-require_once __DIR__ . '/../../pdf-generator/vendor/autoload.php';
+require_once __DIR__ . '/../../pdf-generator/autoload.php';
 
 if (!isset($_POST['table_html'])) {
     die('No table data received');
