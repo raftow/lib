@@ -54,13 +54,15 @@ class AfwQsearchMotor
 
 				if ($desc["SEARCH-BY-ONE"] and ($desc["TYPE"] == "ENUM")) {
 					//if($col_name) die("_POST[$col_name] = ".$_POST[$col_name]." liste_rep = ".var_export($fkObj,true));
-					self::select(
+					if ($readonly) {
+						$tuple_col = AfwShowMotor::prepareShowInfoForColumn($obj, $col_name, $desc, $lang);
+						echo $tuple_col["input"];
+					} else self::select(
 						$fkObj,
 						array($_POST[$col_name]),
 						array(
 							"class" => "form-control $lang_input $lang $class_inputSearch $class_select $inp_selected",
 							"name"  => $col_name,
-							"readonly" => $readonly,
 							"required" => $required
 						),
 						"asc",
