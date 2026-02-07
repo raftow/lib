@@ -262,7 +262,7 @@ if (!$result_page_title) {
         if ($action == "retrieve")
                 $result_page_title = $obj->translate('SEARCH_RESULT', $lang, true) . " " . $tr_;
         elseif ($action == "retrieve-simple")
-                $result_page_title = $obj->translate('SEARCH_RESULT', $lang, true);
+                $result_page_title = $obj->translate('SEARCH_RESULT_SIMPLE', $lang, true);
         elseif ($qsearchview == "exec")
                 $result_page_title = $obj->translate($obj->getTableName(), $lang) . " " . $obj->translate('who.received.action.' . $action, $lang);
         else

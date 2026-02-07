@@ -70,6 +70,8 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['NEW'] = 'إضافة سجل جديد';
         $trad['OPERATOR']['EDIT_FILE'] = 'تعديل البيانات';
         $trad['OPERATOR']['SEARCH_RESULT'] = 'نتائج الاستعلام في';
+        $trad['OPERATOR']['SEARCH_RESULT_SIMPLE'] = 'نتائج الاستعلام';
+
         $trad['OPERATOR']['LOADING_PROBLEM'] = 'Erreur lors du chargement du fichier';
         $trad['OPERATOR']['SUBMIT'] = 'انطلق';
         $trad['OPERATOR']['SUBMIT-SEARCH'] = 'بحث';
