@@ -4,7 +4,7 @@ class AfwShowMotor
     /**
      * @param AFWObject $obj
      */
-    public static function prepareShowInfoForColumn($obj, $nom_col, $desc, $lang, $obj_errors = [], $step_show_error = false, $i_can_see_attribute = false, $mode_field_read_only_log = "")
+    public static function prepareShowInfoForColumn($obj, $nom_col, $desc, $lang, $obj_errors = [], $step_show_error = false, $i_can_see_attribute = true, $mode_field_read_only_log = "")
     {
         $tuple = [];
         // if($nom_col=="response_templates") die("case mode_field_read_only nom_col = $nom_col");
@@ -84,7 +84,7 @@ class AfwShowMotor
             if ($obj_errors[$nom_col]) $tuple["error"] = $obj_errors[$nom_col];
             // if($nom_col=="response_templates") die("case i can see attribute : " . $tuple["input"]);
         } else {
-            if ($nom_col == "response_templates") die("case i can not see attribute");
+            $tuple["input"] .= "<!-- case i can not see attribute $nom_col in mode QSEARCH-->";
         }
         $tuple["input"] .= "</div>";
         // if this column is to show with accordion run the js of accordion
