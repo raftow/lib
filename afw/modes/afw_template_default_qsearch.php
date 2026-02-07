@@ -66,7 +66,9 @@ foreach ($formColumns as $nom_col) {
 
 
                         ob_start();
-                        AfwQsearchMotor::type_input($nom_col, $desc, $obj, $data[$nom_col]["filled_criteria"]);
+                        $readOnly = in_array($nom_col, $readOnlyColumns);
+                        $required = in_array($nom_col, $requiredColumns);
+                        AfwQsearchMotor::type_input($nom_col, $desc, $obj, $data[$nom_col]["filled_criteria"], $readOnly, $required);
                         $data[$nom_col]["input"] = ob_get_clean();
                         $oper_qsearch = $desc["QSEARCH_OPER"];
                         if (!$oper_qsearch) {

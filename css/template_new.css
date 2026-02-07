@@ -179,6 +179,10 @@ tr.off {
     border-top: 1px solid silver;
 }
 
+table.search_result_table tbody tr:hover {
+    background-color: rgb(187 226 255) !important;
+}
+
 tbody tr.odd {
     background-color: rgb(255, 255, 255) !important;
 }
