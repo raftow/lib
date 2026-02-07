@@ -182,6 +182,8 @@ if ($datatable_on) {
         $btns_display["excel"] = ($myClassInstance->excelExport and ($ids_count > 0) and $objme) ? 1 : 0;
         $btns_total += $btns_display["excel"];
 
+        $btns_display["pdf"] = ($myClassInstance->pdfExport and ($ids_count > 0) and $objme) ? 1 : 0;
+        $btns_total += $btns_display["pdf"];
 
         if (AfwSession::config('MODE_DEVELOPMENT', false)) {
                 $btns_display["migration"] = (($ids_count > 0) and $objme) ? 1 : 0;
@@ -274,6 +276,16 @@ if ($datatable_on) {
                 $out_scr_btns .= AfwShowHelper::showObject($myClassInstance, "HTML", "afw_hidden_search_criteria.php");
                 $out_scr_btns .= '<input type="submit" class="longbtn greenbtn submit-btn fright" name="submit_xls"  id="submit_xls" value="' . $xls_export . '" />';
                 $out_scr_btns .= '</form>';
+                $out_scr_btns .= '</div>';
+                $btn_num++;
+        }
+
+        if ($btns_display["pdf"]) {
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-' . $btns_total . '-btn-' . $btn_num . '" style="">';
+                $pdf_export = $myClassInstance->translate('PDF-EXPORT', $lang, true);
+                $out_scr_btns .= '<input type="button" class="longbtn orangebtn submit-btn fright" name="submit_pdf"  id="submit_pdf" value="' . $pdf_export . '" onclick="exportToPDF()" />';
+                $classe_pdf = strtolower($myClassInstance->getClass());
+                $out_scr_btns .= AfwShowHelper::showPdfButton('example', $classe_pdf, $page_title);
                 $out_scr_btns .= '</div>';
                 $btn_num++;
         }

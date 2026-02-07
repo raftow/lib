@@ -3063,4 +3063,43 @@ class AfwShowHelper
 
         return $data_to_display;
     }
+
+    public static function showPdfButton($idTable, $classe_pdf, $title)
+    {
+        return "<script>
+        function exportToPDF() {
+            // Get the table HTML
+            var tableHTML = document.getElementById('$idTable').outerHTML;
+            
+            // Create a form and submit
+            var form = document.createElement('form');
+            form.method = 'POST';
+            form.action = 'index.php?Main_Page=afw_mode_pdf.php';
+            
+            var input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'table_html';
+            input.value = tableHTML;
+            form.appendChild(input);
+            
+            var input2 = document.createElement('input');
+            
+            input2.type = 'hidden';
+            input2.name = 'title';
+            input2.value = '$title';
+            form.appendChild(input2);
+
+            var input3 = document.createElement('input');
+            
+            input3.type = 'hidden';
+            input3.name = 'classe_pdf';
+            input3.value = '$classe_pdf';
+            form.appendChild(input3);
+
+            
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>";
+    }
 }
