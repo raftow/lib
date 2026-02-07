@@ -1,11 +1,15 @@
 <?php
 class AfwShowMotor
 {
+    /**
+     * @param AFWObject $obj
+     */
     public static function prepareShowInfoForColumn($obj, $nom_col, $desc, $lang, $obj_errors = [], $step_show_error = false, $i_can_see_attribute = false, $mode_field_read_only_log = "")
     {
         $tuple = [];
         // if($nom_col=="response_templates") die("case mode_field_read_only nom_col = $nom_col");
         $obj->showAsDataTable = $desc['DATA_TABLE'];
+        $col_val = $obj->getVal($nom_col);
         $style_div_form_control = "";
 
         if ($desc['FORM_HEIGHT']) {
@@ -54,7 +58,7 @@ class AfwShowMotor
         $tuple["input"] = "<div id='$id_div_input' class='hzm_data hzm_data_$nom_col $col_val_class $ro_classes_form' style='$style_div_form_control'>";
         if (((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) and (!$desc['NO-INPUT'])) {
             // if($nom_col=="response_templates") die("case no-CATEGORY or FORCE-INPUT");
-            $col_val = $obj->getVal($nom_col);
+
             ob_start();
             AfwEditMotor::hidden_input($nom_col, $desc, $col_val, $obj);
             $tuple["input"] .= ob_get_clean();
@@ -72,7 +76,8 @@ class AfwShowMotor
                 else $tuple["input"] .= $obj->tm("hidden", $lang) . "<!-- hidden because desc[DISPLAY] == false -->";
             else {
                 // if($nom_col=="response_templates") $tuple["input"] .= "obj->showAttribute($nom_col) = ";
-                $tuple["input"] .= $obj->showAttribute($nom_col);
+                // $tuple["input"] .= $obj->showAttribute($nom_col, $desc, true, $lang);
+                $tuple["input"] .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
             }
 
             if ($obj_errors[$nom_col]) $tuple["error"] = $obj_errors[$nom_col];
