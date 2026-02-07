@@ -29,7 +29,7 @@ $class_db_structure = $obj->getMyDbStructure();
 
 foreach ($class_db_structure as $nom_col => $desc) {
         list($is_category_field, $is_settable_attribute) = AfwStructureHelper::isSettable($obj, $nom_col, $desc);
-        if ($nom_col == "workflow_stage_id") die("rafik dbg 7/2/26 of workflow_stage_id : class_db_structure[$nom_col] = " . var_export($desc, true) . " is_settable_attribute = $is_settable_attribute, _POST=" . var_export($_POST, true));
+        // if ($nom_col == "workflow_stage_id") die("rafik dbg 7/2/26 of workflow_stage_id : class_db_structure[$nom_col] = " . var_export($desc, true) . " is_settable_attribute = $is_settable_attribute, _POST=" . var_export($_POST, true));
         if (($_POST[$nom_col]) and ($_POST["oper_$nom_col"] == "=") and $is_settable_attribute) {
                 $obj->set($nom_col, $_POST[$nom_col]);
         }

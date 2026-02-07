@@ -69,7 +69,7 @@ class AfwShowMotor
             $tuple["trad"]  = $obj->getAttributeLabel($nom_col, $lang);  // . " :"
             if ($desc["EDIT-HIDE-VALUE"] or (isset($desc["DISPLAY"]) and (!$desc["DISPLAY"])))
                 if ($desc["EDIT-HIDE-VALUE"]) $tuple["input"] .=  $desc["EDIT-HIDE-VALUE"];
-                else $tuple["input"] .= $obj->tm("hidden") . "<!-- hidden because desc[DISPLAY] == false -->";
+                else $tuple["input"] .= $obj->tm("hidden", $lang) . "<!-- hidden because desc[DISPLAY] == false -->";
             else {
                 // if($nom_col=="response_templates") $tuple["input"] .= "obj->showAttribute($nom_col) = ";
                 $tuple["input"] .= $obj->showAttribute($nom_col);
