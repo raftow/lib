@@ -71,13 +71,14 @@ class AfwShowMotor
         }
         if ($i_can_see_attribute) {
             $tuple["trad"]  = $obj->getAttributeLabel($nom_col, $lang);  // . " :"
-            if ($desc["EDIT-HIDE-VALUE"] or (isset($desc["DISPLAY"]) and (!$desc["DISPLAY"])))
+            if ($desc["EDIT-HIDE-VALUE"] or (isset($desc["DISPLAY"]) and (!$desc["DISPLAY"]))) {
                 if ($desc["EDIT-HIDE-VALUE"]) $tuple["input"] .=  $desc["EDIT-HIDE-VALUE"];
                 else $tuple["input"] .= $obj->tm("hidden", $lang) . "<!-- hidden because desc[DISPLAY] == false -->";
-            else {
-                // if($nom_col=="response_templates") $tuple["input"] .= "obj->showAttribute($nom_col) = ";
-                // $tuple["input"] .= $obj->showAttribute($nom_col, $desc, true, $lang);
                 $tuple["input"] .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
+            } else {
+                // if($nom_col=="response_templates") $tuple["input"] .= "obj->showAttribute($nom_col) = ";
+                $tuple["input"] .= $obj->showAttribute($nom_col, $desc, true, $lang);
+                // $tuple["input"] .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
             }
 
             if ($obj_errors[$nom_col]) $tuple["error"] = $obj_errors[$nom_col];
