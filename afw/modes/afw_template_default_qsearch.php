@@ -70,6 +70,8 @@ foreach ($formColumns as $nom_col) {
                         $data[$nom_col]["filled_criteria"] = ($filled_val);
 
                         $data[$nom_col]["trad"]  = $obj->translate($nom_col, $lang);
+                        $data[$nom_col]["required"] = $desc['REQUIRED'];
+                        $data[$nom_col]["mandatory"] = $desc['MANDATORY'];
 
                         $data[$nom_col]["qsize"] = $desc["QSIZE"];
                         if (!$data[$nom_col]["qsize"]) $data[$nom_col]["qsize"] = 3;
@@ -150,10 +152,19 @@ if (true) {
                                         $tr_obj = $class_tr2;
                         }
 
+                        $class_label0 = "hzm_label hzm_label_$col";
+                        if ($info['required']) {
+                                $class_label = "class='$class_label0 label_required'";
+                        } elseif ($info['mandatory']) {
+                                $class_label = "class='$class_label0 label_mandatory'";
+                        } else {
+                                $class_label = "class='$class_label0'";
+                        }
+
         ?>
                         <div class="col-md-<?= $qsize . " col-filter-" . $col ?>">
                                 <div class="form-group">
-                                        <label><?php echo $info["trad"]; ?>
+                                        <label <?php echo $class_label; ?>><?php echo $info["trad"]; ?>
                                         </label>
                                         <?php echo $info["input"] . $info["oper"]; ?>
                                 </div>
