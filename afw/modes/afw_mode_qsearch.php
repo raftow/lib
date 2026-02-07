@@ -472,7 +472,7 @@ if ($action == "retrieve") {
         } else {
                 AfwMainPage::addOutput("<input type='hidden' id='qsearchview' name='qsearchview' value='all' />");
         }
-} else {
+} elseif ($action != "retrieve-simple") {
         if ($action_params) $actionParamsArr = explode(",", $action_params);
         else $actionParamsArr = array();
         $actionParamsTranslator = implode(".", $actionParamsArr);
