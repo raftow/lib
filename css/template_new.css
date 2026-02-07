@@ -374,6 +374,15 @@ a.btn.btn-primary {
     height: 150px;
 }
 
+input.longbtn.orangebtn {
+    background-color: #f0a663 !important;
+    color: white;
+}
+
+input.longbtn.orangebtn:hover {
+    background-color: #c37226 !important;
+}
+
 input.longbtn.greenbtn {
     background-color: #e1ffe1 !important;
 }
