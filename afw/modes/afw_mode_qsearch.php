@@ -105,7 +105,6 @@ if ($objme) {
 }
 
 $actions_tpl_arr = AfwUmsPagHelper::getAllActions($myClassInstance, 0, false);
-
 // throw new AfwRun timeException("debugg :: actions_tpl_arr of $cl = ".var_export($actions_tpl_arr,true));
 if ($resetcrit) {
         $_POST = array();
@@ -587,7 +586,7 @@ if (false and $objme and $objme->isAdmin()) {
         AfwMainPage::addOutput('<td>&nbsp;</td>');
 }
 AfwMainPage::addOutput('<td width="15px">&nbsp;</td>');
-if ($datatable_on) {
+if ($datatable_on and ($action == "retrieve")) {
         AfwMainPage::addOutput('   <td>');
         AfwMainPage::addOutput("<a href=\"main.php?Main_Page=afw_mode_qsearch.php&cl=$cl&currmod=$currmod&resetcrit=1\"><div id='reset-form' type='submit' name='submit-reset-form' class='yellbtn smallbtn fright'>" . $myClassInstance->translate('RESET-CRITEREA', $lang, true) . "</div></a>");
         AfwMainPage::addOutput('   </td>');
