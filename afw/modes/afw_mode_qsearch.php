@@ -284,7 +284,7 @@ if ($datatable_on) {
                 $out_scr_btns .= '<div class="btn-qsearch btn-centered-' . $btns_total . '-btn-' . $btn_num . '" style="">';
                 $pdf_export = $myClassInstance->translate('PDF-EXPORT', $lang, true);
                 $out_scr_btns .= '<input type="button" class="longbtn orangebtn submit-btn fright" name="submit_pdf"  id="submit_pdf" value="' . $pdf_export . '" onclick="exportToPDF()" />';
-                $classe_pdf = strtolower($myClassInstance->getClass());
+                $classe_pdf = strtolower(get_class($myClassInstance));
                 $out_scr_btns .= AfwShowHelper::showPdfButton('example', $classe_pdf, $page_title);
                 $out_scr_btns .= '</div>';
                 $btn_num++;
