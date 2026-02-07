@@ -161,13 +161,15 @@ class AfwQsearchMotor
 					}
 
 					if ($desc["SEARCH-BY-ONE"] and ($desc["TYPE"] == "FK")) {
-						self::select(
+						if ($readonly) {
+							$tuple_col = AfwShowMotor::prepareShowInfoForColumn($obj, $col_name, $desc, $lang);
+							echo $tuple_col["input"];
+						} else self::select(
 							$l_rep,
 							isset($_POST[$col_name]) ? array($_POST[$col_name]) : $searchDefaultValue,
 							array(
 								"class" => "form-control $lang_input $lang $class_inputSearch $class_select $inp_selected",
 								"name"  => $col_name,
-								"readonly" => $readonly,
 								"required" => $required,
 								"reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name, '', '', true),
 								"onchange" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
