@@ -184,7 +184,7 @@ if ($datatable_on) {
         $btns_display["pdf"] = ($myClassInstance->pdfExport and ($ids_count > 0) and $objme) ? 1 : 0;
         $btns_total += $btns_display["pdf"];
 
-        if (AfwSession::config('MODE_DEVELOPMENT', false)) {
+        if (AfwSession::config('MODE_DEVELOPMENT', false) and $myClassInstance->migrationExport) {
                 $btns_display["migration"] = (($ids_count > 0) and $objme) ? 1 : 0;
                 $btns_total += $btns_display["migration"];
         }
