@@ -140,8 +140,35 @@ class AfwPrevilegeHelper
     }
 
 
+
     /**
-     * retrieve
+     * getExcelCols
+     * return array of columns for excel export
+     * @param array $array
+     */
+
+     public static final function getExcelCols($object, $lang = 'ar') {
+
+        $objme = AfwSession::getUserConnected();
+        $all_nom_cols = $object->getAllAttributes();
+
+        $cols_excel = [];
+
+        foreach ($all_nom_cols as $nom_col) {
+            $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
+
+            if (AfwPrevilegeHelper::keyIsToDisplayForUser($object, $nom_col, $objme)) {
+                if ($desc['EXCEL'] or (!isset($desc['EXCEL']) && $desc['RETRIEVE']))
+                        $cols_excel[$nom_col] = $object->translate($nom_col, $lang);
+            }
+        }
+
+        return $cols_excel;
+
+     }
+
+    /**
+     * getRetrieveCols
      * for display mode get retrieve columns
      * @param array $array
      */

@@ -62,7 +62,7 @@ if (count($header_retrieve) == 0) {
 // if($mode_ret == "props") die("$tentative tentative for header in mode $mode_ret-retrieve = ".var_export($header_retrieve,true));
 
 if ($genere_xls) {
-        $header_excel = AfwUmsPagHelper::getExportExcelHeader($obj, $lang);
+        $header_excel = AfwUmsPagHelper::getExportExcelHeader($obj, $lang, $forced_retrieve_cols, $hide_retrieve_cols);
 }
 
 
@@ -409,7 +409,7 @@ if (true) {
 
                                                                                 $lbl = addslashes($tuple["display_object"]);
                                                                                 ?>
-                                                                                <tr>
+                                                                                <tr class='data-row'>
                                                                                         <?
                                                                                         foreach ($header as $nom_col => $tr_col) {
                                                                                                 $desc = $class_db_structure[$nom_col];

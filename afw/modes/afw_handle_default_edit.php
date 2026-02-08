@@ -329,6 +329,13 @@ if ($_POST["pbmon"]) {
     }
 }
 
+// Rafik 8/2/2026 *** IMPORTANT *****
+// DO NOT REMOVE BELOW BECAUSE WE WILL REDIRECT TO MODE QSEARCH or one of its sub-modes or sub-screens 
+// if we keep $_POST without reset we will consider some posted `sets` in edit mode as if thery are posted `selects` in search mode
+// VVVVVVVVV  !!! KEEP BELOW
+$_POST = [];
+// ^^^^^^^^^  !!! KEEP ABOVE
+
 
 // the global after save action override the local one.
 if ($global_after_save_edit[$class]) {
@@ -347,7 +354,6 @@ if ($save_update and ($obj->after_save_edit or $obj->after_save_edit_cases)) {
 
 
     if ($cl) {
-        $_POST = [];
         if (($mode == "display") or ($mode == "edit")) {
             if ((!$obj->after_save_edit["attribute"]) and (!$obj->after_save_edit["formulaAttribute"])) AfwRunHelper::simpleError("bad configration for after_save_edit option : " . var_export($obj->after_save_edit, true));
             if ($obj->after_save_edit["formulaAttribute"]) $id = $obj->calc($obj->after_save_edit["formulaAttribute"]);

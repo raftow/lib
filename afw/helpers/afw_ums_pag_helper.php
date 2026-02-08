@@ -1039,41 +1039,27 @@ class AfwUmsPagHelper extends AFWRoot
         return $cols_retrieve;
     }
 
-    public static final function getExportExcelHeader($object, $lang = 'ar')
+    public static final function getExportExcelHeader($object, $lang = 'ar',
+        $forced_cols = [],
+        $hide_cols = [])
     {
-        $objme = AfwSession::getUserConnected();
-        $all_nom_cols = $object->getAllAttributes();
+        $cols = AfwPrevilegeHelper::getExcelCols($object, $lang);
 
         $cols_excel = [];
 
-        foreach ($all_nom_cols as $nom_col) {
-            $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
+        foreach ($cols as $nom_col) {
+            $cols_excel[$nom_col] = $object->getAttributeLabel($nom_col, $lang, true);
+        }
 
-            if (AfwPrevilegeHelper::keyIsToDisplayForUser($object, $nom_col, $objme)) {
-                if (
-                    $desc['TYPE'] == 'PK' and
-                    (!isset($desc['EXCEL']) or $desc['EXCEL'])
-                ) {
-                    $cols_excel[$nom_col] = $object->translate($nom_col, $lang);
-                } else {
-                    if (
-                        isset($desc['EXCEL']) && $desc['EXCEL'] or
-                        !isset($desc['EXCEL']) &&
-                        isset($desc['RETRIEVE']) &&
-                        $desc['RETRIEVE']
-                    ) {
-                        $cols_excel[$nom_col] = $object->translate(
-                            $nom_col,
-                            $lang
-                        );
-                    }
-                }
-            } else {
-                $nonexcel_cols[] = $nom_col;
+        foreach ($forced_cols as $nom_col) {
+            if (!isset($cols_excel[$nom_col])) {
+                $cols_excel[$nom_col] = $object->getAttributeLabel($nom_col, $lang, true);
             }
         }
 
-        // $object->simpleError(var_export($nonexcel_cols,true)."<br>".var_export($cols_excel,true));
+        foreach ($hide_cols as $nom_col) {
+            unset($cols_excel[$nom_col]);
+        }
 
         return $cols_excel;
     }
