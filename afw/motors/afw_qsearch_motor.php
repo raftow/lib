@@ -160,6 +160,7 @@ class AfwQsearchMotor
 							array(
 								"class" => "form-control $lang_input $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
 								"name"  => $col_name . "[]",
+								"id"  => $col_name,
 								"size"  => 5,
 								"multi" => true,
 								"reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name, '', '', true),
