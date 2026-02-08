@@ -222,6 +222,7 @@ if ($datatable_on) {
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_edit.php"/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="' . $cl . '"/>';
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="' . $currmod . '"/>';
+                $out_scr_btns .= '<input type="hidden" name="action" value="' . $action . '"/>';
                 $out_scr_btns .= '<input type="submit" class="longbtn bluebtn submit-btn fright" name="submit"  id="submit-form-new-instance" value="' . $new_instance . " " . $single_obj_name . '" />
                                   <input type="hidden" size="3" name="newo" value="' . $newo . '"/>';
                 foreach ($other_hidden_arr as $hiddenCol => $hiddenVal) {
