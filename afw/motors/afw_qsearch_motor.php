@@ -98,34 +98,7 @@ class AfwQsearchMotor
 
 
 				$ans_tab_where = $obj->getSearchWhereOfAttribute($col_name);
-
-				/*
-									if(!isset($desc["WHERE-SEARCH"])) $ans_tab_where = $desc["WHERE"];
-									else $ans_tab_where = $desc["WHERE-SEARCH"];*/
-
-				$file_dir_name = dirname(__FILE__);
-				/*
-									if($nom_module_fk)
-									{
-										$full_file_path = $file_dir_name."/../$nom_module_fk/".$nom_fichier_fk;
-										
-									}
-									else
-									{
-										$full_file_path = $file_dir_name."/".$nom_fichier_fk;
-									}
-									
-									if(!file_exists($full_file_path))
-									{
-										$obj->_error("Impossible de charger $full_file_path in type _input($col_name) for $obj");
-									}
-									
-									require_once $full_file_path;*/
-
-
 				$fkObj      = new $nom_class_fk();
-
-
 				$list_distinct_txt = "";
 				$list_distinct_sql_in = "";
 				$caluse_where = "";
@@ -196,74 +169,7 @@ class AfwQsearchMotor
 						);
 					}
 				} else {
-					if ($desc["SEARCH-BY-ONE"] and ($desc["TYPE"] == "FK")) {
-						$nom_table_fk   = $desc["ANSWER"];
-						$nom_module_fk  = $desc["ANSMODULE"];
-						if (!$nom_module_fk) {
-							$nom_module_fk = AfwUrlManager::currentWebModule();
-						}
-						$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
-
-						$col_name_atc = $col_name . "_atc";
-						$atc_input_normal = "";
-
-						$val = $_POST[$col_name];
-						if ($val) {
-							$fkObj->load($val);
-							$val_display = $fkObj->getDisplay();
-						} else $val_display = "";
-						//$clwhere = $desc["WHERE"];
-						$attp = $col_name;
-						$clp = $obj->getMyClass();
-						$idp = $obj->getId();
-						$modp = $obj->getMyModule();
-
-						//$clwhere = $ans_tab_where;
-
-		?>
-						<table style='width: 100%;' cellspacing='0' cellpadding='0'>
-							<tr style="background-color: rgba(255, 255, 255, 0);">
-								<td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?= $col_name ?>" name="<?= $col_name ?>" class="form-control <?= $lang ?> inputtrescourt cl_id" value="<?= $val ?>" readonly></td>
-								<td style="padding:0px;margin:0px;"><input type="text" id="<?= $col_name_atc ?>" name="<?= $col_name_atc ?>" class="form-control <?= $lang ?> <?= $atc_input_normal . " " . $class_inputSearch ?>" value="<?= $val_display ?>"></td>
-							</tr>
-						</table>
-						<script>
-							$(function() {
-
-								$("#<?= $col_name_atc ?>").autocomplete({
-									source: "../lib/api/autocomplete.php?cl=<?= $nom_class_fk ?>&currmod=<?= $nom_module_fk ?>&clp=<?= $clp ?>&idp=<?= $idp ?>&modp=<?= $modp ?>&attp=<?= $attp ?>",
-									minLength: 0,
-
-									change: function(event, ui) {
-										if ($("#<?= $col_name_atc ?>").val() == "") {
-											$("#<?= $col_name ?>").val("");
-										}
-									},
-
-
-									select: function(event, ui) {
-										//alert(ui.item.id);
-										$("#<?= $col_name ?>").val(ui.item.id);
-										$("#<?= $col_name ?>").attr('class', 'form-control inputtrescourt cl_id');
-										$("#<?= $col_name_atc ?>").attr('class', 'form-control <?= $atc_input_normal ?>');
-									},
-
-									html: true, // optional (jquery.ui.autocomplete.html.js required)
-
-									// optional (if other layers overlap autocomplete list)
-									open: function(event, ui) {
-										$(".ui-autocomplete").css("z-index", 1000);
-									}
-								});
-
-							});
-						</script>
-					<?
-					} else {
-					?>
-						<input type="text" class="form-control <?= $lang ?> <?= trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
-				<?
-					}
+					self::autocomplete_fk($col_name, $desc, $obj, $lang, $class_inputInt, $class_inputSearch, $inp_selected);
 				}
 				break;
 
@@ -288,7 +194,7 @@ class AfwQsearchMotor
 			case 'INT':
 			case 'AMNT':
 
-				?> <input type="text" class="form-control <?= $lang ?> <?= trim(" inputfull $class_inputSearch ") ?>" placeholder="<?php echo $col_placeholder ?>" name="<?php echo $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
+		?> <input type="text" class="form-control <?= $lang ?> <?= trim(" inputfull $class_inputSearch ") ?>" placeholder="<?php echo $col_placeholder ?>" name="<?php echo $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
 			<?php echo $desc["UNIT"];
 				//echo $desc["TITLE_AFTER"];
 				break;
@@ -687,7 +593,7 @@ class AfwQsearchMotor
 		<?
 		}
 		?>
-<?php
+		<?php
 	}
 
 	public static function subval_sort($table_a_trie, $table_ref, $ord = "desc")
@@ -702,5 +608,79 @@ class AfwQsearchMotor
 		foreach ($table_ref as $key => $val)
 			$res[$key] = $table_a_trie[$key];
 		return $res;
+	}
+
+
+	public static function autocomplete_fk($col_name, $desc, $obj, $lang, $class_inputInt, $class_inputSearch, $inp_selected)
+	{
+		if ($desc["SEARCH-BY-ONE"] and ($desc["TYPE"] == "FK")) {
+			$nom_table_fk   = $desc["ANSWER"];
+			$nom_module_fk  = $desc["ANSMODULE"];
+			if (!$nom_module_fk) {
+				$nom_module_fk = AfwUrlManager::currentWebModule();
+			}
+			$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
+
+			$col_name_atc = $col_name . "_atc";
+			$atc_input_normal = "";
+
+			$val = $_POST[$col_name];
+			if ($val) {
+				$fkObj = new $nom_class_fk();
+				$fkObj->load($val);
+				$val_display = $fkObj->getDisplay();
+			} else $val_display = "";
+			//$clwhere = $desc["WHERE"];
+			$attp = $col_name;
+			$clp = $obj->getMyClass();
+			$idp = $obj->getId();
+			$modp = $obj->getMyModule();
+
+			//$clwhere = $ans_tab_where;
+
+		?>
+			<table style='width: 100%;' cellspacing='0' cellpadding='0'>
+				<tr style="background-color: rgba(255, 255, 255, 0);">
+					<td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?= $col_name ?>" name="<?= $col_name ?>" class="form-control <?= $lang ?> inputtrescourt cl_id" value="<?= $val ?>" readonly></td>
+					<td style="padding:0px;margin:0px;"><input type="text" id="<?= $col_name_atc ?>" name="<?= $col_name_atc ?>" class="form-control <?= $lang ?> <?= $atc_input_normal . " " . $class_inputSearch ?>" value="<?= $val_display ?>"></td>
+				</tr>
+			</table>
+			<script>
+				$(function() {
+
+					$("#<?= $col_name_atc ?>").autocomplete({
+						source: "../lib/api/autocomplete.php?cl=<?= $nom_class_fk ?>&currmod=<?= $nom_module_fk ?>&clp=<?= $clp ?>&idp=<?= $idp ?>&modp=<?= $modp ?>&attp=<?= $attp ?>",
+						minLength: 0,
+
+						change: function(event, ui) {
+							if ($("#<?= $col_name_atc ?>").val() == "") {
+								$("#<?= $col_name ?>").val("");
+							}
+						},
+
+
+						select: function(event, ui) {
+							//alert(ui.item.id);
+							$("#<?= $col_name ?>").val(ui.item.id);
+							$("#<?= $col_name ?>").attr('class', 'form-control inputtrescourt cl_id');
+							$("#<?= $col_name_atc ?>").attr('class', 'form-control <?= $atc_input_normal ?>');
+						},
+
+						html: true, // optional (jquery.ui.autocomplete.html.js required)
+
+						// optional (if other layers overlap autocomplete list)
+						open: function(event, ui) {
+							$(".ui-autocomplete").css("z-index", 1000);
+						}
+					});
+
+				});
+			</script>
+		<?php
+		} else {
+		?>
+			<input type="text" class="form-control <?= $lang ?> <?= trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
+<?php
+		}
 	}
 }
