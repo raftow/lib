@@ -587,7 +587,7 @@ class AfwLoadHelper extends AFWRoot
         return [$data, $isAvail];
     }*/
 
-    public static function getRetrieveDataFromObjectList($liste_obj, $header, $lang = 'ar', $newline = "\n<br>", $display_object_attrib = false)
+    public static function getRetrieveDataFromObjectList($liste_obj, $header, $lang = 'ar', $newline = "\n<br>", $display_object_attrib = false, $stripHtmlTags = false)
     {
 
         $descArr = [];
@@ -612,7 +612,9 @@ class AfwLoadHelper extends AFWRoot
                             list($icon, $textReason, $wd, $hg,) = $objItem->whyAttributeIsNotApplicable($col);
                             if (!$wd) $wd = 20;
                             if (!$hg) $hg = 20;
-                            $tuple[$col] = "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>";
+                            if ($stripHtmlTags) {
+                                $tuple[$col] = "N/A";
+                            } else $tuple[$col] = "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>";
                         } elseif (
                             $objItem->umsCheckDisabledInRetrieveMode() or
                             AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($objItem, $col, AfwSession::getUserConnected(), 'DISPLAY', $desc)
@@ -627,14 +629,22 @@ class AfwLoadHelper extends AFWRoot
                             } elseif ($qrm == "decode") $tuple[$col] = $objItem->decode($col);
                             else $tuple[$col] = $objItem->getVal($col);
 
+
+                            if ($stripHtmlTags) {
+                                if (AfwStringHelper::stringStartsWith($tuple[$col], "<img")) {
+                                    $tuple[$col] = "Image";
+                                } else $tuple[$col] = strip_tags($tuple[$col]);
+                            }
+
                             // if($col=="qsearch") die("$col showing with method $qrm = <br>".$tuple[$col]."<br> log : $qrm_log");
 
                             // $htr_e = hrtime()[1];
                             // $htr = $htr_e - $htr_s;
                             // if($htr > 5000000) die("htr of $col = $htr <br>\nend=$htr_e <br>\nstart=$htr_s");
                         } else {
-
-                            $tuple[$col] = "<img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$textReason'  width='20' heigth='20'>";
+                            if ($stripHtmlTags) {
+                                $tuple[$col] = "Locked";
+                            } else $tuple[$col] = "<img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$textReason'  width='20' heigth='20'>";
                         }
                     }
                 }
