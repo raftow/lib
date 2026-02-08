@@ -65,7 +65,7 @@ if (($session_previous_search) and (!$datatable_on)) {
                 ${"oper_" . $nom_col} = $criteria_arr["oper"];
         }
 
-        $datatable_on = 1;
+        if (!$datatable_off) $datatable_on = 1;
 }
 /*
 if ($_POST and ($cl == "WorkflowRequest")) {
