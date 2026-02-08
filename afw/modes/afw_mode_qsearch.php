@@ -283,7 +283,7 @@ if ($datatable_on) {
                         $out_scr_btns .= '</form>';
                 } else {
                         $xls_download = $myClassInstance->translate('EXCEL-DOWNLOAD', $lang, true);
-                        $out_scr_btns .= '<a target="_excel" href="' . $excel_link . '" class="longbtn greenbtn submit-btn fright"> ' . $xls_download . '</a>';
+                        $out_scr_btns .= '<a target="_excel" href="' . $excel_link . '" class="longbtn greenbtn excel submit-btn fright"> ' . $xls_download . '</a>';
                 }
 
                 $out_scr_btns .= '</div>';

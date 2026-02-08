@@ -178,7 +178,8 @@ tr.off {
     background-color: white;
     border-top: 1px solid silver;
 }
-table.search_result_table tbody tr.data-row:hover{
+
+table.search_result_table tbody tr.data-row:hover {
     background-color: rgb(187 226 255) !important;
 }
 
@@ -455,6 +456,20 @@ a.longbtn.yellowbtn:hover {
 .yellowbtn:active {
     background-color: rgb(245 147 20);
     color: rgb(255 255 255);
+}
+
+a.longbtn.greenbtn.excel {
+    background-image: url(../lib/images/xls.png);
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    color: white !important;
+    background-color: green !important;
+}
+
+a.longbtn.greenbtn.excel:hover {
+    font-weight: normal;
+    background-color: #33a333 !important;
 }
 
 .greenbtn {
