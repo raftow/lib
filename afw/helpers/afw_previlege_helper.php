@@ -2,7 +2,8 @@
 class AfwPrevilegeHelper
 {
     // هنا نتكلم  عن البيانات في العمود بحسب السجل
-    public static final function dataAttributeCanBeDisplayedForUser($object,
+    public static final function dataAttributeCanBeDisplayedForUser(
+        $object,
         $attribute,
         $auser,
         $mode = 'DISPLAY',
@@ -81,21 +82,24 @@ class AfwPrevilegeHelper
             : false;
     }
 
-    public static final function getReasonAttributeNotRetrievableOrRetrievable($object,
+    public static final function getReasonAttributeNotRetrievableOrRetrievable(
+        $object,
         $attribute,
         $mode = 'display',
         $lang = 'ar',
         $all = false,
         $desc = null
     ) {
-        $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = AfwPrevilegeHelper::keyIsToDisplayForUser($object,
+        $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = AfwPrevilegeHelper::keyIsToDisplayForUser(
+            $object,
             $attribute,
             null
         );
 
         if (!$attributeIsToDisplayForMe) {
             $objme = AfwSession::getUserConnected();
-            $attributeIsToDisplayForMe = AfwPrevilegeHelper::keyIsToDisplayForUser($object,
+            $attributeIsToDisplayForMe = AfwPrevilegeHelper::keyIsToDisplayForUser(
+                $object,
                 $attribute,
                 $objme
             );
@@ -121,7 +125,8 @@ class AfwPrevilegeHelper
             (isset($desc['RETRIEVE']) and $desc['RETRIEVE'] or
                 isset($desc[$RETRIEVE_LANG]) and $desc[$RETRIEVE_LANG]);
 
-        $retForMode = self::isRetrieveColForMode($object,
+        $retForMode = self::isRetrieveColForMode(
+            $object,
             $attribute,
             $mode,
             $lang,
@@ -147,7 +152,8 @@ class AfwPrevilegeHelper
      * @param array $array
      */
 
-     public static final function getExcelCols($object, $lang = 'ar') {
+    public static final function getExcelCols($object, $lang = 'ar')
+    {
 
         $objme = AfwSession::getUserConnected();
         $all_nom_cols = $object->getAllAttributes();
@@ -159,13 +165,12 @@ class AfwPrevilegeHelper
 
             if (AfwPrevilegeHelper::keyIsToDisplayForUser($object, $nom_col, $objme)) {
                 if ($desc['EXCEL'] or (!isset($desc['EXCEL']) && $desc['RETRIEVE']))
-                        $cols_excel[$nom_col] = $object->translate($nom_col, $lang);
+                    $cols_excel[] = $nom_col;
             }
         }
 
         return $cols_excel;
-
-     }
+    }
 
     /**
      * getRetrieveCols
@@ -173,7 +178,8 @@ class AfwPrevilegeHelper
      * @param array $array
      */
 
-     public static final function getRetrieveCols($object,
+    public static final function getRetrieveCols(
+        $object,
         $mode = 'display',
         $lang = 'ar',
         $all = false,
@@ -196,8 +202,7 @@ class AfwPrevilegeHelper
         $db_struct_all = $object->getAllMyDbStructure();
 
         foreach ($db_struct_all as $attribute => $descAttr) {
-            if (AfwPrevilegeHelper::isRetrieveCol($object, $attribute, $mode, $lang, $all, $descAttr, $force_retrieve_cols)) 
-            {
+            if (AfwPrevilegeHelper::isRetrieveCol($object, $attribute, $mode, $lang, $all, $descAttr, $force_retrieve_cols)) {
                 if (
                     !$hide_retrieve_cols or
                     !is_array($hide_retrieve_cols) or
@@ -229,7 +234,7 @@ class AfwPrevilegeHelper
                     }
 
                     if ($take and $takeCateg) {
-                        if($descAttr["RETRIEVE_LAST"]) $tableau_final[] = $attribute;
+                        if ($descAttr["RETRIEVE_LAST"]) $tableau_final[] = $attribute;
                         else $tableau[] = $attribute;
                     }
                 }
@@ -255,13 +260,14 @@ class AfwPrevilegeHelper
     }
 
 
-    public static final function prepareAfwTokens($object,
+    public static final function prepareAfwTokens(
+        $object,
         $text_to_decode,
         $lang = 'ar',
         $trad_erase = [],
         $token_arr = [],
-        $toLower=false,
-        $fieldsTokenAlways=false,
+        $toLower = false,
+        $fieldsTokenAlways = false,
     ) {
 
         //throw new AfwRuntimeException("token_arr = ".var_export($token_arr,true)." text_to_decode=$text_to_decode");
@@ -349,13 +355,12 @@ class AfwPrevilegeHelper
                 $token_arr[$token_fcl] = $token_fcl_val;
             }
 
-            if($struct_item['TYPE'] == 'YN')
-            {
+            if ($struct_item['TYPE'] == 'YN') {
                 if (($fieldsTokenAlways or (strpos($text_to_decode, $token_is) !== false))) {
                     $object_token_is_arr = $object->token_is_arr;
                     $object_token_not_is_arr = $object->token_not_is_arr;
                     $object_token_null_is_arr = $object->token_null_is_arr;
-    
+
                     if (!$object_token_is_arr[$fieldname]) {
                         $object_token_is_arr[$fieldname] = 'YES';
                     }
@@ -365,7 +370,7 @@ class AfwPrevilegeHelper
                     if (!$object_token_null_is_arr[$fieldname]) {
                         $object_token_null_is_arr[$fieldname] = 'NOT YET';
                     }
-    
+
                     $field_val = $object->getVal($fieldname);
                     if ($field_val == 'Y') {
                         $token_is_val = $object->translateOperator(
@@ -383,15 +388,15 @@ class AfwPrevilegeHelper
                             $lang
                         );
                     }
-    
+
                     $token_arr[$token_is] = $token_is_val;
                 }
-    
+
                 if ($fieldsTokenAlways or (strpos($text_to_decode, $token_is_en) !== false)) {
                     $object_token_is_en_arr = $object->token_is_en_arr;
                     $object_token_not_is_en_arr = $object->token_not_is_en_arr;
                     $object_token_null_is_en_arr = $object->token_null_is_en_arr;
-    
+
                     if (!$object_token_is_en_arr[$fieldname]) {
                         $object_token_is_en_arr[$fieldname] = 'required'; // YES
                     }
@@ -401,7 +406,7 @@ class AfwPrevilegeHelper
                     if (!$object_token_null_is_en_arr[$fieldname]) {
                         $object_token_null_is_en_arr[$fieldname] = ''; // NOT-YET
                     }
-    
+
                     $field_val = $object->getVal($fieldname);
                     if ($field_val == 'Y') {
                         $token_is_en_val = $object_token_is_en_arr[$fieldname];
@@ -410,11 +415,11 @@ class AfwPrevilegeHelper
                     } else {
                         $token_is_en_val = $object_token_null_is_en_arr[$fieldname];
                     }
-    
+
                     $token_arr[$token_is_en] = $token_is_en_val;
                 }
             }
-            
+
 
             if ($fieldsTokenAlways or (strpos($text_to_decode, $token_data) !== false)) {
                 // if($fieldname=="prices_buttons") AfwRunHelper::safeDie("this->tokens = ".var_export($object->tokens,true));
@@ -430,7 +435,8 @@ class AfwPrevilegeHelper
                 $token_arr[$token_value] = $object->getVal($fieldname);
             }
 
-            if ($struct_item['CATEGORY'] == 'ITEMS' and
+            if (
+                $struct_item['CATEGORY'] == 'ITEMS' and
                 ($fieldsTokenAlways or strpos($text_to_decode, $token_data_no_icons) !== false)
             ) {
                 $struct_item['ICONS'] = false;
@@ -458,7 +464,8 @@ class AfwPrevilegeHelper
                 $token_arr[$token_label] = $trad_col;
             }
 
-            if ($struct_item['TYPE'] == 'DATE' and
+            if (
+                $struct_item['TYPE'] == 'DATE' and
                 ($fieldsTokenAlways or (strpos($text_to_decode, $token_full_date) !== false))
             ) {
                 $token_arr[$token_full_date] = $object->fullHijriDate($fieldname);
@@ -473,7 +480,8 @@ class AfwPrevilegeHelper
                 );
             }
 
-            if ($struct_item['TO_TRANSLATE'] and
+            if (
+                $struct_item['TO_TRANSLATE'] and
                 ($fieldsTokenAlways or (strpos($text_to_decode, $token_to_translate) !== false))
             ) {
                 $token_arr[$token_to_translate] = $object->translateValue(
@@ -481,21 +489,20 @@ class AfwPrevilegeHelper
                 );
             }
         }
-        if($toLower)
-        {
-            foreach($token_arr as $token => $token_value)
-            {
+        if ($toLower) {
+            foreach ($token_arr as $token => $token_value) {
                 unset($token_arr[$token]);
                 $token_arr[strtolower($token)] = $token_value;
             }
         }
-        
+
 
         return $token_arr;
     }
 
 
-    public static final function isRetrieveCol($object,
+    public static final function isRetrieveCol(
+        $object,
         $attribute,
         $mode = 'display',
         $lang = 'ar',
@@ -504,14 +511,16 @@ class AfwPrevilegeHelper
         $force_retrieve_cols = null
     ) {
 
-        $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = AfwPrevilegeHelper::keyIsToDisplayForUser($object,
+        $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = AfwPrevilegeHelper::keyIsToDisplayForUser(
+            $object,
             $attribute,
             null
         );
 
         if (!$attributeIsToDisplayForMe) {
             $objme = AfwSession::getUserConnected();
-            $attributeIsToDisplayForMe = AfwPrevilegeHelper::keyIsToDisplayForUser($object,
+            $attributeIsToDisplayForMe = AfwPrevilegeHelper::keyIsToDisplayForUser(
+                $object,
                 $attribute,
                 $objme
             );
@@ -529,7 +538,7 @@ class AfwPrevilegeHelper
             $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
         }
 
-        if(!$force_retrieve_cols) $force_retrieve_cols = $object->force_retrieve_cols;
+        if (!$force_retrieve_cols) $force_retrieve_cols = $object->force_retrieve_cols;
 
         $is_force_retrieve =
             ($force_retrieve_cols and
@@ -540,7 +549,8 @@ class AfwPrevilegeHelper
             (isset($desc['RETRIEVE']) and $desc['RETRIEVE'] or
                 isset($desc[$RETRIEVE_LANG]) and $desc[$RETRIEVE_LANG]);
 
-        $retForMode = self::isRetrieveColForMode($object,
+        $retForMode = self::isRetrieveColForMode(
+            $object,
             $attribute,
             $mode,
             $lang,
@@ -578,7 +588,8 @@ class AfwPrevilegeHelper
     // return Y : yes,
     //    N: no,
     //    W: undefined
-    public static final function isRetrieveColForMode($object, 
+    public static final function isRetrieveColForMode(
+        $object,
         $attribute,
         $mode,
         $lang = 'ar',
@@ -747,7 +758,7 @@ class AfwPrevilegeHelper
     public static final function isSFilterCol($object, $attribute, $desc = '')
     {
         // $objme = AfwSession::getUserConnected();
-        if(!$object->attributeIsApplicable($attribute)) return false;
+        if (!$object->attributeIsApplicable($attribute)) return false;
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
@@ -770,7 +781,7 @@ class AfwPrevilegeHelper
     public static final function isQSearchCol($object, $attribute, $desc = '')
     {
         // $objme = AfwSession::getUserConnected();
-        if(!$object->attributeIsApplicable($attribute)) return false;
+        if (!$object->attributeIsApplicable($attribute)) return false;
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
@@ -825,14 +836,16 @@ class AfwPrevilegeHelper
                 $desc['FIELD-FORMULA'] or
                 $desc['SHORTCUT'] and $desc['SHORTCUT-PART-JOIN']);
 
-        $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = AfwPrevilegeHelper::keyIsToDisplayForUser($object,
+        $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = AfwPrevilegeHelper::keyIsToDisplayForUser(
+            $object,
             $attribute,
             null
         );
 
         if (!$attributeIsToDisplayForMe) {
             if (!$objme) $objme = AfwSession::getUserConnected();
-            $attributeIsToDisplayForMe = AfwPrevilegeHelper::keyIsToDisplayForUser($object,
+            $attributeIsToDisplayForMe = AfwPrevilegeHelper::keyIsToDisplayForUser(
+                $object,
                 $attribute,
                 $objme
             );
@@ -890,15 +903,17 @@ class AfwPrevilegeHelper
      * @param AFWObject $object
      */
 
-    public static final function getMiniBoxCols($object, $only_applicable=true)
+    public static final function getMiniBoxCols($object, $only_applicable = true)
     {
         $tableau = [];
 
         $FIELDS_ALL = $object->getAllAttributes();
 
         foreach ($FIELDS_ALL as $attribute) {
-            if (AfwPrevilegeHelper::isMiniBoxCol($object, $attribute) and
-                ((!$only_applicable) or ($object->attributeIsApplicable($attribute)))) {
+            if (
+                AfwPrevilegeHelper::isMiniBoxCol($object, $attribute) and
+                ((!$only_applicable) or ($object->attributeIsApplicable($attribute)))
+            ) {
                 $tableau[] = $attribute;
             }
         }
@@ -906,5 +921,4 @@ class AfwPrevilegeHelper
         // if (self::$TABLE == "school") die(self::$TABLE . " => FIELDS_ALL = " . var_export($FIELDS_ALL, true));
         return $tableau;
     }
-    
 }
