@@ -272,7 +272,7 @@ if ($datatable_on) {
                 $out_scr_btns .= '<input type="hidden" name="cl" value="' . $cl . '"/>';
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="' . $currmod . '"/>';
                 $out_scr_btns .= '<input type="hidden" name="limite"    value="0"/>';
-                $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_qsearch.php"/>';
+                $out_scr_btns .= '<input type="hidden" name="Main_Page" value="' . $current_page . '"/>';
                 $out_scr_btns .= AfwShowHelper::showObject($myClassInstance, "HTML", "afw_hidden_search_criteria.php");
                 $out_scr_btns .= '<input type="submit" class="longbtn greenbtn submit-btn fright" name="submit_xls"  id="submit_xls" value="' . $xls_export . '" />';
                 $out_scr_btns .= '</form>';
