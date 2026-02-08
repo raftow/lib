@@ -186,6 +186,7 @@ $getActionsMatrix_time_t = round(($getActionsMatrix_time_end - $getActionsMatrix
 die("getActionsMatrix_time_t=$getActionsMatrix_time_t");
 */
 if ($genere_xls) {
+        die("header_excel =" . var_export($header_excel, true));
         AfwSession::log("Before execute getRetrieveDataFromObjectList for excel generation in afw_handle_default_search");
         list($data_excel, $isAvail_excel) = AfwLoadHelper::getRetrieveDataFromObjectList($liste_obj, $header_excel, $lang, $newline = "\n", false, true);
         AfwSession::log("After execute getRetrieveDataFromObjectList for excel generation in afw_handle_default_search");
