@@ -9,23 +9,22 @@ class AfwMysql
 {
     public static function get_error($link)
     {
-        if(self::php_is_old()) return null; // mysql_error($link);    
-        else return mysqli_error($link);    
+        if (self::php_is_old()) return null; // mysql_error($link);    
+        else return mysqli_error($link);
     }
 
     public static function insert_id($link)
     {
-        if(self::php_is_old()) return null; // mysql_insert_id($link);    
-        else return mysqli_insert_id($link);    
+        if (self::php_is_old()) return null; // mysql_insert_id($link);    
+        else return mysqli_insert_id($link);
     }
 
 
     public static function rows_count($mysqli_result)
     {
-        if(self::php_is_old()) return null;   
-        else 
-        {
-            if(is_bool($mysqli_result)) $row_count = 0;
+        if (self::php_is_old()) return null;
+        else {
+            if (is_bool($mysqli_result)) $row_count = 0;
             else $row_count = mysqli_num_rows($mysqli_result);
 
             return $row_count;
@@ -34,14 +33,14 @@ class AfwMysql
 
     public static function fetch_array($result)
     {
-        if(self::php_is_old()) return null; // mysql_fetch_array($result);
+        if (self::php_is_old()) return null; // mysql_fetch_array($result);
         else return mysqli_fetch_array($result);
     }
 
     public static function affected_rows($link)
     {
-        if(self::php_is_old()) return null; // mysql_affected_rows($link);    
-        else return mysqli_affected_rows($link);    
+        if (self::php_is_old()) return null; // mysql_affected_rows($link);    
+        else return mysqli_affected_rows($link);
     }
 
     public static function queryToCapture($sql)
@@ -60,63 +59,50 @@ class AfwMysql
         ) return false;
 
         return true;*/
-
     }
 
 
-    
 
-    public static function query($sql, $link, $is_update=false)
+
+    public static function query($sql, $link, $is_update = false)
     {
-        if(self::php_is_old()) return null; // mysql_query($sql, $link);    
-        else
-        {
-            if(self::queryToCapture($sql))
-            {
+        if (self::php_is_old()) return null; // mysql_query($sql, $link);    
+        else {
+            if (self::queryToCapture($sql)) {
                 throw new AfwRuntimeException("queryToCapture : $sql");
             }
-            try{
+            try {
                 $sql_html = strip_tags($sql);
-                if(strlen($sql_html)>1207)
-                {
-                    $sql_html = "[[".substr($sql_html, 0, 1200). "...]]";
+                if (strlen($sql_html) > 2807) {
+                    $sql_html = "[[" . substr($sql_html, 0, 2800) . "...]]";
                 }
                 $return = mysqli_query($link, $sql);
                 $aff_rows = mysqli_affected_rows($link);
+            } catch (Exception $e) {
+                throw new AfwRuntimeException("Exception happened when query : $sql_html : " . $e->getMessage());
             }
-            catch(Exception $e)
-            {                
-                throw new AfwRuntimeException("Exception happened when query : $sql_html : ".$e->getMessage());
-            }
-            $log = date("H:i:s")." > ".$sql_html." > $aff_rows affected rows";
-            if($is_update) AfwBatch::print_hard_sql($log);
+            $log = date("H:i:s") . " > " . $sql_html . " > $aff_rows affected rows";
+            if ($is_update) AfwBatch::print_hard_sql($log);
             else AfwBatch::print_sql($log);
             return $return;
-        } 
+        }
     }
 
-    public static function connection($hostname, $username, $password, $database, $port=3306)
+    public static function connection($hostname, $username, $password, $database, $port = 3306)
     {
-        if(self::php_is_old()) 
-        {
+        if (self::php_is_old()) {
             // return mysql_pconnect($hostname, $username, $password);
-        }
-        else
-        {
-            try{
+        } else {
+            try {
                 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
                 return mysqli_connect($hostname, $username, $password, $database, $port);
-            }
-            catch(Exception $e)
-            {
-                die("Failed to do connection <!-- ($hostname, $username, *****, $database, $port) : Exception Message : ".$e->getMessage()." -->");
+            } catch (Exception $e) {
+                die("Failed to do connection <!-- ($hostname, $username, *****, $database, $port) : Exception Message : " . $e->getMessage() . " -->");
+                // if you do throw new AfwRuntimeException it will show stack trace containing password
+            } catch (Error $e) {
+                die("Error when doing connection <!-- ($hostname, $username, *****, $database) : " . $e->getMessage() . " -->");
                 // if you do throw new AfwRuntimeException it will show stack trace containing password
             }
-            catch(Error $e)
-            {
-                die("Error when doing connection <!-- ($hostname, $username, *****, $database) : ".$e->getMessage()." -->");
-                // if you do throw new AfwRuntimeException it will show stack trace containing password
-            } 
         }
     }
 
@@ -126,8 +112,4 @@ class AfwMysql
         // return (PHP_VERSION_ID < 70000);
         return false;
     }
-    
-    
-
-
 }
