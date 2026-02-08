@@ -378,28 +378,34 @@ a.btn.btn-primary {
     height: 150px;
 }
 
-input.longbtn.orangebtn {
+input.longbtn.orangebtn,
+a.longbtn.orangebtn {
     background-color: #f0a663 !important;
     color: white;
 }
 
-input.longbtn.orangebtn:hover {
+input.longbtn.orangebtn:hover,
+a.longbtn.orangebtn:hover {
     background-color: #c37226 !important;
 }
 
-input.longbtn.greenbtn {
+input.longbtn.greenbtn,
+a.longbtn.greenbtn {
     background-color: #e1ffe1 !important;
 }
 
-input.longbtn.greenbtn:hover {
+input.longbtn.greenbtn:hover,
+a.longbtn.greenbtn:hover {
     background-color: rgb(32 185 38) !important;
 }
 
-input.longbtn.yellowbtn {
+input.longbtn.yellowbtn,
+a.longbtn.yellowbtn {
     background-color: #f9ebd4d4 !important;
 }
 
-input.longbtn.yellowbtn:hover {
+input.longbtn.yellowbtn:hover,
+a.longbtn.yellowbtn:hover {
     background-color: rgb(245 147 20) !important;
 }
 

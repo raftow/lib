@@ -111,11 +111,15 @@ if ($resetcrit) {
         $datatable_on = false;
 }
 
+$excel_link = "";
+$search_result_html = "";
 
 // $myClassInstance->debuggObj($_POST);
 if ($datatable_on) {
         // die("DBG-before afw_handle_default_search");
-        include 'afw_handle_default_search.php';
+        $handle_return = include 'afw_handle_default_search.php';
+        $excel_link = $handle_return['excel_link'];
+        $search_result_html = $handle_return['search_result_html'];
         AfwSession::log("End of afw_handle_default_search");
         // die("DBG-after afw_handle_default_search");
         $collapse_show = "";
@@ -264,18 +268,24 @@ if ($datatable_on) {
 
 
         if ($btns_display["excel"]) {
-                $out_scr_btns .= '<div class="btn-qsearch btn-centered-' . $btns_total . '-btn-' . $btn_num . '" style="">';
-                $xls_export = $myClassInstance->translate('EXCEL-EXPORT', $lang, true);
 
-                $out_scr_btns .= '<form name="xlsForm" id="xlsForm" method="post" action="' . "main.php" . '">';
-                $out_scr_btns .= '<input type="hidden" name="xls_on"  value="1"/>';
-                $out_scr_btns .= '<input type="hidden" name="cl" value="' . $cl . '"/>';
-                $out_scr_btns .= '<input type="hidden" name="currmod" value="' . $currmod . '"/>';
-                $out_scr_btns .= '<input type="hidden" name="limite"    value="0"/>';
-                $out_scr_btns .= '<input type="hidden" name="Main_Page" value="' . $current_page . '"/>';
-                $out_scr_btns .= AfwShowHelper::showObject($myClassInstance, "HTML", "afw_hidden_search_criteria.php");
-                $out_scr_btns .= '<input type="submit" class="longbtn greenbtn submit-btn fright" name="submit_xls"  id="submit_xls" value="' . $xls_export . '" />';
-                $out_scr_btns .= '</form>';
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-' . $btns_total . '-btn-' . $btn_num . '" style="">';
+                if (!$excel_link) {
+                        $xls_export = $myClassInstance->translate('EXCEL-EXPORT', $lang, true);
+                        $out_scr_btns .= '<form name="xlsForm" id="xlsForm" method="post" action="' . "main.php" . '">';
+                        $out_scr_btns .= '<input type="hidden" name="xls_on"  value="1"/>';
+                        $out_scr_btns .= '<input type="hidden" name="cl" value="' . $cl . '"/>';
+                        $out_scr_btns .= '<input type="hidden" name="currmod" value="' . $currmod . '"/>';
+                        $out_scr_btns .= '<input type="hidden" name="limite"    value="0"/>';
+                        $out_scr_btns .= '<input type="hidden" name="Main_Page" value="' . $current_page . '"/>';
+                        $out_scr_btns .= AfwShowHelper::showObject($myClassInstance, "HTML", "afw_hidden_search_criteria.php");
+                        $out_scr_btns .= '<input type="submit" class="longbtn greenbtn submit-btn fright" name="submit_xls"  id="submit_xls" value="' . $xls_export . '" />';
+                        $out_scr_btns .= '</form>';
+                } else {
+                        $xls_download = $myClassInstance->translate('EXCEL-DOWNLOAD', $lang, true);
+                        $out_scr_btns .= '<a target="_excel" href="' . $excel_link . '" class="longbtn greenbtn submit-btn fright"> ' . $xls_download . '</a>';
+                }
+
                 $out_scr_btns .= '</div>';
                 $btn_num++;
         }

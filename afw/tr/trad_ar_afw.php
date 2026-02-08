@@ -81,7 +81,9 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['RESET_FORM'] = 'مسح معايير البحث';
         $trad['OPERATOR']['NO-RECORD'] = 'لا يوجد سجلات';
         $trad['OPERATOR']['EXCEL-EXPORT'] = 'تصدير النتائج إلى ملف إكسيل';
-        $trad['OPERATOR']['PDF-EXPORT'] = 'تصدير النتائج إلى ملف PDF';
+        $trad['OPERATOR']['EXCEL-DOWNLOAD'] = 'تحميل ملف الإكسيل';
+
+        $trad['OPERATOR']['PDF-EXPORT'] = 'تصدير النتائج إلى ملف PDF وتحميله';
         $trad['OPERATOR']['MIGRATION-EXPORT'] = 'تصدير النتائج إلى ملف البيانات المهاجرة';
 
         $trad['OPERATOR']['DDB-BTN'] = 'حذف المكررات';

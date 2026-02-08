@@ -15,9 +15,6 @@ $MAX_ROW_DEFAULT = AfwSession::config("MAX_ROW", 500);
 $MAX_ROW = AfwSession::config("MAX_ROW-$cl", $MAX_ROW_DEFAULT);
 if (!$objme->isAdmin()) $MAX_ROW = AfwSession::config("MAX_ROW-$cl-not-admin", $MAX_ROW);
 
-//$genere_xls = true;//$_REQUEST["genere_xls"];
-//$genere_xls = $_REQUEST["genere_xls"];
-
 if ($_REQUEST["xls_on"]) $genere_xls = true;
 if ($_REQUEST["migration_on"]) $genere_migration = true;
 //if($genere_migration) die("genere_migration ...");
@@ -81,7 +78,6 @@ else
 
 if (!$liste_obj) {
         // require_once $file_obj;
-        //die("genere_xls=[$genere_xls]");
         if (!$lang) $lang = 'ar';
 
 
@@ -606,13 +602,12 @@ if (true) {
 
 <?php
 }
+$link = "";
 if ($genere_xls) {
-
-        $link = AfwExcel::genereExcel($header_excel, $data_excel, $xls_page_title = 'نتائج البحث', "search-result-" . date("YmdHis"));
-        echo $link;
+        $link = AfwExcel::genereExcel($header_excel, $data_excel, $xls_page_title = 'نتائج البحث', "search-result-" . date("YmdHis"), true, "purelink");
 }
 
 
-
-
 $search_result_html = ob_get_clean();
+
+return ['excel_link' => $link, 'search_result_html' => $search_result_html];
