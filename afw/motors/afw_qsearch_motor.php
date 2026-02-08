@@ -13,7 +13,6 @@ class AfwQsearchMotor
 
 	public static function type_input($col_name, $desc, $obj, $selected = false, $readonly = false, $required = false)
 	{
-		//global $lang, , $class_inputInt, $class_inputText, $class_inputSelected;
 		$lang = AfwLanguageHelper::getGlobalLanguage();
 		// obsolete require_once(dirname(__FILE__).'/../modes/afw_rights.php');
 
@@ -37,6 +36,8 @@ class AfwQsearchMotor
 		else  $inp_selected = "";
 
 		$class_select = ""; // $images["class_inputSelect"];
+
+		$class_inputInt = $images["class_inputInt"];
 
 		$col_placeholder = "";
 		if ($desc["PLACEHOLDER"]) $col_placeholder = $obj->translate($desc["PLACEHOLDER"], $lang);
@@ -180,17 +181,18 @@ class AfwQsearchMotor
 							""
 						);
 					} else {
-						self::select(
+						self::mobiselector(
 							$l_rep,
-							((isset($_POST[$col_name])) ? $_POST[$col_name] : $searchDefaultValue),
+							isset($_POST[$col_name]) ? array($_POST[$col_name]) : $searchDefaultValue,
 							array(
 								"class" => "form-control $lang_input $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
 								"name"  => $col_name . "[]",
 								"size"  => 5,
-								"multi" => true
-							),
-							"asc",
-							true
+								"multi" => true,
+								"reloadfn" => AfwJsEditHelper::getJsOfReloadOf($obj, $col_name, '', '', true),
+								"onchange" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name),
+								"onchangefn" => AfwJsEditHelper::getJsOfOnChangeOf($obj, $col_name, $descr = "", false),
+							)
 						);
 					}
 				} else {
@@ -236,9 +238,6 @@ class AfwQsearchMotor
 										if ($("#<?= $col_name_atc ?>").val() == "") {
 											$("#<?= $col_name ?>").val("");
 										}
-										// $("#<?= $col_name ?>").val("");
-										// $("#<?= $col_name ?>").attr('class', 'inputtrescourt cl_<?= $class_icon ?>_id');
-										// $("#<?= $col_name_atc ?>").attr('class', '<?= $atc_input_modified_class ?>');
 									},
 
 
@@ -319,7 +318,10 @@ class AfwQsearchMotor
 
 				if ($desc['MANDATORY']) unset($answer_list["W"]);  // <=  to be reviewed (ظپظٹظ‡ ظ†ط¸ط±)
 				if ($desc['MANDATORY-SEARCH']) unset($answer_list["W"]);
-
+				if ($desc['INPUT-STYLE'])
+					$input_style = "style='" . $desc['INPUT-STYLE'] . "'";
+				else
+					$input_style = '';
 				self::select(
 					$answer_list,
 					(isset($_POST[$col_name])) ? array($_POST[$col_name]) : array(),
@@ -536,6 +538,81 @@ class AfwQsearchMotor
 		}
 	}
 
+	public static function mobiselector($list_id_val, $selected = [], $info = [])
+	{
+		$lang = AfwLanguageHelper::getGlobalLanguage();
+
+		if (count($list_id_val) > 7) {
+			$info['enableFiltering'] = true;
+			$info['numberDisplayed'] = 3;
+			$info['filterPlaceholder'] = 'اكتب كلمة للبحث';
+		} else {
+			$info['enableFiltering'] = false;
+			$info['filterPlaceholder'] = 'اختيار';
+		}
+
+		$multi = ' multiple';
+		?>
+
+
+		<script>
+			mobiscroll.setOptions({
+				locale: mobiscroll.localeAr,
+				theme: 'ios',
+				themeVariant: 'light'
+			});
+
+			$(function() {
+				$('#<?php echo $info['id'] ?>')
+					.mobiscroll()
+					.select({
+						inputElement: document.getElementById('<?php echo $info['id'] ?>-input'),
+						filter: <?php echo $info['enableFiltering'] ? 'true' : 'false' ?>,
+					});
+			});
+		</script>
+
+		<label>
+			<input mbsc-input id="<?php echo $info['id'] ?>-input" placeholder="<?php echo $info['filterPlaceholder'] ?>" data-dropdown="true" data-input-style="outline" data-label-style="stacked" data-tags="true" />
+		</label>
+		<script>
+			<?php
+			if ($info['reloadfn']) {
+				echo '// reload fun-ction for attribute : ' . $info['name'] . "\n";
+				echo $info['reloadfn'] . "\n\n";
+			}
+			?>
+		</script>
+		<select class="<?php echo $info['class'] ?>"
+			name="<?php echo $info['name'] ?>"
+			id="<?php echo $info['id'] ?>"
+			tabindex="<?php echo $info['tabindex'] ?>"
+			onchange="<?php echo $info['onchange'] ?>"
+			<?php echo $multi ?>
+			<?php echo $info['style'] ?>
+			<?php
+			if ($info['required']) {
+				echo 'required';
+			}
+			?>>
+			<?php
+
+			$data_content = '';
+
+			foreach ($list_id_val as $id => $val) {
+				if ($info['bsel_css']) {
+					$opt_css = $info['bsel_css'][$id];
+					$data_content = "data-content=\"<span class='$opt_css'>$val</span>\"";
+				}
+			?>
+				<option value="<?php echo $id ?>" <?php echo (in_array($id, $selected)) ? ' selected' : ''; ?> <?php echo $data_content ?>><?php echo $val ?></option>
+			<?php
+			}
+			?>
+		</select>
+	<?php
+	}
+
 	public static function select($list_id_val, $selected = array(), $info = array(), $ordre = "", $null_val = true, $null_val_display = "??? ????")
 	{
 		$lang = AfwLanguageHelper::getGlobalLanguage();
@@ -579,7 +656,7 @@ class AfwQsearchMotor
 		if (!empty($multi) && $count < $size)
 			$size = $count;
 		if (!$info["id"]) $info["id"] = trim(trim($info["name"], "]"), "[");
-		?>
+	?>
 
 		<script>
 			<?php
