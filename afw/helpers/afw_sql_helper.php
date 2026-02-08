@@ -594,6 +594,7 @@ class AfwSqlHelper extends AFWRoot
                     $phraseLangWhere,
                 ];
             case 'TEXT':
+            case 'TIME':    
                 $val_col = trim($val_col);
                 if ($oper == '=') {
                     $cond_col = "='$val_col'";
@@ -700,7 +701,8 @@ class AfwSqlHelper extends AFWRoot
                         . ' oper= '
                         . $oper
                         . " value='"
-                        . $val_col
+                        . $val_col.' _POST='
+                        . var_export($_POST, true)
                         . "'");
         }
     }

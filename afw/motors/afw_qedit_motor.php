@@ -352,7 +352,7 @@ class AfwQeditMotor {
                 $type_input_ret = "select";
 
                 $class_of_input_select_multi = $class_inputSelect_multi_big;
-                if ($desc["MEDIUM_DROPDOWN_WIDTH"]) $class_of_input_select_multi = $class_inputSelect_multi;
+                if ($desc["MEDIUM_DROPDOWN_WIDTH"] or ($desc["SIZE"] < 64)) $class_of_input_select_multi = $class_inputSelect_multi;
 
                 if ($obj->qedit_minibox)
                     $css_class = "form-control $lang_input";

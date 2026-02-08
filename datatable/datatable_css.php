@@ -4,10 +4,10 @@ table.dataTable thead th, table.dataTable tfoot th {
 	font-weight: bold
 }
 table.dataTable thead th, table.dataTable thead td {
-	padding: 10px 10px; 6px 18px;
+	padding: 10px 10px 6px 18px;
 	border-bottom: 1px solid #111;
-        font-size: 13px !important;
-        text-align: right;
+    font-size: 13px !important;
+    text-align: right;
 }
 table.dataTable thead th:active, table.dataTable thead td:active {
 	outline: none
@@ -20,7 +20,7 @@ table.dataTable tfoot th, table.dataTable tfoot td {
 }
 table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc {
 	cursor: pointer;
-	*cursor: hand
+	/*cursor: hand*/
 }
 table.dataTable thead .sorting, table.dataTable thead .sorting_asc, table.dataTable thead .sorting_desc, table.dataTable thead .sorting_asc_disabled, table.dataTable thead .sorting_desc_disabled {
 	background-repeat: no-repeat;
@@ -219,8 +219,7 @@ table.dataTable, table.dataTable th, table.dataTable td {
 .dataTables_wrapper {
 	position: relative;
 	clear: both;
-	*zoom: 1;
-	zoom: 1
+	zoom: 1;
 }
 .dataTables_wrapper .dataTables_length {
 	float: left;
@@ -253,7 +252,7 @@ table.dataTable, table.dataTable th, table.dataTable td {
 	text-align: center;
 	text-decoration: none !important;
 	cursor: pointer;
-	*cursor: hand;
+	/*cursor: hand;*/
 	color: #333 !important;
 	border: 1px solid transparent;
 	border-radius: 2px
@@ -327,7 +326,7 @@ table.dataTable, table.dataTable th, table.dataTable td {
 	clear: both
 }
 .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody {
-	*margin-top: -1px;
+	margin-top: -1px;
 	-webkit-overflow-scrolling: touch
 }
 .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th, .dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td {
