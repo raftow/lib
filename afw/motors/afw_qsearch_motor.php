@@ -151,7 +151,7 @@ class AfwQsearchMotor
 					$list_count = AfwLoadHelper::vhGetListe($fkObj, $col_name, $obj->getTableName(), $caluse_where, $action = "count", $lang);
 				} else $list_count = 0;
 				$LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
-				if (($list_count <= $LIMIT_INPUT_SELECT) and (!$desc["AUTOCOMPLETE-SEARCH"])) {
+				if ((!$desc["SEARCH-BY-ONE"]) or ($list_count <= $LIMIT_INPUT_SELECT) and (!$desc["AUTOCOMPLETE-SEARCH"])) {
 					$l_rep = AfwLoadHelper::vhGetListe($fkObj, $col_name, $obj->getTableName(), $caluse_where, $action = "default", $lang);
 					$fkObj_disp = $fkObj->getDisplay($lang);
 					// if($col_name=="institution_id") die("AfwLoadHelper :: vhGet Liste($fkObj_disp, '$caluse_where', objme, $action, $lang) =>".var_export($l_rep,true));
