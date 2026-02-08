@@ -36,6 +36,7 @@ class AfwSearchHelper
 
                                         // die("DBG-getClauseWhere for $nom_col [$my_oper] ($my_val)");
                                         list($where, $fixm, $cond_phrase) = AfwSqlHelper::getClauseWhere($object, "me." . $nom_col, $my_oper,  $my_val, $my_val2, $lang);
+                                        if ($nom_col == "workflow_scope_id") die("getClauseWhere(me.$nom_col,$my_oper,$my_val,$my_val2,$lang) = list($where,$fixm,$cond_phrase)");
                                         // if(($nom_col == "idn") and ((!$my_val) or ($my_val == "1092666765"))) die("getClauseWhere(me.$nom_col,$my_oper,$my_val,$my_val2,$lang) = list($where,$fixm,$cond_phrase)");
                                         $arr_sql_conds[] = $where;
                                         // if(($nom_col == "idn") and ((!$my_val) or ($my_val == "1092666765"))) die("1.debugg the criteria = ".var_export($arr_sql_conds,true));
