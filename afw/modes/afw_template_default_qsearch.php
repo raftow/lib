@@ -70,8 +70,8 @@ foreach ($formColumns as $nom_col) {
                         $data[$nom_col]["filled_criteria"] = ($filled_val);
 
                         $data[$nom_col]["trad"]  = $obj->translate($nom_col, $lang);
-                        $data[$nom_col]["required"] = $desc['REQUIRED'];
-                        $data[$nom_col]["mandatory"] = $desc['MANDATORY'];
+                        $data[$nom_col]["required"] = ($desc['QSEARCH-REQUIRED'] or in_array($nom_col, $requiredColumns));
+                        $data[$nom_col]["mandatory"] = ($desc['QSEARCH-MANDATORY']);
 
                         $data[$nom_col]["qsize"] = $desc["QSIZE"];
                         if (!$data[$nom_col]["qsize"]) $data[$nom_col]["qsize"] = 3;
