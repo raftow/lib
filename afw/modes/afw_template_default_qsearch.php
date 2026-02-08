@@ -77,7 +77,7 @@ foreach ($formColumns as $nom_col) {
                         if (!$data[$nom_col]["qsize"]) $data[$nom_col]["qsize"] = 3;
                         $total_qsize += $data[$nom_col]["qsize"];
 
-                        $desc["SEARCH-BY-ONE"] = true;
+                        $desc["SEARCH-BY-ONE"] = (!$desc["SEARCH-MULTIPLE"]);
 
 
                         ob_start();
