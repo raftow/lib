@@ -154,6 +154,7 @@ class AfwQsearchMotor
 							""
 						);
 					} else {
+						if ($col_name == "workflow_scope_id") die("_POST[$col_name] = " . var_export($_POST[$col_name], true));
 						self::mobiselector(
 							$l_rep,
 							isset($_POST[$col_name]) ? array($_POST[$col_name]) : $searchDefaultValue,
