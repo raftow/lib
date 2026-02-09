@@ -289,16 +289,19 @@ class AfwLoadHelper extends AFWRoot
             $val_arr = explode(",", $val_0);
             $is_array = true;
             $oneId = false;
+            $case_where = " -- mfk"; 
         }
         elseif (is_array($val)){
             $val_arr = $val;
             $is_array = true;
             $oneId = false;
+            $case_where = " -- array";
         } else {
             $val_arr = [];
             $val_arr[] = $val;
             $oneId = $val;
             $is_array = false;
+            $case_where = " -- one id";
         }
 
         foreach ($val_arr as $k => $kval) {
@@ -307,7 +310,7 @@ class AfwLoadHelper extends AFWRoot
 
         if ((!$small_lookup) and (count($val_arr) > 0)) $where = "$pk in (" . implode(",", $val_arr) . ")";
         else $where = "1";
-        self::getLookupData($nom_module_fk, $nom_table_fk, $where, "", $oneId);
+        self::getLookupData($nom_module_fk, $nom_table_fk, $where.$case_where, "", $oneId);
 
 
 
