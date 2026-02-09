@@ -459,7 +459,7 @@ a.longbtn.yellowbtn:hover {
 }
 
 a.longbtn.greenbtn.excel {
-    background-image: url(../lib/images/xls.png);
+    background-image: url(../images/xls.png);
     background-repeat: no-repeat;
     background-position-x: center;
     background-position-y: center;
@@ -528,7 +528,7 @@ a.longbtn.greenbtn.excel:hover {
     border-style: none;
     /* border-width: 0px; */
     /* border-color: #0a0a0a; */
-    background-image: url(../../lib/images/edit_w_24.png) !important;
+    background-image: url(../images/edit_w_24.png) !important;
     background-size: 16px 16px !important;
     background-repeat: no-repeat !important;
     background-position: 15px 6px !important;
