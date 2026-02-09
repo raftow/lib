@@ -289,6 +289,11 @@ class AfwLoadHelper extends AFWRoot
             $val_arr = explode(",", $val_0);
             $is_array = true;
             $oneId = false;
+        }
+        elseif (is_array($val)){
+            $val_arr = $val;
+            $is_array = true;
+            $oneId = false;
         } else {
             $val_arr = [];
             $val_arr[] = $val;
