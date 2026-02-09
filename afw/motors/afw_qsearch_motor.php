@@ -154,10 +154,13 @@ class AfwQsearchMotor
 							""
 						);
 					} else {
+						if (is_array($_POST[$col_name])) $selected_values = $_POST[$col_name];
+						else $selected_values = array($_POST[$col_name]);
+
 						if ($col_name == "workflow_scope_id") die("_POST[$col_name] = " . var_export($_POST[$col_name], true));
 						self::mobiselector(
 							$l_rep,
-							isset($_POST[$col_name]) ? array($_POST[$col_name]) : $searchDefaultValue,
+							$selected_values,
 							array(
 								"class" => "form-control $lang_input $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
 								"name"  => $col_name . "[]",
