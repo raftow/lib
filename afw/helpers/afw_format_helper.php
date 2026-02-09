@@ -1909,6 +1909,9 @@ class AfwFormatHelper
             }
 
             if ($attrtype == 'FK' or $attrtype == 'YN' or $attrtype == 'ENUM' or $attrtype == 'MFK') {
+                if(is_array($field_value) or (is_string($field_value))) {
+                    die("case strange of 9/2/2026 : field_value = ".var_export($field_value, true));
+                }
                 $return = AfwFormatHelper::decodeSimulatedFieldValue($object, $attribute, $field_value);
             }
         }
