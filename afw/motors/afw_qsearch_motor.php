@@ -50,12 +50,12 @@ class AfwQsearchMotor
 			case 'ENUM':
 			case 'MENUM':
 				if ($desc["ANSWER"] == "INSTANCE_FUNCTION") {
-					$fkObj = AfwStructureHelper::getEnumAnswerList($obj, $col_name);
+					$enumAnswerList = AfwStructureHelper::getEnumAnswerList($obj, $col_name);
 					// $obj->_error("$col_name is INSTANCE_FUNCTION answer and it has this getEnumAnswerList ".var_export($fkObj,true));
 				} else {
 					$fcol_name = $desc["FUNCTION_COL_NAME"];
 					if (!$fcol_name) $fcol_name = $col_name;
-					$fkObj = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj);
+					$enumAnswerList = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj);
 				}
 
 				if ($desc["SEARCH-BY-ONE"] and ($desc["TYPE"] == "ENUM")) {
@@ -64,7 +64,7 @@ class AfwQsearchMotor
 						$tuple_col = AfwShowMotor::prepareShowInfoForColumn($obj, $col_name, $desc, $lang);
 						echo $tuple_col["input"];
 					} else self::select(
-						$fkObj,
+						$enumAnswerList,
 						array($_POST[$col_name]),
 						array(
 							"class" => "form-control $lang_input $lang $class_inputSearch $class_select $inp_selected",
@@ -76,18 +76,19 @@ class AfwQsearchMotor
 						""
 					);
 				} else {
-					self::select(
-						$fkObj,
-						((isset($_POST[$col_name])) ? $_POST[$col_name] : array()),
-						array(
-							"class" => "form-control $lang_input $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
-							"name"  => $col_name . "[]",
-							"size"  => 5,
-							"multi" => true
-						),
-						"asc",
-						false
-					);
+					if (is_array($_POST[$col_name])) $selected_values = $_POST[$col_name];
+					else $selected_values = array($_POST[$col_name]);
+					self::mobiselector(
+							$enumAnswerList,
+							$selected_values,
+							array(
+								"class" => "form-control $lang_input $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+								"name"  => $col_name . "[]",
+								"id"  => $col_name,
+								"size"  => 5,
+								"multi" => true								
+							)
+						);
 				}
 				break;
 			case 'FK':
