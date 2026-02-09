@@ -313,7 +313,7 @@ class AfwLoadHelper extends AFWRoot
         if ((!$small_lookup) and (count($val_arr) > 0)) $where = "$pk in (" . implode(",", $val_arr) . ")";
         else $where = "1";
 
-        die("rafik dbg : where=$where. case_where=$case_where val=".var_export($val, true));
+        if(AfwStringHelper::stringContain($where, "Array")) die("rafik dbg : where=$where. case_where=$case_where val=".var_export($val, true));
         self::getLookupData($nom_module_fk, $nom_table_fk, $where.$case_where, "", $oneId);
 
 
