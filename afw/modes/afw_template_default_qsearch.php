@@ -61,8 +61,19 @@ if ($obj->requiredColumns) {
         $requiredColumns = [];
 }
 
+if ($obj->specialStructure) {
+        $specialStructure = $obj->specialStructure;
+} else {
+        $specialStructure = [];
+}
+
 foreach ($formColumns as $nom_col) {
         $desc = $class_db_structure[$nom_col];
+        if($specialStructure[$nom_col]) {
+                foreach($specialStructure[$nom_col] as $prop => $propVal) {
+                        $desc[$prop] = $propVal;          
+                }
+        }
         if (AfwPrevilegeHelper::isQSearchCol($obj, $nom_col, $desc)) {
                 if ($total_qsize < $max_total_qsize) {
                         $filled_val = $_POST[$nom_col];

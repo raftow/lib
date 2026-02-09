@@ -326,167 +326,169 @@ class AfwPrevilegeHelper
         );
 
         foreach ($object_db_structure as $fieldname => $struct_item) {
-            $token_fcl = '[fcl:' . $fieldname . ']';
+            if (!$struct_item["NEVER-TOKEN"]) {
+                $token_fcl = '[fcl:' . $fieldname . ']';
 
-            $token_is = '[is:' . $fieldname . ']';
-            $token_is_en = '[is-en:' . $fieldname . ']';
-            $token_value = '[value:' . $fieldname . ']';
-            $token_data = '[' . $fieldname . ']';
-            $token_label = '[' . $fieldname . '_label]';
-            $token_showme = '[' . $fieldname . '_showme]';
+                $token_is = '[is:' . $fieldname . ']';
+                $token_is_en = '[is-en:' . $fieldname . ']';
+                $token_value = '[value:' . $fieldname . ']';
+                $token_data = '[' . $fieldname . ']';
+                $token_label = '[' . $fieldname . '_label]';
+                $token_showme = '[' . $fieldname . '_showme]';
 
-            if ($struct_item['TYPE'] == 'DATE') {
-                $token_full_date = '[' . $fieldname . '.full]';
-                $token_medium_date = '[' . $fieldname . '.medium]';
-            }
-
-            if ($struct_item['CATEGORY'] == 'ITEMS') {
-                $token_data_no_icons = '[' . $fieldname . '.no_icons]';
-            }
-
-            if ($struct_item['TO_TRANSLATE']) {
-                $token_to_translate = '[' . $fieldname . '.translate]';
-            }
-
-            if (($struct_item['TYPE'] == 'TEXT') and strpos($text_to_decode, $token_fcl) !== false) {
-                $token_fcl_val = AfwStringHelper::firstCharLower(
-                    $object->getVal($fieldname)
-                );
-                $token_arr[$token_fcl] = $token_fcl_val;
-            }
-
-            if ($struct_item['TYPE'] == 'YN') {
-                if (($fieldsTokenAlways or (strpos($text_to_decode, $token_is) !== false))) {
-                    $object_token_is_arr = $object->token_is_arr;
-                    $object_token_not_is_arr = $object->token_not_is_arr;
-                    $object_token_null_is_arr = $object->token_null_is_arr;
-
-                    if (!$object_token_is_arr[$fieldname]) {
-                        $object_token_is_arr[$fieldname] = 'YES';
-                    }
-                    if (!$object_token_not_is_arr[$fieldname]) {
-                        $object_token_not_is_arr[$fieldname] = 'NO';
-                    }
-                    if (!$object_token_null_is_arr[$fieldname]) {
-                        $object_token_null_is_arr[$fieldname] = 'NOT YET';
-                    }
-
-                    $field_val = $object->getVal($fieldname);
-                    if ($field_val == 'Y') {
-                        $token_is_val = $object->translateOperator(
-                            $object_token_is_arr[$fieldname],
-                            $lang
-                        );
-                    } elseif ($field_val == 'N') {
-                        $token_is_val = $object->translateOperator(
-                            $object_token_not_is_arr[$fieldname],
-                            $lang
-                        );
-                    } else {
-                        $token_is_val = $object->translateOperator(
-                            $object_token_null_is_arr[$fieldname],
-                            $lang
-                        );
-                    }
-
-                    $token_arr[$token_is] = $token_is_val;
+                if ($struct_item['TYPE'] == 'DATE') {
+                    $token_full_date = '[' . $fieldname . '.full]';
+                    $token_medium_date = '[' . $fieldname . '.medium]';
                 }
 
-                if ($fieldsTokenAlways or (strpos($text_to_decode, $token_is_en) !== false)) {
-                    $object_token_is_en_arr = $object->token_is_en_arr;
-                    $object_token_not_is_en_arr = $object->token_not_is_en_arr;
-                    $object_token_null_is_en_arr = $object->token_null_is_en_arr;
-
-                    if (!$object_token_is_en_arr[$fieldname]) {
-                        $object_token_is_en_arr[$fieldname] = 'required'; // YES
-                    }
-                    if (!$object_token_not_is_en_arr[$fieldname]) {
-                        $object_token_not_is_en_arr[$fieldname] = ''; // NO
-                    }
-                    if (!$object_token_null_is_en_arr[$fieldname]) {
-                        $object_token_null_is_en_arr[$fieldname] = ''; // NOT-YET
-                    }
-
-                    $field_val = $object->getVal($fieldname);
-                    if ($field_val == 'Y') {
-                        $token_is_en_val = $object_token_is_en_arr[$fieldname];
-                    } elseif ($field_val == 'N') {
-                        $token_is_en_val = $object_token_not_is_en_arr[$fieldname];
-                    } else {
-                        $token_is_en_val = $object_token_null_is_en_arr[$fieldname];
-                    }
-
-                    $token_arr[$token_is_en] = $token_is_en_val;
-                }
-            }
-
-
-            if ($fieldsTokenAlways or (strpos($text_to_decode, $token_data) !== false)) {
-                // if($fieldname=="prices_buttons") AfwRunHelper::safeDie("this->tokens = ".var_export($object->tokens,true));
-                $struct_item['IN_TEMPLATE'] = true;
-                $token_arr[$token_data] = $object->showAttribute(
-                    $fieldname,
-                    $struct_item
-                );
-                // if($fieldname=="prices_buttons") AfwRunHelper::safeDie("token value of token $token_data = ".var_export($token_arr[$token_data],true));
-            }
-
-            if ($fieldsTokenAlways or (strpos($text_to_decode, $token_value) !== false)) {
-                $token_arr[$token_value] = $object->getVal($fieldname);
-            }
-
-            if (
-                $struct_item['CATEGORY'] == 'ITEMS' and
-                ($fieldsTokenAlways or strpos($text_to_decode, $token_data_no_icons) !== false)
-            ) {
-                $struct_item['ICONS'] = false;
-                $token_arr[$token_data_no_icons] = $object->showAttribute(
-                    $fieldname,
-                    $struct_item
-                );
-                //die("token_arr[$token_data_no_icons] = this->showAttribute($fieldname, struct_item) with struct_item = ".var_export($struct_item,true)." = ".var_export($token_arr[$token_data_no_icons],true));
-            }
-
-            if ((strpos($text_to_decode, $token_showme) !== false)) {
-                $token_arr[$token_showme] = '';
-                $objToShowIt = $object->het($fieldname);
-                if ($objToShowIt) {
-                    $token_arr[$token_showme] = $objToShowIt->showMe('', $lang);
-                }
-            }
-
-            if ($fieldsTokenAlways or (strpos($text_to_decode, $token_label) !== false)) {
-                $trad_col = $trad_erase[$fieldname];
-                if (!$trad_col) {
-                    $trad_col = $object->getAttributeLabel($fieldname, $lang);
+                if ($struct_item['CATEGORY'] == 'ITEMS') {
+                    $token_data_no_icons = '[' . $fieldname . '.no_icons]';
                 }
 
-                $token_arr[$token_label] = $trad_col;
-            }
+                if ($struct_item['TO_TRANSLATE']) {
+                    $token_to_translate = '[' . $fieldname . '.translate]';
+                }
 
-            if (
-                $struct_item['TYPE'] == 'DATE' and
-                ($fieldsTokenAlways or (strpos($text_to_decode, $token_full_date) !== false))
-            ) {
-                $token_arr[$token_full_date] = $object->fullHijriDate($fieldname);
-            }
+                if (($struct_item['TYPE'] == 'TEXT') and strpos($text_to_decode, $token_fcl) !== false) {
+                    $token_fcl_val = AfwStringHelper::firstCharLower(
+                        $object->getVal($fieldname)
+                    );
+                    $token_arr[$token_fcl] = $token_fcl_val;
+                }
 
-            if (
-                $struct_item['TYPE'] == 'DATE' and
-                ($fieldsTokenAlways or (strpos($text_to_decode, $token_medium_date) !== false))
-            ) {
-                $token_arr[$token_medium_date] = $object->mediumHijriDate(
-                    $fieldname
-                );
-            }
+                if ($struct_item['TYPE'] == 'YN') {
+                    if (($fieldsTokenAlways or (strpos($text_to_decode, $token_is) !== false))) {
+                        $object_token_is_arr = $object->token_is_arr;
+                        $object_token_not_is_arr = $object->token_not_is_arr;
+                        $object_token_null_is_arr = $object->token_null_is_arr;
 
-            if (
-                $struct_item['TO_TRANSLATE'] and
-                ($fieldsTokenAlways or (strpos($text_to_decode, $token_to_translate) !== false))
-            ) {
-                $token_arr[$token_to_translate] = $object->translateValue(
-                    $fieldname
-                );
+                        if (!$object_token_is_arr[$fieldname]) {
+                            $object_token_is_arr[$fieldname] = 'YES';
+                        }
+                        if (!$object_token_not_is_arr[$fieldname]) {
+                            $object_token_not_is_arr[$fieldname] = 'NO';
+                        }
+                        if (!$object_token_null_is_arr[$fieldname]) {
+                            $object_token_null_is_arr[$fieldname] = 'NOT YET';
+                        }
+
+                        $field_val = $object->getVal($fieldname);
+                        if ($field_val == 'Y') {
+                            $token_is_val = $object->translateOperator(
+                                $object_token_is_arr[$fieldname],
+                                $lang
+                            );
+                        } elseif ($field_val == 'N') {
+                            $token_is_val = $object->translateOperator(
+                                $object_token_not_is_arr[$fieldname],
+                                $lang
+                            );
+                        } else {
+                            $token_is_val = $object->translateOperator(
+                                $object_token_null_is_arr[$fieldname],
+                                $lang
+                            );
+                        }
+
+                        $token_arr[$token_is] = $token_is_val;
+                    }
+
+                    if ($fieldsTokenAlways or (strpos($text_to_decode, $token_is_en) !== false)) {
+                        $object_token_is_en_arr = $object->token_is_en_arr;
+                        $object_token_not_is_en_arr = $object->token_not_is_en_arr;
+                        $object_token_null_is_en_arr = $object->token_null_is_en_arr;
+
+                        if (!$object_token_is_en_arr[$fieldname]) {
+                            $object_token_is_en_arr[$fieldname] = 'required'; // YES
+                        }
+                        if (!$object_token_not_is_en_arr[$fieldname]) {
+                            $object_token_not_is_en_arr[$fieldname] = ''; // NO
+                        }
+                        if (!$object_token_null_is_en_arr[$fieldname]) {
+                            $object_token_null_is_en_arr[$fieldname] = ''; // NOT-YET
+                        }
+
+                        $field_val = $object->getVal($fieldname);
+                        if ($field_val == 'Y') {
+                            $token_is_en_val = $object_token_is_en_arr[$fieldname];
+                        } elseif ($field_val == 'N') {
+                            $token_is_en_val = $object_token_not_is_en_arr[$fieldname];
+                        } else {
+                            $token_is_en_val = $object_token_null_is_en_arr[$fieldname];
+                        }
+
+                        $token_arr[$token_is_en] = $token_is_en_val;
+                    }
+                }
+
+
+                if ($fieldsTokenAlways or (strpos($text_to_decode, $token_data) !== false)) {
+                    // if($fieldname=="prices_buttons") AfwRunHelper::safeDie("this->tokens = ".var_export($object->tokens,true));
+                    $struct_item['IN_TEMPLATE'] = true;
+                    $token_arr[$token_data] = $object->showAttribute(
+                        $fieldname,
+                        $struct_item
+                    );
+                    // if($fieldname=="prices_buttons") AfwRunHelper::safeDie("token value of token $token_data = ".var_export($token_arr[$token_data],true));
+                }
+
+                if ($fieldsTokenAlways or (strpos($text_to_decode, $token_value) !== false)) {
+                    $token_arr[$token_value] = $object->getVal($fieldname);
+                }
+
+                if (
+                    $struct_item['CATEGORY'] == 'ITEMS' and
+                    ($fieldsTokenAlways or strpos($text_to_decode, $token_data_no_icons) !== false)
+                ) {
+                    $struct_item['ICONS'] = false;
+                    $token_arr[$token_data_no_icons] = $object->showAttribute(
+                        $fieldname,
+                        $struct_item
+                    );
+                    //die("token_arr[$token_data_no_icons] = this->showAttribute($fieldname, struct_item) with struct_item = ".var_export($struct_item,true)." = ".var_export($token_arr[$token_data_no_icons],true));
+                }
+
+                if ((strpos($text_to_decode, $token_showme) !== false)) {
+                    $token_arr[$token_showme] = '';
+                    $objToShowIt = $object->het($fieldname);
+                    if ($objToShowIt) {
+                        $token_arr[$token_showme] = $objToShowIt->showMe('', $lang);
+                    }
+                }
+
+                if ($fieldsTokenAlways or (strpos($text_to_decode, $token_label) !== false)) {
+                    $trad_col = $trad_erase[$fieldname];
+                    if (!$trad_col) {
+                        $trad_col = $object->getAttributeLabel($fieldname, $lang);
+                    }
+
+                    $token_arr[$token_label] = $trad_col;
+                }
+
+                if (
+                    $struct_item['TYPE'] == 'DATE' and
+                    ($fieldsTokenAlways or (strpos($text_to_decode, $token_full_date) !== false))
+                ) {
+                    $token_arr[$token_full_date] = $object->fullHijriDate($fieldname);
+                }
+
+                if (
+                    $struct_item['TYPE'] == 'DATE' and
+                    ($fieldsTokenAlways or (strpos($text_to_decode, $token_medium_date) !== false))
+                ) {
+                    $token_arr[$token_medium_date] = $object->mediumHijriDate(
+                        $fieldname
+                    );
+                }
+
+                if (
+                    $struct_item['TO_TRANSLATE'] and
+                    ($fieldsTokenAlways or (strpos($text_to_decode, $token_to_translate) !== false))
+                ) {
+                    $token_arr[$token_to_translate] = $object->translateValue(
+                        $fieldname
+                    );
+                }
             }
         }
         if ($toLower) {

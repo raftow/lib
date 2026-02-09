@@ -136,6 +136,7 @@ td.col-qe>input, td.col-qe>select, td.col-qe>textarea {
     width: 98% !important;
     max-width: none !important;
     text-align: center;
+    min-width: 180px;
 }
 
 td.col-qe {
