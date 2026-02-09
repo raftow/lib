@@ -11,6 +11,10 @@ class AfwQsearchMotor
 	}
 
 
+	/**
+	 * @param AFWObject $obj
+	 */
+
 	public static function type_input($col_name, $desc, $obj, $selected = false, $readonly = false, $required = false)
 	{
 		$lang = AfwLanguageHelper::getGlobalLanguage();
@@ -97,7 +101,7 @@ class AfwQsearchMotor
 				// $nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
 
 
-				$ans_tab_where = $obj->getSearchWhereOfAttribute($col_name);
+				$ans_tab_where = $obj->getSearchWhereOfAttribute($col_name, $desc);
 				$fkObj      = new $nom_class_fk();
 				$list_distinct_txt = "";
 				$list_distinct_sql_in = "";

@@ -1067,14 +1067,14 @@ class AFWObject extends AFWRoot
         return '';
     }
 
-    final public function getSearchWhereOfAttribute($field_name)
+    final public function getSearchWhereOfAttribute($field_name, $desc=null)
     {
         $where_att = $this->getSpecialSearchWhereOfAttribute($field_name);
 
         if (!$where_att) {
-            $desc = AfwStructureHelper::getStructureOf($this, $field_name);
+            if(!$desc) $desc = AfwStructureHelper::getStructureOf($this, $field_name);
             if (!isset($desc['WHERE-SEARCH'])) {
-                $where_att = $this->getWhereOfAttribute($field_name);
+                $where_att = $this->getWhereOfAttribute($field_name, $desc);
             } else {
                 $where_att = $desc['WHERE-SEARCH'];
             }
@@ -1084,11 +1084,11 @@ class AFWObject extends AFWRoot
         return $where_att;
     }
 
-    final public function getWhereOfAttribute($field_name)
+    final public function getWhereOfAttribute($field_name, $struct=null)
     {
         $where_att = $this->getSpecialWhereOfAttribute($field_name);
         if (!$where_att) {
-            $struct = AfwStructureHelper::getStructureOf($this, $field_name);
+            if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $field_name);
             $where_att = $struct['WHERE'];
         }
 
@@ -1999,7 +1999,7 @@ class AFWObject extends AFWRoot
 
     public function searchDefaultValue($attribute)
     {
-        return null;
+        return '';
     }
 
     public function calcObject($attribute)
