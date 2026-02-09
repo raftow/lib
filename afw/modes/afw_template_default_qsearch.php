@@ -70,9 +70,11 @@ if ($obj->specialStructure) {
 foreach ($formColumns as $nom_col) {
         $desc = $class_db_structure[$nom_col];
         if($specialStructure[$nom_col]) {
+                echo("TSS Structure[$nom_col] before ".var_export($desc, true));
                 foreach($specialStructure[$nom_col] as $prop => $propVal) {
                         $desc[$prop] = $propVal;          
                 }
+                die("TSS Structure[$nom_col] after ".var_export($desc, true));
         }
         if (AfwPrevilegeHelper::isQSearchCol($obj, $nom_col, $desc)) {
                 if ($total_qsize < $max_total_qsize) {
