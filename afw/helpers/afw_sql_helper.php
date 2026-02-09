@@ -529,7 +529,7 @@ class AfwSqlHelper extends AFWRoot
                         . implode(', ', $object->decodeList($nom_col, $val_col))
                         . '</span>';
                     return [
-                        $nom_col
+                        $prefixed_nom_col
                             . ' '
                             . $oper
                             . " ($codage'"
@@ -594,7 +594,7 @@ class AfwSqlHelper extends AFWRoot
                     $phraseLangWhere,
                 ];
             case 'TEXT':
-            case 'TIME':    
+            case 'TIME':
                 $val_col = trim($val_col);
                 if ($oper == '=') {
                     $cond_col = "='$val_col'";
@@ -696,14 +696,15 @@ class AfwSqlHelper extends AFWRoot
                 // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
                 throw new AfwRuntimeException(
                     $prefixed_nom_col
-                        . ' has type ' . $desc['TYPE'] .' witch is not managed by SQLHelper::getClauseWhere desc='
+                        . ' has type ' . $desc['TYPE'] . ' witch is not managed by SQLHelper::getClauseWhere desc='
                         . var_export($desc, true)
                         . ' oper= '
                         . $oper
                         . " value='"
-                        . $val_col.' _POST='
+                        . $val_col . ' _POST='
                         . var_export($_POST, true)
-                        . "'");
+                        . "'"
+                );
         }
     }
 
@@ -1656,8 +1657,8 @@ class AfwSqlHelper extends AFWRoot
         $group_by = '',
         $throw_error = true,
         $throw_analysis_crash = true,
-        $filter_arr=[])
-    {
+        $filter_arr = []
+    ) {
         $module_server = $object->getModuleServer();
         $query = 'select ' . $group_by;
 
