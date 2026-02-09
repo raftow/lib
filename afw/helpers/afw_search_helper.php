@@ -33,7 +33,9 @@ class AfwSearchHelper
                                 if ($there_is_search) {
                                         $where = "";
                                         $fixm = "";
-
+                                        if (is_string($my_val) and trim($my_val) == "Array") {
+                                                throw new AfwRuntimeException("Posted strange request array for col=$nom_col _POST = " . var_export($_POST, true));
+                                        }
                                         // die("DBG-getClauseWhere for $nom_col [$my_oper] ($my_val)");
                                         list($where, $fixm, $cond_phrase) = AfwSqlHelper::getClauseWhere($object, "me." . $nom_col, $my_oper,  $my_val, $my_val2, $lang);
                                         // if (($nom_col == "workflow_scope_id") or ($nom_col == "workflow_sub_scope_id")) die("getClauseWhere(me.$nom_col,$my_oper,$my_val,$my_val2,$lang) = list($where,$fixm,$cond_phrase)");
