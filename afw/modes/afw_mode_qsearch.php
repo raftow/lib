@@ -452,6 +452,10 @@ if ($readOnlyColumns) {
         $myClassInstance->readOnlyColumns = $readOnlyColumns;
 }
 
+if ($specialStructure) {
+        $myClassInstance->specialStructure = $specialStructure;
+}
+
 AfwMainPage::addOutput(AfwShowHelper::showObject($myClassInstance, "HTML", "afw_template_default_qsearch.php"));
 
 
