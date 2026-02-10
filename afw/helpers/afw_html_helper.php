@@ -225,7 +225,7 @@ class AfwHtmlHelper extends AFWRoot
                 $method_help = $btn_title_original . " : " . $method_tooltip;
                 if ($isAdmin) $method_help .= " [$method_name]";
 
-                return "        <button name=\"api-$method_name\" id=\"api-$method_name\" data-toggle=\"tooltip\" data-placement=\"bottom\" 
+                return "        <button name=\"api-$module-$afwClass-$id-$method_name\" id=\"api-$module-$afwClass-$id-$method_name\" data-toggle=\"tooltip\" data-placement=\"bottom\" 
                                         module=\"$module\" afwclass=\"$afwClass\" oid=\"$id\" ttl=\"$swal_title\" txt=\"$swal_text\" csmethod=\"$method_name\"
                                         type=\"submit\" 
                                         class=\"bf bf-$color $afwClass $action_lourde api-method $api hzm-$method_name theme-new\">                                
