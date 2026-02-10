@@ -154,7 +154,7 @@ class AfwHtmlFooterJsHelper
 
 
       function apiChangeStatus(afwclass, the_module, obj_id, csmethod) {
-        $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).addClass("btn-white");
+        $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).addClass("bf-white");
         $.ajax({
           type: 'POST',
           url: '../lib/api/afw_status_changer.php',
