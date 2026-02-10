@@ -186,6 +186,57 @@ class AfwHtmlHelper extends AFWRoot
                 return $html_buttons_spec_methods;
         }
 
+
+        /**
+         * @param AFWObject $obj
+         */
+
+        public static function showHtmlOfStatusChangeApiButton(
+                $obj,
+                $api,
+                $method_name,
+                $color,
+                $afwClass,
+                $method_icon = 'run',
+                $lang = 'ar',
+                $action_lourde = true,
+                $isAdmin = false,
+                $ver = "",
+                $max_title = 38,
+                $method_log = ''
+        ) {
+
+                // title / tooltip or help
+                $btn_title = $obj->translate($method_name, $lang);
+                $method_tooltip = $obj->translate($method_name . ".tooltip", $lang);
+                if (($btn_title == $method_name) or (!$btn_title)) $btn_title = "";
+                if (!$btn_title) {
+                        $btn_title = AfwStringHelper::methodToTitle($method_name);
+                }
+                $btn_title_original = $btn_title;
+                if (strlen($btn_title) > $max_title) $btn_title = AfwStringHelper::truncateArabicJomla($btn_title, $max_title);
+
+                $method_help = $btn_title_original . " : " . $method_tooltip;
+                if ($isAdmin) $method_help .= " [$method_name]";
+
+                return "        <button name=\"submit-$method_name\" id=\"submit-$method_name\" data-toggle=\"tooltip\" data-placement=\"bottom\" type=\"submit\" class=\"bf bf-$color $afwClass $action_lourde api-method hzm-$method_name theme-new\">                                
+                                        <div class=\"hzm-width-100 hzm-text-center hzm_margin_bottom theme-new\">                                      
+                                                <div class=\"hzm-vertical-align hzm-container-center hzm-api-$api hzm-otherlink hzm-otherlink-icon-container border-primary theme-new\">                                        
+                                                        <i class=\"hzm-container-center hzm-vertical-align-middle hzm-icon-$method_icon theme-new\"></i>                                      
+                                                </div>                                    
+                                                <div class='pbm-tr'>$btn_title</div>
+                                        </div>  
+                                </button><!-- method $method_name status-log : $method_log -->
+                                <script>
+                                        $(document).ready(function(){
+                                                $('#submit-$method_name').tooltip({
+                                                placement: \"bottom\",
+                                                title: \"$method_help\"
+                                        });
+                                });
+                                </script>";
+        }
+
         /**
          * @param AFWObject $obj
          */
