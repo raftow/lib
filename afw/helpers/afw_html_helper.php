@@ -196,6 +196,8 @@ class AfwHtmlHelper extends AFWRoot
                 $api,
                 $method_name,
                 $color,
+                $swal_title,
+                $swal_text,
                 $method_icon = 'run',
                 $lang = 'ar',
                 $action_lourde = true,
@@ -204,7 +206,9 @@ class AfwHtmlHelper extends AFWRoot
                 $max_title = 38,
                 $method_log = ''
         ) {
-                if(!$obj) return "NO-OBJECT-FOR-API-BUTTON";
+                $swal_title = str_replace('"', "'", $swal_title);
+                $swal_text = str_replace('"', "'", $swal_text);
+                if (!$obj) return "NO-OBJECT-FOR-API-BUTTON";
                 $id = $obj->id;
                 $afwClass = get_class($obj);
                 $module = $obj->getMyModule();
@@ -222,7 +226,8 @@ class AfwHtmlHelper extends AFWRoot
                 if ($isAdmin) $method_help .= " [$method_name]";
 
                 return "        <button name=\"api-$method_name\" id=\"api-$method_name\" data-toggle=\"tooltip\" data-placement=\"bottom\" 
-                                        module=\"$module\" afwclass=\"$afwClass\" oid=\"$id\" type=\"submit\" 
+                                        module=\"$module\" afwclass=\"$afwClass\" oid=\"$id\" ttl=\"$swal_title\" txt=\"$swal_text\"
+                                        type=\"submit\" 
                                         class=\"bf bf-$color $afwClass $action_lourde api-method $api hzm-$method_name theme-new\">                                
                                         <div class=\"hzm-width-100 hzm-text-center hzm_margin_bottom theme-new\">                                      
                                                 <div class=\"hzm-vertical-align hzm-container-center hzm-api-$api hzm-otherlink hzm-otherlink-icon-container border-primary theme-new\">                                        
