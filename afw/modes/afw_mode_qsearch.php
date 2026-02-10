@@ -466,9 +466,6 @@ if ($instanceOptions) {
 AfwMainPage::addOutput(AfwShowHelper::showObject($myClassInstance, "HTML", "afw_template_default_qsearch.php"));
 
 
-
-
-
 if ($action == "retrieve") {
         if ($qsearchview == "all") $fgroup_all_selected = "selected";
         else $fgroup_all_selected = "";

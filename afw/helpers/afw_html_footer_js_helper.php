@@ -152,6 +152,35 @@ class AfwHtmlFooterJsHelper
         });
       }
 
+
+      function apiChangeStatus(afwclass, the_module, obj_id, csmethod) {
+        $.ajax({
+          type: 'POST',
+          url: '../lib/api/afw_status_changer.php',
+          data: {
+            cls: afwclass,
+            currmod: the_module,
+            idobj: obj_id,
+            csmethod: csmethod,
+            lang: '<?php echo $lang; ?>'
+          },
+          dataType: 'json',
+          success: function(data) {
+            console.log('currmod=' + the_module + ' cls=' + afwclass + ' idobj=' + obj_id + ' csmethod=' + csmethod + ' afw_status_changer res = ', data);
+            if (data.status == "success") {
+              // $("#span-" + mod + "-" + cls + "-" + idobj + "-" + col).text(data.aff);
+              apiChangeStatusDoneOn(the_module, afwclass, obj_id, csmethod);
+            } else {
+              mess = '';
+              <?php echo $response_data_format ?>
+              swal("<?php echo $you_dont_have_rights ?> " + mess); // 
+              return [false, null];
+            }
+          }
+
+        });
+      }
+
       function switchRun(cl, md, swc_id, swc_col) {
         console.log('switch running before ajax action on md=' + md + ' cl=' + cl + ' id=' + swc_id + ' col=' + swc_col);
         $.ajax({
@@ -436,6 +465,38 @@ class AfwHtmlFooterJsHelper
         });
 
         move_triggers();
+
+        $(".api-method.changestatus").click(function() {
+          var obj_id = $(this).attr("oid");
+          var afwclass = $(this).attr("afwclass");
+          var csmethod = $(this).attr("csmethod");
+          var the_module = $(this).attr("module");
+          var ttl = $(this).attr("ttl");
+          var txt = $(this).attr("txt");
+
+
+          if ((ttl != '') && (txt != '')) {
+            $(".alert.messages").fadeOut().remove();
+            swal({
+                title: ttl,
+                text: txt,
+                icon: "warning",
+                buttons: true,
+                dangerMode: false,
+              })
+              .then((willChangeStatus) => {
+                if (willChangeStatus) {
+                  apiChangeStatus(afwclass, the_module, obj_id, csmethod);
+                }
+              });
+          } else {
+            // console.log('apiChangeStatus will run because no swal texts defined');
+            apiChangeStatus(afwclass, the_module, obj_id, csmethod);
+          }
+
+
+
+        });
 
         $(".switcher").click(function() {
           var swc_id = $(this).attr("oid");
