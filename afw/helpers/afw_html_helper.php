@@ -196,7 +196,6 @@ class AfwHtmlHelper extends AFWRoot
                 $api,
                 $method_name,
                 $color,
-                $afwClass,
                 $method_icon = 'run',
                 $lang = 'ar',
                 $action_lourde = true,
@@ -205,7 +204,9 @@ class AfwHtmlHelper extends AFWRoot
                 $max_title = 38,
                 $method_log = ''
         ) {
-
+                if(!$obj) return "NO-OBJECT-FOR-API-BUTTON";
+                $id = $obj->id;
+                $afwClass = get_class($obj);
                 // title / tooltip or help
                 $btn_title = $obj->translate($method_name, $lang);
                 $method_tooltip = $obj->translate($method_name . ".tooltip", $lang);
@@ -219,7 +220,7 @@ class AfwHtmlHelper extends AFWRoot
                 $method_help = $btn_title_original . " : " . $method_tooltip;
                 if ($isAdmin) $method_help .= " [$method_name]";
 
-                return "        <button name=\"submit-$method_name\" id=\"submit-$method_name\" data-toggle=\"tooltip\" data-placement=\"bottom\" type=\"submit\" class=\"bf bf-$color $afwClass $action_lourde api-method hzm-$method_name theme-new\">                                
+                return "        <button name=\"submit-$method_name\" id=\"submit-$method_name\" data-toggle=\"tooltip\" data-placement=\"bottom\" data-afwclass=\"$afwClass\" data-id=\"$id\" type=\"submit\" class=\"bf bf-$color $afwClass $action_lourde api-method hzm-$method_name theme-new\">                                
                                         <div class=\"hzm-width-100 hzm-text-center hzm_margin_bottom theme-new\">                                      
                                                 <div class=\"hzm-vertical-align hzm-container-center hzm-api-$api hzm-otherlink hzm-otherlink-icon-container border-primary theme-new\">                                        
                                                         <i class=\"hzm-container-center hzm-vertical-align-middle hzm-icon-$method_icon theme-new\"></i>                                      

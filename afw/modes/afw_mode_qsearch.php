@@ -456,6 +456,13 @@ if ($specialStructure) {
         $myClassInstance->specialStructure = $specialStructure;
 }
 
+if ($instanceOptions) {
+        foreach($instanceOptions as $instanceOption => $instanceOptionValue)
+        $myClassInstance->$instanceOption = $instanceOptionValue;
+}
+
+
+
 AfwMainPage::addOutput(AfwShowHelper::showObject($myClassInstance, "HTML", "afw_template_default_qsearch.php"));
 
 
