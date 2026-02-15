@@ -383,7 +383,16 @@ class AfwUrlManager extends AFWRoot
                 $pageCode = $theStructureClass::pageCode($uri_items);
                 $log_explain = "from $theStructureClass::pageCode(...) method";
             } else $log_explain_advanced = "$theStructureClass::pageCode(...) not found";
-        } else $log_explain_advanced = "theClass=$theClass and theModule=$theModule";
+        }
+        if ($theModule) {
+            $theModuleClass = ucfirst($theModule) . "Object";
+            if (AfwAutoLoader::afwClassExists($theModuleClass)) {
+                if (method_exists($theModuleClass, "pageCode")) {
+                    $pageCode = $theModuleClass::pageCode($uri_items);
+                    $log_explain = "from $theModuleClass::pageCode(...) method";
+                } else $log_explain_advanced = "$theModuleClass::pageCode(...) not found";
+            } else $log_explain_advanced = "analysin uri tems theModule class '$theModuleClass' not found";
+        } else $log_explain_advanced = "analysin uri tems theClass is empty and theModule is empty";
 
         if (!$pageCode) {
             list($uri_items, $pageCode, $log_explain) = self::defaultCurrentPageCode($theModule, $theClass, $uri_items, $original_serv_uri, $serv_uri, $ignored_vars);

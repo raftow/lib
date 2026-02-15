@@ -154,6 +154,7 @@ class AfwHtmlFooterJsHelper
 
 
       function apiChangeStatus(afwclass, the_module, obj_id, csmethod) {
+        $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).addClass("bf-white");
         $.ajax({
           type: 'POST',
           url: '../lib/api/afw_status_changer.php',
@@ -168,9 +169,10 @@ class AfwHtmlFooterJsHelper
           success: function(data) {
             console.log('currmod=' + the_module + ' cls=' + afwclass + ' idobj=' + obj_id + ' csmethod=' + csmethod + ' afw_status_changer res = ', data);
             if (data.status == "success") {
-              // $("#span-" + mod + "-" + cls + "-" + idobj + "-" + col).text(data.aff);
+              $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).html('<img src="../lib/images/success.png" width="64" height="64">');
               apiChangeStatusDoneOn(the_module, afwclass, obj_id, csmethod);
             } else {
+              $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).html('<img src="../lib/images/fail.png" width="64" height="64">');
               mess = '';
               <?php echo $response_data_format ?>
               swal("<?php echo $you_dont_have_rights ?> " + mess); // 

@@ -10,7 +10,7 @@ class AfwDateHelper
     private static $F = [
         'ar' => [1 => 'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو', 'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'],
         'en' => [1 => 'January', 'February', 'March', 'April', 'mayo', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                        ];
+    ];
 
     private static $M = ['ar' => [1 => 'كانون الثاني', 'شباط', 'آذار', 'نيسان', 'أيار', 'حزيران', 'تموز', 'آب', 'أيلول', 'تشرين الأول', 'تشرين الثاني', 'كانون الأول']];
     private static $a = ['ar' => ['am' => 'ص', 'pm' => 'م']];
@@ -1130,7 +1130,7 @@ class AfwDateHelper
         return $arr_hij_period;
     }
 
-    public static function parseGregDate($gdate, $sep='/', $format='d/m/Y')
+    public static function parseGregDate($gdate, $sep = '/', $format = 'd/m/Y')
     {
         $formatExploded = explode($sep, $format);
         $formatItemIndex = array_flip($formatExploded);
@@ -1141,7 +1141,7 @@ class AfwDateHelper
         $yyyy = AfwStringHelper::left_complete_len($gdateItems[$formatItemIndex["Y"]], '0', 4);
         $mm = AfwStringHelper::left_complete_len($gdateItems[$formatItemIndex["m"]], 2, '0');
         $dd = AfwStringHelper::left_complete_len($gdateItems[$formatItemIndex["d"]], 2, '0');
-        return $yyyy."-".$mm."-".$dd;
+        return $yyyy . "-" . $mm . "-" . $dd;
     }
 
     public static function gregToHijri($gdate, $mode = 'hdate', $ifSeemsHijriKeepAsIs = false, $throwError = true, $estimateIfOutOfRange = true)
@@ -1504,11 +1504,9 @@ class AfwDateHelper
 
         $return = AfwSession::getVar("hijri-of-$gdate");
         if (($mode == 'hdate') and (strlen($return) != 8)) {
-            if($estimateIfOutOfRange)
-            {
-                  return self::convertGregToHijri($gdate);  
-            }
-            elseif ($throwError) throw new AfwRuntimeException("Error converting $wd_gdate from DB => row_hijri=" . var_export($row_hijri, true) . " => hijri_day = $hijri_day = diff_date($gdate,$greg_date) + 1 => return=$return");
+            if ($estimateIfOutOfRange) {
+                return self::convertGregToHijri($gdate);
+            } elseif ($throwError) throw new AfwRuntimeException("Error converting $wd_gdate from DB => row_hijri=" . var_export($row_hijri, true) . " => hijri_day = $hijri_day = diff_date($gdate,$greg_date) + 1 => return=$return");
             else return "error 6";
         }
 
@@ -1547,18 +1545,17 @@ class AfwDateHelper
                 if ($mm < 10) $mm = "0" . $mm;
 
                 $hdate = $yyyy . $mm . $dd;
-                if($yyyy!=$hijri_year)
-                {
+                if ($yyyy != $hijri_year) {
                     $hijri_to_greg_file_name = "lib/chsys/dates/hijri_" . $yyyy . "_to_greg";
-                    $hijri_to_greg_file = dirname(__FILE__) . "/../../../".$hijri_to_greg_file_name.".php";
+                    $hijri_to_greg_file = dirname(__FILE__) . "/../../../" . $hijri_to_greg_file_name . ".php";
                     $hijri_to_greg_arr = include($hijri_to_greg_file);
                 }
             }
         }
-        
+
         if (!$hijri_to_greg_arr[$hdate]) {
             $err_message = "Failed to convert hijri date ($original_hdate) to gregorian date, seems that the file $hijri_to_greg_file_name is not available or is incomplete";
-            AfwSession::hzmLog($err_message, "fail"); 
+            AfwSession::hzmLog($err_message, "fail");
             throw new AfwBusinessException($err_message);
         }
         return $hijri_to_greg_arr[$hdate];
@@ -1779,7 +1776,9 @@ class AfwDateHelper
     {
         $result_diff = self::timeDiffInSeconds($gdate2, $gdate1);
         $result_diff = $result_diff / 3600;
-        if ($round) {$result_diff = round($result_diff);}
+        if ($round) {
+            $result_diff = round($result_diff);
+        }
 
         return $result_diff;
     }
@@ -1823,12 +1822,12 @@ class AfwDateHelper
         $arr_hour = explode(':', $arr_dat[1]);
 
         $tmstmp = mktime(
-            $arr_hour[0] + $hours,
-            $arr_hour[1] + $minutes,
-            $arr_hour[2] + $seconds,
-            $arr_day[1] + $months,
-            $arr_day[2] + $days,
-            $arr_day[0] + $years
+            intval($arr_hour[0]) + $hours,
+            intval($arr_hour[1]) + $minutes,
+            intval($arr_hour[2]) + $seconds,
+            intval($arr_day[1]) + $months,
+            intval($arr_day[2]) + $days,
+            intval($arr_day[0]) + $years
         );
 
         return date('Y-m-d H:i:s', $tmstmp);
