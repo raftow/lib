@@ -1,8 +1,9 @@
 <?php
 class AfwSqlHelper extends AFWRoot
 {
-    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isNoEmptyString = [], $isDate = [], $isDatetime = [], $datetimeformat = 'MM/DD/YYYY HH24:MI')
+    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isNoEmptyString = [], $isDate = [], $isDatetime = [], $isMandatory = [], $datetimeformat = 'MM/DD/YYYY HH24:MI')
     {
+        $errors = [];
         $my_row_cols = array_keys($my_row);
         $insert_cols = '';
         $insert_vals = '';
@@ -30,6 +31,10 @@ class AfwSqlHelper extends AFWRoot
             if (!$isPKCol[$row_col]) {
                 if ((!$row_val) and ($row_val !== 0) and ($row_val !== '0'))
                     $row_val = 'null';
+
+                if($isMandatory[$row_col] and (!$row_val or ($row_val=='null'))) {
+
+                }
                 if ($isScalarCol[$row_col])
                     $set_update_cols .= "\n-- oldn=$old_row_val : \n $row_col=$row_val,";
                 // elseif($isDate[$row_col]) $set_update_cols .= " $row_col=TO_DATE('$row_val', 'yyyy-mm-dd'),\n";

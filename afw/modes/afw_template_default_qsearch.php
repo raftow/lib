@@ -69,6 +69,7 @@ if ($obj->specialStructure) {
 
 foreach ($formColumns as $nom_col) {
         $desc = $class_db_structure[$nom_col];
+        $desc['QSEARCH'] = true;
         if($specialStructure[$nom_col]) {
                 // echo("TSS Structure[$nom_col] before ".var_export($desc, true));
                 foreach($specialStructure[$nom_col] as $prop => $propVal) {
