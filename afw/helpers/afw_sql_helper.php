@@ -1,7 +1,7 @@
 <?php
 class AfwSqlHelper extends AFWRoot
 {
-    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isNoEmptyString = [], $isDate = [], $isDatetime = [], $isMandatory = [], $datetimeformat = 'MM/DD/YYYY HH24:MI')
+    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isNoEmptyString = [], $isDate = [], $isDatetime = [], $isMandatory = [], $datetimeformat = 'MM/DD/YYYY HH24:MI', $dateformat = 'MM/DD/YYYY')
     {
         $errors = [];
         $my_row_cols = array_keys($my_row);
@@ -17,7 +17,7 @@ class AfwSqlHelper extends AFWRoot
             elseif ($isDatetime[$row_col])
                 $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
             elseif ($isDate[$row_col])
-                $row_val_string = "TO_DATE('$row_val', 'yyyy-mm-dd')";
+                $row_val_string = "TO_DATE('$row_val', '$dateformat')";
             else {
                 $row_val_cleaned = str_replace("'", "''", $row_val);
                 $row_val_string = "'$row_val_cleaned'";
@@ -28,17 +28,27 @@ class AfwSqlHelper extends AFWRoot
             else
                 $insert_vals .= ", $row_val_string -- $row_col \n";
 
-            if (!$isPKCol[$row_col]) {
-                if ((!$row_val) and ($row_val !== 0) and ($row_val !== '0'))
+
+            if ($isScalarCol[$row_col] and !is_numeric($row_val) and ($row_val != 'null')) {
+                $errors[] = "$row_col is Numeric field, value=[$row_val=".var_export($old_row_val)."] is not numeric";
+            }
+
+            if (!$isPKCol[$row_col]) {                
+                $row_val_is_null = ((!$row_val) and
+                    ($row_val !== 0) and
+                    ($row_val !== 0.0) and ($row_val !== '0') and ($row_val !== '0.0'));
+
+                if ($row_val_is_null)
                     $row_val = 'null';
 
-                if($isMandatory[$row_col] and (!$row_val or ($row_val=='null'))) {
-
+                if ($isMandatory[$row_col] and ($row_val == 'null')) {
+                    $errors[] = "$row_col is Mandatory field can't be null [$row_col=$row_val=" . var_export($old_row_val, true) . "]";
                 }
-                if ($isScalarCol[$row_col])
+                if ($isScalarCol[$row_col]) {
+
                     $set_update_cols .= "\n-- oldn=$old_row_val : \n $row_col=$row_val,";
-                // elseif($isDate[$row_col]) $set_update_cols .= " $row_col=TO_DATE('$row_val', 'yyyy-mm-dd'),\n";
-                else
+                    // elseif($isDate[$row_col]) $set_update_cols .= " $row_col=TO_DATE('$row_val', 'yyyy-mm-dd'),\n";
+                } else
                     $set_update_cols .= "\n-- olds=$old_row_val : \n $row_col=$row_val_string,";
             } else {
                 if (!$isScalarCol[$row_col])
@@ -71,7 +81,7 @@ class AfwSqlHelper extends AFWRoot
                         where $pk_cols_where;
                 end;";
 
-        return $sql;
+        return [$errors, $sql];
     }
 
     public static final function sqlInsertOrUpdate($table, $my_row, $pkCol_arr = null)
