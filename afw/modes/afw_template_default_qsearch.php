@@ -42,9 +42,10 @@ if (!$max_total_qsize) $max_total_qsize = 10;
 /**
  * @var AFWObject $obj
  */
-
+$forceFormColumns = false;
 if ($obj->formColumns) {
         $formColumns = $obj->formColumns;
+        $forceFormColumns = true;
 } else {
         $formColumns = array_keys($class_db_structure);
 }
@@ -69,12 +70,14 @@ if ($obj->specialStructure) {
 
 foreach ($formColumns as $nom_col) {
         $desc = $class_db_structure[$nom_col];
-        $desc['QSEARCH'] = true;
-        $desc['SEARCH'] = true;
-        if($specialStructure[$nom_col]) {
+        if ($forceFormColumns) {
+                $desc['QSEARCH'] = true;
+                $desc['SEARCH'] = true;
+        }
+        if ($specialStructure[$nom_col]) {
                 // echo("TSS Structure[$nom_col] before ".var_export($desc, true));
-                foreach($specialStructure[$nom_col] as $prop => $propVal) {
-                        $desc[$prop] = $propVal;          
+                foreach ($specialStructure[$nom_col] as $prop => $propVal) {
+                        $desc[$prop] = $propVal;
                 }
                 // die("TSS Structure[$nom_col] after ".var_export($desc, true));
         }
