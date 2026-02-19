@@ -1,7 +1,7 @@
 <?php
 class AfwSqlHelper extends AFWRoot
 {
-    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isNoEmptyString = [], $isDate = [], $isDatetime = [], $isMandatory = [], $datetimeformat = 'MM/DD/YYYY HH24:MI', $dateformat = 'MM/DD/YYYY')
+    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isNoEmptyString = [], $isDate = [], $isDatetime = [], $isMandatory = [], $datetimeformat = 'MM/DD/YYYY HH24:MI', $dateformat = 'MM/DD/YYYY', $specialFields=[])
     {
         $errors = [];
         $my_row_cols = array_keys($my_row);
@@ -10,7 +10,11 @@ class AfwSqlHelper extends AFWRoot
         $set_update_cols = '';
         $pk_cols_where = "1=1\n";
         foreach ($tableColsArr as $row_col) {
-            $row_val = $my_row[$row_col];
+            $specialDescFound = "";
+            foreach($specialFields as $specialDesc => $specialArr) {
+                if($specialArr[$row_col]) $specialDescFound .= $specialDesc.",";
+            }
+            $row_val = trim($my_row[$row_col]);
             $old_row_val = $row_val;
             if ($isNoEmptyString[$row_col] and (!$row_val or (strtoupper($row_val) == 'NULL')))
                 $row_val_string = 'null';
@@ -19,17 +23,18 @@ class AfwSqlHelper extends AFWRoot
             elseif ($isDate[$row_col])
                 $row_val_string = "TO_DATE('$row_val', '$dateformat')";
             else {
-                $row_val_cleaned = str_replace("'", "''", $row_val);
+                if(strtoupper($row_val) == 'NULL') $row_val_cleaned = "";
+                else $row_val_cleaned = str_replace("'", "''", $row_val);
                 $row_val_string = "'$row_val_cleaned'";
             }
             $insert_cols .= ", $row_col";
             if ($isScalarCol[$row_col] and ($row_val or ($row_val == '0')))
-                $insert_vals .= ", $row_val -- $row_col \n";
+                $insert_vals .= ", $row_val -- $row_col -- scalar -- $specialDescFound\n";
             else
-                $insert_vals .= ", $row_val_string -- $row_col \n";
+                $insert_vals .= ", $row_val_string -- $row_col -- nonscalar -- $specialDescFound\n";
 
 
-            if ($isScalarCol[$row_col] and !is_numeric($row_val) and ($row_val != 'null')) {
+            if ($isScalarCol[$row_col] and !is_numeric($row_val) and (strtolower(trim($row_val)) != 'null')) {
                 $errors[] = "$row_col is Numeric field, value=[$row_val=".var_export($old_row_val)."] is not numeric";
             }
 
@@ -46,10 +51,10 @@ class AfwSqlHelper extends AFWRoot
                 }
                 if ($isScalarCol[$row_col]) {
 
-                    $set_update_cols .= "\n-- oldn=$old_row_val : \n $row_col=$row_val,";
+                    $set_update_cols .= "\n-- oldn=$old_row_val -- $specialDescFound : \n $row_col=$row_val,";
                     // elseif($isDate[$row_col]) $set_update_cols .= " $row_col=TO_DATE('$row_val', 'yyyy-mm-dd'),\n";
                 } else
-                    $set_update_cols .= "\n-- olds=$old_row_val : \n $row_col=$row_val_string,";
+                    $set_update_cols .= "\n-- olds=$old_row_val -- $specialDescFound : \n $row_col=$row_val_string,";
             } else {
                 if (!$isScalarCol[$row_col])
                     $pk_cols_where .= "   AND $row_col=$row_val_string\n";
