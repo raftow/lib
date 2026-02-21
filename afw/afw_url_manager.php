@@ -384,7 +384,7 @@ class AfwUrlManager extends AFWRoot
                 $log_explain = "from $theStructureClass::pageCode(...) method";
             } else $log_explain_advanced = "$theStructureClass::pageCode(...) not found";
         }
-        if ($theModule) {
+        if ((!$pageCode) and $theModule) {
             $theModuleClass = ucfirst($theModule) . "Object";
             if (AfwAutoLoader::afwClassExists($theModuleClass)) {
                 if (method_exists($theModuleClass, "pageCode")) {
