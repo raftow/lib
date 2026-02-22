@@ -60,6 +60,7 @@ if (count($header_retrieve) == 0) {
 
 if ($genere_xls) {
         $header_excel = AfwUmsPagHelper::getExportExcelHeader($obj, $lang, $forced_retrieve_cols, $hide_retrieve_cols);
+        die("header_excel = " . var_export($header_excel, true));
 }
 
 
