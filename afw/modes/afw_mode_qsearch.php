@@ -125,8 +125,8 @@ if ($datatable_on) {
         $search_result_html = $handle_return['search_result_html'];
         AfwSession::log("End of afw_handle_default_search");
         // die("DBG-after afw_handle_default_search");
-        $collapse_show = "";
-} else $collapse_show = "show";
+
+}
 
 
 
