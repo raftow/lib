@@ -215,6 +215,12 @@ if ($datatable_on) {
 
         $out_scr_btns .= "<div class='btns-qsearch'>";
 
+        $out_scr_btns .= "<!-- ";
+        $out_scr_btns .= print_r($btns_display, true);
+        $out_scr_btns .= " -->";
+
+
+
         $btn_num = 1;
 
 
