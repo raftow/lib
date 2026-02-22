@@ -91,7 +91,8 @@ class AfwExcel
 		$dataStyle = null,
 		$data_align = "right",
 		$altern_color = "EEEEEE",
-		$big_header_color = "666666"
+		$big_header_color = "666666",
+		$myHeaderStyle = null
 	) {
 		$objme = AfwSession::getUserConnected();
 
@@ -205,8 +206,8 @@ class AfwExcel
 			]
 		];
 
-		$all_header_rows = 'A3:' . $last_letter . '3';
-		if (!$headerStyle) $headerStyle = [
+		$my_header_rows = 'A3:' . $last_letter . '3';
+		if (!$myHeaderStyle) $myHeaderStyle = [
 			// (C1) FONT
 			"font" => [
 				"bold" => true,
@@ -258,7 +259,7 @@ class AfwExcel
 			"fill" => [
 				// SOLID FILL
 				"fillType" => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-				"color" => ["rgb" => "555555"], // argb possible
+				"color" => ["rgb" => "666666"], // argb possible
 
 				/*  GRADIENT FILL
 			  "fillType" => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
@@ -320,6 +321,9 @@ class AfwExcel
 		if ($addBigHeader) {
 			$style = $sheet->getStyle($all_header_rows);
 			$style->applyFromArray($headerStyle);
+
+			$mstyle = $sheet->getStyle($myHeaderStyle);
+			$mstyle->applyFromArray($myHeaderStyle);
 
 			if (!$bigHeaderStyle) {
 				$bigHeaderStyle = $headerStyle;
