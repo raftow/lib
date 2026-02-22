@@ -606,13 +606,7 @@ AfwMainPage::addOutput("<div class='btn-group' role='group' aria-label='...'>
 AfwMainPage::addOutput("   
                 </form>
                 </div> <!-- form-container -->
-                <script>
-                                                \$( function() {
-                                                \$(\"#qfilter\").accordion({
-                                                collapsible: true
-                                                });
-                                                } );
-                                        </script>
+                
                 
                 ");
 AfwMainPage::addOutput("</center>");
@@ -622,7 +616,15 @@ AfwMainPage::addOutput('');
 
 AfwMainPage::addOutput("</div>
        </div>
-</div>");
+</div>
+<script>
+        \$( function() {
+        \$(\"#qfilter\").accordion({
+                collapsible: true
+                });
+        });
+</script>
+");
 AfwMainPage::addOutput("<div id=\"search_result_div\">");
 if ($datatable_on) {
 

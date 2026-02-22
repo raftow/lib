@@ -3160,6 +3160,7 @@ screen and (max-width: 660px) {
 .hzm_data.form-control.inputreadonly {
     padding-top: 10px !important;
     font-size: 100% !important;
+    font-family: title;
 }
 
 .form-group {
