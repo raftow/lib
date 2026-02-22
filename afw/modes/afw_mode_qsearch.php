@@ -608,7 +608,7 @@ AfwMainPage::addOutput("
                 </div> <-- form-container -->
                 <script>
                                                 \$( function() {
-                                                \$(\"#form-container\").accordion({
+                                                \$(\"#qfilter\").accordion({
                                                 collapsible: true
                                                 });
                                                 } );
