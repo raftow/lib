@@ -388,11 +388,15 @@ if ($qsearch_page_title) {
 
 AfwMainPage::addOutput("<div id='page-content-wrapper' class='qsearch_page'>
                 <div class='row row-filter-$cl_short'>
-                        <div class='qfilter col-sm-10 col-md-10 pb10'><h1>$page_title</h1>");
+                        <div class='qfilter col-sm-10 col-md-10 pb10'>");
+
+AfwMainPage::addOutput("<div class=\"expand collapsed\" data-toggle=\"collapse\" data-target=\"form-container\">");
+AfwMainPage::addOutput("<h1>$page_title</h1>");
 if ($page_sub_title) {
         AfwMainPage::addOutput("<h2>$page_sub_title</h2>");
         AfwMainPage::addOutput("<h3>$page_action_description</h3>");
 }
+AfwMainPage::addOutput("</div>");
 
 $list_of_ret_cols_all = array();
 $list_of_ret_cols_default = array();
@@ -435,7 +439,7 @@ if (!$myClassInstance->isLourde()) {
 } else {
         $aclourde = 'class="form_lourde"';
 }
-AfwMainPage::addOutput('<form name="searchForm" id="searchForm" ' . $aclourde . ' method="post" action="' . "main.php" . '">');
+AfwMainPage::addOutput('<div id="form-container" class="form-container"><form name="searchForm" id="searchForm" ' . $aclourde . ' method="post" action="' . "main.php" . '">');
 $cl_short = strtolower(substr($myClassInstance->getMyClass(), 0, 10));
 
 AfwMainPage::addOutput('<div class="row row-' . $cl_short . '">');
@@ -457,8 +461,8 @@ if ($specialStructure) {
 }
 
 if ($instanceOptions) {
-        foreach($instanceOptions as $instanceOption => $instanceOptionValue)
-        $myClassInstance->$instanceOption = $instanceOptionValue;
+        foreach ($instanceOptions as $instanceOption => $instanceOptionValue)
+                $myClassInstance->$instanceOption = $instanceOptionValue;
 }
 
 
@@ -578,44 +582,30 @@ AfwMainPage::addOutput('<script type="text/javascript">
     
 </script>');
 
+if ($datatable_on and ($action == "retrieve")) {
+        $reset_link = "<a href=\"main.php?Main_Page=afw_mode_qsearch.php&cl=$cl&currmod=$currmod&resetcrit=1\"><div id='reset-form' type='submit' name='submit-reset-form' class='yellbtn smallbtn fright'>" . $myClassInstance->translate('RESET-CRITEREA', $lang, true) . "</div></a>";
+} else {
+        $reset_link = "&nbsp;";
+}
 AfwMainPage::addOutput("<div class='btn-group' role='group' aria-label='...'>
                 <table>
-                <tr>
-                        <td width='15px'>&nbsp;</td>
-                        <td>
-                             <input id='qsearch-submit-form' type='submit' name='submit' class='simple-btn smallbtn fright' value='" . $myClassInstance->translate($execute_btn, $lang, true) . "'>
-                        </td>
-                        <td width='15px'>&nbsp;</td>
-                </form>
-                
+                        <tr>
+                                <td width='15px'>&nbsp;</td>
+                                <td>
+                                <input id='qsearch-submit-form' type='submit' name='submit' class='simple-btn smallbtn fright' value='" . $myClassInstance->translate($execute_btn, $lang, true) . "'>
+                                </td>
+                                <td width='15px'>&nbsp;</td>
+                                <td>&nbsp;</td>
+                                <td width=\"15px\">&nbsp;</td>
+                                <td>$reset_link</td>
+                                <td width='15px'>&nbsp;</td>
+                        </tr>
+                </table>
+                </div>
 ");
-
-// die("DBG-qsearch form ready");
-
-//  مؤقتا البحث المتقدم لا يسمح به إلا للادارة
-// @todo : is not working well so disabled
-if (false and $objme and $objme->isAdmin()) {
-        AfwMainPage::addOutput('<td><form name="adv_searchForm" id="adv_searchForm" method="post" action="' . "main.php" . '">');
-        AfwMainPage::addOutput('<input type="hidden" name="cl" value="' . $cl . '"/>');
-        AfwMainPage::addOutput('<input type="hidden" name="currmod" value="' . $currmod . '"/>');
-        AfwMainPage::addOutput('<input type="hidden" name="get_cache"    value="1"/>');
-        AfwMainPage::addOutput('<input type="hidden" id="Main_Page" name="Main_Page" value="afw_mode_search.php"/>');
-        AfwMainPage::addOutput("<input id='submit-form' type='submit' name='submit' class='greenbtn smallbtn fright' value='" . $myClassInstance->translate('SUBMIT-SEARCH-ADVANCED', $lang, true) . "'>");
-        AfwMainPage::addOutput('</form></td>');
-} else {
-        AfwMainPage::addOutput('<td>&nbsp;</td>');
-}
-AfwMainPage::addOutput('<td width="15px">&nbsp;</td>');
-if ($datatable_on and ($action == "retrieve")) {
-        AfwMainPage::addOutput('   <td>');
-        AfwMainPage::addOutput("<a href=\"main.php?Main_Page=afw_mode_qsearch.php&cl=$cl&currmod=$currmod&resetcrit=1\"><div id='reset-form' type='submit' name='submit-reset-form' class='yellbtn smallbtn fright'>" . $myClassInstance->translate('RESET-CRITEREA', $lang, true) . "</div></a>");
-        AfwMainPage::addOutput('   </td>');
-} else {
-        AfwMainPage::addOutput('<td>&nbsp;</td>');
-}
-AfwMainPage::addOutput("   <td width='15px'>&nbsp;</td>
-                </tr></table>
-        </div>");
+AfwMainPage::addOutput("   
+                </form>
+                </div> <-- form container -->");
 AfwMainPage::addOutput("</center>");
 AfwMainPage::addOutput('');
 

@@ -880,7 +880,7 @@ div.messages--warning>div.timer {
     border: none !important;
 }
 
-div.qfilter>h1 {
+div.qfilter h1 {
     font-size: 140%;
     font-weight: normal;
     text-align: center;
