@@ -51,7 +51,7 @@ if ($session_previous_search and ($cl == "WorkflowRequest")) {
 }
 */
 
-$collapse_show = 'true';
+$accordion_expanded = 'true';
 
 if (($session_previous_search) and (!$datatable_on)) {
         /*if ($session_previous_search and ($cl == "WorkflowRequest")) {
@@ -66,10 +66,12 @@ if (($session_previous_search) and (!$datatable_on)) {
                 ${"oper_" . $nom_col} = $criteria_arr["oper"];
         }
 
-        if (!$datatable_off) $datatable_on = 1;
+        if (!$datatable_off) {
+                $datatable_on = 1;
+        }
 }
 
-if (count($_POST) > 0) $collapse_show = 'false';
+if ($datatable_on and count($_POST) > 0) $accordion_expanded = 'false';
 /*
 if ($_POST and ($cl == "WorkflowRequest")) {
         die("DBG-_POST=" . var_export($_POST, true));
@@ -632,7 +634,7 @@ AfwMainPage::addOutput("</div>
         \$( function() {
         \$(\"#qfilter\").accordion({
                 collapsible: true, 
-                active: $collapse_show
+                active: $accordion_expanded
                 });
         });
 </script>
