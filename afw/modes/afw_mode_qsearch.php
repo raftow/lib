@@ -388,7 +388,7 @@ if ($qsearch_page_title) {
 
 AfwMainPage::addOutput("<div id='page-content-wrapper' class='qsearch_page'>
                 <div class='row row-filter-$cl_short'>
-                        <div class='qfilter col-sm-10 col-md-10 pb10'>");
+                        <div id='qfilter' class='qfilter col-sm-10 col-md-10 pb10'>");
 
 AfwMainPage::addOutput("<div class=\"expand collapsed\" data-toggle=\"collapse\" data-target=\"form-container\">");
 AfwMainPage::addOutput("<h1>$page_title</h1>");
@@ -605,7 +605,7 @@ AfwMainPage::addOutput("<div class='btn-group' role='group' aria-label='...'>
 ");
 AfwMainPage::addOutput("   
                 </form>
-                </div> <-- form-container -->
+                </div> <!-- form-container -->
                 <script>
                                                 \$( function() {
                                                 \$(\"#qfilter\").accordion({
