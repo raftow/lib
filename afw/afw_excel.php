@@ -322,7 +322,7 @@ class AfwExcel
 			$style = $sheet->getStyle($all_header_rows);
 			$style->applyFromArray($headerStyle);
 
-			$mstyle = $sheet->getStyle($myHeaderStyle);
+			$mstyle = $sheet->getStyle($my_header_rows);
 			$mstyle->applyFromArray($myHeaderStyle);
 
 			if (!$bigHeaderStyle) {
