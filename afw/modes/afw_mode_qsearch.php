@@ -605,7 +605,16 @@ AfwMainPage::addOutput("<div class='btn-group' role='group' aria-label='...'>
 ");
 AfwMainPage::addOutput("   
                 </form>
-                </div> <-- form container -->");
+                </div> <-- form-container -->
+                <script>
+                                                \$( function() {
+                                                \$(\"#form-container\").accordion({
+                                                collapsible: true
+                                                });
+                                                } );
+                                        </script>
+                
+                ");
 AfwMainPage::addOutput("</center>");
 AfwMainPage::addOutput('');
 
