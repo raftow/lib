@@ -1290,6 +1290,11 @@ h1.modal-title {
     background-color: transparent !important;
 }
 
+.qfilter-header.ui-accordion-header {
+    background-color: transparent !important;
+    border-bottom: none !important;
+}
+
 div.dataTables_filter {
     width: 450px;
 }

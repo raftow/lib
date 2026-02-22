@@ -390,7 +390,7 @@ AfwMainPage::addOutput("<div id='page-content-wrapper' class='qsearch_page'>
                 <div class='row row-filter-$cl_short'>
                         <div id='qfilter' class='qfilter col-sm-10 col-md-10 pb10'>");
 
-AfwMainPage::addOutput("<div class=\"expand collapsed\" data-toggle=\"collapse\" data-target=\"form-container\">");
+AfwMainPage::addOutput("<div class=\"qfilter-header\">");
 AfwMainPage::addOutput("<h1>$page_title</h1>");
 if ($page_sub_title) {
         AfwMainPage::addOutput("<h2>$page_sub_title</h2>");
