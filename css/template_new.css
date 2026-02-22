@@ -881,7 +881,7 @@ div.messages--warning>div.timer {
 }
 
 div.qfilter h1 {
-    font-size: 140%;
+    font-size: 22px !important;
     font-weight: normal;
     text-align: center;
     padding-bottom: 15px;
