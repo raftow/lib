@@ -67,9 +67,9 @@ if (($session_previous_search) and (!$datatable_on)) {
         }
 
         if (!$datatable_off) $datatable_on = 1;
-
-        $collapse_show = 'false';
 }
+
+if (count($_POST) > 0) $collapse_show = 'false';
 /*
 if ($_POST and ($cl == "WorkflowRequest")) {
         die("DBG-_POST=" . var_export($_POST, true));
