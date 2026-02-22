@@ -51,6 +51,7 @@ if ($session_previous_search and ($cl == "WorkflowRequest")) {
 }
 */
 
+$collapse_show = 'true';
 
 if (($session_previous_search) and (!$datatable_on)) {
         /*if ($session_previous_search and ($cl == "WorkflowRequest")) {
@@ -66,6 +67,8 @@ if (($session_previous_search) and (!$datatable_on)) {
         }
 
         if (!$datatable_off) $datatable_on = 1;
+
+        $collapse_show = 'false';
 }
 /*
 if ($_POST and ($cl == "WorkflowRequest")) {
@@ -620,7 +623,8 @@ AfwMainPage::addOutput("</div>
 <script>
         \$( function() {
         \$(\"#qfilter\").accordion({
-                collapsible: true
+                collapsible: true, 
+                active: $collapse_show
                 });
         });
 </script>
