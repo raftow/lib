@@ -690,7 +690,7 @@ col-3 {
 input,
 select,
 textarea {
-	font-family: inherit;
+	font-family: title;
 	font-size: inherit;
 	line-height: inherit;
 }
@@ -699,7 +699,7 @@ textarea {
 .ui-widget select,
 .ui-widget textarea,
 .ui-widget button {
-	font-family: inherit !important;
+	font-family: title !important;
 	font-size: 1em;
 }
 
