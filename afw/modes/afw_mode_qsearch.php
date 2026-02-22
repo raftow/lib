@@ -177,6 +177,12 @@ $plural_obj_name_short =  $myClassInstance->transClassPlural($lang, true, true);
 $single_obj_name =  $myClassInstance->transClassSingle($lang);
 
 
+if ($instanceOptions) {
+        foreach ($instanceOptions as $instanceOption => $instanceOptionValue)
+                $myClassInstance->$instanceOption = $instanceOptionValue;
+}
+
+
 $out_scr_btns = "";
 if ($datatable_on) {
         $btns_total = 0;
@@ -469,10 +475,6 @@ if ($specialStructure) {
         $myClassInstance->specialStructure = $specialStructure;
 }
 
-if ($instanceOptions) {
-        foreach ($instanceOptions as $instanceOption => $instanceOptionValue)
-                $myClassInstance->$instanceOption = $instanceOptionValue;
-}
 
 
 
