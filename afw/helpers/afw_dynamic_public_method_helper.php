@@ -109,9 +109,9 @@ class AfwDynamicPublicMethodHelper
             }
             $methodConfirmationNeeded = $publicDynamicMethodProps["confirmation_needed"];
             $methodConfirmationWarning = $object->decodeTpl($publicDynamicMethodProps['confirmation_warning']);
-            $methodConfirmationWarningEn = $object->decodeTpl(AfwLanguageHelper::tt($publicDynamicMethodProps['confirmation_warning']), 'en');
+            $methodConfirmationWarningEn = $object->decodeTpl(AfwLanguageHelper::tt($publicDynamicMethodProps['confirmation_warning'], 'en', $object->getMyModule()));
             $methodConfirmationQuestion = $object->decodeTpl($publicDynamicMethodProps['confirmation_question']);
-            $methodConfirmationQuestionEn = $object->decodeTpl(AfwLanguageHelper::tt($publicDynamicMethodProps['confirmation_question']), 'en');
+            $methodConfirmationQuestionEn = $object->decodeTpl(AfwLanguageHelper::tt($publicDynamicMethodProps['confirmation_question'], 'en', $object->getMyModule()));
 
             $pbmDynItem = array(
                 'METHOD' => $methodName,
@@ -133,7 +133,7 @@ class AfwDynamicPublicMethodHelper
                 'PUBLISHED' => $published,
 
                 'BF-ID' => '',
-                'confirmation_needed' => $methodConfirmationNeeded,
+                'CONFIRMATION_NEEDED' => $methodConfirmationNeeded,
                 'CONFIRMATION_WARNING' => array('ar' => $methodConfirmationWarning, 'en' => $methodConfirmationWarningEn),
                 'CONFIRMATION_QUESTION' => array('ar' => $methodConfirmationQuestion, 'en' => $methodConfirmationQuestionEn),
             );

@@ -96,13 +96,13 @@ foreach($class_db_structure as $nom_col => $desc)
  
 
 
-<? 
+<?php 
    $qsearch_by_text_cols = [];
    
    if(true)
    {        
 ?>   
-	<? 
+	<?php 
              $numFiltre = 0;
              $xFiltre = 0;
              $colFiltre = 0;
@@ -134,7 +134,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                         <?php echo "<!-- start input -->".$info["input"]."<!-- end input start oper-->".$info["oper"]."<!-- end oper-->";?>
                                 </div>
                         </div>
-        	<? 
+        	<?php 
                         $need_to_close_div = true;// false;
                         $totqsize += $qsize;
                         if($totqsize>=12)
@@ -144,7 +144,7 @@ foreach($class_db_structure as $nom_col => $desc)
                 ?>
 </div>
 <div class="row-sfilter row row-buttons">                
-                <?                           
+                <?php                           
                         }
                 } 
              }
@@ -153,14 +153,14 @@ foreach($class_db_structure as $nom_col => $desc)
               {
 ?>
 
-<?
+<?php
               }
    }
    else
    {
 ?>
          
-<?
+<?php
    }
    
 

@@ -22,7 +22,7 @@ class AfwFileSystem {
     }
 
     // @todo rewrite from scratch
-    public static function write($file_target, $content = '', $append = 'erase', $create_folder=false) 
+    public static function write($file_target, $content = '', $append = 'erase', $create_folder=false, $encoding="UTF-8") 
     {
         $file = self::path($file_target);
         $folder = self::folderOf($file_target); 
@@ -39,6 +39,8 @@ class AfwFileSystem {
         {
             throw new AfwRuntimeException("the file $file exists but no permission read/write on it : $file = self :: path($file_target)");
         }
+
+        if($encoding) $content = mb_convert_encoding($content, $encoding);
 
         switch ($append) {
             case 'append':

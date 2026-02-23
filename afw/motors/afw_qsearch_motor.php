@@ -6,7 +6,7 @@ class AfwQsearchMotor
 		$type_input_ret = "hidden";
 ?>
 		<input type="hidden" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-		<?
+<?php
 		return $type_input_ret;
 	}
 

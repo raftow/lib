@@ -254,6 +254,7 @@ class AfwHtmlHelper extends AFWRoot
                 $theme = $pbm_item['THEME'];
                 if (!$theme) $theme = "default";
                 $condition = $pbm_item['CONDITION'];
+                if(!$pbm_item['LOG']) $pbm_item['LOG'] = "";
                 if ($condition) {
                         $show_pbm = $obj->$condition();
                         if ($show_pbm) $pbm_item['LOG'] .= " > $condition applied successfully";
@@ -270,6 +271,7 @@ class AfwHtmlHelper extends AFWRoot
                         if ((!$pbm_item["STEP2"]) or ($obj->currentStep != $pbm_item["STEP2"])) {
                                 if ((!$pbm_item["STEPS"]) or (!in_array($obj->currentStep, $pbm_item["STEPS"]))) {
                                         $show_pbm = false;
+                                        $pbm_item['LOG'] .= " Step is not applicable";
                                 }
                         }
                 }

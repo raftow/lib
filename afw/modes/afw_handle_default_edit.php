@@ -254,7 +254,7 @@ if ($_POST["pbmon"]) {
                     $confirmation_warning = $pMethodItem["CONFIRMATION_WARNING"][$lang];
                     $confirmation_question = $pMethodItem["CONFIRMATION_QUESTION"][$lang];
 
-                    // die("confirmation_warning=$confirmation_warning , confirmation_question=$confirmation_question, pMethodItem=".var_export($pMethodItem,true));
+                    // if($objme->id==1) die("debugg the pbm messages : confirmation_warning=$confirmation_warning , confirmation_question=$confirmation_question, pMethodItem=".var_export($pMethodItem,true));
                     include("afw_mode_confirm.php");
                     $header_bloc_edit .= $confirm_html;
                 } elseif ($_POST["pbmconfirm-$pbMethodCode"]) {

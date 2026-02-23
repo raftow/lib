@@ -6584,4 +6584,24 @@ class AFWObject extends AFWRoot
         if (AfwStringHelper::stringStartsWith($col, "cross_col")) return "stats_cross_col";
         else return 'stats_cross_row';
     }
+
+    public function executeItemsMethod($itemsMethod)
+    {
+        if ($itemsMethod) {
+            if (!isset($this->itemsMethodExec[$itemsMethod])) {
+                $itemsList = $this->$itemsMethod();
+                if (!$itemsList) {
+                    $itemsList = array();
+                }
+                $this->itemsMethodExec[$itemsMethod] = $itemsList;
+            }
+        } else {
+            $itemsList = array();
+            $itemsList["none"] = array('ar' => "none", 'en' => "none");
+            $this->itemsMethodExec[$itemsMethod] = $itemsList;
+        }
+
+
+        return $this->itemsMethodExec[$itemsMethod];
+    }
 }
