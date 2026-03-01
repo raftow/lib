@@ -880,8 +880,8 @@ div.messages--warning>div.timer {
     border: none !important;
 }
 
-div.qfilter>h1 {
-    font-size: 140%;
+div.qfilter h1 {
+    font-size: 22px !important;
     font-weight: normal;
     text-align: center;
     padding-bottom: 15px;
@@ -1284,6 +1284,15 @@ h1.modal-title {
 
 .ui-accordion .ui-accordion-header {
     border: 1px solid #c0c0c070 !important;
+}
+
+.ui-accordion .qfilter.ui-accordion-header {
+    background-color: transparent !important;
+}
+
+.qfilter-header.ui-accordion-header {
+    background-color: transparent !important;
+    border-bottom: none !important;
 }
 
 div.dataTables_filter {

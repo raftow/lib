@@ -773,6 +773,14 @@ class AFWObject extends AFWRoot
         return AfwSqlHelper::aggregFunction($obj, $function, $group_by, $throw_error, $throw_analysis_crash);
     }
 
+
+    public static function loadListeWhere($where, $limit = '', $order_by = '')
+    {
+        $obj = new static();
+        $obj->where($where);
+        return self::loadListe($obj, $limit, $order_by);
+    }
+
     public static function loadRecords($where, $limit = '', $order_by = '')
     {
         $obj = new static();
@@ -1067,12 +1075,12 @@ class AFWObject extends AFWRoot
         return '';
     }
 
-    final public function getSearchWhereOfAttribute($field_name, $desc=null)
+    final public function getSearchWhereOfAttribute($field_name, $desc = null)
     {
         $where_att = $this->getSpecialSearchWhereOfAttribute($field_name);
 
         if (!$where_att) {
-            if(!$desc) $desc = AfwStructureHelper::getStructureOf($this, $field_name);
+            if (!$desc) $desc = AfwStructureHelper::getStructureOf($this, $field_name);
             if (!isset($desc['WHERE-SEARCH'])) {
                 $where_att = $this->getWhereOfAttribute($field_name, $desc);
             } else {
@@ -1084,11 +1092,11 @@ class AFWObject extends AFWRoot
         return $where_att;
     }
 
-    final public function getWhereOfAttribute($field_name, $struct=null)
+    final public function getWhereOfAttribute($field_name, $struct = null)
     {
         $where_att = $this->getSpecialWhereOfAttribute($field_name);
         if (!$where_att) {
-            if(!$struct) $struct = AfwStructureHelper::getStructureOf($this, $field_name);
+            if (!$struct) $struct = AfwStructureHelper::getStructureOf($this, $field_name);
             $where_att = $struct['WHERE'];
         }
 

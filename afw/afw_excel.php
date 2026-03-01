@@ -91,7 +91,8 @@ class AfwExcel
 		$dataStyle = null,
 		$data_align = "right",
 		$altern_color = "EEEEEE",
-		$big_header_color = "002299"
+		$big_header_color = "666666",
+		$myHeaderStyle = null
 	) {
 		$objme = AfwSession::getUserConnected();
 
@@ -138,7 +139,7 @@ class AfwExcel
 			throw new AfwRuntimeException('too much cols in header_excel=' . var_export($header_excel));
 		}
 
-		$all_header_rows = 'A1:' . $last_letter . '3';
+		$all_header_rows = 'A1:' . $last_letter . '2';
 		if (!$headerStyle) $headerStyle = [
 			// (C1) FONT
 			"font" => [
@@ -191,7 +192,74 @@ class AfwExcel
 			"fill" => [
 				// SOLID FILL
 				"fillType" => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
-				"color" => ["rgb" => "000000"], // argb possible
+				"color" => ["rgb" => "FFFFFF"], // argb possible
+
+				/*  GRADIENT FILL
+			  "fillType" => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
+			  "rotation" => 90,
+			  "startColor" => [
+				"argb" => "FF000000",
+			  ],
+			  "endColor" => [
+				"argb" => "FFFFFFFF",
+			  ]*/
+			]
+		];
+
+		$my_header_rows = 'A3:' . $last_letter . '3';
+		if (!$myHeaderStyle) $myHeaderStyle = [
+			// (C1) FONT
+			"font" => [
+				"bold" => true,
+				"italic" => false,
+				"underline" => false,
+				"strikethrough" => false,
+				"color" => ["rgb" => "FFFFFF"], // argb possible
+				"name" => "Calibri",
+				"size" => 18
+			],
+
+			// (C2) ALIGNMENT
+			"alignment" => [
+				"horizontal" => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+				// \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT
+				// \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER
+				"vertical" => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+				// \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_TOP
+				// \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER
+			],
+
+			// (C3) BORDER
+			/*
+			"borders" => [
+			  "top" => [
+				"borderStyle" => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+				"color" => ["argb" => "FFFF0000"]
+			  ],
+			  "bottom" => [
+				"borderStyle" => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+				"color" => ["argb" => "FF00FF00"]
+			  ],
+			  "left" => [
+				"borderStyle" => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_MEDIUM,
+				"color" => ["argb" => "FF0000FF"]
+			  ],
+			  "right" => [
+				"borderStyle" => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
+				"color" => ["argb" => "FF0000FF"]
+			  ]
+			   ALTERNATIVELY, THIS WILL SET ALL
+			  "outline" => [
+				"borderStyle" => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THICK,
+				"color" => ["argb" => "FFFF0000"]
+			  ]
+			],*/
+
+			// (C4) FILL
+			"fill" => [
+				// SOLID FILL
+				"fillType" => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
+				"color" => ["rgb" => "666666"], // argb possible
 
 				/*  GRADIENT FILL
 			  "fillType" => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_GRADIENT_LINEAR,
@@ -253,6 +321,9 @@ class AfwExcel
 		if ($addBigHeader) {
 			$style = $sheet->getStyle($all_header_rows);
 			$style->applyFromArray($headerStyle);
+
+			$mstyle = $sheet->getStyle($my_header_rows);
+			$mstyle->applyFromArray($myHeaderStyle);
 
 			if (!$bigHeaderStyle) {
 				$bigHeaderStyle = $headerStyle;

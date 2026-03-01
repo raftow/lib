@@ -3160,6 +3160,7 @@ screen and (max-width: 660px) {
 .hzm_data.form-control.inputreadonly {
     padding-top: 10px !important;
     font-size: 100% !important;
+    font-family: title;
 }
 
 .form-group {
@@ -3170,6 +3171,17 @@ screen and (max-width: 660px) {
 .object_status_err.hzm_label.greentitle.expand.collapsed {
     color: #d01313 !important;
     font-weight: bold !important;
+}
+
+.ui-accordion-header {
+    color: #8e0928 !important;
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 22px;
+    background-image: url(../../lib/images/collapse16.png) !important;
+    background-attachment: scroll !important;
+    background-repeat: no-repeat !important;
+    background-position: 25px 25px !important;
 }
 
 .ui-accordion-header.ui-accordion-header-collapsed {

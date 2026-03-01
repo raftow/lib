@@ -10,6 +10,7 @@ foreach ($themeArr as $theme => $themeValue) {
 $images = AfwThemeHelper::loadTheme();
 
 if (!$objme) $objme = AfwSession::getUserConnected();
+$me =  $objme->id;
 
 $MAX_ROW_DEFAULT = AfwSession::config("MAX_ROW", 500);
 $MAX_ROW = AfwSession::config("MAX_ROW-$cl", $MAX_ROW_DEFAULT);
@@ -60,6 +61,7 @@ if (count($header_retrieve) == 0) {
 
 if ($genere_xls) {
         $header_excel = AfwUmsPagHelper::getExportExcelHeader($obj, $lang, $forced_retrieve_cols, $hide_retrieve_cols);
+        // die("header_excel = " . var_export($header_excel, true));
 }
 
 
@@ -190,7 +192,7 @@ if ($genere_xls) {
         AfwSession::log("Before execute getRetrieveDataFromObjectList for excel generation in afw_handle_default_search");
         list($data_excel, $isAvail_excel) = AfwLoadHelper::getRetrieveDataFromObjectList($liste_obj, $header_excel, $lang, $newline = "\n", false, true);
         AfwSession::log("After execute getRetrieveDataFromObjectList for excel generation in afw_handle_default_search");
-        //die("header_excel =".var_export($header_excel,true)." data_excel = ".var_export($data_excel,true));
+        // die("header_excel =" . var_export($header_excel, true) . " data_excel = " . var_export($data_excel, true));
 }
 
 
@@ -605,7 +607,7 @@ if (true) {
 }
 $link = "";
 if ($genere_xls) {
-        $link = AfwExcel::genereExcel($header_excel, $data_excel, $xls_page_title = 'نتائج البحث', "search-result-" . date("YmdHis"), true, "purelink");
+        $link = AfwExcel::genereExcel($header_excel, $data_excel, $xls_page_title = 'نتائج البحث', "search-result-$cl-$me-" . date("YmdHis"), true, "purelink");
 }
 
 
