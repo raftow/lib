@@ -1,7 +1,7 @@
 <?php
 class AfwSqlHelper extends AFWRoot
 {
-    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isNoEmptyString = [], $isDate = [], $isDatetime = [], $isMandatory = [], $datetimeformat = 'MM/DD/YYYY HH24:MI', $dateformat = 'MM/DD/YYYY', $specialFields=[])
+    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isToSetNullWhenEmptyString = [], $isDate = [], $isDatetime = [], $isMandatory = [], $datetimeformat = 'MM/DD/YYYY HH24:MI', $dateformat = 'MM/DD/YYYY', $specialFields = [])
     {
         $errors = [];
         $my_row_cols = array_keys($my_row);
@@ -11,19 +11,29 @@ class AfwSqlHelper extends AFWRoot
         $pk_cols_where = "1=1\n";
         foreach ($tableColsArr as $row_col) {
             $specialDescFound = "";
-            foreach($specialFields as $specialDesc => $specialArr) {
-                if($specialArr[$row_col]) $specialDescFound .= $specialDesc.",";
+            foreach ($specialFields as $specialDesc => $specialArr) {
+                if ($specialArr[$row_col]) $specialDescFound .= $specialDesc . ",";
             }
             $row_val = trim($my_row[$row_col]);
             $old_row_val = $row_val;
-            if ($isNoEmptyString[$row_col] and (!$row_val or (strtoupper($row_val) == 'NULL')))
+            if ($isToSetNullWhenEmptyString[$row_col] and (!$row_val or (strtoupper($row_val) == 'NULL')))
                 $row_val_string = 'null';
-            elseif ($isDatetime[$row_col])
+            elseif ($isDatetime[$row_col]) {
+                list($dateformat_tmp, $timeformat_tmp) = explode(' ', $datetimeformat);
+                list($row_val_date, $row_val_time) = explode(' ', $row_val);
+                if (!AfwDateHelper::checkDateFormat($row_val_date, $dateformat_tmp,true)) {
+                    $errors[] = "$row_col is Datetime field, value=[$row_val_date] does not match date format $dateformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."]";
+                } elseif (!AfwDateHelper::checkTimeFormat($row_val_time, $timeformat_tmp,true)) {
+                    $errors[] = "$row_col is Datetime field, value=[$row_val_time] does not match time format $timeformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."]";
+                } 
                 $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
-            elseif ($isDate[$row_col])
+            } elseif ($isDate[$row_col]) {
+                if (!AfwDateHelper::checkDateFormat($row_val, $dateformat,true)) {
+                    $errors[] = "$row_col is Date field, value=[$row_val] does not match date format $dateformat canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."]";
+                }
                 $row_val_string = "TO_DATE('$row_val', '$dateformat')";
-            else {
-                if(strtoupper($row_val) == 'NULL') $row_val_cleaned = "";
+            } else {
+                if (strtoupper($row_val) == 'NULL') $row_val_cleaned = "";
                 else $row_val_cleaned = str_replace("'", "''", $row_val);
                 $row_val_string = "'$row_val_cleaned'";
             }
@@ -35,10 +45,10 @@ class AfwSqlHelper extends AFWRoot
 
 
             if ($isScalarCol[$row_col] and !is_numeric($row_val) and (strtolower(trim($row_val)) != 'null')) {
-                $errors[] = "$row_col is Numeric field, value=[$row_val=".var_export($old_row_val)."] is not numeric";
+                $errors[] = "$row_col is Numeric field, value=[$row_val=" . var_export($old_row_val) . "] is not numeric";
             }
 
-            if (!$isPKCol[$row_col]) {                
+            if (!$isPKCol[$row_col]) {
                 $row_val_is_null = ((!$row_val) and
                     ($row_val !== 0) and
                     ($row_val !== 0.0) and ($row_val !== '0') and ($row_val !== '0.0'));

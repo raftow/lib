@@ -3626,6 +3626,12 @@ class AFWObject extends AFWRoot
         return $this->getDefaultDisplay($lang);
     }
 
+    public function getDisplayForUser($lang = 'ar', $auser=null)
+    {
+        if($auser and $auser->isSuperAdmin()) return $this->getDisplay($lang);
+        else return $this->getShortDisplay($lang);
+    }
+
     final public function initDISPLAY_FIELD($lang = '')
     {
         if ((!$this->DISPLAY_FIELD) and isset($this->DISPLAY_FIELD_BY_LANG)) {

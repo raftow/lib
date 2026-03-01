@@ -3057,8 +3057,9 @@ class AfwShowHelper
             // die($this->getDisplay($lang)." AfwShowHelper::manyMiniBoxes showed [for $ids, public_show=$public_show] : ".$data_to_display." report=$report");
         }
 
-        if ($data_to_display == '') {
-            $data_to_display = AfwFormatHelper::getItemsEmptyMessage($object, $structure, $lang);
+        if (!$data_to_display) {
+            if($structure) $data_to_display = AfwFormatHelper::getItemsEmptyMessage($object, $structure, $lang);
+            else return "<!-- empty minibox -->";
         }
 
         return $data_to_display;

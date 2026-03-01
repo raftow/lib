@@ -563,7 +563,7 @@ class AfwSession extends AFWRoot
 
         public static function companiesList()
         {
-                return AfwSession::config("companies", ["uoh", "nauss"]);
+                return AfwSession::config("companies", ["company-1", "company-2", "etc"]);
         }
 
         public static function currentCompany()

@@ -1209,6 +1209,50 @@ class AfwDateHelper
         return $hdate;
     }
 
+    public static function oracleToPhpDatetimeFormat($oracle_format)
+    {
+        $format = str_replace('YYYY', 'Y', $oracle_format);
+        $format = str_replace('MM', 'm', $format);
+        $format = str_replace('DD', 'd', $format);
+        $format = str_replace('HH24', 'H', $format);
+        $format = str_replace('MI', 'i', $format);
+        $format = str_replace('SS', 's', $format);
+        return $format;
+    }
+
+    public static function phpToOracleDatetimeFormat($oracle_format)
+    {
+        $format = str_replace('Y', 'YYYY', $oracle_format);
+        $format = str_replace('m', 'MM', $format);
+        $format = str_replace('d', 'DD', $format);
+        $format = str_replace('H', 'HH24', $format);
+        $format = str_replace('i', 'MI', $format);
+        $format = str_replace('s', 'SS', $format);
+
+        return $format;
+    }
+
+    public static function checkDateFormat($gdate, $format, $oracle=false)
+    {
+        if($oracle) {
+            $format = self::oracleToPhpDatetimeFormat($format);
+        }
+        $d = DateTime::createFromFormat($format, $gdate);
+        return $d && $d->format($format) === $gdate;
+    }
+
+
+    public static function checkTimeFormat($time, $format, $oracle=false)
+    {
+        if($oracle) {
+            $format = self::oracleToPhpDatetimeFormat($format);
+        }
+        $dtime = "01/25/2000 $time";
+        $dtformat = "m/d/Y $format";
+        $d = DateTime::createFromFormat($dtformat, $dtime);
+        return $d && $d->format($dtformat) === $dtime;
+    }
+
 
     public static function repareGorbojGregDate($gdate)
     {
