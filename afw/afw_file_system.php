@@ -146,7 +146,10 @@ class AfwFileSystem {
     }
 
     public static function exists($file) {
-        return file_exists(self::path($file));
+        $file_cleaned = self::path($file);
+        $return = file_exists($file_cleaned);
+        // if(!$return and AfwStringHelper::stringContain($file_cleaned,"tvtc_user_")) die("rafik stopped this at 2 Mars 2026 $file_cleaned doesn't exists");
+        return $return;
     }
 
     public static function folderExists($folder) {

@@ -116,7 +116,9 @@ $messages["Password has been resetted. The new password has been sent by"] = "ت
 $messages["to"] = "إلى";
 $messages["The system seems has refused this insert operation"] = "يبدو أن النظام قد رفض عملية الإدخال هذه";
 
+$messages["support & help"] = "الدعم والمساعدة";
+$messages["This page is under construction"] = "هذه الصفحة قيد الإنشاء";
 // 
-// $messages[""] = "";
+// 
 // $messages[""] = "";
 // $messages[""] = "";

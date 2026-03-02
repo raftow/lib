@@ -11,15 +11,14 @@ class AfwQeditMotor {
 
     public static function type_input($col_name, $desc, $val, &$obj, $separator, $data_loaded = false, $force_css = "", $qedit_orderindex = 0, $data_length_class_default_for_fk = "inputmoyen")
     {
-        global $Main_Page, $_GET, $_POST, $mode_hijri_edit, $objme;
-
         $lang = AfwLanguageHelper::getGlobalLanguage();
-
         $development_mode = AfwSession::config("MODE_DEVELOPMENT", false);
+
+        $objme = AfwSession::getUserConnected();
 
         $mode_qedit = true;
 
-        if (!$Main_Page) $Main_Page = $_GET["Main_Page"];
+        $Main_Page = $_GET["Main_Page"];
         if (!$Main_Page) $Main_Page = $_POST["Main_Page"];
 
         // die("qed motor Main_Page = $Main_Page");
@@ -130,7 +129,7 @@ class AfwQeditMotor {
                 if ((!$auto_c) and ($list_count <= $LIMIT_INPUT_SELECT)) {
 
                     $obj_className = $obj->getMyClass();
-                    if ($development_mode or $objme->isAdmin()) echo "<!-- for ($obj_className).$col_name : [$objRep] -> loadMany FollowingStructureAndValue($col_name, $desc,$val, $obj) -->";
+                    if ($development_mode or ($objme and $objme->isAdmin())) echo "<!-- for ($obj_className).$col_name : [$objRep] -> loadMany FollowingStructureAndValue($col_name, $desc,$val, $obj) -->";
                     //list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj);
                     $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
                     $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
