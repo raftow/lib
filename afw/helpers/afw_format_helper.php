@@ -664,6 +664,10 @@ class AfwFormatHelper
         return [$formatted, $data_to_display, $link_to_display];
     }
 
+    /**
+     * @param AFWObject $object
+     */
+
     final public static function getItemsEmptyMessage(&$object, $structure, $lang = 'ar')
     {
         if ($structure['EMPTY-ITEMS-MESSAGE']) {
@@ -671,7 +675,11 @@ class AfwFormatHelper
         } else {
             $empty_code = 'obj-empty';
         }
-        return "<div class='empty_message'>" . $object->translate($empty_code, $lang) . '</div>';
+        $empty_message = $object->translate($empty_code, $lang);
+        if(!$empty_message or ($empty_message == $empty_code)) {
+            $empty_message = $object->tm($empty_code, $lang);
+        }
+        return "<div class='empty_message'>" . $empty_message . '</div>';
     }
 
     public static function getEnumVal(&$object, $attribute, $field_value)

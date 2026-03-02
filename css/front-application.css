@@ -3174,10 +3174,10 @@ screen and (max-width: 660px) {
 }
 
 .ui-accordion-header {
-    color: #8e0928 !important;
+    color: #09378e !important;
     text-decoration: none;
     font-weight: normal;
-    font-size: 22px;
+    font-size: 18px;
     background-image: url(../../lib/images/collapse16.png) !important;
     background-attachment: scroll !important;
     background-repeat: no-repeat !important;
@@ -3185,10 +3185,10 @@ screen and (max-width: 660px) {
 }
 
 .ui-accordion-header.ui-accordion-header-collapsed {
-    color: #8e0928 !important;
+    color: #09378e !important;
     text-decoration: none;
     font-weight: normal;
-    font-size: 22px;
+    font-size: 18px;
     background-image: url(../../lib/images/collapse16.png) !important;
     background-attachment: scroll !important;
     background-repeat: no-repeat !important;

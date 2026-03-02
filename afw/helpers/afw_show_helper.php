@@ -2113,9 +2113,14 @@ class AfwShowHelper
                                 $empty_code = 'atr-empty';
                             }
 
+                            $empty_message = $object->translate($empty_code, $lang);
+                            if(!$empty_message or ($empty_message == $empty_code)) {
+                                $empty_message = $object->tm($empty_code, $lang);
+                            }
+
                             $data_to_display =
                                 "<div class='empty_message'>"
-                                . $object->translate($empty_code, $lang)
+                                . $empty_message
                                 . '</div>';
                         } else {
                             $data_to_display =
@@ -2300,13 +2305,12 @@ class AfwShowHelper
                                     $empty_code = 'atr-empty';
                                 }
 
-                                $html_display[$group_retieve] =
-                                    "<div class='empty_message'>"
-                                    . $object->translate(
-                                        $empty_code,
-                                        $lang
-                                    )
-                                    . '</div>';
+                                $empty_message = $object->translate($empty_code, $lang);
+                                if(!$empty_message or ($empty_message == $empty_code)) {
+                                    $empty_message = $object->tm($empty_code, $lang);
+                                }
+
+                                $html_display[$group_retieve] = "<div class='empty_message'>$empty_message</div>";
                             }
                         }
 
@@ -2408,10 +2412,12 @@ class AfwShowHelper
                             $empty_code = 'atr-empty';
                         }
 
-                        $data_to_display =
-                            "<div class='empty_message'>"
-                            . $object->translate($empty_code, $lang)
-                            . '</div>';
+                        $empty_message = $object->translate($empty_code, $lang);
+                        if(!$empty_message or ($empty_message == $empty_code)) {
+                            $empty_message = $object->tm($empty_code, $lang);
+                        }
+
+                        $data_to_display = "<div class='empty_message'>$empty_message</div>";
                     }
                 } elseif (strtoupper($structure['FORMAT']) == 'CUSTOM') {
                     $methodCustom = $structure['CUSTOM_FORMAT'];
@@ -2453,10 +2459,12 @@ class AfwShowHelper
                             $empty_code = 'atr-empty';
                         }
 
-                        $data_to_display =
-                            "<div class='empty_message'>"
-                            . $object->translate($empty_code, $lang)
-                            . '</div>';
+                        $empty_message = $object->translate($empty_code, $lang);
+                        if(!$empty_message or ($empty_message == $empty_code)) {
+                            $empty_message = $object->tm($empty_code, $lang);
+                        }
+
+                        $data_to_display = "<div class='empty_message'>$empty_message</div>";
                     }
                 } else {
                     $data_to_display = '';
