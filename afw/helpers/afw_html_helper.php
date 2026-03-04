@@ -209,7 +209,7 @@ class AfwHtmlHelper extends AFWRoot
                 $swal_title = str_replace('"', "'", $swal_title);
                 $swal_text = str_replace('"', "'", $swal_text);
                 if (!$obj) return "NO-OBJECT-FOR-API-BUTTON";
-                $id = $obj->id;
+                $id = $obj->getJsId();
                 $afwClass = get_class($obj);
                 $module = $obj->getMyModule();
                 // title / tooltip or help

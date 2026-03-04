@@ -64,7 +64,9 @@ if ($genere_xls) {
         // die("header_excel = " . var_export($header_excel, true));
 }
 
-
+if($show_checkboxes and $obj) {
+        $header_retrieve["id"] = $obj->translate("id",$lang);
+}
 
 
 //AFWDebugg::print_str('fin for each '.__LINE__);

@@ -783,7 +783,11 @@ class AfwPrevilegeHelper
     public static final function isQSearchCol($object, $attribute, $desc = '')
     {
         // $objme = AfwSession::getUserConnected();
-        if (!$object->attributeIsApplicable($attribute)) return false;
+        // @todo : this rule below is commented until review
+        // this below rule should be reviewed because $object for Qsearch form is empty object and some attributes can be 
+        // non applicable for empty object but any way we can search in database of filled objects
+        // if (!$object->attributeIsApplicable($attribute)) return false;
+        
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
@@ -807,6 +811,42 @@ class AfwPrevilegeHelper
         $return = ($is_searchable and $is_qsearchable);
 
         return $return;
+    }
+
+    public static final function isNotQSearchColReason($object, $attribute, $desc = '')
+    {
+        // $objme = AfwSession::getUserConnected();
+        
+        // @todo : this rule below is commented until review
+        // this below rule should be reviewed because $object for Qsearch form is empty object and some attributes can be 
+        // non applicable for empty object but any way we can search in database of filled objects
+        // if (!$object->attributeIsApplicable($attribute)) return 'is not applicable';
+        
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        } else {
+            $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
+        }
+        $is_searchable = AfwPrevilegeHelper::isSearchCol($object, $attribute, $desc);
+        if(!$is_searchable) return 'is not searchable column';
+        $can_qsearch =
+            ($desc['QSEARCH'] or
+                !isset($desc['QSEARCH']) and $desc['SEARCH-BY-ONE']);
+
+        if(!$can_qsearch) return 'is not defined as quick searchable column';        
+        $is_qsearchable =
+            (($desc['TYPE'] == 'PK' or
+                    $desc['TYPE'] == 'FK' or
+                    $desc['TYPE'] == 'ENUM' or
+                    $desc['TYPE'] == 'YN' or
+                    $desc['TYPE'] == 'DATE' // or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
+                )
+                    or
+                    $desc['TEXT-SEARCHABLE-SEPARATED']);
+        if(!$is_qsearchable) return 'column type is not simple quick searchable & is not text-searchable separately';        
+        
+
+        return 'should be qseach column (may be isNotQSearchColReason method has not been synched with isSearchCol method)';
     }
 
 

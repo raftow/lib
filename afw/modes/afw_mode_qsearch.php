@@ -218,8 +218,10 @@ if ($datatable_on) {
         $btns_total += $btns_display["qedit-result"];
 
 
-
-
+        $rpbm_list = $myClassInstance->retriveModePublicMethodsForUser($objme);
+        $btns_display["rpbm"] = (count($rpbm_list)>0);
+        
+        $show_checkboxes = $btns_display["rpbm"];
 
         $out_scr_btns .= "<div class='btns-qsearch'>";
 
@@ -282,6 +284,31 @@ if ($datatable_on) {
         }
 
 
+        if ($btns_display["rpbm"]) { // retrieve mode public method block execute
+                $langUp = strtoupper($lang);
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-' . $btns_total . '-btn-' . $btn_num . '" style="">';                
+                $out_scr_btns .= '<form name="rpbmForm" id="rpbmForm" method="post" action="' . "main.php" . '">';
+                $out_scr_btns .= '<input type="hidden" name="ids"  value=""/>';
+                $out_scr_btns .= '<input type="hidden" name="cl" value="' . $cl . '"/>';
+                $out_scr_btns .= '<input type="hidden" name="currmod" value="' . $currmod . '"/>';
+                $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_rpbm.php"/>';
+                $out_scr_btns .= AfwShowHelper::showObject($myClassInstance, "HTML", "afw_hidden_search_criteria.php");
+                foreach($rpbm_list as $rpbm_item_code => $rpbm_item) {                        
+                        $rpbm_item_method = $rpbm_item['METHOD'];
+                        if($rpbm_item_method) {
+                                $rpbm_item_title_ar = $rpbm_item['LABEL_AR'];
+                                $rpbm_item_title = $rpbm_item['LABEL_'.$langUp];
+                                if(!$rpbm_item_title) $rpbm_item_title = $rpbm_item_title_ar;
+                                if(!$rpbm_item_title) $rpbm_item_title = $rpbm_item_method;
+                                $out_scr_btns .= "<input type=\"submit\" class=\"longbtn greenbtn submit-btn fright\" name=\"submit_rpbm_$rpbm_item_code\"  id=\"submit_rpbm_$rpbm_item_code\" value=\"$rpbm_item_title\" />\n";
+                        }
+                        
+                }
+                
+                $out_scr_btns .= '</form>';
+                $out_scr_btns .= '</div>';
+                $btn_num++;
+        }
 
 
         if ($btns_display["excel"]) {

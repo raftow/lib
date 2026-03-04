@@ -1383,11 +1383,16 @@ class AFWObject extends AFWRoot
         }
     }
 
+    // like getId() but for JS separator '-' or '|' are often in their context not accepted so we use '_'
+    public function getJsId() {
+        return $this->getId('_');
+    }
+
     /**
      * getId
      * Return the first field's value
      */
-    public function getId()
+    public function getId($force_sep='')
     {
         /*
          * global $boucle_inf, $boucle_inf_arr;
@@ -1424,7 +1429,10 @@ class AFWObject extends AFWRoot
              *     die("pk_val_arr = ".var_export($pk_val_arr,true)."<br> MPK = ".var_export($this->PK_MULTIPLE_ARR,true)."<br> FVAL = ".var_export($this->getAllfieldValues(),true));
              * }
              */
-            if ($this->PK_MULTIPLE === true) {
+            if($force_sep) {
+                $sep = $force_sep;
+            }
+            elseif ($this->PK_MULTIPLE === true) {
                 $sep = '-';
             } else {
                 $sep = $this->PK_MULTIPLE;
@@ -5151,6 +5159,23 @@ class AFWObject extends AFWRoot
         $final_pbm_arr = [];
         foreach ($pbm_arr as $pbm_code => $pbm_item) {
             if ($pbm_item["PUBLISHED"][$context]) $final_pbm_arr[$pbm_code] = $pbm_item;
+        }
+
+        return $final_pbm_arr;
+    }
+
+    /**
+     * @param Auser $auser
+     */
+    final public function retriveModePublicMethodsForUser($auser)
+    {
+        $allowed_pbm_arr = $this->getPublicMethodsForUser($auser);
+
+        $final_pbm_arr = [];
+        foreach ($allowed_pbm_arr as $pbm_code => $pbm_item) {
+            if ($pbm_item['EXECUTE-IN-RETRIEVE-MODE']) {
+                $final_pbm_arr[$pbm_code] = $pbm_item;
+            }
         }
 
         return $final_pbm_arr;

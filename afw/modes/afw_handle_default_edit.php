@@ -287,6 +287,11 @@ if ($_POST["pbmon"]) {
                     $start_m_time = date('Y-m-d H:i:s');
                 }
                 list($error, $info, $warn, $technical) = $obj->executePublicMethodForUser($objme, $pbMethodCode, $lang);
+                if($error and !is_string($error)) $error = var_export($error, true);
+                if($info and !is_string($info)) $info = var_export($info, true);
+                if($warn and !is_string($warn)) $warn = var_export($warn, true);
+                if($technical and !is_string($technical)) $technical = var_export($technical, true);
+
                 if ($pMethodItem['TIMER']) {
                     $end_m_time = date('Y-m-d H:i:s');
                     $duree_pbm = AfwDateHelper::timeDiffInSeconds($end_m_time, $start_m_time);

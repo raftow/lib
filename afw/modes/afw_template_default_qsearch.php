@@ -68,6 +68,8 @@ if ($obj->specialStructure) {
         $specialStructure = [];
 }
 
+$my_log="";
+
 foreach ($formColumns as $nom_col) {
         $desc = $class_db_structure[$nom_col];
         if ($forceFormColumns) {
@@ -116,10 +118,17 @@ foreach ($formColumns as $nom_col) {
                         AfwQsearchMotor::hidden_input("oper_" . $nom_col, null, $oper_qsearch, null);
                         $data[$nom_col]["oper"] = ob_get_clean();
                 }
-
+                else {
+                        $my_log .= "<!--  $nom_col is not in qsearch mode because max capacity of form ($max_total_qsize) is reached, so no space to put this input -->\n";
+                }
                 //if($nom_col=="id_domain")  $obj->_error("data[$nom_col] = ".var_export($data[$nom_col],true));
 
         }
+        else {
+
+                $reason_not_qsearch = AfwPrevilegeHelper::isNotQSearchColReason($obj, $nom_col, $desc);
+                $my_log .= "<!--  $nom_col is not in qsearch mode because $reason_not_qsearch -->\n";
+        } 
         //elseif($nom_col=="id_domain")  $obj->_error("desc [$nom_col] = ".var_export($desc,true));
 }
 
@@ -151,8 +160,7 @@ if ($obj->qsearchByTextEnabled()) {
 } else $qsearch_by_text_cols = [];
 
 if (true) {
-?>
-        <?
+        echo $my_log;
         $numFiltre = 0;
         $xFiltre = 0;
         $colFiltre = 0;
