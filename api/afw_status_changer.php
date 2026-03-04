@@ -42,7 +42,7 @@ foreach ($required_modules as $required_module) {
 
 /** @var AFWObject $myObj */
 $myObj = new $cls();
-$myObj_loaded = $myObj->load($idobj);
+$myObj_loaded = $myObj->load($idobj,'','',true,'_');
 
 if (!$myObj_loaded) {
     $data['status'] = 'error';

@@ -1552,9 +1552,9 @@ class AFWObject extends AFWRoot
      * Load into object a specified row
      * @param string $value : Optional, specify the value of primary key
      */
-    public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true)
+    public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep='')
     {
-        return AfwLoadHelper::loadAfwObject($this, $value, $result_row, $order_by_sentence, $optim_lookup);
+        return AfwLoadHelper::loadAfwObject($this, $value, $result_row, $order_by_sentence, $optim_lookup, $force_sep);
     }
 
     /**

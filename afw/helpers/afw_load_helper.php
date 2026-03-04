@@ -809,7 +809,7 @@ class AfwLoadHelper extends AFWRoot
      * @param AFWObject $object
      * @param string $value : Optional, specify the value of primary key
      */
-    public static function loadAfwObject(&$object, $value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true)
+    public static function loadAfwObject(&$object, $value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep='')
     {
         global $MODE_BATCH_LOURD, $load_count;
 
@@ -898,7 +898,11 @@ class AfwLoadHelper extends AFWRoot
         // $time_end3 = microtime(true);
         if ($value and !$result_row) {
             if ($object->PK_MULTIPLE) {
-                if ($object->PK_MULTIPLE === true) {
+            
+                if($force_sep) {
+                    $sep = $force_sep;
+                }
+                elseif ($object->PK_MULTIPLE === true) {
                     $sep = '-';
                 } else {
                     $sep = $object->PK_MULTIPLE;
