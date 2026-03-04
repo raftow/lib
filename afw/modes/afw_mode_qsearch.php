@@ -218,7 +218,7 @@ if ($datatable_on) {
         $btns_total += $btns_display["qedit-result"];
 
 
-        $rpbm_list = $myClassInstance->retriveModePublicMethodsForUser($objme);
+        $rpbm_list = []; //$myClassInstance->retriveModePublicMethodsForUser($objme);
         $btns_display["rpbm"] = (count($rpbm_list)>0);
         
         $show_checkboxes = $btns_display["rpbm"];
