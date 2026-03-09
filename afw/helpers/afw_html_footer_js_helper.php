@@ -22,12 +22,6 @@ class AfwHtmlFooterJsHelper
     else
       $response_data_format = "mess = data.message_client + ' > ' + data.message;\n";
 
-    $cl = $options["qsearch-cl"];
-    $qs_options = [];
-    if(method_exists($cl,"getQsearchDefaultOptions")) {
-            $qs_options = $cl::getQsearchDefaultOptions();
-    }
-    if(!$qs_options["records-in-page"]) $qs_options["records-in-page"] = 25;
 
     ob_start();
 ?>
