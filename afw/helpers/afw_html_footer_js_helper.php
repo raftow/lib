@@ -616,8 +616,8 @@ class AfwHtmlFooterJsHelper
 
         $('#example').DataTable({
           pagingType: "full_numbers",
-          pageLength: <?php echo $options["all-records-in-one-page"] ? -1 : $options["records-in-page"]; ?>, 
-          lengthMenu: <?php echo $options["lengthMenu"] ?>
+          pageLength: <?php echo $options["all-records-in-one-page"] ? -1 : ($options["records-in-page"] ? $options["records-in-page"] : 25); ?>, 
+          lengthMenu: <?php echo $options["lengthMenu"] ? $options["lengthMenu"] : '[[10, 25, 50, -1], [10, 25, 50, "All"]]' ?>
         });
 
 
