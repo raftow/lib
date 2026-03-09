@@ -150,15 +150,18 @@ if(method_exists($cl,"getQsearchDefaultOptions")) {
 if(!$qs_options["records-in-page"]) $qs_options["records-in-page"] = 25;
 
 // we can use the checknox select mode only  if all records feet in one page
-if(count($liste_obj) < $qs_options["records-in-page"]) {
+$liste_obj_count = count($liste_obj);
+$records_in_page = $qs_options["records-in-page"];
+if($liste_obj_count < $records_in_page) {
     $feet_in_one_page = true;   
+    $feet_in_one_page_log = "";   
 } else {
     $feet_in_one_page = false;       
 }
 
 if($show_checkboxes and $obj) {
         if($feet_in_one_page) {
-                $header_retrieve["check-id"] = "<div id='check-all' class='js-check-all'></div>";
+                $header_retrieve["check-id"] = "<div id='check-all' class='js-check-all'><!-- $liste_obj_count < $records_in_page --></div>";
         }
         else {
                 AfwSession::pushWarning($obj->tm("لا يمكن تفعيل الخيارات المتعددة لتنفيذ بعض الاجراءات الجماعية بسبب تجاوز عدد السجلات العدد الأقصى", $lang));

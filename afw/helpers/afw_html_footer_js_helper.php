@@ -3,6 +3,7 @@ class AfwHtmlFooterJsHelper
 {
   public static function render($objme, $lang, $options = [])
   {
+    if(!$options["records-in-page"]) throw new AfwRuntimeException("AfwHtmlFooterJsHelper::render(objme, $lang, options = ".var_export($options, true).")");
     if ($objme) {
       $are_you_sure = $objme->translateMessage('ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_RECORD', $lang);
       $once_deleted = $objme->translateMessage('ONCE_DELETED_YOU_WILL_NOT_BE_ABLE_TO_GO_BACK', $lang);
@@ -20,6 +21,13 @@ class AfwHtmlFooterJsHelper
       $response_data_format = "mess = data.message_client;\n";
     else
       $response_data_format = "mess = data.message_client + ' > ' + data.message;\n";
+
+    $cl = $options["qsearch-cl"];
+    $qs_options = [];
+    if(method_exists($cl,"getQsearchDefaultOptions")) {
+            $qs_options = $cl::getQsearchDefaultOptions();
+    }
+    if(!$qs_options["records-in-page"]) $qs_options["records-in-page"] = 25;
 
     ob_start();
 ?>
