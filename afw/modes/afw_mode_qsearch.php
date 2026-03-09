@@ -220,7 +220,8 @@ if ($datatable_on) {
         $btns_display["qedit-result"] = ($ids and ($ids_count < 101) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin()) ? 1 : 0;
         $btns_total += $btns_display["qedit-result"];
         
-        $btns_display["rpbm"] = $rpbm;
+        $btns_display["rpbm"] = $rpbm ? 1 : 0;
+        $btns_total += $btns_display["rpbm"];
         
         $out_scr_btns .= "<div class='btns-qsearch'>";
 
