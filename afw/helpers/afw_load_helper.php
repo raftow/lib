@@ -1029,7 +1029,7 @@ class AfwLoadHelper extends AFWRoot
 
             // die("test_rafik 1002 this->IS_VIRTUAL = [$object->IS_VIRTUAL] this->getAllfieldValues()=".var_export($object->getAllfieldValues(),true));
         } else {
-            throw new AfwRuntimeException($classNameTable . ' : Unable to use the method load() without any research criteria (' . $object->getSQL() . "), use select() or where() before.");
+            throw new AfwRuntimeException($classNameTable . ' : Unable to use the method load() without any research criteria (' . $object->getSQL() . "), use select() or where() before. Id = ".$object->id);
         }
         $has_been_loaded = $return;
         // $time_end4 = microtime(true);
