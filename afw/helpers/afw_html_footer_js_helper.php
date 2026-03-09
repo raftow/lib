@@ -218,6 +218,22 @@ class AfwHtmlFooterJsHelper
         });
       }
 
+      function removeFromMfk(ids, id) {
+        if(ids.length==0) ids = ",";
+        ids = ids.replace(id+",", "");
+        if(ids===",") ids = "";
+
+        return ids;
+      }
+
+      function addInMfk(ids, id) {
+          ids = removeFromMfk(ids, id);
+          if(ids.length==0) ids = ",";
+          ids = ids + id + ",";
+
+          return ids;
+      }
+
       function move_triggers() {
         $(".move-up").unbind('click');
         $(".move-up").click(function() {
@@ -397,6 +413,57 @@ class AfwHtmlFooterJsHelper
         $(".HzmModal-close-icon").click(function() {
           $("#tipofday").fadeOut().remove();
         });
+
+
+        
+
+        $(".js-check-all").click(function() {
+            $(this).toggleClass('checked');
+            if($(this).hasClass('checked')) {
+              $('#checked_ids').val(","+$('#all_ids').val()+",");
+              $('.submit-btn.rpbm').removeAttr('disabled');
+              $(".js-check-box").addClass('checked');
+            }
+            else {
+              $('#checked_ids').val("");
+              $('.submit-btn.rpbm').attr('disabled',true);
+              $(".js-check-box").removeClass('checked');
+            }
+        });
+
+        $(".js-check-box").click(function() {
+          var check_id = $(this).attr("id");
+          // console.log('check_id = '+check_id);
+          var arr_data = check_id.split("-");
+          var chk = arr_data[0];
+          var id = arr_data[1];  
+          // console.log('id = '+id);
+          var checked_ids = $('#checked_ids').val();
+          var checked_ids_old = checked_ids;
+          // console.log('ids before = '+checked_ids);
+          $(this).toggleClass('checked');
+
+          if($(this).hasClass('checked')) {
+            checked_ids = addInMfk(checked_ids, id);
+            // console.log('addInMfk("'+checked_ids_old+'", "'+id+'") result '+checked_ids);
+          }
+          else {
+            checked_ids = removeFromMfk(checked_ids, id);
+          }
+
+          $('#checked_ids').val(checked_ids);
+
+          if(checked_ids.length<=1) {
+            $('.submit-btn.rpbm').attr('disabled',true);
+          }
+          else {
+            $('.submit-btn.rpbm').removeAttr('disabled');
+          }
+
+          
+
+        });
+
         $(".trash").click(function() {
           var del_id = $(this).attr("id");
           var cl = $(this).attr("cl");
@@ -548,7 +615,9 @@ class AfwHtmlFooterJsHelper
         });
 
         $('#example').DataTable({
-          "pagingType": "full_numbers"
+          pagingType: "full_numbers",
+          pageLength: <?php echo $options["all-records-in-one-page"] ? -1 : $options["records-in-page"]; ?>, 
+          lengthMenu: <?php echo $options["lengthMenu"] ?>
         });
 
 

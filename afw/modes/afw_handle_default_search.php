@@ -64,9 +64,6 @@ if ($genere_xls) {
         // die("header_excel = " . var_export($header_excel, true));
 }
 
-if($show_checkboxes and $obj) {
-        $header_retrieve["id"] = $obj->translate("id",$lang);
-}
 
 
 //AFWDebugg::print_str('fin for each '.__LINE__);
@@ -146,6 +143,29 @@ if (!$liste_obj) {
         $liste_obj       = $obj->loadManyEager($the_limit, $sql_order_by);
         //$dataRetrive = AfwLoadHelper::retrieveMany($obj, $the_limit, $sql_order_by);
 }
+$qs_options = [];
+if(method_exists($cl,"getQsearchDefaultOptions")) {
+        $qs_options = $cl::getQsearchDefaultOptions();
+}
+if(!$qs_options["records-in-page"]) $qs_options["records-in-page"] = 25;
+
+// we can use the checknox select mode only  if all records feet in one page
+if(count($liste_obj) < $qs_options["records-in-page"]) {
+    $feet_in_one_page = true;   
+} else {
+    $feet_in_one_page = false;       
+}
+
+if($show_checkboxes and $obj) {
+        if($feet_in_one_page) {
+                $header_retrieve["check-id"] = "<div id='check-all' class='js-check-all'></div>";
+        }
+        else {
+                AfwSession::pushWarning($obj->tm("لا يمكن تفعيل الخيارات المتعددة لتنفيذ بعض الاجراءات الجماعية بسبب تجاوز عدد السجلات العدد الأقصى", $lang));
+        }
+        
+}
+
 
 AfwSession::log("End of Data retrieve in afw_handle_default_search");
 
@@ -158,7 +178,7 @@ if ($liste_count > $too_much_records) {
         foreach ($header as $col => $titre) {
                 if ($obj->seemsCalculatedField($col)) {
                         unset($header[$col]);
-                        AfwSession::pushWarning("تم حجب العمود [$titre] لأجل تسريع الصفحة التي تحتوي على سجلات كثيرة جدا");
+                        AfwSession::pushWarning($obj->tm("تم حجب العمود [$titre] لأجل تسريع الصفحة التي تحتوي على سجلات كثيرة جدا", $lang));
                 }
         }
 }
@@ -291,13 +311,13 @@ if (true) {
                                                         AfwSession::log("Before prepare of header and can_action array matrix in afw_handle_default_search");
                                                         if (count($header) != 0) {
                                                                 $datatable_header = "";
-                                                                /*
-                                if(($cl=="Module"))
-                                {
-                                        $message .= "<br>header = ".var_export($header,true);
-                                        throw new AfwRun timeException($message);
-                                }*/
-
+                                                        /*        
+                                                        if(($cl=="Request"))
+                                                        {
+                                                                $message .= "<br>Rafik debugg header = ".var_export($header,true);
+                                                                throw new AfwRuntimeException($message);
+                                                        }
+                                                        */
                                                                 foreach ($header as $nom_col => $tr_col) {
                                                                         // if(!is_array($desc)) throw new AfwRun timeException("desc is not an array : ".var_export($desc,true));
                                                                         $nom_col_short = "$nom_col.short";
@@ -604,7 +624,7 @@ if (true) {
                         </td>
                 </tr>
         </table>
-
+        <input type="hidden" id="all_ids" name="all_ids"  value="<?php echo $ids?>"/>
 <?php
 }
 $link = "";

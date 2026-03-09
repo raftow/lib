@@ -283,7 +283,7 @@ class AfwLoadHelper extends AFWRoot
     {
         if (!$val) return "";
 
-        if(is_string($val) and AfwStringHelper::stringContain($val, "Array")) throw new AfwRuntimeException("Stopped by rafik for debugg how value = $val");
+        if (is_string($val) and AfwStringHelper::stringContain($val, "Array")) throw new AfwRuntimeException("Stopped by rafik for debugg how value = $val");
 
         if (is_string($val) and AfwStringHelper::stringContain($val, ",")) // it is mfk
         {
@@ -291,9 +291,8 @@ class AfwLoadHelper extends AFWRoot
             $val_arr = explode(",", $val_0);
             $is_array = true;
             $oneId = false;
-            $case_where = " -- mfk"; 
-        }
-        elseif (is_array($val)){
+            $case_where = " -- mfk";
+        } elseif (is_array($val)) {
             $val_arr = $val;
             $is_array = true;
             $oneId = false;
@@ -310,13 +309,13 @@ class AfwLoadHelper extends AFWRoot
             if (!$kval) unset($val_arr[$k]);
         }
 
-        
+
 
         if ((!$small_lookup) and (count($val_arr) > 0)) $where = "$pk in (" . implode(",", $val_arr) . ")";
         else $where = "1";
 
         // if(AfwStringHelper::stringContain($where, "Array")) die("rafik dbg : where=$where. case_where=$case_where val=".var_export($val, true));
-        self::getLookupData($nom_module_fk, $nom_table_fk, $where.$case_where, "", $oneId);
+        self::getLookupData($nom_module_fk, $nom_table_fk, $where . $case_where, "", $oneId);
 
 
 
@@ -619,46 +618,50 @@ class AfwLoadHelper extends AFWRoot
                 if ($display_object_attrib) $tuple['display_object'] = $objItem->getShortDisplay($lang);
                 if (count($header) != 0) {
                     foreach ($header as $col => $titre) {
-                        if (!$col) throw new AfwRuntimeException('header columns erroned, column empty : ' . var_export($header, true));
-                        if (!$descArr[$col]) $descArr[$col] = AfwStructureHelper::getStructureOf($objItem, $col);
-                        $desc = $descArr[$col];
-                        if (!$objItem->attributeIsApplicable($col)) {
-                            list($icon, $textReason, $wd, $hg,) = $objItem->whyAttributeIsNotApplicable($col);
-                            if (!$wd) $wd = 20;
-                            if (!$hg) $hg = 20;
-                            if ($stripHtmlTags) {
-                                $tuple[$col] = "N/A";
-                            } else $tuple[$col] = "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>";
-                        } elseif (
-                            $objItem->umsCheckDisabledInRetrieveMode() or
-                            AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($objItem, $col, AfwSession::getUserConnected(), 'DISPLAY', $desc)
-                        ) {
-                            // $htr_s = hrtime()[1];
-                            $qrm = $objItem->quickRetrieveMethod();
-                            // $qrm = "val";
-                            $qrm_log = "";
-                            if ($qrm == "qshow") {
-                                $tuple[$col] = AfwShowHelper::quickShowAttribute($objItem, $col, $lang, $desc, $newline);
-                                $qrm_log = "quickShowAttribute on $col, $lang, desc = " . var_export($desc, true);
-                            } elseif ($qrm == "decode") $tuple[$col] = $objItem->decode($col);
-                            else $tuple[$col] = $objItem->getVal($col);
-
-
-                            if ($stripHtmlTags) {
-                                if (AfwStringHelper::stringStartsWith($tuple[$col], "<img")) {
-                                    $tuple[$col] = "Image";
-                                } else $tuple[$col] = strip_tags($tuple[$col]);
-                            }
-
-                            // if($col=="qsearch") die("$col showing with method $qrm = <br>".$tuple[$col]."<br> log : $qrm_log");
-
-                            // $htr_e = hrtime()[1];
-                            // $htr = $htr_e - $htr_s;
-                            // if($htr > 5000000) die("htr of $col = $htr <br>\nend=$htr_e <br>\nstart=$htr_s");
+                        if ($col == "check-id") {
+                            $tuple[$col] = "<div id='check-$id' class='js-check-box'></div>";
                         } else {
-                            if ($stripHtmlTags) {
-                                $tuple[$col] = "Locked";
-                            } else $tuple[$col] = "<img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$textReason'  width='20' heigth='20'>";
+                            if (!$col) throw new AfwRuntimeException('header columns erroned, column empty : ' . var_export($header, true));
+                            if (!$descArr[$col]) $descArr[$col] = AfwStructureHelper::getStructureOf($objItem, $col);
+                            $desc = $descArr[$col];
+                            if (!$objItem->attributeIsApplicable($col)) {
+                                list($icon, $textReason, $wd, $hg,) = $objItem->whyAttributeIsNotApplicable($col);
+                                if (!$wd) $wd = 20;
+                                if (!$hg) $hg = 20;
+                                if ($stripHtmlTags) {
+                                    $tuple[$col] = "N/A";
+                                } else $tuple[$col] = "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>";
+                            } elseif (
+                                $objItem->umsCheckDisabledInRetrieveMode() or
+                                AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($objItem, $col, AfwSession::getUserConnected(), 'DISPLAY', $desc)
+                            ) {
+                                // $htr_s = hrtime()[1];
+                                $qrm = $objItem->quickRetrieveMethod();
+                                // $qrm = "val";
+                                $qrm_log = "";
+                                if ($qrm == "qshow") {
+                                    $tuple[$col] = AfwShowHelper::quickShowAttribute($objItem, $col, $lang, $desc, $newline);
+                                    $qrm_log = "quickShowAttribute on $col, $lang, desc = " . var_export($desc, true);
+                                } elseif ($qrm == "decode") $tuple[$col] = $objItem->decode($col);
+                                else $tuple[$col] = $objItem->getVal($col);
+
+
+                                if ($stripHtmlTags) {
+                                    if (AfwStringHelper::stringStartsWith($tuple[$col], "<img")) {
+                                        $tuple[$col] = "Image";
+                                    } else $tuple[$col] = strip_tags($tuple[$col]);
+                                }
+
+                                // if($col=="qsearch") die("$col showing with method $qrm = <br>".$tuple[$col]."<br> log : $qrm_log");
+
+                                // $htr_e = hrtime()[1];
+                                // $htr = $htr_e - $htr_s;
+                                // if($htr > 5000000) die("htr of $col = $htr <br>\nend=$htr_e <br>\nstart=$htr_s");
+                            } else {
+                                if ($stripHtmlTags) {
+                                    $tuple[$col] = "Locked";
+                                } else $tuple[$col] = "<img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$textReason'  width='20' heigth='20'>";
+                            }
                         }
                     }
                 }
@@ -809,7 +812,7 @@ class AfwLoadHelper extends AFWRoot
      * @param AFWObject $object
      * @param string $value : Optional, specify the value of primary key
      */
-    public static function loadAfwObject(&$object, $value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep='')
+    public static function loadAfwObject(&$object, $value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '')
     {
         global $MODE_BATCH_LOURD, $load_count;
 
@@ -898,11 +901,10 @@ class AfwLoadHelper extends AFWRoot
         // $time_end3 = microtime(true);
         if ($value and !$result_row) {
             if ($object->PK_MULTIPLE) {
-            
-                if($force_sep) {
+
+                if ($force_sep) {
                     $sep = $force_sep;
-                }
-                elseif ($object->PK_MULTIPLE === true) {
+                } elseif ($object->PK_MULTIPLE === true) {
                     $sep = '-';
                 } else {
                     $sep = $object->PK_MULTIPLE;

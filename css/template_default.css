@@ -1291,3 +1291,13 @@ div.dataTables_filter {
     width: 100% !important;
     border-bottom: 1px solid #bec8d2 !important;
 }
+
+input.submit-btn:disabled {
+    background-color: gray !important;
+    color: silver !important;
+}
+
+input.submit-btn:disabled:hover {
+    background-color: gray !important;
+    color: silver !important;
+}

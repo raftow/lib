@@ -553,9 +553,7 @@ class AfwStatsHelper
                 $(document).ready(function() {       
                         $("#qsearch-submit-form").click(function(){
                                 $(".alert-dismissable").fadeOut().remove();
-                                $("#search_result_div").html(\'<div class="footer1 hzm-relative-loader-div" id="mySQLloader"><div class="relative hzm-loading-div" id="myloading">
-                                ' . $please_wait_loading . '
-                                </div></div>\');
+                                $("#search_result_div").html(\'<div class="footer1 hzm-relative-loader-div" id="mySQLloader"><div class="relative hzm-loading-div" id="myloading">' . $please_wait_loading . '</div></div>\');
                         });
                 });
             

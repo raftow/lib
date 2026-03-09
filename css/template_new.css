@@ -1368,3 +1368,13 @@ div.dataTables_filter {
     margin-bottom: 10px;
     background-color: white;
 }
+
+input.submit-btn:disabled {
+    background-color: gray !important;
+    color: silver !important;
+}
+
+input.submit-btn:disabled:hover {
+    background-color: gray !important;
+    color: silver !important;
+}

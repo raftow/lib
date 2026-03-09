@@ -165,7 +165,15 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['NULL'] = 'غير محدد';
         $trad['OPERATOR']['NOT YET'] = 'ليس بعد';
         $trad['OPERATOR']['archive'] = 'الأرشيف';
+        $trad['OPERATOR']['MY-FILES'] = 'إضافة مرفقات جديدة';
+        $trad['OPERATOR']['EDIT-MY-FILES'] = 'إدارة مرفقاتي';
+        $trad['OPERATOR']['ETC'] = 'الخ';
+        $trad['OPERATOR']['OBJECT-WITHOUT-NAME'] = '[كيان بدون اسم]';
 
+        $trad['OPERATOR']['HIDDEN-MENU'] = 'قائمة مخفية';
+        $trad['OPERATOR']['SETTINGS'] = 'الإعدادات';
+
+        $trad['OPERATOR']['select'] = 'اختيار';
         $trad['OPERATOR']['on'] = 'على';
         $trad['OPERATOR']['at'] = 'بتاريخ';
         $trad['OPERATOR']['dark mode'] = 'ليلي';
@@ -188,13 +196,7 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['no_update_found'] = 'لا يوجد تعديلات';
         $trad['OPERATOR']['other_functions'] = 'وظائف أخرى';
 
-        $trad['OPERATOR']['MY-FILES'] = 'إضافة مرفقات جديدة';
-        $trad['OPERATOR']['EDIT-MY-FILES'] = 'إدارة مرفقاتي';
-        $trad['OPERATOR']['ETC'] = 'الخ';
-        $trad['OPERATOR']['OBJECT-WITHOUT-NAME'] = '[كيان بدون اسم]';
-
-        $trad['OPERATOR']['HIDDEN-MENU'] = 'قائمة مخفية';
-        $trad['OPERATOR']['SETTINGS'] = 'الإعدادات';
+        $trad['OPERATOR']['for selected items'] = 'للعناصر التي تم اختيارها';
 
         return $trad;
     }

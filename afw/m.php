@@ -24,8 +24,9 @@ if($Main_Page)
         require("$m_file_dir_name/afw_main_page.php"); 
         // die("before AfwMainPage::echoMainPag Main_Page=$Main_Page MODULE=$MODULE");
         $table = null;
-        if(isset($_REQUEST["cl"])) $table = strtolower($_REQUEST["cl"]); 
-        // $table = AfwStringHelper::classToTable($_REQUEST["cl"]);
+        if(isset($_REQUEST["cl"])) $table = AfwStringHelper::classToTable($_REQUEST["cl"]);
+        // $table = strtolower($_REQUEST["cl"]); 
+        
         if(!$table) $table = "all";
 
         $options = AfwMainPage::getDefaultOptions($Main_Page, $MODULE, $table);

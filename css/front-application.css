@@ -4912,3 +4912,34 @@ span.json.error {
     color: red;
     background-color: inherit;
 }
+
+
+.js-check-all, .js-check-box {
+    background-image: url(http://10.108.72.48/lib/images/unchecked.png);
+    background-size: cover;
+    background-position: center;
+    width: 32px;
+    height: 32px;
+    margin-left: 20px !important;
+}
+
+.js-check-all.checked, .js-check-box.checked {
+    background-image: url(http://10.108.72.48/lib/images/checked.png) !important;
+    background-size: cover;
+    background-position: center;
+    width: 32px;
+    height: 32px;
+    margin-left: 20px !important;
+}
+
+.rpbm.message {
+    margin: 10px;
+    border-radius: 0;
+    width: 100%;
+}
+
+.rpbm.message.nothing {
+    text-align: center;
+    border: 1px solid gray;
+    padding: 15px;
+}

@@ -1175,6 +1175,26 @@ class AFWObject extends AFWRoot
         return false;
     }
 
+
+    /**
+     * Used especially when the PK is multiple we can not do sql 'WHERE id in (x,y,z)' because no id PK column
+     * @param string $ids list of ids separated by the separator $sep (ex : '1,2,3')
+     */
+    public function loadManyIdsOneByOne($ids, $sep=",") {
+        $ids = trim($ids,$sep);
+        $ids_arr = explode($sep, $ids);
+        $objList = [];
+        foreach($ids_arr as $id) {
+            $obj = new static();
+            if($obj->load($id)) {
+                $objList[] = $obj;
+            }
+            unset($obj);
+        }
+
+        return $objList;
+    }
+
     /**
      * Rafik 10/6/2021 : use joins on lookup tables and any answer table of FK retrieved field
      * to avoid if for example it load 1000 objects to load each 1000 FK attribute object each one by separated SQl query
@@ -5153,6 +5173,9 @@ class AFWObject extends AFWRoot
     }
 
 
+    
+
+
     final public function getPublishedMethodsFor($auser, $context)
     {
         $pbm_arr = $this->getPublicMethodsForUser($auser);
@@ -5167,9 +5190,23 @@ class AFWObject extends AFWRoot
     /**
      * @param Auser $auser
      */
-    final public function retriveModePublicMethodsForUser($auser)
+    final public function retrieveModePublicMethodsForUser($auser)
     {
-        $allowed_pbm_arr = $this->getPublicMethodsForUser($auser);
+        $allowed_pbm_arr = [];
+        $message = "";
+        try {
+            $allowed_pbm_arr = $this->getPublicMethodsForUser($auser);
+        }
+        catch(Exception $e) {
+            $message = "retrieveModePublicMethodsForUser Exception : ".$e->getMessage()." File ".$e->getFile()." Line ".$e->getLine();
+            AfwSession::pushWarning($message);
+        }
+        catch(Error $e) {
+            $message = "retrieveModePublicMethodsForUser Error : ".$e->getMessage()." File ".$e->getFile()." Line ".$e->getLine();
+            AfwSession::pushWarning($message);
+        }
+        
+        // die("message =$message / allowed_pbm_arr=".var_export($allowed_pbm_arr, true));
 
         $final_pbm_arr = [];
         foreach ($allowed_pbm_arr as $pbm_code => $pbm_item) {
@@ -5178,6 +5215,7 @@ class AFWObject extends AFWRoot
             }
         }
 
+        // die("final_pbm_arr=".var_export($final_pbm_arr, true));
         return $final_pbm_arr;
     }
 
@@ -5239,6 +5277,20 @@ class AFWObject extends AFWRoot
     final public function getPublicMethodForUser($auser, $pMethodCode)
     {
         $pbm_arr = $this->getPublicMethodsForUser($auser, 'all');
+
+        // code semble tres bete ci dessous
+        foreach ($pbm_arr as $pbm_code => $pbm_item) {
+            if ($pMethodCode == $pbm_code) {
+                return $pbm_item;
+            }
+        }
+
+        return null;
+    }
+
+    final public function getPublicMethod($pMethodCode)
+    {
+        $pbm_arr = $this->getPublicMethods();
 
         // code semble tres bete ci dessous
         foreach ($pbm_arr as $pbm_code => $pbm_item) {

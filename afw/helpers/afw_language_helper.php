@@ -256,9 +256,10 @@ class AfwLanguageHelper
         }
     }
 
-    public static function translateKeyword($text, $langue = 'ar')
+    public static function translateKeyword($text, $lang = null)
     {
-            return AfwLanguageHelper::tarjem($text, $langue, true, '', '');
+        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage(); 
+        return AfwLanguageHelper::tarjem($text, $lang, true, '', '');
     }
 
     public static function translateYesNo($what, $lang = '')

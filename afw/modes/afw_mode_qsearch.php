@@ -109,6 +109,9 @@ if ($objme) {
         }
 }
 
+$rpbm_list = $myClassInstance->retrieveModePublicMethodsForUser($objme); // []; //
+$rpbm = $show_checkboxes = (count($rpbm_list)>0);
+
 $actions_tpl_arr = AfwUmsPagHelper::getAllActions($myClassInstance, 0, false);
 // throw new AfwRun timeException("debugg :: actions_tpl_arr of $cl = ".var_export($actions_tpl_arr,true));
 if ($resetcrit) {
@@ -216,13 +219,9 @@ if ($datatable_on) {
 
         $btns_display["qedit-result"] = ($ids and ($ids_count < 101) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin()) ? 1 : 0;
         $btns_total += $btns_display["qedit-result"];
-
-
-        $rpbm_list = []; //$myClassInstance->retriveModePublicMethodsForUser($objme);
-        $btns_display["rpbm"] = (count($rpbm_list)>0);
         
-        $show_checkboxes = $btns_display["rpbm"];
-
+        $btns_display["rpbm"] = $rpbm;
+        
         $out_scr_btns .= "<div class='btns-qsearch'>";
 
         $out_scr_btns .= "<!-- ";
@@ -288,19 +287,20 @@ if ($datatable_on) {
                 $langUp = strtoupper($lang);
                 $out_scr_btns .= '<div class="btn-qsearch btn-centered-' . $btns_total . '-btn-' . $btn_num . '" style="">';                
                 $out_scr_btns .= '<form name="rpbmForm" id="rpbmForm" method="post" action="' . "main.php" . '">';
-                $out_scr_btns .= '<input type="hidden" name="ids"  value=""/>';
+                $out_scr_btns .= '<input type="hidden" id="checked_ids" name="checked_ids"  value=","/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="' . $cl . '"/>';
                 $out_scr_btns .= '<input type="hidden" name="currmod" value="' . $currmod . '"/>';
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_rpbm.php"/>';
                 $out_scr_btns .= AfwShowHelper::showObject($myClassInstance, "HTML", "afw_hidden_search_criteria.php");
+                $for_selected_items = $myClassInstance->translateOperator("for selected items", $lang);
                 foreach($rpbm_list as $rpbm_item_code => $rpbm_item) {                        
                         $rpbm_item_method = $rpbm_item['METHOD'];
                         if($rpbm_item_method) {
                                 $rpbm_item_title_ar = $rpbm_item['LABEL_AR'];
-                                $rpbm_item_title = $rpbm_item['LABEL_'.$langUp];
+                                $rpbm_item_title = $rpbm_item['LABEL_'.$langUp]." ".$for_selected_items;
                                 if(!$rpbm_item_title) $rpbm_item_title = $rpbm_item_title_ar;
                                 if(!$rpbm_item_title) $rpbm_item_title = $rpbm_item_method;
-                                $out_scr_btns .= "<input type=\"submit\" class=\"longbtn greenbtn submit-btn fright\" name=\"submit_rpbm_$rpbm_item_code\"  id=\"submit_rpbm_$rpbm_item_code\" value=\"$rpbm_item_title\" />\n";
+                                $out_scr_btns .= "<input type=\"submit\" class=\"longbtn greenbtn submit-btn rpbm fright\" name=\"submit_rpbm_$rpbm_item_code\"  id=\"submit_rpbm_$rpbm_item_code\" value=\"$rpbm_item_title\" disabled/>\n";
                         }
                         
                 }
@@ -614,9 +614,7 @@ AfwMainPage::addOutput('<script type="text/javascript">
         $(document).ready(function() {       
                 $("#qsearch-submit-form").click(function(){
                         $(".alert-dismissable").fadeOut().remove();
-                        $("#search_result_div").html(\'<div class="footer1 hzm-relative-loader-div" id="mySQLloader"><div class="relative hzm-loading-div" id="myloading">
-                        ' . $please_wait_loading . '
-                        </div></div>\');
+                        $("#search_result_div").html(\'<div class="footer1 hzm-relative-loader-div" id="mySQLloader"><div class="relative hzm-loading-div" id="myloading">' . $please_wait_loading . '</div></div>\');
                 });
         });
     
