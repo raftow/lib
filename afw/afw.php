@@ -5198,7 +5198,7 @@ class AFWObject extends AFWRoot
             $allowed_pbm_arr = $this->getPublicMethodsForUser($auser);
         }
         catch(Exception $e) {
-            $message = "retrieveModePublicMethodsForUser Exception : ".$e->getMessage()." File ".$e->getFile()." Line ".$e->getLine();
+            $message = "retrieveModePublicMethodsForUser Exception : ".$e->getMessage()."\n<br> File ".$e->getFile()."\n<br> Line ".$e->getLine()."\n<br> Backtrace :\n<br>".$e->getTraceAsString();
             AfwSession::pushWarning($message);
         }
         catch(Error $e) {
