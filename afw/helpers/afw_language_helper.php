@@ -189,8 +189,13 @@ class AfwLanguageHelper
                     // if(($langue=="en") and ($module=="adm") and ($nom_table=="program_track") and ($nom_col=="programtrack.single")) die("from caseTrans=$caseTrans / lang=$langue: trad[$nom_table][$nom_col] = ".$trad[$nom_table][$nom_col]);
 
                     if (isset($trad) and $trad and (!is_array($trad))) {
-                        throw new AfwRuntimeException("after include_once $nom_file trad 1 is " . var_export($trad, true));
+                        throw new AfwRuntimeException("after $caseTrans trad 1 is " . var_export($trad, true));
                     }
+
+                    /*
+                    if (($nom_table=="request") and (!$trad[$nom_table]["day(s)"] or ($trad[$nom_table]["day(s)"]=="day(s)"))) {
+                        throw new AfwRuntimeException("after $caseTrans trad 111 is " . var_export($trad, true));
+                    }*/
 
                     // if(($module=="lib/afw") and ($nom_table=="all") and ($nom_col=="qsearch_by_help")) echo(" 2. tarjem has found the file nom_file=$nom_file : caseTrans=$caseTrans<br> trad[*][$nom_col]=".$trad["*"][$nom_col]);
                     if($nom_table=="all") $nom_table = "*";

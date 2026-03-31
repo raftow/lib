@@ -4034,6 +4034,16 @@ class AFWObject extends AFWRoot
             $nom_table,
             $module
         );
+        /*
+        if ($nom_table=="request") {
+                        throw new AfwRuntimeException("Bad tarjema $return = AfwLanguageHelper::tarjem(
+            $nom_col,
+            $langue,
+            $operator,
+            $nom_table,
+            $module
+        );");
+                    }*/
 
         if (
             AfwStringHelper::stringStartsWith(trim($return), '??') and

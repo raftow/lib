@@ -18785,7 +18785,20 @@ textarea.form-control-lg {
   .count_content>h3>span.counter {
     font-family: digi;
     color: cornflowerblue;
+    font-weight: normal;
   }
+
+  span.counter.error {
+    background-color: transparent;
+    color: red !important;
+  }
+
+    span.counter.warning {
+        background-color: transparent;
+        color: orange !important;
+        box-shadow: none !important;
+        font-size: 45px !important;
+    }
 
   .row.justify-content-center {
     background-color: #93b1bf3d;

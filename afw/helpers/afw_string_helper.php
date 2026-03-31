@@ -2,6 +2,17 @@
 
 class AfwStringHelper
 {
+        
+        public static function deep_trim($text) {
+                return trim(self::remove_utf8_bom(trim($text)));
+        }
+
+        public static function remove_utf8_bom($text) {
+                $bom = pack('H*', 'EFBBBF');
+                $text = preg_replace("/^$bom/", '', $text);
+                return $text;
+        }
+
         public static function duplicateName($the_name, $prefix = "_", $the_name2, $prefix2 = " ", $the_name3, $prefix3 = " ", $maxK = 20)
         {
                 for ($k = 1; $k <= $maxK; $k++) {

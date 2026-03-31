@@ -1,5 +1,19 @@
 <?php
-
+if (!function_exists('array_is_list')) {
+    function array_is_list(array $array): bool {
+        if (empty($array)) {
+            return true;
+        }
+        $current_key = 0;
+        foreach ($array as $key => $noop) {
+            if ($key !== $current_key) {
+                return false;
+            }
+            ++$current_key;
+        }
+        return true;
+    }
+}
 // old require of afw_root
 // alter table hijra_date_base add unique key(HIJRI_YEAR,HIJRI_MONTH);
 class AfwApiConsumeHelper 
@@ -17,8 +31,11 @@ class AfwApiConsumeHelper
                 $curl_commands[] = "\$curl = curl_init(); // success";
                 // echo "option CURLOPT_URL setted\n";
                 
-                
-                if ($data) 
+                if ($data and array_is_list($data))
+                {
+                    $p_url = $url . "/" . implode("/",$data);
+                } 
+                elseif ($data and is_array($data)) 
                 {
                    $params = http_build_query($data);
                    $p_url = sprintf("%s?%s", $url, $params);
@@ -130,7 +147,16 @@ class AfwApiConsumeHelper
                 
                 curl_close($curl);
                 
-                if($success) $decoded_response = json_decode($response); else $decoded_response = null;
+                if($success) 
+                {
+                    $decoded_response = json_decode(AfwStringHelper::deep_trim($response));
+                    if ($decoded_response === null && json_last_error() !== JSON_ERROR_NONE) {
+                        throw new AfwRuntimeException("returned response |$response| has caused JSON decode error: " . json_last_error_msg()." Error code: " . json_last_error());
+                    } 
+                }    
+                else $decoded_response = null;
+
+                
                 
                 return array('url' => $p_url, 'success' => $success, 'message' => $error_msg, 'result' => $decoded_response, 'commands'=>$curl_commands, 'response' => $response);
         }

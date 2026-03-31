@@ -45,8 +45,8 @@ class AfwMainPage
                 }
             }
 
-            if(!$options["records-in-page"]) $options["records-in-page"] = 25;
-            if(!$options["lengthMenu"]) $options["lengthMenu"] = '[[10, 25, 50, -1], [10, 25, 50, "All"]]';
+            if((!isset($options["records-in-page"])) or (!$options["records-in-page"])) $options["records-in-page"] = 25;
+            if((!isset($options["lengthMenu"])) or (!$options["lengthMenu"])) $options["lengthMenu"] = '[[10, 25, 50, -1], [10, 25, 50, "All"]]';
             
             
         }

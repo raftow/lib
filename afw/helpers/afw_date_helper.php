@@ -1689,13 +1689,13 @@ class AfwDateHelper
         return $greg_date;
     }
 
-    public static function shiftHijriDate($hdate = '', $offset = 1)
+    public static function shiftHijriDate($hdate = '', $days = 1)
     {
         if (!$hdate) {
             $hdate = self::currentHijriDate();
         }
         $gdate = self::hijriToGreg($hdate);
-        $gdate = self::shiftGregDate($gdate, $offset);
+        $gdate = self::shiftGregDate($gdate, $days);
 
         return self::gregToHijri($gdate);
     }
@@ -1720,9 +1720,9 @@ class AfwDateHelper
      *  @param integer $offset number of days offset to shift
      */
 
-    public static function shiftGregDate($gdate, $offset)
+    public static function shiftGregDate($gdate, $days)
     {
-        return self::shiftPeriodGregDate($gdate, $offset, 0, 0);
+        return self::shiftPeriodGregDate($gdate, $days, 0, 0);
     }
 
     public static function shiftPeriodGregDate($gdate, $days, $months, $years)

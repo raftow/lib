@@ -132,7 +132,7 @@ class AfwDatabase extends AFWRoot
             }
         }
 
-        return [$result, $project_link_name];
+        return [$result, $project_link_name, $row_count, $affected_row_count];
     }
 
     /**
