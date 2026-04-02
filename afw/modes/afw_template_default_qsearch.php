@@ -109,9 +109,20 @@ foreach ($formColumns as $nom_col) {
                         $data[$nom_col]["input"] = ob_get_clean();
                         $oper_qsearch = $desc["QSEARCH_OPER"];
                         if (!$oper_qsearch) {
-                                if (($desc["TYPE"] == "DATE") or ($desc["TYPE"] == "GDAT")) $oper_qsearch = "between";
+                                if (
+                                        ($desc["TYPE"] == "DATE") or 
+                                        ($desc["TYPE"] == "GDAT") or
+                                        ($desc["TYPE"] == "PCTG") or
+                                        ($desc["TYPE"] == "INT") or
+                                        ($desc["TYPE"] == "AMNT")
+                                    ) 
+                                {
+                                        $oper_qsearch = "between";
+                                }
                                 elseif ($desc["SEARCH-MULTIPLE"])
+                                {
                                         $oper_qsearch = "in";
+                                }
                                 else $oper_qsearch = "=";
                         }
                         ob_start();

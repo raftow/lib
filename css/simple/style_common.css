@@ -3247,18 +3247,17 @@ hr {
     color: #fff
 }
 
-.form-group,
-label {
+.form-group, label {
     margin-bottom: 7px;
     width: 100%;
+    font-family: menu, tahoma, sans-serif !important;
 }
 
 .form-group.hide {
     display: none;
 }
 
-input,
-input::-webkit-input-placeholder {
+input, input::-webkit-input-placeholder {
     font-size: 13px;
     padding-top: 2px
 }

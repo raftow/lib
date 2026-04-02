@@ -522,7 +522,8 @@ class AfwSqlHelper extends AFWRoot
         // if($val_col=="1007294216") die("nom_col=$nom_col prefixed_nom_col=$prefixed_nom_col");
 
         // if($original_nom_col=="cvalid") throw new AfwRuntimeException("nom_col = ".$nom_col." because structure=".var_export($desc,true));
-
+        $val_col2_default = 0;
+        $between_quote = "";
         switch ($desc['TYPE']) {
             case 'FK':
             case 'ENUM':
@@ -647,12 +648,18 @@ class AfwSqlHelper extends AFWRoot
                     $phraseLangWhere,
                 ];
             case 'DATE':
-                if ($oper == 'between') {
-                    $val_col = str_replace('-', '', $val_col);
-                    $val_col2 = str_replace('-', '', $val_col2);
-                    if (!$val_col2) {
-                        $val_col2 = '29991230';
-                    }
+                $val_col2_default = '29991230';
+                $between_quote = "'";
+                $val_col = str_replace('-', '', $val_col);
+                $val_col2 = str_replace('-', '', $val_col2);                
+            case 'PCTG':                
+			case 'INT':
+			case 'AMNT':    
+                if (!$val_col2) {
+                    $val_col2 = $val_col2_default;
+                }
+                if ($oper == 'between') {                    
+                    
                     // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col,$val_col2] ";
                     $phraseLangWhere =
                         "<span class='crit_field_name'>"
@@ -662,11 +669,8 @@ class AfwSqlHelper extends AFWRoot
                         . "</span> : <span class='crit_field_value'> [$val_col -> $val_col2] </span>";
                     return [
                         $prefixed_nom_col
-                            . " between  '"
-                            . $val_col
-                            . "' and '"
-                            . $val_col2
-                            . "'",
+                            . " between  $between_quote" . $val_col . "$between_quote" 
+                            . " and $between_quote" . $val_col2 . "$between_quote",
                         '',
                         $phraseLangWhere,
                     ];
@@ -726,7 +730,7 @@ class AfwSqlHelper extends AFWRoot
                 // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
                 throw new AfwRuntimeException(
                     $prefixed_nom_col
-                        . ' has type ' . $desc['TYPE'] . ' witch is not managed by SQLHelper::getClauseWhere desc='
+                        . ' has type ' . $desc['TYPE'] . ' which is not managed by SQLHelper::getClauseWhere desc='
                         . var_export($desc, true)
                         . ' oper= '
                         . $oper

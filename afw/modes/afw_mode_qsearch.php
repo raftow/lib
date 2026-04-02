@@ -6,7 +6,7 @@ $lang = AfwLanguageHelper::getGlobalLanguage();
 $please_wait = AFWObject::gtr("PLEASE_WAIT", $lang);
 $loading = AFWObject::gtr("LOADING", $lang);
 $please_wait_loading = $please_wait . " " . $loading;
-
+if (!$current_page) $current_page = "afw_mode_qsearch.php";
 $themeArr = AfwThemeHelper::loadTheme();
 foreach ($themeArr as $theme => $themeValue) {
         $$theme = $themeValue;
@@ -584,7 +584,6 @@ AfwMainPage::addOutput('<input type="hidden" name="action_params" value="' . $ac
 AfwMainPage::addOutput('<input type="hidden" name="r" value="' . $r . '"/>');
 AfwMainPage::addOutput('<input type="hidden" name="option" value="' . $option . '"/>');
 AfwMainPage::addOutput('<input type="hidden" name="limite"    value="0"/>');
-if (!$current_page) $current_page = "afw_mode_qsearch.php";
 AfwMainPage::addOutput('<input type="hidden" id="Main_Page" name="Main_Page" value="' . $current_page . '"/>');
 /*
 AfwMainPage::addOutput( '<script type="text/javascript">

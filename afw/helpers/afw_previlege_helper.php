@@ -787,7 +787,7 @@ class AfwPrevilegeHelper
         // this below rule should be reviewed because $object for Qsearch form is empty object and some attributes can be 
         // non applicable for empty object but any way we can search in database of filled objects
         // if (!$object->attributeIsApplicable($attribute)) return false;
-        
+
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
@@ -803,6 +803,9 @@ class AfwPrevilegeHelper
                     $desc['TYPE'] == 'FK' or
                     $desc['TYPE'] == 'ENUM' or
                     $desc['TYPE'] == 'YN' or
+                    $desc['TYPE'] == 'INT' or
+                    $desc['TYPE'] == 'AMNT' or
+                    $desc['TYPE'] == 'PCTG' or
                     $desc['TYPE'] == 'DATE' // or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
                 )
                     or
@@ -839,6 +842,9 @@ class AfwPrevilegeHelper
                     $desc['TYPE'] == 'FK' or
                     $desc['TYPE'] == 'ENUM' or
                     $desc['TYPE'] == 'YN' or
+                    $desc['TYPE'] == 'INT' or
+                    $desc['TYPE'] == 'AMNT' or
+                    $desc['TYPE'] == 'PCTG' or
                     $desc['TYPE'] == 'DATE' // or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
                 )
                     or

@@ -200,9 +200,6 @@ class AfwQsearchMotor
 				break;
 			case 'PK':
 			case 'TEXT':
-			case 'PCTG':
-			case 'INT':
-			case 'AMNT':
 
 		?> <input type="text" class="form-control <?= $lang ?> <?= trim(" inputfull $class_inputSearch ") ?>" placeholder="<?php echo $col_placeholder ?>" name="<?php echo $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
 			<?php echo $desc["UNIT"];
@@ -250,6 +247,28 @@ class AfwQsearchMotor
 					false
 				);
 				break;
+			case 'PCTG':
+			case 'INT':
+			case 'AMNT':
+?><!-- between table -->
+				<table style="border: 1px silver solid;width:100%">
+					<tr>
+						<td style='padding:5px;'>
+							بين
+						</td>
+						<td>
+							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>							
+						</td>
+						<td style='padding:5px;'>
+							و
+						</td>
+						<td>
+							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<? echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
+						</td>
+					</tr>
+				</table><!-- end between table -->
+			<?php 
+			break;
 			case 'DATE':
 			?><!-- between table -->
 				<table style="border: 1px silver solid;width:100%">
