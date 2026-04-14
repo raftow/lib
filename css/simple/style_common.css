@@ -1138,6 +1138,13 @@ input[type="text"], textarea {
     border-color: #188ee1 !important;
 }
 
+.btn-primary[disabled]:hover {
+    color: #fff;
+    background-color: #e4e4e4;
+    color: #a19d9d;
+    border-color: #a19d9d !important;
+}
+
 .closebtn {
     color: #fff;
     background: #341300 url('../../../lib/images/close.png') no-repeat 95px center !important;
@@ -4453,6 +4460,16 @@ textarea {
     font-size: 18px;
 }
 
+/*----*/
+button[disabled],
+input[disabled],
+textarea[disabled],
+select[disabled] {
+	background-color: #e4e4e4;
+	color: #a19d9d;
+    border-color: #a19d9d !important;
+}
+
 .nice_link {
     padding: 0px 14px 0px 14px;
     background-color: #b7e2f8;
@@ -7435,6 +7452,64 @@ input.inputqe.xqe_data_notloaded {
     border-radius: 50%;
 }
 
+
+.ppa {
+    width: 80%;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 19px;
+}
+
+p.special-link.hide {
+    display: none !important;
+}
+
+p.special-link.ppa {
+    width: 100%;
+    display: block;
+    margin: 0;
+    float: right;
+}
+
+p.special-link {
+    font-size: 16px;
+}
+
+p.special-link.ppa.done {
+    background-color: #16b98a;
+    color: white;
+    padding: 4px;
+}
+
+p.special-link.ppa.read {
+    background-color: orange;
+    color: white;
+    padding: 4px;
+}
+
+p.special-link.ppa.read>a {
+    color: white;
+}
+
+p.special-link.ppa.todo {
+    background-color: #168ab9;
+    color: white;
+    padding: 4px;
+}
+
+p.special-link.ppa.todo>a {
+    color: white;
+}
+
+p.ppa-acceptance {
+    font-size: 16px;
+    width: 70%;
+    float: left;
+}
+
+p.ppa-acceptance.hide {
+    display: none;
+}
 
 /************* FOR RETIRIEVE AND GRID DEFAULT STYLES *************/
 

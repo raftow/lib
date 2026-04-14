@@ -106,7 +106,7 @@ foreach($class_db_structure as $nom_col => $desc)
         $qedit_orderindex = $col_num + $obj->qeditNum*$nb_cols_qedit;
         $obj->qeditNomCol = $nom_col;
         $attr_IsApplicable = $obj->attributeIsApplicable($nom_col);
-        
+        // if(($nom_col=='org_ar') and !$attr_IsApplicable) die("$nom_col is not applicable for row $obj_qeditNum");
         if(($column_order==1) and $obj->PK_MULTIPLE)
         {
                 $qedit_orig_nom_col["id_" . $obj_qeditNum] = "id";
@@ -156,8 +156,10 @@ foreach($class_db_structure as $nom_col => $desc)
                                 }
                                 
                                 $obj_val = $obj->getVal($nom_col);
+                                // if(($nom_col=='org_ar') and ($obj_qeditNum==0)) die("for col $nom_col for row $obj_qeditNum : applicable = $attr_IsApplicable ");
                                 if($attr_IsApplicable)
                                 {
+                                        // if(($nom_col=='org_ar')) die("$nom_col is applicable for row $obj_qeditNum");
                                         $qerow = 1;
                                         $qecols = $desc['QEDIT-COLS'];
                                         if($desc['QEDIT-BEFORE-COLS'])
@@ -171,6 +173,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                                 $qerow = 2;
                                                 $qecols = $desc['QEDIT-AFTER-COLS'];
                                         }
+                                                
                                         $qerow_exists[$qerow] = true;
                                         if(!$mode_show_field_read_only)
                                         {
@@ -257,13 +260,16 @@ foreach($class_db_structure as $nom_col => $desc)
                                 }
                                 else
                                 {
+                                        // if(($nom_col=='org_ar')) die("$nom_col is not applicable for row $obj_qeditNum");
                                         list($icon,$textReason, $wd, $hg) = $obj->whyAttributeIsNotApplicable($nom_col);
                                         if(!$wd) $wd = 20;
                                         if(!$hg) $hg = 20;
                                         //$obj->_error("$obj has Attribute $nom_col NotApplicable : ($icon,$textReason)");
                                         $qedit_input_arr[$qerow][$qedit_nom_col] = ["input"=>"<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>", "cols"=>$qecols];
+                                        // die("case N/A qedit_input_arr = ".var_export($qedit_input_arr, true));
                                 }
                                 
+                                // if(($qerow==1) and ($qedit_nom_col=='org_ar')) die("for row=$qerow col=$qedit_nom_col debugg of qedit_input_arr = ".var_export($qedit_input_arr, true));
                                 
                                 if(!$obj_val)
                                 {
@@ -455,6 +461,7 @@ if(!$obj->qedit_minibox)
         if(!$total_sahm) $total_sahm = count($qedit_input_arr[$qerow_num]);
         if(!$total_sahm) $total_sahm = 5;
         //die(var_export($arrErrors,true));
+        // if($qerow_num==1) die("qedit_input_arr=".var_export($qedit_input_arr,true));
         foreach($qedit_input_arr[$qerow_num] as $col => $input_html_row)
         {
              $input_html = $input_html_row["input"];

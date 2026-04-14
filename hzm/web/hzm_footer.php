@@ -1,6 +1,7 @@
 <?php
 
 $objme = AfwSession::getUserConnected();
+// die("rafik . objme = ".var_export($objme, true));
 $lang = AfwLanguageHelper::getGlobalLanguage();
 if(!$lang) $lang="ar";
 $please_wait = AFWObject::gtr("PLEASE_WAIT",$lang);
@@ -152,12 +153,14 @@ include_once("hzm_footer_features_js.php");
         list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = AfwFrontMenu::loadUmsCacheForUser($me_id, $lang);
         if($cache_found)
         {
+          die("rafik AfwFrontMenu::loadUmsCacheForUser($me_id, $lang) => quick_links_arr = ".var_export($quick_links_arr, true)." mau_info = ".var_export($mau_info, true));
           $quick_links_arr = $quick_links_arr[$lang]; 
           $tocheck = $user_cache_file_path;
         }
         else
         {
           $quick_links_arr = $objme->getMyQuickLinks($lang, $MODULE);
+          die("rafik objme->getMyQuickLinks($lang, $module) => quick_links_arr = ".var_export($quick_links_arr, true));
           $tocheck = "from database objme->getMyQuickLinks($lang, $MODULE)";
         } 
     }

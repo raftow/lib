@@ -14,22 +14,25 @@ class AfwHtmlFooterHelper extends AfwHtmlHelper
 
         $data_tokens["quick_links_title"] = AfwSession::config("quick_links_title", "روابط سريعة");
         $data_tokens["module"] = $module;
-
+        // die("rafik . objme = ".var_export($objme, true));
         if($objme)
         {
             $me_id = $objme->id;
             list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = AfwFrontMenu::loadUmsCacheForUser($me_id, $lang);
             if($cache_found)
             {
+                // die("rafik AfwFrontMenu::loadUmsCacheForUser($me_id, $lang) => quick_links_arr = ".var_export($quick_links_arr, true)." mau_info = ".var_export($mau_info, true));
                 $quick_links_arr = $quick_links_arr[$lang]; 
                 $tocheck = $user_cache_file_path;
             }
             else
             {
                 $quick_links_arr = $objme->getMyQuickLinks($lang, $module);
+                // die("rafik objme->getMyQuickLinks($lang, $module) => quick_links_arr = ".var_export($quick_links_arr, true));
                 $tocheck = "from database objme->getMyQuickLinks($lang, $module)";
             } 
         }
+
         $quick_links_html = "";
         if($quick_links_arr and is_array($quick_links_arr) and count($quick_links_arr)>0)
         {
@@ -61,6 +64,7 @@ class AfwHtmlFooterHelper extends AfwHtmlHelper
     ) 
     {
         $objme = AfwSession::getUserConnected();
+        if(!$objme) $objme = AfwSession::getCustomerConnected();
 
         $data_tokens = self::prepareTokens($footer_template,
             $lang,

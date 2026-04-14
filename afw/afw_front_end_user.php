@@ -11,6 +11,8 @@ interface AfwFrontEndUser {
     // a supervisor is a the highest business role and in technical
     // he has some roles lightly smaller than admin (can see some needed logs for example)        
     public function isSupervisor();
+    public function isCustomer();
+    public function getMyQuickLinks($lang = 'ar', $except_module = '');
     
 }
 

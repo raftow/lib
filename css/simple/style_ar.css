@@ -2755,11 +2755,7 @@ ui-datepicker .ui-datepicker-next,
 	border-radius: 0;
 }
 
-/*----*/
-input[disabled],
-select[disabled] {
-	background-color: #e4e4e4;
-}
+
 
 .degree {
 	padding-top: 10px;
@@ -4163,7 +4159,9 @@ span.gear {
 	direction: rtl;
 	text-align: right;
 	vertical-align: middle;
-	height: 30px;
+	/* height: 30px; Rafik 7/4/2026 : will cause problem in front-end
+	    applications like crm becuase other similar divs will not be 
+	    same height and the floating will not work correctly */
 	background: url("../../../lib/images/mobileb.png") no-repeat 10px;
 	font-size: 16px !important;
 	color: #184CB6 !important;

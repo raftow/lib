@@ -804,12 +804,13 @@ class AfwStructureHelper extends AFWRoot
         $attribute,
         $desc = '',
         $submode = '',
-        $for_this_instance = true
+        $for_this_instance = true,
+        $force_accept_not_applicable = false
     ) {
         if (!$object)
             return false;
         if (!$object->attributeIsApplicable($attribute))
-            return false;
+            if(!$force_accept_not_applicable) return false;
         global $display_in_edit_mode;
 
         /*
@@ -897,7 +898,8 @@ class AfwStructureHelper extends AFWRoot
             $attribute,
             $desc,
             $submode,
-            false
+            false,
+            true
         ) and
             (  /* !isset($desc[$qedit_mode_code]) or // Rafik This at left is old logic should be obsolete now and QEDIT mode should be explicit */
                 $desc[$qedit_mode_code] or
