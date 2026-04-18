@@ -172,9 +172,11 @@ class AfwHtmlFooterJsHelper
             console.log('currmod=' + the_module + ' cls=' + afwclass + ' idobj=' + obj_id + ' csmethod=' + csmethod + ' afw_status_changer res = ', data);
             if (data.status == "success") {
               $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).html('<img src="../lib/images/success.png" width="64" height="64">');
+              $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeClass("changestatus");
               apiChangeStatusDoneOn(the_module, afwclass, obj_id, csmethod);
             } else {
               $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).html('<img src="../lib/images/fail.png" width="64" height="64">');
+              $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeClass("changestatus");
               mess = '';
               <?php echo $response_data_format ?>
               swal("<?php echo $you_dont_have_rights ?> " + mess); // 
@@ -221,19 +223,19 @@ class AfwHtmlFooterJsHelper
       }
 
       function removeFromMfk(ids, id) {
-        if(ids.length==0) ids = ",";
-        ids = ids.replace(id+",", "");
-        if(ids===",") ids = "";
+        if (ids.length == 0) ids = ",";
+        ids = ids.replace(id + ",", "");
+        if (ids === ",") ids = "";
 
         return ids;
       }
 
       function addInMfk(ids, id) {
-          ids = removeFromMfk(ids, id);
-          if(ids.length==0) ids = ",";
-          ids = ids + id + ",";
+        ids = removeFromMfk(ids, id);
+        if (ids.length == 0) ids = ",";
+        ids = ids + id + ",";
 
-          return ids;
+        return ids;
       }
 
       function move_triggers() {
@@ -417,20 +419,19 @@ class AfwHtmlFooterJsHelper
         });
 
 
-        
+
 
         $(".js-check-all").click(function() {
-            $(this).toggleClass('checked');
-            if($(this).hasClass('checked')) {
-              $('#checked_ids').val(","+$('#all_ids').val()+",");
-              $('.submit-btn.rpbm').removeAttr('disabled');
-              $(".js-check-box").addClass('checked');
-            }
-            else {
-              $('#checked_ids').val("");
-              $('.submit-btn.rpbm').attr('disabled',true);
-              $(".js-check-box").removeClass('checked');
-            }
+          $(this).toggleClass('checked');
+          if ($(this).hasClass('checked')) {
+            $('#checked_ids').val("," + $('#all_ids').val() + ",");
+            $('.submit-btn.rpbm').removeAttr('disabled');
+            $(".js-check-box").addClass('checked');
+          } else {
+            $('#checked_ids').val("");
+            $('.submit-btn.rpbm').attr('disabled', true);
+            $(".js-check-box").removeClass('checked');
+          }
         });
 
         $(".js-check-box").click(function() {
@@ -438,31 +439,29 @@ class AfwHtmlFooterJsHelper
           // console.log('check_id = '+check_id);
           var arr_data = check_id.split("-");
           var chk = arr_data[0];
-          var id = arr_data[1];  
+          var id = arr_data[1];
           // console.log('id = '+id);
           var checked_ids = $('#checked_ids').val();
           var checked_ids_old = checked_ids;
           // console.log('ids before = '+checked_ids);
           $(this).toggleClass('checked');
 
-          if($(this).hasClass('checked')) {
+          if ($(this).hasClass('checked')) {
             checked_ids = addInMfk(checked_ids, id);
             // console.log('addInMfk("'+checked_ids_old+'", "'+id+'") result '+checked_ids);
-          }
-          else {
+          } else {
             checked_ids = removeFromMfk(checked_ids, id);
           }
 
           $('#checked_ids').val(checked_ids);
 
-          if(checked_ids.length<=1) {
-            $('.submit-btn.rpbm').attr('disabled',true);
-          }
-          else {
+          if (checked_ids.length <= 1) {
+            $('.submit-btn.rpbm').attr('disabled', true);
+          } else {
             $('.submit-btn.rpbm').removeAttr('disabled');
           }
 
-          
+
 
         });
 
@@ -618,7 +617,7 @@ class AfwHtmlFooterJsHelper
 
         $('#example').DataTable({
           pagingType: "full_numbers",
-          pageLength: <?php echo $options["all-records-in-one-page"] ? -1 : ($options["records-in-page"] ? $options["records-in-page"] : 25); ?>, 
+          pageLength: <?php echo $options["all-records-in-one-page"] ? -1 : ($options["records-in-page"] ? $options["records-in-page"] : 25); ?>,
           lengthMenu: <?php echo $options["lengthMenu"] ? $options["lengthMenu"] : '[[10, 25, 50, -1], [10, 25, 50, "All"]]' ?>
         });
 
