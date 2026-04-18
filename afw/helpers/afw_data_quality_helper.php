@@ -11,7 +11,8 @@ class AfwDataQualityHelper
         $attribute = null, // if $attribute is set means we ignore all attributes except $attribute
         $stop_on_first_error = false,
         $start_step = null,
-        $end_step = null
+        $end_step = null,
+        $resume_error_message = false
     ) {
         // global $errors_check_count;
         //, $errors_ check_count _max;
@@ -46,7 +47,7 @@ class AfwDataQualityHelper
             // we should pass $erroned_attribute = null to get all step attributes for cache and after we we will
             // return only for the attribute requested
             $erroned_attribute = null; 
-            $common_e_arr   =   self::getCommonDataErrors($object, $lang, $show_val, $step, $erroned_attribute, $stop_on_first_error, $start_step, $end_step);
+            $common_e_arr   =   self::getCommonDataErrors($object, $lang, $show_val, $step, $erroned_attribute, $stop_on_first_error, $start_step, $end_step, $resume_error_message);
             if((get_class($object)=="Applicant") and ($step==2) and ($attribute=="passeport_num")) // and !$start_step and !$end_step
             {            
                 die(get_class($object)." : dbg getCommonDataErrors(lang=$lang, show_val=$show_val, step=$step, attribute=$attribute, stop_on_first_error=$stop_on_first_error, start_step=$start_step, end_step=$end_step) => ".var_export($common_e_arr,true));
@@ -114,6 +115,63 @@ class AfwDataQualityHelper
             (!$desc['CATEGORY'] or $desc['ERROR-CHECK']);
     }
 
+
+    // PILLAR : if an object is a pillar for another object, 
+    //          it means that the quality of data of the second object is 
+    //          highly depending on the quality of data of the first object, 
+    //          so we consider that if there is an error in the first object, 
+    //          there is an error in the second object even if there is no error in the second object itself, 
+    //          and we call the first object a pillar for the second object
+    // POLE : if an object is a pole for another object it means it is a pillar when it is applicable
+    // PILLAR-PART : if an object is a pillar-part for another object, 
+    //               it means that it is a pillar for the second object only if it is required, 
+    //               
+
+
+    /**
+     * @param AFWObject $object
+     */
+    public static final function getPillarObjects($object, $step = 'all')
+    {
+        $pillar_objects = [];
+        $object_db_structure = $object::getDbStructure(
+            $return_type = 'structure',
+            $attrib = 'all',
+            $step
+        );
+
+        foreach ($object_db_structure as $attribute => $desc) {
+            if (($desc['PILLAR'] or ($desc['POLE'] and $object->attributeIsApplicable($attribute))
+                                 or ($desc['PILLAR-PART']) and $object->attributeIsRequired($attribute, $desc)))
+            {
+                $obj_arr = [];
+                if ($desc['TYPE'] == 'FK') {
+                    $objVal = $object->get($attribute, 'object', '', false);
+                    if (is_object($objVal)) {
+                        $obj_arr[] = $objVal;
+                    }
+                    elseif (is_array($objVal)) {
+                        $obj_arr = $objVal;
+                    }
+                }
+
+                if ($desc['TYPE'] == 'MFK') {
+                    $obj_arr = $object->get($attribute);
+                    
+                }
+
+                foreach ($obj_arr as $obj_id => $objVal) {
+                    if (is_object($objVal)) {
+                        $pillar_objects[] = $objVal;
+                    }
+                }
+            }
+        }
+
+        return $pillar_objects;
+
+    }
+
     // Action :
     // Check common known errors
     // 1. Mandatory fields values
@@ -121,6 +179,9 @@ class AfwDataQualityHelper
     // 3. Constraints on values for Constrainted fields
     // 4. Errors eventually in 'pillar-part' fields
     // return array of errors
+    /**
+     * @param AFWObject $object
+     */
     private static final function getCommonDataErrors($object,    
         $lang = 'ar',
         $show_val = true,
@@ -128,7 +189,8 @@ class AfwDataQualityHelper
         $erroned_attribute = null,
         $stop_on_first_error = false,
         $start_step = null,
-        $end_step = null
+        $end_step = null,
+        $resume_error_message = false
     ) {
         global $errors_check_count;
 
@@ -288,7 +350,7 @@ class AfwDataQualityHelper
                         */
 
                         if (!$correctFormat) {
-                            if (!$desc['RESUME_TEXT_ERROR']) {
+                            if (!$resume_error_message) {
                                 $cm_errors[$error_attribute] .=
                                     $object->translateOperator(
                                         'FIELD VALUE',
@@ -300,10 +362,7 @@ class AfwDataQualityHelper
                                     ' : ';
                             }
                             $cm_errors[$error_attribute] .=
-                                $object->translateOperator(
-                                    $correctFormatMess,
-                                    $lang
-                                ) . ", \n";
+                                $object->translateOperator($correctFormatMess,$lang) . ", \n";
 
                             if ($stop_on_first_error) break;
                         }
@@ -374,7 +433,7 @@ class AfwDataQualityHelper
                                 if (is_object($objVal)) {
                                     $err_obj_arr = AfwDataQualityHelper::getDataErrors($objVal, 
                                         $lang,
-                                        $show_val
+                                        $show_val,                                        
                                     );
                                     $objVal_disp = $objVal->getShortDisplay();
                                     $err_count = count($err_obj_arr);
@@ -581,7 +640,7 @@ class AfwDataQualityHelper
         $ignore_fields_arr = null,
         $attribute = null
     ) {
-        $return = AfwDataQualityHelper::getDataErrors($object, $lang, $show_val, $recheck, $kstep, $ignore_fields_arr, $attribute, false, );
+        $return = AfwDataQualityHelper::getDataErrors($object, $lang, $show_val, $recheck, $kstep, $ignore_fields_arr, $attribute, false, null, null, true);
         // if($attribute=="passeport_num") die("dbg inside getStepErrors ".get_class($object)."::getDataErrors(lang=$lang, show_val=$show_val, recheck=$recheck, kstep=$kstep, ignore_fields_arr=$ignore_fields_arr, attribute=$attribute, false, ) => ".var_export($return,true));
         return $return;
     }

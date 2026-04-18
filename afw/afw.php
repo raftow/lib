@@ -1120,6 +1120,19 @@ class AFWObject extends AFWRoot
             return null;
     }
 
+    public static function loadOrCreateWithUniqueKey($ukey_array)
+    {
+        $obj = new static();
+        if ($obj->loadWithUniqueKey($ukey_array))
+            return $obj;
+        else {
+            foreach ($ukey_array as $ukey => $ukey_value) {
+                $obj->set($ukey, $ukey_value);
+            }
+            return $obj;
+        }
+    }
+
     public function loadWithUniqueKey($ukey_array)
     {
         foreach ($ukey_array as $ukey => $ukey_value) {
@@ -2227,7 +2240,7 @@ class AFWObject extends AFWRoot
             } else {
                 // rafik : since version 2.0.1 if we are updating existing record
                 // we put in FIELDS_UPDATED the old values
-                // not the new value that we can find in aFIELD VALUEs array
+                // not the new value that we can find in afield values array
                 // except if value is empty so we put true "@@empty@@"
                 // to be sure that FIELDS_UPDATED contain old value
                 // --> to test that old value was not empty do FIELDS_UPDATED[$key] !== "@@empty@@"

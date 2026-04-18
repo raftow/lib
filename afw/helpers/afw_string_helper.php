@@ -76,6 +76,13 @@ class AfwStringHelper
                 return (substr($string, -$len) === $endString);
         }
 
+        public static function stringReplaceLast($string, $search, $replace)
+        {
+                $pos = strlen($string) - strlen($search) - 1;
+                $string = substr_replace($string, $replace, $pos, strlen($search));
+                return $string;
+        }
+
         public static function clean_my_url($string)
         {
                 $string2 = str_replace('<', '', $string);

@@ -99,12 +99,15 @@ class AfwSqlHelper extends AFWRoot
         return [$errors, $sql];
     }
 
-    public static final function sqlInsertOrUpdate($table, $my_row, $pkCol_arr = null)
+    public static final function sqlInsertOrUpdate($table, $my_row, $pkCol_arr = null, $tableCol_arr = null)
     {
-        $my_row_cols = array_keys($my_row);
+        if($tableCol_arr) $my_row_cols = $tableCol_arr;
+        else $my_row_cols = array_keys($my_row);
+        
         $set_insert_cols = '';
         $set_update_cols = '';
         $pk_cols_where = '1';
+
         foreach ($my_row_cols as $row_col) {
             $row_val = $my_row[$row_col];
             $set_insert_cols .= " $row_col='$row_val',";
@@ -112,7 +115,7 @@ class AfwSqlHelper extends AFWRoot
                 if (!$pkCol_arr[$row_col])
                     $set_update_cols .= " $row_col='$row_val',";
                 else
-                    $pk_cols_where = " AND $row_col='$row_val'";
+                    $pk_cols_where .= " AND $row_col='$row_val'";
             }
         }
 

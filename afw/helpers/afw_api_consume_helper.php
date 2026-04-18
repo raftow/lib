@@ -21,7 +21,7 @@ class AfwApiConsumeHelper
 
     private static function consume_complex_api($bearer, $url, $token, $proxy = null , $data = null, 
                     $verify_host=null, $verify_pear=null, $return_transfer=true, 
-                    $encoding='', $method='GET', $maxredirs=10, $timeout=0, $followlocation=true, $http_version=null,
+                    $associative=false, $encoding='', $method='GET', $maxredirs=10, $timeout=0, $followlocation=true, $http_version=null,
                     $http_header_array = ['accept: application/json', 'Content-Type: application/json'],
                     $print_full_debugg=false, $print_error=false)
     {        
@@ -149,9 +149,9 @@ class AfwApiConsumeHelper
                 
                 if($success) 
                 {
-                    $decoded_response = json_decode(AfwStringHelper::deep_trim($response));
+                    $decoded_response = json_decode(AfwStringHelper::deep_trim($response), $associative);
                     if ($decoded_response === null && json_last_error() !== JSON_ERROR_NONE) {
-                        throw new AfwRuntimeException("returned response |$response| has caused JSON decode error: " . json_last_error_msg()." Error code: " . json_last_error());
+                        throw new AfwRuntimeException("curl $p_url returned response |$response| has caused JSON decode error: " . json_last_error_msg()." Error code: " . json_last_error());
                     } 
                 }    
                 else $decoded_response = null;
@@ -174,20 +174,20 @@ class AfwApiConsumeHelper
 
     public static function consume_bearer_api($url, $token, $proxy = null , $data = null, 
                     $verify_host=false, $verify_pear=false, $return_transfer=true, 
-                    $encoding='', $method='GET', $maxredirs=10, $timeout=0, $followlocation=true, $http_version=null,
+                    $associative=false, $encoding='', $method='GET', $maxredirs=10, $timeout=0, $followlocation=true, $http_version=null,
                     $http_header_array = ['accept: application/json', 'Content-Type: application/json'],
                     $print_full_debugg=false, $print_error=false)
     {
-        return self::consume_complex_api(true, $url, $token, $proxy, $data, $verify_host, $verify_pear, $return_transfer, $encoding, $method, $maxredirs, $timeout, $followlocation, $http_version, $http_header_array, $print_full_debugg, $print_error);
+        return self::consume_complex_api(true, $url, $token, $proxy, $data, $verify_host, $verify_pear, $return_transfer, $associative, $encoding, $method, $maxredirs, $timeout, $followlocation, $http_version, $http_header_array, $print_full_debugg, $print_error);
     }
 
     public static function consume_normal_api($url, $proxy = null, $data = null, 
                     $verify_host=false, $verify_pear=false, $return_transfer=true, 
-                    $encoding='', $method='GET', $maxredirs=10, $timeout=0, $followlocation=true, $http_version=null,
+                    $associative=false, $encoding='', $method='GET', $maxredirs=10, $timeout=0, $followlocation=true, $http_version=null,
                     $http_header_array = ['accept: application/json', 'Content-Type: application/json'],
                     $print_full_debugg=false, $print_error=false)
     {
-        return self::consume_complex_api(false, $url, "",    $proxy, $data, $verify_host, $verify_pear, $return_transfer, $encoding, $method, $maxredirs, $timeout, $followlocation, $http_version, $http_header_array, $print_full_debugg, $print_error);
+        return self::consume_complex_api(false, $url, "",    $proxy, $data, $verify_host, $verify_pear, $return_transfer, $associative, $encoding, $method, $maxredirs, $timeout, $followlocation, $http_version, $http_header_array, $print_full_debugg, $print_error);
     }
 
 
@@ -207,7 +207,7 @@ class AfwApiConsumeHelper
         $encoding = AfwSettingsHelper::readSettingValue($object,"encoding",'');
         $print_full_debugg = AfwSettingsHelper::readSettingValue($object,"print_full_debugg",true);
         $print_error = AfwSettingsHelper::readSettingValue($object,"print_error",true);
-        
+        $associative = AfwSettingsHelper::readSettingValue($object,"associative",false);
         // $xxxxx = AfwSettingsHelper::readSettingValue($object,"xxxxx",def-xxxxx);
         $http_header_array = AfwSettingsHelper::readSettingValue($object, "http_header", ['accept: application/json', 'Content-Type: application/json'],"settings",true);
         if($bearer_token)
@@ -220,6 +220,7 @@ class AfwApiConsumeHelper
                 $verify_host,
                 $verify_pear,
                 $return_transfer,
+                $associative,
                 $encoding,
                 $method,
                 $maxredirs,
@@ -238,6 +239,7 @@ class AfwApiConsumeHelper
                 $verify_host,
                 $verify_pear,
                 $return_transfer,
+                $associative,
                 $encoding,
                 $method,
                 $maxredirs,

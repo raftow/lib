@@ -2055,13 +2055,35 @@ div.class_input_width_90>div.form-control {
     width: 85% !important;
 }
 
+.hzm_tooltip_error {
+    margin-top: -32px;
+    position: sticky !important;
+    /* z-index: 9999 !important; */
+    /* position: sticky !important; */
+    color: red;
+    margin-right: 60px;
+    font-size: 13px;
+    height: 32px;
+}
+
 .form-control-div.errors {
-    border-color: #df806f;
+    border-style: none;
     padding-top: 8px !important;
+    /* color: wheat; */
+    /* background-color: red; */
+    min-height: fit-content;
+}
+
+/* rafik : old version with red background and white text for errors, we changed to only red border and error message in tooltip to avoid too much red in the form when there are multiple errors
+.form-control-div.errors {
+    border-color: #df806f; 
+
+    padding-top: 8px !important;    
     color: wheat;
     background-color: red;
     min-height: fit-content;
-}
+}    */
+
 
 .hzm_tooltip {
     width: 15%;
@@ -4947,4 +4969,27 @@ span.json.error {
     text-align: center;
     border: 1px solid gray;
     padding: 15px;
+}
+
+.report-item.report-label {
+    background-color: #f7f7f7;
+}
+.report-item {
+    float: right;
+    width: 24%;
+    margin-left: 1%;
+    height: 29px;
+    margin-bottom: 4px;
+}
+
+/****
+
+
+**/
+
+
+
+hr.hrthin {
+    height: 1px;
+    margin: 0;
 }
