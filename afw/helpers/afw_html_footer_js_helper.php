@@ -173,10 +173,12 @@ class AfwHtmlFooterJsHelper
             if (data.status == "success") {
               $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).html('<img src="../lib/images/success.png" width="64" height="64">');
               $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeClass("changestatus");
+              $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeEvent("click");
               apiChangeStatusDoneOn(the_module, afwclass, obj_id, csmethod);
             } else {
               $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).html('<img src="../lib/images/fail.png" width="64" height="64">');
               $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeClass("changestatus");
+              $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeEvent("click");
               mess = '';
               <?php echo $response_data_format ?>
               swal("<?php echo $you_dont_have_rights ?> " + mess); // 
