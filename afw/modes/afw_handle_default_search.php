@@ -144,29 +144,27 @@ if (!$liste_obj) {
         //$dataRetrive = AfwLoadHelper::retrieveMany($obj, $the_limit, $sql_order_by);
 }
 $qs_options = [];
-if(method_exists($cl,"getQsearchDefaultOptions")) {
+if (method_exists($cl, "getQsearchDefaultOptions")) {
         $qs_options = $cl::getQsearchDefaultOptions();
 }
-if(!$qs_options["records-in-page"]) $qs_options["records-in-page"] = 25;
+if (!$qs_options["records-in-page"]) $qs_options["records-in-page"] = 25;
 
 // we can use the checknox select mode only  if all records feet in one page
 $liste_obj_count = count($liste_obj);
 $records_in_page = $qs_options["records-in-page"];
-if($liste_obj_count < $records_in_page) {
-    $feet_in_one_page = true;   
-    $feet_in_one_page_log = "";   
+if ($liste_obj_count < $records_in_page) {
+        $feet_in_one_page = true;
+        $feet_in_one_page_log = "";
 } else {
-    $feet_in_one_page = false;       
+        $feet_in_one_page = false;
 }
 
-if($show_checkboxes and $obj) {
-        if($feet_in_one_page) {
+if ($show_checkboxes and $obj) {
+        if ($feet_in_one_page) {
                 $header_retrieve["check-id"] = "<div id='check-all' class='js-check-all'><!-- $liste_obj_count < $records_in_page --></div>";
-        }
-        else {
+        } else {
                 AfwSession::pushWarning($obj->tm("لا يمكن تفعيل الخيارات المتعددة لتنفيذ بعض الاجراءات الجماعية بسبب تجاوز عدد السجلات العدد الأقصى", $lang));
         }
-        
 }
 
 
@@ -293,12 +291,12 @@ if (!$result_page_title) {
                 $result_page_title = $obj->translate($obj->getTableName(), $lang) . " " . $obj->translate('who.will.receive.action.' . $action, $lang);
 }
 
-
+list($special_css_tab_search_result,) = explode(".", $current_page);
 
 if (true) {
 ?>
 
-        <table id="search_result_table" width="<?= $pct_tab_search_result ?>" class="search_result_table">
+        <table id="search_result_table" width="<?php echo $pct_tab_search_result ?>" class="search_result_table <?php echo $special_css_tab_search_result ?>">
                 <tr>
                         <td>
                                 <table width="100%">
@@ -314,7 +312,7 @@ if (true) {
                                                         AfwSession::log("Before prepare of header and can_action array matrix in afw_handle_default_search");
                                                         if (count($header) != 0) {
                                                                 $datatable_header = "";
-                                                        /*        
+                                                                /*        
                                                         if(($cl=="Request"))
                                                         {
                                                                 $message .= "<br>Rafik debugg header = ".var_export($header,true);
@@ -627,7 +625,7 @@ if (true) {
                         </td>
                 </tr>
         </table>
-        <input type="hidden" id="all_ids" name="all_ids"  value="<?php echo $ids?>"/>
+        <input type="hidden" id="all_ids" name="all_ids" value="<?php echo $ids ?>" />
 <?php
 }
 $link = "";
