@@ -408,8 +408,12 @@ if (true) {
                                                                         $maxRecordsUmsCheck = $obj->maxRecordsUmsCheck();
                                                                         $repeat_retrieve_header = $obj->repeatRetrieveHeader();
                                                                         $umsCheckDisabledInRetrieveMode = $obj->umsCheckDisabledInRetrieveMode();
+
+
+
                                                                         if ($maxRecordsUmsCheck > 100) $maxRecordsUmsCheck = 100;
                                                                         foreach ($data as $id => $tuple) {
+                                                                                $row_class_key = $tuple['ca-col'];
                                                                                 //if($ids_count<50)
                                                                                 //{
                                                                                 if ($ids) $ids .= ",";
@@ -430,8 +434,19 @@ if (true) {
                                                                                 if (!$isAvail[$id]) $cl_tr = $class_td_off;
 
                                                                                 $lbl = addslashes($tuple["display_object"]);
+                                                                                if ($row_class_key) {
+                                                                                        $row_class_key_val = '' . $tuple['ca-' . $row_class_key];
+                                                                                        $row_class_key_val = str_replace('-', '_', $row_class_key_val);
+                                                                                        $row_class_css = $row_class_key . ' hzm_row_' . $row_class_key_val;
+                                                                                        /*if(!trim($row_class_key_val)) {
+                                                                                                die("Error: row_class_key_val is empty for id=$id, tuple = ".var_export($tuple,true)." and row_class_key = $row_class_key");
+                                                                                        }*/
+                                                                                } else {
+                                                                                        $row_class_css = 'hzm_row_std';
+                                                                                }
+
                                                                                 ?>
-                                                                                <tr class='data-row'>
+                                                                                <tr class='data-row <?php echo $row_class_css ?>'>
                                                                                         <?
                                                                                         foreach ($header as $nom_col => $tr_col) {
                                                                                                 $desc = $class_db_structure[$nom_col];

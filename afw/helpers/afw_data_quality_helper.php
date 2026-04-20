@@ -12,7 +12,8 @@ class AfwDataQualityHelper
         $stop_on_first_error = false,
         $start_step = null,
         $end_step = null,
-        $resume_error_message = false
+        $resume_error_message = false,
+        $checkPoles = true
     ) {
         // global $errors_check_count;
         //, $errors_ check_count _max;
@@ -47,7 +48,7 @@ class AfwDataQualityHelper
             // we should pass $erroned_attribute = null to get all step attributes for cache and after we we will
             // return only for the attribute requested
             $erroned_attribute = null; 
-            $common_e_arr   =   self::getCommonDataErrors($object, $lang, $show_val, $step, $erroned_attribute, $stop_on_first_error, $start_step, $end_step, $resume_error_message);
+            $common_e_arr   =   self::getCommonDataErrors($object, $lang, $show_val, $step, $erroned_attribute, $stop_on_first_error, $start_step, $end_step, $resume_error_message, $checkPoles);
             if((get_class($object)=="Applicant") and ($step==2) and ($attribute=="passeport_num")) // and !$start_step and !$end_step
             {            
                 die(get_class($object)." : dbg getCommonDataErrors(lang=$lang, show_val=$show_val, step=$step, attribute=$attribute, stop_on_first_error=$stop_on_first_error, start_step=$start_step, end_step=$end_step) => ".var_export($common_e_arr,true));
@@ -190,7 +191,8 @@ class AfwDataQualityHelper
         $stop_on_first_error = false,
         $start_step = null,
         $end_step = null,
-        $resume_error_message = false
+        $resume_error_message = false,
+        $checkPoles = true
     ) {
         global $errors_check_count;
 
@@ -395,13 +397,13 @@ class AfwDataQualityHelper
                     // 4. Errors eventually in pillar or 'pillar-part' fields
                     //   pole or     is same as pillar but only if applicable
                     //   pillar-part   is same as pillar if attribute Is Required
-                    if (
+                    if ($checkPoles and (
                         $desc['PILLAR'] or
                         $desc['POLE'] and
                         $object->attributeIsApplicable($attribute) or
                         $desc['PILLAR-PART'] and
                         $object->attributeIsRequired($attribute)
-                    ) {
+                    )) {
                         // only for FK or MFK Fields
                         if ($desc['TYPE'] == 'FK') {
                             if (intval($val_attr) > 0) {
@@ -433,7 +435,16 @@ class AfwDataQualityHelper
                                 if (is_object($objVal)) {
                                     $err_obj_arr = AfwDataQualityHelper::getDataErrors($objVal, 
                                         $lang,
-                                        $show_val,                                        
+                                        $show_val,
+                                        false, 
+                                        'all',
+                                        null,
+                                        null,
+                                        false,
+                                        null,
+                                        null,
+                                        $resume_error_message,
+                                        $checkPoles
                                     );
                                     $objVal_disp = $objVal->getShortDisplay();
                                     $err_count = count($err_obj_arr);
@@ -489,7 +500,16 @@ class AfwDataQualityHelper
                                     }
                                     $err_obj_arr = AfwDataQualityHelper::getDataErrors($objVal, 
                                         $lang,
-                                        $show_val
+                                        $show_val,
+                                        false, 
+                                        'all',
+                                        null,
+                                        null,
+                                        false,
+                                        null,
+                                        null,
+                                        $resume_error_message,
+                                        $checkPoles
                                     );
                                     $err_count = count($err_obj_arr);
                                     if (

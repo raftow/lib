@@ -38,17 +38,15 @@ class AfwMainPage
 
         if ((strpos($Main_Page, "_qsearch.php") !== FALSE) and  ($Main_Table != "all")) {
             $MainClass = AfwStringHelper::tableToClass($Main_Table);
-            if(method_exists($MainClass,"getQsearchDefaultOptions")) {
+            if (method_exists($MainClass, "getQsearchDefaultOptions")) {
                 $qs_options = $MainClass::getQsearchDefaultOptions();
-                foreach($qs_options as $qs_option => $qs_option_value) {
+                foreach ($qs_options as $qs_option => $qs_option_value) {
                     $options[$qs_option] = $qs_option_value;
                 }
             }
 
-            if((!isset($options["records-in-page"])) or (!$options["records-in-page"])) $options["records-in-page"] = 25;
-            if((!isset($options["lengthMenu"])) or (!$options["lengthMenu"])) $options["lengthMenu"] = '[[10, 25, 50, -1], [10, 25, 50, "All"]]';
-            
-            
+            if ((!isset($options["records-in-page"])) or (!$options["records-in-page"])) $options["records-in-page"] = 25;
+            if ((!isset($options["lengthMenu"])) or (!$options["lengthMenu"])) $options["lengthMenu"] = '[[10, 25, 50, -1], [10, 25, 50, "All"]]';
         }
 
         if (strpos($Main_Page, "_qedit.php") !== FALSE) {
@@ -71,18 +69,22 @@ class AfwMainPage
     }
     public static function echoMainPage($current_module, $Main_Page, $module_path, $options = [])
     {
-        $curr_path = dirname(__FILE__);
-        include("$curr_path/afw_main_start.php");
-        $Main_Table = "all";
-        if($_REQUEST['cl'] and !$options["no-take-cl"]) {
-            $Main_Table = AfwStringHelper::classToTable($_REQUEST['cl']);
+        try {
+            $curr_path = dirname(__FILE__);
+            include("$curr_path/afw_main_start.php");
+            $Main_Table = "all";
+            if ($_REQUEST['cl'] and !$options["no-take-cl"]) {
+                $Main_Table = AfwStringHelper::classToTable($_REQUEST['cl']);
+            }
+            if (count($options) == 0) $options = AfwMainPage::getDefaultOptions($Main_Page, $current_module, $Main_Table);
+
+            //die("rafik is upgrading MainPage librairy code=ADEF202511061552-03 ...");
+            // die("echoMainPage($current_module, $Main_Page, $module_path) after afw_main_start lang=$lang");
+            // die("echoMainPage 20241119  : after include($curr_path/afw_main_start.php) lang = ".$lang);
+            echo self::renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);
+        } catch (Exception $e) {
+            throw new AfwBusinessException($e->getMessage());
         }
-        if (count($options) == 0) $options = AfwMainPage::getDefaultOptions($Main_Page, $current_module, $Main_Table);
-        
-        //die("rafik is upgrading MainPage librairy code=ADEF202511061552-03 ...");
-        // die("echoMainPage($current_module, $Main_Page, $module_path) after afw_main_start lang=$lang");
-        // die("echoMainPage 20241119  : after include($curr_path/afw_main_start.php) lang = ".$lang);
-        echo self::renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);
     }
 
     public static function echoDirectPage($current_module, $direct_page, $direct_page_path, $options = [])

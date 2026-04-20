@@ -1205,8 +1205,8 @@ class AfwShowHelper
                             $dataImportance[$col] = AfwHtmlHelper::importanceCss($obj, $col, $desc);
                         }
                     }
-                    if ($objListItem->rowCategoryAttribute()) {
-                        list($categoryAttribute, $categoryAttributeCATEGORY) = explode(':', $obj->rowCategoryAttribute());
+                    if ($objListItem->rowCategoryAttribute("retrieve")) {
+                        list($categoryAttribute, $categoryAttributeCATEGORY) = explode(':', $obj->rowCategoryAttribute("retrieve"));
                         // die("list(attr=$categoryAttribute, cat=$categoryAttributeCATEGORY)");
                         if ($categoryAttributeCATEGORY) {
                             $tuple['ca-' . $categoryAttribute] = $objListItem->calc($categoryAttribute);
@@ -1248,7 +1248,7 @@ class AfwShowHelper
         $order_key = $obj->moveColumn();
 
         // die($obj->getMyClass()." >> nowrap_cols for $obj = ".var_export($obj->nowrap_cols,true));
-        list($categoryAttribute, $categoryAttributeCATEGORY) = explode(':', $obj->rowCategoryAttribute());
+        list($categoryAttribute, $categoryAttributeCATEGORY) = explode(':', $obj->rowCategoryAttribute("retrieve"));
 
         if ($options['html_table_id']) {
             $popupEditSettings['html_table_id'] = $options['html_table_id'];

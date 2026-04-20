@@ -613,8 +613,20 @@ class AfwLoadHelper extends AFWRoot
         foreach ($liste_obj as $id => $objItem) {
             if (!$textReason) $textReason = $objItem->translateMessage('DATA_PROTECTED', $lang);
             if (is_object($objItem) and ($objItem->umsCheckDisabledInRetrieveMode() or AfwUmsPagHelper::userCanDoOperationOnObject($objItem, AfwSession::getUserConnected(), 'display'))) {
-                $objIsActive = $objItem->isActive();
                 $tuple = [];
+                if ($objItem->rowCategoryAttribute("search")) {
+                    list($categoryAttribute, $categoryAttributeCATEGORY) = explode(':', $objItem->rowCategoryAttribute("search"));
+                    // die("list(attr=$categoryAttribute, cat=$categoryAttributeCATEGORY)");
+                    $tuple['ca-col'] = $categoryAttribute;
+                    if ($categoryAttributeCATEGORY) {
+                        $tuple['ca-' . $categoryAttribute] = $objItem->calc($categoryAttribute);
+                        // if(($categoryAttribute=="request_late") and ($objListItem->id==88210)) die("tuple[ca-$categoryAttribute] = ".$tuple["ca-".$categoryAttribute]." = $objListItem-->calc($categoryAttribute)");
+                    } else
+                        $tuple['ca-' . $categoryAttribute] = "-".$objItem->getVal($categoryAttribute)."-$categoryAttribute-000";
+                }
+
+                $objIsActive = $objItem->isActive();
+
                 if ($display_object_attrib) $tuple['display_object'] = $objItem->getShortDisplay($lang);
                 if (count($header) != 0) {
                     foreach ($header as $col => $titre) {
@@ -1029,7 +1041,7 @@ class AfwLoadHelper extends AFWRoot
 
             // die("test_rafik 1002 this->IS_VIRTUAL = [$object->IS_VIRTUAL] this->getAllfieldValues()=".var_export($object->getAllfieldValues(),true));
         } else {
-            throw new AfwRuntimeException($classNameTable . ' : Unable to use the method load() without any research criteria (' . $object->getSQL() . "), use select() or where() before. Id = ".$object->id);
+            throw new AfwRuntimeException($classNameTable . ' : Unable to use the method load() without any research criteria (' . $object->getSQL() . "), use select() or where() before. Id = " . $object->id);
         }
         $has_been_loaded = $return;
         // $time_end4 = microtime(true);

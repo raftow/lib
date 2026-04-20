@@ -1193,13 +1193,14 @@ class AFWObject extends AFWRoot
      * Used especially when the PK is multiple we can not do sql 'WHERE id in (x,y,z)' because no id PK column
      * @param string $ids list of ids separated by the separator $sep (ex : '1,2,3')
      */
-    public function loadManyIdsOneByOne($ids, $sep=",") {
-        $ids = trim($ids,$sep);
+    public function loadManyIdsOneByOne($ids, $sep = ",")
+    {
+        $ids = trim($ids, $sep);
         $ids_arr = explode($sep, $ids);
         $objList = [];
-        foreach($ids_arr as $id) {
+        foreach ($ids_arr as $id) {
             $obj = new static();
-            if($obj->load($id)) {
+            if ($obj->load($id)) {
                 $objList[] = $obj;
             }
             unset($obj);
@@ -1417,7 +1418,8 @@ class AFWObject extends AFWRoot
     }
 
     // like getId() but for JS separator '-' or '|' are often in their context not accepted so we use '_'
-    public function getJsId() {
+    public function getJsId()
+    {
         return $this->getId('_');
     }
 
@@ -1425,7 +1427,7 @@ class AFWObject extends AFWRoot
      * getId
      * Return the first field's value
      */
-    public function getId($force_sep='')
+    public function getId($force_sep = '')
     {
         /*
          * global $boucle_inf, $boucle_inf_arr;
@@ -1462,10 +1464,9 @@ class AFWObject extends AFWRoot
              *     die("pk_val_arr = ".var_export($pk_val_arr,true)."<br> MPK = ".var_export($this->PK_MULTIPLE_ARR,true)."<br> FVAL = ".var_export($this->getAllfieldValues(),true));
              * }
              */
-            if($force_sep) {
+            if ($force_sep) {
                 $sep = $force_sep;
-            }
-            elseif ($this->PK_MULTIPLE === true) {
+            } elseif ($this->PK_MULTIPLE === true) {
                 $sep = '-';
             } else {
                 $sep = $this->PK_MULTIPLE;
@@ -1585,7 +1586,7 @@ class AFWObject extends AFWRoot
      * Load into object a specified row
      * @param string $value : Optional, specify the value of primary key
      */
-    public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep='')
+    public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '')
     {
         return AfwLoadHelper::loadAfwObject($this, $value, $result_row, $order_by_sentence, $optim_lookup, $force_sep);
     }
@@ -1828,8 +1829,21 @@ class AFWObject extends AFWRoot
         return 'all';
     }
 
-    public final function isOk($force = false, $returnErrors = false, $langue = null, $ignore_fields_arr = null, $start_step = null, $end_step = null)
+
+    public final function myDataIsOk()
     {
+        return $this->isOk(true,false,null,null,null,null,false);
+    }
+
+    public final function isOk(
+        $force = false,
+        $returnErrors = false,
+        $langue = null,
+        $ignore_fields_arr = null,
+        $start_step = null,
+        $end_step = null,        
+        $checkPoles = true
+    ) {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$langue)
             $langue = $lang;
@@ -1848,7 +1862,7 @@ class AFWObject extends AFWRoot
             $end_step = $returnErrors;
         }
 
-        $this->arr_erros = AfwDataQualityHelper::getDataErrors($this, $langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step);
+        $this->arr_erros = AfwDataQualityHelper::getDataErrors($this, $langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step,false,$checkPoles);
         // die("showErrorsAsSessionWarnings:: getDataErrors($langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step) => ".var_export($dataErr,true));
         $is_ok = (count($this->arr_erros) == 0);
         if (!$returnErrors)
@@ -3675,9 +3689,9 @@ class AFWObject extends AFWRoot
         return $this->getDefaultDisplay($lang);
     }
 
-    public function getDisplayForUser($lang = 'ar', $auser=null)
+    public function getDisplayForUser($lang = 'ar', $auser = null)
     {
-        if($auser and $auser->isSuperAdmin()) return $this->getDisplay($lang);
+        if ($auser and $auser->isSuperAdmin()) return $this->getDisplay($lang);
         else return $this->getShortDisplay($lang);
     }
 
@@ -5196,7 +5210,7 @@ class AFWObject extends AFWRoot
     }
 
 
-    
+
 
 
     final public function getPublishedMethodsFor($auser, $context)
@@ -5219,16 +5233,14 @@ class AFWObject extends AFWRoot
         $message = "";
         try {
             $allowed_pbm_arr = $this->getPublicMethodsForUser($auser);
-        }
-        catch(Exception $e) {
-            $message = "retrieveModePublicMethodsForUser Exception : ".$e->getMessage()."\n<br> File ".$e->getFile()."\n<br> Line ".$e->getLine()."\n<br> Backtrace :\n<br>".$e->getTraceAsString();
+        } catch (Exception $e) {
+            $message = "retrieveModePublicMethodsForUser Exception : " . $e->getMessage() . "\n<br> File " . $e->getFile() . "\n<br> Line " . $e->getLine() . "\n<br> Backtrace :\n<br>" . $e->getTraceAsString();
+            AfwSession::pushWarning($message);
+        } catch (Error $e) {
+            $message = "retrieveModePublicMethodsForUser Error : " . $e->getMessage() . " File " . $e->getFile() . " Line " . $e->getLine();
             AfwSession::pushWarning($message);
         }
-        catch(Error $e) {
-            $message = "retrieveModePublicMethodsForUser Error : ".$e->getMessage()." File ".$e->getFile()." Line ".$e->getLine();
-            AfwSession::pushWarning($message);
-        }
-        
+
         // die("message =$message / allowed_pbm_arr=".var_export($allowed_pbm_arr, true));
 
         $final_pbm_arr = [];
@@ -6458,7 +6470,7 @@ class AFWObject extends AFWRoot
      * if this fucntion return an attribute name the value of this attribute will css-style the <tr> row
      * in retrieve mode display if this object is in ITEMS category field
      */
-    public function rowCategoryAttribute()
+    public function rowCategoryAttribute($mode="retrieve")
     {
         return $this->fld_ACTIVE();
     }
