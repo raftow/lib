@@ -1419,6 +1419,7 @@ class AfwSqlHelper extends AFWRoot
                         }
                     }
                 } else {
+                    // 
                 }
 
                 $object->IS_COMMITING = false;
@@ -1440,8 +1441,8 @@ class AfwSqlHelper extends AFWRoot
             }
         }
         // should neve go here
-        return null;
         $object->IS_COMMITING = false;
+        return null;
     }
 
     /**
