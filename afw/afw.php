@@ -338,7 +338,7 @@ class AFWObject extends AFWRoot
         $repare = true
     ) {
         $return = self::getDbStructure($return_type, $attribute, 'all', null, null, $repare);
-        if(($attribute == "applicantFileList") and !$return) die(static::$TABLE." :: getDbStructure(return_type=$return_type, $attribute, 'all', null, null, repare=$repare) returned empty value");
+        // if(($attribute == "applicantFileList") and !$return) die(static::$TABLE." :: getDbStructure(return_type=$return_type, $attribute, 'all', null, null, repare=$repare) returned empty value");
         return $return;
     }
 
