@@ -2027,7 +2027,12 @@ class AfwShowHelper
      */
     public static function showVirtualAttribute($object, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $lang = 'ar', $structure = null, $getlink = false)
     {
+        
         if (!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+
+        if($attribute=="applicantFileList") {
+                            die("<textarea rows='100' cols='128' class='php'>rafik 001 structure = ".var_export($structure,true)." intelligent_category = ".$intelligent_category." structure[DO-NOT-RETRIEVE-COLS]=".var_export($structure["DO-NOT-RETRIEVE-COLS"],true)."</textarea>");
+        }
         switch ($intelligent_category) {
             case 'VIRTUAL':
                 $data_to_display = $object->getVirtual($attribute, 'value', '');
@@ -2315,7 +2320,7 @@ class AfwShowHelper
                         }
 
                         if($attribute=="applicantFileList") {
-                            die("<textarea rows='100' cols='128' class='php'>structure = ".var_export($structure,true)." first_item->hide_retrieve_cols = ".var_export($first_item->hide_retrieve_cols,true)." structure[DO-NOT-RETRIEVE-COLS]=".var_export($structure["DO-NOT-RETRIEVE-COLS"],true)." html_display = ".var_export($html_display,true)."</textarea>");
+                            die("<textarea rows='100' cols='128' class='php'>rafik 002 structure = ".var_export($structure,true)." first_item->hide_retrieve_cols = ".var_export($first_item->hide_retrieve_cols,true)." structure[DO-NOT-RETRIEVE-COLS]=".var_export($structure["DO-NOT-RETRIEVE-COLS"],true)." html_display = ".var_export($html_display,true)."</textarea>");
                         }
                         // if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("html_display = ".var_export($html_display,true));
 
