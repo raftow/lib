@@ -4,7 +4,7 @@ class AfwEditMotor
     public static function hidden_input($col_name, $desc, $val, &$obj)
     {
         if ($desc['INPUT-FORMATTING'] == 'addslashes') {
-                    $val = addslashes($val);
+            $val = addslashes($val);
         }
         $type_input_ret = 'hidden';
         include 'tpl/helper_edit_hidden.php';
@@ -194,9 +194,9 @@ class AfwEditMotor
         }
 
         if ($desc['TITLE_BEFORE'] and $obj) {
-            ?>
+?>
             <div class='title_before title_<?php echo $col_name; ?>'><?php echo $obj->tm($desc['TITLE_BEFORE']) ?></div>
-    <?php
+            <?php
         }
 
         if ($desc['REQUIRED'] or $desc['MANDATORY']) {
@@ -221,7 +221,7 @@ class AfwEditMotor
                     break;
                 } else {
                     $type_input_ret = 'text';
-                    ?>
+            ?>
                     <input type="text" class="form-control <?php echo $lang_input ?> form-pk" name="<?php echo $col_name ?>" value="<?php echo $val ?>" size=32 maxlength=255 readonly>
         <?php
                 }
@@ -378,6 +378,34 @@ class AfwEditMotor
                             } elseif ($format_type == 'DROPDOWN') {
                                 if (!$format_param3) {
                                     $format_param3 = 1;
+                                }
+
+                                $dropdown_min = intval($format_param1);
+                                $dropdown_max = intval($format_param2);
+                                $dropdown_step = intval($format_param3);
+                            }
+                        }
+                    }
+
+                    if (($desc['TYPE'] == 'PCTG') or ($desc['TYPE'] == 'AMNT') or ($desc['TYPE'] == 'FLOAT')) {
+                        $input_type_html = 'number';
+                        $input_options_html = '';
+                        if ($desc['FORMAT']) {
+                            list($format_type, $format_param1, $format_param2, $format_param3) = explode(':', $desc['FORMAT']);  // ex FORMAT=>"STEP:0:3:1"  or DROPDOWN=>"STEP:0:3:1"
+                            if ($format_type == 'STEP') {
+                                if (!$format_param3) {
+                                    $format_param3 = 0.01;
+                                }
+
+                                if ($desc['TYPE'] == 'PCTG') {
+                                    $format_param1 = 0;
+                                    $format_param2 = 100;
+                                }
+
+                                $input_options_html = " step='$format_param3' min='$format_param1' max='$format_param2' ";
+                            } elseif ($format_type == 'DROPDOWN') {
+                                if (!$format_param3) {
+                                    $format_param3 = 0.1;
                                 }
 
                                 $dropdown_min = intval($format_param1);
@@ -735,17 +763,17 @@ class AfwEditMotor
             $durationNegative = 'false';
         }
         ?>
-        <input type="text" id="<?php echo $input_name ?>" name="<?php echo $col_name ?>" value="<?php echo $valaff ?>" class="form-control <?php echo $lang_input ?> form-time<?php echo $input_name ?>" onchange="<?php echo $onchange ?>"<?php echo $input_style ?> <?php echo $input_required ?>>
+        <input type="text" id="<?php echo $input_name ?>" name="<?php echo $col_name ?>" value="<?php echo $valaff ?>" class="form-control <?php echo $lang_input ?> form-time<?php echo $input_name ?>" onchange="<?php echo $onchange ?>" <?php echo $input_style ?> <?php echo $input_required ?>>
         <script>
             $(document).ready(function() {
                 $("#<?php echo $input_name ?>").clockTimePicker({
-                    required:                              <?php echo $required ?>,
+                    required: <?php echo $required ?>,
                     separator: '<?php echo $separator ?>',
-                    precision:                               <?php echo $precision ?>,
-                    duration:                              <?php echo $duration ?>,
+                    precision: <?php echo $precision ?>,
+                    duration: <?php echo $duration ?>,
                     minimum: '<?php echo $minimum ?>',
                     maximum: '<?php echo $maximum ?>',
-                    durationNegative:                                      <?php echo $durationNegative ?>
+                    durationNegative: <?php echo $durationNegative ?>
                 });
             });
         </script>
@@ -766,7 +794,7 @@ class AfwEditMotor
         }
 
         $multi = ' multiple';
-        ?>
+    ?>
 
 
         <script>
@@ -781,7 +809,7 @@ class AfwEditMotor
                     .mobiscroll()
                     .select({
                         inputElement: document.getElementById('<?php echo $info['id'] ?>-input'),
-                        filter:                                <?php echo $info['enableFiltering'] ? 'true' : 'false' ?>,
+                        filter: <?php echo $info['enableFiltering'] ? 'true' : 'false' ?>,
                     });
             });
         </script>
@@ -818,8 +846,8 @@ class AfwEditMotor
                     $opt_css = $info['bsel_css'][$id];
                     $data_content = "data-content=\"<span class='$opt_css'>$val</span>\"";
                 }
-                ?>
-                <option value="<?php echo $id ?>"<?php echo (in_array($id, $selected)) ? ' selected' : ''; ?> <?php echo $data_content ?>><?php echo $val ?></option>
+            ?>
+                <option value="<?php echo $id ?>" <?php echo (in_array($id, $selected)) ? ' selected' : ''; ?> <?php echo $data_content ?>><?php echo $val ?></option>
             <?php
             }
             ?>
@@ -873,7 +901,7 @@ class AfwEditMotor
             $info['empty_item'] = '&nbsp;';
         }
 
-        ?>
+    ?>
 
         <script>
             <?php
@@ -905,24 +933,24 @@ class AfwEditMotor
             ?>
         </script>
 
-        <select class="<?php echo $info['class'] ?>" name="<?php echo $info['name'] ?>" id="<?php echo $info['id'] ?>" tabindex="<?php echo $info['tabindex'] ?>" onchange="<?php echo $info['onchange'] ?>"<?php echo $multi ?> size=<?php echo $size ?> <?php echo $info['style'] ?> <?php
-        if ($info['disable'] or $info['disabled']) {
-            echo 'disabled';
-        }
-        ?> <?php
-        if ($info['required']) {
-            echo 'required';
-        }
-        ?>>
+        <select class="<?php echo $info['class'] ?>" name="<?php echo $info['name'] ?>" id="<?php echo $info['id'] ?>" tabindex="<?php echo $info['tabindex'] ?>" onchange="<?php echo $info['onchange'] ?>" <?php echo $multi ?> size=<?php echo $size ?> <?php echo $info['style'] ?> <?php
+                                                                                                                                                                                                                                                                                        if ($info['disable'] or $info['disabled']) {
+                                                                                                                                                                                                                                                                                            echo 'disabled';
+                                                                                                                                                                                                                                                                                        }
+                                                                                                                                                                                                                                                                                        ?> <?php
+                                                                                                                                                                                                                                                                                            if ($info['required']) {
+                                                                                                                                                                                                                                                                                                echo 'required';
+                                                                                                                                                                                                                                                                                            }
+                                                                                                                                                                                                                                                                                            ?>>
             <?php
             if ($null_val) {
                 if ($info['required']) {
-                    ?>
+            ?>
                     <option></option>
                 <?php
                 } else {
-                    ?>
-                    <option value="0"<?php echo (in_array(0, $selected)) ? ' selected' : ''; ?>><?php echo $info['empty_item'] ?></option>
+                ?>
+                    <option value="0" <?php echo (in_array(0, $selected)) ? ' selected' : ''; ?>><?php echo $info['empty_item'] ?></option>
                 <?php
                 }
             }
@@ -938,14 +966,14 @@ class AfwEditMotor
                     $opt_css = $info['bsel_css'][$id];
                     $data_content = "data-content=\"<span class='$opt_css'>$val</span>\"";
                 }
-                ?> <option value="<?php echo $id ?>"<?php echo (in_array($id, $selected)) ? ' selected' : ''; ?> <?php echo $data_content ?>><?php echo $val ?></option>
+                ?> <option value="<?php echo $id ?>" <?php echo (in_array($id, $selected)) ? ' selected' : ''; ?> <?php echo $data_content ?>><?php echo $val ?></option>
             <?php
             }
             ?>
         </select>
         <?
         if ($multi) {
-            ?>
+        ?>
             <!-- Initialize the plugin: -->
             <script type="text/javascript">
                 $(document).ready(function() {
@@ -966,7 +994,7 @@ class AfwEditMotor
                         <? } ?>
                         <? if ($info['filterPlaceholder']) { ?> filterPlaceholder: '<?php echo $info['filterPlaceholder'] ?>',
                         <? } ?>
-                        <? if ($info['maxHeight']) { ?> maxHeight:                                                                   <?php echo $info['maxHeight'] ?>,
+                        <? if ($info['maxHeight']) { ?> maxHeight: <?php echo $info['maxHeight'] ?>,
                         <? } ?>
                         <? if ($info['includeSelectAllOption']) { ?> includeSelectAllOption: true<? } ?>
                     });
@@ -975,7 +1003,7 @@ class AfwEditMotor
         <?
         }
         ?>
-    <?php
+<?php
     }
 
     public static function attributeEditDiv($obj, $col, $desc, $fgroup, $lang, $openedInGroupDiv, $info = null, $colErrors = [], $step_show_error = false)
