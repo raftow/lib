@@ -42,7 +42,7 @@ class AfwStructureHelper extends AFWRoot
                 false
             );
 
-            if($field_name == "applicantFileList") echo("$field_name dbg struct before repareMyStructure =".var_export($struct,true));
+            // if($field_name == "applicantFileList") echo("$field_name dbg struct before repareMyStructure =".var_export($struct,true));
 
             if ($struct and $repare) {
                 $struct = AfwStructureHelper::repareMyStructure($object, $struct, $field_name);
