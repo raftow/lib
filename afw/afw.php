@@ -778,7 +778,7 @@ class AFWObject extends AFWRoot
     {
         $obj = new static();
         $obj->where($where);
-        return self::loadListe($obj, $limit, $order_by);
+        return AfwLoadHelper::loadListe($obj, $limit, $order_by);
     }
 
     public static function loadRecords($where, $limit = '', $order_by = '')
