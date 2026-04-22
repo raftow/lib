@@ -4691,10 +4691,10 @@ class AFWObject extends AFWRoot
             $structure = AfwStructureHelper::repareMyStructure($this, $structure, $attribute);
             $casestr = "AfwStructureHelper::repareMyStructure($this, $structure, $attribute)";
         }
-
+        /*
         if($attribute=="applicantFileList") {
                 die("<textarea rows='100' cols='128' class='php'>rafik 004 structure = ".var_export($structure,true)." casestr=$casestr </textarea>");
-        }
+        }*/
 
         if (!$this->id_origin) {
             $id_origin = $this->getId();
