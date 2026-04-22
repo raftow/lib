@@ -1615,6 +1615,7 @@ a.hzm3-button.hzm3-light-grey.hzm3-block {
 
 button.new-specialmethod.theme-new {
     min-width: 280px;
+    min-height: 80px;
 }
 
 .bf.theme-new:hover {

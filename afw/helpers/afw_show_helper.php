@@ -2314,6 +2314,9 @@ class AfwShowHelper
                             }
                         }
 
+                        if($attribute=="applicantFileList") {
+                            die("<textarea rows='100' cols='128' class='php'>structure = ".var_export($structure,true)." first_item->hide_retrieve_cols = ".var_export($first_item->hide_retrieve_cols,true)." structure[DO-NOT-RETRIEVE-COLS]=".var_export($structure["DO-NOT-RETRIEVE-COLS"],true)." html_display = ".var_export($html_display,true)."</textarea>");
+                        }
                         // if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("html_display = ".var_export($html_display,true));
 
                         if ($no_tabs) {
