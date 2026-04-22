@@ -4733,6 +4733,10 @@ class AFWObject extends AFWRoot
             // if($key == "adm_orgunit_id") die("dbg 55477 rafik : list($formatted, $data_to_display, $link_to_display,) = AfwFormatHelper::formatValue($value, $key, ..)");
         }
 
+        if($attribute=="applicantFileList") {
+                            die("<textarea rows='100' cols='128' class='php'>rafik 003 structure = ".var_export($structure,true)." intelligent_category=$intelligent_category formatted=$formatted structure[DO-NOT-RETRIEVE-COLS]=".var_export($structure["DO-NOT-RETRIEVE-COLS"],true)."</textarea>");
+        }
+
         if ($formatted) {
             // if($key=="price5") throw new AfwRuntimeException("how we get here ???? data_to_display = $data_to_display = AfwFormatHelper::formatValue($value,$key, $structure, $getFormatLink)");
             // done

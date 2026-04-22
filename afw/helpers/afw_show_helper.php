@@ -2029,10 +2029,10 @@ class AfwShowHelper
     {
         
         if (!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
-
+        /*
         if($attribute=="applicantFileList") {
                             die("<textarea rows='100' cols='128' class='php'>rafik 001 structure = ".var_export($structure,true)." intelligent_category = ".$intelligent_category." structure[DO-NOT-RETRIEVE-COLS]=".var_export($structure["DO-NOT-RETRIEVE-COLS"],true)."</textarea>");
-        }
+        }*/
         switch ($intelligent_category) {
             case 'VIRTUAL':
                 $data_to_display = $object->getVirtual($attribute, 'value', '');
@@ -2318,10 +2318,10 @@ class AfwShowHelper
                                 $html_display[$group_retieve] = "<div class='empty_message'>$empty_message</div>";
                             }
                         }
-
+                        /*
                         if($attribute=="applicantFileList") {
                             die("<textarea rows='100' cols='128' class='php'>rafik 002 structure = ".var_export($structure,true)." first_item->hide_retrieve_cols = ".var_export($first_item->hide_retrieve_cols,true)." structure[DO-NOT-RETRIEVE-COLS]=".var_export($structure["DO-NOT-RETRIEVE-COLS"],true)." html_display = ".var_export($html_display,true)."</textarea>");
-                        }
+                        }*/
                         // if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("html_display = ".var_export($html_display,true));
 
                         if ($no_tabs) {
