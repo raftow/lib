@@ -72,10 +72,10 @@ if (($session_previous_search) and (!$datatable_on)) {
 }
 
 if ($datatable_on and count($_POST) > 0) $accordion_expanded = 'false';
-/*
+
 if ($_POST and ($cl == "WorkflowRequest")) {
         die("DBG-_POST=" . var_export($_POST, true));
-}*/
+}
 
 if (!$currmod) {
         $currmod = $uri_module;
