@@ -3784,6 +3784,13 @@ class AFWObject extends AFWRoot
         return $this->getDisplay($lang);
     }
 
+    public function getStatusDisplay($lang = 'ar', $context='default')
+    {
+        return '';
+    }
+
+    
+
     /**
      * __toString
      * Display First Field
