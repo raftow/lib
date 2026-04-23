@@ -51,7 +51,7 @@ if ($session_previous_search and ($cl == "WorkflowRequest")) {
 }
 */
 
-$accordion_expanded = 'true';
+$accordion_expanded = 0;
 
 if (($session_previous_search) and (!$datatable_on)) {
         /*if ($session_previous_search and ($cl == "WorkflowRequest")) {
@@ -73,9 +73,9 @@ if (($session_previous_search) and (!$datatable_on)) {
 
 if ($datatable_on and count($_POST) > 0) $accordion_expanded = 'false';
 
-if ($_POST and ($cl == "ApplicationDesire")) {
+/* if ($_POST and ($cl == "ApplicationDesire")) {
         die("DBG-_POST=" . var_export($_POST, true));
-}
+}*/
 
 if (!$currmod) {
         $currmod = $uri_module;
