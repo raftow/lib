@@ -2062,7 +2062,7 @@ div.class_input_width_90>div.form-control {
     /* z-index: 9999 !important; */
     /* position: sticky !important; */
     color: red;
-    margin-right: 60px;
+    margin-right: 120px;
     font-size: 13px;
     height: 32px;
 }
@@ -4942,7 +4942,8 @@ span.json.error {
 }
 
 
-.js-check-all, .js-check-box {
+.js-check-all,
+.js-check-box {
     background-image: url(http://10.108.72.48/lib/images/unchecked.png);
     background-size: cover;
     background-position: center;
@@ -4951,7 +4952,8 @@ span.json.error {
     margin-left: 20px !important;
 }
 
-.js-check-all.checked, .js-check-box.checked {
+.js-check-all.checked,
+.js-check-box.checked {
     background-image: url(http://10.108.72.48/lib/images/checked.png) !important;
     background-size: cover;
     background-position: center;
@@ -4975,6 +4977,7 @@ span.json.error {
 .report-item.report-label {
     background-color: #f7f7f7;
 }
+
 .report-item {
     float: right;
     width: 24%;
