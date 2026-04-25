@@ -173,12 +173,12 @@ class AfwHtmlFooterJsHelper
             if (data.status == "success") {
               $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).html('<img src="../lib/images/success.png" width="64" height="64">');
               $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeClass("changestatus");
-              $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeAttr('onclick'); // removeEvent("click");
+              // $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeAttr('onclick'); // removeEvent("click");
               apiChangeStatusDoneOn(the_module, afwclass, obj_id, csmethod);
             } else {
               $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).html('<img src="../lib/images/fail.png" width="64" height="64">');
               $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeClass("changestatus");
-              $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeAttr('onclick'); // removeEvent("click");
+              // $("#api-" + the_module + "-" + afwclass + "-" + obj_id + "-" + csmethod).removeAttr('onclick'); // removeEvent("click");
               mess = '';
               <?php echo $response_data_format ?>
               swal("<?php echo $you_dont_have_rights ?> " + mess); // 
@@ -546,25 +546,29 @@ class AfwHtmlFooterJsHelper
           var ttl = $(this).attr("ttl");
           var txt = $(this).attr("txt");
 
+          if ($(this).hasClass("changestatus")) {
 
-          if ((ttl != '') && (txt != '')) {
-            $(".alert.messages").fadeOut().remove();
-            swal({
-                title: ttl,
-                text: txt,
-                icon: "warning",
-                buttons: true,
-                dangerMode: false,
-              })
-              .then((willChangeStatus) => {
-                if (willChangeStatus) {
-                  apiChangeStatus(afwclass, the_module, obj_id, csmethod);
-                }
-              });
-          } else {
-            // console.log('apiChangeStatus will run because no swal texts defined');
-            apiChangeStatus(afwclass, the_module, obj_id, csmethod);
+            if ((ttl != '') && (txt != '')) {
+              $(".alert.messages").fadeOut().remove();
+              swal({
+                  title: ttl,
+                  text: txt,
+                  icon: "warning",
+                  buttons: true,
+                  dangerMode: false,
+                })
+                .then((willChangeStatus) => {
+                  if (willChangeStatus) {
+                    apiChangeStatus(afwclass, the_module, obj_id, csmethod);
+                  }
+                });
+            } else {
+              // console.log('apiChangeStatus will run because no swal texts defined');
+              apiChangeStatus(afwclass, the_module, obj_id, csmethod);
+            }
+
           }
+
 
 
 
