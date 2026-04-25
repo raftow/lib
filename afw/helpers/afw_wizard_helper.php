@@ -1,6 +1,6 @@
 <?php
 
-class AfwWizardHelper extends AFWRoot 
+class AfwWizardHelper extends AFWRoot
 {
     private $afwObject;
     public function __construct($afwObject)
@@ -10,18 +10,14 @@ class AfwWizardHelper extends AFWRoot
 
     public function getMyCLStep()
     {
-        if(!$this->afwObject)
-        {
+        if (!$this->afwObject) {
             throw new AfwRuntimeException('AfwWizardHelper methods need the afwObject to be setted');
         }
-        if ($this->afwObject->getMyTheme() == 'default') {
-            return 'wizardv1_li';
-        } else {
-            $clObj = $this->afwObject->getMyClass();
-            return 'cl_' .
-                substr($clObj, 0, 3) .
-                substr($clObj, strlen($clObj) - 3, 3);
-        }
+
+        $clObj = $this->afwObject->getMyClass();
+        $clcss_obj = 'cl_' . substr($clObj, 0, 3) . substr($clObj, strlen($clObj) - 3, 3);
+        $css_theme = $this->afwObject->getMyTheme();
+        return "wizardv1_li $clcss_obj $css_theme";
     }
 
     public function getWizardStepsClass()
@@ -61,20 +57,20 @@ class AfwWizardHelper extends AFWRoot
         $icon,
         $structure = null
     ) {
-        if(!$object)
-        {
+        if (!$object) {
             throw new AfwRuntimeException('AfwWizardHelper methods need the afwObject to be setted');
         }
 
         if (!$structure) {
-            $structure = AfwStructureHelper::getStructureOf($object,$attribute);
+            $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
             $structure = AfwStructureHelper::repareMyStructure($object, $structure, $attribute);
         }
         if (!isset($structure['ICONS']) or $structure['ICONS']) {
             if ($icon == 'EDIT' or $icon == 'DELETE') {
                 if ($structure['EDIT_DELETE_IF_WRITEABLE']) {
-                    list($writeable, $reason) = AfwStructureHelper::attributeIsWriteableBy($object,
+                    list($writeable, $reason) = AfwStructureHelper::attributeIsWriteableBy(
+                        $object,
                         $attribute,
                         null,
                         $structure
@@ -85,8 +81,8 @@ class AfwWizardHelper extends AFWRoot
 
             // rafik : if the minibox for example is called inside tpl
             if ($structure['IN_TEMPLATE']) {
-                if (isset($structure[$icon."_ICON_IN_TEMPLATE"])) {
-                    return $structure[$icon."_ICON_IN_TEMPLATE"];
+                if (isset($structure[$icon . "_ICON_IN_TEMPLATE"])) {
+                    return $structure[$icon . "_ICON_IN_TEMPLATE"];
                 }
             }
 
@@ -94,7 +90,7 @@ class AfwWizardHelper extends AFWRoot
                 return (($icon == 'EDIT' or $icon == 'VIEW' or $icon == 'DELETE') ? 1 : 0);
             }
             if ($structure["$icon-ICON"]) {
-                return ($structure["$icon-ICON"]>1) ? $structure["$icon-ICON"] : 1; // "icon=$icon struct[$attribute]=".var_export($structure,true);
+                return ($structure["$icon-ICON"] > 1) ? $structure["$icon-ICON"] : 1; // "icon=$icon struct[$attribute]=".var_export($structure,true);
             }
             //@@@todo if($structure["SHOW-ID"]) $first_item->showId = true;
         }
@@ -223,9 +219,9 @@ class AfwWizardHelper extends AFWRoot
                             );
                             $displ2 = trim($displ2);
                             if (!$displ2) {
-                                $displ2 = "case 1 : ".get_class($object)."->displayAttribute($attribute,false, $lang, &currstep=$parent_step)";
+                                $displ2 = "case 1 : " . get_class($object) . "->displayAttribute($attribute,false, $lang, &currstep=$parent_step)";
                             } else {
-                                $displ2 .= "<!-- case 1: ".get_class($object)."->displayAttribute($attribute,false, $lang, &currstep=$parent_step) -->";
+                                $displ2 .= "<!-- case 1: " . get_class($object) . "->displayAttribute($attribute,false, $lang, &currstep=$parent_step) -->";
                             }
 
                             if (!$struct['NO-RETURNTO']) {
@@ -243,9 +239,9 @@ class AfwWizardHelper extends AFWRoot
                             );
                             $displ2 = trim($displ2);
                             if (!$displ2) {
-                                $displ2 = "case 2 : ".get_class($object)."->displayAttribute($attribute,false, $lang)";
+                                $displ2 = "case 2 : " . get_class($object) . "->displayAttribute($attribute,false, $lang)";
                             } else {
-                                $displ2 .= "<!-- case 2 : ".get_class($object)."->displayAttribute($attribute,false, $lang) -->";
+                                $displ2 .= "<!-- case 2 : " . get_class($object) . "->displayAttribute($attribute,false, $lang) -->";
                             }
                         }
 
@@ -274,7 +270,7 @@ class AfwWizardHelper extends AFWRoot
                         if (!isset($struct['OTM-TITLE'])) {
                             $struct['OTM-TITLE'] = true;
                         }
-                        list($displ2, $link_url2) = $object->displayAttribute($attribute,false,$lang);
+                        list($displ2, $link_url2) = $object->displayAttribute($attribute, false, $lang);
                         $displ2 = trim($displ2);
                         if (!$displ2) {
                             $displ2 = "case 3 : this->displayAttribute($attribute,false, $lang) return nothing";
@@ -308,19 +304,15 @@ class AfwWizardHelper extends AFWRoot
                         $link = [];
                         $title = '';
                         if ($struct['OTM-SHOW']) {
-                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY", $lang).' ';
-                        }
-                        elseif ($struct['OTM-CARD']) {
-                            $title .= AfwLanguageHelper::translateKeyword("PROFILE", $lang).' ';
-                        }
-                        elseif ($struct['OTM-FILE']) {
-                            $title .= AfwLanguageHelper::translateKeyword("FILE", $lang).' ';
-                        }
-                        elseif ($struct['OTM-RETURNTO']) {
-                            $title .= AfwLanguageHelper::translateKeyword("TO", $lang).' ';
-                        }
-                        else{
-                            $title .= AfwLanguageHelper::translateKeyword("Properties of", $lang).' ';
+                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY", $lang) . ' ';
+                        } elseif ($struct['OTM-CARD']) {
+                            $title .= AfwLanguageHelper::translateKeyword("PROFILE", $lang) . ' ';
+                        } elseif ($struct['OTM-FILE']) {
+                            $title .= AfwLanguageHelper::translateKeyword("FILE", $lang) . ' ';
+                        } elseif ($struct['OTM-RETURNTO']) {
+                            $title .= AfwLanguageHelper::translateKeyword("TO", $lang) . ' ';
+                        } else {
+                            $title .= AfwLanguageHelper::translateKeyword("Properties of", $lang) . ' ';
                         }
 
                         if (!$struct['OTM-NO-LABEL']) {
@@ -328,7 +320,7 @@ class AfwWizardHelper extends AFWRoot
                         }
                         // else $title .= "debugg_rafik : ".var_export($struct,true);
                         if ($struct['OTM-TITLE']) {
-                            $title .= "<br><p class='display'>".$displ2."</p>";
+                            $title .= "<br><p class='display'>" . $displ2 . "</p>";
                         }
                         $title = trim($title);
 
@@ -367,7 +359,7 @@ class AfwWizardHelper extends AFWRoot
                         $link = [];
                         $title = '';
                         if ($struct['OTM-SHOW']) {
-                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY", $lang).' ';
+                            $title .= AfwLanguageHelper::translateKeyword("DISPLAY", $lang) . ' ';
                         } else {
                             $title .=
                                 $object->tf($struct['LINK_TO_MFK_ITEMS']) . ' ';
@@ -455,7 +447,8 @@ class AfwWizardHelper extends AFWRoot
             !$display_in_display_mode[$className];
     }
 
-    public final static function getFinishButtonLabelDefault($object,
+    public final static function getFinishButtonLabelDefault(
+        $object,
         $lang,
         $nextStep,
         $form_readonly = 'RO'
@@ -472,12 +465,10 @@ class AfwWizardHelper extends AFWRoot
         }
 
         if ($object->editByStep and $nextStep > 0 and $object->isDraft()) {
-            return $object->translate('COMPLETE_LATER' . $form_readonly,$lang,true);
+            return $object->translate('COMPLETE_LATER' . $form_readonly, $lang, true);
         }
         //$this->editNbSteps
 
         return $object->translate('FINISH' . $form_readonly, $lang, true);
     }
-
-
 }
