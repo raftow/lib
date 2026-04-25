@@ -407,23 +407,19 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 $step_erroned = false;
                                                         }
 
+                                                        $AlreadyStep = ($kstep <= $last_edited_step) ? "AlreadyStep" : "GoingStep";
+                                                        $CurrentStep = ($kstep == $obj->currentStep) ? "CurrentStep" : "";
+                                                        $ErronedStep = ($step_erroned) ? "ErronedStep" : "";
+                                                        $InactiveStep = (($kstep <= $last_edited_step) or (!$obj->stepsAreOrdered()) or ($obj->stepsAreOrdered() <= $obj->currentStep)) ? "" : "InactiveStep";
+                                                        $otherCssStep = "LES$last_edited_step cs" . $obj->currentStep;
+
+                                                        $class_step = "$AlreadyStep $CurrentStep $ErronedStep $InactiveStep $otherCssStep";
+
                                                         if ($kstep == $obj->currentStep) {
-                                                                if ($step_erroned)
-                                                                        $class_step = "CurrentStep ErronedStep ZZW ks$kstep cs" . $obj->currentStep; //." draft".$obj->getVal("draft");
-                                                                else
-                                                                        $class_step = "CurrentStep";
                                                                 $link = "#";
                                                         } elseif (($kstep <= $last_edited_step) or (!$obj->stepsAreOrdered()) or ($obj->stepsAreOrdered() <= $obj->currentStep)) {
-                                                                if ($step_erroned)
-                                                                        $class_step = "AlreadyStep ErronedStep ZZO LES$last_edited_step";
-                                                                elseif ($kstep <= $last_edited_step)
-                                                                        $class_step = "AlreadyStep LES$last_edited_step";
-                                                                else
-                                                                        $class_step = "GoingStep LES$last_edited_step";
-
                                                                 $link = "main.php?Main_Page=afw_mode_edit.php&cl=$clObj&id=$idObj&currmod=$moduleObj&currstep=$kstep";
                                                         } else {
-                                                                $class_step = "InactiveStep";
                                                                 if (!$last_edited_step) {
                                                                         $step_errors_list = "step inactive";
                                                                         $step_show_error_why = "because last edited step not defined and steps are ordered (mth:stepsAreOrdered)";
