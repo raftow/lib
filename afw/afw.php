@@ -5965,8 +5965,15 @@ class AFWObject extends AFWRoot
         return round((100 * $this->getDoneSteps(-1)) / $this->editNbSteps);
     }
 
+    protected function customLastEditedStep($simulation = true)
+    {
+        return 0;
+    }
+
     public function getLastEditedStep($simulation = true)
     {
+        $customLastEditedStep = $this->customLastEditedStep($simulation);
+        if ($customLastEditedStep > 0) return $customLastEditedStep;
         // pb resolved : tabs inactive au milieu (mode edit)
         // code a revoir
         // if($this->isDraft()) return 1;
