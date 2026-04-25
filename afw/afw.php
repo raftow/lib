@@ -5965,6 +5965,18 @@ class AFWObject extends AFWRoot
         return round((100 * $this->getDoneSteps(-1)) / $this->editNbSteps);
     }
 
+    public function getDefaultCurrentStep()
+    {
+        $currstep = $this->getLastEditedStep();
+        $currstep_orig = "get Last Edited Step";
+        if (!AfwFrameworkHelper::stepIsEditable($this, $currstep)) {
+            $currstep = 0;
+            $currstep_orig = "";
+        }
+
+        return [$currstep, $currstep_orig];
+    }
+
     protected function customLastEditedStep($simulation = true)
     {
         return 0;
@@ -6385,6 +6397,8 @@ class AFWObject extends AFWRoot
     {
         return 'default';
     }
+
+
 
     // By default you have a wizard and steps should be ordered it means that you can
     // not go to step 3 if step 2 is not completed,
