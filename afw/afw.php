@@ -1832,7 +1832,7 @@ class AFWObject extends AFWRoot
 
     public final function myDataIsOk()
     {
-        return $this->isOk(true,false,null,null,null,null,false);
+        return $this->isOk(true, false, null, null, null, null, false);
     }
 
     public final function isOk(
@@ -1841,7 +1841,7 @@ class AFWObject extends AFWRoot
         $langue = null,
         $ignore_fields_arr = null,
         $start_step = null,
-        $end_step = null,        
+        $end_step = null,
         $checkPoles = true
     ) {
         $lang = AfwLanguageHelper::getGlobalLanguage();
@@ -1862,7 +1862,7 @@ class AFWObject extends AFWRoot
             $end_step = $returnErrors;
         }
 
-        $this->arr_erros = AfwDataQualityHelper::getDataErrors($this, $langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step,false,$checkPoles);
+        $this->arr_erros = AfwDataQualityHelper::getDataErrors($this, $langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step, false, $checkPoles);
         // die("showErrorsAsSessionWarnings:: getDataErrors($langue, true, $force, $returnErrorsStep, $ignore_fields_arr, null, $stop_on_first_error, $start_step, $end_step) => ".var_export($dataErr,true));
         $is_ok = (count($this->arr_erros) == 0);
         if (!$returnErrors)
@@ -3784,12 +3784,12 @@ class AFWObject extends AFWRoot
         return $this->getDisplay($lang);
     }
 
-    public function getStatusDisplay($lang = 'ar', $context='default')
+    public function getStatusDisplay($lang = 'ar', $context = 'default')
     {
         return '';
     }
 
-    
+
 
     /**
      * __toString
@@ -4597,12 +4597,13 @@ class AFWObject extends AFWRoot
         return $this->getShortDisplay($lang);
     }
 
+    /* have no sens for me
     public function displayMyLinkMode($mode = 'edit', $lang = 'ar')
     {
         return $this->getDisplay($lang)
             . ' '
             . $this->showAttribute($mode, ['TYPE' => strtoupper($mode)]);
-    }
+    }*/
 
     public function displayAttribute(
         $attribute,
@@ -6488,7 +6489,7 @@ class AFWObject extends AFWRoot
      * if this fucntion return an attribute name the value of this attribute will css-style the <tr> row
      * in retrieve mode display if this object is in ITEMS category field
      */
-    public function rowCategoryAttribute($mode="retrieve")
+    public function rowCategoryAttribute($mode = "retrieve")
     {
         return $this->fld_ACTIVE();
     }
