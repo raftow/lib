@@ -4647,7 +4647,7 @@ class AFWObject extends AFWRoot
         return $return;
     }
 
-    public function showMyLink($step = 0, $target = '', $what = 'icon', $whatis = 'view_ok', $mode = 'edit')
+    public function showMyLink($step = 0, $target = '', $what = 'icon', $whatis = 'view_ok', $mode = 'edit', $css_class = 'nice')
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         $val_id = $this->getId();
@@ -4671,7 +4671,7 @@ class AFWObject extends AFWRoot
         elseif ($what == 'long')
             $what = $this->getDisplay($lang);
 
-        return "<div class='my_link'><a $target href='main.php?Main_Page=afw_mode_$mode.php$step_param&popup=&cl=$val_class&currmod=$currmod&id=$val_id' >$what</a></div>";
+        return "<div class='my_link $css_class'><a $target href='main.php?Main_Page=afw_mode_$mode.php$step_param&popup=&cl=$val_class&currmod=$currmod&id=$val_id' >$what</a></div>";
     }
 
     public function showAttribute(

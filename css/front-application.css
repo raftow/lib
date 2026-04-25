@@ -4997,3 +4997,12 @@ hr.hrthin {
     height: 1px;
     margin: 0;
 }
+
+div.my_link.nice {
+    min-width: 120px;
+}
+
+div.my_link.nice>a {
+    padding: 2px 8px;
+    border: 1px silver solid;
+}
