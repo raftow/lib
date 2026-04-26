@@ -1,4 +1,4 @@
-<?
+<?php
 function variable_get($name, $default = NULL) 
 {
   return AfwSession::config($name, $default);

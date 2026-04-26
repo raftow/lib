@@ -1,4 +1,4 @@
-<?
+<?php
 interface MailSystemInterface {
   /**
    * Format a message 

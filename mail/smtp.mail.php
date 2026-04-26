@@ -631,9 +631,9 @@ class SmtpMailSystem  {
   /**
    * Strips the headers from the body part.
    *
-   * @param input
+   * @param string input
    *   A string containing the body part to strip.
-   * @return
+   * @return string
    *   A string with the stripped body part.
    */
   protected function _remove_headers($input) {
@@ -675,15 +675,15 @@ class SmtpMailSystem  {
    * Returns the string from within $source that is some where after $target
    * and is between $beginning_character and $ending_character.
    *
-   * @param $source
+   * @param string $source
    *   A string containing the text to look through.
-   * @param $target
+   * @param string $target
    *   A string containing the text in $source to start looking from.
-   * @param $beginning_character
+   * @param string $beginning_character
    *   A string containing the character just before the sought after text.
-   * @param $ending_character
+   * @param string $ending_character
    *   A string containing the character just after the sought after text.
-   * @return
+   * @return string
    *   A string with the text found between the $beginning_character and the
    *   $ending_character.
    */
