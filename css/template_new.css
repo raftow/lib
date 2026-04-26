@@ -467,6 +467,14 @@ a.longbtn.greenbtn.excel {
     background-color: green !important;
 }
 
+input.submit-btn.pdf {
+    background-image: url(../images/pdf_big.png);
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 20px;
+    background-size: 32px;
+}
+
 a.longbtn.greenbtn.excel:hover {
     font-weight: normal;
     background-color: #33a333 !important;
