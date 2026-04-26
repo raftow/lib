@@ -3508,10 +3508,12 @@ class AFWObject extends AFWRoot
     /**
      * APPROVED ***
      */
-    public function singleTranslation($lang = 'ar')
+    public function singleTranslation($lang = 'ar', $add_the = false)
     {
+        if($add_the) $the_ = $this->translateOperator("The ",$lang);
+        else $the_ = "";
         // can be overrridden
-        return $this->transClassSingle($lang);
+        return $the_.$this->transClassSingle($lang);
     }
 
     public function transStatsAttribute($attribute, $lang)

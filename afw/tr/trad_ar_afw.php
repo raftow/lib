@@ -195,8 +195,8 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['--changes'] = 'التعديلات';
         $trad['OPERATOR']['no_update_found'] = 'لا يوجد تعديلات';
         $trad['OPERATOR']['other_functions'] = 'وظائف أخرى';
-
         $trad['OPERATOR']['for selected items'] = 'للعناصر التي تم اختيارها';
+        $trad['OPERATOR']['The '] = 'الـ';
 
         return $trad;
     }

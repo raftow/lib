@@ -95,6 +95,7 @@ $trad["OPERATOR"]["SIGN-UP"]	         	                = "S'inscrire";
 $trad["OPERATOR"]["LANGUE"]	         	                = "Langue";
 $trad["OPERATOR"]["OPTIONS"]	         	                = "Options";
 $trad["OPERATOR"]["NULL"]	         	                = "Non définie";
+$trad['OPERATOR']['The ']                               = 'Le ';
 
 // évèvè à
 
