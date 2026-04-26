@@ -187,6 +187,7 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['back_to_last_form'] = 'رجوع إلى الشاشة السابقة';
         $trad['OPERATOR']['new_search'] = 'عملية بحث جديدة';
         $trad['OPERATOR']['show'] = 'الإطلاع';
+        $trad['OPERATOR']['view'] = 'الإطلاع على';
         $trad['OPERATOR']['records_updated'] = 'تم تعديل';
         $trad['OPERATOR']['record(s)'] = 'من السجلات';
         $trad['OPERATOR']['qedit_some_records'] = 'إدارة البيانات المرجعية لـ';
