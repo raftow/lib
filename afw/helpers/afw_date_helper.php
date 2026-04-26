@@ -1212,6 +1212,17 @@ class AfwDateHelper
     public static function oracleToPhpDatetimeFormat($oracle_format)
     {
         $format = str_replace('YYYY', 'Y', $oracle_format);
+        $format = str_replace('MM', 'n', $format);
+        $format = str_replace('DD', 'd', $format);
+        $format = str_replace('HH24', 'H', $format);
+        $format = str_replace('MI', 'i', $format);
+        $format = str_replace('SS', 's', $format);
+        return $format;
+    }
+
+    public static function oracleToPhp02DatetimeFormat($oracle_format)
+    {
+        $format = str_replace('YYYY', 'Y', $oracle_format);
         $format = str_replace('MM', 'm', $format);
         $format = str_replace('DD', 'd', $format);
         $format = str_replace('HH24', 'H', $format);
@@ -1223,7 +1234,7 @@ class AfwDateHelper
     public static function phpToOracleDatetimeFormat($oracle_format)
     {
         $format = str_replace('Y', 'YYYY', $oracle_format);
-        $format = str_replace('m', 'MM', $format);
+        $format = str_replace('n', 'MM', $format);
         $format = str_replace('d', 'DD', $format);
         $format = str_replace('H', 'HH24', $format);
         $format = str_replace('i', 'MI', $format);
@@ -1235,10 +1246,54 @@ class AfwDateHelper
     public static function checkDateFormat($gdate, $format, $oracle=false)
     {
         if($oracle) {
-            $format = self::oracleToPhpDatetimeFormat($format);
+            $original_format = $format;
+            $format = self::oracleToPhpDatetimeFormat($original_format);
+            $format2 = self::oracleToPhp02DatetimeFormat($original_format);
+            $d = DateTime::createFromFormat($format, $gdate);
+            $d2 = DateTime::createFromFormat($format2, $gdate);
+            return (($d && $d->format($format) === $gdate) or ($d2 && $d2->format($format2) === $gdate));
         }
-        $d = DateTime::createFromFormat($format, $gdate);
-        return $d && $d->format($format) === $gdate;
+        else {
+            $d = DateTime::createFromFormat($format, $gdate);
+            return ($d && $d->format($format) === $gdate);
+        }
+        
+    }
+
+    public static function checkDateFormatReason($gdate, $format, $oracle=false)
+    {
+        if($oracle) {
+            $original_format = $format;
+            $format = self::oracleToPhpDatetimeFormat($original_format);
+            $format2 = self::oracleToPhp02DatetimeFormat($original_format);
+            $d = DateTime::createFromFormat($format, $gdate);
+            $d2 = DateTime::createFromFormat($format2, $gdate);
+            $return = "Reason : (original_format=$original_format, phpformat=$format, php2format=$format2)";
+            if(!$d) $return .= "<br>\nDateTime::createFromFormat($format, $gdate) failed";
+            else {
+                $df = $d->format($format);
+                $return .= "<br>\nDateTime::createFromFormat($format, $gdate)->format($format) = $df vs original $gdate";
+            }
+            if(!$d2) $return .= "<br>\nDateTime::createFromFormat($format2, $gdate) failed";
+            else {
+                $d2f = $d2->format($format2);
+                $return .= "<br>\nDateTime::createFromFormat($format2, $gdate)->format($format2) = $d2f vs original $gdate <br>";
+            }
+
+        }
+        else {
+            $d = DateTime::createFromFormat($format, $gdate);
+            $return = "Reason :";
+            if(!$d) $return .= "<br>\nDateTime::createFromFormat($format, $gdate) failed";
+            else {
+                $df = $d->format($format);
+                $return .= "<br>\nDateTime::createFromFormat($format, $gdate)->format($format) = $df vs original $gdate";
+            }
+
+        }
+
+        return $return;
+        
     }
 
 

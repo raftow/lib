@@ -22,14 +22,14 @@ class AfwSqlHelper extends AFWRoot
                 list($dateformat_tmp, $timeformat_tmp) = explode(' ', $datetimeformat);
                 list($row_val_date, $row_val_time) = explode(' ', $row_val);
                 if (!AfwDateHelper::checkDateFormat($row_val_date, $dateformat_tmp,true)) {
-                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], date-part-value=[$row_val_date] does not match date format $dateformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."]";
+                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], date-part-value=[$row_val_date] does not match date format $dateformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."] ".AfwDateHelper::checkDateFormatReason($row_val_date, $dateformat_tmp,true);
                 } elseif (!AfwDateHelper::checkTimeFormat($row_val_time, $timeformat_tmp,true)) {
                     $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], time-part-value=[$row_val_time] does not match time format $timeformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."]";
                 } 
                 $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
             } elseif ($isDate[$row_col]) {
                 if (!AfwDateHelper::checkDateFormat($row_val, $dateformat,true)) {
-                    $errors[] = "$row_col is Date field, value=[$row_val] does not match date format $dateformat canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."]";
+                    $errors[] = "$row_col is Date field, value=[$row_val] does not match date format $dateformat canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."] ".AfwDateHelper::checkDateFormatReason($row_val, $dateformat,true);
                 }
                 $row_val_string = "TO_DATE('$row_val', '$dateformat')";
             } else {
