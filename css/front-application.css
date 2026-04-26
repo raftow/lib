@@ -5000,6 +5000,7 @@ hr.hrthin {
 
 div.my_link.nice {
     min-width: 120px;
+    height: 36px;
 }
 
 div.my_link.nice>a {
