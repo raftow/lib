@@ -54,6 +54,10 @@ class AfwQsearchMotor
 					// $obj->_error("$col_name is INSTANCE_FUNCTION answer and it has this getEnumAnswerList ".var_export($fkObj,true));
 				} else {
 					$fcol_name = $desc["FUNCTION_COL_NAME"];
+					if(AfwStringHelper::stringStartsWith($fcol_name,"::")) {
+						$dynMethodName = substr($fcol_name,2);
+						$fcol_name = $obj->$dynMethodName($col_name, "FUNCTION_COL_NAME");
+					}
 					if (!$fcol_name) $fcol_name = $col_name;
 					$enumAnswerList = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj);
 				}

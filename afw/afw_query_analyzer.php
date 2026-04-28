@@ -138,9 +138,11 @@ class AfwQueryAnalyzer
         $we_can_not_throw_analysis_exception = ($MODE_SQL_PROCESS_LOURD or $MODE_BATCH_LOURD);
         $we_should_throw_analysis_exception = (AfwSession::config('MODE_DEVELOPMENT', false) and (self::$nb_queries_executed > $_sql_analysis_seuil_calls));
         if ($we_should_throw_analysis_exception and !$we_can_not_throw_analysis_exception) {
+            $backtrace = debug_backtrace(1, 20);
             throw new AfwRuntimeException("Too much queries executed when mode is not MODE_BATCH_LOURD or MODE_SQL_PROCESS_LOURD !<br>
                                            Nb Queries Executed = " . self::$nb_queries_executed . " > $_sql_analysis_seuil_calls = Max <br> 
-                                           Sql Picture = " . var_export(self::$sql_picture_arr, true));
+                                           Sql Picture = " . var_export(self::$sql_picture_arr, true).
+                                           "Backtrace = ".var_export($backtrace, true));
         }
 
         $sql_info_class = 'sqlinfo';

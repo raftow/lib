@@ -584,6 +584,7 @@ AfwMainPage::addOutput('<input type="hidden" name="action_params" value="' . $ac
 AfwMainPage::addOutput('<input type="hidden" name="r" value="' . $r . '"/>');
 AfwMainPage::addOutput('<input type="hidden" name="option" value="' . $option . '"/>');
 AfwMainPage::addOutput('<input type="hidden" name="limite"    value="0"/>');
+AfwMainPage::addOutput('<input type="hidden" name="special_filter"    value="' . $special_filter . '"/>');
 AfwMainPage::addOutput('<input type="hidden" id="Main_Page" name="Main_Page" value="' . $current_page . '"/>');
 /*
 AfwMainPage::addOutput( '<script type="text/javascript">

@@ -95,12 +95,13 @@ if (!$liste_obj) {
                 $obj->select_visibilite_horizontale();
                 $count_liste_obj = $obj->func("count(*)");
                 $obj->where($sql_conds);
-                $obj->select_visibilite_horizontale();
         } else {
                 $obj->select_visibilite_horizontale();
-                $count_liste_obj = $obj->func("count(*)");
-                $obj->select_visibilite_horizontale();
+                $count_liste_obj = $obj->func("count(*)");                
         }
+
+        $obj->select_visibilite_horizontale();
+        if($special_filter) $obj->$special_filter();
 
         // die("DBG-where select_visibilite_horizontale");
 

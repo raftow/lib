@@ -1842,7 +1842,7 @@ class AFWObject extends AFWRoot
         $ignore_fields_arr = null,
         $start_step = null,
         $end_step = null,
-        $checkPoles = true
+        $checkPoles = false
     ) {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$langue)

@@ -76,7 +76,7 @@ if ($id) {
             $dataErrStepStart = null;
             $dataErrStepEnd = null;
         }
-        list($is_obj_ok, $dataErr) = $myObj->isOk(true, $dataErrStep, $lang, [], $dataErrStepStart, $dataErrStepEnd);
+        list($is_obj_ok, $dataErr) = $myObj->isOk(true, $dataErrStep, $lang, [], $dataErrStepStart, $dataErrStepEnd,false);
         // die("showErrorsAsSessionWarnings::myObj::isOk(true,$dataErrStep, $lang, [], $dataErrStepStart, $dataErrStepEnd) => ".var_export($dataErr,true));
         if (!$is_obj_ok) {
             $war = implode("<br>", $dataErr);

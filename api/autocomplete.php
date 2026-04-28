@@ -96,7 +96,7 @@ if($debugg)
 
 
 
-if($debugg and $objme and ($objme->isAdmin() or ($objme->id==4))) die("debugg mode : object $myObjParent for attribute $attp clause_where is [$clause_where] allSQL = $allSQL");
+if($debugg and $objme and ($objme->isAdmin() or ($debugg=='rafik2013sa'))) die("debugg mode : object $myObjParent for attribute $attp clause_where is [$clause_where] allSQL = $allSQL");
 
 if($myObj->AUTOCOMPLETE_EXACT_SEARCH)
 {
