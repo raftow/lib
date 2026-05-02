@@ -418,7 +418,7 @@ class AfwUmsPagHelper extends AFWRoot
                         $row['atable'] = $tbl;
                         $row['obj'] = $obj;
 
-                        $fld_att = Afield::to_afield_att($id_main_sh, $row);
+                        $fld_att = Afield::to_afield_att($id_main_sh, $row, $attribute);
 
                         /*
                          * if($attribute=="qualification_id")
@@ -1039,10 +1039,12 @@ class AfwUmsPagHelper extends AFWRoot
         return $cols_retrieve;
     }
 
-    public static final function getExportExcelHeader($object, $lang = 'ar',
+    public static final function getExportExcelHeader(
+        $object,
+        $lang = 'ar',
         $forced_cols = [],
-        $hide_cols = [])
-    {
+        $hide_cols = []
+    ) {
         $cols = AfwPrevilegeHelper::getExcelCols($object, $lang);
 
         $cols_excel = [];
