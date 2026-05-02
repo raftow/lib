@@ -8,7 +8,7 @@ foreach ($themeArr as $theme => $themeValue) {
     $$theme = $themeValue;
 }
 
-require_once('afw_rights.php');
+
 
 if (!$currmod) {
     $currmod = $uri_module;
@@ -41,7 +41,7 @@ $development_mode = AfwSession::config("MODE_DEVELOPMENT", false);
 if ($tech_notes) $myObj->debugg_tech_notes = [$tech_notes];
 $inited_cols = array();
 
-AfwMainPage::initOutput("");
+CmsMainPage::initOutput("");
 if (!$id and $key) $id = "key-$key";
 // die("rafik before object load id=$id , method_back=$method_back : => _POST = ".var_export($_POST,true));
 if ($id) {
@@ -84,7 +84,7 @@ if ($id) {
 
 
         if ($err or $war or $inf) {
-            AfwMainPage::addOutput(AfwHtmlHelper::showNotification($err, $war, $inf));
+            CmsMainPage::addOutput(AfwHtmlHelper::showNotification($err, $war, $inf));
         }
     }
 
@@ -140,7 +140,7 @@ $report_can_edit = AfwSession::getLog("iCanDo");
 if (!$can) {
     $deniedEditMessage = $myObj->getDeniedEditMessage($lang);
     if ($deniedEditMessage) {
-        AfwMainPage::addOutput($deniedEditMessage);
+        CmsMainPage::addOutput($deniedEditMessage);
         exit();
     } else {
         // @todo : to be changed every where we bad use the session vars
@@ -183,11 +183,11 @@ if ($id) {
     //die("filled object :".var_export($myObj,true));
 }
 
-AfwMainPage::addOutput($header_bloc_edit);
+CmsMainPage::addOutput($header_bloc_edit);
 if ($die_message) {
-    AfwMainPage::addOutput("<div class='die_div'>" . $die_message . "</div>");
+    CmsMainPage::addOutput("<div class='die_div'>" . $die_message . "</div>");
 } else {
-    AfwMainPage::addOutput('<form id="edit_form" name="edit_form" method="post" action="main.php" enctype="multipart/form-data" >');
+    CmsMainPage::addOutput('<form id="edit_form" name="edit_form" method="post" action="main.php" enctype="multipart/form-data" >');
 
 
 
@@ -201,21 +201,21 @@ if ($die_message) {
             if (!$currstep) {
                 $currstep_orig = "default";
                 $currstep = 1;
-                //AfwMainPage::addOutput( $objme->showObjTech();
+                //CmsMainPage::addOutput( $objme->showObjTech();
             }
-            AfwMainPage::addOutput('<input type="hidden" name="oldcurrstep"   value="' . $currstep . '"/>');
+            CmsMainPage::addOutput('<input type="hidden" name="oldcurrstep"   value="' . $currstep . '"/>');
         } else $currstep_orig = "defined";
 
-        AfwMainPage::addOutput('<input type="hidden" name="currstep"   value="' . $currstep . '"/>');
-        AfwMainPage::addOutput('<input type="hidden" name="currstep_orig"   value="' . $currstep_orig . '"/>');
+        CmsMainPage::addOutput('<input type="hidden" name="currstep"   value="' . $currstep . '"/>');
+        CmsMainPage::addOutput('<input type="hidden" name="currstep_orig"   value="' . $currstep_orig . '"/>');
 
         $myObj->currentStep = $currstep;
         // @todo-$objme->curStepFor[$myObj->getTableName()][$myObj->getId()] = $currstep;
 
     }
-    AfwMainPage::addOutput($myObj->showHTML("afw_template_default_edit.php", array("inited_cols" => $inited_cols)));
+    CmsMainPage::addOutput($myObj->showHTML("afw_template_default_edit.php", array("inited_cols" => $inited_cols)));
 
-    AfwMainPage::addOutput('   <input type="hidden" name="pbmon"     value="1"/>
+    CmsMainPage::addOutput('   <input type="hidden" name="pbmon"     value="1"/>
             <input type="hidden" name="file_obj"   value="_' . $cl . '"/>
             <input type="hidden" name="class_obj"  value="' . $cl . '"/>
             <input type="hidden" name="class_parent"  value="' . $clp . '"/>
@@ -233,6 +233,6 @@ if ($die_message) {
                     \$(\"#edit_form\").validate();
                 });
                 </script>");
-    AfwMainPage::addOutput($footer_bloc_edit);
+    CmsMainPage::addOutput($footer_bloc_edit);
     $mode_hijri_edit = true;
 }

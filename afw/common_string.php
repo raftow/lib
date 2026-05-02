@@ -1,1 +1,0 @@
-obsolete common_string.php

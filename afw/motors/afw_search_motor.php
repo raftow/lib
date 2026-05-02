@@ -14,7 +14,6 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
 {
     global $lang, $class_inputSelect_multi_big, $class_inputInt, $class_inputText, $class_inputSelected;
     $objme = AfwSession::getUserConnected();
-    require_once(dirname(__FILE__).'/../modes/afw_rights.php');
     // global $TMP_ROOT;
     // $images = AfwThemeHelper::loadTheme();
     $maxlength_input = 1000;
@@ -70,7 +69,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
             $nom_table_fk   = $desc["ANSWER"];
             $nom_module_fk  = $desc["ANSMODULE"];
             if (!$nom_module_fk) {
-                $nom_module_fk = AfwUrlManager::currentWebModule();
+                $nom_module_fk = UfwUrlManager::currentWebModule();
             }
             $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
             // $nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
@@ -152,7 +151,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                     $nom_table_fk   = $desc["ANSWER"];
                     $nom_module_fk  = $desc["ANSMODULE"];
                     if (!$nom_module_fk) {
-                        $nom_module_fk = AfwUrlManager::currentWebModule();
+                        $nom_module_fk = UfwUrlManager::currentWebModule();
                     }
                     $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 

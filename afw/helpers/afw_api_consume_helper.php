@@ -18,6 +18,31 @@ if (!function_exists('array_is_list')) {
 // alter table hijra_date_base add unique key(HIJRI_YEAR,HIJRI_MONTH);
 class AfwApiConsumeHelper 
 {
+    public static function getDataFromAPIUrl($api_url, $data)
+    {
+        $url = $api_url . "/" . implode("/",$data);
+        // die("url=$url");
+        // Get cURL resource
+        $curl = curl_init();
+        // Set some options - we are passing in a useragent too here
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_URL => $url,
+            CURLOPT_USERAGENT => substr(md5(date("His")),0,5).' '.rand(0,1000)  // cURL Request
+        ));
+        // Send the request & save response to $resp
+        $resp = curl_exec($curl);
+        // die("curl_exec $url => resp=$resp");
+        $result_api = json_decode($resp, true);
+        
+        // Close request to clear up some resources
+        curl_close($curl);
+
+        // die("data_res of curl_exec($url) = ".var_export($result_api,true));
+        
+        return $result_api;             
+    }
 
     private static function consume_complex_api($bearer, $url, $token, $proxy = null , $data = null, 
                     $verify_host=null, $verify_pear=null, $return_transfer=true, 
@@ -46,8 +71,8 @@ class AfwApiConsumeHelper
                 }
                 
                 $url = $p_url;
-                if($print_full_debugg) AfwBatch::print_comment("using params : " . var_export($data, true));
-                if($print_full_debugg) AfwBatch::print_comment("consuming url : " . $url);
+                if($print_full_debugg) UfwBatch::print_comment("using params : " . var_export($data, true));
+                if($print_full_debugg) UfwBatch::print_comment("consuming url : " . $url);
                 $curl_options = array();
                 // echo "initilized\n";
                 $curl_options[CURLOPT_URL] = $url;
@@ -126,7 +151,7 @@ class AfwApiConsumeHelper
                 $response = curl_exec($curl);
                 // $response = '{"data":[{"code":"0100","name":"Riyadh","region_code":"0001","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0101","name":"Makkah Al-Mukarramah","region_code":"0002","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0103","name":"Jeddah","region_code":"0002","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0104","name":"Taif","region_code":"0002","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0105","name":"Al-Madinah Al-Munawwarah","region_code":"0003","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0106","name":"Yanbu","region_code":"0003","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0107","name":"Buraidah","region_code":"0004","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0108","name":"Unaizah","region_code":"0004","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0109","name":"Khamis Mushait","region_code":"0006","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null},{"code":"0110","name":"Tabuk","region_code":"0007","created_at":"2024-03-04 14:17:51","updated_at":"2025-10-13 10:58:28","deleted_at":null}],"meta":{"current_page":1,"from":1,"last_page":18,"per_page":10,"to":10,"total":177}}';
                 $curl_commands[] = "\$response = curl_exec(\$curl);";       
-                if($print_full_debugg) AfwBatch::print_debugg("API RESULT :\n $response\n");
+                if($print_full_debugg) UfwBatch::print_debugg("API RESULT :\n $response\n");
                 if(!trim($response))
                 {
                     $error_msg .= "API Error : the response is empty ";
@@ -139,7 +164,7 @@ class AfwApiConsumeHelper
                 {
                     $http_header_array_text = implode(" || ", $http_header_array);
                     $error_msg = "Error while doing curl_exec method=$method on url= $url / header = $http_header_array_text / proxy=$proxy_host port=".$proxy_port." => response=$response => error message : " . $error_msg;
-                    if($print_error) AfwBatch::print_error("error_msg : $error_msg");
+                    if($print_error) UfwBatch::print_error("error_msg : $error_msg");
                 }
                 
                 

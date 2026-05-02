@@ -10,8 +10,8 @@ if(!$action_page) $action_page = "pwd_reset.php";
 $logbl = substr(md5($_SERVER["HTTP_USER_AGENT"] . "-" . date("Y-m-d")),0,10);
 
 $module_auth_dir_name = $module_dir_name = $file_dir_name;
-require_once("$file_dir_name/../../../lib/afw/afw_autoloader.php");
-$uri_module = AfwUrlManager::currentURIModule();       
+require_once("$file_dir_name/../../../lib/afw/core/afw_autoloader.php");
+$uri_module = UfwUrlManager::currentURIModule();       
 
 require_once("$module_auth_dir_name/../../../$uri_module/ini.php");
 require_once("$module_auth_dir_name/../../../$uri_module/module_config.php");
@@ -68,7 +68,7 @@ elseif(($_POST["mobile"]) and ($_POST["idn"]) and ($_POST["resetGo"]))
         } 
         else
         {
-                list($error, $info, $warning) = AfwLoginUtilities::reset_pwd_for($idn_type, $idn, $mobile, $lang);
+                list($error, $info, $warning) = UfwLoginUtilities::reset_pwd_for($idn_type, $idn, $mobile, $lang);
                 if($error) 
                 {
                         $result_message .= $error;
@@ -76,7 +76,7 @@ elseif(($_POST["mobile"]) and ($_POST["idn"]) and ($_POST["resetGo"]))
                 }
                 else
                 {
-                        //die("list($error, $info, $warning) = AfwLoginUtilities::reset_pwd_for($idn_type, $idn, $mobile, $lang)");
+                        //die("list($error, $info, $warning) = UfwLoginUtilities::reset_pwd_for($idn_type, $idn, $mobile, $lang)");
                         //if($info) AfwSession::pushInformation($info);
                         // if($warning) AfwSession::pushWarning($warning);
                         AfwSession::pushInformation(AfwLanguageHelper::tt("A new password has been sent to your mobile number")." : $mobile");
@@ -163,7 +163,7 @@ if($desc_site)
                                 <div class='form-group width_pct_50 hzm_captcha'>
                                         <label class="hzm_label hzm_label_customer_cpt">الرمز البصري
                                         </label>
-                                        <img style="width: 100%;height: 42px;" src="../lib/afw/afw_captcha.php" />                                        
+                                        <img style="width: 100%;height: 42px;" src="../lib/afw/includes/afw_captcha.php " />                                        
                                 </div>
                                 <div class="form-group width_pct_100 hzm_help"> 
                                         upper or lower case doesn't matter <br>

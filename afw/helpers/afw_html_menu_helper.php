@@ -14,7 +14,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
     ) {
         $login_template = AfwSession::currentLoginTemplate();
         $xmodule = AfwSession::getCurrentlyExecutedModule();
-        $module = AfwUrlManager::currentURIModule();
+        $module = UfwUrlManager::currentURIModule();
         $company = AfwSession::currentCompany();
         // if($company!="nauss") die("debugg rafik main_company=[$company] should be nauss : _SESSION = ".var_export($_SES SION,true));
         $login_out_css = "sign-in";
@@ -48,7 +48,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         if ($objme) {
             $me_id = $objme->id;
 
-            list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = AfwFrontMenu::loadUmsCacheForUser($me_id, $lang);
+            list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = CmsFrontMenu::loadUmsCacheForUser($me_id, $lang);
 
             if ($cache_found) {
                 $user_full = $user_info["user_full_name"][$lang];

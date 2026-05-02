@@ -22,7 +22,7 @@ $batch_root_path = "/var/www/hub_batch";
 
 
 
-require_once("$lib_root_path/afw/afw_autoloader.php");
+require_once("$lib_root_path/afw/core/afw_autoloader.php");
 // AfwAutoLoader::addModule("sis");
 
 if($transformModule)
@@ -51,11 +51,11 @@ $print_warning = true;
 $print_error = true;
 $print_important = true;
 
-AfwBatch::enableEcho();
+UfwBatch::enableEcho();
 
 list($success, $new_value) = $transformClass::$transform($value);
-if($success) AfwBatch::print_important("> sucess of $transformClass => $transform ($value) => $new_value");
-else AfwBatch::print_error("> fail of $transformClass => $transform ($value) => $new_value");
+if($success) UfwBatch::print_important("> sucess of $transformClass => $transform ($value) => $new_value");
+else UfwBatch::print_error("> fail of $transformClass => $transform ($value) => $new_value");
 
 
 

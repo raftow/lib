@@ -17,9 +17,9 @@
 <!-- end plugins -->
 <link rel="stylesheet" href="../../css/jquery-ui-1.14.0.css">
 <link rel="stylesheet" href="../../css/font-awesome.min.css">
-<link rel="stylesheet" href="../../css/menu_<?=$lang?>.css">
-<link rel="stylesheet" href="../../css/front-application.css">
-<link rel="stylesheet" href="../../css/hzm-v001.css">
+<link rel="stylesheet" href="../../css/menu_<?=$lang?>.css?crst=<?php echo $crst ?>">
+<link rel="stylesheet" href="../../css/front-application.css?crst=<?php echo $crst ?>">
+<link rel="stylesheet" href="../../css/hzm-v001.css?crst=<?php echo $crst ?>">
 
 <link rel='stylesheet' href='../lib/css/front_screen_pc.css?crst=<?php echo $crst ?>'>
 <link rel='stylesheet' href='../lib/css/front_tablet.css?crst=<?php echo $crst ?>'>

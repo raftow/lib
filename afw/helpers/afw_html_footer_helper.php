@@ -18,10 +18,10 @@ class AfwHtmlFooterHelper extends AfwHtmlHelper
         if($objme)
         {
             $me_id = $objme->id;
-            list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = AfwFrontMenu::loadUmsCacheForUser($me_id, $lang);
+            list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = CmsFrontMenu::loadUmsCacheForUser($me_id, $lang);
             if($cache_found)
             {
-                // die("rafik AfwFrontMenu::loadUmsCacheForUser($me_id, $lang) => quick_links_arr = ".var_export($quick_links_arr, true)." mau_info = ".var_export($mau_info, true));
+                // die("rafik CmsFrontMenu::loadUmsCacheForUser($me_id, $lang) => quick_links_arr = ".var_export($quick_links_arr, true)." mau_info = ".var_export($mau_info, true));
                 $quick_links_arr = $quick_links_arr[$lang]; 
                 $tocheck = $user_cache_file_path;
             }
@@ -64,7 +64,10 @@ class AfwHtmlFooterHelper extends AfwHtmlHelper
     ) 
     {
         $objme = AfwSession::getUserConnected();
-        if(!$objme) $objme = AfwSession::getCustomerConnected();
+
+        if(!$objme and AfwAutoLoader::haveModule("crm")) {
+            $objme = AfwSession::getCustomerConnected();
+        } 
 
         $data_tokens = self::prepareTokens($footer_template,
             $lang,

@@ -397,7 +397,7 @@ class AfwLanguageHelper
             }
         }
 
-        $return = AfwReplacement::trans_replace($return, $module, $langue);
+        $return = UfwReplacement::trans_replace($return, $module, $langue);
 
         return $return;
     }
@@ -461,5 +461,88 @@ class AfwLanguageHelper
         }
 
         return $object->DISPLAY_FIELD;
+    }
+
+    /**
+     * $maksour = false ex المسلمون
+     * $maksour = true ex المسلمين
+     */
+    public static function transClassPlural($object, $lang = 'ar', $short = false, $maksour = false)
+    {
+        $tableLowerOrigin = strtolower($object::$TABLE);
+
+        if ($short) {
+            $tableLower = $tableLowerOrigin . '.short';
+        } else {
+            $tableLower = $tableLowerOrigin;
+        }
+
+        if ($maksour) {
+            $tableLowerNotMaksour = $tableLower;
+            $tableLower = $tableLower . '_';
+        }
+
+        $return = $object->translate($tableLower, $lang);
+        if ($return == $tableLower and $maksour) {
+            $tableLower = $tableLowerNotMaksour;
+            $return = $object->translate($tableLower, $lang);
+        }
+
+        if ($return == $tableLower and $short) {
+            $tableLower = $tableLowerOrigin;
+            $return = $object->translate($tableLower, $lang);
+        }
+
+        if ($return == $tableLower) {
+            $return = AfwStringHelper::toEnglishText(trim($return)) . 's';
+        }
+
+        return $return;
+    }
+
+    public static function transClassSingle($object, $lang = 'ar', $short = false)
+    {
+        $tableLower = strtolower($object::$TABLE);
+        $classLower = strtolower(AfwStringHelper::tableToClass($object::$TABLE));
+
+        $classSingleOrigin = $classLower . '.single';
+
+        if ($short) {
+            $classSingle = $classSingleOrigin . '.short';
+        } else {
+            $classSingle = $classSingleOrigin;
+        }
+
+        $return = $object->translate($classSingle, $lang);
+        // if($lang=="en") die("$return = this->translate($classSingle, $lang)");
+
+        if ($return == $classSingle and $short) {
+            $classSingle = $classSingleOrigin;
+            $return = $object->translate($classSingle, $lang);
+        }
+
+        if ($return == $classSingle) {
+            $return = AfwStringHelper::toEnglishText(trim($tableLower));
+        }
+
+        return $return;
+    }
+
+    public static function transStatsAttribute($object, $attribute, $lang)
+    {
+        $nom_col_short  = "$attribute.stat";
+        $trad_col_short = $object->translate($nom_col_short, $lang);
+        if ($trad_col_short == $nom_col_short) {
+            $nom_col_short  = "$attribute.short";
+            $trad_col_short = $object->translate($nom_col_short, $lang);
+        }
+
+        if ($trad_col_short == $nom_col_short) {
+            $stat_trad = $object->translate($attribute, $lang);
+        } else {
+            $stat_trad = $trad_col_short;
+        }
+
+        return $stat_trad;
     }
 }

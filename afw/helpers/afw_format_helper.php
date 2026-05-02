@@ -285,7 +285,8 @@ class AfwFormatHelper
             if ($structure['FORMAT'] == 'FRM') {
                 $structure['FORMAT'] = 'EXP-WEEKDAY-MONTHNAME';
             }
-
+            /* rafik @todo if needed this case should be redevelopped with new library of momken framework
+            mysqldate_to_explicit_fr_date_arr was in common_date.php witch is obsolete now
             if (AfwStringHelper::stringStartsWith($structure['FORMAT'], 'EXP-')) {
                 // ex : "FORMAT"=>"EXP-WEEKDAY-MONTHNAME"
 
@@ -314,7 +315,9 @@ class AfwFormatHelper
                     $return_array = false
                 );
                 // die("$data_to_display = mysqldate_to_explicit_fr_date_arr(date_to_display=$date_to_display, WeekDayOn=$WeekDayOn, YearOn=$YearOn, MonthNameOn=$MonthNameOn,Separator=' ',return_array=false);");
-            } elseif ($structure['FORMAT'] == 'DATETIME') {
+            }             
+            else*/
+                if ($structure['FORMAT'] == 'DATETIME') {
             } elseif ($structure['FORMAT'] == 'CONVERT_HIJRI') {
                 if ($date_to_display) {
                     $hijri_date = AfwDateHelper::gregToHijri($date_to_display, 'hdate-dashed', $structure['IF-SEEMS-HIJRI-KEEP']);

@@ -5007,3 +5007,48 @@ div.my_link.nice>a {
     padding: 2px 8px;
     border: 1px silver solid;
 }
+
+div.hzm_xgreen {
+    background-color: #5ccf5f;
+    margin-top: 15px !important;
+    border-color: green;
+    width: 60%;
+    margin: auto;
+}
+
+div.hzm_xgreen>a {
+    color: white !important;
+    font-size: 20px;
+}
+
+.hzm_blink {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  /* Apply the animation */
+  animation: blink-animation 3s steps(25, start) infinite;
+  -webkit-animation: blink-animation 3s steps(25, start) infinite;
+}
+
+@keyframes blink-animation {
+  from { opacity: 1.0; }
+  to { opacity: 0.0; }
+}
+
+@-webkit-keyframes blink-animation {
+  from { opacity: 1.0; }
+  to { opacity: 0.0; }
+}
+
+hr.separator {
+    visibility: visible;
+    border-top: 1px solid #2625253d;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.footer-ad {
+    font-size: 17px;
+}

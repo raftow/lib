@@ -11,13 +11,13 @@ $themeArr = AfwThemeHelper::loadTheme();
 foreach ($themeArr as $theme => $themeValue) {
     $$theme = $themeValue;
 }
-require_once("afw_rights.php");
+
 
 if (!$currmod) {
-    $currmod = AfwUrlManager::currentWebModule();
+    $currmod = UfwUrlManager::currentWebModule();
 } else AfwAutoLoader::addModule($currmod);
 
-AfwMainPage::initOutput("");
+CmsMainPage::initOutput("");
 $objme = AfwSession::getUserConnected();
 if (!$objme) {
     AfwSession::pushError("الرجاء تسجيل الدخول أولا");
@@ -30,11 +30,11 @@ if (!$objme) {
  * 
  */
 
-// AfwMainPage::addOutput("_POST=".var_export($_POST, true));
+// CmsMainPage::addOutput("_POST=".var_export($_POST, true));
 
 $checked_ids =  trim(trim($_POST['checked_ids']), ",");
 if (!$checked_ids) {
-    AfwMainPage::addOutput("<div class='error'>لم يتم اختيار أي عنصر لتنفيذ الاجراءات عليه</div>");
+    CmsMainPage::addOutput("<div class='error'>لم يتم اختيار أي عنصر لتنفيذ الاجراءات عليه</div>");
 } else {
     $cl =  $_POST['cl'];
     $currmod =  $_POST['currmod'];
@@ -46,7 +46,7 @@ if (!$checked_ids) {
     }
 
     if (!$pMethodCode) {
-        AfwMainPage::addOutput("<div class='error'>لم يتم اختيار أي اجراء ترغب في تنفيذه. يرجى مراجعة المشرف بخصوص هذا الخلل</div>");
+        CmsMainPage::addOutput("<div class='error'>لم يتم اختيار أي اجراء ترغب في تنفيذه. يرجى مراجعة المشرف بخصوص هذا الخلل</div>");
     } else {
         /**
          * @var AFWObject $myClassInstance;
@@ -71,7 +71,7 @@ if (!$checked_ids) {
         $pbmTitle = $pMethodMainProps["LABEL_$lang_upper"];
         if (!$pbmTitle) $pbmTitle = $pMethodMainProps["LABEL_AR"];
 
-        AfwMainPage::addOutput("<h5 class=\"bluetitle search\"><i></i>تنفيذ الإجراء التالي [$pbmTitle] على مجموعة من السجلات</h5>");
+        CmsMainPage::addOutput("<h5 class=\"bluetitle search\"><i></i>تنفيذ الإجراء التالي [$pbmTitle] على مجموعة من السجلات</h5>");
 
         foreach ($myObjList as $myObjItem) {
             /**
@@ -80,23 +80,23 @@ if (!$checked_ids) {
             $record_display = $myObjItem->getDisplay($lang);
             $pMethodProps = $myObjItem->getPublicMethodForUser($objme, $pMethodCode);
             if (!$pMethodProps) {
-                AfwMainPage::addOutput("<div class='rpbm message warning'>لا يمكنك تنفيذ هذا الاجراء على السجل : $record_display بسبب عدم وجود الصلاحية أو بسبب مخالفة قواعد العمل</div>");
+                CmsMainPage::addOutput("<div class='rpbm message warning'>لا يمكنك تنفيذ هذا الاجراء على السجل : $record_display بسبب عدم وجود الصلاحية أو بسبب مخالفة قواعد العمل</div>");
             } elseif ($pMethodProps["COLOR"] == "denied") {
                 $log = $pMethodProps["LOG"];
-                AfwMainPage::addOutput("<div class='rpbm message warning'>لا يمكنك تنفيذ هذا الاجراء على السجل : $record_display لأحد الأسباب التالية : <br>\n عدم وجود الصلاحية للمستخدم <br>\n $log</div>");
+                CmsMainPage::addOutput("<div class='rpbm message warning'>لا يمكنك تنفيذ هذا الاجراء على السجل : $record_display لأحد الأسباب التالية : <br>\n عدم وجود الصلاحية للمستخدم <br>\n $log</div>");
             } else {
                 $pbmethod = $pMethodProps["METHOD"];
                 list($err, $inf, $war) = $myObjItem->$pbmethod($lang);
                 if ($err) {
-                    AfwMainPage::addOutput("<div class='rpbm message error'>خطأ أثناء تنفيذ هذا الاجراء على السجل : $record_display : $err</div>");
+                    CmsMainPage::addOutput("<div class='rpbm message error'>خطأ أثناء تنفيذ هذا الاجراء على السجل : $record_display : $err</div>");
                     $err_count++;
                 }
                 if ($war) {
-                    AfwMainPage::addOutput("<div class='rpbm message warning'>تنبيه أثناء تنفيذ هذا الاجراء على السجل : $record_display : $war</div>");
+                    CmsMainPage::addOutput("<div class='rpbm message warning'>تنبيه أثناء تنفيذ هذا الاجراء على السجل : $record_display : $war</div>");
                     $war_count++;
                 }
                 if ($inf) {
-                    AfwMainPage::addOutput("<div class='rpbm message information'>تم تنفيذ هذا الاجراء على السجل : $record_display : $inf</div>");
+                    CmsMainPage::addOutput("<div class='rpbm message information'>تم تنفيذ هذا الاجراء على السجل : $record_display : $inf</div>");
                     $inf_count++;
                 }
             }
@@ -105,9 +105,9 @@ if (!$checked_ids) {
         $err_cls = ($err_count > 0) ? "error" : "nothing";
         $war_cls = ($war_count > 0) ? "warning" : "nothing";
         $inf_cls = ($inf_count > 0) ? "information" : "nothing";
-        AfwMainPage::addOutput("<div class='rpbm message nothing'>عدد الحالات الاجمالي : $all_count</div>");
-        AfwMainPage::addOutput("<div class='rpbm message $inf_cls'>عدد الحالات المنفذة : $inf_count</div>");
-        AfwMainPage::addOutput("<div class='rpbm message $err_cls'>عدد الأخطاء          : $err_count</div>");
-        AfwMainPage::addOutput("<div class='rpbm message $war_cls'>عدد التنبيهات       : $war_count</div>");
+        CmsMainPage::addOutput("<div class='rpbm message nothing'>عدد الحالات الاجمالي : $all_count</div>");
+        CmsMainPage::addOutput("<div class='rpbm message $inf_cls'>عدد الحالات المنفذة : $inf_count</div>");
+        CmsMainPage::addOutput("<div class='rpbm message $err_cls'>عدد الأخطاء          : $err_count</div>");
+        CmsMainPage::addOutput("<div class='rpbm message $war_cls'>عدد التنبيهات       : $war_count</div>");
     }
 }

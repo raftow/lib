@@ -10,7 +10,7 @@ foreach ($themeArr as $theme => $themeValue) {
 
 
 if (! $currmod) {
-    $currmod = AfwUrlManager::currentWebModule();
+    $currmod = UfwUrlManager::currentWebModule();
 }
 
 $datatable_on = true;
@@ -20,7 +20,7 @@ if (! $currmod) {
 }
 
 if (! $cl) {
-    AfwMainPage::addOutput( 'Mode Stat : no defined class ');
+    CmsMainPage::addOutput( 'Mode Stat : no defined class ');
     exit;
 
 }
@@ -31,14 +31,14 @@ $myClass = $cl;
  * @var AFWObject $myClassInstance
  */
 
-$myClassInstance = new $cl();
+$myClassInstance = new $myClass();
 
 if (! $stc) {
     $stc = $myClassInstance->STATS_DEFAULT_CODE;
 }
 
 if (! $stc) {
-    AfwMainPage::addOutput( 'Mode Stat : no defined stat code ');
+    CmsMainPage::addOutput( 'Mode Stat : no defined stat code ');
     exit;
 
 }
@@ -54,7 +54,7 @@ $MODE_BATCH_LOURD      = $config_stats_options['MODE_BATCH_LOURD'];
 
 
 if (! $stats_config) {
-    AfwMainPage::addOutput( 'Mode Stat : no defined stat config : ' . $stc);
+    CmsMainPage::addOutput( 'Mode Stat : no defined stat config : ' . $stc);
     exit;
 
 }
@@ -84,7 +84,7 @@ if($sql_conds) $myClassInstance->where($sql_conds);
 
 $allSql = $myClassInstance->getSQL();
 
-AfwMainPage::addOutput("<!-- sql_conds=$sql_conds allSql=$allSql -->");
+CmsMainPage::addOutput("<!-- sql_conds=$sql_conds allSql=$allSql -->");
 
 
 
@@ -93,7 +93,7 @@ list($stat_trad, $stats_data_arr, $stats_big_header, $case, $footer_sum_title_ar
 
 AfwStatsHelper::outputModeStatsHeaderAndFilterPanel($myClassInstance, $stats_config, $stats_code, $currmod, $lang);
 
-// AfwMainPage::addOutput("<pre class='php'>case=$case stat_trad = ".var_export($stat_trad,true)." stats_data_arr = ".var_export($stats_data_arr,true)."</pre>");
+// CmsMainPage::addOutput("<pre class='php'>case=$case stat_trad = ".var_export($stat_trad,true)." stats_data_arr = ".var_export($stats_data_arr,true)."</pre>");
 if($stats_config['REMOVE-BIG-HEADER'])  $stats_big_header = null;   
 
 AfwStatsHelper::outputModeStatsTable(

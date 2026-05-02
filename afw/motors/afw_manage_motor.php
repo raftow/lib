@@ -128,7 +128,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                 $nom_module_fk  = $desc["ANSMODULE"];
                                 if(!$nom_module_fk)
                                 {
-                                        $nom_module_fk = AfwUrlManager::currentWebModule();
+                                        $nom_module_fk = UfwUrlManager::currentWebModule();
                                 }
 
 				$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
@@ -279,7 +279,7 @@ public static function genereInputForAttribute($col_name, &$obj, $lang, $formInp
                                 $nom_module_fk  = $desc["ANSMODULE"];
                                 if(!$nom_module_fk)
                                 {
-                                        $nom_module_fk = AfwUrlManager::currentWebModule();
+                                        $nom_module_fk = UfwUrlManager::currentWebModule();
                                 }
 				$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 				//$nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);

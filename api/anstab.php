@@ -10,8 +10,8 @@ if(!$lang) $lang = "ar";
 
 $attr_arr = array();
 $relative_path = "../";
-require_once("$file_dir_name/../afw/afw_error_handler.php");
-require_once("$file_dir_name/../afw/afw_autoloader.php");
+require_once("$file_dir_name/../afw/utilities/ufw_error_handler.php");
+require_once("$file_dir_name/../afw/core/afw_autoloader.php");
 foreach($_GET as $col => $val) 
 {
         if(AfwStringHelper::stringStartsWith($col,"post_attr_"))
@@ -76,7 +76,7 @@ if(!$obj->answerTableForAttributeIsPublic($attribute,$desc))
                 echo "check member activated : <br>";  
         }
         $only_members = true;
-        include("$file_dir_name/../lib/afw/afw_check_member.php");
+        include("$file_dir_name/../lib/afw/includes/afw_check_member.php");
 }
 
 if($debugg or $debug)
@@ -124,7 +124,7 @@ $nom_module_fk  = $desc["ANSMODULE"];
 if(!$nom_module_fk)
 {
         
-        $nom_module_fk = AfwUrlManager::currentWebModule();
+        $nom_module_fk = UfwUrlManager::currentWebModule();
 }
 $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 $nom_fichier_fk = AfwStringHelper::tableToFile($nom_table_fk);

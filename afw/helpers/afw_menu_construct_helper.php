@@ -113,7 +113,7 @@ class AfwMenuConstructHelper
                 $menu_folder["page"] = "i.php?cn=".$rowMenu["controller"]."&mt=".$rowMenu["methodName"];
                 $menu_folder["css"] = ($methodName === $rowMenu["methodName"]) ? "active" : "";
                 $menu_folder["icon"] = $rowMenu["icon"];
-                $menu_folder_i_html = AfwFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder, $module, $lang, $r, true, $iamAdmin);
+                $menu_folder_i_html = CmsFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder, $module, $lang, $r, true, $iamAdmin);
                 $html_hzm_menu .= $menu_folder_i_html;
             }
         }
@@ -185,7 +185,7 @@ class AfwMenuConstructHelper
                 $me_id = $objme->id;
 
                 if (!$no_cache_use_for_ums) {
-                    list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = AfwFrontMenu::loadUmsCacheForUser($me_id, $lang);
+                    list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = CmsFrontMenu::loadUmsCacheForUser($me_id, $lang);
                 } else {
                     $cache_found = false;
                     $quick_links_arr = null;
@@ -215,7 +215,7 @@ class AfwMenuConstructHelper
                     if (($iamAdmin) or (!$menu_folder_i["need_admin"])) {
                         //$menu_color = $menu_next_color[$menu_color];
                         //$menu_folder_i["color_class"] = $menu_color;
-                        $menu_folder_i_html = AfwFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder_i, $module, $lang, $r, true, $iamAdmin);
+                        $menu_folder_i_html = CmsFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder_i, $module, $lang, $r, true, $iamAdmin);
                         // if($menu_folder_id=="-1") die($menu_folder_i_html);
                         // if($menu_folder_i_html) die("menu[$menu_folder_id] => ".$menu_folder_i_html." item => ".var_export($menu_folder_i,true));
                         $html_hzm_menu .= $menu_folder_i_html;

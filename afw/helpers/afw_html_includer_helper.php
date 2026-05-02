@@ -14,10 +14,10 @@ class AfwHtmlIncluderHelper
           $site_name = AfwSession::getCurrentFrontSiteName($options["front-application"],$lang);
       else
           $site_name = AfwSession::getCurrentSiteName($lang);
-      $main_module = $cmodule = AfwUrlManager::currentURIModule();
+      $main_module = $cmodule = UfwUrlManager::currentURIModule();
       $xmodule = AfwSession::getCurrentlyExecutedModule();
       $xtemplate = AfwSession::getCurrentModuleTemplate();
-      list($pagecode, $log_explain) = AfwUrlManager::currentPageCode();
+      list($pagecode, $log_explain) = UfwUrlManager::currentPageCode();
       $company = AfwSession::currentCompany();
       $menu_template = AfwSession::currentMenuTemplate();
     
@@ -90,12 +90,12 @@ class AfwHtmlIncluderHelper
 
         if ($options["front_header"]) {
           $header .= "
-          <link rel='stylesheet' href='../lib/css/front-application.css'>
-          <link rel='stylesheet' href='../lib/css/hzm-v001.css'>";
+          <link rel='stylesheet' href='../lib/css/front-application.css?crst=$crst'>
+          <link rel='stylesheet' href='../lib/css/hzm-v001.css?crst=$crst'>";
         }
 
         if ($options["dashboard-stats"]) {
-          $header .= "<link rel='stylesheet' href='../lib/css/dashboard-stats.css'>";
+          $header .= "<link rel='stylesheet' href='../lib/css/dashboard-stats.css?crst=$crst'>";
         }
 
         if ($options["tree-view-js"]) {
@@ -116,7 +116,7 @@ class AfwHtmlIncluderHelper
 
 
         if($options["otp"]) $header .= "
-          <link rel='stylesheet' href='../lib/css/otp.css'>";
+          <link rel='stylesheet' href='../lib/css/otp.css?crst=$crst'>";
 
         if($options["front_application"]) $header .= "
           <link rel='stylesheet' href='../lib/css/front_screen_pc.css?crst=$crst'>

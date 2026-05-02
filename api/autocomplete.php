@@ -1,8 +1,8 @@
 <?php
 
 $file_dir_name = dirname(__FILE__);
-require_once("$file_dir_name/../afw/afw_autoloader.php");
-include_once ("../afw/afw_error_handler.php");
+require_once("$file_dir_name/../afw/core/afw_autoloader.php");
+include_once ("../afw/utilities/ufw_error_handler.php");
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 $lang = "en";
@@ -15,7 +15,7 @@ require_once("$file_dir_name/../../config/global_config.php");
 // old include of afw.php
 $only_members = true;
 $debug_name = "autocomplete";
-require("$file_dir_name/../lib/afw/afw_check_member.php");
+require("$file_dir_name/../lib/afw/includes/afw_check_member.php");
 
 if(!$objme) $objme = AfwSession::getUserConnected();
 $lang = AfwSession::getSessionVar("lang");

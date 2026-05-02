@@ -67,18 +67,17 @@
                 $my_afw_theme = "simple"
              )
         {
-                // throw new AfwRuntimeException("why use page constructor ?");
                 $role = $arrRequest["r"];
                 //self::initLanguage();
                 // die("dbg-002 rafik 20241119 lang = ".$lang);
-                $current_module = AfwUrlManager::currentURIModule();
+                $current_module = UfwUrlManager::currentURIModule();
                 $the_main_section_file_arr = explode("/",$the_main_section_file);
                 $main_section_file_name = $the_main_section_file_arr[count($the_main_section_file_arr)-1];
                 list($main_section_file_name, ) = explode(".",$main_section_file_name);
                 // die("main_section_file_name=$main_section_file_name");
                 $f3c = substr($main_section_file_name,0,3);
                 $f7c = substr($main_section_file_name,0,7);
-                list($pagecode, $log_explain) = AfwUrlManager::currentPageCode();
+                list($pagecode, $log_explain) = UfwUrlManager::currentPageCode();
                 // die("pagecode=$pagecode");
                 $pagecode_splitted = implode(" ",explode("_",$pagecode));
                 // to avoid infinite mirroring
@@ -166,6 +165,16 @@
                 // die("notifications_html=$notifications_html");
                 
                 $the_body = "<!-- built with _body template $body_template -->\n";
+                /*die("will self::constructBodyWithTemplate($body_template, 
+                        $the_header, 
+                        $the_menu, 
+                        $the_section, 
+                        $notifications_html,
+                        $lang,
+                        $current_module,
+                        $pagecode,
+                        $the_footer
+                );");*/
                 $the_body .= self::constructBodyWithTemplate($body_template, 
                         $the_header, 
                         $the_menu, 

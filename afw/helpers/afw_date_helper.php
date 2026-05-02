@@ -853,6 +853,7 @@ class AfwDateHelper
 
     public static function addHijriPeriodToHijriDate($hdate, $nb_months, $nb_years = 0)
     {
+        if(!$hdate) $hdate = self::currentHijriDate();
         if (strpos($hdate, '-') === false) {
             $hdate = self::add_dashes($hdate);
         }

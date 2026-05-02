@@ -229,36 +229,36 @@ class AfwStringHelper
                                 if (self::is_arabic($word, 0.7)) {
                                         if (($current == "") or ($current == "arabic") or (count($arabic_words) == 0)) {
                                                 $arabic_words[] = $word;
-                                                if ($print_full_debugg) AfwBatch::print_debugg("$word taked as arabic");
+                                                if ($print_full_debugg) UfwBatch::print_debugg("$word taked as arabic");
                                                 $current = "arabic";
                                         } else {
                                                 $log = "split failed arabic and latin are mixed. manually split needed ! cur=$current and ecountered arabic word '$word'";
-                                                if ($print_full_debugg) AfwBatch::print_error($log);
+                                                if ($print_full_debugg) UfwBatch::print_error($log);
                                                 return array($string, "", false, $log);
                                         }
                                 } elseif (self::is_latin($word, 0.7)) {
                                         if (($current == "") or ($current == "latin") or (count($latin_words) == 0)) {
                                                 $latin_words[] = $word;
-                                                if ($print_full_debugg) AfwBatch::print_debugg("$word taked as latin as current=$current or count(latin_words) = " . count($latin_words));
+                                                if ($print_full_debugg) UfwBatch::print_debugg("$word taked as latin as current=$current or count(latin_words) = " . count($latin_words));
                                                 $current = "latin";
                                         } elseif (($current == "arabic") and ($latinWordsInArabic < $latinWordsInArabicMax)) {
                                                 $arabic_words[] = $word;
                                                 $latinWordsInArabic++;
-                                                if ($print_full_debugg) AfwBatch::print_debugg("$word is latin but taked as arabic $latinWordsInArabic latin_words=" . var_export($latin_words, true));
+                                                if ($print_full_debugg) UfwBatch::print_debugg("$word is latin but taked as arabic $latinWordsInArabic latin_words=" . var_export($latin_words, true));
                                         } else {
                                                 $log = "split failed arabic and latin are mixed. manually split needed ! cur=$current, latinWordsInArabic=$latinWordsInArabic and ecountered latin word '$word' ";
-                                                if ($print_full_debugg) AfwBatch::print_error($log);
+                                                if ($print_full_debugg) UfwBatch::print_error($log);
                                                 return array($string, "", false, $log);
                                         }
                                 } else {
                                         if (($current == "") or ($current == "latin")) {
                                                 $latin_words[] = $word;
                                                 $current = "latin";
-                                                if ($print_full_debugg) AfwBatch::print_warning("$word language unknown taked as latin");
+                                                if ($print_full_debugg) UfwBatch::print_warning("$word language unknown taked as latin");
                                         } else {
                                                 $arabic_words[] = $word;
                                                 $current = "arabic";
-                                                if ($print_full_debugg) AfwBatch::print_warning("$word language unknown taked as arabic");
+                                                if ($print_full_debugg) UfwBatch::print_warning("$word language unknown taked as arabic");
                                         }
                                 }
                         }
@@ -341,26 +341,26 @@ class AfwStringHelper
                 foreach ($chars as $char) {
                         //$pos = ord($char); we cant use that, its not binary safe 
                         $pos = self::uniord($char);
-                        if ($print_full_debugg) AfwBatch::print_debugg($char . " --> " . $pos . PHP_EOL . "<br>");
+                        if ($print_full_debugg) UfwBatch::print_debugg($char . " --> " . $pos . PHP_EOL . "<br>");
 
                         if ($pos >= 1536 && $pos <= 1791) {
                                 $arabic_count++;
-                                if ($print_full_debugg) AfwBatch::print_debugg("$char = > arabic so $arabic_count arabic char(s) <br>\n");
+                                if ($print_full_debugg) UfwBatch::print_debugg("$char = > arabic so $arabic_count arabic char(s) <br>\n");
                         } else if ($pos > 64 && $pos < 123) {
                                 $latin_count++;
-                                if ($print_full_debugg) AfwBatch::print_debugg("$char = > latin so $latin_count latin char(s) <br>\n");
+                                if ($print_full_debugg) UfwBatch::print_debugg("$char = > latin so $latin_count latin char(s) <br>\n");
                         } else {
-                                if ($print_full_debugg) AfwBatch::print_debugg("$char = > symbol <br>\n");
+                                if ($print_full_debugg) UfwBatch::print_debugg("$char = > symbol <br>\n");
                         }
                         $total_count++;
                 }
-                if ($print_full_debugg) AfwBatch::print_debugg("ar:$arabic_count, en:$latin_count, tot:$total_count <br>\n");
+                if ($print_full_debugg) UfwBatch::print_debugg("ar:$arabic_count, en:$latin_count, tot:$total_count <br>\n");
                 if (!$total_count) $total_count = 1;
                 $pct_prob = $arabic_count / $total_count;
 
                 if ($pct_prob > $seuil_pct) {
                         $seuil_pct2 = $seuil_pct * 100;
-                        if ($print_full_debugg) AfwBatch::print_info("more than $seuil_pct2 % arabic chars, its probably arabic");
+                        if ($print_full_debugg) UfwBatch::print_info("more than $seuil_pct2 % arabic chars, its probably arabic");
                         return true;
                 }
                 return false;

@@ -9,8 +9,8 @@ if(!$lang) $lang = "ar";
 
 $attr_arr = array();
 $relative_path = "../";
-require_once("$file_dir_name/../afw/afw_error_handler.php");
-require_once("$file_dir_name/../afw/afw_autoloader.php");
+require_once("$file_dir_name/../afw/utilities/ufw_error_handler.php");
+require_once("$file_dir_name/../afw/core/afw_autoloader.php");
 
 foreach($_GET as $col => $val) 
 {
@@ -145,7 +145,7 @@ $nom_module_fk  = $desc["ANSMODULE"];
 if(!$nom_module_fk)
 {
         
-        $nom_module_fk = AfwUrlManager::currentWebModule();
+        $nom_module_fk = UfwUrlManager::currentWebModule();
 }
 $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 $nom_fichier_fk = AfwStringHelper::tableToFile($nom_table_fk);*/

@@ -1,6 +1,6 @@
 <?php
-//die("afw_error_handler.php");
-include_once("afw_error_handler.php");
+//die("utilities/ufw_error_handler.php");
+include_once("utilities/ufw_error_handler.php");
 
 if(!$MODULE) throw new AfwRuntimeException("the index of the MVC system require that MODULE be defined");
 $file_dir_name = dirname(__FILE__);
@@ -64,7 +64,7 @@ ini_set('zend.exception_ignore_args', 0);
 
 
 
-require_once("afw_autoloader.php");
+require_once("core/afw_autoloader.php");
 $parent_module = AfwSession::config("main_module", "");
 if($MODULE) AfwAutoLoader::addModule($MODULE);
 if($currmod) 

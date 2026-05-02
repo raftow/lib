@@ -5,8 +5,8 @@ set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 
 
-require_once("$file_dir_name/../lib/afw/afw_autoloader.php");
-$uri_module = AfwUrlManager::currentURIModule();       
+require_once("$file_dir_name/../lib/afw/core/afw_autoloader.php");
+$uri_module = UfwUrlManager::currentURIModule();       
 
 
 include_once ("$direct_dir_name/ini.php");
@@ -31,7 +31,7 @@ $only_members = false;
 foreach($_GET as $col => $val) ${$col} = $val;
 foreach($_POST as $col => $val) ${$col} = $val;
 
-include("$direct_dir_name/../lib/afw/afw_check_member.php");
+include("$direct_dir_name/../lib/afw/includes/afw_check_member.php");
 
 include("tmkn_model_drawing.php");
 $width_canvas = 2900;

@@ -283,39 +283,39 @@ $fixm_list = implode(",",$fixm_list_arr);
 $nb_new_objs = $nb_objs - $real_nb_objs;
 if($nb_new_objs<0) $nb_new_objs = 0;
 
-AfwMainPage::addOutput( '<center>';
-AfwMainPage::addOutput( '<table cellspacing="3" cellpadding="1">';
-AfwMainPage::addOutput( "<tr><td align='center'><br>تم حفظ $updated_nb_objs من السجلات بنجاح<br><br></td></tr>";
+CmsMainPage::addOutput( '<center>';
+CmsMainPage::addOutput( '<table cellspacing="3" cellpadding="1">';
+CmsMainPage::addOutput( "<tr><td align='center'><br>تم حفظ $updated_nb_objs من السجلات بنجاح<br><br></td></tr>";
 
-AfwMainPage::addOutput( '<tr>';
-AfwMainPage::addOutput( '<td><br>'; 
-AfwMainPage::addOutput( '<form name="editForm" id="editForm" method="post" action="main.php">';
-AfwMainPage::addOutput( '<input type="hidden" name="Main_Page" value="afw_mode_search.php"/>';
-AfwMainPage::addOutput( '<input type="hidden" name="cl" value="'.$class.'"/>';
-AfwMainPage::addOutput( '<input type="submit" class="yellowbtn btn fright" name="submit"  id="submit-form" value="'.$other _search.'" />';
-AfwMainPage::addOutput( '</form><br>';
-AfwMainPage::addOutput( '</td>';
-AfwMainPage::addOutput( '</tr>';
+CmsMainPage::addOutput( '<tr>';
+CmsMainPage::addOutput( '<td><br>'; 
+CmsMainPage::addOutput( '<form name="editForm" id="editForm" method="post" action="main.php">';
+CmsMainPage::addOutput( '<input type="hidden" name="Main_Page" value="afw_mode_search.php"/>';
+CmsMainPage::addOutput( '<input type="hidden" name="cl" value="'.$class.'"/>';
+CmsMainPage::addOutput( '<input type="submit" class="yellowbtn btn fright" name="submit"  id="submit-form" value="'.$other _search.'" />';
+CmsMainPage::addOutput( '</form><br>';
+CmsMainPage::addOutput( '</td>';
+CmsMainPage::addOutput( '</tr>';
 
-AfwMainPage::addOutput( '<tr>';
-AfwMainPage::addOutput( '<td><br>'; 
-AfwMainPage::addOutput( '<form name="editForm" id="editForm" method="post" action="main.php">';
-AfwMainPage::addOutput( '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
-AfwMainPage::addOutput( '<input type="hidden" name="cl" value="'.$class.'"/>';
-AfwMainPage::addOutput( '<input type="hidden" name="newo" value="3"/>';
-AfwMainPage::addOutput( '<input type="hidden" name="limit" value="30"/>';
-AfwMainPage::addOutput( '<input type="hidden" name="ids" value="all"/>';
-AfwMainPage::addOutput( '<input type="hidden" name="fixmdisable" value="1"/>';
-AfwMainPage::addOutput( '<input type="hidden" name="fixm" value="'.$fixm.'"/>';
+CmsMainPage::addOutput( '<tr>';
+CmsMainPage::addOutput( '<td><br>'; 
+CmsMainPage::addOutput( '<form name="editForm" id="editForm" method="post" action="main.php">';
+CmsMainPage::addOutput( '<input type="hidden" name="Main_Page" value="afw_mode_qedit.php"/>';
+CmsMainPage::addOutput( '<input type="hidden" name="cl" value="'.$class.'"/>';
+CmsMainPage::addOutput( '<input type="hidden" name="newo" value="3"/>';
+CmsMainPage::addOutput( '<input type="hidden" name="limit" value="30"/>';
+CmsMainPage::addOutput( '<input type="hidden" name="ids" value="all"/>';
+CmsMainPage::addOutput( '<input type="hidden" name="fixmdisable" value="1"/>';
+CmsMainPage::addOutput( '<input type="hidden" name="fixm" value="'.$fixm.'"/>';
 
 foreach($fixm_array as $fixm_col => $fixm_val) {
-       if($fixm_col) AfwMainPage::addOutput( '<input type="hidden" name="sel_'.$fixm_col.'" value="'.$fixm_val.'"/>';
+       if($fixm_col) CmsMainPage::addOutput( '<input type="hidden" name="sel_'.$fixm_col.'" value="'.$fixm_val.'"/>';
 }
 
-AfwMainPage::addOutput( '<input type="submit" class="bluebtn btn fright" name="submit"  id="submit-form" value="'.$back _to_last_form.'" />';
-AfwMainPage::addOutput( '</form><br>';
-AfwMainPage::addOutput( '</td>';
-AfwMainPage::addOutput( '</tr>';
+CmsMainPage::addOutput( '<input type="submit" class="bluebtn btn fright" name="submit"  id="submit-form" value="'.$back _to_last_form.'" />';
+CmsMainPage::addOutput( '</form><br>';
+CmsMainPage::addOutput( '</td>';
+CmsMainPage::addOutput( '</tr>';
 
-AfwMainPage::addOutput( '</table>';
-AfwMainPage::addOutput( '</center>'; */
+CmsMainPage::addOutput( '</table>';
+CmsMainPage::addOutput( '</center>'; */

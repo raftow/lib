@@ -98,7 +98,7 @@ class AfwStructureHelper extends AFWRoot
         $got_first_time = false;
 
         if (!$module_code) {
-            $module_code = AfwUrlManager::currentURIModule();
+            $module_code = UfwUrlManager::currentURIModule();
         }
 
         $debugg_db_structure = AfwStructureHelper::constructDBStructure($module_code, $class_name, $attribute, $step, $start_step, $end_step);

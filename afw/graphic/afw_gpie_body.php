@@ -3,7 +3,7 @@
      {
           $widthChart_extended = $widthChart+20; 
           $heightChart_extended = $heightChart+20;
-          AfwMainPage::addOutput("<div id=\"piechart_3d\" class=\"stats_table\" ></div>");
+          CmsMainPage::addOutput("<div id=\"piechart_3d\" class=\"stats_table\" ></div>");
      }
 
 ?>

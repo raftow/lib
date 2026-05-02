@@ -1,2 +1,2 @@
 <?php 
-// obsolete replaced by AfwBatchColors
+// obsolete replaced by UfwBatchColors

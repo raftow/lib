@@ -2,7 +2,7 @@
 
 $file_dir_name = dirname(__FILE__); 
 
-require_once("afw_rights.php");
+
 $themeArr = AfwThemeHelper::loadTheme();
 foreach($themeArr as $theme => $themeValue)
 {
@@ -33,10 +33,10 @@ if($tech_notes) $myObj->tech_notes = $tech_notes;
 $can = $objme->iCanDoOperationOnObjClass($myObj,"display");
 $iCanDoOperationLog = var_export($objme->iCanDoOperationLog,true);
 $iCanDoBFLog = var_export($objme->iCanDoBFLog,true);
-AfwMainPage::initOutput("<!--iCanDo : $iCanDoOperationLog  ,  $iCanDoBFLog -->");
+CmsMainPage::initOutput("<!--iCanDo : $iCanDoOperationLog  ,  $iCanDoBFLog -->");
 if(!$can)
 {
-    AfwMainPage::addOutput("<center>لا يوجد عندك صلاحية لرؤية هذه المعلومات</center>");  
+    CmsMainPage::addOutput("<center>لا يوجد عندك صلاحية لرؤية هذه المعلومات</center>");  
 }
 
 if($myObj->load($id))
@@ -44,18 +44,18 @@ if($myObj->load($id))
         $lv_obj =& $myObj;
         include_once("afw_save_last_visit.php");
         
-        //AfwMainPage::addOutput( "<table class='$class_table' cellpadding='4' cellspacing='3'><tr><td colspan='2' align='center' class='$class_bloc'>";
+        //CmsMainPage::addOutput( "<table class='$class_table' cellpadding='4' cellspacing='3'><tr><td colspan='2' align='center' class='$class_bloc'>";
 
         
 	if(AfwUmsPagHelper::userCanDoOperationOnObject($myObj,$objme,'display'))
     {
-		AfwMainPage::addOutput( AfwShowHelper::showMinibox($myObj));
+		CmsMainPage::addOutput( AfwShowHelper::showMinibox($myObj));
 	}
 	else
-		AfwMainPage::addOutput( "لا يوجد عندك صلاحية لعرض هذا السجل");
-	//AfwMainPage::addOutput( "</td></tr></table>";
-        //AfwMainPage::addOutput( "</div></div></div>";
-        //AfwMainPage::addOutput( "</td></tr></table>";
+		CmsMainPage::addOutput( "لا يوجد عندك صلاحية لعرض هذا السجل");
+	//CmsMainPage::addOutput( "</td></tr></table>";
+        //CmsMainPage::addOutput( "</div></div></div>";
+        //CmsMainPage::addOutput( "</td></tr></table>";
 }
 else 
-	AfwMainPage::addOutput("<center><table><tr><td><img src='image/warning.png' alt=''></td><td class='error'>لا يمكن تحميل هذا السجل، يبدوا أنه غير موجود أو حصل خطأ أثناء التحميل</td></tr></table></center>");
+	CmsMainPage::addOutput("<center><table><tr><td><img src='image/warning.png' alt=''></td><td class='error'>لا يمكن تحميل هذا السجل، يبدوا أنه غير موجود أو حصل خطأ أثناء التحميل</td></tr></table></center>");

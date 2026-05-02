@@ -1,7 +1,7 @@
 <?php
     $MODULE  = $_REQUEST["m"];
     $file_dir_name = dirname(__FILE__)."/../..";
-    include(dirname(__FILE__)."/../afw_start.php");
+    include(dirname(__FILE__)."/../../afw/includes/afw_start.php");
     $stc  = $_REQUEST["stc"];
     $class  = $_REQUEST["cl"];
     $lang  = $_REQUEST["lang"];

@@ -7,7 +7,7 @@
    
    if(!$MODULE) $MODULE = "ums";  
     
-     
+   $crst = md5("crst".date("YmdHis"));     
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=<?=$page_charset?>">
@@ -18,8 +18,8 @@
 <link rel="stylesheet" href="../../css/jquery-ui-1.14.0.css">
 <link rel="stylesheet" href="../../css/font-awesome.min.css">
 <link rel="stylesheet" href="../../css/menu_<?=$lang?>.css">
-<link rel="stylesheet" href="../../css/front-application.css">
-<link rel="stylesheet" href="../../css/hzm-v001.css">
+<link rel="stylesheet" href="../../css/front-application.css?crst=<?php echo $crst ?>">
+<link rel="stylesheet" href="../../css/hzm-v001.css?crst=<?php echo $crst ?>">
 
 <link rel="stylesheet" href="../../css/front_app.css">
 <link rel="stylesheet" href="../../bootstrap/bootstrap-v5.3.3.min.css">

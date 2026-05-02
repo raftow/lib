@@ -127,7 +127,7 @@ class AfwLoadHelper extends AFWRoot
         $nom_table_fk   = $desc["ANSWER"];
         $nom_module_fk  = $desc["ANSMODULE"];
         if (!$nom_module_fk) {
-            $nom_module_fk = AfwUrlManager::currentWebModule();
+            $nom_module_fk = UfwUrlManager::currentWebModule();
         }
         if ((!$nom_table_fk) or (strtoupper($nom_table_fk) == "FUNCTION")) {
             if ($throwException) throw new AfwRuntimeException("getAnswerTableJsonArrayWithDetails fails for anstab($nom_module_fk,$nom_table_fk) for Structure of $attribute = " . var_export($desc, true));
@@ -173,7 +173,7 @@ class AfwLoadHelper extends AFWRoot
         $nom_table_fk   = $desc["ANSWER"];
         $nom_module_fk  = $desc["ANSMODULE"];
         if (!$nom_module_fk) {
-            $nom_module_fk = AfwUrlManager::currentWebModule();
+            $nom_module_fk = UfwUrlManager::currentWebModule();
         }
         if (!$nom_table_fk) throw new AfwRuntimeException("desc of $attribute is " . var_export($desc, true));
         $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);

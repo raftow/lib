@@ -1,6 +1,18 @@
 <?php
 class AfwSqlHelper extends AFWRoot
 {
+    public static function decodeDeleteReturn($ret)
+    {
+        if ($ret == -1)
+            return 'UMS implementation does not allow this user to delete this record, see userCanDeleteMeStandard';
+        if ($ret == -2)
+            return 'The business rules and conditions of this afw-sub-class does not allow this user to delete this record see userCanDeleteMeSpecial';
+        if ($ret <= 0)
+            return "unknown no-delete reason $ret";
+
+        return 'YOU CAN DELETE !! so why get here ?';
+    }
+
     public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isToSetNullWhenEmptyString = [], $isDate = [], $isDatetime = [], $isMandatory = [], $datetimeformat = 'MM/DD/YYYY HH24:MI', $dateformat = 'MM/DD/YYYY', $specialFields = [])
     {
         $errors = [];
@@ -217,6 +229,10 @@ class AfwSqlHelper extends AFWRoot
      * }
      */
 
+    /**
+     * @param AFWObject $obj
+     */
+
     public static final function getSQLUpdate($obj, $user_id = 0, $ver = 0, $id_updated = '', $nocote_fields = null)
     {
         $report = '';
@@ -345,6 +361,23 @@ class AfwSqlHelper extends AFWRoot
         $query = trim($query);
         $query = trim($query, ',');
         if ($id_updated) {
+            $query .= self::getPKCondSQL($obj, $id_updated);
+        } else {
+            $query .= "\n WHERE 1 ";
+        }
+        $query .= $obj->getSQL();
+
+        $query .= $old_val_query_part;
+
+        return [$query, $fields_updated, $report];
+    }
+
+    /**
+     * @param AFWObject $obj
+     */
+
+    final public static function getPKCondSQL($obj, $id_updated) {
+        $query = "";
             if ($obj->PK_MULTIPLE) {
                 if ($obj->PK_MULTIPLE === true) {
                     $sep = '-';
@@ -367,14 +400,8 @@ class AfwSqlHelper extends AFWRoot
                 $query .=
                     "\n WHERE " . $obj->getPKField() . " = '$id_updated'";
             }
-        } else {
-            $query .= "\n WHERE 1 ";
-        }
-        $query .= $obj->getSQL();
 
-        $query .= $old_val_query_part;
-
-        return [$query, $fields_updated, $report];
+        return $query;    
     }
 
     /**
@@ -388,9 +415,9 @@ class AfwSqlHelper extends AFWRoot
         $throw_error = true,
         $throw_analysis_crash = true
     ) {
-        AfwBatch::print_sql("<br>\n ############################################################################# <br>\n");
-        AfwBatch::print_sql("<br>\nexecQuery will execute : <br>\n");
-        AfwBatch::print_sql("<br>\n$sql_query <br>\n");
+        UfwBatch::print_sql("<br>\n ############################################################################# <br>\n");
+        UfwBatch::print_sql("<br>\nexecQuery will execute : <br>\n");
+        UfwBatch::print_sql("<br>\n$sql_query <br>\n");
 
         list($result, $project_link_name) = AfwDatabase::db_query(
             $sql_query,
@@ -414,8 +441,8 @@ class AfwSqlHelper extends AFWRoot
              !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!';
             }
 
-            AfwBatch::print_sql("<br>\nexecQuery failed : <br>\n");
-            AfwBatch::print_sql("<br>\n$sql_error <br>\n");
+            UfwBatch::print_sql("<br>\nexecQuery failed : <br>\n");
+            UfwBatch::print_sql("<br>\n$sql_error <br>\n");
         } else {
             $affected_row_count = AfwMysql::affected_rows(AfwDatabase::getLinkByName($project_link_name));
 
@@ -427,9 +454,9 @@ class AfwSqlHelper extends AFWRoot
              */
 
             $row_count = AfwMysql::rows_count($result);
-            AfwBatch::print_sql("<br>\nexecQuery succeeded : <br>\n");
-            AfwBatch::print_sql("<br>\nrow count     : $row_count <br>\n");
-            AfwBatch::print_sql("<br>\naffected rows : $affected_row_count <br>\n");
+            UfwBatch::print_sql("<br>\nexecQuery succeeded : <br>\n");
+            UfwBatch::print_sql("<br>\nrow count     : $row_count <br>\n");
+            UfwBatch::print_sql("<br>\naffected rows : $affected_row_count <br>\n");
         }
 
         return [$result, $row_count, $affected_row_count];
@@ -797,12 +824,12 @@ class AfwSqlHelper extends AFWRoot
             if ($list_from_join_cols) {
                 $query .= ",\n" . $list_from_join_cols;
             }
-            $this_class = get_class($object);
+            $object_class = get_class($object);
             $query .=
                 "\n FROM "
                 . $object::_prefix_table($object::$TABLE)
                 . ' me -- class : '
-                . $this_class;
+                . $object_class;
             if ($join_sentence) {
                 $query .= "\n" . $join_sentence;
             }
@@ -870,11 +897,11 @@ class AfwSqlHelper extends AFWRoot
 
     private static function beforeModification($object, $id, $fields_updated)
     {
-        $this_db_structure = $object::getDbStructure(
+        $object_db_structure = $object::getDbStructure(
             $return_type = 'structure',
             $attribute = 'all'
         );
-        foreach ($this_db_structure as $attribute => $desc) {
+        foreach ($object_db_structure as $attribute => $desc) {
             if ($desc['AUTO-CREATE']) {
                 $val = $object->getVal($attribute);
                 if (!$val) {
@@ -940,18 +967,18 @@ class AfwSqlHelper extends AFWRoot
     {
         $unique_key_vals = [];
         $myClass = $object->getMyClass();
-        // $this_copy = cl one $object;
-        // $this_copy->clearSelect();
-        /** @var AFWObject $this_copy */
-        $this_copy = new $myClass();
+        // $object_copy = cl one $object;
+        // $object_copy->clearSelect();
+        /** @var AFWObject $object_copy */
+        $object_copy = new $myClass();
         foreach ($object->UNIQUE_KEY as $key_col) {
             $unique_key_vals[] = $object->getVal($key_col);
-            $this_copy->select($key_col, $object->getVal($key_col));
+            $object_copy->select($key_col, $object->getVal($key_col));
         }
-        $load_result = $this_copy->load();
-        $this_copy_id = $this_copy->id;
-        unset($this_copy);
-        return [$load_result, $this_copy_id, $unique_key_vals];
+        $load_result = $object_copy->load();
+        $object_copy_id = $object_copy->id;
+        unset($object_copy);
+        return [$load_result, $object_copy_id, $unique_key_vals];
     }
 
     /**
@@ -1023,12 +1050,21 @@ class AfwSqlHelper extends AFWRoot
                     'warning : beforeInsert refused insert operation. declined insert into '
                     . $object::$TABLE;
                 if ($MODE_BATCH_LOURD) {
-                    AfwBatch::print_warning($debugg_tech_notes);
+                    UfwBatch::print_warning($debugg_tech_notes);
                 }
                 $information = "<div class='sql warning'> $debugg_tech_notes </div>";
                 AfwSession::sqlLog($information, 'HZM');
                 $object->debugg_tech_notes = $debugg_tech_notes;
                 return false;
+            }
+
+            $AUDIT_DISABLED = AfwSession::config('AUDIT_DISABLED', false);
+
+            if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
+                    // die("call to AfwAuditHelper::audit_on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                    AfwAuditHelper::audit_on_update($object, $object->fieldsHasChanged(), "insert", "first insert");
+            } else {
+                // if(....) die("no call to AfwAuditHelper::audit_on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
             }
             // die("rafik 135001 : ".var_export($object,true));
             // may be has been changed in the previous before insert event
@@ -1049,7 +1085,7 @@ class AfwSqlHelper extends AFWRoot
                     'warning : insert operation aborted because no field filled to insert declined insert into '
                     . $object::$TABLE;
                 if ($MODE_BATCH_LOURD) {
-                    AfwBatch::print_warning($debugg_tech_notes);
+                    UfwBatch::print_warning($debugg_tech_notes);
                 }
                 $information = "<div class='sql warning'> $debugg_tech_notes </div>";
                 AfwSession::sqlLog($information, 'HZM');
@@ -1060,7 +1096,7 @@ class AfwSqlHelper extends AFWRoot
             if ($object->UNIQUE_KEY and $check_if_exists_by_uk) {
 
                 /*
-                if ($load_result and ($this_copy->id == 3000000002)) {
+                if ($load_result and ($object_copy->id == 3000000002)) {
                     throw new AfwRuntimeException("3000000002 loaded here load_result = $load_result");
                 }*/
 
@@ -1092,7 +1128,7 @@ class AfwSqlHelper extends AFWRoot
                         throw new AfwRuntimeException($dbl_message);
                     }
 
-                    // $object->set($object->getPKField(), $this_copy->getId());
+                    // $object->set($object->getPKField(), $object_copy->getId());
                     // $object->update();
                 }
                 // die("rafik 135003 query($query) : ".var_export($object,true));
@@ -1254,8 +1290,9 @@ class AfwSqlHelper extends AFWRoot
      * update
      * commit attributes update to DB
      */
-    public static function updateObject(&$object, $only_me = true, $nocote_fields = null, $onlyReturnSQL = false, $disableAfterCommitDBEvent = false)
+    public static function updateObject(&$object, $only_me = true, $nocote_fields = null, $onlyReturnSQL = false, $disableAfterCommitDBEvent = false, $update_context="")
     {
+        $devMode = AfwSession::config("MODE_DEVELOPMENT", false);
         if ($object->IS_COMMITING)
             throw new AfwRuntimeException('To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods');
         $object->IS_COMMITING = true;
@@ -1321,12 +1358,7 @@ class AfwSqlHelper extends AFWRoot
             }
 
             if ($can_update) {
-                if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
-                    // die("call to AfwAuditHelper::audit_before_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
-                    AfwAuditHelper::audit_before_update($object, $object->fieldsHasChanged());
-                } else {
-                    // if(....) die("no call to AfwAuditHelper::audit_before_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
-                }
+                
 
                 // if((!$arr_tables_without_technical_fields) or (array_search(static::$TABLE, $arr_tables_without_technical_fields) === false)) {
 
@@ -1392,6 +1424,23 @@ class AfwSqlHelper extends AFWRoot
                         $object->resetChangedFields();
                         $object->afterUpdate($id_updated, $fields_updated, $disableAfterCommitDBEvent);
                         $object->majTriggerReset();
+                        
+                        if (($return == 1) and $object->AUDIT_DATA and (!$AUDIT_DISABLED)) {
+                            try {
+                                // die("call to AfwAuditHelper::audit_on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                                AfwAuditHelper::audit_on_update($object, $object->fieldsHasChanged(), "update", $update_context);
+                            }
+                            catch(Exception $e) {
+                                $message = "Audit operation failed.";
+                                if($devMode) {
+                                    $message .= " >> ".$e->getMessage();
+                                    $message .= " >> the query on parent table was ".$query;
+                                }
+                            }
+                            
+                        } else {
+                            // if(....) die("no call to AfwAuditHelper::audit_on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                        }
                     }
                     if ($only_me and $return > 1) {
                         throw new AfwRuntimeException(
@@ -1451,7 +1500,7 @@ class AfwSqlHelper extends AFWRoot
      *     2. execute beforeHide and afterHide events
      * Hide row by setting AVAILABLE_IND = 'N'
      */
-    public static function hideObject($object)
+    public static function hideObject($object, $update_context = '')
     {
         $AUDIT_DISABLED = AfwSession::config('AUDIT_DISABLED', false);
         $me = AfwSession::getUserIdActing();
@@ -1462,10 +1511,6 @@ class AfwSqlHelper extends AFWRoot
                     . '.'
             );
         } else {
-            if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
-                AfwAuditHelper::audit_before_update($object, [$object->fld_ACTIVE() => 'N']);
-            }
-
             $user_id = $me;
             if (!$user_id) {
                 $user_id = 0;
@@ -1502,10 +1547,63 @@ class AfwSqlHelper extends AFWRoot
                 $return = $object->execQuery($query);
 
                 $object->afterHide($object->getAfieldValue($object->getPKField()));
+
+                if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
+                    AfwAuditHelper::audit_on_update($object, [$object->fld_ACTIVE() => 'N'], 'hide', $update_context);
+                }
             }
 
             return $return;
         }
+    }
+
+    public static function deleteObject(&$object, $id_replace, $update_context = '') {
+        $lang = AfwLanguageHelper::getGlobalLanguage();
+        $objme = AfwSession::getUserConnected();
+
+        if ($object->IS_VIRTUAL) {
+            throw new AfwRuntimeException(
+                'can not call delete method with virtual table : '
+                    . $object::$TABLE
+                    . '.'
+            );
+        } elseif (($delReturn = $object->userCanDeleteMe($objme)) <= 0) {
+            $delReturnDecoded = self::decodeDeleteReturn($delReturn);
+            throw new AfwRuntimeException(
+                "the user [$objme] is not allowed to do delete operation on ["
+                    . $object->getShortDisplay($lang) . "] DEL-RETURN=$delReturnDecoded"
+            );
+        } else {
+            $return = false;
+            $object->majTriggered();
+            if ($object->beforeDelete($object->id, $id_replace)) {
+                $AUDIT_DISABLED = AfwSession::config('AUDIT_DISABLED', false);
+                // for audit
+                if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
+                    $object->logicDelete(true, true, '', [], "Audit before delete");
+                }
+                $query = 'DELETE FROM ' . $object::_prefix_table($object::$TABLE) . ' WHERE 1 ';
+                if ($object->getPKIsMultiple()) {
+                    foreach ($object->PK_MULTIPLE_ARR as $pk_field) {
+                        $query .= "and $pk_field = '" . $object->getAfieldValue($pk_field) . "'";
+                    }
+                } else {
+                    $query .= 'and ' . $object->getPKField() . " = '" . $object->getAfieldValue($object->getPKField()) . "'";
+                }
+
+                $return = $object->execQuery($query);
+                $object->majTriggered();
+                // die("query : $query");
+                $object->afterDelete(
+                    $object->getAfieldValue($object->getPKField()),
+                    $id_replace
+                );
+                if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
+                    AfwAuditHelper::audit_on_update($object, [], 'delete', $update_context);
+                }
+            }
+        }
+        return $return;
     }
 
     public static function deleteOneByOneWhere($object, $where, $simul = false)
@@ -1890,10 +1988,10 @@ class AfwSqlHelper extends AFWRoot
     private function getTheResultRowIndex($result_row=null)
     {
         $loadByIndex = null;
-        if (is_array($this->UNIQUE_KEY) and count($this->UNIQUE_KEY) > 0) {
+        if (is_array($object->UNIQUE_KEY) and count($object->UNIQUE_KEY) > 0) {
             $uk_val_arr = [];
             $isLoadByIndex = true;
-            foreach ($this->UNIQUE_KEY as $key_item) {
+            foreach ($object->UNIQUE_KEY as $key_item) {
                 if (!isset($result_row[$key_item])) {
                     $isLoadByIndex = false;
                 } else {
@@ -1904,7 +2002,7 @@ class AfwSqlHelper extends AFWRoot
             if ($isLoadByIndex) {
                 $loadByIndex = implode('-/-', $uk_val_arr);
             }
-            // if(($className=="TravelHotel") and (!$value)) throw new AfwRuntimeException("loadByIndex=$loadByIndex this->SEARCH_TAB = ".var_export($this->SEARCH_TAB,true));
+            // if(($className=="TravelHotel") and (!$value)) throw new AfwRuntimeException("loadByIndex=$loadByIndex this->SEARCH_TAB = ".var_export($object->SEARCH_TAB,true));
         }
 
         return $loadByIndex;

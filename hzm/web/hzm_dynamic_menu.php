@@ -94,7 +94,7 @@ if(!$objme) $objme = AfwSession::getUserConnected();
           $my_files = AfwLanguageHelper::translateKeyword("EDIT-MY-FILES", $lang);
           
           $codeme = substr(md5("code".$me),0,8);
-          $right_menu[] = array('href' => "afw_edit_my_files.php?x=$me&y=$codeme",'css' => "files-o", 'title' => "$my_files");
+          $right_menu[] = array('href' => "web/afw_edit_my_files.php?x=$me&y=$codeme",'css' => "files-o", 'title' => "$my_files");
 
           if($my_account_page) 
               $right_menu[] = array('href' => $my_account_page,'css' => "user", 'title' => "$my_account_title ($my_firstname)");

@@ -1,6 +1,7 @@
 <?php
 if (!$lang) $lang = "ar";
 if (!$my_font) $my_font = "front";
+$crst = md5("crst".date("YmdHis"));
 ?>
 
 <head>
@@ -16,8 +17,8 @@ if (!$my_font) $my_font = "front";
   <?php
   if ($front_header) {
   ?>
-    <link rel="stylesheet" href="../lib/css/front-application.css">
-    <link rel="stylesheet" href="../lib/css/hzm-v001.css">
+    <link rel="stylesheet" href="../lib/css/front-application.css?crst=<?php echo $crst ?>">
+    <link rel="stylesheet" href="../lib/css/hzm-v001.css?crst=<?php echo $crst ?>">
     
   <?php
   }
@@ -93,9 +94,9 @@ if (!$my_font) $my_font = "front";
     <script src="../lib/js/localization/messages_<?php echo  $lang ?>.js"></script>
   <?php
   }
-  $cmodule = AfwUrlManager::currentURIModule();
+  $cmodule = UfwUrlManager::currentURIModule();
   $xmodule = AfwSession::getCurrentlyExecutedModule();
-  $pagecode = AfwUrlManager::currentPageCode();
+  $pagecode = UfwUrlManager::currentPageCode();
   
   ?>
   <!-- end plugins -->
@@ -137,7 +138,7 @@ if (!$my_font) $my_font = "front";
     // nothing todo for the moment
   }
 
-  $crst = md5("crst".date("YmdHis"));
+  
   ?>
 
   <!-- end datatable/css/js -->

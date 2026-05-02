@@ -1,5 +1,5 @@
 <?php
-/* rafik 17/11/2021 obsolete after coming of new AfwBatch class
+/* rafik 17/11/2021 obsolete after coming of new UfwBatch class
 if(!function_exists('print_debugg')) 
 {
 

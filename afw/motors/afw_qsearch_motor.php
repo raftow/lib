@@ -18,7 +18,6 @@ class AfwQsearchMotor
 	public static function type_input($col_name, $desc, $obj, $selected = false, $readonly = false, $required = false)
 	{
 		$lang = AfwLanguageHelper::getGlobalLanguage();
-		// obsolete require_once(dirname(__FILE__).'/../modes/afw_rights.php');
 
 		if ($desc['utf8'] or $desc['UTF8'] or ((!isset($desc['UTF8'])) and AfwStringHelper::stringEndsWith($col_name, '_ar'))) {
 			$dir = 'rtl';
@@ -100,7 +99,7 @@ class AfwQsearchMotor
 				$nom_table_fk   = $desc["ANSWER"];
 				$nom_module_fk  = $desc["ANSMODULE"];
 				if (!$nom_module_fk) {
-					$nom_module_fk = AfwUrlManager::currentWebModule();
+					$nom_module_fk = UfwUrlManager::currentWebModule();
 				}
 				$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 				// $nom_fichier_fk = AFWObject::table ToFile($nom_table_fk);
@@ -281,7 +280,7 @@ class AfwQsearchMotor
 							من
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>
+							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" autocomplete="off" > </input>
 							<script type="text/javascript">
 								$('#<?= $col_name ?>').calendarsPicker({
 									calendar: $.calendars.instance('UmmAlQura')
@@ -292,7 +291,7 @@ class AfwQsearchMotor
 							إلى
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<? echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
+							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<? echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>" autocomplete="off" > </input>
 							<script type="text/javascript">
 								$('#<?= $col_name . "_2" ?>').calendarsPicker({
 									calendar: $.calendars.instance('UmmAlQura')
@@ -650,7 +649,7 @@ class AfwQsearchMotor
 			$nom_table_fk   = $desc["ANSWER"];
 			$nom_module_fk  = $desc["ANSMODULE"];
 			if (!$nom_module_fk) {
-				$nom_module_fk = AfwUrlManager::currentWebModule();
+				$nom_module_fk = UfwUrlManager::currentWebModule();
 			}
 			$nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
 

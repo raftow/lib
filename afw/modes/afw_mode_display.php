@@ -8,7 +8,7 @@ else
 {
         // die("display_in_edit_mode=".var_export($display_in_edit_mode,true)." display_in_display_mode=".var_export($display_in_display_mode,true));
 
-        require_once("afw_rights.php");
+        
         $themeArr = AfwThemeHelper::loadTheme();
 foreach($themeArr as $theme => $themeValue)
 {
@@ -59,14 +59,14 @@ foreach($themeArr as $theme => $themeValue)
 
         // die("rafik pbmon=$pbmon, _POST = ".var_export($_POST,true));
 
-        AfwMainPage::initOutput("<!--iCanDo : $iCanDoOperationLog  ,  $iCanDoBFLog -->");
+        CmsMainPage::initOutput("<!--iCanDo : $iCanDoOperationLog  ,  $iCanDoBFLog -->");
         if($myObj->load($id))
         {
                 die("rafik myObj = ".var_export($myObj,true));
                 $lv_obj =& $myObj;
                 include_once("afw_save_last_visit.php");
                 
-                //AfwMainPage::addOutput( "<table class='$class_table' cellpadding='4' cellspacing='3'><tr><td colspan='2' align='center' class='$class_bloc'>";
+                //CmsMainPage::addOutput( "<table class='$class_table' cellpadding='4' cellspacing='3'><tr><td colspan='2' align='center' class='$class_bloc'>";
 
                 if($pbmon)
                 {
@@ -123,14 +123,14 @@ foreach($themeArr as $theme => $themeValue)
                                 {
                                         $currstep_orig = "default";
                                         $currstep = 1;
-                                        //AfwMainPage::addOutput( $objme->showObjTech();
+                                        //CmsMainPage::addOutput( $objme->showObjTech();
                                 }    
-                                // AfwMainPage::addOutput( '<input type="hidden" name="oldcurrstep"   value="'.$currstep.'"/>';
+                                // CmsMainPage::addOutput( '<input type="hidden" name="oldcurrstep"   value="'.$currstep.'"/>';
                         }
                         else $currstep_orig = "defined";
                         
-                        // AfwMainPage::addOutput( '<input type="hidden" name="currstep"   value="'.$currstep.'"/>';
-                        // AfwMainPage::addOutput( '<input type="hidden" name="currstep_orig"   value="'.$currstep_orig.'"/>';
+                        // CmsMainPage::addOutput( '<input type="hidden" name="currstep"   value="'.$currstep.'"/>';
+                        // CmsMainPage::addOutput( '<input type="hidden" name="currstep_orig"   value="'.$currstep_orig.'"/>';
                         
                         $myObj->currentStep = $currstep;
                         // @todo-$objme->curStepFor[$myObj->getTableName()][$myObj->getId()] = $currstep;
@@ -138,17 +138,17 @@ foreach($themeArr as $theme => $themeValue)
                     }
                         
                     //if($myObj->test_rafik) die("rafik 3 ".var_export($myObj,true));
-                    AfwMainPage::addOutput($myObj->showHTML());
+                    CmsMainPage::addOutput($myObj->showHTML());
                 }
                 else
-                        AfwMainPage::addOutput("لا يوجد عندك صلاحية لعرض هذا السجل");
-                //AfwMainPage::addOutput( "</td></tr></table>";
-                //AfwMainPage::addOutput( "</div></div></div>";
-                //AfwMainPage::addOutput( "</td></tr></table>";
+                        CmsMainPage::addOutput("لا يوجد عندك صلاحية لعرض هذا السجل");
+                //CmsMainPage::addOutput( "</td></tr></table>";
+                //CmsMainPage::addOutput( "</div></div></div>";
+                //CmsMainPage::addOutput( "</td></tr></table>";
         }
         else 
         {
-                AfwMainPage::addOutput("<center><table><tr><td><img src='image/warning.png' alt=''></td><td class='error'>لا يمكن تحميل هذا السجل، يبدوا أنه غير موجود أو حصل خطأ أثناء التحميل</td></tr></table></center>");
+                CmsMainPage::addOutput("<center><table><tr><td><img src='image/warning.png' alt=''></td><td class='error'>لا يمكن تحميل هذا السجل، يبدوا أنه غير موجود أو حصل خطأ أثناء التحميل</td></tr></table></center>");
         }
 
 //if($myObj->test_rafik) die("rafik 2");

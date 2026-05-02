@@ -1,6 +1,6 @@
 <?php
 
-include_once("afw_error_handler.php");
+include_once("utilities/ufw_error_handler.php");
 
 class AfwController extends AFWRoot
 {

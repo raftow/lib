@@ -15,7 +15,7 @@ require_once("$file_dir_name/../$currmod/$file");
 //AFWDebugg::setEnabled(true);
 ////AFWObject::setDebugg(true);
 //AFWDebugg::initialiser("","afw_debugg.txt");
-AfwMainPage::addOutput('<table cellpadding="4" cellspacing="4" class="card"><tr align="center"><td>';
+CmsMainPage::addOutput('<table cellpadding="4" cellspacing="4" class="card"><tr align="center"><td>';
 //$cl  = $_REQUEST['cl'];
 $obj = new $class();
 
@@ -23,22 +23,22 @@ if($id and $obj->load($id))
 {
 	if($obj->delete($id_replace))
         {
-              AfwMainPage::addOutput( "<br><p class='alert-success'><br><span>تم مسح العنصر بنجاح</span><br></p>";
+              CmsMainPage::addOutput( "<br><p class='alert-success'><br><span>تم مسح العنصر بنجاح</span><br></p>";
         }
         else
         {
         
-              AfwMainPage::addOutput( "<br><p class='alert-error'><br><span>لم يتم مسح العنصر بنجاح</span><br></p>";
+              CmsMainPage::addOutput( "<br><p class='alert-error'><br><span>لم يتم مسح العنصر بنجاح</span><br></p>";
         }
 }
 else
 {
 
-      AfwMainPage::addOutput( "<br><p class='alert-error'><br><span>سجل غير موجود أو تم مسحه سابقا</span><br></p>";
+      CmsMainPage::addOutput( "<br><p class='alert-error'><br><span>سجل غير موجود أو تم مسحه سابقا</span><br></p>";
 }
 
-// AfwMainPage::addOutput( '<br><br><br><center><a href="main.php?Main_Page=afw_mode_search.php&cl='.$class.'&currmod='.$currmod.'&lastsearch=true"><span class="greenbtn btn">الرجوع إلى البحث السابق</span></a></center>';
-AfwMainPage::addOutput( '</td></tr></table>';
+// CmsMainPage::addOutput( '<br><br><br><center><a href="main.php?Main_Page=afw_mode_search.php&cl='.$class.'&currmod='.$currmod.'&lastsearch=true"><span class="greenbtn btn">الرجوع إلى البحث السابق</span></a></center>';
+CmsMainPage::addOutput( '</td></tr></table>';
 //AfwSession::startSession();        
 //header("Location: main.php?Main_Page=afw_mode_search.php&cl=$class&lastsearch=true");
 //header("Location: main.php");

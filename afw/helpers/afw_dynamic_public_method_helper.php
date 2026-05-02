@@ -74,9 +74,9 @@ class AfwDynamicPublicMethodHelper
 
             $methodTitleAr = $object->getMethodTitle($methodName0, 'ar');
             $methodTitleAr = str_replace('[item]', $itemTitleAr, $methodTitleAr);
-            $methodTitleAr = AfwReplacement::trans_replace($methodTitleAr, "workflow", "ar");
+            $methodTitleAr = UfwReplacement::trans_replace($methodTitleAr, "workflow", "ar");
             $methodTitleEn = $object->getMethodTitle($methodName0, 'en');
-            $methodTitleEn = AfwReplacement::trans_replace($methodTitleEn, "workflow", "en");
+            $methodTitleEn = UfwReplacement::trans_replace($methodTitleEn, "workflow", "en");
             $methodTitleEn = str_replace('[item]', $itemTitleEn, $methodTitleEn);
             $methodTooltipAr = $object->getMethodTooltip($methodName0, 'ar');
             if (trim($methodTooltipAr) == trim($methodTitleAr)) $methodTooltipAr = "";

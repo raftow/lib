@@ -30,7 +30,7 @@
                 $default_from = $send_from_arr;
         }
         
-        $send_from = AfwGlobalVar::variable_get('site_mail', AfwGlobalVar::variable_get('sendmail_from', $default_from));
+        $send_from = AfwSession::config('site_mail', AfwSession::config('sendmail_from', $default_from));
         // die("send_from = ".$send_from);
         if(!is_array($body))
         {

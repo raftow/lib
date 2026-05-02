@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__)."/../../../config/global_config.php");
 
 
-require_once ('afw_rights.php');
+
 $themeArr = AfwThemeHelper::loadTheme();
 foreach($themeArr as $theme => $themeValue)
 {
@@ -99,8 +99,8 @@ $nb_objs = count($ddb_objs);
 //print_r($mainObject);
 //die();
 
-AfwMainPage::initOutput($header_bloc_edit);
-AfwMainPage::addOutput('<form method="post" action="main.php">');
+CmsMainPage::initOutput($header_bloc_edit);
+CmsMainPage::addOutput('<form method="post" action="main.php">');
 $mainObject->id_origin = $id_origin;
 $mainObject->class_origin = $class_origin;
 $mainObject->module_origin = $module_origin;
@@ -112,11 +112,11 @@ $mainObject->return_mode = $return_mode;
 if(!$nb_objs)
 {
     if($mainObject->no_row_to_qedit_message)
-        AfwMainPage::addOutput($mainObject->no_row_to_qedit_message);
+        CmsMainPage::addOutput($mainObject->no_row_to_qedit_message);
     elseif($not_found_mess)
-        AfwMainPage::addOutput($not_found_mess);
+        CmsMainPage::addOutput($not_found_mess);
     else
-        AfwMainPage::addOutput("لا يوجد سجلات");
+        CmsMainPage::addOutput("لا يوجد سجلات");
         
     $datatable_on = true;
     $mode_hijri_edit = true;       	
@@ -240,37 +240,37 @@ else
                 $hid_sel_ .= "<input type=\"hidden\" name=\"$item\"   value=\"$item_value\"/> \n";        
             }
         }            
-        AfwMainPage::addOutput($form_html_ddb);
-        AfwMainPage::addOutput("<div class='hzm_panel_link_bar footer'><div class='fright full-right-width'>");
+        CmsMainPage::addOutput($form_html_ddb);
+        CmsMainPage::addOutput("<div class='hzm_panel_link_bar footer'><div class='fright full-right-width'>");
         $submit_title = $mainObject->translate('UPDATE',$lang,true);
         $submit_name = "submit";
-        AfwMainPage::addOutput("<input type=\"submit\" name=\"$submit_name\"  id=\"submit-ddb-form\" class=\"$class_inputSubmit\" value=\"&nbsp;$submit_title&nbsp;\" width=\"200px\" height=\"30px\" />");
+        CmsMainPage::addOutput("<input type=\"submit\" name=\"$submit_name\"  id=\"submit-ddb-form\" class=\"$class_inputSubmit\" value=\"&nbsp;$submit_title&nbsp;\" width=\"200px\" height=\"30px\" />");
         if($diff_exists)
         {
-             AfwMainPage::addOutput("<div class='$class_ddbSubmit'>يوجد فوارق تمنع حذف السجلات المكررة يجب دمج البيانات</div>");
+             CmsMainPage::addOutput("<div class='$class_ddbSubmit'>يوجد فوارق تمنع حذف السجلات المكررة يجب دمج البيانات</div>");
         }
         elseif(count($ids_to_keep) < 1)
         {
-             AfwMainPage::addOutput("<div class='$class_ddbSubmit'>يجب إختيار السجل الوحيد الذي يتم ابقاؤه</div>");
+             CmsMainPage::addOutput("<div class='$class_ddbSubmit'>يجب إختيار السجل الوحيد الذي يتم ابقاؤه</div>");
         }
         elseif(count($ids_to_keep) > 1)
         {
-             AfwMainPage::addOutput("<div class='$class_ddbSubmit'> السجل  الذي يتم ابقاؤه يجب يكون سجلا واحدا</div>");
+             CmsMainPage::addOutput("<div class='$class_ddbSubmit'> السجل  الذي يتم ابقاؤه يجب يكون سجلا واحدا</div>");
         }
         elseif(count($ids_to_delete) == 0)
         {
-             AfwMainPage::addOutput("<div class='$class_ddbSubmit'>يجب إختيار على الأقل سجل واحد مكرر لحذفه</div>");
+             CmsMainPage::addOutput("<div class='$class_ddbSubmit'>يجب إختيار على الأقل سجل واحد مكرر لحذفه</div>");
         }
         else
         {
               $submit_ddb_title = $mainObject->translate('RUN_DDB',$lang,true);
               $submit_ddb_name = "submit_ddb";
         
-              AfwMainPage::addOutput("<input type=\"submit\" name=\"$submit_ddb_name\"  id=\"submit-ddb-form\" class=\"$class_ddbSubmit\" value=\"&nbsp;$submit_ddb_title&nbsp;\" width=\"200px\" height=\"30px\" />");
+              CmsMainPage::addOutput("<input type=\"submit\" name=\"$submit_ddb_name\"  id=\"submit-ddb-form\" class=\"$class_ddbSubmit\" value=\"&nbsp;$submit_ddb_title&nbsp;\" width=\"200px\" height=\"30px\" />");
         }
         
-        AfwMainPage::addOutput("</div></div>");
-        AfwMainPage::addOutput('   <input type="hidden" name="id_origin"   value="'.$id_origin.'"/>
+        CmsMainPage::addOutput("</div></div>");
+        CmsMainPage::addOutput('   <input type="hidden" name="id_origin"   value="'.$id_origin.'"/>
         		<input type="hidden" name="class_origin"   value="'.$class_origin.'"/>
         		<input type="hidden" name="module_origin"   value="'.$module_origin.'"/>
         		<input type="hidden" name="ids"   value="'.$ids.'"/>
@@ -286,7 +286,7 @@ else
                         <input type="hidden" name="Main_Page" id="Main_Page" value="afw_handle_default_ddb.php"/>
         		
         	    </form>');
-        //AfwMainPage::addOutput( $footer_bloc_ddb;
+        //CmsMainPage::addOutput( $footer_bloc_ddb;
 
         $datatable_on = true;
         $mode_hijri_edit = true;

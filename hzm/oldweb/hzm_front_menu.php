@@ -53,7 +53,7 @@
         $my_files = AfwLanguageHelper::translateKeyword("EDIT-MY-FILES", $lang);
         
         $codeme = substr(md5("code".$me),0,8);
-        $right_menu[] = array('href' => "afw_edit_my_files.php?x=$me&y=$codeme",'css' => "files-o", 'title' => "$my_files");
+        $right_menu[] = array('href' => "web/afw_edit_my_files.php?x=$me&y=$codeme",'css' => "files-o", 'title' => "$my_files");
 
         if($my_account_page) 
                 $right_menu[] = array('href' => $my_account_page,'css' => "user", 'title' => "$my_account_title ($my_firstname)");
@@ -145,7 +145,7 @@
                         
                         if(!$ncu)
                         {
-                             list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = AfwFrontMenu::loadUmsCacheForUser($me_id, $lang);
+                             list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = CmsFrontMenu::loadUmsCacheForUser($me_id, $lang);
                         }
                         else
                         {
@@ -181,7 +181,7 @@
                                         $menu_folder_i["color_class"] = $menu_color; 
                                         $tpl_path = AfwHtmlHelper::hzmTplPath();
                                         $menu_template = AfwSession::currentMenuTemplate();
-                                        $menu_folder_i_html = AfwFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder_i, $application_code, $lang, $r, true, $iamAdmin);
+                                        $menu_folder_i_html = CmsFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder_i, $application_code, $lang, $r, true, $iamAdmin);
                                         // if($menu_folder_id=="-1") die($menu_folder_i_html);
                                         // if($menu_folder_i_html) die("menu[$menu_folder_id] => ".$menu_folder_i_html." item => ".var_export($menu_folder_i,true));
                                         $html_hzm_menu .= $menu_folder_i_html;

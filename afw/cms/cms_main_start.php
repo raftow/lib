@@ -1,0 +1,74 @@
+<?php
+// die("DBG-mode main page");
+set_time_limit(8400);
+ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
+ini_set('zend.exception_ignore_args', 0);
+
+
+
+if (!$MODULE) $MODULE = $current_module;
+
+$module_path = dirname(__FILE__)."/../../../$MODULE";
+$lib_path = dirname(__FILE__)."/../../../lib";
+
+require_once("$lib_path/afw/core/afw_autoloader.php");
+include("$lib_path/../config/global_config.php");
+// 
+
+
+if (!$MODULE) {
+    throw new RuntimeException("MODULE not defined in afw main start");
+} else {
+    if (!$currmod) $currmod = $_GET["currmod"];
+    // die("afw main page MODULE is $MODULE currmod is $currmod");
+}
+require_once("$module_path/ini.php");
+require_once("$module_path/module_config.php");
+require_once("$module_path/application_config.php");
+// die("DBG-begin of session start");
+AfwSession::initConfig($config_arr,"system", "$module_path/application_config.php");
+AfwSession::startSession();
+// die("DBG-session started");
+if (!$objme) $objme = AfwSession::getUserConnected();
+// die("DBG-User Connected Got");
+// $mode_analysis = (AfwSession::config("MODE_DEVELOPMENT", false) or ($objme and $objme->isAdmin() and AfwSession::config("MODE_ANALYSIS", false)));
+
+$lang = $_GET["lang"];
+if(!$lang) $lang = AfwSession::getSessionVar("current_lang", "ar");
+else AfwSession::setSessionVar("current_lang", $lang);
+if(!$lang) $lang = "ar";
+// die("main start lang = ".$lang);
+
+$parent_module = AfwSession::config("main_module", "");
+if ($parent_module) AfwAutoLoader::addMainModule($parent_module);
+if ($MODULE) AfwAutoLoader::addModule($MODULE);
+if ($currmod) AfwAutoLoader::addModule($currmod);
+
+$required_modules = AfwSession::config("required_modules", []);
+foreach($required_modules as $required_module)
+{
+    AfwAutoLoader::addModule($required_module);
+}
+
+
+
+//$uri_module = UfwUrlManager::currentURIModule();
+
+include("$lib_path/afw/utilities/ufw_error_handler.php");
+
+if (!$force_allow_access_to_customers) $only_members = true;
+
+//foreach ($_REQUEST as $col => $val) ${$col} = $val;
+if(!$Main_Page) $Main_Page = $_REQUEST["Main_Page"];
+// die(var_export($_REQUEST,true));
+// die("main start 2 lang = ".$lang);
+$afw_check_member_file = "$lib_path/afw/includes/afw_check_member.php";
+if (file_exists($afw_check_member_file)) {
+    include($afw_check_member_file);
+}
+// die("main start 3 lang = ".$lang);
+$header_template = AfwSession::config("header-template", "modern"); 
+$menu_template = AfwSession::config("menu-template", "modern");
+$body_template = AfwSession::config("body-template", "modern");
+$footer_template = AfwSession::config("footer-template", "modern");
+

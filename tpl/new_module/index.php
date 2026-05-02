@@ -7,4 +7,4 @@ $My_Module = $MODULE;
 
 
 // AfwRunHelper::simpleError("System under maintenance. contactez RB");
-AfwMainPage::echoMainPage($My_Module, $Main_Page, $file_dir_name);
+CmsMainPage::echoMainPage($My_Module, $Main_Page, $file_dir_name);

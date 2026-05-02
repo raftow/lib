@@ -6,7 +6,7 @@ foreach($themeArr as $theme => $themeValue)
 {
     $$theme = $themeValue;
 }
-require_once 'afw_rights.php';
+
 
 // global $currmod,$sub_pack,$cl,$TMP_ROOT, $uri_module, $popup, $file_box_css_class;
 

@@ -9,6 +9,7 @@ if($controllerName)
 {
         $ControllerClass = ucfirst($controllerName)."Controller";                        
         //$module = "unknown-module";
+        $iexception = null;
         try{
                 $controllerObj = new $ControllerClass ($request);
                 $viewType = $controllerObj->viewType();
@@ -45,26 +46,33 @@ if($controllerName)
         }
         catch(Exception $e) 
         {
+                $iexception = $e;
+                $controllerObjError = $e->getMessage()." ".$e->getTraceAsString();
                 // throw new AfwRuntimeException("test eh04");
                 //$controllerObj = null;
-                $controllerObjError = $e->getMessage()." ".$e->getTraceAsString();
+                
                 /*
-                if(AfwSession::config("MODE_DEVELOPMENT", false)) 
+                
                 else $controllerObjError = "Disabled because of non dev mode";*/
         }
 
+        
         if(!$controllerObj)
         {
-                throw new AfwRuntimeException("failed to instanciate controller $controllerName : $controllerObjError");
+                $iexception = new AfwRuntimeException("failed to instanciate controller $controllerName : $controllerObjError");
         }
         elseif($controllerObjError)
         {
-                throw new AfwRuntimeException("Controller $controllerName (".get_class($controllerObj).") prepare/initiate failed : $controllerObjError");
+                if(!AfwSession::config("MODE_DEVELOPMENT", false) or !$iexception) 
+                        $iexception = new AfwRuntimeException("Controller $controllerName (".get_class($controllerObj).") prepare/initiate failed : $controllerObjError");
         }
         elseif(!method_exists($controllerObj,$methodName))
         {
-                throw new AfwRuntimeException("Controller $controllerName (".get_class($controllerObj).") does'nt contain method (".$methodName.")");
+                $iexception = new AfwRuntimeException("Controller $controllerName (".get_class($controllerObj).") does'nt contain method (".$methodName.")");
         }
+
+        if($iexception) throw $iexception;
+        
 
         $request["controllerObj"] = $controllerObj;
         $request["methodName"] = $methodName;

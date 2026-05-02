@@ -9,7 +9,7 @@ foreach($themeArr as $theme => $themeValue)
 
 
 
-require_once ('afw_rights.php');
+
 
 $objme = AfwSession::getUserConnected();
 if(!$objme) 
@@ -77,13 +77,13 @@ ici ce n'est pas applicable car on n'as pas d'insert de new records
 //$myMainObject->commonFields = $comfld;
 if(isset($copypast)) $myMainObject::$copypast = $copypast;
 
-AfwMainPage::addOutput("<div class=\"filebox editcard\">");
+CmsMainPage::addOutput("<div class=\"filebox editcard\">");
 if($fixmtit) 
 {
-        AfwMainPage::addOutput("<h3 class=\"bluetitle\"><i></i>$fixmtit</h3>");
+        CmsMainPage::addOutput("<h3 class=\"bluetitle\"><i></i>$fixmtit</h3>");
 }
-AfwMainPage::addOutput('<form method="post" action="main.php">');
-AfwMainPage::addOutput("<div class=\"hzm_table_container\">");
+CmsMainPage::addOutput('<form method="post" action="main.php">');
+CmsMainPage::addOutput("<div class=\"hzm_table_container\">");
 if($ids)
 {
         if($ids=="all") { 
@@ -257,9 +257,9 @@ if($nb_objs>0)
 
 
         
-        AfwMainPage::addOutput($header_bloc_crossed);
-        AfwMainPage::addOutput("<div class='hzm_table_container'>$html</div>");
-        AfwMainPage::addOutput("<div class='hzm_table_container'>");
+        CmsMainPage::addOutput($header_bloc_crossed);
+        CmsMainPage::addOutput("<div class='hzm_table_container'>$html</div>");
+        CmsMainPage::addOutput("<div class='hzm_table_container'>");
         if($myMainObject->return_mode)
         {
                  $submit_qedit_title_code = 'UPDATE_AND_RETURN';
@@ -271,8 +271,8 @@ if($nb_objs>0)
                  $submit_name = "submit";
         }
         $submit_title = $myMainObject->translate($submit_qedit_title_code,$lang,true);
-        AfwMainPage::addOutput("<input type=\"submit\" name=\"$submit_name\"  id=\"$submit_name\" class=\"$class_inputSubmit\" value=\"&nbsp; $submit_title &nbsp;\" width=\"200px\" height=\"30px\" />");
-        AfwMainPage::addOutput("</div>");
+        CmsMainPage::addOutput("<input type=\"submit\" name=\"$submit_name\"  id=\"$submit_name\" class=\"$class_inputSubmit\" value=\"&nbsp; $submit_title &nbsp;\" width=\"200px\" height=\"30px\" />");
+        CmsMainPage::addOutput("</div>");
         
         
         $hid_sel_ = "";
@@ -285,7 +285,7 @@ if($nb_objs>0)
             }
         }            
         
-        AfwMainPage::addOutput('   <input type="hidden" name="id_origin"   value="'.$id_origin.'"/>
+        CmsMainPage::addOutput('   <input type="hidden" name="id_origin"   value="'.$id_origin.'"/>
         		<input type="hidden" name="class_origin"   value="'.AfwStringHelper::hzmEncrypt($class_origin).'"/>
                         <input type="hidden" name="module_origin"   value="'.$module_origin.'"/>
                         <input type="hidden" name="step_origin"   value="'.$step_origin.'"/>
@@ -310,8 +310,8 @@ if($nb_objs>0)
                         <input type="hidden" name="Main_Page" id="Main_Page" value="afw_handle_default_crossed.php"/>
         		
         	    ');
-        AfwMainPage::addOutput($footer_bloc_crossed);
-        AfwMainPage::addOutput("</div></form></div>");
+        CmsMainPage::addOutput($footer_bloc_crossed);
+        CmsMainPage::addOutput("</div></form></div>");
         /*
         $datatable_on = true;
         $mode_hijri_edit = true;

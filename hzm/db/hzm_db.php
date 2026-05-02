@@ -84,7 +84,7 @@ function raiseError($msg, $throwed_arr=array(), $throwed_vals=array())
     
     if($MODE_BATCH)
     { 
-            $res = AfwBatch::emailError($project_code, $project, $msg);
+            $res = UfwBatch::emailError($project_code, $project, $msg);
             if(!$res["result"]) $msg .= ", can't send email for this error : ".$res["error"];
     }
     return showError($msg, $call_method = "");
@@ -121,7 +121,7 @@ function showError($msg, $call_method = "")
         else
         {
                 $header = array("function"=>25, "file"=> 40, "line"=> 6,);
-                AfwBatch::print_data($header,$backtrace, $colors=null);
+                UfwBatch::print_data($header,$backtrace, $colors=null);
         }
         
         if($_POST) 
@@ -209,7 +209,7 @@ function execQuery($database, $query_txt, $titre="", $continueAndSendAlert=false
                 $alerte_txt = "$alerte Appelée par $fichier_appelant";
                 //print "$brVotre administrateur a été informé des paramètres de l'erreur : $projet,$alerte_txt,$alerteTo,$id_page ";
                 //insert_alerte($projet,$alerte_txt,$alerteTo,$id_page,false,30);
-                $res2 = AfwBatch::emailError("Error happened", $database, $alerte);            
+                $res2 = UfwBatch::emailError("Error happened", $database, $alerte);            
                 */
         }
         else
@@ -224,13 +224,13 @@ function execQuery($database, $query_txt, $titre="", $continueAndSendAlert=false
    $affected_rows = AfwMysql::affected_rows(AfwDatabase::getLinkByName($project_link_name));
    
    
-   if($print_debugg) AfwBatch::debugg("End query : $end_q_time, duree : $duree_q, affected : $affected_rows row(s) \n");  
+   if($print_debugg) UfwBatch::debugg("End query : $end_q_time, duree : $duree_q, affected : $affected_rows row(s) \n");  
 
    if(($analyse_sql=='W') or ($analyse_sql=='Y') or ($duree_q>10))
    {
            $text_time = " ($end_q_time - $start_q_time) : $duree_q s";
            //insert_analyse($query_txt.$text_time,$duree_q);
-           $res2 = AfwBatch::emailError("requete lourde", $database, $query_txt.$text_time); 
+           $res2 = UfwBatch::emailError("requete lourde", $database, $query_txt.$text_time); 
    }
    
    

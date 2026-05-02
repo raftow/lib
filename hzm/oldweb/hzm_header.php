@@ -2,11 +2,9 @@
   if(!$my_theme)  $my_theme = "simple";
   $file_hzm_dir_name = dirname(__FILE__); 
   
-  require_once("$file_hzm_dir_name/../../afw/afw_utils.php");
-  
   $f3c = substr($Main_Page,0,3);
   $f7c = substr($Main_Page,0,7);
-  if(!$pagecode) list($pagecode,) = AfwUrlManager::currentPageCode();
+  if(!$pagecode) list($pagecode,) = UfwUrlManager::currentPageCode();
   $pagecode_splitted = implode(" ",explode("_",$pagecode));
   // die("rafik-adm-001 : config=".var_export($config,true));
   
@@ -18,7 +16,7 @@ else $header_entry_counter++;
 
 if($header_entry_counter>1)
 {
-        AfwRunHelper::simpleError("HzmHeader included twice, in general this happen when you include main.php or afw_main_page.php when you are inside body of MainPage");
+        AfwRunHelper::simpleError("HzmHeader included twice, in general this happen when you include main.php or cms_main_page.php when you are inside body of MainPage");
 }
 if(!$objme) $objme = AfwSession::getUserConnected();
 $lang = AfwSession::getSessionVar("lang");
@@ -94,7 +92,7 @@ else $dir = "ltr";
                 {
                         $me_id = $objme->id;
                         
-                        list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = AfwFrontMenu::loadUmsCacheForUser($me_id, $lang);
+                        list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = CmsFrontMenu::loadUmsCacheForUser($me_id, $lang);
 
                         if($cache_found)
                         {
@@ -274,7 +272,7 @@ $user_full
                 $data_tokens["out_index_page"] = $out_index_page;
                 $html_template_file = "$file_hzm_dir_name/hzm_header_${my_theme}_tpl.php";
                 
-                echo showUsingHzmTemplate($html_template_file, $data_tokens);
+                echo UfwUtils::showUsingOldHzmTemplate($html_template_file, $data_tokens);
          
    }
    

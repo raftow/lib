@@ -1,7 +1,7 @@
 <?php
 // die("DBG-mode handle search");
 require_once(dirname(__FILE__) . "/../../../config/global_config.php");
-require_once(dirname(__FILE__) . '/../modes/afw_rights.php');
+
 
 $themeArr = AfwThemeHelper::loadTheme("handle-qsearch");
 foreach ($themeArr as $theme => $themeValue) {
@@ -646,7 +646,7 @@ if (true) {
 }
 $link = "";
 if ($genere_xls) {
-        $link = AfwExcel::genereExcel($header_excel, $data_excel, $xls_page_title = 'نتائج البحث', "search-result-$cl-$me-" . date("YmdHis"), true, "purelink");
+        $link = UfwExcel::genereExcel($header_excel, $data_excel, $xls_page_title = 'نتائج البحث', "search-result-$cl-$me-" . date("YmdHis"), true, "purelink");
 }
 
 
