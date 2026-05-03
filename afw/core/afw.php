@@ -648,8 +648,8 @@ class AFWObject extends AFWRoot
             }
         }
         if (AfwStructureHelper::fieldExists($this, $this->fld_ACTIVE())) {
-            if($this->fld_LOG()) {
-                $this->set($this->fld_LOG(), $log_info);    
+            if ($this->fld_LOG()) {
+                $this->set($this->fld_LOG(), $log_info);
                 if ($commit) {
                     return $this->update($only_me);
                 }
@@ -3522,10 +3522,10 @@ class AFWObject extends AFWRoot
      */
     public function singleTranslation($lang = 'ar', $add_the = false)
     {
-        if($add_the) $the_ = $this->translateOperator("The ",$lang);
+        if ($add_the) $the_ = $this->translateOperator("The ", $lang);
         else $the_ = "";
         // can be overrridden
-        return $the_.$this->transClassSingle($lang);
+        return $the_ . $this->transClassSingle($lang);
     }
 
     public function transStatsAttribute($attribute, $lang = 'ar')
@@ -4376,7 +4376,7 @@ class AFWObject extends AFWRoot
         return true;
     }
 
-    
+
 
     final public function userCanDeleteMe($auser, $log = true)
     {
@@ -5725,6 +5725,7 @@ class AFWObject extends AFWRoot
 
     protected function paggableAttribute($attribute, $structure)
     {
+        if ($structure["NOT-PAGGABLE"]) return [false, 'configured not paggable from structure'];
         // can be overridden in subclasses
         return [true, ''];
     }
@@ -6669,11 +6670,13 @@ class AFWObject extends AFWRoot
         return $this->itemsMethodExec[$itemsMethod];
     }
 
-    public function isByRowAuditable() {
+    public function isByRowAuditable()
+    {
         return (($this->AUDIT_DATA === true) or ($this->AUDIT_DATA === "byrow_audit"));
     }
 
-    public function isByColumnAuditable() {
+    public function isByColumnAuditable()
+    {
         return (($this->AUDIT_DATA === true) or ($this->AUDIT_DATA === "bycol_audit"));
     }
 }
