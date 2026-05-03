@@ -75,6 +75,7 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['LOADING_PROBLEM'] = 'Erreur lors du chargement du fichier';
         $trad['OPERATOR']['SUBMIT'] = 'انطلق';
         $trad['OPERATOR']['SUBMIT-SEARCH'] = 'بحث';
+        $trad['OPERATOR']['SUBMIT-AUDIT'] = 'تقصي الأثر';
         $trad['OPERATOR']['EXECUTE'] = 'تنفيذ';
         $trad['OPERATOR']['SUBMIT-SEARCH-ADVANCED'] = 'بحث متقدم';
         $trad['OPERATOR']['RESET-CRITEREA'] = 'مسح المعايير';  // "بحث جديد";

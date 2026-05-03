@@ -1006,6 +1006,32 @@ class AfwUmsPagHelper extends AFWRoot
         return $actions_tpl_matrix;
     }*/
 
+
+        
+
+    /**
+     * @param AFWObject $object
+     **/
+
+    public static final function getAuditHeader(
+        $object,
+        $fgroup = 'all', 
+        $fields = 'all',
+        $lang = 'ar'
+    ) {
+        $cols = AfwPrevilegeHelper::getAuditCols($object, $fgroup, 
+        $fields,
+        $lang);
+
+        $cols_retrieve = [];
+
+        foreach ($cols as $nom_col) {
+            $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang, true);
+        }
+
+        return $cols_retrieve;
+    }    
+
     /**
      * @param AFWObject $object
      **/

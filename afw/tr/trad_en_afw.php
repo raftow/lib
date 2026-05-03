@@ -54,7 +54,8 @@ class AfwOperatorEnTranslator
         $trad["OPERATOR"]["SEARCH_RESULT"]                            = "search results in";
         $trad["OPERATOR"]["LOADING_PROBLEM"]                            = "File upload failed";
         $trad["OPERATOR"]["SUBMIT"]                                = "submit";
-        $trad["OPERATOR"]["SUBMIT-SEARCH"]                            = "Search";
+        $trad["OPERATOR"]["SUBMIT-SEARCH"]                              = "Search";
+        $trad['OPERATOR']['SUBMIT-AUDIT']                               = "Audit";
         $trad["OPERATOR"]["SUBMIT-SEARCH-ADVANCED"]                     = "advanced";
         $trad["OPERATOR"]["RESET_FORM"]                                = "reset criterea";
         $trad["OPERATOR"]["NO-RECORD"]                                    = "no record found";

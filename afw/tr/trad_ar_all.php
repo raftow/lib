@@ -113,6 +113,7 @@ $trad["*"]["welcome"] = "مرحبا";
 
 $trad["*"]["any_word"] = "أي كلمة دلالية";
 $trad["*"]["all fields"] = "جميع الحقول";
+$trad["*"]["all groups"] = "جميع المجموعات";
 
 $trad["*"]["Number of words between [min] and [max] words"] = "عدد الكلمات بين [min] و [max] كلمة";
 $trad["*"]["Minimum number of words [min] words"] = "عدد الكلمات الأدنى [min] كلمة";

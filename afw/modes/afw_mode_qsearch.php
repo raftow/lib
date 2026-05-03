@@ -481,7 +481,7 @@ if (!$myClassInstance->isLourde()) {
         $aclourde = 'class="form_lourde"';
 }
 CmsMainPage::addOutput('<div id="form-container" class="form-container"><form name="searchForm" id="searchForm" ' . $aclourde . ' method="post" action="' . "main.php" . '">');
-$cl_short = strtolower(substr($myClassInstance->getMyClass(), 0, 10));
+// $cl_short = strtolower(substr($myClassInstance->getMyClass(), 0, 10));
 
 CmsMainPage::addOutput('<div class="row row-' . $cl_short . '">');
 
@@ -517,7 +517,7 @@ if ($action == "retrieve") {
 
         if (!$disable_select_view_in_qsearch_mode[$cl]) {
                 $all_fields = AFWObject::gtr("all fields", $lang);
-                $select_view = "<div class='qsearchview_select'><select id='qsearchview' name='qsearchview' class='form-control $lang_input'>
+                $select_view = "<div class='qsearchview_select'><select id='qsearchview' name='qsearchview' class='form-control lang_$lang'>
                   <option value='all' $fgroup_all_selected >$all_fields</option>
                 ";
                 $qsrch_fgroups = $myClassInstance->getFieldGroupArr($lang);
@@ -555,7 +555,7 @@ if ($action == "retrieve") {
         else $fgroup_exec_selected = "";
 
         $select_view = "<div class='qsearchview_select'>
-                <select id='qsearchview' name='qsearchview' class='form-control $lang_input'>
+                <select id='qsearchview' name='qsearchview' class='form-control lang_$lang'>
                   <option value='' $fgroup_0_selected>فقط اظهار القائمة المعنية وعدد عناصرها </option>
                   <option value='exec' $fgroup_exec_selected>تنفيذ $methodTranslated</option>
                 </select></div>";

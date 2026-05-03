@@ -172,10 +172,63 @@ class AfwPrevilegeHelper
         return $cols_excel;
     }
 
+
+    /**
+     * getAuditCols
+     * for mode audit get retrieve columns
+     * @param AFWObject $object
+     * @return array
+     */
+
+    public static final function getAuditCols($object, $fgroup, 
+        $fields,
+        $lang = 'ar',
+        $type = 'all')
+    {
+        $tableau = [];
+        $tableau_final = [];
+        $db_struct_all = $object->getAllMyDbStructure();
+
+        foreach ($db_struct_all as $attribute => $descAttr) {
+            if (AfwPrevilegeHelper::isAuditCol($object, $attribute, $lang, $descAttr)) {
+                if (true) 
+                {
+                    $take = false;
+                    if ($type == 'all') {
+                        $take = true;
+                    } else {
+                        // if(!$descAttr) $descAttr = AfwStructureHelper::getStructureOf($object,$attribute);
+                        if ($descAttr['TYPE'] == $type) {
+                            $take = true;
+                        }
+                    }
+
+                    $takeCateg = true;
+                    
+                    if ($take and $takeCateg) {
+                        if ($descAttr["AUDIT_LAST"]) $tableau_final[] = $attribute;
+                        else $tableau[] = $attribute;
+                    }
+                }
+                
+            }        }
+
+        $tableau = array_merge($tableau, $tableau_final);
+        /*
+        if(static::$TABLE=="practice")
+        {
+            $message = "tableau = ".var_export($tableau,true);
+            throw new AfwRuntimeException("get Audit Cols : debugg : $message");
+        }
+        */
+        return $tableau;
+    }
+
     /**
      * getRetrieveCols
      * for display mode get retrieve columns
-     * @param array $array
+     * @param AFWObject $object
+     * @return array
      */
 
     public static final function getRetrieveCols(
@@ -324,6 +377,11 @@ class AfwPrevilegeHelper
             $return_type = 'structure',
             $attribute = 'all'
         );
+
+        $token_data_no_icons = "";
+        $token_full_date = "";
+        $token_to_translate = "";
+        $token_medium_date = "";
 
         foreach ($object_db_structure as $fieldname => $struct_item) {
             if (!$struct_item["NEVER-TOKEN"]) {
@@ -502,6 +560,51 @@ class AfwPrevilegeHelper
         return $token_arr;
     }
 
+    /**
+     * @param AFWObject $object
+     * @param string $attribute,
+     */
+
+    public static final function isAuditCol($object, 
+        $attribute, 
+        $lang='ar', 
+        $desc = null)
+    {
+        $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = AfwPrevilegeHelper::keyIsToDisplayForUser(
+            $object,
+            $attribute,
+            null
+        );
+
+        if (!$attributeIsToDisplayForMe) {
+            $objme = AfwSession::getUserConnected();
+            $attributeIsToDisplayForMe = AfwPrevilegeHelper::keyIsToDisplayForUser(
+                $object,
+                $attribute,
+                $objme
+            );
+        }
+
+        if (!$attributeIsToDisplayForMe) {
+            return false;
+        }
+
+        if (!$lang) throw new AfwRuntimeException("lang param is required for isAuditCol method");
+        $AUDIT_LANG = 'AUDIT-' . strtoupper($lang);
+
+        if (!$desc) {
+            $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+        }
+
+        return (isset($desc['AUDIT']) and $desc['AUDIT'] or
+                isset($desc[$AUDIT_LANG]) and $desc[$AUDIT_LANG]);
+    
+    }
+
+    /**
+     * @param AFWObject $object
+     * @param string $attribute,
+     */
 
     public static final function isRetrieveCol(
         $object,
@@ -860,6 +963,7 @@ class AfwPrevilegeHelper
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
 
+        $objme = AfwSession::getUserConnected();
 
         $SEARCH_LANG = 'SEARCH-' . strtoupper($lang);
 
@@ -874,7 +978,7 @@ class AfwPrevilegeHelper
                 $desc['SEARCH'] or
                 $desc['SEARCH-BY-ONE'] or
                 $desc[$SEARCH_LANG] or
-                $attribute == $object->fld_ACTIVE() and ($objme = AfwSession::getUserConnected()) and $objme->isAdmin());
+                $attribute == $object->fld_ACTIVE() and ($objme) and $objme->isAdmin());
 
         //@todo : rafik implemeter cas d'un shortcut et le parent du shortcut est un PART-JOIN
         //    "SHORTCUT-PART-JOIN" est un attribue temporaire n'as aucun sens sauf activer le QSearch pour un shortcut
@@ -891,7 +995,6 @@ class AfwPrevilegeHelper
         );
 
         if (!$attributeIsToDisplayForMe) {
-            if (!$objme) $objme = AfwSession::getUserConnected();
             $attributeIsToDisplayForMe = AfwPrevilegeHelper::keyIsToDisplayForUser(
                 $object,
                 $attribute,
