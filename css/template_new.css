@@ -1517,11 +1517,11 @@ div.audit-disabled {
 }
 
 div.audit-enabled {
-    background-color: #14db43 !important;
+    background-color: #57fd7e !important;
     display: inline;
     border: 2px solid #078850;
     padding: 3px 9px;
-    color: #ffffff;
+    color: #0c0c0c;
     margin-left: 9px;
     margin-right: 9px;
     font-size: 12px;

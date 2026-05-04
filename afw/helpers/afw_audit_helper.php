@@ -180,7 +180,9 @@ class AfwAuditHelper extends AFWRoot
 
     public static function auditAdvancedHtml($initialRow, $dataTuple, $object, $lang='ar') {
         $id = $initialRow["id"]."_". $initialRow["version"]."_". $initialRow["action"];        
+        $auditId = "V".$initialRow["version"]. strtoupper(substr($initialRow["action"],0,1));
         $icon_advanced = "<span id='icon-audit-$id' class='fa advanced-audit icon-plus' title='".AfwLanguageHelper::translateKeyword("optaudit_advanced_tooltipions", $lang)."'></span>";
+        $icon_advanced .= "<div class='identifier'>$auditId</div>";
         return "<div class='audit-advanced' id='audit-advanced-$id'>$icon_advanced</div>";
     }
 
