@@ -1516,6 +1516,17 @@ div.audit-disabled {
     font-weight: normal;
 }
 
+div.audit-enabled {
+    background-color: #14db43 !important;
+    display: inline;
+    border: 2px solid #078850;
+    padding: 3px 9px;
+    color: #ffffff;
+    margin-left: 9px;
+    margin-right: 9px;
+    font-size: 12px;
+    font-weight: normal;
+}
 
 div#audit_result_div th, div#audit_result_div td {
     border: 1px solid silver;

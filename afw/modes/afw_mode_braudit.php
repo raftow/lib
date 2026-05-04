@@ -129,6 +129,10 @@ if(AfwSession::config('AUDIT_DISABLED', false)) {
     $audit_disabled = $myClassInstance->translate("audit disabled", $lang, true);
     $page_sub_title .= "<div class='audit-disabled'>$audit_disabled</div>";
 }
+else {
+    $audit_enabled = $myClassInstance->translate("audit enabled", $lang, true);
+    $page_sub_title .= "<div class='audit-enabled'>$audit_enabled</div>";
+}
 $page_action_description = null;
 $execute_btn = 'SUBMIT-AUDIT';
 
