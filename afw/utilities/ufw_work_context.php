@@ -4,9 +4,12 @@
 class UfwWorkContext
 {
 
-    public static function setWorkContext($lang)
+    /**
+     * @param string $work_context
+     */
+    public static function setWorkContext($work_context)
     {
-        AfwSession::setSessionVar("work_context", $lang);        
+        AfwSession::setSessionVar("work_context", $work_context);        
     }
 
     public static function getWorkContext()

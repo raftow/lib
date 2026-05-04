@@ -1,4 +1,7 @@
 <?php
+$old_work_context = UfwWorkContext::getWorkContext();
+UfwWorkContext::setWorkContext("framework quick-edit mode");
+
 require_once(dirname(__FILE__) . "/../../../config/global_config.php");
 $themeArr = AfwThemeHelper::loadTheme();
 foreach ($themeArr as $theme => $themeValue) {
@@ -271,7 +274,7 @@ if ($submit_return) {
 } else {
         include("afw_mode_qedit.php");
 }
-
+UfwWorkContext::setWorkContext($old_work_context);
 /*
 $fixm_list_arr = array();
 for($i=0;$i<count($fixm_cols);$i++)

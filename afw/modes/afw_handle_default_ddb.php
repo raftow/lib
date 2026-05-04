@@ -5,7 +5,9 @@ foreach($themeArr as $theme => $themeValue)
 {
     $$theme = $themeValue;
 }
-
+$old_work_context = UfwWorkContext::getWorkContext();
+UfwWorkContext::setWorkContext("deduplication");
+UfwWorkContext::setWorkContext($old_work_context);
 $class = $_POST["class_obj"];
 $currmod = $_POST["currmod"];
 //$file  = $_POST["file_obj"];
@@ -154,3 +156,4 @@ else AfwSession::pushInformation(AfwLanguageHelper::translateKeyword("no_update_
 
 $ids = implode(",",$list_objs_ids);
 include("afw_mode_ddb.php");
+UfwWorkContext::setWorkContext($old_work_context);

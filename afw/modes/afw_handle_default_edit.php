@@ -1,6 +1,6 @@
 <?php
-
-
+$old_work_context = UfwWorkContext::getWorkContext();
+UfwWorkContext::setWorkContext("framework edit mode");
 // die("handle edit : _POST = ".var_export($_POST,true));
 require_once(dirname(__FILE__) . "/../../../config/global_config.php");
 $class = $_POST["class_obj"];
@@ -280,8 +280,6 @@ if ($_POST["pbmon"]) {
 
             // die("pbm_confirmed=$pbm_confirmed");
             if ($pbm_confirmed) {
-                $old_update_context = $update_context;
-                $update_context = "من خلال زر " . $pMethodItem["LABEL_AR"] . "-" . $pMethodItem["METHOD"];
                 if ($_POST["pbmpbis_$pbMethodCode"]) {
                     $obj->pbmethod_main_param = $_POST["pbmpbis_$pbMethodCode"];
                 } elseif ($_POST["pbmp_$pbMethodCode"]) {
@@ -295,8 +293,11 @@ if ($_POST["pbmon"]) {
                 } else {
                     $start_m_time = "";
                 }
-
+                $old2_work_context = UfwWorkContext::getWorkContext();
+                $update_context = "من خلال زر " . $pMethodItem["LABEL_AR"] . "-" . $pMethodItem["METHOD"];
+                UfwWorkContext::setWorkContext($update_context);
                 list($error, $info, $warn, $technical) = $obj->executePublicMethodForUser($objme, $pbMethodCode, $lang);
+                UfwWorkContext::setWorkContext($old2_work_context);
                 if($error and !is_string($error)) $error = var_export($error, true);
                 if($info and !is_string($info)) $info = var_export($info, true);
                 if($warn and !is_string($warn)) $warn = var_export($warn, true);
@@ -316,7 +317,7 @@ if ($_POST["pbmon"]) {
                     $warn .= "<div class='technical'>$technical</div>";
                 }
 
-                $update_context = $old_update_context;
+                
 
                 if (!$info and !$error and !$warn) {
                     if ($objme and $objme->isAdmin())
@@ -410,3 +411,4 @@ if ($save_update and ($obj->after_save_edit or $obj->after_save_edit_cases)) {
     include("afw_mode_edit.php");
     // if(($objme) and ($objme->isSuperAdmin())) die("handle error : case : $case_of_handle : object : ".var_export($obj,true))
 }
+UfwWorkContext::setWorkContext($old_work_context);
