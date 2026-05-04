@@ -373,6 +373,9 @@ class AfwInputHelper extends AFWRoot
                                                 $log_echo .= "<br>\n liste_rep = " . var_export($liste_rep, true);
                                                 $max_rep_id = 0;
                                                 $oord = 0;
+                                                $liste_css = [];
+                                                $liste_choix = [];
+                                                $liste_codes = [];
                                                 foreach ($liste_rep as $rep_id => $rep_val) {
                                                         if ($rep_val) {
                                                                 $liste_choix[$oord] = $rep_val;
@@ -458,9 +461,17 @@ class AfwInputHelper extends AFWRoot
                         case 'FLOAT':
                         case 'AMNT':
                                 $input_type_html = 'text';
+                                $format_type = ""; 
+                                $format_param1 = "";
+                                $format_param2 = "";
+                                $format_param3 = "";
+                                $dropdown_min = 0;
+                                $dropdown_max = 0;
+                                $dropdown_step = 1;
+                                $input_options_html = '';
                                 if ($desc['TYPE'] == 'INT') {
                                         $input_type_html = 'number';
-                                        $input_options_html = '';
+                                        
                                         if ($desc['FORMAT']) {
                                                 list($format_type, $format_param1, $format_param2, $format_param3) = explode(':', $desc['FORMAT']);  // ex FORMAT=>"STEP:0:3:1"  or DROPDOWN=>"STEP:0:3:1"
                                                 if ($format_type == 'STEP') {
@@ -644,6 +655,7 @@ class AfwInputHelper extends AFWRoot
                                         $data_length_class = '';
 
                                 $remove_options_arr = $desc['REMOVE_OPTIONS'];
+                                $answer_list = [];
 
                                 if (!$remove_options_arr['Y'])
                                         $this_yes_label = $obj->showYNValueForAttribute('YES', $col_name, $lang);
@@ -747,6 +759,8 @@ class AfwInputHelper extends AFWRoot
                 }
 
                 $multi = '';
+                $option_empty_html = '';
+                $data_image_html = '';
                 if (isset($info['multi']) && $info['multi'])
                         $multi = ' multiple';
                 $size = 1;
@@ -822,7 +836,7 @@ class AfwInputHelper extends AFWRoot
                                 $data_content = "data-content=\"<span class='$opt_css'>$val</span>\"";
                         }
                         if ($data_images) {
-                                $data_image_html = '';
+                                
                                 if (is_array($data_images)) {
                                         $data_images_arr = $data_images;
                                         $data_image_html = "data-image='" . $data_images_arr[$id] . "'";

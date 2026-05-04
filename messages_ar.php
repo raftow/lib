@@ -118,6 +118,9 @@ $messages["The system seems has refused this insert operation"] = "يبدو أن
 
 $messages["support & help"] = "الدعم والمساعدة";
 $messages["This page is under construction"] = "هذه الصفحة قيد الإنشاء";
+
+$messages["The record being audited"] = "السجل الذي يتم تقصي الأثر عليه";
+$messages["Cell Changed"] = "الخلايا المتغيرة";
 // 
 // 
 // $messages[""] = "";

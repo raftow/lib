@@ -1,4 +1,7 @@
 <?php
+
+use function Matrix\antidiagonal;
+
 class AfwPrevilegeHelper
 {
     // هنا نتكلم  عن البيانات في العمود بحسب السجل
@@ -177,6 +180,8 @@ class AfwPrevilegeHelper
      * getAuditCols
      * for mode audit get retrieve columns
      * @param AFWObject $object
+     * @param string $fgroup
+     * @param string $fields
      * @return array
      */
 
@@ -190,7 +195,7 @@ class AfwPrevilegeHelper
         $db_struct_all = $object->getAllMyDbStructure();
 
         foreach ($db_struct_all as $attribute => $descAttr) {
-            if (AfwPrevilegeHelper::isAuditCol($object, $attribute, $lang, $descAttr)) {
+            if (($fields=='all') or AfwPrevilegeHelper::isAuditCol($object, $attribute, $lang, $descAttr)) {
                 if (true) 
                 {
                     $take = false;
@@ -203,9 +208,9 @@ class AfwPrevilegeHelper
                         }
                     }
 
-                    $takeCateg = true;
+                    $takeFilter = (($fgroup=='all') or ($descAttr['FGROUP'] == $fgroup));
                     
-                    if ($take and $takeCateg) {
+                    if ($take and $takeFilter) {
                         if ($descAttr["AUDIT_LAST"]) $tableau_final[] = $attribute;
                         else $tableau[] = $attribute;
                     }
@@ -570,6 +575,9 @@ class AfwPrevilegeHelper
         $lang='ar', 
         $desc = null)
     {
+        // no need to audit PK it will never change
+        if($object->inPK($attribute)) return false;
+
         $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = AfwPrevilegeHelper::keyIsToDisplayForUser(
             $object,
             $attribute,

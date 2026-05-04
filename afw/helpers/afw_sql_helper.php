@@ -374,6 +374,7 @@ class AfwSqlHelper extends AFWRoot
 
     /**
      * @param AFWObject $obj
+     * @param string $id_updated
      */
 
     final public static function getPKCondSQL($obj, $id_updated) {

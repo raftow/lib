@@ -119,7 +119,12 @@ if ($datatable_on) {
 
 $single_obj_name =  $myClassInstance->transClassSingle($lang);
 $page_title = $myClassInstance->translate('AUDIT', $lang, true) . " " . $single_obj_name;
-$page_sub_title = $myClassInstance->getDisplay($lang);
+$page_sub_title = $myClassInstance->translateMessage('The record being audited', $lang) . " : ";
+$cell_changed = $myClassInstance->translateMessage('Cell Changed', $lang);
+$page_sub_title .= "<div class='object_title'>".$myClassInstance->getDisplay($lang)."</div>";
+$page_sub_title .= "<div class='lookup_code'>".$myClassInstance->getMyCode()."</div>";
+$page_sub_title .= "<div class='identifier'>".$myClassInstance->id."</div>";
+$page_sub_title .= "<div class='cell-changed'>".$cell_changed."</div>";
 $page_action_description = null;
 $execute_btn = 'SUBMIT-AUDIT';
 
@@ -130,7 +135,7 @@ CmsMainPage::addOutput("<div id='page-content-wrapper' class='braudit_page'>
 CmsMainPage::addOutput("<div class=\"qfilter-header\">");
 CmsMainPage::addOutput("<h1>$page_title</h1>");
 if ($page_sub_title) {
-        CmsMainPage::addOutput("<h2>$page_sub_title</h2>");
+        CmsMainPage::addOutput("<h1 class=\"subtitle\">$page_sub_title</h1>");
         CmsMainPage::addOutput("<h3>$page_action_description</h3>");
 }
 CmsMainPage::addOutput("</div>");
@@ -263,7 +268,7 @@ CmsMainPage::addOutput("
 CmsMainPage::addOutput("</center>");
 CmsMainPage::addOutput('');
 
-
+$accordion_expanded = 0;
 
 CmsMainPage::addOutput("</div>
        </div>

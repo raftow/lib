@@ -143,6 +143,10 @@ class AfwOperatorEnTranslator
         $trad["OPERATOR"]["DISPLAY"]                                 = "Show";
         $trad["OPERATOR"]["DELETE"]                                 = "Delete";
 
+        $trad['OPERATOR']['action.insert'] = 'insert';
+        $trad['OPERATOR']['action.update'] = 'update';
+        $trad['OPERATOR']['action.delete'] = 'delete';
+
 
         return $trad;
     }

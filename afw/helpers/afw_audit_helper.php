@@ -115,6 +115,8 @@ class AfwAuditHelper extends AFWRoot
 
     /**
      * @param AFWObject $object
+     * @param string $attribute
+     * @param string $update_context
      */
     public static function bycol_audit(&$object, $attribute, $update_context)
     {
@@ -134,4 +136,49 @@ class AfwAuditHelper extends AFWRoot
         return $object->execQuery("INSERT INTO $table_audit(id, version, val, update_date, update_auser_id, update_context)
                             select $id, version, $old_value, $update_date_col, $update_auser_id_col, _utf8'$update_context' from $table_name where id = $id");
     }
+
+    /**
+     * @param array $initialRow
+     * @param array $dataTuple
+     * @param AFWObject $object
+     * 
+     */
+
+    public static function auditActionHtml($initialRow, $dataTuple, $object, $lang='ar') {
+        $html = "";
+        $id = $initialRow["id"]."_". $initialRow["version"]."_". $initialRow["action"];        
+        $version = AfwLanguageHelper::translateKeyword("version", $lang)." ".$initialRow["version"];
+        $datetime = $initialRow["action_at"];
+        $dtv = "<div class='audit-cell version'>$version</div>";
+        $dtv .= "<div class='audit-cell dt'>$datetime</div>";
+        $html .= "<div class='audit-row audit-dtv'>$dtv</div>";
+        $action_by = $initialRow["action_by"];
+        $action = $initialRow["action"];
+        $by = AfwLoadHelper::decodeLookupValue("ums", "auser", $action_by, "", "", "id");
+        $action_text = AfwLanguageHelper::translateKeyword("action.".$action, $lang);
+        $action_by_sentence = $action_text." ".
+             AfwLanguageHelper::translateKeyword("by", $lang)." ".$by;
+        $context = $initialRow["update_context"];     
+        $browser = $initialRow["action_browser"];     
+        $fromip = $initialRow["action_ip"];     
+        $html .= "<div class='audit-row audit-action'>$action_by_sentence</div>";
+        $html .= "<div class='audit-row audit-context'>$context</div>";
+        $html .= "<div class='audit-row audit-fromip'>$fromip</div>";
+        $html .= "<div class='audit-row audit-browser'>$browser</div>";
+        return "<div id='audit-action-div-$id' class='audit-action-div hide'>$html</div>";
+    }
+
+    /**
+     * @param array $initialRow
+     * @param array $dataTuple
+     * @param AFWObject $object
+     * 
+     */
+
+    public static function auditAdvancedHtml($initialRow, $dataTuple, $object, $lang='ar') {
+        $id = $initialRow["id"]."_". $initialRow["version"]."_". $initialRow["action"];        
+        $icon_advanced = "<span id='icon-audit-$id' class='fa advanced-audit icon-plus' title='".AfwLanguageHelper::translateKeyword("optaudit_advanced_tooltipions", $lang)."'></span>";
+        return "<div class='audit-advanced' id='audit-advanced-$id'>$icon_advanced</div>";
+    }
+
 }

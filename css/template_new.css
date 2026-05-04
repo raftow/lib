@@ -894,6 +894,15 @@ div.qfilter h1 {
     text-align: center;
     padding-bottom: 15px;
     border-bottom: 1px solid #8e9193a8;
+    margin-bottom: 0;
+}
+
+div.qfilter h1.subtitle {
+    font-size: 15px !important;
+    color: black;
+    background-color: aliceblue;
+    padding-top: 10px;
+    margin-top: 0;
 }
 
 .steps_wizardv1 li a {
@@ -1385,4 +1394,112 @@ input.submit-btn:disabled {
 input.submit-btn:disabled:hover {
     background-color: gray !important;
     color: silver !important;
+}
+
+div.object_title {
+    display: inline;
+    padding: 4px 8px !important;
+    background-color: #6b681a !important;
+    font-size: 12px;
+    font-weight: normal;
+    font-family: system-ui;
+    color: rgb(255, 255, 255);
+    margin-left: 9px;
+    margin-right: 9px;
+}
+
+
+div.identifier {
+    display: inline;
+    padding: 4px 8px !important;
+    background-color: #227abb !important;
+    font-size: 12px;
+    font-weight: normal;
+    font-family: system-ui;
+    color: white;
+    margin-left: 9px;
+    margin-right: 9px;
+}
+
+div.lookup_code {
+    display: inline;
+    padding: 4px 8px !important;
+    background-color: #0f2a4e !important;
+    font-size: 12px;
+    font-weight: normal;
+    font-family: system-ui;
+    color: white;
+    margin-left: 9px;
+    margin-right: 9px;
+}
+
+div.audit-row {
+    width: 24%;
+    float: right;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding:5px;
+}
+
+div.audit-action-div {
+    width: 100%;
+    float: right;
+    background-color: aliceblue;
+}
+
+div.audit-row.audit-dtv {
+    background-color: #a7d6ff;
+}
+
+div.audit-row.audit-action {
+    background-color: #a7b7c5;
+}
+
+div.audit-row.audit-context {
+    background-color: #d2e7f9;
+}
+
+.audit-row.audit-browser {
+    width: 100%;
+    background-color: #479ae3;
+    color: white;
+    font-size: 11px !important;
+    margin-top: 3px;
+}
+
+.audit-cell {
+    width: 48%;
+    margin-left: 1%;
+    margin-right: 1%;
+    float: right;
+}
+
+.icon-plus:before {
+    content: "\f107";
+    font-size: 24px !important;
+}
+
+.icon-minus:before {
+    content : "\f106";
+    font-size: 24px !important;
+}
+
+table.grid tr td.cell-changed > span{
+    background-color: #f7b8ff59 !important;
+    display: block;
+    border: 2px solid #f900ff;
+    padding: 9px;
+    color: #f900ff;
+}
+
+div.cell-changed {
+    background-color: #f7b8ff59 !important;
+    display: inline;
+    border: 2px solid #f900ff;
+    padding: 3px 9px;
+    color: #f900ff;
+    margin-left: 9px;
+    margin-right: 9px;
+    font-size: 12px;
+    font-weight: bold;
 }

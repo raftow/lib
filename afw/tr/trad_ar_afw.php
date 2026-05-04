@@ -34,6 +34,7 @@ class AfwOperatorArTranslator
 
         $trad['OPERATOR']['SEARCH'] = 'بحث متقدم في';
         $trad['OPERATOR']['QSEARCH'] = 'الإستعلام عن';
+        $trad['OPERATOR']['AUDIT'] = 'تقصي أثر التعديلات على';
 
         $trad['OPERATOR']['CLICK-TO-EDIT-SEARCH'] = 'انقر هنا لتعديل معايير البحث';
         $trad['OPERATOR']['SEARCH CRITERIA'] = 'معايير البحث في';
@@ -199,6 +200,16 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['other_functions'] = 'وظائف أخرى';
         $trad['OPERATOR']['for selected items'] = 'للعناصر التي تم اختيارها';
         $trad['OPERATOR']['The '] = 'الـ';
+        $trad['OPERATOR']['audit_action'] = 'الإجراء';
+        $trad['OPERATOR']['audit_advanced'] = 'تفاصيل إضافية';
+        $trad['OPERATOR']['audit_advanced_tooltip'] = 'انقر للحصول على تفاصيل إضافية';
+        $trad['OPERATOR']['version'] = 'نسخة';
+        $trad['OPERATOR']['by'] = 'بواسطة';
+
+        $trad['OPERATOR']['action.insert'] = 'إضافة';
+        $trad['OPERATOR']['action.update'] = 'تعديل';
+        $trad['OPERATOR']['action.delete'] = 'حذف';
+        
 
         return $trad;
     }

@@ -845,12 +845,20 @@ class AFWObject extends AFWRoot
         return '';
     }
 
-    public function getMyCode($not_defined_code = 'not_defined_code')
+    public final function getMyObjectCode()
     {
+        $not_defined_code = 'not_defined_code';
         if (!$this->OBJECT_CODE) {
             return $not_defined_code;
         }
         return $this->getVal($this->OBJECT_CODE);
+    }
+
+
+    // can be overriden
+    public function getMyCode()
+    {
+        return $this->getMyObjectCode();
     }
 
     /**
@@ -1323,10 +1331,15 @@ class AFWObject extends AFWRoot
         $this->PK_FIELD = $pk_field_column;
     }
 
-    public function inMultiplePK($field_name)
+    public function inPK($attribute) {
+        if($this->PK_MULTIPLE) return $this->inMultiplePK($attribute);
+        else return ($attribute == $this->getPK());
+    }
+
+    public function inMultiplePK($attribute)
     {
         foreach ($this->PK_MULTIPLE_ARR as $pk_field) {
-            if ($pk_field == $field_name) {
+            if ($pk_field == $attribute) {
                 return true;
             }
         }
@@ -1366,10 +1379,10 @@ class AFWObject extends AFWRoot
     public function getPKField($add_me = '')
     {
         if (!$this->PK_FIELD and !$this->PK_MULTIPLE) {
-            $return = $add_me . 'id';
+            $return = $add_me . $this->PK_FIELD;
         } elseif ($this->PK_FIELD and !$this->PK_MULTIPLE) {
             $return = $add_me . $this->PK_FIELD;
-        } elseif ($this->PK_MULTIPLE) {
+        } else { // PK IS MULTIPLE 
             if ($this->PK_MULTIPLE === true) {
                 $sep = '-';
             } else {
@@ -1490,6 +1503,16 @@ class AFWObject extends AFWRoot
         }
     }
 
+
+    /**
+     * sqlCondPK : return SQL condition for the PK of this object
+     * @return string
+     */
+    public function sqlCondPK()
+    {
+        return AfwSqlHelper::getPKCondSQL($this, $this->id);
+    }
+
     /**
      * setId
      * Set the first field's value
@@ -1512,6 +1535,10 @@ class AFWObject extends AFWRoot
             $this->setAfieldDefaultValue($this->getPKField(), $value);
         }
     }
+    /**
+     * 
+     * @param string $attribute
+     */
 
     public function cest($attribute)
     {
@@ -3481,9 +3508,9 @@ class AFWObject extends AFWRoot
 
     public final function switchCol($swc_col)
     {
+        $switch_mess = 'SWITCH FAILED ';
         try {
             $structure = AfwStructureHelper::getStructureOf($this, $swc_col);
-            $switch_mess = 'SWITCH FAILED ';
             $swc_col_old_val = $this->getVal($swc_col);
 
             if ($structure['W-IS-VALUE']) {
@@ -3584,6 +3611,7 @@ class AFWObject extends AFWRoot
                     $return = self::executeQuery($query);
                     static::afterDeleteWhere($where);
                 }
+                else $return = -99;
 
                 return $return;
             } else {

@@ -2022,6 +2022,7 @@ class AfwFormatHelper
          * }
          */
         $return = null;
+        $this_debugg = "";
         if (!$return) {
             $this_id = $object->getId();
 

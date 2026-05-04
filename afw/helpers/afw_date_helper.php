@@ -42,7 +42,8 @@ class AfwDateHelper
         }
         list($d, $D, $j, $l, $S, $F, $m, $M, $n, $t, $L, $o, $Y, $y, $w, $a, $A, $H, $i, $s, $O) = explode('/', date('d/D/j/l/S/F/m/M/n/t/L/o/Y/y/w/a/A/H/i/s/O', $timestamp));
         if ($hijri) {
-            extract(static::convertGregorianToHijriArray($d, $m, $Y));
+            $hijArr = static::convertGregorianToHijriArray($d, $m, $Y);
+            extract($hijArr);
             $j = $day;
             $t = $ml;
             $L = $ln;
@@ -150,6 +151,7 @@ class AfwDateHelper
     {
         $jd = gregoriantojd($month, $day, $year);
         $mjd = $jd - 2400000;
+        $i = -9999999;
         foreach (static::$jdl as $i => $v) {
             if ($v > ($mjd - 1)) {
                 break;
@@ -1102,6 +1104,8 @@ class AfwDateHelper
                 $descr = '';
             }
 
+            $counter = -99;
+            
             if ($increment_days > 0) {
                 $counter = substr($hdate, 4, 4);
             } elseif ($increment_months > 0) {

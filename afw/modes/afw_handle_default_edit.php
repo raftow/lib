@@ -1,4 +1,6 @@
 <?php
+
+
 // die("handle edit : _POST = ".var_export($_POST,true));
 require_once(dirname(__FILE__) . "/../../../config/global_config.php");
 $class = $_POST["class_obj"];
@@ -9,7 +11,11 @@ $posted_currmod = $_POST["currmod"];
 if (!$lang) $lang = "ar";
 $file_dir_name = dirname(__FILE__);
 
-if (!$objme) $objme = AfwSession::getUserConnected();
+$header_bloc_edit = "";
+if (!isset($objme)) $objme = AfwSession::getUserConnected();
+if (!isset($currstep)) $currstep = 1;
+if (!isset($save_update)) $save_update = "";
+if (!isset($can_show_info)) $can_show_info = 1;
 
 //AFWDebugg::setEnabled(true);
 ////AFWObject::setDebugg(true);
@@ -64,10 +70,11 @@ foreach ($class_db_structure as $nom_col => $desc) {
 foreach ($class_db_structure as $nom_col => $desc) {
     // if($nom_col=="training_period_menum") die("training_period_menum -> ".var_export($_POST[$nom_col],true));
     if (!$desc["STEP"]) $desc["STEP"] = 1;
-
+    /** @disregard P1008 Undefined variable */
     // !$desc["READONLY"] car a ce moment la hidden mouch checkbox
     $yn_checkbox = (($desc["TYPE"] == "YN") and ($desc["CHECKBOX"]) and (!$desc["READONLY"]) and ((!$obj->editByStep) or ($currstep == $desc["STEP"])));
 
+    /** @disregard P1008 Undefined variable */
     if (
         isset($_POST[$nom_col]) or
         $yn_checkbox or
@@ -285,7 +292,10 @@ if ($_POST["pbmon"]) {
                 //if($obj->pbmethod_main_param) die("obj->pbmethod_main_param = ".$obj->pbmethod_main_param.", _POST = ".var_export($_POST,true));
                 if ($pMethodItem['TIMER']) {
                     $start_m_time = date('Y-m-d H:i:s');
+                } else {
+                    $start_m_time = "";
                 }
+
                 list($error, $info, $warn, $technical) = $obj->executePublicMethodForUser($objme, $pbMethodCode, $lang);
                 if($error and !is_string($error)) $error = var_export($error, true);
                 if($info and !is_string($info)) $info = var_export($info, true);
@@ -343,9 +353,9 @@ $_POST = [];
 
 
 // the global after save action override the local one.
-if ($global_after_save_edit[$class]) {
+/* if ($global_after_save_edit[$class]) {
     $obj->after_save_edit = $global_after_save_edit[$class];
-}
+}*/
 
 if ($save_update and ($obj->after_save_edit or $obj->after_save_edit_cases)) {
     if ($obj->after_save_edit_cases) {
@@ -386,7 +396,7 @@ if ($save_update and ($obj->after_save_edit or $obj->after_save_edit_cases)) {
     // if($tech_notes) die(var_export($tech_notes,true));
 
     if ($save_update) {
-        $currstep = $obj->getNextStepAfterFinish($current_step);
+        $currstep = $obj->getNextStepAfterFinish($currstep);
         //$test_rafik = true;   // looking for reason of this error : AH00052: child pid 31733 exit signal Segmentation fault (11)
         //echo $obj->showMe();
         //if($obj->test_rafik) die("save_update before afw_mode_display.php cl=[$cl] tech_notes=[$tech_notes] obj=".var_export($obj,true));

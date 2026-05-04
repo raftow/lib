@@ -1029,6 +1029,9 @@ class AfwUmsPagHelper extends AFWRoot
             $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang, true);
         }
 
+        $cols_retrieve["audit_action"] = $object->translateOperator("audit_action",$lang);
+        $cols_retrieve["audit_advanced"] = $object->translateOperator("audit_advanced",$lang);
+
         return $cols_retrieve;
     }    
 

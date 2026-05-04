@@ -611,10 +611,7 @@ class AfwShowHelper
     public static function showManyObj($liste_obj, $obj, $objme, $lang, $options = [])
     {
         $mode_force_cols = null;
-        $images = AfwThemeHelper::loadTheme();
-        foreach ($images as $theme => $themeValue) {
-            $$theme = $themeValue;
-        }
+        
         $arr_col = 0;
         $trad_erase = [];
         $limit = '';
@@ -831,390 +828,9 @@ class AfwShowHelper
                         } else {
                         }
                     }
-                    $tuple = [];
-                    $tupleValue = [];
-                    if (count($header) != 0) {
-                        // if($obj instanceof Atable) die("header = ".var_export($header, true));
-                        foreach ($header as $col => $desc) {
-                            if (!$objListItem->attributeIsApplicable($col)) {
-                                list(
-                                    $icon,
-                                    $textReason,
-                                    $wd,
-                                    $hg,
-                                ) = $objListItem->whyAttributeIsNotApplicable($col);
-                                if (!$wd) {
-                                    $wd = 20;
-                                }
-                                if (!$hg) {
-                                    $hg = 20;
-                                }
-                                $tuple[$col] =
-                                    "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='"
-                                    . htmlentities($textReason)
-                                    . "'  width='$wd' heigth='$hg'>";
-                            } elseif (AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($objListItem, $col, $objme, 'DISPLAY', $desc)) {
-                                if ($desc == 'AAA') {
-                                    $tuple['description'] = $objListItem->__toString();
-                                } else {
-                                    $val_id = $objListItem->getId();
-                                    $ord = $objListItem->getMoveOrder();
-                                    switch ($desc['TYPE']) {
-                                        case 'PK':
-                                            $tuple[$col] = $val_id;
-                                            break;
-                                        case 'DEL':
-                                            $col_trans = AfwLanguageHelper::translateKeyword('DELETE', $lang);
-                                            $val_id = $objListItem->getId();
-                                            $val_class = $objListItem->getMyClass();
-                                            $val_currmod = $objListItem->getMyModule();
-                                            $lvl = $desc['DEL_LEVEL'];
-                                            if (!$lvl) {
-                                                $lvl = 2;
-                                            }
-                                            $userCanDel = $objListItem->userCanDeleteMe($objme);
-                                            if ($userCanDel > 0) {
-                                                $delete_button_path = $images['delete'];
-                                                $lbl = $objListItem->getShortDisplay($lang);
-                                                // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
-                                                $tuple[$col_trans] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='$delete_button_path' style='height: 22px !important;'></a>";
-                                            } else {
-                                                if ($userCanDel == -1) {
-                                                    $explanation = 'لا يوجد لديك صلاحية لمسح هذا النوع من السجلات';
-                                                } else {
-                                                    $explanation = 'انك تحتاج لصلاحية خاصة لمسح هذا السجل بعينه';
-                                                }
-                                                $tuple[$col_trans] =
-                                                    "<a href='#'><img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$explanation'  width='24' heigth='24'></a>";
-                                            }
-                                            // if($obj instanceof Atable) die("tuple = ".var_export($tuple, true));
-                                            break;
-                                        case 'MOVE_UP':
-                                            $bswal = $desc['MOVE-QUESTION'];
-                                            $col_trans = AfwLanguageHelper::translateKeyword('MOVE_UP', $lang);
-                                            $icon_button_path = $images['move-up'];
-                                            $tuple[$col_trans] = "<a href='#' id='mover-up-$val_id' here='afw_shwr' oid='$val_id' ord='$ord' cl='$val_class' md='$val_currmod' lbl='$lbl' afworder='$afworder' bswal='$bswal' class='move-up'><img src='$icon_button_path' style='height: 22px !important;'></a>";
-                                            break;
-
-                                        case 'MOVE_DOWN':
-                                            $bswal = $desc['MOVE-QUESTION'];
-                                            $col_trans = AfwLanguageHelper::translateKeyword('MOVE_DOWN', $lang);
-                                            $icon_button_path = $images['move-down'];
-                                            $tuple[$col_trans] = "<a href='#' id='mover-down-$val_id' here='afw_shwr' oid='$val_id' ord='$ord' cl='$val_class' md='$val_currmod' lbl='$lbl' afworder='$afworder' bswal='$bswal' class='move-down'><img src='$icon_button_path' style='height: 22px !important;'></a>";
-                                            break;
-
-                                        case 'SHOW':
-                                            $col_trans = AfwLanguageHelper::translateKeyword('DISPLAY', $lang);
-                                            // die("for col $col and lang=$lang col_trans=$col_trans");
-                                            if ($objListItem->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'))) {
-                                                if (!$objListItem->isActive()) {
-                                                    $data_errors =
-                                                        'تم حذفها الكترونيا';
-                                                } elseif (
-                                                    !$objListItem->isOk(
-                                                        $force_check = true
-                                                    )
-                                                ) {
-                                                    $data_errors_arr = AfwDataQualityHelper::getDataErrors(
-                                                        $objListItem,
-                                                        $lang
-                                                    );
-                                                    $data_errors = implode(
-                                                        ' / ',
-                                                        $data_errors_arr
-                                                    );
-                                                    if (
-                                                        strlen($data_errors) >
-                                                        596 or
-                                                        count(
-                                                            $data_errors_arr
-                                                        ) >
-                                                        18
-                                                    ) {
-                                                        $data_errors =
-                                                            'أخطاء كثيرة';
-                                                        $viewIcon =
-                                                            'view_error';
-                                                    }
-                                                } else {
-                                                    $data_errors =
-                                                        'لا يوجد أخطاء';
-                                                }
-                                            } else {
-                                                if (!$objListItem->isActive()) {
-                                                    $data_errors = 'تم حذفها الكترونيا';
-                                                } else {
-                                                    $data_errors = 'لم يتم تفعيل التثبت من الأخطاء لهذا الكيان';
-                                                }
-                                            }
-                                            $currstep = $desc['GO-TO-STEP'];
-                                            if (!$currstep)
-                                                $currstep = $objListItem->getDefaultStep();
-                                            if (!$currstep)
-                                                $currstep = 1;
-                                            $val_id = $objListItem->getId();
-                                            $val_class = $objListItem->getMyClass();
-                                            $val_currmod = $objListItem->getMyModule();
-                                            $tuple[$col_trans] =
-                                                "<a href='main.php?Main_Page=afw_mode_display.php&cl=$val_class&currmod=$val_currmod&id=$val_id&currstep=$currstep' ><img src='../lib/images/$viewIcon.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='"
-                                                . htmlentities($data_errors)  // var_export($desc,true).
-                                                . "'></a>";
-                                            break;
-                                        case 'EDIT':
-                                            $col_trans = AfwLanguageHelper::translateKeyword($col, $lang);
-                                            $currstep = $desc['GO-TO-STEP'];
-                                            if (!$currstep)
-                                                $currstep = $objListItem->getDefaultStep();
-                                            if (!$currstep)
-                                                $currstep = 1;
-                                            $val_id = $objListItem->getId();
-                                            // if(!is_numeric($val_id)) die("val object export = ".var_export($objListItem,true).", val->getId() => $val_id");
-                                            $val_class = $objListItem->getMyClass();
-                                            $val_currmod = $objListItem->getMyModule();
-                                            list(
-                                                $canEdit,
-                                                $cantEditReason,
-                                            ) = $objListItem->userCanEditMe($objme);
-                                            if ($canEdit) {
-                                                $edit_button_path = $images['modifier'];
-                                                $tuple[$col_trans] = "<a href='m.php?mp=ed&cl=$val_class&cm=$val_currmod&id=$val_id&cs=$currstep&clp=$class_origin' class='editme showmany'><img src='$edit_button_path' width='22' heigth='22'></a>";
-                                            } else {
-                                                $tuple[$col_trans] = "<a href='#'><img src='../lib/images/lock.png'  data-toggle='tooltip' data-placement='top' title='$cantEditReason' width='24' heigth='24'></a>";
-                                            }
-
-                                            break;
-                                        case 'FK':
-                                            if (AfwStructureHelper::isLookupAttribute($objListItem, $col, $desc)) {
-                                                $val_decoded = $objListItem->getVal($col);
-                                                $tuple[$col] = $objListItem->decode($col) . "<!-- val decoded is $val_decoded -->";
-                                            } else {
-                                                $obj_col = $objListItem->het($col);
-                                                if (empty($desc['CATEGORY'])) {
-                                                    if ($obj_col) {
-                                                        $tuple[$col] = $obj_col->showMe('retrieve', $lang);
-                                                    } else {
-                                                        if (
-                                                            $desc['EMPTY_IS_ALL'] or
-                                                            $desc['FORMAT'] ==
-                                                            'EMPTY_IS_ALL'
-                                                        ) {
-                                                            $all_code = "ALL-$col";
-                                                            $return = $objListItem->translate(
-                                                                $all_code,
-                                                                $lang
-                                                            );
-                                                            if (
-                                                                $return == $all_code
-                                                            ) {
-                                                                $return = $objListItem->translateOperator(
-                                                                    'ALL',
-                                                                    $lang
-                                                                );
-                                                            }
-                                                            $tuple[$col] = $return;
-                                                        } else {
-                                                            $tuple[$col] = '';
-                                                        }
-                                                    }
-                                                } else {
-                                                    if (is_object($obj_col)) {
-                                                        $tuple[$col] = $obj_col->showMe(
-                                                            'retrieve',
-                                                            $lang
-                                                        );
-                                                    } elseif (is_array($obj_col)) {
-                                                        $mfk_show_sep =
-                                                            $desc['LIST_SEPARATOR'];
-                                                        if (!$mfk_show_sep) {
-                                                            $mfk_show_sep =
-                                                                $desc['MFK-SHOW-SEPARATOR'];
-                                                        }
-                                                        if (!$mfk_show_sep) {
-                                                            $mfk_show_sep =
-                                                                "<br>\n";
-                                                        }
-                                                        // $str  = "Strange returned list of objects !! : ".'<br>';
-                                                        $str = '';
-                                                        foreach (
-                                                            $obj_col as $instance
-                                                        ) {
-                                                            if ($str) {
-                                                                $str .= $mfk_show_sep;
-                                                            }
-                                                            $str .= $instance->showMe(
-                                                                'retrieve',
-                                                                $lang
-                                                            );
-                                                        }
-                                                        // $str .= var_export($obj_col,true);
-                                                        $tuple[$col] = $str;
-                                                    } elseif (!$obj_col) {
-                                                        if (
-                                                            $desc['EMPTY_IS_ALL'] or
-                                                            $desc['FORMAT'] ==
-                                                            'EMPTY_IS_ALL'
-                                                        ) {
-                                                            $all_code = "ALL-$col";
-                                                            $return = $objListItem->translate(
-                                                                $all_code,
-                                                                $lang
-                                                            );
-                                                            if (
-                                                                $return == $all_code
-                                                            ) {
-                                                                $return = $objListItem->translateOperator(
-                                                                    'ALL',
-                                                                    $lang
-                                                                );
-                                                            }
-                                                            $tuple[$col] = $return;
-                                                        } else {
-                                                            $tuple[$col] = '';
-                                                        }
-                                                    } else {
-                                                        throw new AfwRuntimeException(
-                                                            "strange value for FK field : $col => "
-                                                                . var_export(
-                                                                    $obj_col,
-                                                                    true
-                                                                )
-                                                        );
-                                                    }
-                                                }
-                                            }
-                                            break;
-                                        case 'MFK':
-                                            $objs = $objListItem->get($col, 'object', '', false);
-
-                                            if (!is_array($objs)) {
-                                                throw new AfwRuntimeException("How $objListItem => get($col,'object','',false) return " . var_export($objs, true));
-                                            }
-                                            $nbc = count($objs);
-
-                                            /*
-                                             * if(($col=="show_field_mfk") and $nbc<2)
-                                             * {
-                                             *     die("rafik 20240923 : $objListItem => get($col,'object','',false) = ".var_export($objs,true));
-                                             * }
-                                             */
-                                            if ($nbc > 0) {
-                                                $mfk_show_sep =
-                                                    $desc['LIST_SEPARATOR'];
-                                                if (!$mfk_show_sep) {
-                                                    $mfk_show_sep =
-                                                        $desc['MFK-SHOW-SEPARATOR'];
-                                                }
-                                                if (!$mfk_show_sep) {
-                                                    $mfk_show_sep = "<br>\n";
-                                                }
-                                                $str_arr = [];
-                                                foreach ($objs as $instance) {
-                                                    if ($instance)
-                                                        $str_arr[] = $instance->getShortDisplay($lang);
-                                                    unset($instance);
-                                                }
-
-                                                $tuple[$col] = implode($mfk_show_sep, $str_arr);  // ." nbc=".$nbc;
-                                                unset($objs);
-                                            }
-                                            break;
-                                        case 'ANSWER':
-                                            $tuple[$col] = $objListItem->decode($col);
-                                            break;
-                                        case 'YN':
-                                            // if(($objListItem->id==476) and ($col=="active")) echo("see FORMAT in desc = ".var_export($desc,true));
-                                            if ($desc['FORMAT'] == 'icon') {
-                                                $onoff = $objListItem->sureIs($col) ? 'on' : 'off';
-                                                list($switcher_authorized, $switcher_title, $switcher_text) = $objListItem->switcherConfig($col, $objme);
-                                                $structureCol = AfwPrevilegeHelper::keyIsToDisplayForUser($objListItem, $col, $objme);
-                                                if ($structureCol['READONLY'])
-                                                    $switcher_authorized = false;
-                                                if ($switcher_authorized) {
-                                                    $switcher_img_style = '';
-                                                    $switcher_img_net = 'net';
-                                                } else {
-                                                    $switcher_img_style = '';  // style='opacity: 0.6;'
-                                                    $switcher_img_net = 'flou';
-                                                }
-
-                                                $img_onoff = "<img class='$switcher_img_net' src='../lib/images/$onoff.png' width='30' heigth='20' $switcher_img_style>";
-
-                                                if ($switcher_authorized) {
-                                                    $val_class = $objListItem->getMyClass();
-                                                    $currm = $objListItem->getMyModule();
-                                                    $val_id = $objListItem->id;
-                                                    $tuple[$col] = "<span case='1' id='$currm-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currm' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
-                                                    // $tuple[$col] .= "rafik<!-- ".var_export($structureCol, true)." -->";
-                                                } else {
-                                                    $tuple[$col] = $img_onoff;
-                                                }
-                                            } else {
-                                                $col_decoded = $objListItem->decode($col);
-                                                $tuple[$col] = $col_decoded;
-                                            }
-
-                                            // if(($objListItem->id==476) and ($col=="active"))  echo("tuple[$col] = ".$tuple[$col]);
-
-                                            /*
-                                             * $yn_decoded = $col.strtoupper($col_decoded);
-                                             * $yn_translated = $objListItem->translate($yn_decoded,$lang);
-                                             * //die("yn_translated=$yn_translated");
-                                             * if((!$yn_translated) or ($yn_translated==$yn_decoded))
-                                             * {
-                                             * $yn_decoded = strtoupper($col_decoded);
-                                             * $yn_translated = $objListItem->translate($yn_decoded,$lang);
-                                             * }
-                                             * if((!$yn_translated) or ($yn_translated==$yn_decoded))
-                                             * {
-                                             * $yn_decoded = strtoupper($col_decoded);
-                                             * $yn_translated = $objListItem->translateOperator($yn_decoded,$lang);
-                                             * }
-                                             * $tuple[$col] = $yn_translated;
-                                             */
-
-                                            break;
-                                        case 'ENUM':
-                                            $value = $objListItem->getVal($col);
-                                            $display_val = $objListItem->decode($col);
-                                            if (
-                                                $display_val and
-                                                $desc['FORMAT-INPUT'] ==
-                                                'hzmtoggle'
-                                            ) {
-                                                // if(!$display_val) $display_val = "...";
-                                                // die("key=$attribute, val=$objListItem, display_val=$display_val, HZM-CSS=".$structure["HZM-CSS"]);
-                                                $css_arr = AfwStringHelper::afw_explode(
-                                                    $desc['HZM-CSS']
-                                                );
-                                                $css_val =
-                                                    $css_arr[$value]
-                                                    . '_display';
-                                                $tuple[$col] = "<div class='$css_val'>$display_val</div>";
-                                            } else {
-                                                $tuple[$col] = $display_val;
-                                            }
-                                            break;
-                                        default:
-                                            $tuple[$col] = $objListItem->decode($col);
-                                            // if($col=="homework") die("$objListItem -> decode($col) = [".$tuple[$col]."]");
-                                            break;
-                                    }
-                                }
-                            }
-                            $dataValue[$id][$col] = $objListItem->getVal($col);
-                            $dataImportance[$col] = AfwHtmlHelper::importanceCss($obj, $col, $desc);
-                        }
-                    }
-                    if ($objListItem->rowCategoryAttribute("retrieve")) {
-                        list($categoryAttribute, $categoryAttributeCATEGORY) = explode(':', $obj->rowCategoryAttribute("retrieve"));
-                        // die("list(attr=$categoryAttribute, cat=$categoryAttributeCATEGORY)");
-                        if ($categoryAttributeCATEGORY) {
-                            $tuple['ca-' . $categoryAttribute] = $objListItem->calc($categoryAttribute);
-                            // if(($categoryAttribute=="request_late") and ($objListItem->id==88210)) die("tuple[ca-$categoryAttribute] = ".$tuple["ca-".$categoryAttribute]." = $objListItem-->calc($categoryAttribute)");
-                        } else
-                            $tuple['ca-' . $categoryAttribute] = $objListItem->getVal($categoryAttribute);
-                    }
-                    $data[$id] = $tuple;
+                    
+                    $data[$id] = self::objectItemToTuple($objListItem, $header);
+                    // ----****************
                     $recordArr[$id] = $objListItem->getShortDisplay($lang);
                     $isAvail[$id] = $objIsActive;
                     // $count_liste_obj++;
@@ -1293,6 +909,11 @@ class AfwShowHelper
         return [$html, $liste_obj, $ids];
     }
 
+    /**
+     * @param array $data 
+     * @param array $header_trad 
+     */
+
     public static function tableToHtml(
         $data,
         $header_trad,
@@ -1309,22 +930,23 @@ class AfwShowHelper
         $bigtitle_tr_class = 'bigtitle',
         $width_th_arr = [],
         $img_width = '',
-        $rows_by_table = 0,
+        $rows_by_table = 0, // rbt mode
         $showWidthedTable = '',
         $row_class_key = '',
         $css_class_name = '',
         $class_td_off = 'off',
         $order_key = '',
         $decoderArr = null,
-        $popupEditSettings = []
+        $popupEditSettings = [],
+        $repeat_header_after=10,
+        $colFarcha = null,
+        $cellStylingRules = null                        
     ) {
         if (!AfwFormatHelper::isDataRowsFormat($data))
             return [var_export($data), ""];
         // die("dataImportance=".var_export($dataImportance,true));
-        global $datatable_on_components,
-            $datatable_on,
-            $styled_data_arr,
-            $datatables_arr;
+
+        if($colFarcha) unset($header_trad[$colFarcha]);    
 
         if (!$lang)
             $lang = AfwLanguageHelper::getGlobalLanguage();
@@ -1340,9 +962,9 @@ class AfwShowHelper
         $id_prop = '';
         $html = '';
         $html_header = '';
+        $tab_style = '';
+        $id_prop_body = '';
         if ($showAsDataTable) {
-            $datatable_on = true;
-            $datatable_on_components[] = $showAsDataTable;
             $id_prop = "id='$showAsDataTable'";
             $class_table = 'display';
             $tab_style = 'width: 100%;';
@@ -1395,6 +1017,8 @@ class AfwShowHelper
         }
 
         $html_header .= $the_header;
+
+        $nowrap_col = "";
 
         if ($rows_by_table > 0 and !$showAsDataTable) {
             $html_arr = [];
@@ -1464,7 +1088,8 @@ class AfwShowHelper
                         $val_col_disp = $val_col;
 
                     $html .=
-                        "         <td class='col-importance-$importance $col_class_css' $nowrap_col>" . $val_col_disp . "</td>\n";
+                        "         <td class='rbt col-importance-$importance $col_class_css' $nowrap_col>" . $val_col_disp . "</td>\n";
+                        // rbt means rows by table mode
                 }
                 $html .= "   </tr>\n";
 
@@ -1499,7 +1124,9 @@ class AfwShowHelper
             $sum_cols_total = [];
             $my_class_name = '';
             $cl_tr = '';
+            $old_cl = '';
             $rows_count_table = 0;
+            $previous_tuple = null;
             foreach ($data as $id => $tuple) {
                 $row_class_css = $css_class_name;
                 if ($row_class_key) {
@@ -1535,7 +1162,10 @@ class AfwShowHelper
                     $order = $tuple['id'];
                 else
                     $order = $id;
-                $html .= "   <tr id='tr-object-$order' class='ky$order_key $cl_tr $row_class_css' alt='old_cl=$old_cl'>\n";
+                $myTr = "";
+                $colspan = 0;
+                $myTr .= "   <tr id='tr-object-$order' class='ky$order_key $cl_tr $row_class_css' alt='old_cl=$old_cl'>\n";
+                
                 foreach ($header_trad as $nom_col => $desc) {
                     $importance = ($dataImportance and is_array($dataImportance)) ? $dataImportance[$nom_col] : '';
                     $nom_col_ltn = AfwStringHelper::arabic_to_latin_chars($nom_col);
@@ -1560,9 +1190,10 @@ class AfwShowHelper
                         $nowrap_col = '';
                     }
 
-                    if ($styled_data_arr[$nom_col]) {
+                    //if (AfwStyling::$styled_ data_arr[$nom_col]) 
+                    if(false) {
                         $tuple_copy = $tuple;
-                        $data_aff = $styled_data_arr[$nom_col];
+                        // $data_aff = AfwStyling::$styled_ data_arr[$nom_col];
                         foreach ($tuple_copy as $colx => $valx) {
                             $data_aff = str_replace(
                                 "[$colx]",
@@ -1607,11 +1238,23 @@ class AfwShowHelper
                     } elseif (($nom_col != 'مسح') and (strtoupper($nom_col) != 'DEL') and (strtoupper($nom_col) != 'DELETE')) {
                         $data_aff = "<span class='$nom_col-span'>$data_aff</span>";
                     }
+                    // intelligent rules for styling cells
+                    if($cellStylingRules) {
+                        $istyle = '';
+                        foreach($cellStylingRules as $stylingRule => $style) {
+                            if(self::applyStylingRule($nom_col, $stylingRule, $tuple, $previous_tuple)) {
+                                $istyle .= " ".$style;
+                                $istyle = trim($istyle);
+                            }
+                        }
+                        
+                    }
+                    else {
+                        $istyle = '';
+                    }
 
-                    $html .=
-                        "         <td id='$td_id' class='col-importance-$importance $col_class_css' $nowrap_col>"
-                        . $data_aff
-                        . "</td>\n";
+                    $myTr .= "         <td id='$td_id' class='$istyle col-importance-$importance $col_class_css' $nowrap_col>$data_aff</td>\n";
+                    $colspan++;
                     if ($total_cols[$nom_col]) {
                         // if($nom_col == "perf_total") die("summing $nom_col : currval = ".$tuple[$nom_col]." data = ".var_export($data,true));
                         if (!$sum_cols_total[$nom_col]) {
@@ -1621,24 +1264,34 @@ class AfwShowHelper
                     }
                     // else die("not summing $nom_col data = ".var_export($data,true));
                 }
-                $html .= "   </tr>\n";
+                $myTr .= "   </tr>\n";
+                // I name it farcha because it is one column but 
+                // it sawwi farcha on all columns as new tr attached to previous tr
+                if($colFarcha) {
+                    $colFarchaValue = $tuple[$colFarcha];
+                    $myTr .= "<tr><td colspan='$colspan'>$colFarchaValue</td></tr>\n";
+                }
+                $html .= $myTr;
                 $rows_count_table++;
-                if ((!$showAsDataTable) and ($rows_count_table == 10)) {
+                if ((!$showAsDataTable) and ($rows_count_table == $repeat_header_after)) {
                     $html .= "\n</tbody>\n";
 
                     $html .= $the_header;
                     $html .= '<tbody>';
                     $rows_count_table = 0;
                 }
+                $previous_tuple = $tuple;
             }
 
             if ($total_cols and count($total_cols) > 0) {
                 $html .= "   <tr class='$cl_tr' alt='old_cl=$old_cl'>\n";
                 $col_ord = 0;
                 foreach ($header_trad as $nom_col => $desc) {
-                    if ($styled_data_arr[$nom_col]) {
+                    if(false)
+                    //if (AfwStyling::$styled_ data_arr[$nom_col]) 
+                    {
                         $total_col = $sum_cols_total[$nom_col];
-                        $total_disp = $styled_data_arr[$nom_col];
+                        //$total_disp = AfwStyling::$styled_ data_arr[$nom_col];
 
                         /*
                          * $tuple_copy = $tuple;
@@ -1677,7 +1330,8 @@ class AfwShowHelper
                 $html .= '</td></tr></table>';
             }
 
-            if ($showAsDataTable and !$datatables_arr[$showAsDataTable]) {
+            if ($showAsDataTable) // obsolete :  and !$datatables_arr[$showAsDataTable]
+            {
                 $html .= "<script type=\"text/javascript\">
 \$(document).ready(function() {
 \$('#$showAsDataTable').DataTable( {
@@ -1776,6 +1430,7 @@ class AfwShowHelper
         $curr_col = 0;
         $used_hzm_width = 0;
         $idInput = $qeditInputsArr['id' . '_' . $qeditNum];
+        $remain_hzm_width = 0;
 
         foreach ($miniboxTemplateArr as $col => $desc) {
             $remain_hzm_width = 12 - $used_hzm_width;
@@ -2024,10 +1679,12 @@ class AfwShowHelper
     /**
      * showVirtual
      * @param AFWObject $object
+     * @param string $attribute
+     * @param string $intelligent_category
      */
     public static function showVirtualAttribute($object, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $lang = 'ar', $structure = null, $getlink = false)
     {
-        
+        $link_to_display = '';
         if (!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         /*
         if($attribute=="applicantFileList") {
@@ -2119,7 +1776,7 @@ class AfwShowHelper
                             }
 
                             $empty_message = $object->translate($empty_code, $lang);
-                            if(!$empty_message or ($empty_message == $empty_code)) {
+                            if (!$empty_message or ($empty_message == $empty_code)) {
                                 $empty_message = $object->tm($empty_code, $lang);
                             }
 
@@ -2311,7 +1968,7 @@ class AfwShowHelper
                                 }
 
                                 $empty_message = $object->translate($empty_code, $lang);
-                                if(!$empty_message or ($empty_message == $empty_code)) {
+                                if (!$empty_message or ($empty_message == $empty_code)) {
                                     $empty_message = $object->tm($empty_code, $lang);
                                 }
 
@@ -2421,7 +2078,7 @@ class AfwShowHelper
                         }
 
                         $empty_message = $object->translate($empty_code, $lang);
-                        if(!$empty_message or ($empty_message == $empty_code)) {
+                        if (!$empty_message or ($empty_message == $empty_code)) {
                             $empty_message = $object->tm($empty_code, $lang);
                         }
 
@@ -2468,7 +2125,7 @@ class AfwShowHelper
                         }
 
                         $empty_message = $object->translate($empty_code, $lang);
-                        if(!$empty_message or ($empty_message == $empty_code)) {
+                        if (!$empty_message or ($empty_message == $empty_code)) {
                             $empty_message = $object->tm($empty_code, $lang);
                         }
 
@@ -2628,6 +2285,7 @@ class AfwShowHelper
         if ($structure['TARGET']) {
             $target = "target='" . $structure['TARGET'] . "'";
         }
+        else $target = '';
 
         $data_to_display = "<a $target href='m.php?mp=ds&cl=$val_class&cm=$currmod&id=$val_id' >$my_label</a>";
         return [$data_to_display, $link_to_display];
@@ -2756,6 +2414,7 @@ class AfwShowHelper
         if ($structure['TARGET']) {
             $target = "target='" . $structure['TARGET'] . "'";
         }
+        else $target = '';
 
         $data_to_display = "<a $target href='m.php?mp=ed&cl=$val_class&cm=$currmod&id=$val_id&clp=$class_origin' >$my_label</a>";
 
@@ -2863,6 +2522,7 @@ class AfwShowHelper
      */
     public static function showMFK($object, $attribute, $lang = 'ar', $structure = null, $getlink = false)
     {
+        $link_to_display = '';
         $temp_obj = $object->get($attribute, 'object', '', false);
 
         // if($attribute=="attendanceList") throw new AfwRuntimeException("$object - > get($attribute) = ".var_export($temp_obj,true));
@@ -2977,6 +2637,10 @@ class AfwShowHelper
     }
 
 
+    /**
+     * showRetrieveTable
+      * @param AFWObject|array $mixed
+     */
     public static function showRetrieveTable(&$mixed, $lang = 'ar', $options = ['mode_force_cols' => true])
     {
         $objme = AfwSession::getUserConnected();
@@ -2987,6 +2651,9 @@ class AfwShowHelper
         } elseif (is_array($mixed)) {
             $objectList = $mixed;
             $object = reset($objectList);
+        } else {
+            $objectList = null;
+            $object = null;
         }
 
         list($html_table, $objectList, $ids,) = AfwShowHelper::showManyObj(
@@ -3003,7 +2670,7 @@ class AfwShowHelper
 
     public static function showMinibox(
         $object,
-        $structure = '',
+        $structure = null,
         $lang = 'ar',
         $token_arr = null,
         $objme = null,
@@ -3074,7 +2741,7 @@ class AfwShowHelper
         }
 
         if (!$data_to_display) {
-            if($structure) $data_to_display = AfwFormatHelper::getItemsEmptyMessage($object, $structure, $lang);
+            if ($structure) $data_to_display = AfwFormatHelper::getItemsEmptyMessage($object, $structure, $lang);
             else return "<!-- empty minibox -->";
         }
 
@@ -3119,4 +2786,453 @@ class AfwShowHelper
         }
     </script>";
     }
+
+    /**
+     * @param AFWObject $objListItem
+     * @param array $header
+     * @return array
+     */
+
+    public static function objectItemToTuple($objListItem, $header)
+    {
+        $tuple = [];
+        $images = AfwThemeHelper::loadTheme();
+        foreach ($images as $theme => $themeValue) {
+            $$theme = $themeValue;
+        }
+
+        if (count($header) != 0) {
+            // if($objListItem instanceof Atable) die("header = ".var_export($header, true));
+            foreach ($header as $col => $hitem) {
+                if(is_array($hitem)) {
+                    $desc = $hitem;
+                } else {
+                    $desc = $objListItem->getMyDbStructure('structure',$col);
+                }
+                if (!$objListItem->attributeIsApplicable($col)) {
+                    list(
+                        $icon,
+                        $textReason,
+                        $wd,
+                        $hg,
+                    ) = $objListItem->whyAttributeIsNotApplicable($col);
+                    if (!$wd) {
+                        $wd = 20;
+                    }
+                    if (!$hg) {
+                        $hg = 20;
+                    }
+                    $tuple[$col] =
+                        "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='"
+                        . htmlentities($textReason)
+                        . "'  width='$wd' heigth='$hg'>";
+                } elseif (AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($objListItem, $col, $objme, 'DISPLAY', $desc)) {
+                    if ($desc == 'AAA') {
+                        $tuple['description'] = $objListItem->__toString();
+                    } else {
+                        $val_id = $objListItem->getId();
+                        $ord = $objListItem->getMoveOrder();
+                        switch ($desc['TYPE']) {
+                            case 'PK':
+                                $tuple[$col] = $val_id;
+                                break;
+                            case 'DEL':
+                                $col_trans = AfwLanguageHelper::translateKeyword('DELETE', $lang);
+                                $val_id = $objListItem->getId();
+                                $val_class = $objListItem->getMyClass();
+                                $val_currmod = $objListItem->getMyModule();
+                                $lvl = $desc['DEL_LEVEL'];
+                                if (!$lvl) {
+                                    $lvl = 2;
+                                }
+                                $userCanDel = $objListItem->userCanDeleteMe($objme);
+                                if ($userCanDel > 0) {
+                                    $delete_button_path = $images['delete'];
+                                    $lbl = $objListItem->getShortDisplay($lang);
+                                    // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
+                                    $tuple[$col_trans] = "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='$delete_button_path' style='height: 22px !important;'></a>";
+                                } else {
+                                    if ($userCanDel == -1) {
+                                        $explanation = 'لا يوجد لديك صلاحية لمسح هذا النوع من السجلات';
+                                    } else {
+                                        $explanation = 'انك تحتاج لصلاحية خاصة لمسح هذا السجل بعينه';
+                                    }
+                                    $tuple[$col_trans] =
+                                        "<a href='#'><img src='../lib/images/lock.png' data-toggle='tooltip' data-placement='top' title='$explanation'  width='24' heigth='24'></a>";
+                                }
+                                // if($objListItem instanceof Atable) die("tuple = ".var_export($tuple, true));
+                                break;
+                            case 'MOVE_UP':
+                                $bswal = $desc['MOVE-QUESTION'];
+                                $col_trans = AfwLanguageHelper::translateKeyword('MOVE_UP', $lang);
+                                $icon_button_path = $images['move-up'];
+                                $tuple[$col_trans] = "<a href='#' id='mover-up-$val_id' here='afw_shwr' oid='$val_id' ord='$ord' cl='$val_class' md='$val_currmod' lbl='$lbl' afworder='$afworder' bswal='$bswal' class='move-up'><img src='$icon_button_path' style='height: 22px !important;'></a>";
+                                break;
+
+                            case 'MOVE_DOWN':
+                                $bswal = $desc['MOVE-QUESTION'];
+                                $col_trans = AfwLanguageHelper::translateKeyword('MOVE_DOWN', $lang);
+                                $icon_button_path = $images['move-down'];
+                                $tuple[$col_trans] = "<a href='#' id='mover-down-$val_id' here='afw_shwr' oid='$val_id' ord='$ord' cl='$val_class' md='$val_currmod' lbl='$lbl' afworder='$afworder' bswal='$bswal' class='move-down'><img src='$icon_button_path' style='height: 22px !important;'></a>";
+                                break;
+
+                            case 'SHOW':
+                                $col_trans = AfwLanguageHelper::translateKeyword('DISPLAY', $lang);
+                                // die("for col $col and lang=$lang col_trans=$col_trans");
+                                if ($objListItem->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'))) {
+                                    if (!$objListItem->isActive()) {
+                                        $data_errors =
+                                            'تم حذفها الكترونيا';
+                                    } elseif (
+                                        !$objListItem->isOk(
+                                            $force_check = true
+                                        )
+                                    ) {
+                                        $data_errors_arr = AfwDataQualityHelper::getDataErrors(
+                                            $objListItem,
+                                            $lang
+                                        );
+                                        $data_errors = implode(
+                                            ' / ',
+                                            $data_errors_arr
+                                        );
+                                        if (
+                                            strlen($data_errors) >
+                                            596 or
+                                            count(
+                                                $data_errors_arr
+                                            ) >
+                                            18
+                                        ) {
+                                            $data_errors =
+                                                'أخطاء كثيرة';
+                                            $viewIcon =
+                                                'view_error';
+                                        }
+                                    } else {
+                                        $data_errors =
+                                            'لا يوجد أخطاء';
+                                    }
+                                } else {
+                                    if (!$objListItem->isActive()) {
+                                        $data_errors = 'تم حذفها الكترونيا';
+                                    } else {
+                                        $data_errors = 'لم يتم تفعيل التثبت من الأخطاء لهذا الكيان';
+                                    }
+                                }
+                                $currstep = $desc['GO-TO-STEP'];
+                                if (!$currstep)
+                                    $currstep = $objListItem->getDefaultStep();
+                                if (!$currstep)
+                                    $currstep = 1;
+                                $val_id = $objListItem->getId();
+                                $val_class = $objListItem->getMyClass();
+                                $val_currmod = $objListItem->getMyModule();
+                                $tuple[$col_trans] =
+                                    "<a href='main.php?Main_Page=afw_mode_display.php&cl=$val_class&currmod=$val_currmod&id=$val_id&currstep=$currstep' ><img src='../lib/images/$viewIcon.png' width='24' heigth='24' data-toggle='tooltip' data-placement='top' title='"
+                                    . htmlentities($data_errors)  // var_export($desc,true).
+                                    . "'></a>";
+                                break;
+                            case 'EDIT':
+                                $col_trans = AfwLanguageHelper::translateKeyword($col, $lang);
+                                $currstep = $desc['GO-TO-STEP'];
+                                if (!$currstep)
+                                    $currstep = $objListItem->getDefaultStep();
+                                if (!$currstep)
+                                    $currstep = 1;
+                                $val_id = $objListItem->getId();
+                                // if(!is_numeric($val_id)) die("val object export = ".var_export($objListItem,true).", val->getId() => $val_id");
+                                $val_class = $objListItem->getMyClass();
+                                $val_currmod = $objListItem->getMyModule();
+                                list(
+                                    $canEdit,
+                                    $cantEditReason,
+                                ) = $objListItem->userCanEditMe($objme);
+                                if ($canEdit) {
+                                    $edit_button_path = $images['modifier'];
+                                    $tuple[$col_trans] = "<a href='m.php?mp=ed&cl=$val_class&cm=$val_currmod&id=$val_id&cs=$currstep&clp=$class_origin' class='editme showmany'><img src='$edit_button_path' width='22' heigth='22'></a>";
+                                } else {
+                                    $tuple[$col_trans] = "<a href='#'><img src='../lib/images/lock.png'  data-toggle='tooltip' data-placement='top' title='$cantEditReason' width='24' heigth='24'></a>";
+                                }
+
+                                break;
+                            case 'FK':
+                                if (AfwStructureHelper::isLookupAttribute($objListItem, $col, $desc)) {
+                                    $val_decoded = $objListItem->getVal($col);
+                                    $tuple[$col] = $objListItem->decode($col) . "<!-- val decoded is $val_decoded -->";
+                                } else {
+                                    $obj_col = $objListItem->het($col);
+                                    if (empty($desc['CATEGORY'])) {
+                                        if ($obj_col) {
+                                            $tuple[$col] = $obj_col->showMe('retrieve', $lang);
+                                        } else {
+                                            if (
+                                                $desc['EMPTY_IS_ALL'] or
+                                                $desc['FORMAT'] ==
+                                                'EMPTY_IS_ALL'
+                                            ) {
+                                                $all_code = "ALL-$col";
+                                                $return = $objListItem->translate(
+                                                    $all_code,
+                                                    $lang
+                                                );
+                                                if (
+                                                    $return == $all_code
+                                                ) {
+                                                    $return = $objListItem->translateOperator(
+                                                        'ALL',
+                                                        $lang
+                                                    );
+                                                }
+                                                $tuple[$col] = $return;
+                                            } else {
+                                                $tuple[$col] = '';
+                                            }
+                                        }
+                                    } else {
+                                        if (is_object($obj_col)) {
+                                            $tuple[$col] = $obj_col->showMe(
+                                                'retrieve',
+                                                $lang
+                                            );
+                                        } elseif (is_array($obj_col)) {
+                                            $mfk_show_sep =
+                                                $desc['LIST_SEPARATOR'];
+                                            if (!$mfk_show_sep) {
+                                                $mfk_show_sep =
+                                                    $desc['MFK-SHOW-SEPARATOR'];
+                                            }
+                                            if (!$mfk_show_sep) {
+                                                $mfk_show_sep =
+                                                    "<br>\n";
+                                            }
+                                            // $str  = "Strange returned list of objects !! : ".'<br>';
+                                            $str = '';
+                                            foreach (
+                                                $obj_col as $instance
+                                            ) {
+                                                if ($str) {
+                                                    $str .= $mfk_show_sep;
+                                                }
+                                                $str .= $instance->showMe(
+                                                    'retrieve',
+                                                    $lang
+                                                );
+                                            }
+                                            // $str .= var_export($obj_col,true);
+                                            $tuple[$col] = $str;
+                                        } elseif (!$obj_col) {
+                                            if (
+                                                $desc['EMPTY_IS_ALL'] or
+                                                $desc['FORMAT'] ==
+                                                'EMPTY_IS_ALL'
+                                            ) {
+                                                $all_code = "ALL-$col";
+                                                $return = $objListItem->translate(
+                                                    $all_code,
+                                                    $lang
+                                                );
+                                                if (
+                                                    $return == $all_code
+                                                ) {
+                                                    $return = $objListItem->translateOperator(
+                                                        'ALL',
+                                                        $lang
+                                                    );
+                                                }
+                                                $tuple[$col] = $return;
+                                            } else {
+                                                $tuple[$col] = '';
+                                            }
+                                        } else {
+                                            throw new AfwRuntimeException(
+                                                "strange value for FK field : $col => "
+                                                    . var_export(
+                                                        $obj_col,
+                                                        true
+                                                    )
+                                            );
+                                        }
+                                    }
+                                }
+                                break;
+                            case 'MFK':
+                                $objs = $objListItem->get($col, 'object', '', false);
+
+                                if (!is_array($objs)) {
+                                    throw new AfwRuntimeException("How $objListItem => get($col,'object','',false) return " . var_export($objs, true));
+                                }
+                                $nbc = count($objs);
+
+                                /*
+                                             * if(($col=="show_field_mfk") and $nbc<2)
+                                             * {
+                                             *     die("rafik 20240923 : $objListItem => get($col,'object','',false) = ".var_export($objs,true));
+                                             * }
+                                             */
+                                if ($nbc > 0) {
+                                    $mfk_show_sep =
+                                        $desc['LIST_SEPARATOR'];
+                                    if (!$mfk_show_sep) {
+                                        $mfk_show_sep =
+                                            $desc['MFK-SHOW-SEPARATOR'];
+                                    }
+                                    if (!$mfk_show_sep) {
+                                        $mfk_show_sep = "<br>\n";
+                                    }
+                                    $str_arr = [];
+                                    foreach ($objs as $instance) {
+                                        if ($instance)
+                                            $str_arr[] = $instance->getShortDisplay($lang);
+                                        unset($instance);
+                                    }
+
+                                    $tuple[$col] = implode($mfk_show_sep, $str_arr);  // ." nbc=".$nbc;
+                                    unset($objs);
+                                }
+                                break;
+                            case 'ANSWER':
+                                $tuple[$col] = $objListItem->decode($col);
+                                break;
+                            case 'YN':
+                                // if(($objListItem->id==476) and ($col=="active")) echo("see FORMAT in desc = ".var_export($desc,true));
+                                if ($desc['FORMAT'] == 'icon') {
+                                    $onoff = $objListItem->sureIs($col) ? 'on' : 'off';
+                                    list($switcher_authorized, $switcher_title, $switcher_text) = $objListItem->switcherConfig($col, $objme);
+                                    $structureCol = AfwPrevilegeHelper::keyIsToDisplayForUser($objListItem, $col, $objme);
+                                    if ($structureCol['READONLY'])
+                                        $switcher_authorized = false;
+                                    if ($switcher_authorized) {
+                                        $switcher_img_style = '';
+                                        $switcher_img_net = 'net';
+                                    } else {
+                                        $switcher_img_style = '';  // style='opacity: 0.6;'
+                                        $switcher_img_net = 'flou';
+                                    }
+
+                                    $img_onoff = "<img class='$switcher_img_net' src='../lib/images/$onoff.png' width='30' heigth='20' $switcher_img_style>";
+
+                                    if ($switcher_authorized) {
+                                        $val_class = $objListItem->getMyClass();
+                                        $currm = $objListItem->getMyModule();
+                                        $val_id = $objListItem->id;
+                                        $tuple[$col] = "<span case='1' id='$currm-$val_class-$val_id-$col' oid='$val_id' cl='$val_class' md='$currm' col='$col' ttl='$switcher_title' txt='$switcher_text' class='switcher afw-authorised'>$img_onoff</span>";
+                                        // $tuple[$col] .= "rafik<!-- ".var_export($structureCol, true)." -->";
+                                    } else {
+                                        $tuple[$col] = $img_onoff;
+                                    }
+                                } else {
+                                    $col_decoded = $objListItem->decode($col);
+                                    $tuple[$col] = $col_decoded;
+                                }
+
+                                // if(($objListItem->id==476) and ($col=="active"))  echo("tuple[$col] = ".$tuple[$col]);
+
+                                /*
+                                             * $yn_decoded = $col.strtoupper($col_decoded);
+                                             * $yn_translated = $objListItem->translate($yn_decoded,$lang);
+                                             * //die("yn_translated=$yn_translated");
+                                             * if((!$yn_translated) or ($yn_translated==$yn_decoded))
+                                             * {
+                                             * $yn_decoded = strtoupper($col_decoded);
+                                             * $yn_translated = $objListItem->translate($yn_decoded,$lang);
+                                             * }
+                                             * if((!$yn_translated) or ($yn_translated==$yn_decoded))
+                                             * {
+                                             * $yn_decoded = strtoupper($col_decoded);
+                                             * $yn_translated = $objListItem->translateOperator($yn_decoded,$lang);
+                                             * }
+                                             * $tuple[$col] = $yn_translated;
+                                             */
+
+                                break;
+                            case 'ENUM':
+                                $value = $objListItem->getVal($col);
+                                $display_val = $objListItem->decode($col);
+                                if (
+                                    $display_val and
+                                    $desc['FORMAT-INPUT'] ==
+                                    'hzmtoggle'
+                                ) {
+                                    // if(!$display_val) $display_val = "...";
+                                    // die("key=$attribute, val=$objListItem, display_val=$display_val, HZM-CSS=".$structure["HZM-CSS"]);
+                                    $css_arr = AfwStringHelper::afw_explode(
+                                        $desc['HZM-CSS']
+                                    );
+                                    $css_val =
+                                        $css_arr[$value]
+                                        . '_display';
+                                    $tuple[$col] = "<div class='$css_val'>$display_val</div>";
+                                } else {
+                                    $tuple[$col] = $display_val;
+                                }
+                                break;
+                            default:
+                                $tuple[$col] = $objListItem->decode($col);
+                                // if($col=="homework") die("$objListItem -> decode($col) = [".$tuple[$col]."]");
+                                break;
+                        }
+                    }
+                }
+                $dataValue[$id][$col] = $objListItem->getVal($col);
+                $dataImportance[$col] = AfwHtmlHelper::importanceCss($objListItem, $col, $desc);
+            }
+        }
+        if ($objListItem->rowCategoryAttribute("retrieve")) {
+            list($categoryAttribute, $categoryAttributeCATEGORY) = explode(':', $objListItem->rowCategoryAttribute("retrieve"));
+            // die("list(attr=$categoryAttribute, cat=$categoryAttributeCATEGORY)");
+            if ($categoryAttributeCATEGORY) {
+                $tuple['ca-' . $categoryAttribute] = $objListItem->calc($categoryAttribute);
+                // if(($categoryAttribute=="request_late") and ($objListItem->id==88210)) die("tuple[ca-$categoryAttribute] = ".$tuple["ca-".$categoryAttribute]." = $objListItem-->calc($categoryAttribute)");
+            } else
+                $tuple['ca-' . $categoryAttribute] = $objListItem->getVal($categoryAttribute);
+        }
+
+        return $tuple;
+    }
+
+    /**
+     * @param array $rows 
+     * @param string $className
+     * @param array $header 
+     * @param AFWObject $object
+     */
+
+    public static function formatDataRows($rows, $className, $header, $object, $lang='ar', $newColumnsRules=[]) {
+        $data = [];
+        foreach($rows as $k => $row) {  
+            /**
+             * @var AFWObject $objListItem
+             */
+              $objListItem = new $className();                  
+              $objListItem->load('', $row);
+              $data[$k] = self::objectItemToTuple($objListItem, $header);
+              foreach($newColumnsRules as $newCol => $newColDefinition) {
+                if($newColDefinition["calcMethod"]) {
+                    $calcMethod = $newColDefinition["calcMethod"];
+                    $calcClass = $newColDefinition["calcClass"];
+                    $data[$k][$newCol] = $calcClass::$calcMethod($row, $data[$k], $object, $lang);
+                }
+              }                      
+
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param string $attribute
+     * @param string $stylingRule
+     * @param array $tuple
+     * @param array|null $previous_tuple
+     */
+    public static function applyStylingRule($attribute, $stylingRule, $tuple, $previous_tuple) {
+        if($stylingRule=="changed") {
+            if($attribute=="audit_advanced") return false;
+            if(!$previous_tuple) return false;
+            return ($tuple[$attribute] != $previous_tuple[$attribute]);
+        }
+    }
+
+
 }

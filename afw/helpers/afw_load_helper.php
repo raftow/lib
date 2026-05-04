@@ -706,6 +706,14 @@ class AfwLoadHelper extends AFWRoot
         return self::decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $structure["SMALL-LOOKUP"]);
     }
 
+    /**
+     * @param string $ans_module
+     * @param string $ans_table
+     * @param mixed $value
+     * @param string $separator
+     * @param string $emptyMessage
+     * @param mixed $pk
+     */
     public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $small_lookup = false)
     {
 
