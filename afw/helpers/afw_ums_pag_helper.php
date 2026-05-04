@@ -250,6 +250,14 @@ class AfwUmsPagHelper extends AFWRoot
                 $tbl->set('is_lookup', 'N');
             }
 
+            if ($obj->AUDIT_DATA === "byrow_audit") {
+                $tbl->set('auditable', 'Y');
+            } elseif ($obj->AUDIT_DATA === "bycol_audit") {
+                $tbl->set('auditable', 'W');
+            } else {
+                $tbl->set('auditable', 'N');
+            }
+
             if (is_array($obj->DISPLAY_FIELD)) {
                 $display_field = implode('|', $obj->DISPLAY_FIELD);
             } elseif (is_array($obj->DISPLAY_FIELD_BY_LANG)) {
