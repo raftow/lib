@@ -406,6 +406,10 @@ class AfwSqlHelper extends AFWRoot
     }
 
     /**
+     * @param string $module_server
+     * @param string $module
+     * @param string $table
+     * @param string $sql_query
      * @return array like object [$result, $row_count, $affected_row_count]
      */
     final public static function executeQuery(
@@ -416,6 +420,8 @@ class AfwSqlHelper extends AFWRoot
         $throw_error = true,
         $throw_analysis_crash = true
     ) {
+        $row_count = -99;
+        $affected_row_count = -99;
         UfwBatch::print_sql("<br>\n ############################################################################# <br>\n");
         UfwBatch::print_sql("<br>\nexecQuery will execute : <br>\n");
         UfwBatch::print_sql("<br>\n$sql_query <br>\n");
@@ -463,32 +469,43 @@ class AfwSqlHelper extends AFWRoot
         return [$result, $row_count, $affected_row_count];
     }
 
+    /**
+     * @param AFWObject $object
+     * @param string $nom_col
+     * @param string $oper
+     * @param string|array $val_col
+     * @param string|null $val_col2
+     * @param string $lang
+     * @return array like object [$clause_where, $fixm]
+     */
+
     public static final function getClauseWhere(
         $object,
         $nom_col,
         $oper,
         $val_col,
-        $val_col2 = null,
+        $val_col2,
         $lang
     ) {
+        $fixm = '';
         $server_db_prefix = AfwSession::currentDBPrefix();
 
         $all_oper_arr = [
             'in (.)' => AfwLanguageHelper::translateKeyword('IN', $lang),
-            '=' => AfwLanguageHelper::translateKeyword('EQUAL', $lang, true),
-            '<' => AfwLanguageHelper::translateKeyword('LESS_THAN', $lang, true),
-            '>' => AfwLanguageHelper::translateKeyword('GREATER_THAN', $lang, true),
-            '<=' => AfwLanguageHelper::translateKeyword('LESS_OR_EQUAL_THAN', $lang, true),
-            '>=' => AfwLanguageHelper::translateKeyword('GREATER_OR_EQUAL_THAN', $lang, true),
-            '!=' => AfwLanguageHelper::translateKeyword('NOT_EQUAL', $lang, true),
-            'between' => AfwLanguageHelper::translateKeyword('BETWEEN', $lang, true),
-            "like X'%.%'" => AfwLanguageHelper::translateKeyword('CONTAIN', $lang, true),
-            "like X'.%'" => AfwLanguageHelper::translateKeyword('BEGINS_WITH', $lang, true),
-            "like X'%.'" => AfwLanguageHelper::translateKeyword('ENDS_WITH', $lang, true),
-            "like X'.'" => AfwLanguageHelper::translateKeyword('EQUAL', $lang, true),
-            "not like X'%.%'" => AfwLanguageHelper::translateKeyword('NOT_CONTAIN', $lang, true),
-            "=''" => AfwLanguageHelper::translateKeyword('IS_EMPTY', $lang, true),
-            "!=''" => AfwLanguageHelper::translateKeyword('IS_NOT_EMPTY', $lang, true),
+            '=' => AfwLanguageHelper::translateKeyword('EQUAL', $lang),
+            '<' => AfwLanguageHelper::translateKeyword('LESS_THAN', $lang),
+            '>' => AfwLanguageHelper::translateKeyword('GREATER_THAN', $lang),
+            '<=' => AfwLanguageHelper::translateKeyword('LESS_OR_EQUAL_THAN', $lang),
+            '>=' => AfwLanguageHelper::translateKeyword('GREATER_OR_EQUAL_THAN', $lang),
+            '!=' => AfwLanguageHelper::translateKeyword('NOT_EQUAL', $lang),
+            'between' => AfwLanguageHelper::translateKeyword('BETWEEN', $lang),
+            "like X'%.%'" => AfwLanguageHelper::translateKeyword('CONTAIN', $lang),
+            "like X'.%'" => AfwLanguageHelper::translateKeyword('BEGINS_WITH', $lang),
+            "like X'%.'" => AfwLanguageHelper::translateKeyword('ENDS_WITH', $lang),
+            "like X'.'" => AfwLanguageHelper::translateKeyword('EQUAL', $lang),
+            "not like X'%.%'" => AfwLanguageHelper::translateKeyword('NOT_CONTAIN', $lang),
+            "=''" => AfwLanguageHelper::translateKeyword('IS_EMPTY', $lang),
+            "!=''" => AfwLanguageHelper::translateKeyword('IS_NOT_EMPTY', $lang),
         ];
         $prefixed_nom_col = $nom_col;
         list($prefix_col, $nom_col) = explode('.', $nom_col);
@@ -1425,8 +1442,8 @@ class AfwSqlHelper extends AFWRoot
                         $object->resetChangedFields();
                         $object->afterUpdate($id_updated, $fields_updated, $disableAfterCommitDBEvent);
                         $object->majTriggerReset();
-                        
-                        if (($return == 1) and $object->isAuditable()) {
+                        $isAuditable = $object->isAuditable();
+                        if (($return == 1) and $isAuditable) {
                             try {
                                 // die("call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
                                 AfwAuditHelper::audit_on_update($object, $object->fieldsHasChanged(), "update", $update_context);
@@ -1440,7 +1457,7 @@ class AfwSqlHelper extends AFWRoot
                             }
                             
                         } else {
-                            // if(....) die("no call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                            if($object->getMyClass() == "WorkflowRequest") die("no call to AfwAuditHelper::audit _on_update($object,..,update,$update_context) : return==[$return] and isAuditable==[$isAuditable]");
                         }
                     }
                     if ($only_me and $return > 1) {
