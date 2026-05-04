@@ -1503,3 +1503,7 @@ div.cell-changed {
     font-size: 12px;
     font-weight: bold;
 }
+
+div#audit_result_div th, div#audit_result_div td {
+    border: 1px solid silver;
+}
