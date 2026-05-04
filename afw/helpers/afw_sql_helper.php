@@ -1451,9 +1451,12 @@ class AfwSqlHelper extends AFWRoot
                             catch(Exception $e) {
                                 $message = "Audit operation failed.";
                                 if($devMode) {
-                                    $message .= " >> ".$e->getMessage();
-                                    $message .= " >> the query on parent table was ".$query;
+                                    $message .= "\n >> ".$e->getMessage();
+                                    $message .= "\n >> ".$e->getTraceAsString();
+                                    $message .= "\n >> the query on parent table was ".$query;                                    
+                                    throw new AfwRuntimeException($message);
                                 }
+                                else throw new AfwBusinessException($message);
                             }
                             
                         } else {
