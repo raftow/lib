@@ -1504,6 +1504,19 @@ div.cell-changed {
     font-weight: bold;
 }
 
+div.audit-disabled {
+    background-color: #890421 !important;
+    display: inline;
+    border: 2px solid #ff0000;
+    padding: 3px 9px;
+    color: #ffffff;
+    margin-left: 9px;
+    margin-right: 9px;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+
 div#audit_result_div th, div#audit_result_div td {
     border: 1px solid silver;
 }

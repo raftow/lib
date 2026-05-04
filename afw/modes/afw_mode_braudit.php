@@ -125,6 +125,10 @@ $page_sub_title .= "<div class='object_title'>".$myClassInstance->getDisplay($la
 $page_sub_title .= "<div class='lookup_code'>".$myClassInstance->getMyCode()."</div>";
 $page_sub_title .= "<div class='identifier'>".$myClassInstance->id."</div>";
 $page_sub_title .= "<div class='cell-changed'>".$cell_changed."</div>";
+if(AfwSession::config('AUDIT_DISABLED', false)) {
+    $audit_disabled = $myClassInstance->translate("audit disabled", $lang, true);
+    $page_sub_title .= "<div class='audit-disabled'>$audit_disabled</div>";
+}
 $page_action_description = null;
 $execute_btn = 'SUBMIT-AUDIT';
 

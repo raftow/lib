@@ -6698,6 +6698,19 @@ class AFWObject extends AFWRoot
         return $this->itemsMethodExec[$itemsMethod];
     }
 
+    protected function iamAuditable()
+    {
+        return true;
+    }
+
+
+    public function isAuditable()
+    {
+        $AUDIT_DISABLED = AfwSession::config('AUDIT_DISABLED', false);
+
+        return ($this->AUDIT_DATA and $this->iamAuditable() and !$AUDIT_DISABLED);
+    }
+
     public function isByRowAuditable()
     {
         return (($this->AUDIT_DATA === true) or ($this->AUDIT_DATA === "byrow_audit"));

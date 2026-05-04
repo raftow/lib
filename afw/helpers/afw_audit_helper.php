@@ -24,6 +24,9 @@ class AfwAuditHelper extends AFWRoot
 
 
     /**
+     * @param AFWObject $object
+     * @param array $arr_fields_updated : array of the form [attribute1 => new_value1, attribute2 => new_value2,...]
+     * @param string $action
      * audit_on_update
      * Insert into _audit table before execute Update Query
      */

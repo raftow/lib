@@ -202,6 +202,7 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['The '] = 'الـ';
         $trad['OPERATOR']['audit_action'] = 'الإجراء';
         $trad['OPERATOR']['audit_advanced'] = 'تفاصيل إضافية';
+        $trad['OPERATOR']['audit disabled'] = 'تقصي الأثر متوقف';
         $trad['OPERATOR']['audit_advanced_tooltip'] = 'انقر للحصول على تفاصيل إضافية';
         $trad['OPERATOR']['version'] = 'نسخة';
         $trad['OPERATOR']['by'] = 'بواسطة';

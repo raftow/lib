@@ -1059,13 +1059,13 @@ class AfwSqlHelper extends AFWRoot
                 return false;
             }
 
-            $AUDIT_DISABLED = AfwSession::config('AUDIT_DISABLED', false);
+            
 
-            if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
-                    // die("call to AfwAuditHelper::audit_on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+            if ($object->isAuditable()) {
+                    // die("call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
                     AfwAuditHelper::audit_on_update($object, $object->fieldsHasChanged(), "insert", "first insert");
             } else {
-                // if(....) die("no call to AfwAuditHelper::audit_on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                // if(....) die("no call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
             }
             // die("rafik 135001 : ".var_export($object,true));
             // may be has been changed in the previous before insert event
@@ -1426,9 +1426,9 @@ class AfwSqlHelper extends AFWRoot
                         $object->afterUpdate($id_updated, $fields_updated, $disableAfterCommitDBEvent);
                         $object->majTriggerReset();
                         
-                        if (($return == 1) and $object->AUDIT_DATA and (!$AUDIT_DISABLED)) {
+                        if (($return == 1) and $object->isAuditable()) {
                             try {
-                                // die("call to AfwAuditHelper::audit_on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                                // die("call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
                                 AfwAuditHelper::audit_on_update($object, $object->fieldsHasChanged(), "update", $update_context);
                             }
                             catch(Exception $e) {
@@ -1440,7 +1440,7 @@ class AfwSqlHelper extends AFWRoot
                             }
                             
                         } else {
-                            // if(....) die("no call to AfwAuditHelper::audit_on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                            // if(....) die("no call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
                         }
                     }
                     if ($only_me and $return > 1) {
@@ -1549,7 +1549,7 @@ class AfwSqlHelper extends AFWRoot
 
                 $object->afterHide($object->getAfieldValue($object->getPKField()));
 
-                if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
+                if ($object->isAuditable()) {
                     AfwAuditHelper::audit_on_update($object, [$object->fld_ACTIVE() => 'N'], 'hide', $update_context);
                 }
             }
@@ -1578,11 +1578,6 @@ class AfwSqlHelper extends AFWRoot
             $return = false;
             $object->majTriggered();
             if ($object->beforeDelete($object->id, $id_replace)) {
-                $AUDIT_DISABLED = AfwSession::config('AUDIT_DISABLED', false);
-                // for audit
-                if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
-                    $object->logicDelete(true, true, '', [], "Audit before delete");
-                }
                 $query = 'DELETE FROM ' . $object::_prefix_table($object::$TABLE) . ' WHERE 1 ';
                 if ($object->getPKIsMultiple()) {
                     foreach ($object->PK_MULTIPLE_ARR as $pk_field) {
@@ -1599,7 +1594,7 @@ class AfwSqlHelper extends AFWRoot
                     $object->getAfieldValue($object->getPKField()),
                     $id_replace
                 );
-                if ($object->AUDIT_DATA and !$AUDIT_DISABLED) {
+                if ($object->isAuditable()) {
                     AfwAuditHelper::audit_on_update($object, [], 'delete', $update_context);
                 }
             }
