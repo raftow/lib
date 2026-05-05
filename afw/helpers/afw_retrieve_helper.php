@@ -99,6 +99,9 @@ class AfwRetrieveHelper
                 $cant_do_action_log_arr[$action_item] .= " ($can_case)";
             }
         }
+        else {
+            throw new AfwBusinessException("For class $cl no header columns defined to retrieve lang=$lang");
+        }
 
         AfwSession::log("After prepare of header and can_action array matrix in afw_handle_default_search");
         AfwSession::log("Before show data retrieve in afw_handle_default_search");
