@@ -1440,7 +1440,7 @@ div.identifier {
 div.lookup_code {
     display: inline;
     padding: 4px 8px !important;
-    background-color: #0f2a4e !important;
+    background-color: #000 !important;
     font-size: 12px;
     font-weight: normal;
     font-family: system-ui;
@@ -1519,23 +1519,24 @@ div.audit-row.audit-context {
     font-size: 24px !important;
 }
 
+table.grid tr td.cell-changed > span,
+div.cell-changed {
+    background-color: #307bfbd4 !important;
+    border: 2px solid #1463b1;
+    color: #ffffff;
+}
+
 table.grid tr td.cell-changed > span{
-    background-color: #f7b8ff59 !important;
     display: block;
-    border: 2px solid #f900ff;
     padding: 9px;
-    color: #f900ff;
 }
 
 div.cell-changed {
-    background-color: #f7b8ff59 !important;
     display: inline;
-    border: 2px solid #f900ff;
     padding: 3px 9px;
-    color: #f900ff;
     margin-left: 9px;
     margin-right: 9px;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: bold;
 }
 
