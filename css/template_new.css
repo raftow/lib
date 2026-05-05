@@ -985,10 +985,26 @@ div.hzm_home_bloc>h3 {
 
 /****   login    *******/
 
+.hzm_body {
+    min-height: 1010px;
+    overflow: auto;
+    /* margin-right: 10%; */
+    margin-bottom: 0px !important;
+    height: 100%;
+}
+
 body.hzm_body.login {
     min-height: fit-content !important;
     max-height: fit-content !important;
     height: fit-content !important;
+}
+
+.main {
+    background: #e4fffa;
+    padding: 10% 0;
+    margin: 0px 0px !important;
+    height: 100% !important;
+    min-height: 1010px;
 }
 
 .modal-dialog.popup-login {
@@ -1434,11 +1450,12 @@ div.lookup_code {
 }
 
 div.audit-row {
-    width: 24%;
+    width: auto;
+    min-width: 200px;
     float: right;
     margin-left: 2px;
     margin-right: 2px;
-    padding:5px;
+    padding: 7px;
 }
 
 div.audit-action-div {
@@ -1449,10 +1466,12 @@ div.audit-action-div {
 
 div.audit-row.audit-dtv {
     background-color: #a7d6ff;
+    min-width: 250px;
+    padding: 4px;
 }
 
 div.audit-row.audit-action {
-    background-color: #a7b7c5;
+    background-color: #aac6dfcf;
 }
 
 div.audit-row.audit-context {
@@ -1460,19 +1479,35 @@ div.audit-row.audit-context {
 }
 
 .audit-row.audit-browser {
-    width: 100%;
-    background-color: #479ae3;
-    color: white;
-    font-size: 11px !important;
-    margin-top: 3px;
+    background-color: white;
 }
 
 .audit-cell {
-    width: 48%;
+    width: auto;
     margin-left: 1%;
     margin-right: 1%;
     float: right;
+    white-space: nowrap;
+        padding: 3px;
 }
+
+.audit-cell.version
+{
+    background-color: #ddeefd;
+    border-radius: 8px;
+    padding-left: 9px;
+    padding-right: 9px;
+}
+
+.audit-row.audit-fromip {
+    width: auto;
+    background-color: #479ae3;
+    color: white;
+    font-size: 15px !important;
+    margin-top: 3px;
+    text-align: center;
+}
+
 
 .icon-plus:before {
     content: "\f107";
@@ -1531,3 +1566,4 @@ div.audit-enabled {
 div#audit_result_div th, div#audit_result_div td {
     border: 1px solid silver;
 }
+
