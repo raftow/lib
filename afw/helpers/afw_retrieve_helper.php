@@ -35,7 +35,9 @@ class AfwRetrieveHelper
         $actions_tpl_matrix = AfwUmsPagHelper::getActionsMatrix($liste_obj);
         AfwSession::log("After execute UmsPagHelper::getActionsMatrix in afw_handle_default_search");
 
-        $actions_tpl_arr = array();
+        $actions_tpl_arr = AfwUmsPagHelper::getAllActions($obj, 0, false);
+        // throw new AfwRun timeException("debugg :: actions_tpl_arr of $cl = ".var_export($actions_tpl_arr,true));
+
         $cant_do_action_log_arr = array();
         $can_action_arr = array();
         $datatable_header = "";
@@ -159,7 +161,7 @@ class AfwRetrieveHelper
                 $html .= "<td class='col-importance-$importance text_$text_direction srch-result-col-$nom_col'>" . $tuple[$nom_col] . "</td>";
             }
 
-            // die(var_export($actions_tpl_arr,true));
+            // die("rafik is debugging ... actions_tpl_arr= ".var_export($actions_tpl_arr,true));
             if ($ids_count < 3000) {
 
                 foreach ($actions_tpl_arr as $action_item => $action_item_props) {

@@ -108,8 +108,6 @@ if ($objme) {
 $rpbm_list = $myClassInstance->retrieveModePublicMethodsForUser($objme); // []; //
 $rpbm = $show_checkboxes = (count($rpbm_list)>0);
 
-$actions_tpl_arr = AfwUmsPagHelper::getAllActions($myClassInstance, 0, false);
-// throw new AfwRun timeException("debugg :: actions_tpl_arr of $cl = ".var_export($actions_tpl_arr,true));
 if ($resetcrit) {
         $_POST = array();
         $datatable_on = false;

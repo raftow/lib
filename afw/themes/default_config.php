@@ -6,6 +6,7 @@
         'delete'		=> '../lib/images/delete-button.png', // delete.png
         //'trash'		        => '../lib/images/delete-button.png',  
         'modifier'		=> '../lib/images/square.png',    
+        'audit'		=> '../lib/images/audit.png', 
         'move-up'		=> '../lib/images/move-up.png',    
         'move-down'		=> '../lib/images/move-down.png',    
         'editppp'		=> '../lib/images/editppp.png',
