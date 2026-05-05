@@ -106,6 +106,7 @@ class AfwRetrieveHelper
         AfwSession::log("After prepare of header and can_action array matrix in afw_handle_default_search");
         AfwSession::log("Before show data retrieve in afw_handle_default_search");
         $html = "";
+        $html .= "<thead><tr>$datatable_header</tr></thead>";
         $ids = "";
         $ids_count = 0;
         $maxRecordsUmsCheck = $obj->maxRecordsUmsCheck();
@@ -123,11 +124,7 @@ class AfwRetrieveHelper
             $ids .= $id;
             $ids_count++;
             if ($repeat_retrieve_header and (($ids_count % $repeat_retrieve_header) == 0)) {
-                $html .= "<thead>
-                                                                                                <tr>
-                                                                                                        $datatable_header
-                                                                                                </tr>
-                                                                                        </thead>";
+                $html .= "<thead><tr>$datatable_header</tr></thead>";
             }
             //}
             if ($cl_tr == $class_td2) $cl_tr = $class_td1;
