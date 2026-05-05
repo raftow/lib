@@ -660,6 +660,7 @@ class AfwUmsPagHelper extends AFWRoot
     /**
      * @param AFWObject $object
      * @param Auser $auser
+     * @param string $operation can be display, edit, delete, search, qsearch
      */
     public static final function userCanDoOperationOnObject(
         $object,
@@ -681,6 +682,12 @@ class AfwUmsPagHelper extends AFWRoot
             return true;
         }
         if ($operation == 'qsearch' and $object->public_display) {
+            return true;
+        }
+        if ($operation == 'edit' and $object->public_edit) {
+            return true;
+        }
+        if ($operation == 'audit' and $object->public_audit) {
             return true;
         }
 
@@ -749,6 +756,11 @@ class AfwUmsPagHelper extends AFWRoot
         return $return;
     }
 
+    /**
+     * @param AFWObject $object
+     * @param Auser $auser
+     * @param string $operation can be display, edit, delete, search, qsearch
+     */
     public static final function userCanNotDoOperationOnObjectReason(
         $object,
         $auser,

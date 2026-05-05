@@ -1652,6 +1652,15 @@ class AFWObject extends AFWRoot
         );
     }
 
+    /**
+     * getJsonMe
+     * Return an array of objects or values of important fields to be used in JSON output,
+     * it can be used for example in API output to return only important fields and not all fields of the object, and also to return details of FK attributes instead of only their id value
+     * @param array $options
+     * options can contain :
+     * - except-$attribute => true to exclude an important field from JSON output
+     * - decode_fk => 'all' to decode all FK attributes or array with attribute as
+     */
     public function getJsonMe($options = [])
     {
         $impFields = AfwPrevilegeHelper::getAfwImportantFields($this);
@@ -1716,6 +1725,14 @@ class AFWObject extends AFWRoot
         return AfwLoadHelper::showObjectAsJsonArray($this, $attribute, $lang);
     }
 
+    /**
+     * getJsonArray
+     * Return an array of objects or values of an attribute to be used in JSON output, it can be used for example for answer table attribute to return an array of answers with details instead of only an array of values, it can also be used for FK attribute to return the object details instead of only the id value
+     * @param string $attribute
+     * @param array $options
+     * @return array
+
+     */
     public function getJsonArray($attribute, $options = null)
     {
         if (!$options) {
@@ -1744,6 +1761,7 @@ class AFWObject extends AFWRoot
         } elseif (is_object($hetted) and ($hetted instanceof AFWObject)) {
             $result = $hetted->getJsonMe($options);
         }
+        else $result = [];
 
         return $result;
     }
@@ -4448,6 +4466,10 @@ class AFWObject extends AFWRoot
         return $return;
     }
 
+    /**
+     * userCanEditMeWithoutRole
+     * @param Auser $auser
+     */
     protected function userCanEditMeWithoutRole($auser)
     {
         if ($auser and $auser->isAdmin())
@@ -4457,6 +4479,10 @@ class AFWObject extends AFWRoot
         return [false, 'userCanEditMeWithoutRole not implemented for non admin users'];
     }
 
+    /**
+     * userCanEditMeStandard
+     * @param Auser $auser
+     */
     final public function userCanEditMeStandard($auser)
     {
         return AfwUmsPagHelper::userCanDoOperationOnObject($this, $auser, 'edit');
@@ -4478,6 +4504,24 @@ class AFWObject extends AFWRoot
         return [false, ''];
     }
 
+    /**
+     * userCanAuditMe
+     * @param Auser $auser
+     */
+    final public function userCanAuditMe($auser)
+    {
+        $can = AfwUmsPagHelper::userCanDoOperationOnObject($this, $auser, 'audit');
+
+        if(!$can) $not_can_reason = AfwUmsPagHelper::userCanNotDoOperationOnObjectReason($this, $auser, 'audit');
+        else $not_can_reason = '';
+
+        return [$can, $not_can_reason];
+    }
+
+    /**
+     * userCanEditMe
+     * @param Auser $auser
+     */
     final public function userCanEditMe($auser)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
@@ -5213,7 +5257,7 @@ class AFWObject extends AFWRoot
         $final_pbm_arr = [];
         foreach ($allowed_pbm_arr as $pbm_code => $pbm_item) {
             $user_can_run = true;
-
+            $user_cant_reason = "no roles or conditions defined for this PBM";
             if ($pbm_item['CAN_IF']) {
                 $methodCan = $pbm_item['CAN_IF'];
                 if ($methodCan === true) $methodCan = "can" . AfwStringHelper::firstCharUpper($pbm_item["METHOD"]);
