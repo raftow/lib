@@ -928,6 +928,10 @@ class AfwUmsPagHelper extends AFWRoot
 
     /**
      * @param AFWObject $object
+     * @param int $step
+     * @param bool $takeViewIcon
+     * @return array
+
      */
     public static final function getAllActions($object, $step = 0, $takeViewIcon = true)
     {
@@ -940,9 +944,10 @@ class AfwUmsPagHelper extends AFWRoot
 
         $actions_tpl_arr = $object->getSpecificActions($step);
         // die("$object : getSpecificActions = ".var_export($actions_tpl_arr,true));
-        list($editAction, $editFilename) = $object->editAction($step);
-        list($displayAction, $displayFilename) = $object->displayAction($step);
+        list($editAction, $editFilename) = $object->editAction();
+        list($displayAction, $displayFilename) = $object->displayAction();
         list($deleteAction, $deleteFilename) = $object->deleteAction();
+        list($auditAction, $auditFilename) = $object->auditAction();
 
         if (!$object->isActive()) {
             $viewIcon = 'view_off';
@@ -1004,6 +1009,11 @@ class AfwUmsPagHelper extends AFWRoot
         return $actions_tpl_arr;
     }
 
+    /**
+     * @param AFWObject[] $liste_obj
+     * @param int $step
+     * @return array
+     */
     public static final function getActionsMatrix($liste_obj, $step = 0)
     {
         $actions_tpl_matrix = [];

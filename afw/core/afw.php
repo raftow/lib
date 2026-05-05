@@ -6016,6 +6016,13 @@ class AFWObject extends AFWRoot
         return '';
     }
 
+    public function auditAction()
+    {
+        if($this->AUDIT_DATA == "byrow_audit") $type_audit='braudit';
+        else $type_audit='audit';
+        return ['audit', "afw_mode_$type_audit.php"];
+    }
+
     public function editAction()
     {
         return ['edit', 'afw_mode_edit.php'];
