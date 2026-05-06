@@ -207,7 +207,7 @@ if (!$disable_select_view_in_braudit_mode[$cl]) {
             <select id='fgroup' name='fgroup' class='form-control lang_$lang'>
             <option value='all' $fgroup_all_selected >$all_groups</option>
         ";
-        $qsrch_fgroups = $myClassInstance->getFieldGroupArr($lang);
+        $qsrch_fgroups = AfwStructureHelper::getAuditGroupArr($myClassInstance,$lang);
         $size_what_to_see = 3;
         foreach ($qsrch_fgroups as $fgroupcode => $fgroupname) {
                 if ($fgroup == $fgroupcode) $fgroup_selected = "selected";

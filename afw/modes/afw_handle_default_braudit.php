@@ -42,6 +42,8 @@ $rows_braudit = AfwDatabase::db_recup_rows($sql_braudit);
 
 $newColumnsRules = [];
 $newColumnsRules["audit_action"] = ["calcClass"=>"AfwAuditHelper", "calcMethod"=>"auditActionHtml"];
+$newColumnsRules["audit_by"] = ["calcClass"=>"AfwAuditHelper", "calcMethod"=>"auditByHtml"];
+$newColumnsRules["audit_datetime"] = ["calcClass"=>"AfwAuditHelper", "calcMethod"=>"auditDatimeHtml"];
 $newColumnsRules["audit_advanced"] = ["calcClass"=>"AfwAuditHelper", "calcMethod"=>"auditAdvancedHtml"];
 
 
@@ -63,10 +65,13 @@ AfwShowHelper::tableToHtml($data_braudit,
                             'bigtitle',
                             [],
                             '',
-                            0,'','','','off','',null,[],
+                            0,'','','audit','off','',null,[],
                             3,
                             "audit_action",
-                            ["changed"=>"cell-changed"]);
+                            ["changed"=>[
+                                            'css'=>"cell-changed",
+                                            'exceptions'=>["action_by","action_at"]
+                                           ]]);
 
 $html .= "<script>
             $(document).ready(function() {
@@ -79,10 +84,10 @@ $html .= "<script>
                     console.log('action_div_id = '+action_div_id);
                     if($('#'+action_div_id).hasClass('hide')) {
                         $('#'+action_div_id).removeClass('hide');                    
-                        $(this).removeClass('icon-minus').addClass('icon-plus');
+                        $(this).removeClass('icon-plus').addClass('icon-minus');
                     } else {
                         $('#'+action_div_id).addClass('hide');                    
-                        $(this).removeClass('icon-plus').addClass('icon-minus');
+                        $(this).removeClass('icon-minus').addClass('icon-plus');
                     }
                 });
             });

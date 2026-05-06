@@ -135,7 +135,7 @@ class AfwDataQualityHelper
     public static final function getPillarObjects($object, $step = 'all')
     {
         $pillar_objects = [];
-        $object_db_structure = $object::getDbStructure(
+        $object_db_structure = $object::afwDbStructure(
             $return_type = 'structure',
             $attrib = 'all',
             $step
@@ -199,7 +199,7 @@ class AfwDataQualityHelper
         $cm_errors = [];
 
         if (!$erroned_attribute) {
-            $object_db_structure = $object::getDbStructure(
+            $object_db_structure = $object::afwDbStructure(
                 $return_type = 'structure',
                 $attrib = 'all',
                 $step,
@@ -207,15 +207,15 @@ class AfwDataQualityHelper
                 $end_step
             );
             // if((get_class($object)=="Applicant") and ($step)) throw new AfwRuntimeException(get_class($object).":: dbg : this_db_structure for step=$step and start_step=$start_step, end_step=$end_step => ".var_export($object_db_structure,true));
-            // die("showErrorsAsSessionWarnings::getDbStructure($return_type, $attrib, $step, $start_step, $end_step) = ".var_export($object_db_structure,true));
-            // if($step!="all") die("static::getDbStructure($return_type, $attrib, $step) = ".var_export($object_db_structure,true));
+            // die("showErrorsAsSessionWarnings::getDb Structure($return_type, $attrib, $step, $start_step, $end_step) = ".var_export($object_db_structure,true));
+            // if($step!="all") die("static::getDb Structure($return_type, $attrib, $step) = ".var_export($object_db_structure,true));
         } else {
-            $attrib_structure = $object::getDbStructure(
+            $attrib_structure = $object::afwDbStructure(
                 $return_type = 'structure',
                 $attrib = $erroned_attribute
             );
             $object_db_structure[$attrib] = $attrib_structure;
-            //die("static::getDbStructure($return_type, $attrib) = ".var_export($object_db_structure,true));
+            //die("static::getDb Structure($return_type, $attrib) = ".var_export($object_db_structure,true));
         }
 
         // if((get_class($object)=="Applicant") and (!$erroned_attribute) and ($step=="all") and !$object_db_structure["passeport_num"]) die("dbg 2025/02 this_db_structure = ".var_export($object_db_structure,true));
@@ -494,10 +494,6 @@ class AfwDataQualityHelper
                                     is_object($objVal) and
                                     $errors_i < $errors_max
                                 ) {
-                                    if ($errors_check_count[$attribute] > 30) {
-                                        $errors_check_count_attr = $errors_check_count[$attribute];
-                                        throw new AfwRuntimeException("too mauch error checks called for attribute $attribute (nb=$errors_check_count_attr), be carefull on infinite loops");
-                                    }
                                     $err_obj_arr = AfwDataQualityHelper::getDataErrors($objVal, 
                                         $lang,
                                         $show_val,

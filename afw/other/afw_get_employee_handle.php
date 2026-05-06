@@ -5,13 +5,13 @@ require_once(dirname(__FILE__)."/../../config/global_config.php");
 
 $theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__FILE__);include("$file_dir_name/modes/".$theme_name.'_config.php');
 
-if(!$objme) $objme = AfwSession::getUserConnected();
+if(!isset($objme)) $objme = AfwSession::getUserConnected();
 
 if(!$lang) $lang = 'ar';
 
 
 $obj  = new Employee();
-$class_db_structure = Employee::getDbStructure($return_type="structure", $attribute = "all");
+$class_db_structure = Employee::afwDbStructure($return_type="structure", $attribute = "all");
 
 
 $employee_info = $_POST["employee_info"];
@@ -86,6 +86,7 @@ else
 }
 
 $search_result_html = "";
+$result_page_title = "";
 
 if($count_liste_obj==0)
 {

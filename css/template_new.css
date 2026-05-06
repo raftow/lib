@@ -1428,7 +1428,7 @@ div.object_title {
 div.identifier {
     display: inline;
     padding: 4px 8px !important;
-    background-color: #227abb !important;
+    background-color: #1c8d19 !important;
     font-size: 12px;
     font-weight: normal;
     font-family: system-ui;
@@ -1461,12 +1461,12 @@ div.audit-row {
 div.audit-action-div {
     width: 100%;
     float: right;
-    background-color: aliceblue;
+    background-color: #f0f8ffba;
 }
 
 div.audit-row.audit-dtv {
-    background-color: #a7d6ff;
-    min-width: 250px;
+    background-color: #a7d6ff75;
+    min-width: 80px;
     padding: 4px;
 }
 
@@ -1479,7 +1479,7 @@ div.audit-row.audit-context {
 }
 
 .audit-row.audit-browser {
-    background-color: white;
+    background-color: transparent;
 }
 
 .audit-cell {
@@ -1501,10 +1501,10 @@ div.audit-row.audit-context {
 
 .audit-row.audit-fromip {
     width: auto;
-    background-color: #479ae3;
-    color: white;
+    background-color: #849fb7a8;
+    color: #000;
     font-size: 15px !important;
-    margin-top: 3px;
+    margin-top: 0px;
     text-align: center;
 }
 
@@ -1568,3 +1568,10 @@ div#audit_result_div th, div#audit_result_div td {
     border: 1px solid silver;
 }
 
+tr.audit:hover {
+    background-color: #fdf06f !important;
+}
+
+table.dataTable tbody tr.audit:hover>td, table.grid tbody tr.audit:hover>td {
+    opacity: 100% !important;
+}

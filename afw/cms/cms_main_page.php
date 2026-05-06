@@ -1,5 +1,5 @@
 <?php
-include_once("utilities/ufw_error_handler.php");
+include_once(dirname(__FILE__)."/../utilities/ufw_error_handler.php");
 class CmsMainPage
 {
     public static function resetOutput()
@@ -145,13 +145,41 @@ class CmsMainPage
         return $html_output;
     }
 
+    /**
+     * Main_Page is the main section file that will be included in the body of the page, 
+     * it is a php file that will generate the main content of the page
+     * @param string $Main_Page the main section file name (with extension) that will be 
+     *               included in the body of the page
+     * @param string $module_path the path of the current module, it is used to determine 
+     *               the path of the main section file, and also to determine 
+     *               the path of the templates
+     * @param string $header_template the header template file name (with extension) 
+     *               that will be included in the page, it is used to generate 
+     *               the header of the page
+     * @param string $menu_template the menu template file name (with extension) 
+     *               that will be included in the page, it is used to generate the menu of the page
+     * @param string $body_template the body template file name (with extension) 
+     *               that will be included in the page, it is used to generate the body of the page
+     * @param string $footer_template the footer template file name (with extension) 
+     *               that will be included in the page, it is used to generate the footer of the page
+     * @param string $lang the language of the page, it is used to determine 
+     *               the language of the templates, and also to determine 
+     *               the language of the main section file if it is a language specific file
+     * @param string $current_module the current module name, it is used to determine 
+     *               the path of the main section file, and also to determine 
+     *               the path of the templates
+     * @param array $options the options that will be passed to the main section file, 
+     *              it is used to pass any additional information that the main section file may need, 
+     *              for example : for qsearch pages, it can be used to pass 
+     *              the records-in-page option, and the lengthMenu option
+     */
 
     private static function renderMainPage($Main_Page, $module_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options = [])
     {
 
         if (!$Main_Page) throw new AfwRuntimeException("Main Page not defined in renderMainPage");;
         if (!$module_path) throw new AfwRuntimeException("Module path not defined in renderMainPage");;
-
+        $My_Module = "";
         if ((AfwStringHelper::stringStartsWith($Main_Page, "afw_mode_"))) $My_Module = "lib/afw/modes";
         elseif ((AfwStringHelper::stringStartsWith($Main_Page, "afw_handle_"))) $My_Module = "lib/afw/modes";
         elseif ((AfwStringHelper::stringStartsWith($Main_Page, "afw_template_"))) $My_Module = "lib/afw/modes";

@@ -33,7 +33,7 @@ $list_objs_ids = "";
 $real_nb_objs = 0;
 $updated_nb_objs = 0;
 
-$class_db_structure = $class::getDbStructure($return_type = "structure", $attribute = "all");
+$class_db_structure = $class::afwDbStructure($return_type = "structure", $attribute = "all");
 
 for ($i = 0; $i < $nb_objs; $i++) {
         $pki = "id_$i";

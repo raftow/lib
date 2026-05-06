@@ -34,7 +34,7 @@ if ($id) {
     if ($obj->load($id)) $is_loaded_from_db = true;
 }
 
-$class_db_structure = $obj::getDbStructure($return_type = "structure", $attribute = "all");
+$class_db_structure = $obj::afwDbStructure($return_type = "structure", $attribute = "all");
 
 if (!$is_loaded_from_db) {
     if ($obj->UNIQUE_KEY and $obj->tryToLoadWithUniqueKeyForEditMode()) {

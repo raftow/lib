@@ -167,7 +167,7 @@ else
         
         $ddb_field_arr = array();
         
-        $class_db_structure = $mainObject::getDbStructure($return_type="structure", $attribute = "all");
+        $class_db_structure = $mainObject::afwDbStructure($return_type="structure", $attribute = "all");
         
         foreach($class_db_structure as $nom_col => $desc)
         {

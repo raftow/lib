@@ -147,25 +147,51 @@ class AfwAuditHelper extends AFWRoot
      * 
      */
 
+    public static function auditDatimeHtml($initialRow, $dataTuple, $object, $lang='ar') {
+        $datetime = $initialRow["action_at"];
+        return "<div class='audit-cell datetime'>$datetime</div>";
+    }    
+
+        /**
+     * @param array $initialRow
+     * @param array $dataTuple
+     * @param AFWObject $object
+     * 
+     */
+
+    public static function auditByHtml($initialRow, $dataTuple, $object, $lang='ar') {
+        $action_by = $initialRow["action_by"];
+        $by = AfwLoadHelper::decodeLookupValue("ums", "auser", $action_by, "", "", "id");
+        return "<div class='audit-cell by'>$by</div>";
+    }    
+
+
+    /**
+     * @param array $initialRow
+     * @param array $dataTuple
+     * @param AFWObject $object
+     * 
+     */
+
     public static function auditActionHtml($initialRow, $dataTuple, $object, $lang='ar') {
         $html = "";
         $id = $initialRow["id"]."_". $initialRow["version"]."_". $initialRow["action"];        
         $version = AfwLanguageHelper::translateKeyword("version", $lang)." ".$initialRow["version"];
-        $datetime = $initialRow["action_at"];
         $dtv = "<div class='audit-cell version'>$version</div>";
-        $dtv .= "<div class='audit-cell dt'>$datetime</div>";
         $html .= "<div class='audit-row audit-dtv'>$dtv</div>";
-        $action_by = $initialRow["action_by"];
         $action = $initialRow["action"];
-        $by = AfwLoadHelper::decodeLookupValue("ums", "auser", $action_by, "", "", "id");
+        // $datetime = $initialRow["action_at"];
+        //$dtv .= "<div class='audit-cell dt'>$datetime</div>";
+        // $action_by = $initialRow["action_by"];
+        // $by = AfwLoadHelper::decodeLookupValue("ums", "auser", $action_by, "", "", "id");
+        $context = AfwLanguageHelper::translateKeyword($initialRow["update_context"], $lang);     
         $action_text = AfwLanguageHelper::translateKeyword("action.".$action, $lang);
-        $action_by_sentence = $action_text." ".
-             AfwLanguageHelper::translateKeyword("by", $lang)." ".$by;
-        $context = $initialRow["update_context"];     
+        $using = AfwLanguageHelper::translateKeyword("using", $lang);
+        $action_by_sentence = $action_text." ".$using." ".$context;
         $browser = $initialRow["action_browser"];     
         $fromip = $initialRow["action_ip"];     
         $html .= "<div class='audit-row audit-action'>$action_by_sentence</div>";
-        $html .= "<div class='audit-row audit-context'>$context</div>";
+        // $html .= "<div class='audit-row audit-context'>$context</div>";
         $html .= "<div class='audit-row audit-fromip'>$fromip</div>";
         $html .= "<div class='audit-row audit-browser'>$browser</div>";
         return "<div id='audit-action-div-$id' class='audit-action-div hide'>$html</div>";

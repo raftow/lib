@@ -210,7 +210,7 @@ class AFWObject extends AFWRoot
             static::$TABLE = $table;
             $this->AUDIT_DATA = false;
             $this->IS_VIRTUAL = strtolower(substr(static::$TABLE, 0, 2)) == 'v_';
-            // $this_db_structure = static::getDbStructure($return_type="structure", $attribute = "all");
+            // $this_db_structure = static::afwDbStructure($return_type="structure", $attribute = "all");
             $this->initValues();
             $this->PK_FIELD = $pk_field;
         } else {
@@ -310,7 +310,7 @@ class AFWObject extends AFWRoot
 
     public static function answerTableAndModuleFor($attribute)
     {
-        $struct = self::getDbStructure($return_type = 'structure', $attribute);
+        $struct = static::afwDbStructure($return_type = 'structure', $attribute);
         if (!$struct['ANSWER']) {
             throw new AfwRuntimeException("Missed ANSWER property for attribute $attribute : answerTableAndModuleFor => structure = " . var_export($struct, true));
         }
@@ -319,17 +319,17 @@ class AFWObject extends AFWRoot
 
     public static function getShortNames()
     {
-        return self::getDbStructure($return_type = 'shortnames');
+        return static::afwDbStructure($return_type = 'shortnames');
     }
 
     public static function getShortcutFields()
     {
-        return self::getDbStructure($return_type = 'shortcuts');
+        return static::afwDbStructure($return_type = 'shortcuts');
     }
 
     public static function getFormulaFields()
     {
-        return self::getDbStructure($return_type = 'formulas');
+        return static::afwDbStructure($return_type = 'formulas');
     }
 
     public function getMyDbStructure(
@@ -337,12 +337,12 @@ class AFWObject extends AFWRoot
         $attribute = 'all',
         $repare = true
     ) {
-        $return = self::getDbStructure($return_type, $attribute, 'all', null, null, $repare);
-        // if(($attribute == "applicantFileList") and !$return) die(static::$TABLE." :: getDbStructure(return_type=$return_type, $attribute, 'all', null, null, repare=$repare) returned empty value");
+        $return = static::afwDbStructure($return_type, $attribute, 'all', null, null, $repare);
+        // if(($attribute == "applicantFileList") and !$return) die(static::$TABLE." :: afwDbStructure(return_type=$return_type, $attribute, 'all', null, null, repare=$repare) returned empty value");
         return $return;
     }
 
-    public static function getDbStructure(
+    public static function afwDbStructure(
         $return_type = 'structure',
         $attribute = 'all',
         $step = 'all',
@@ -4858,7 +4858,7 @@ class AFWObject extends AFWRoot
             else $sme = 0;
 
             $arr_tokens[$sepBefore."SME".$sepAfter] = $sme;*/
-            $this_db_structure = static::getDbStructure(
+            $this_db_structure = static::afwDbStructure(
                 $return_type = 'structure',
                 $attribute = 'all'
             );
@@ -5671,7 +5671,7 @@ class AFWObject extends AFWRoot
         $step = 'all',
         $consider_bad_format_as_empty = true
     ) {
-        $this_db_structure = static::getDbStructure(
+        $this_db_structure = static::afwDbStructure(
             $return_type = 'structure',
             $attribute = 'all'
         );
@@ -5838,7 +5838,7 @@ class AFWObject extends AFWRoot
 
     public function pagMe($id_main_sh, $updateIfExists = false, $restrictToField = '')
     {
-        $this_db_structure = static::getDbStructure(
+        $this_db_structure = static::afwDbStructure(
             $return_type = 'structure',
             'all'
         );
@@ -6351,20 +6351,7 @@ class AFWObject extends AFWRoot
         return $current_step;
     }
 
-    public function getFieldGroupArr($lang = 'ar', $all = false)
-    {
-        $field_group_arr = [];
-        $this_db_structure = static::getDbStructure($return_type = 'structure', $attribute = 'all');
-        foreach ($this_db_structure as $nom_col => $desc) {
-            if ($desc['FGROUP'] and (!$desc['ITEMS'] or $all)) {
-                if (!$field_group_arr[$desc['FGROUP']]) {
-                    $field_group_arr[$desc['FGROUP']] = $this->translate($desc['FGROUP'], $lang);
-                }
-            }
-        }
-
-        return $field_group_arr;
-    }
+    
 
     public function getFieldGroupInfos($fgroup)
     {
@@ -6632,7 +6619,7 @@ class AFWObject extends AFWRoot
                     . "' does not exist in structure of entity : "
                     . static::$TABLE
                     . '<!-- : DB_STRUCTURE = '
-                    . var_export(self::getDbStructure(), true) . ' -->'
+                    . var_export(static::afwDbStructure(), true) . ' -->'
             );
         }
 

@@ -378,7 +378,7 @@ class AfwPrevilegeHelper
             }
         }
 
-        $object_db_structure = $object::getDbStructure(
+        $object_db_structure = $object::afwDbStructure(
             $return_type = 'structure',
             $attribute = 'all'
         );
@@ -784,7 +784,7 @@ class AfwPrevilegeHelper
 
     public static final function getAfwImportantFields($object)
     {
-        $object_db_structure = $object::getDbStructure(
+        $object_db_structure = $object::afwDbStructure(
             $return_type = 'structure',
             $attribute = 'all'
         );

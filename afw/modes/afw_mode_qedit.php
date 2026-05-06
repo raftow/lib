@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__)."/../../../config/global_config.php");
 
-//$themeArr = AfwThemeHelper::loadTheme();
+$themeArr = AfwThemeHelper::loadTheme();
 foreach($themeArr as $theme => $themeValue)
 {
     $$theme = $themeValue;
@@ -264,7 +264,7 @@ else
             if($qedit_obj->getId()<=0) $qedit_obj->odd_even = "new"; 
             else $qedit_obj->odd_even = $tr_odd_even;    
             // AfwSession::hzmLog("الله المستعان ".date("H:i:s")." before AfwShowHelper::showObject( $qedit_obj ... afw_template_row_qedit.php)","FOOTER");  
-            if(!$class_db_structure) $class_db_structure = $qedit_obj::getDbStructure($return_type="structure", $attribute = "all");
+            if(!$class_db_structure) $class_db_structure = $qedit_obj::afwDbStructure($return_type="structure", $attribute = "all");
             CmsMainPage::addOutput( AfwShowHelper::showObject($qedit_obj,"HTML", "afw_template_row_qedit.php", $color = false, $childrens = false, $decode = true, $virtuals = "", $indent = "", $data_template, $class_db_structure));
             $num++;
             if($tr_odd_even == "odd") $tr_odd_even = "even"; else $tr_odd_even = "odd";

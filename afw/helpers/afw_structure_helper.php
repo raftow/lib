@@ -1,6 +1,9 @@
 <?php
 class AfwStructure
 {
+    /**
+     * @var array
+     */
     public static $DB_STRUCTURE = null;
 }
 
@@ -9,6 +12,14 @@ class AfwStructureHelper extends AFWRoot
     private static $shortNamesArray = [];
     private static $structuresArray = [];
 
+    /**
+     * die and dump a message with back trace, it can also log the message in debugg if $to_debugg is true
+      * @param string $message
+      * @param boolean $to_die
+      * @param boolean $to_debugg
+      * @param boolean $trace
+      * @param boolean $light if true the back trace will be lightened to show only file and line without function calls
+     */
     public static function dd($message, $to_die = true, $to_debugg = false, $trace = true, $light = false)
     {
         if ($trace)
@@ -69,6 +80,23 @@ class AfwStructureHelper extends AFWRoot
         return $struct;
     }
 
+    /**
+     * getDbStructure 
+     * method is the main method to get the structure of an attribute 
+     *    or a group of attributes for a class, it can return different types 
+     *    of structure according to the $return_type parameter
+     * @param string $module_code
+     * @param string $class_name
+     * @param string $table_name
+     * @param string $return_type structure|shortnames|shortcuts|formulas
+     * @param string $attribute attribute name or short name or 'all'
+      * @param string $step step number or 'all'
+      * @param string|null $start_step step number to start from if step is 'all'
+      * @param string|null $end_step step number to end to if step is 'all'
+      * @param bool $repare if true the returned structure(s) will be repared by technicalRepareStructure method
+      *
+      * @return array|mixed
+     */
     public static function getDbStructure(
         $module_code,
         $class_name,
@@ -80,22 +108,20 @@ class AfwStructureHelper extends AFWRoot
         $end_step = null,
         $repare = true
     ) {
+        $this_short_names = [];
+        $this_shortcuts = [];
+        $this_formulas = [];
         if ($return_type == 'shortnames') {
             $attribute = 'all';
-            $this_short_names = [];
         }
 
         if ($return_type == 'shortcuts') {
             $attribute = 'all';
-            $this_shortcuts = [];
         }
 
         if ($return_type == 'formulas') {
             $attribute = 'all';
-            $this_formulas = [];
         }
-
-        $got_first_time = false;
 
         if (!$module_code) {
             $module_code = UfwUrlManager::currentURIModule();
@@ -188,6 +214,7 @@ class AfwStructureHelper extends AFWRoot
 
     public static final function constructDBStructure($module_code, $class_name, $attribute, $step = 'all', $start_step = null, $end_step = null)
     {
+        $got_first_time = false;
         // $start_m_time = microtime();
         $start_m_time = 0;
         $my_db_structure = null;
@@ -508,17 +535,20 @@ class AfwStructureHelper extends AFWRoot
         return $desc;
     }
 
+    /**
+     * @var array
+     */
     public static $allRealFields = null;
 
     /**
      * @param AFWObject $object
-     * @param boolean $structure
+     * @param boolean $returnStructure
      * @return array
      */
     public static final function getAllRealFields(&$object, $returnStructure = false)
     {
-        if (!$returnStructure) {
-            $cls = $object->getMyClass();
+        $cls = $object->getMyClass();
+        if (!$returnStructure) {            
             if (self::$allRealFields[$cls])
                 return self::$allRealFields[$cls];
         }
@@ -1082,7 +1112,7 @@ class AfwStructureHelper extends AFWRoot
     public static function allRealAttributes($className, $step = 'all')
     {
         $returnArr = [];
-        $this_db_structure = $className::getDbStructure($return_type = 'structure', 'all');
+        $this_db_structure = $className::afwDbStructure($return_type = 'structure', 'all');
         foreach ($this_db_structure as $attrib => $desc) {
             if ((!$desc['CATEGORY']) and (($step == 'all') or ($desc['STEP'] == 'all') or ($desc['STEP'] == $step))) {
                 $returnArr[] = $attrib;
@@ -1094,7 +1124,7 @@ class AfwStructureHelper extends AFWRoot
 
     public static function getParentOf($className, $this_table, $attribute)
     {
-        $this_db_structure = $className::getDbStructure($return_type = 'structure', 'all');
+        $this_db_structure = $className::afwDbStructure($return_type = 'structure', 'all');
         foreach ($this_db_structure as $attrib => $desc) {
             if (
                 $desc['CATEGORY'] == 'ITEMS' and
@@ -1421,9 +1451,62 @@ class AfwStructureHelper extends AFWRoot
         return false;
     }
 
+    /**
+     * export
+      * @param AFWObject $object
+      * @return string
+     */
     public static function export($object)
     {
         $object->optimizeMemory();
         return var_export($object, true);
+    }
+
+    /**
+     * getFieldGroupArr
+      * @param AFWObject $object
+      * @param string $lang
+      * @param bool $all
+      * @return array
+
+     */
+    public static function getFieldGroupArr($object, $lang = 'ar', $all = false)
+    {
+        $field_group_arr = [];
+        $this_db_structure = $object::afwDbStructure($return_type = 'structure', $attribute = 'all');
+        foreach ($this_db_structure as $nom_col => $desc) {
+            if ($desc['FGROUP'] and (!$desc['ITEMS'] or $all)) {
+                if (!$field_group_arr[$desc['FGROUP']]) {
+                    $field_group_arr[$desc['FGROUP']] = $object->translate($desc['FGROUP'], $lang);
+                }
+            }
+        }
+
+        return $field_group_arr;
+    }
+
+
+    /**
+     * getAuditGroupArr
+      * @param AFWObject $object
+      * @param string $lang
+      * @param bool $all
+      * @return array
+
+     */
+
+    public static function getAuditGroupArr($object, $lang = 'ar', $all = false)
+    {
+        $field_group_arr = [];
+        $this_db_structure = $object::afwDbStructure($return_type = 'structure', $attribute = 'all');
+        foreach ($this_db_structure as $nom_col => $desc) {
+            if ($desc['AGROUP'] and ($desc['AUDIT'] or $all)) {
+                if (!$field_group_arr[$desc['AGROUP']]) {
+                    $field_group_arr[$desc['AGROUP']] = $object->translate($desc['AGROUP'], $lang);
+                }
+            }
+        }
+
+        return $field_group_arr;
     }
 }

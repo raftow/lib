@@ -7,7 +7,6 @@ foreach($themeArr as $theme => $themeValue)
 }
 $old_work_context = UfwWorkContext::getWorkContext();
 UfwWorkContext::setWorkContext("deduplication");
-UfwWorkContext::setWorkContext($old_work_context);
 $class = $_POST["class_obj"];
 $currmod = $_POST["currmod"];
 //$file  = $_POST["file_obj"];
@@ -25,7 +24,7 @@ $mainObject = new $class();
 
 $ddb_field_arr = array();
 
-$class_db_structure = $class::getDbStructure($return_type="structure", $attribute = "all");
+$class_db_structure = $class::afwDbStructure($return_type="structure", $attribute = "all");
         
 foreach($class_db_structure as $nom_col => $desc)
 {

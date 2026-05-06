@@ -1249,8 +1249,10 @@ class AfwShowHelper
                     // intelligent rules for styling cells
                     if ($cellStylingRules) {
                         $istyle = '';
-                        foreach ($cellStylingRules as $stylingRule => $style) {
-                            if (self::applyStylingRule($nom_col, $stylingRule, $tuple, $previous_tuple)) {
+                        foreach ($cellStylingRules as $stylingRule => $styleRow) {
+                            $style = $styleRow['css'];
+                            $exceptions = $styleRow['exceptions'];
+                            if ((!in_array($nom_col, $exceptions)) and self::applyStylingRule($nom_col, $stylingRule, $tuple, $previous_tuple)) {
                                 $istyle .= " " . $style;
                                 $istyle = trim($istyle);
                             }
@@ -1275,7 +1277,7 @@ class AfwShowHelper
                 // it sawwi farcha on all columns as new tr attached to previous tr
                 if ($colFarcha) {
                     $colFarchaValue = $tuple[$colFarcha];
-                    $myTr .= "<tr><td colspan='$colspan'>$colFarchaValue</td></tr>\n";
+                    $myTr .= "<tr class='$css_class_name'><td colspan='$colspan'>$colFarchaValue</td></tr>\n";
                 }
                 $html .= $myTr;
                 $rows_count_table++;

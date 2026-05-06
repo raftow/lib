@@ -518,7 +518,7 @@ if ($action == "retrieve") {
                 $select_view = "<div class='qsearchview_select'><select id='qsearchview' name='qsearchview' class='form-control lang_$lang'>
                   <option value='all' $fgroup_all_selected >$all_fields</option>
                 ";
-                $qsrch_fgroups = $myClassInstance->getFieldGroupArr($lang);
+                $qsrch_fgroups = AfwStructureHelper::getFieldGroupArr($myClassInstance,$lang);
                 $size_qsearch_text = ${"size_qsearch_" . $myClassInstance};
                 if (!$size_qsearch_text) $size_qsearch_text = 3;
                 foreach ($qsrch_fgroups as $fgroupcode => $fgroupname) {

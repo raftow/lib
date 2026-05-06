@@ -1,7 +1,11 @@
 <?php
+/**
+ * @var AfwObject $obj
+ * @var string $return_type
+ */
 
 $hidden_inputs_arr = array();
-$class_db_structure = $obj::getDbStructure($return_type="structure", $attribute = "all");
+$class_db_structure = $obj::afwDbStructure($return_type="structure", $attribute = "all");
 
 foreach($class_db_structure as $nom_col => $desc)
 {

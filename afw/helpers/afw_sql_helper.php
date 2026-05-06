@@ -915,7 +915,7 @@ class AfwSqlHelper extends AFWRoot
 
     private static function beforeModification($object, $id, $fields_updated)
     {
-        $object_db_structure = $object::getDbStructure(
+        $object_db_structure = $object::afwDbStructure(
             $return_type = 'structure',
             $attribute = 'all'
         );

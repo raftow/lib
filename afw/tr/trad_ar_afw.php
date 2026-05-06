@@ -202,11 +202,15 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['The '] = 'الـ';
         $trad['OPERATOR']['audit_action'] = 'الإجراء';
         $trad['OPERATOR']['audit_advanced'] = 'تفاصيل إضافية';
+        $trad['OPERATOR']['audit_datetime'] = 'تاريخ التعديل';
+        $trad['OPERATOR']['audit_by'] = 'التعديل بواسطة';
         $trad['OPERATOR']['audit disabled'] = 'تدقيق متوقف';
         $trad['OPERATOR']['audit enabled'] = 'تدقيق مفعل';
         $trad['OPERATOR']['audit_advanced_tooltip'] = 'انقر للحصول على تفاصيل إضافية';
         $trad['OPERATOR']['version'] = 'نسخة';
         $trad['OPERATOR']['by'] = 'بواسطة';
+        $trad['OPERATOR']['using'] = 'باستخدام';
+        $trad['OPERATOR']['global-context'] = 'وسيلة غير معرفة في نظام التدقيق';
 
         $trad['OPERATOR']['action.insert'] = 'إضافة';
         $trad['OPERATOR']['action.update'] = 'تعديل';

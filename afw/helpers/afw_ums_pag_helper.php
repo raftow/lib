@@ -1066,6 +1066,8 @@ class AfwUmsPagHelper extends AFWRoot
         }
 
         $cols_retrieve["audit_action"] = $object->translateOperator("audit_action",$lang);
+        $cols_retrieve["audit_by"] = $object->translateOperator("audit_by",$lang);
+        $cols_retrieve["audit_datetime"] = $object->translateOperator("audit_datetime",$lang);
         $cols_retrieve["audit_advanced"] = $object->translateOperator("audit_advanced",$lang);
 
         return $cols_retrieve;

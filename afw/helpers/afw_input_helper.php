@@ -982,6 +982,21 @@ class AfwInputHelper extends AFWRoot
                 return ob_get_clean();
         }
 
+
+        /**
+         * This function generates the HTML for a popup editor for a specific 
+         *      attribute of an object. It retrieves the structure of the attribute, 
+         *      creates an input field for it, and wraps it in a popup layout with 
+         *      save and cancel buttons.
+         * 
+         * @param string $module The module name to which the class belongs.
+         * @param string $classe The class name of the object being edited.
+         * @param string $attribute The attribute of the object that is being edited in the popup.
+         * @param string $lang The language code for translations.
+         * @param AfwObject $obj The object instance that contains the attribute being edited.
+         * @return string The HTML string for the popup editor.
+         */
+
         public static function popupEditor($module, $classe, $attribute, $lang, $obj)
         {
                 $desc = AfwStructureHelper::getDbStructure($module, $classe, '', 'structure', $attribute);

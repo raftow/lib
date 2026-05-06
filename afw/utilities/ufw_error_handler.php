@@ -80,7 +80,7 @@ if((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwException
             global $relative_path;
                 $file = $ex->getFile();
                 $line = $ex->getLine();
-
+                $lines = "";
                 if ( file_exists( $file ) )
                 {
                         $lines = file( $file );
