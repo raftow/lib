@@ -1,6 +1,10 @@
 <?php
 
-$file_dir_name = dirname(__FILE__);
+$afw_dir_name = dirname(__FILE__)."../afw";
+require_once($afw_dir_name.'/core/afw_autoloader.php');
+require_once("$afw_dir_name/utilities/ufw_error_handler.php");
+
+
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 if(!$lang) $lang = "ar";
@@ -9,8 +13,7 @@ if(!$lang) $lang = "ar";
 
 $attr_arr = array();
 $relative_path = "../";
-require_once("$file_dir_name/../afw/utilities/ufw_error_handler.php");
-require_once("$file_dir_name/../afw/core/afw_autoloader.php");
+
 
 foreach($_GET as $col => $val) 
 {
@@ -46,7 +49,7 @@ foreach($required_modules as $required_module)
 }
 
 AfwSession::startSession();
-require_once("$file_dir_name/../../config/global_config.php");
+require_once("$afw_dir_name/../../config/global_config.php");
 
 // die(var_export($attr_arr,true));
 

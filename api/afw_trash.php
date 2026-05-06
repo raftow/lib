@@ -1,8 +1,10 @@
 <?php
 
-$file_dir_name = dirname(__FILE__);
-require_once("../afw/core/afw_autoloader.php");
-include_once ("../afw/utilities/ufw_error_handler.php");
+$objme = AfwSession::getUserConnected();
+$afw_dir_name = dirname(__FILE__)."../afw";
+require_once($afw_dir_name.'/core/afw_autoloader.php');
+include_once($afw_dir_name."/utilities/ufw_error_handler.php");
+
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 $lang = $_REQUEST['lang'];
@@ -10,7 +12,7 @@ $lang = $_REQUEST['lang'];
 AfwSession::startSession();
 $update_context = "delete with afw trash network service";
 // echo "here5"; 
-require_once("$file_dir_name/../../config/global_config.php");
+require_once("$afw_dir_name/../../config/global_config.php");
 // echo "here6";
 // old include of afw.php
 $only_members = true;
@@ -26,7 +28,7 @@ $MODULE = $currmod;
 
 if(!$MODULE) die("module not defined to access trahser");
   
-include("$file_dir_name/../lib/afw/includes/afw_check_member.php");
+include("$afw_dir_name/includes/afw_check_member.php");
 $lang = AfwLanguageHelper::getGlobalLanguage();
  
 // 
