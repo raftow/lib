@@ -1,8 +1,9 @@
 <?php
 ini_set("upload_max_filesize", "40M");
-$file_dir_name = dirname(__FILE__);
+
 
 try {
+        $afw_dir = dirname(__FILE__)."/..";
         $module = $_POST["module"];
         $doc_type_id = $_POST["doc_type_id"];
         if (!$doc_type_id) $doc_type_id = 1;
@@ -14,17 +15,10 @@ try {
         if (isset($_POST["allowed_exention_list"])) $allowed_exention_list = $_POST["allowed_exention_list"];
         else $allowed_exention_list = null;
 
-        require_once("core/afw_autoloader.php");
+        require_once("$afw_dir/core/afw_autoloader.php");
         AfwSession::startSession();
         $uri_module = UfwUrlManager::currentURIModule();
         if ($uri_module) AfwAutoLoader::addModule($uri_module);
-
-        // include_once("$file_dir_name/../../exte rnal/co nfig.php");
-        // include_once("$file_dir_name/../../exte rnal/d b.php");
-
-
-
-
         $objme = AfwSession::getUserConnected();
         if (!$objme) {
                 echo '{"status":"error", "message":"not connected"}';
@@ -47,12 +41,16 @@ try {
         // AFWDebugg::initialiser($DEBUGG_SQL_DIR,$my_debug_file);
 
 
+        /**
+         * @var array $config_arr
+         * @var int $allowed_upload_size
+         */
 
         $my_sh = $objme->getMyOrganizationId("");
         if (!$module) throw new AfwRuntimeException("MODULE var should be defined for `myUpload` file upload process");
-        include_once("$file_dir_name/../$module/module_config.php");
-        include_once("$file_dir_name/../$module/application_config.php");
-        AfwSession::initConfig($config_arr, "system", "$file_dir_name/../$module/application_config.php");
+        include_once("$afw_dir/../../$module/module_config.php");
+        include_once("$afw_dir/../../$module/application_config.php");
+        AfwSession::initConfig($config_arr, "system", "$afw_dir/../../$module/application_config.php");
 
 
         // max allowwed size for upload
@@ -142,7 +140,7 @@ try {
                         // array ( 'upl' => array ( 'name' => 'normalLeaveRamadan1436.jpg', 'type' => 'image/jpeg', 'tmp_name' => 'C:\\wamp\\tmp\\php942C.tmp', 'error' => 0, 'size' => 79454, ), )
                         if (move_uploaded_file($mv_from_file, $mv_to_file)) {
                                 if ($after_upload) {
-                                        $after_upload_full_file_name = "$file_dir_name/../../$module/afup/after_upload_$after_upload.php";
+                                        $after_upload_full_file_name = "$afw_dir/../../$module/afup/after_upload_$after_upload.php";
                                         if (file_exists($after_upload_full_file_name)) {
                                                 include($after_upload_full_file_name);
                                         } else {
@@ -175,15 +173,16 @@ try {
                                         $mime = finfo_file($finfo, $mv_from_file);
                                         $_FILES['upl']["mime"] = $mime;
                                         $move_error = "file $mv_from_file exists but failed to move to $mv_to_file";
+                                        $error = "can't move file to uploads folder : <br>
+                                                        from $mv_from_file(size:$fsize, mime:$mime) to $mv_to_file, <br>
+                                                        upload error : $upl_error, <br>
+                                                        move error : $move_error<br>
+                                                        try manually : move $mv_from_file $mv_to_file\n<br>";
                                 } else {
-                                        $move_error = "file $mv_from_file not found";
+                                        $error = "file $mv_from_file not found";
                                 }
 
-                                $error = "can't move file to uploads folder : <br>
-                                from $mv_from_file(size:$fsize, mime:$mime) to $mv_to_file, <br>
-                                upload error : $upl_error, <br>
-                                move error : $move_error<br>
-                                try manually : move $mv_from_file $mv_to_file\n<br>";
+                                
                                 $_FILES['move_error'] = $error;
                         }
                 } else {

@@ -70,7 +70,7 @@ AfwShowHelper::tableToHtml($data_braudit,
                             "audit_action",
                             ["changed"=>[
                                             'css'=>"cell-changed",
-                                            'exceptions'=>["action_by","action_at"]
+                                            'exceptions'=>["audit_by","audit_datetime"]
                                            ]]);
 
 $html .= "<script>
