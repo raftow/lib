@@ -2,6 +2,10 @@
 
 class AfwPrevilege extends AFWRoot
 {
+    /**
+     * Loads all server modules info from client-company/modules_all.php file
+     * @return array [found, mod_info, file_modules_all]
+     */
     public static function loadAllServerModules()
     {
         $company = AfwSession::currentCompany();
@@ -14,6 +18,10 @@ class AfwPrevilege extends AFWRoot
         return [$found, $mod_info, $file_modules_all];
     }
 
+    /**
+     * @param string $module_code
+     * @return int
+     */
     public static function moduleIdOfModuleCode($module_code)
     {
         list($found, $mod_info) = self::loadAllServerModules();
@@ -21,6 +29,10 @@ class AfwPrevilege extends AFWRoot
         else return 0;
     }
 
+    /**
+     * @param string $module_id
+     * @return string
+     */
     public static function moduleCodeOfModuleId($module_id)
     {
         list($found, $mod_info, $file_modules_all) = self::loadAllServerModules();
@@ -28,6 +40,10 @@ class AfwPrevilege extends AFWRoot
         else return "";
     }
 
+    /**
+     * @param string $module_code
+     * @return array
+     */
     public static function loadModulePrevileges($module_code)
     {
         $previlege_sys_file =  dirname(__FILE__) . "/../../../$module_code/previleges.php";
@@ -39,6 +55,11 @@ class AfwPrevilege extends AFWRoot
     }
 
 
+    /**
+     * @param string $module_code
+     * @param string $table_name
+     * @return array
+     */
     public static function loadModuleTablePrevileges($module_code, $table_name)
     {
         $fileName = "previleges_$module_code" . "_table_$table_name"  . ".php";

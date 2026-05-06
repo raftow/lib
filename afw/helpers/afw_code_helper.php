@@ -9,6 +9,17 @@ class AfwCodeHelper
         return $line;
     }
 
+    /**
+     * Show code lines in html format with line numbers and focus on a specific line if needed
+      * @param string|array $file_or_lines file path or array of lines to show
+      * @param int $line line number to focus on (1-based index)
+      * @param int $lines_before number of lines to show before the focused line
+      * @param int $lines_after number of lines to show after the focused line
+      * @param string $title title to show above the code block
+      * @param string $language language for syntax highlighting (e.g. 'php', 'js', 'html')
+      * @param string $focus_class css class to apply to the focused line
+      * @return string html code to display the code block
+     */
     public static function showCodeLines($file_or_lines, $line = 0, $lines_before = 0, $lines_after = 0, $title = '', $language = 'php', $focus_class = 'line')
     {
         if (!is_array($file_or_lines)) {
@@ -17,7 +28,10 @@ class AfwCodeHelper
                 $lines = file($file);
                 $title .= '<i>modified at ' . date('F d Y H:i:s.', filemtime($file)) . '</i>';
             }
-
+            else {
+                $lines = null;
+                $title .= '<i>file not found</i>';
+            }
             if ($line)
                 $title .= "focus on line $line";
         } else {
@@ -74,6 +88,7 @@ class AfwCodeHelper
             try {
                 UfwFileSystem::write($generated_fileName, $php);
             } catch (Exception $e) {
+                $mv_command_line = "failed to generate it";
                 $command_lines_arr[] = UfwUtils::hzm_format_command_line("error", "failed to write php file $generated_fileName\n");
             } finally {
                 $root_module_path = $root_www_path . $dir_sep . $module_code;
@@ -88,6 +103,7 @@ class AfwCodeHelper
                 $mv_command_line = "$mv_command$generated_fileName $root_module_path";
             }
         } else {
+            $mv_command_line = "gen-folder=no-gen";
             $command_lines_arr[] = UfwUtils::hzm_format_command_line("warning", "  file generation disable");
         }
 

@@ -34,7 +34,7 @@ class AfwOperatorArTranslator
 
         $trad['OPERATOR']['SEARCH'] = 'بحث متقدم في';
         $trad['OPERATOR']['QSEARCH'] = 'الإستعلام عن';
-        $trad['OPERATOR']['AUDIT'] = 'تقصي أثر التعديلات على';
+        $trad['OPERATOR']['AUDIT'] = 'تدقيق التعديلات على';
 
         $trad['OPERATOR']['CLICK-TO-EDIT-SEARCH'] = 'انقر هنا لتعديل معايير البحث';
         $trad['OPERATOR']['SEARCH CRITERIA'] = 'معايير البحث في';
@@ -76,7 +76,7 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['LOADING_PROBLEM'] = 'Erreur lors du chargement du fichier';
         $trad['OPERATOR']['SUBMIT'] = 'انطلق';
         $trad['OPERATOR']['SUBMIT-SEARCH'] = 'بحث';
-        $trad['OPERATOR']['SUBMIT-AUDIT'] = 'تقصي الأثر';
+        $trad['OPERATOR']['SUBMIT-AUDIT'] = 'تدقيق';
         $trad['OPERATOR']['EXECUTE'] = 'تنفيذ';
         $trad['OPERATOR']['SUBMIT-SEARCH-ADVANCED'] = 'بحث متقدم';
         $trad['OPERATOR']['RESET-CRITEREA'] = 'مسح المعايير';  // "بحث جديد";
@@ -99,7 +99,7 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['ERROR'] = 'خطأ';
         $trad['OPERATOR']['INFORMATION'] = 'معلومة';
         $trad['OPERATOR']['WARNING'] = 'تنبيه';
-        $trad['OPERATOR']['DEBUGG'] = 'تقصي أثر';
+        $trad['OPERATOR']['DEBUGG'] = 'تدقيق';
 
         $trad['OPERATOR']['cancel'] = 'إلغاء';
         $trad['OPERATOR']['save'] = 'حفظ';
@@ -202,8 +202,8 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['The '] = 'الـ';
         $trad['OPERATOR']['audit_action'] = 'الإجراء';
         $trad['OPERATOR']['audit_advanced'] = 'تفاصيل إضافية';
-        $trad['OPERATOR']['audit disabled'] = 'تقصي الأثر متوقف';
-        $trad['OPERATOR']['audit enabled'] = 'تقصي الأثر مفعل';
+        $trad['OPERATOR']['audit disabled'] = 'تدقيق متوقف';
+        $trad['OPERATOR']['audit enabled'] = 'تدقيق مفعل';
         $trad['OPERATOR']['audit_advanced_tooltip'] = 'انقر للحصول على تفاصيل إضافية';
         $trad['OPERATOR']['version'] = 'نسخة';
         $trad['OPERATOR']['by'] = 'بواسطة';

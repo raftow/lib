@@ -88,8 +88,10 @@ $html .= "<script>
             });
         </script>";
 
+if($me==1) {
+    $html .= "<hr class='separator'><pre class='sql hide'>$sql_braudit</pre>";
+}
 
-$html .= "<pre class='sql'>$sql_braudit</pre>";
 
 
 return ['audit_result_html'=>$html];

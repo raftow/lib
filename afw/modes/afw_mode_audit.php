@@ -84,7 +84,7 @@ $update_date_obj = $myObj->getUpdateDate();
 $update_user_id_obj = $myObj->getUpdateUserId();
 $myObj_display = $myObj->getDisplay($lang);
 CmsMainPage::initOutput($header_bloc_audit);
-CmsMainPage::addOutput("<br><h1>تقصي الأثر على التعديلات المجراة على السجل : </h2><br>");
+CmsMainPage::addOutput("<br><h1>تدقيق على التعديلات المجراة على السجل : </h2><br>");
 CmsMainPage::addOutput("<span class='object_view'>$myObj_display</span><br>");
 
 $audit_header["all"] = array('version' => "النسخة", 'update_date' => "تاريخ التعديل", 'update_auser_id' => "صاحب التعديل", 'update_context' => "سياق التعديل");
@@ -135,7 +135,7 @@ foreach($attribute_arr as $attribute)
         $audit_header["all"][$attribute] = $attribute_label;
         if($show!="merged")
         {
-                CmsMainPage::addOutput("<br><h2>تقصي الأثر على الحقل :$attribute_label </h2>");
+                CmsMainPage::addOutput("<br><h2>تدقيق على الحقل :$attribute_label </h2>");
                 CmsMainPage::addOutput("<div id='audit-$cl-$id-$attribute'>");
                 
                 list($html,$ids) = AfwShowHelper::tableToHtml($audit_data[$attribute], $audit_header[$attribute]);

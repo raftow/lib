@@ -13,8 +13,24 @@ class AfwStringHelper
                 return $text;
         }
 
-        public static function duplicateName($the_name, $prefix = "_", $the_name2, $prefix2 = " ", $the_name3, $prefix3 = " ", $maxK = 20)
+        /**
+         * Duplicate a name by incrementing the number in the prefix, 
+         *     if exists, or adding a prefix with number 1 if not exists
+         * @param string $the_name the name to duplicate
+         * @param string $prefix the prefix to look for in the name, e.g. "copy" or "cp"
+         * @param string $the_name2 another name to duplicate with the same logic as the_name, it can be empty string if not needed
+         * @param string $prefix2 the prefix for the second name
+         * @param string $the_name3 another name to duplicate with the same logic as the_name, it can be empty string if not needed
+         * @param string $prefix3 the prefix for the third name
+         * @param int $maxK the maximum number of iterations to try
+         * @return array the duplicated names
+
+         */
+        public static function duplicateName($the_name, $prefix, $the_name2, $prefix2, $the_name3, $prefix3 = " ", $maxK = 20)
         {
+                $new_name = "";
+                $new_name2 = "";
+                $new_name3 = "";
                 for ($k = 1; $k <= $maxK; $k++) {
                         $tok = $prefix . $k;
                         $kk = $k + 1;
@@ -520,90 +536,6 @@ class AfwStringHelper
         public static function _real_escape_string($string)
         {
                 return addslashes($string);
-        }
-
-
-        public static final function parseAttribute(
-                $object,
-                $attribute,
-                $val_to_parse,
-                $lang,
-                $set_to_object = true
-        ) {
-                $desc = AfwStructureHelper::getStructureOf($object, $attribute);
-
-                if ($desc['TYPE'] == 'GDAT' or $desc['TYPE'] == 'DATE') {
-                        $alt_separator = '/';
-                        $separator = '-';
-                        if ($desc['TYPE'] == 'GDAT') {
-                                $std_separator = '-';
-                                $thousand = 1000;
-                                $big_thousand = 2000;
-                        }
-
-                        if ($desc['TYPE'] == 'DATE') {
-                                $std_separator = '';
-                                $thousand = 1000;
-                                $big_thousand = 1000;
-                        }
-
-                        if (strpos($val_to_parse, $alt_separator) !== false) {
-                                $separator = $alt_separator;
-                        }
-
-                        list($val1, $val2, $val3) = explode($separator, $val_to_parse);
-
-                        if ($val1 > 31) {
-                                $old_val3 = $val3;
-                                $val3 = $val1;
-                                $val3 = $old_val3;
-                        }
-
-                        if ($val3 > 31) {
-                                if ($val3 > $thousand) {
-                                        $yyyy = $val3;
-                                } else {
-                                        $yyyy = $val3 + $thousand;
-                                }
-                        } else {
-                                $yyyy = $val3 + $big_thousand;
-                        }
-
-                        if ($val2 > 12) {
-                                $dd = $val2;
-                                $mm = $val1;
-                        } else {
-                                $dd = $val1;
-                                $mm = $val2;
-                        }
-
-                        $val = $yyyy . $std_separator . $mm . $std_separator . $dd;
-                } elseif ($desc['TYPE'] == 'FK' or $desc['TYPE'] == 'ENUM') {
-                        // gender
-                        if (
-                                AfwStringHelper::stringStartsWith($attribute, 'gender_') or
-                                AfwStringHelper::stringStartsWith($attribute, 'genre_')
-                        ) {
-                                $fc = substr(strtoupper($val_to_parse), 0, 1);
-                                if ($fc == 'F') {
-                                        $val = 2;
-                                } elseif ($fc == 'M') {
-                                        $val = 1;
-                                } else {
-                                        $val = 0;
-                                }
-                        }
-                        // @todo parse selon attribute type
-                        // FK / Enum : using synonyms data lookup table
-                        $val = $val_to_parse;
-                } else {
-                        $val = $val_to_parse;
-                }
-
-                if ($set_to_object) {
-                        $object->set($attribute, $val);
-                }
-                return [true, $val];
         }
 
         public static function getFileNameFullPath($file_name, $module)
@@ -1440,6 +1372,7 @@ class AfwStringHelper
                 $first_name = "";
                 $father_name = "";
                 $last_name = "";
+                $gfather_name = "";
 
                 switch (count($full_name_list)) {
                         case 0:

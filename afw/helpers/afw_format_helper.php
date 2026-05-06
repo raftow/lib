@@ -317,7 +317,7 @@ class AfwFormatHelper
                 // die("$data_to_display = mysqldate_to_explicit_fr_date_arr(date_to_display=$date_to_display, WeekDayOn=$WeekDayOn, YearOn=$YearOn, MonthNameOn=$MonthNameOn,Separator=' ',return_array=false);");
             }             
             else*/
-                if ($structure['FORMAT'] == 'DATETIME') {
+            if ($structure['FORMAT'] == 'DATETIME') {
             } elseif ($structure['FORMAT'] == 'CONVERT_HIJRI') {
                 if ($date_to_display) {
                     $hijri_date = AfwDateHelper::gregToHijri($date_to_display, 'hdate-dashed', $structure['IF-SEEMS-HIJRI-KEEP']);
@@ -679,7 +679,7 @@ class AfwFormatHelper
             $empty_code = 'obj-empty';
         }
         $empty_message = $object->translate($empty_code, $lang);
-        if(!$empty_message or ($empty_message == $empty_code)) {
+        if (!$empty_message or ($empty_message == $empty_code)) {
             $empty_message = $object->tm($empty_code, $lang);
         }
         return "<div class='empty_message'>" . $empty_message . '</div>';
@@ -2158,5 +2158,96 @@ class AfwFormatHelper
         if (!is_array($data)) return false;
         foreach ($data as $row) if (!is_array($row)) return false;
         return true;
+    }
+
+    /**
+     * Parse a value according to the attribute type and set it to the object if needed
+      * @param AFWObject $object
+      * @param string $attribute
+      * @param string $val_to_parse
+      * @param string $lang
+      * @param bool $set_to_object whether to set the parsed value to the object or just return it
+       * @return array [success, parsed_value]
+       *
+     */
+    public static final function parseAttribute(
+        $object,
+        $attribute,
+        $val_to_parse,
+        $lang,
+        $set_to_object = true
+    ) {
+        $desc = AfwStructureHelper::getStructureOf($object, $attribute);
+
+        if ($desc['TYPE'] == 'GDAT' or $desc['TYPE'] == 'DATE') {
+            $alt_separator = '/';
+            $separator = '-';
+            $thousand = 1000;
+            $big_thousand = 2000;
+            if ($desc['TYPE'] == 'GDAT') {
+                $std_separator = '-';
+                
+            }
+            else { // ($desc['TYPE'] == 'DATE') 
+                $std_separator = '';
+            }
+
+            if (strpos($val_to_parse, $alt_separator) !== false) {
+                $separator = $alt_separator;
+            }
+
+            list($val1, $val2, $val3) = explode($separator, $val_to_parse);
+
+            if ($val1 > 31) {
+                $old_val3 = $val3;
+                $val3 = $val1;
+                $val3 = $old_val3;
+            }
+
+            if ($val3 > 31) {
+                if ($val3 > $thousand) {
+                    $yyyy = $val3;
+                } else {
+                    $yyyy = $val3 + $thousand;
+                }
+            } else {
+                $yyyy = $val3 + $big_thousand;
+            }
+
+            if ($val2 > 12) {
+                $dd = $val2;
+                $mm = $val1;
+            } else {
+                $dd = $val1;
+                $mm = $val2;
+            }
+
+            $val = $yyyy . $std_separator . $mm . $std_separator . $dd;
+        } elseif ($desc['TYPE'] == 'FK' or $desc['TYPE'] == 'ENUM') {
+            // gender
+            if (
+                AfwStringHelper::stringStartsWith($attribute, 'gender_') or
+                AfwStringHelper::stringStartsWith($attribute, 'genre_')
+            ) {
+                $fc = substr(strtoupper($val_to_parse), 0, 1);
+                if ($fc == 'F') {
+                    $val = 2;
+                } elseif ($fc == 'M') {
+                    $val = 1;
+                } else {
+                    $val = 0;
+                }
+            }
+            // @todo parse selon attribute type
+            // FK / Enum : using synonyms data lookup table
+            $val = $val_to_parse;
+        } else {
+            $val = $val_to_parse;
+        }
+
+        if ($set_to_object) {
+            $object->set($attribute, $val);
+        }
+        return [true, $val];
     }
 }

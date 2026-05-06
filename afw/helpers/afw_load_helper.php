@@ -185,6 +185,7 @@ class AfwLoadHelper extends AFWRoot
     public static function vhGetListe(&$obj, $fk_attribute, $fk_table, $where, $action = "default", $lang = "ar", $val_to_keep = null, $order_by = "", $dropdown = false, $optim = true, $max_items_count = true)
     {
         $return = [];
+        $case = "no case";
         if (!$where) $where = "1";
         $obj_cl = get_class($obj);
         if ($action == "default") {
@@ -334,9 +335,23 @@ class AfwLoadHelper extends AFWRoot
     }
 
 
+    /**
+     * getTheObjectCacheForAttribute
+     * Try to get the object of an attribute from local small cache for this attribute, 
+     *   if exist and valid (id is the same as object_id) 
+     *    otherwise return null 
+     *    and delete the cache because it is not valid anymore (id has changed)
+     * @param object $theObject : the object having the attribute
+     * @param string $attribute : the attribute for which we want to get the object
+     * @param int $object_id : the id of the object we want to get,
+     *   it is used to check if the cache is still valid (id has not changed) 
+     *   and if not delete the cache and return null
+     * @return object|null : the object of the attribute if exist in cache and valid, otherwise null
+     */
 
     private static function getTheObjectCacheForAttribute($theObject, $attribute, $object_id)
     {
+        $object = null;
         // 1. try from local small cache for attribute
         if (
             is_object($theObject->OBJECTS_CACHE[$attribute]) and
@@ -755,6 +770,9 @@ class AfwLoadHelper extends AFWRoot
         $sep = $object->DISPLAY_SEPARATOR;
         if (!$sep) $sep = "-";
         // if($table=="crm_customer") die("object->DISPLAY_FIELD = ".var_export($object->DISPLAY_FIELD,true));
+
+        $display_field = "";
+
         if (isset($object->DISPLAY_FIELD)) {
 
             if (is_array($object->DISPLAY_FIELD)) {
@@ -838,7 +856,7 @@ class AfwLoadHelper extends AFWRoot
 
         // $time_start = microtime(true);
 
-
+        $query = 'no-query';
         // if($value == 6082) die("load case cache_management=$cache_management loading $className[$value] result_row=".var_export($result_row));
         //$result_row_from = 'load call as result_row = ' . var_export($result_row, true);
 
@@ -1211,7 +1229,7 @@ class AfwLoadHelper extends AFWRoot
     ) {
         $method_time_start = hrtime(true);
 
-
+        $query = 'no-query';
         // DISABLED EAGER to check lenteur from there or no ?
         // Now it is ok it is not from eager find the reason elsewhere
         // $eager_joins = false;
@@ -2095,6 +2113,7 @@ class AfwLoadHelper extends AFWRoot
                 throw new AfwRuntimeException('table param is mandatory in get EnumTable method');
             }
             $return = NULL;
+            $case = "no case";
             if ($obj) {
                 $return = $obj->$object_method();
                 $case = "obj->$object_method()";
