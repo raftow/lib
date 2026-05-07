@@ -148,6 +148,9 @@ if ($page_sub_title) {
 }
 CmsMainPage::addOutput("</div>");
 
+$agroup = $myClassInstance->DEFAULT_AGROUP;
+if(!$agroup) $agroup = "all";
+if(!$fields) $fields = "auditable";
 
 $list_of_ret_cols_all = array();
 $list_of_ret_cols_default = array();
@@ -155,7 +158,8 @@ $list_of_ret_cols_default = array();
 $class_db_structure = $myClassInstance->getMyDbStructure();
 
 foreach ($class_db_structure as $nom_col => $desc) {
-        if ((($fgroup == "all") or ($desc["FGROUP"]==$fgroup)) and 
+        if(!$desc["AGROUP"]) $desc["AGROUP"] = $desc["FGROUP"];
+        if ((($agroup == "all") or ($desc["AGROUP"]==$agroup)) and 
             (($fields == "all") or (($fields == "auditable") and ($desc["AUDIT"]))) and
             (!$desc["NO-AUDIT"]) and
             AfwPrevilegeHelper::keyIsToDisplayForUser($myClassInstance, $nom_col, $objme)) 
@@ -201,18 +205,18 @@ if (!isset($disable_select_view_in_braudit_mode[$cl])) {
 
 if (!$disable_select_view_in_braudit_mode[$cl]) {
         $all_groups = AFWObject::gtr("all groups", $lang);
-        if ($fgroup == "all") $fgroup_all_selected = "selected";
-        else $fgroup_all_selected = "";
+        if ($agroup == "all") $agroup_all_selected = "selected";
+        else $agroup_all_selected = "";
         $select_view = "<div class='braudit_view_select'>
             <select id='fgroup' name='fgroup' class='form-control lang_$lang'>
-            <option value='all' $fgroup_all_selected >$all_groups</option>
+            <option value='all' $agroup_all_selected >$all_groups</option>
         ";
         $qsrch_fgroups = AfwStructureHelper::getAuditGroupArr($myClassInstance,$lang);
         $size_what_to_see = 3;
-        foreach ($qsrch_fgroups as $fgroupcode => $fgroupname) {
-                if ($fgroup == $fgroupcode) $fgroup_selected = "selected";
-                else $fgroup_selected = "";
-                $select_view .= "<option value='$fgroupcode' $fgroup_selected> $fgroupname</option>";
+        foreach ($qsrch_fgroups as $agroupcode => $agroupname) {
+                if ($agroup == $agroupcode) $agroup_selected = "selected";
+                else $agroup_selected = "";
+                $select_view .= "<option value='$agroupcode' $agroup_selected> $agroupname</option>";
         }
         $select_view .= "</select></div>";
         $what_to_see = $myClassInstance->translate('WHAT-TO-SEE', $lang, true);
