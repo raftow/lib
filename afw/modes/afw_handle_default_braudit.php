@@ -21,17 +21,16 @@ $target = "";
 $popup_t = "";
 
 $cols_spec_retrieve = array();
-if(!$fgroup) $fgroup = "all";
-if(!$fields) $fields = "auditable";
+
 /**
  * @var AFWObject $myClassInstance 
  */
 
 
-$header = AfwUmsPagHelper::getAuditHeader($myClassInstance, $fgroup, $fields, $lang);
+$header = AfwUmsPagHelper::getAuditHeader($myClassInstance, $agroup, $fields, $lang);
 
 if (count($header) == 0) {
-    throw new AfwBusinessException("For class $cl no audit columns defined to retrieve for fields=$fields groups=$fgroup lang=$lang");
+    throw new AfwBusinessException("For class $cl no audit columns defined to retrieve for fields=$fields groups=$agroup lang=$lang");
 }
 
 $myBRAuditTableName = $myClassInstance->getMyTable(true)."_braudit";

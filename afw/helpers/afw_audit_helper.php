@@ -32,8 +32,9 @@ class AfwAuditHelper extends AFWRoot
      */
     public static final function audit_on_update($object, $arr_fields_updated, $action, $update_context = '')
     {
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         if(!$update_context) {
-            $update_context = UfwWorkContext::getWorkContext();
+            $update_context = UfwWorkContext::getAllContextTranslated($lang);
         }
         $table_name = $object->getTableName();
         if ($object->IS_VIRTUAL) {
@@ -207,7 +208,7 @@ class AfwAuditHelper extends AFWRoot
     public static function auditAdvancedHtml($initialRow, $dataTuple, $object, $lang='ar') {
         $id = $initialRow["id"]."_". $initialRow["version"]."_". $initialRow["action"];        
         $auditId = "V".$initialRow["version"]. strtoupper(substr($initialRow["action"],0,1));
-        $icon_advanced = "<span id='icon-audit-$id' class='fa advanced-audit icon-plus' title='".AfwLanguageHelper::translateKeyword("optaudit_advanced_tooltipions", $lang)."'></span>";
+        $icon_advanced = "<span id='icon-audit-$id' class='fa advanced-audit icon-plus' title='".AfwLanguageHelper::translateKeyword("audit_advanced", $lang)."'></span>";
         $icon_advanced .= "<div class='identifier'>$auditId</div>";
         return "<div class='audit-advanced' id='audit-advanced-$id'>$icon_advanced</div>";
     }

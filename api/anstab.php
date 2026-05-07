@@ -1,6 +1,6 @@
 <?php
 
-$afw_dir_name = dirname(__FILE__)."../afw";
+$afw_dir_name = dirname(__FILE__)."/../afw";
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 if(!$lang) $lang = "ar";
@@ -40,7 +40,7 @@ foreach($required_modules as $required_module)
 }
 
 AfwSession::startSession();
-require_once("$file_dir_name/../../config/global_config.php");
+require_once("$afw_dir_name/../../config/global_config.php");
 
 // die(var_export($attr_arr,true));
 

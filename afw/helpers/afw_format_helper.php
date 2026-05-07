@@ -1485,6 +1485,13 @@ class AfwFormatHelper
 
     /**
      * @param AFWObject $object
+     * @param string $attribute
+     * @param array $structure
+     * @param string $table_name
+     * @param string $call_method
+     * @param int|null $max_items
+     * @param bool $eager
+
      */
     final public static function formatITEMS(&$object, $attribute, $structure, $table_name, $call_method, $max_items, $eager = false)
     {
@@ -1554,9 +1561,7 @@ class AfwFormatHelper
                     'Check if ANSWER property is defined for attribute '
                         . $attribute
                         . ' having type ITEMS in DB_STRUCTURE of table '
-                        . $table_name,
-                    $call_method
-                );
+                        . $table_name);
             }
         }
 
@@ -2003,6 +2008,22 @@ class AfwFormatHelper
         return [$err, $info, $warn, $tech, $result_arr];
     }
 
+    /**
+     * getCategorizedAttribute
+      * Return value of attribute according to its category (ITEMS, FORMULA, VIRTUAL, SHORTCUT)
+       * @param AFWObject $object
+       * @param string $attribute
+       * @param string $attribute_category
+       * @param string $attribute_type
+       * @param array $structure
+       * @param string $what
+       * @param string $format
+       * @param bool $integrity
+       * @param int|null $max_items
+       * @param string $lang
+       * @param string $call_method
+       * @return mixed
+     */
     public static function getCategorizedAttribute(&$object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = '')
     {
         /*

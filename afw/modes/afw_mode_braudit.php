@@ -148,7 +148,8 @@ if ($page_sub_title) {
 }
 CmsMainPage::addOutput("</div>");
 
-$agroup = $myClassInstance->DEFAULT_AGROUP;
+$agroup = $_REQUEST["agroup"];
+if(!$agroup) $agroup = $myClassInstance->DEFAULT_AGROUP;
 if(!$agroup) $agroup = "all";
 if(!$fields) $fields = "auditable";
 
@@ -208,12 +209,12 @@ if (!$disable_select_view_in_braudit_mode[$cl]) {
         if ($agroup == "all") $agroup_all_selected = "selected";
         else $agroup_all_selected = "";
         $select_view = "<div class='braudit_view_select'>
-            <select id='fgroup' name='fgroup' class='form-control lang_$lang'>
+            <select id='agroup' name='agroup' class='form-control lang_$lang'>
             <option value='all' $agroup_all_selected >$all_groups</option>
         ";
-        $qsrch_fgroups = AfwStructureHelper::getAuditGroupArr($myClassInstance,$lang);
+        $qsrch_agroups = AfwStructureHelper::getAuditGroupArr($myClassInstance,$lang);
         $size_what_to_see = 3;
-        foreach ($qsrch_fgroups as $agroupcode => $agroupname) {
+        foreach ($qsrch_agroups as $agroupcode => $agroupname) {
                 if ($agroup == $agroupcode) $agroup_selected = "selected";
                 else $agroup_selected = "";
                 $select_view .= "<option value='$agroupcode' $agroup_selected> $agroupname</option>";
@@ -227,7 +228,7 @@ if (!$disable_select_view_in_braudit_mode[$cl]) {
                 </div>        
         </div>');
 } else {
-        CmsMainPage::addOutput("<input type='hidden' id='fgroup' name='fgroup' value='all' />");
+        CmsMainPage::addOutput("<input type='hidden' id='agroup' name='agroup' value='$agroup' />");
 }
 
 CmsMainPage::addOutput('</div>');

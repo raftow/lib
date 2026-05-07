@@ -1051,11 +1051,11 @@ class AfwUmsPagHelper extends AFWRoot
 
     public static final function getAuditHeader(
         $object,
-        $fgroup = 'all', 
+        $agroup = 'all', 
         $fields = 'all',
         $lang = 'ar'
     ) {
-        $cols = AfwPrevilegeHelper::getAuditCols($object, $fgroup, 
+        $cols = AfwPrevilegeHelper::getAuditCols($object, $agroup, 
         $fields,
         $lang);
 

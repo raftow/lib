@@ -180,12 +180,12 @@ class AfwPrevilegeHelper
      * getAuditCols
      * for mode audit get retrieve columns
      * @param AFWObject $object
-     * @param string $fgroup
+     * @param string $agroup
      * @param string $fields
      * @return array
      */
 
-    public static final function getAuditCols($object, $fgroup, 
+    public static final function getAuditCols($object, $agroup, 
         $fields,
         $lang = 'ar',
         $type = 'all')
@@ -195,6 +195,8 @@ class AfwPrevilegeHelper
         $db_struct_all = $object->getAllMyDbStructure();
 
         foreach ($db_struct_all as $attribute => $descAttr) {
+            if(!$descAttr['AGROUP']) $descAttr['AGROUP'] = $descAttr['FGROUP'];
+            if(!$descAttr['AGROUP']) $descAttr['AGROUP'] = 'all';
             if (($fields=='all') or AfwPrevilegeHelper::isAuditCol($object, $attribute, $lang, $descAttr)) {
                 if (true) 
                 {
@@ -208,7 +210,7 @@ class AfwPrevilegeHelper
                         }
                     }
 
-                    $takeFilter = (($fgroup=='all') or ($descAttr['FGROUP'] == $fgroup));
+                    $takeFilter = (($agroup=='all') or ($descAttr['AGROUP'] == $agroup));
                     
                     if ($take and $takeFilter) {
                         if ($descAttr["AUDIT_LAST"]) $tableau_final[] = $attribute;
