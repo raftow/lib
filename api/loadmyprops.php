@@ -156,12 +156,12 @@ $nom_fichier_fk = AfwStringHelper::tableToFile($nom_table_fk);*/
 /*
 if($nom_module_fk)
 {
-     $full_file_path = $file_dir_name."/../$nom_module_fk/".$nom_fichier_fk;
+     $full_file_path = $afw_dir_name."/../$nom_module_fk/".$nom_fichier_fk;
      
 }
 else
 {
-     $full_file_path = $file_dir_name."/".$nom_fichier_fk;
+     $full_file_path = $afw_dir_name."/".$nom_fichier_fk;
 }
 
 if(!file_exists($full_file_path))
