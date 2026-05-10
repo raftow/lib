@@ -1331,8 +1331,9 @@ class AFWObject extends AFWRoot
         $this->PK_FIELD = $pk_field_column;
     }
 
-    public function inPK($attribute) {
-        if($this->PK_MULTIPLE) return $this->inMultiplePK($attribute);
+    public function inPK($attribute)
+    {
+        if ($this->PK_MULTIPLE) return $this->inMultiplePK($attribute);
         else return ($attribute == $this->getPK());
     }
 
@@ -1760,8 +1761,7 @@ class AFWObject extends AFWRoot
             }
         } elseif (is_object($hetted) and ($hetted instanceof AFWObject)) {
             $result = $hetted->getJsonMe($options);
-        }
-        else $result = [];
+        } else $result = [];
 
         return $result;
     }
@@ -3628,8 +3628,7 @@ class AFWObject extends AFWRoot
                     $query = 'DELETE FROM ' . self::_prefix_table(static::$TABLE) . ' WHERE ' . $where;
                     $return = self::executeQuery($query);
                     static::afterDeleteWhere($where);
-                }
-                else $return = -99;
+                } else $return = -99;
 
                 return $return;
             } else {
@@ -4512,7 +4511,7 @@ class AFWObject extends AFWRoot
     {
         $can = AfwUmsPagHelper::userCanDoOperationOnObject($this, $auser, 'audit');
 
-        if(!$can) $not_can_reason = AfwUmsPagHelper::userCanNotDoOperationOnObjectReason($this, $auser, 'audit');
+        if (!$can) $not_can_reason = AfwUmsPagHelper::userCanNotDoOperationOnObjectReason($this, $auser, 'audit');
         else $not_can_reason = '';
 
         return [$can, $not_can_reason];
@@ -6018,8 +6017,8 @@ class AFWObject extends AFWRoot
 
     public function auditAction()
     {
-        if($this->AUDIT_DATA == "byrow_audit") $type_audit='braudit';
-        else $type_audit='audit';
+        if ($this->AUDIT_DATA == "byrow_audit") $type_audit = 'braudit';
+        else $type_audit = 'audit';
         return ['audit', "afw_mode_$type_audit.php"];
     }
 
@@ -6351,7 +6350,7 @@ class AFWObject extends AFWRoot
         return $current_step;
     }
 
-    
+
 
     public function getFieldGroupInfos($fgroup)
     {
@@ -6751,11 +6750,11 @@ class AFWObject extends AFWRoot
 
     public function isByRowAuditable()
     {
-        return (($this->AUDIT_DATA === true) or ($this->AUDIT_DATA === "byrow_audit"));
+        return (($this->AUDIT_DATA === 'both') or ($this->AUDIT_DATA === "byrow_audit"));
     }
 
     public function isByColumnAuditable()
     {
-        return (($this->AUDIT_DATA === true) or ($this->AUDIT_DATA === "bycol_audit"));
+        return (($this->AUDIT_DATA === 'both') or ($this->AUDIT_DATA === "bycol_audit"));
     }
 }
