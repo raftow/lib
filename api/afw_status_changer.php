@@ -1,15 +1,15 @@
 <?php
 
-$objme = AfwSession::getUserConnected();
-$afw_dir_name = dirname(__FILE__)."../afw";
-require_once($afw_dir_name.'/core/afw_autoloader.php');
-include_once($afw_dir_name."/utilities/ufw_error_handler.php");
+$afw_dir_name = dirname(__FILE__) . "../afw";
+require_once($afw_dir_name . '/core/afw_autoloader.php');
+include_once($afw_dir_name . "/utilities/ufw_error_handler.php");
 
 
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 
 AfwSession::startSession();
+$objme = AfwSession::getUserConnected();
 $update_context = 'afw object column value change with network api';
 // echo "here5";
 require_once("$afw_dir_name/../../config/global_config.php");
@@ -45,7 +45,7 @@ foreach ($required_modules as $required_module) {
 
 /** @var AFWObject $myObj */
 $myObj = new $cls();
-$myObj_loaded = $myObj->load($idobj,'','',true,'_');
+$myObj_loaded = $myObj->load($idobj, '', '', true, '_');
 
 if (!$myObj_loaded) {
     $data['status'] = 'error';

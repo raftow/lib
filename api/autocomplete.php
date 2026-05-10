@@ -1,16 +1,16 @@
 <?php
 
-$objme = AfwSession::getUserConnected();
-$afw_dir_name = dirname(__FILE__)."../afw";
-require_once($afw_dir_name.'/core/afw_autoloader.php');
-include_once($afw_dir_name."/utilities/ufw_error_handler.php");
+$afw_dir_name = dirname(__FILE__) . "../afw";
+require_once($afw_dir_name . '/core/afw_autoloader.php');
+include_once($afw_dir_name . "/utilities/ufw_error_handler.php");
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 $lang = "en";
 
 
-        
+
 AfwSession::startSession();
+$objme = AfwSession::getUserConnected();
 
 require_once("$afw_dir_name/../../config/global_config.php");
 // old include of afw.php
@@ -18,10 +18,10 @@ $only_members = true;
 $debug_name = "autocomplete";
 require("$afw_dir_name/includes/afw_check_member.php");
 
-if(!$objme) $objme = AfwSession::getUserConnected();
+if (!$objme) $objme = AfwSession::getUserConnected();
 $lang = AfwSession::getSessionVar("lang");
-if(!$lang) $lang = "ar";
- 
+if (!$lang) $lang = "ar";
+
 // 
 
 // prevent direct access
@@ -32,12 +32,12 @@ if(!$isAjax) {
   $user_error = 'Access denied - not an AJAX request...';
   trigger_error($user_error, E_USER_ERROR);
 }*/
- 
+
 // get what user typed in autocomplete input
 $cl = trim($_GET['cl']);
 $currmod = trim($_GET['currmod']);
 $clwhere = trim($_GET['clwhere']);
-if($clwhere) die("use of clwhere in autocomplete is removed");
+if ($clwhere) die("use of clwhere in autocomplete is removed");
 
 $clp = trim($_GET['clp']);
 $idp = trim($_GET['idp']);
@@ -45,31 +45,30 @@ $modp = trim($_GET['modp']);
 $attp = trim($_GET['attp']);
 $debugg = trim($_GET['debugg']);
 
-if($currmod) AfwAutoLoader::addMainModule($currmod);
-if($modp and ($modp != $currmod)) AfwAutoLoader::addModule($modp);
+if ($currmod) AfwAutoLoader::addMainModule($currmod);
+if ($modp and ($modp != $currmod)) AfwAutoLoader::addModule($modp);
 $required_modules = AfwSession::config("required_modules", []);
-foreach($required_modules as $required_module)
-{
-    AfwAutoLoader::addModule($required_module);
+foreach ($required_modules as $required_module) {
+  AfwAutoLoader::addModule($required_module);
 }
 
 $myObjParent = new $clp();
-if($idp>0) $myObjParent->load($idp);
+if ($idp > 0) $myObjParent->load($idp);
 $clause_where = $myObjParent->getWhereOfAttribute($attp);
 
 
 
 $term = trim($_GET['term']);
- 
+
 $a_json = array();
 $a_json_row = array();
- 
+
 $a_json_invalid = array(array("id" => "#", "value" => $term, "label" => "فقط الحروف..."));
 $json_invalid = json_encode($a_json_invalid);
- 
+
 // replace multiple spaces with one
 $term = preg_replace('/\s+/', ' ', $term);
- 
+
 // SECURITY HOLE ***************************************************************
 // allow space, any unicode letter and digit, underscore and dash
 /*
@@ -78,53 +77,43 @@ if(preg_match("/[^\040\pL\pN_-]/u", $term)) {
   exit;
 }*/
 // *****************************************************************************
- 
+
 $myObj = new $cl();
 
-if($debugg)
-{
-    if($myObj->AUTOCOMPLETE_EXACT_SEARCH)
-    {
-          $allSQL = AfwLoadHelper::findExact($myObj, $term, true);
-    }
-    else
-    {
-          $parts = explode(' ', $term);
-          $allSQL = AfwFrameworkHelper::find($myObj, $parts, $clause_where, $sql_operator = " AND ", true);
-    }
-    
-} 
-
-
-
-if($debugg and $objme and ($objme->isAdmin() or ($debugg=='rafik2013sa'))) die("debugg mode : object $myObjParent for attribute $attp clause_where is [$clause_where] allSQL = $allSQL");
-
-if($myObj->AUTOCOMPLETE_EXACT_SEARCH)
-{
-        $listObj = AfwLoadHelper::findExact($myObj, $term);
-        if($debugg) echo "count(find Exact result) = ".count($listObj);
+if ($debugg) {
+  if ($myObj->AUTOCOMPLETE_EXACT_SEARCH) {
+    $allSQL = AfwLoadHelper::findExact($myObj, $term, true);
+  } else {
+    $parts = explode(' ', $term);
+    $allSQL = AfwFrameworkHelper::find($myObj, $parts, $clause_where, $sql_operator = " AND ", true);
+  }
 }
-else
-{
-        $parts = explode(' ', $term);
-        $p = count($parts);
-        $listObj = AfwFrameworkHelper::find($myObj, $parts,$clause_where);
-        if($debugg) echo "count(find result) = ".count($listObj);
-}
- 
 
- 
-foreach($listObj as $idObj => $iObj) 
-{
+
+
+if ($debugg and $objme and ($objme->isAdmin() or ($debugg == 'rafik2013sa'))) die("debugg mode : object $myObjParent for attribute $attp clause_where is [$clause_where] allSQL = $allSQL");
+
+if ($myObj->AUTOCOMPLETE_EXACT_SEARCH) {
+  $listObj = AfwLoadHelper::findExact($myObj, $term);
+  if ($debugg) echo "count(find Exact result) = " . count($listObj);
+} else {
+  $parts = explode(' ', $term);
+  $p = count($parts);
+  $listObj = AfwFrameworkHelper::find($myObj, $parts, $clause_where);
+  if ($debugg) echo "count(find result) = " . count($listObj);
+}
+
+
+
+foreach ($listObj as $idObj => $iObj) {
   $a_json_row["id"] = $idObj;
   $a_json_row["value"] = $iObj->getDropDownDisplay($lang);
   $a_json_row["label"] = $a_json_row["value"];
   array_push($a_json, $a_json_row);
 }
- 
+
 // highlight search results
 //$a_json = apply_highlight($a_json, $parts);
- 
+
 $json = json_encode($a_json);
 print $json;
-?>

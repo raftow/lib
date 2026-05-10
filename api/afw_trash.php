@@ -1,15 +1,15 @@
 <?php
 
-$objme = AfwSession::getUserConnected();
-$afw_dir_name = dirname(__FILE__)."../afw";
-require_once($afw_dir_name.'/core/afw_autoloader.php');
-include_once($afw_dir_name."/utilities/ufw_error_handler.php");
+$afw_dir_name = dirname(__FILE__) . "../afw";
+require_once($afw_dir_name . '/core/afw_autoloader.php');
+include_once($afw_dir_name . "/utilities/ufw_error_handler.php");
 
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 $lang = $_REQUEST['lang'];
 
 AfwSession::startSession();
+$objme = AfwSession::getUserConnected();
 $update_context = "delete with afw trash network service";
 // echo "here5"; 
 require_once("$afw_dir_name/../../config/global_config.php");
@@ -22,15 +22,15 @@ $debug_name = "afw trash";
 $cl = trim($_POST['cl']);
 $currmod = trim($_POST['currmod']);
 $del_id = trim($_POST['del_id']);
-if((!$del_id) or (!$cl)) die("afw error : nothing to delete, set cl and del_id param to non empty value");
+if ((!$del_id) or (!$cl)) die("afw error : nothing to delete, set cl and del_id param to non empty value");
 
 $MODULE = $currmod;
 
-if(!$MODULE) die("module not defined to access trahser");
-  
+if (!$MODULE) die("module not defined to access trahser");
+
 include("$afw_dir_name/includes/afw_check_member.php");
 $lang = AfwLanguageHelper::getGlobalLanguage();
- 
+
 // 
 
 // prevent direct access
@@ -41,38 +41,34 @@ if(!$isAjax) {
   $user_error = 'Access denied - not an AJAX request...';
   trigger_error($user_error, E_USER_ERROR);
 }*/
- 
+
 // get what user typed in autocomplete input
 
 
 // echo "here3";
 AfwAutoLoader::addMainModule($currmod);
 $required_modules = AfwSession::config("required_modules", []);
-foreach($required_modules as $required_module)
-{
-    AfwAutoLoader::addModule($required_module);
+foreach ($required_modules as $required_module) {
+   AfwAutoLoader::addModule($required_module);
 }
 
 $myObj = new $cl();
 $myObj_loaded = $myObj->load($del_id);
 $can_delete_me = $myObj->userCanDeleteMe($objme);
-if($can_delete_me === -1)
-{
-	$return_message = "المعذرة هذه العملية تحتاج صلاحية ";
+if ($can_delete_me === -1) {
+   $return_message = "المعذرة هذه العملية تحتاج صلاحية ";
    die($return_message);
    // die(AfwSession::getLog("iCanDo")."<br>$return_message<br>can_delete_me = $can_delete_me");
 }
 
-if($can_delete_me === -2)
-{
-	$return_message = "قواعد العمل تمنعك من اجراء هذه العملية";
+if ($can_delete_me === -2) {
+   $return_message = "قواعد العمل تمنعك من اجراء هذه العملية";
    die($return_message);
    // die(AfwSession::getLog("iCanDo")."<br>$return_message<br>can_delete_me = $can_delete_me");
 }
 
-if((!$can_delete_me) or ($can_delete_me <= 0))
-{
-	$return_message = "فشلت عملية اخذ اذن المسح";
+if ((!$can_delete_me) or ($can_delete_me <= 0)) {
+   $return_message = "فشلت عملية اخذ اذن المسح";
    die($return_message);
    // die(AfwSession::getLog("iCanDo")."<br>$return_message<br>can_delete_me = $can_delete_me");
 }
@@ -80,16 +76,13 @@ if((!$can_delete_me) or ($can_delete_me <= 0))
 
 $deleted = false;
 
-if($myObj_loaded)
-{
-   
+if ($myObj_loaded) {
+
    $deleted = $myObj->delete();
-   if($deleted) $deleted_message = "DELETED";
-   else $deleted_message = $myObj->tm("DELETE_NOT_ALLOWED",$lang)." : ".$myObj->tm($myObj->deleteNotAllowedReason,$lang);
-}
-else
-{
-   $deleted_message = $myObj->tm("OBJECT_NOT_FOUND",$lang);
+   if ($deleted) $deleted_message = "DELETED";
+   else $deleted_message = $myObj->tm("DELETE_NOT_ALLOWED", $lang) . " : " . $myObj->tm($myObj->deleteNotAllowedReason, $lang);
+} else {
+   $deleted_message = $myObj->tm("OBJECT_NOT_FOUND", $lang);
 }
 
 echo $deleted_message;

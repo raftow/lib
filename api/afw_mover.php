@@ -1,15 +1,15 @@
 <?php
 
-$objme = AfwSession::getUserConnected();
-$afw_dir_name = dirname(__FILE__)."../afw";
-require_once($afw_dir_name.'/core/afw_autoloader.php');
-include_once($afw_dir_name."/utilities/ufw_error_handler.php");
+$afw_dir_name = dirname(__FILE__) . "../afw";
+require_once($afw_dir_name . '/core/afw_autoloader.php');
+include_once($afw_dir_name . "/utilities/ufw_error_handler.php");
 
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 $lang = "en";
 
 AfwSession::startSession();
+$objme = AfwSession::getUserConnected();
 $update_context = "main order field can be moved up or down with afw mover network api";
 // echo "here5"; 
 require_once("$afw_dir_name/../../config/global_config.php");
@@ -27,14 +27,14 @@ $limitd = trim($_POST['limitd']);
 
 
 
-if((!$currmod) or (!$mv_id) or (!$cl) or (!$mv_sens)) die("afw error : nothing to move, set cl and mv_id and mv_sens params to non empty values currmod=$currmod mv_id=$mv_id cl=$cl mv_sens=$mv_sens");
+if ((!$currmod) or (!$mv_id) or (!$cl) or (!$mv_sens)) die("afw error : nothing to move, set cl and mv_id and mv_sens params to non empty values currmod=$currmod mv_id=$mv_id cl=$cl mv_sens=$mv_sens");
 
 $MODULE = $currmod;
-  
+
 include("$afw_dir_name/includes/afw_check_member.php");
 $lang = AfwSession::getSessionVar("lang");
-if(!$lang) $lang = "ar";
- 
+if (!$lang) $lang = "ar";
+
 // 
 
 // prevent direct access
@@ -45,16 +45,15 @@ if(!$isAjax) {
   $user_error = 'Access denied - not an AJAX request...';
   trigger_error($user_error, E_USER_ERROR);
 }*/
- 
+
 // get what user typed in autocomplete input
 
 
 // echo "here3";
 AfwAutoLoader::addMainModule($currmod);
 $required_modules = AfwSession::config("required_modules", []);
-foreach($required_modules as $required_module)
-{
-    AfwAutoLoader::addModule($required_module);
+foreach ($required_modules as $required_module) {
+   AfwAutoLoader::addModule($required_module);
 }
 
 /**
@@ -64,27 +63,23 @@ $myObj = new $cl();
 $myObj_loaded = $myObj->load($mv_id);
 
 
-if(!$myObj_loaded)
-{
+if (!$myObj_loaded) {
    $return_message = $myObj->tm("OBJECT_NOT_FOUND");
    die($return_message);
 }
 
 list($can_move_me, $no_move_title, $no_move_reason) = $myObj->userCanMoveMe($objme, $mv_sens);
-if(!$can_move_me)
-{
-	$return_message = "$no_move_title : $no_move_reason";
+if (!$can_move_me) {
+   $return_message = "$no_move_title : $no_move_reason";
    die($return_message);
 }
 
 list($can_edit_me, $can_t_edit_me_reason) = $myObj->userCanEditMe($objme);
-if(!$can_edit_me)
-{
-	$return_message = "المعذرة التعديل على هذا السجل يحتاج صلاحية : ".$can_t_edit_me_reason;
+if (!$can_edit_me) {
+   $return_message = "المعذرة التعديل على هذا السجل يحتاج صلاحية : " . $can_t_edit_me_reason;
    die($return_message);
 }
 
 
 list($moved, $moved_message, $switchedMovedObj) = $myObj->moveMe($mv_sens);
 echo $moved_message;
-
