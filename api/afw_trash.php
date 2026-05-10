@@ -1,6 +1,6 @@
 <?php
 
-$afw_dir_name = dirname(__FILE__) . "../afw";
+$afw_dir_name = dirname(__FILE__) . "/../afw";
 require_once($afw_dir_name . '/core/afw_autoloader.php');
 include_once($afw_dir_name . "/utilities/ufw_error_handler.php");
 
