@@ -768,10 +768,10 @@ class AfwLoadHelper extends AFWRoot
     public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $lang, $small_lookup)
     {
 
-        if (self::$lookupMatrix["$ans_module.$ans_table.$lang"][$value]) return self::$lookupMatrix["$ans_module.$ans_table"][$value];
-        if (self::$lookupMatrix["$ans_module.$ans_table.$lang.--"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.--"][$value];
-        if (self::$lookupMatrix["$ans_module.$ans_table.$lang.++"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.++"][$value];
-        if (self::$lookupMatrix["$ans_module.$ans_table.$lang.1"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.1"][$value];
+        if (self::$lookupMatrix["$ans_module.$ans_table.$lang"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.$lang"][$value];
+        if (self::$lookupMatrix["$ans_module.$ans_table.$lang.--"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.$lang.--"][$value];
+        if (self::$lookupMatrix["$ans_module.$ans_table.$lang.++"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.$lang.++"][$value];
+        if (self::$lookupMatrix["$ans_module.$ans_table.$lang.1"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.$lang.1"][$value];
 
         self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $lang, $small_lookup);
         /*
