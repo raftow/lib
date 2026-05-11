@@ -3,7 +3,7 @@
 
 class AfwLanguageHelper
 {
-    private $trad = [];
+    private static $trad = [];
 
     public static function setGlobalLanguage($lang)
     {
