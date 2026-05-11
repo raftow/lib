@@ -1579,7 +1579,7 @@ class AfwShowHelper
                         /* $htr_e = hrtime()[1];
                         $htr = $htr_e - $htr_s;
                         if($htr < 4000000) $htr = "";*/
-                        $return .= "<!-- quickShowAttribute case FK $nom_module_fk / $nom_table_fk -->";  //  / htr = $htr
+                        $return .= "<!-- quickShowAttribute case FK $nom_module_fk / $nom_table_fk : return = $return = AfwLoadHelper::decodeLookupValue($nom_module_fk, $nom_table_fk, $val, $separator, $emptyMessage, $pk, $lang, $small_lookup) -->";  //  / htr = $htr
                     }
                 }
 

@@ -780,7 +780,7 @@ class AfwLoadHelper extends AFWRoot
             $ex_message = "Shoof : self::lookupMatrix[$ans_module.$ans_table] = " . var_export(self::$lookupMatrix["$ans_module.$ans_table"], true);
             throw new AfwRuntimeException($ex_message);
         }*/
-        return self::$lookupMatrix["$ans_module.$ans_table"][$value];
+        return self::$lookupMatrix["$ans_module.$ans_table.$lang"][$value];
     }
 
 
