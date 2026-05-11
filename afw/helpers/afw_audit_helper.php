@@ -115,11 +115,25 @@ class AfwAuditHelper extends AFWRoot
         list($action_browser, $action_ip) = self::getClientInfos();
         $action_browser = addslashes($action_browser);
 
-        $query = 'INSERT INTO ' . $object::_prefix_table($table_audit) . "($insert_columns,  action,  action_by,   action_at,    action_browser,    action_ip,  update_context) 
-                                                                    SELECT $insert_columns, '$action', $action_by, '$action_at', '$action_browser', '$action_ip','$update_context' 
-                                                                    from ".$object::_prefix_table($table_name)." $pk_cond";
+        $prefixed_table_audit = $object::_prefix_table($table_audit);
 
-        return $object->execQuery($query);
+        $current_version = $object->getVersion();
+
+        // check if the record we will insert is already inserted for example because
+        // an exception happen and the process aborted.
+        // so in this case nothing to do
+
+        $audit_already_exists = AfwDatabase::db_recup_value("SELECT count(*) as audit_exists from $prefixed_table_audit $pk_cond and `version`='$current_version' and `action`='$action'");
+        $audit_already_exists = intval($audit_already_exists);
+        if(!$audit_already_exists) {
+            $query = "INSERT INTO $prefixed_table_audit ($insert_columns,  `action`,  action_by,   action_at,    action_browser,    action_ip,  update_context) 
+                                                                        SELECT $insert_columns, '$action', $action_by, '$action_at', '$action_browser', '$action_ip','$update_context' 
+                                                                        from ".$object::_prefix_table($table_name)." $pk_cond";
+
+            return $object->execQuery($query);
+        }
+        else return -99;
+        
     }
 
     /**
