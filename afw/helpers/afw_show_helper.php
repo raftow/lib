@@ -2300,9 +2300,12 @@ class AfwShowHelper
 
     /**
      * @param AFWObject $object
+     * @param string $attribute
+     * @param mixed $value
      */
     public static function showFK($object, $attribute, $value, $lang = 'ar', $structure = null, $getlink = false, $debugg = false)
     {
+        if($attribute=="college_id") $debugg = true;
         // $val_class = $object->getMyClass();
         $link_to_display = '';
         $data_to_display = '';

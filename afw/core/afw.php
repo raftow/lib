@@ -2169,12 +2169,12 @@ class AFWObject extends AFWRoot
         // if($attribute == "session_status_id") die("decode($attribute, $format, $integrity)");
         if (strtolower($format) == 'value') {
             $return = $this->getVal($attribute);
-            $case = "this->getVal($attribute)";
+            // $case = "this->getVal($attribute)";
         } else {
             $return = $this->get($attribute, 'decodeme', $format, $integrity, false, true, $lang);
-            $case = "this->get($attribute,decodeme,$format, $integrity, false, true, $lang)";
+            // $case = "this->get($attribute,decodeme,$format, $integrity, false, true, $lang)";
         }
-        if($attribute == "college_id") die("rafik debugging ... case = $case = $return");
+        // if($attribute == "college_id") die("rafik debugging ... case = $case = $return");
         return $return;    
     }
 
