@@ -59,7 +59,7 @@ include("$module_dir_name/../../hzm/web/hzm_basic_header.php");
                         </tr>
                         <tr>
                                 <th>معرف المستخدم / User ID</th>
-                                <td><? if ($objme) echo $objme->getId() ?></td>
+                                <td><?php if ($objme) echo $objme->getId() ?></td>
                         </tr>
                         <tr>
                                 <th>الخدمة المطلوبة / Requested service</th>

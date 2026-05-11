@@ -6,7 +6,7 @@ class AfwQsearchMotor
 		$type_input_ret = "hidden";
 ?>
 		<input type="hidden" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-<?php
+		<?php
 		return $type_input_ret;
 	}
 
@@ -53,8 +53,8 @@ class AfwQsearchMotor
 					// $obj->_error("$col_name is INSTANCE_FUNCTION answer and it has this getEnumAnswerList ".var_export($fkObj,true));
 				} else {
 					$fcol_name = $desc["FUNCTION_COL_NAME"];
-					if(AfwStringHelper::stringStartsWith($fcol_name,"::")) {
-						$dynMethodName = substr($fcol_name,2);
+					if (AfwStringHelper::stringStartsWith($fcol_name, "::")) {
+						$dynMethodName = substr($fcol_name, 2);
 						$fcol_name = $obj->$dynMethodName($col_name, "FUNCTION_COL_NAME");
 					}
 					if (!$fcol_name) $fcol_name = $col_name;
@@ -82,16 +82,16 @@ class AfwQsearchMotor
 					if (is_array($_POST[$col_name])) $selected_values = $_POST[$col_name];
 					else $selected_values = array($_POST[$col_name]);
 					self::mobiselector(
-							$enumAnswerList,
-							$selected_values,
-							array(
-								"class" => "form-control $lang_input $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
-								"name"  => $col_name . "[]",
-								"id"  => $col_name,
-								"size"  => 5,
-								"multi" => true								
-							)
-						);
+						$enumAnswerList,
+						$selected_values,
+						array(
+							"class" => "form-control $lang_input $lang $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+							"name"  => $col_name . "[]",
+							"id"  => $col_name,
+							"size"  => 5,
+							"multi" => true
+						)
+					);
 				}
 				break;
 			case 'FK':
@@ -204,7 +204,7 @@ class AfwQsearchMotor
 			case 'PK':
 			case 'TEXT':
 
-		?> <input type="text" class="form-control <?= $lang ?> <?= trim(" inputfull $class_inputSearch ") ?>" placeholder="<?php echo $col_placeholder ?>" name="<?php echo $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
+		?> <input type="text" class="form-control <?= $lang ?> <?= trim(" inputfull $class_inputSearch ") ?>" placeholder="<?php echo $col_placeholder ?>" name="<?php echo $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
 			<?php echo $desc["UNIT"];
 				//echo $desc["TITLE_AFTER"];
 				break;
@@ -253,25 +253,25 @@ class AfwQsearchMotor
 			case 'PCTG':
 			case 'INT':
 			case 'AMNT':
-?><!-- between table -->
+			?><!-- between table -->
 				<table style="border: 1px silver solid;width:100%">
 					<tr>
 						<td style='padding:5px;'>
 							بين
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>							
+							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>
 						</td>
 						<td style='padding:5px;'>
 							و
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<? echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
+							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<?php echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
 						</td>
 					</tr>
 				</table><!-- end between table -->
-			<?php 
-			break;
+			<?php
+				break;
 			case 'DATE':
 			?><!-- between table -->
 				<table style="border: 1px silver solid;width:100%">
@@ -280,7 +280,7 @@ class AfwQsearchMotor
 							من
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" autocomplete="off" > </input>
+							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" autocomplete="off"> </input>
 							<script type="text/javascript">
 								$('#<?= $col_name ?>').calendarsPicker({
 									calendar: $.calendars.instance('UmmAlQura')
@@ -291,7 +291,7 @@ class AfwQsearchMotor
 							إلى
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<? echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>" autocomplete="off" > </input>
+							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<?php echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>" autocomplete="off"> </input>
 							<script type="text/javascript">
 								$('#<?= $col_name . "_2" ?>').calendarsPicker({
 									calendar: $.calendars.instance('UmmAlQura')
@@ -711,7 +711,7 @@ class AfwQsearchMotor
 		<?php
 		} else {
 		?>
-			<input type="text" class="form-control <?= $lang ?> <?= trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
+			<input type="text" class="form-control <?= $lang ?> <?= trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
 <?php
 		}
 	}

@@ -1,29 +1,24 @@
 <?php
 $type_input_ret = "select";
-if ($obj->fixm_disable) 
-{
+if ($obj->fixm_disable) {
 
     $type_input_ret = "hidden";
 ?>
     <input type="hidden" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-    <span><? if (!$obj->hideQeditCommonFields) echo $answer_list[$val] ?></span>
+    <span><?php if (!$obj->hideQeditCommonFields) echo $answer_list[$val] ?></span>
 <?php
-}
-elseif ($desc["SWITCHER"]) 
-{
-    $onoff = ($val=="Y") ? "on" : "off";
-    if($desc["READONLY"]) $switcher_img_class = "flou";
+} elseif ($desc["SWITCHER"]) {
+    $onoff = ($val == "Y") ? "on" : "off";
+    if ($desc["READONLY"]) $switcher_img_class = "flou";
     else $switcher_img_class = "switcher-btn";
-    $switcher_img = "<img class='$switcher_img_class' for='$col_name' id='img-$col_name' src='../lib/images/$onoff.png' width='48' heigth='32'>";                                                
+    $switcher_img = "<img class='$switcher_img_class' for='$col_name' id='img-$col_name' src='../lib/images/$onoff.png' width='48' heigth='32'>";
 ?>
     <div class='form-control <?php echo $lang_input ?> form-switcher'>
         <input type="hidden" value="<?php echo $val ?>" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" <?php echo $checkbox_checked ?>>
         <?php echo $switcher_img ?>
     </div>
 <?php
-} 
-elseif ($desc["CHECKBOX"]) 
-{
+} elseif ($desc["CHECKBOX"]) {
     if ($val == "Y") $checkbox_checked = "checked";
     else $checkbox_checked = "";
 
@@ -31,9 +26,7 @@ elseif ($desc["CHECKBOX"])
 ?>
     <div class='form-control <?php echo $lang_input ?> form-ckbox'><input type="checkbox" value="1" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" <?php echo $checkbox_checked ?> class="echeckbox <?php echo $checkbox_extra_class ?>"></div>
 <?php
-} 
-else 
-{
+} else {
     AfwEditMotor::select(
         $answer_list,
         array($val),

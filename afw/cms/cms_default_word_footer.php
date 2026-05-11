@@ -1,4 +1,3 @@
-<?  
-  echo "</body>";
-  echo "</html>";
-?>
+<?php
+echo "</body>";
+echo "</html>";

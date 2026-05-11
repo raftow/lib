@@ -141,8 +141,8 @@ class UfwQueryAnalyzer
             $backtrace = debug_backtrace(1, 20);
             throw new AfwRuntimeException("Too much queries executed when mode is not MODE_BATCH_LOURD or MODE_SQL_PROCESS_LOURD !<br>
                                            Nb Queries Executed = " . self::$nb_queries_executed . " > $_sql_analysis_seuil_calls = Max <br> 
-                                           Sql Picture = " . var_export(self::$sql_picture_arr, true).
-                                           "Backtrace = ".var_export($backtrace, true));
+                                           Sql Picture = " . var_export(self::$sql_picture_arr, true) .
+                "Backtrace = " . var_export($backtrace, true));
         }
 
         $sql_info_class = 'sqlinfo';
@@ -183,9 +183,9 @@ class UfwQueryAnalyzer
                     if (AfwSession::config('MODE_DEVELOPMENT', false)) {
                         throw new AfwRuntimeException(
                             "Query Analysis Crash for : $this_module / $this_table / $sql_query : has been called more than 50 times, <br>
-                            May be because the result is empty so no cache working, You can below un-hide <b>the TECHNICAL SQL analysis :</b> <br><hr><pre class='technical sql'>"
+                            May be because the result is empty so no cache working, <br>\nYou can below un-hide <b>the TECHNICAL SQL analysis :</b> <br><hr><pre class='technical sql'>"
                                 . var_export(self::$_sql_analysis, true) .
-                                "</pre><br> Or if should be managed by AfwLoadHelper::getLookupMatrix(), You can below un-hide <b>the TECHNICAL CACHE OF Lookup-Matrix :</b> : <br><hr><pre class='technical php'>"
+                                "</pre><br> Or if should be managed by AfwLoadHelper::getLookupMatrix(), <br>\nYou can below un-hide <b>the TECHNICAL CACHE OF Lookup-Matrix :</b> : <br><hr><pre class='technical php'>"
                                 . var_export(AfwLoadHelper::getLookupMatrix(), true) . "</pre>"
                         );
                     }

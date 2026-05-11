@@ -980,23 +980,23 @@ class AfwEditMotor
                     $('#<?php echo $info['id'] ?>').multiselect({
                         inheritClass: true,
 
-                        <? if ($info['numberDisplayed']) { ?> numberDisplayed: '<?php echo $info['numberDisplayed'] ?>',
-                        <? } ?>
-                        <? if ($info['buttonWidth']) { ?> buttonWidth: '<?php echo $info['buttonWidth'] ?>',
-                        <? } ?>
-                        <? if ($info['dropRight']) { ?> dropRight: true,
-                        <? } ?>
-                        <? if ($info['inheritClass']) { ?> inheritClass: true,
-                        <? } ?>
-                        <? if ($info['enableFiltering']) { ?> enableFiltering: true,
-                        <? } ?>
-                        <? if ($info['filterBehavior']) { ?> filterBehavior: '<?php echo $info['filterBehavior'] ?>',
-                        <? } ?>
-                        <? if ($info['filterPlaceholder']) { ?> filterPlaceholder: '<?php echo $info['filterPlaceholder'] ?>',
-                        <? } ?>
-                        <? if ($info['maxHeight']) { ?> maxHeight: <?php echo $info['maxHeight'] ?>,
-                        <? } ?>
-                        <? if ($info['includeSelectAllOption']) { ?> includeSelectAllOption: true<? } ?>
+                        <?php if ($info['numberDisplayed']) { ?> numberDisplayed: '<?php echo $info['numberDisplayed'] ?>',
+                        <?php } ?>
+                        <?php if ($info['buttonWidth']) { ?> buttonWidth: '<?php echo $info['buttonWidth'] ?>',
+                        <?php } ?>
+                        <?php if ($info['dropRight']) { ?> dropRight: true,
+                        <?php } ?>
+                        <?php if ($info['inheritClass']) { ?> inheritClass: true,
+                        <?php } ?>
+                        <?php if ($info['enableFiltering']) { ?> enableFiltering: true,
+                        <?php } ?>
+                        <?php if ($info['filterBehavior']) { ?> filterBehavior: '<?php echo $info['filterBehavior'] ?>',
+                        <?php } ?>
+                        <?php if ($info['filterPlaceholder']) { ?> filterPlaceholder: '<?php echo $info['filterPlaceholder'] ?>',
+                        <?php } ?>
+                        <?php if ($info['maxHeight']) { ?> maxHeight: <?php echo $info['maxHeight'] ?>,
+                        <?php } ?>
+                        <?php if ($info['includeSelectAllOption']) { ?> includeSelectAllOption: true<?php } ?>
                     });
                 });
             </script>

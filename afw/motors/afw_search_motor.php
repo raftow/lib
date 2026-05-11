@@ -215,7 +215,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                 <?
                 } else {
                 ?>
-                    <input type="text" class="form-control <?= trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
+                    <input type="text" class="form-control <?= trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
             <?
                 }
             }
@@ -228,7 +228,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
         case 'INT':
         case 'AMNT':
 
-            ?> <input type="text" class="form-control <?= trim(" $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
+            ?> <input type="text" class="form-control <?= trim(" $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
         <?php echo $desc["UNIT"];
             //echo $desc["TITLE_AFTER"];
             break;
@@ -270,7 +270,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                         من
                     </td>
                     <td>
-                        <input type="text" class="form-control <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<? echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>
+                        <input type="text" class="form-control <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>
                         <script type="text/javascript">
                             $('#<?= $col_name ?>').calendarsPicker({
                                 calendar: $.calendars.instance('UmmAlQura')
@@ -281,7 +281,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                         إلى
                     </td>
                     <td>
-                        <input type="text" class="form-control <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<? echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
+                        <input type="text" class="form-control <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<?php echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
                         <script type="text/javascript">
                             $('#<?= $col_name . "_2" ?>').calendarsPicker({
                                 calendar: $.calendars.instance('UmmAlQura')
@@ -545,5 +545,3 @@ public static function subval_sort($table_a_trie, $table_ref, $ord = "desc")
     return $res;
 }
 */
-
-?>

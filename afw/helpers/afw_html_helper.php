@@ -254,7 +254,7 @@ class AfwHtmlHelper extends AFWRoot
                 $theme = $pbm_item['THEME'];
                 if (!$theme) $theme = "default";
                 $condition = $pbm_item['CONDITION'];
-                if(!$pbm_item['LOG']) $pbm_item['LOG'] = "";
+                if (!$pbm_item['LOG']) $pbm_item['LOG'] = "";
                 if ($condition) {
                         $show_pbm = $obj->$condition();
                         if ($show_pbm) $pbm_item['LOG'] .= " > $condition applied successfully";
@@ -785,7 +785,7 @@ class AfwHtmlHelper extends AFWRoot
                                                 <img src="<?=$img?>" width="24" heigth="24" <?=$tooltip?>> 
                                         </a>
                                         </td>
-                <?                      
+                <?php                      
                                         }
                                         else
                                         {

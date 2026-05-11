@@ -87,7 +87,7 @@ class AfwRuntimeException extends RuntimeException
             foreach ($_POST as $psKey => $psVal) $mess_post .= "<p>$psKey => $psVal</p>";
         }
 
-        if ($mess_post) $mess_post = "You can below un-hide <b>the POST ARRAY :</b><br><div class='technical post'><BR>$mess_post</div>";
+        if ($mess_post) $mess_post = "<br>\nYou can below un-hide <b>the POST ARRAY :</b><br><div class='technical post'><BR>$mess_post</div>";
 
 
         parent::__construct($message . " " . $mess_post);

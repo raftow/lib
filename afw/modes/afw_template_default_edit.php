@@ -332,7 +332,7 @@ $wizard_class = $wizObj->getWizardClass();
 if ($obj->elevatezoom) {
 ?>
         <script src='../js/jquery.elevatezoom.js'></script>
-<?
+<?php
 }
 
 $table_name = $obj->getMyTable();
@@ -344,13 +344,13 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
 <?php
 }
 ?>
-<div class="<?= $file_box_css_class ?> editcard <?php echo $module_code . " " . AfwStringHelper::hzmStringOf($table_name) . " s" . $object_status;  ?> ">
+<div class="<?php echo $file_box_css_class ?> editcard <?php echo $module_code . " " . AfwStringHelper::hzmStringOf($table_name) . " s" . $object_status;  ?> ">
         <div class="panel-heading">
                 <h3 class="panel-title col-xs-12"><span><?php echo "$str_name" ?></span></h3>
                 <h3 class="panel-title col-xs-0 text-left"><span class='object_id'><?php echo $str_id ?><span></h3>
         </div>
         <div class="<?php echo $wizard_class . " " . $module_code; ?>">
-                <?
+                <?php
                 if ($obj->editNbSteps > 1) {
                         $step_name = array();
                         $nbStepsEditable = 0;
@@ -369,10 +369,10 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                         <div class="hideMenuTabs">
                                 <span class="tabsBar openTabs">الخطوة <?php echo $curr_step_order ?> : <b><?php echo $curr_step_name ?></b> </span>
                         </div>
-                        <div id="edit_mod_tabs" class="<?= $wizard_tabs_class ?>">
+                        <div id="edit_mod_tabs" class="<?php echo $wizard_tabs_class ?>">
                                 <ul role="tablist">
 
-                                        <?
+                                        <?php
                                         // <li class="PlanStep"><a href="#">php echo "$str_name : $str_id"</a></li>
                                         $clObj = $obj->getMyClass();
 
@@ -429,7 +429,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                         $stepLiContentHtml = $wizObj->getStepLiContentHtml($step_knum, $step_name[$kstep]);
 
                                         ?>
-                                                        <li class="<?= "wizstep" . $kstep . " " . $clStep . " " . $class_step ?>"><a href="<?= $link ?>"><?php echo $stepLiContentHtml ?></a></li>
+                                                        <li class="<?php echo "wizstep" . $kstep . " " . $clStep . " " . $class_step ?>"><a href="<?php echo $link ?>"><?php echo $stepLiContentHtml ?></a></li>
                                                         <!-- <?php
                                                                 $step_errors_list = str_replace("<!--", " ", $step_errors_list);
                                                                 $step_errors_list = str_replace("-->", " ", $step_errors_list);
@@ -438,7 +438,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 if ($step_errors_list) echo $step_errors_list . " why = $step_show_error_why"
                                                                 ?> 
     -->
-                                        <?
+                                        <?php
                                                 }
                                         }
 
@@ -453,12 +453,12 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                 });
                         </script>
 
-                <?
+                <?php
                 }
 
                 ?>
 
-                <div class="hzm_form_panel hzm_step_body_<?= $clStep . " step_panel_" . $obj->currentStep ?>">
+                <div class="hzm_form_panel hzm_step_body_<?php echo $clStep . " step_panel_" . $obj->currentStep ?>">
                         <div class="form_<?php echo $fsens ?> form_wizard_body form_wizard_<?php echo $cl_short; ?> form_right_<?php echo $clStep . " step_body_" . $obj->currentStep; ?>">
                                 <div class="wizard_buttons">
                                         <div class='body_nav_hzm'>
@@ -478,13 +478,13 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         $class_btn_prev = "graybtn";
                                                                 }
                                                         ?>
-                                                                <input type="submit" name="save_previous" id="save_previous" class="fa previous <?= $class_btn_prev ?> wizardbtn fright <?= $disabled_prev ?> <?= $lang ?>" value="&nbsp;<?= $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?= $disabled_prev ?>></input>
-                                                                <?
+                                                                <input type="submit" name="save_previous" id="save_previous" class="fa previous <?php echo $class_btn_prev ?> wizardbtn fright <?php echo $disabled_prev ?> <?php echo $lang ?>" value="&nbsp;<?php echo $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?php echo $disabled_prev ?>></input>
+                                                                <?php
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
                                                                 if ($obj->canSaveOnly($obj->currentStep)) {
                                                                 ?>
-                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                <?
+                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?php echo $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <?php
                                                                 }
                                                                 // $nextStep will be = -1 if all next steps are R/O not editable, so no next editable step
                                                                 $nextStep = AfwFrameworkHelper::findNextEditableStep($obj, $currStep, "show btn ?");
@@ -501,8 +501,8 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 if ($nextStep > 0) {
                                                                         // ." ($currStep -> $nextStep)"
                                                                 ?>
-                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                <?
+                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft" value="&nbsp;<?php echo $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <?php
                                                                 }
 
                                                                 if (
@@ -513,19 +513,19 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         )
                                                                 ) {
                                                                 ?>
-                                                                        <input type="submit" name="save_update" id="save_update" hint="<?= "NextStep:" . $nextStep ?>" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $finish_label ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                <?
+                                                                        <input type="submit" name="save_update" id="save_update" hint="<?php echo "NextStep:" . $nextStep ?>" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?php echo $finish_label ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <?php
                                                                 } else {
                                                                 ?>
-                                                                        <!-- <?= "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
-                                                                <?
+                                                                        <!-- <?php echo "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
+                                                                <?php
                                                                 }
                                                         } else  // not edit by step
                                                         {
                                                                 ?>
-                                                                <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                        <?
+                                                                <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?php echo $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?php echo $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                        <?php
                                                         }
                                                         ?>
                                                 </p>
@@ -533,7 +533,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                 </div>
                                 <div class="form_content form_content_<?php echo $cl_short ?>">
                                         <div id='body_form_hzm' class='body_form_hzm body_form_<?php echo $cl_short ?>'>
-                                                <?
+                                                <?php
 
                                                 $firstTr = true;
                                                 $openedInGroupDiv = false;
@@ -584,7 +584,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                 <div class="form_buttons">
                                         <div class="panel_bottom form_bottom_buttons ">
                                                 <!-- <h5 class='greentitle'><i></i>وظائف ذات صلة</h5>-->
-                                                <?
+                                                <?php
                                                 // echo $html_buttons_spec_methods_bis;
                                                 ?>
                                         </div>
@@ -605,13 +605,13 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         $class_btn_prev = "graybtn";
                                                                 }
                                                         ?>
-                                                                <input type="submit" name="save_previous" id="save_previous" class="fa previous <?= $class_btn_prev ?> wizardbtn fright <?= $disabled_prev ?> <?= $lang ?>" value="&nbsp;<?= $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?= $disabled_prev ?>></input>
-                                                                <?
+                                                                <input type="submit" name="save_previous" id="save_previous" class="fa previous <?php echo $class_btn_prev ?> wizardbtn fright <?php echo $disabled_prev ?> <?php echo $lang ?>" value="&nbsp;<?php echo $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?php echo $disabled_prev ?>></input>
+                                                                <?php
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
                                                                 if ($obj->canSaveOnly($obj->currentStep)) {
                                                                 ?>
-                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                <?
+                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?php echo $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <?php
                                                                 }
                                                                 // $nextStep will be = -1 if all next steps are R/O not editable, so no next editable step
                                                                 $nextStep = AfwFrameworkHelper::findNextEditableStep($obj, $currStep, "show btn ?");
@@ -628,8 +628,8 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 if ($nextStep > 0) {
                                                                         // ." ($currStep -> $nextStep)"
                                                                 ?>
-                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft <?= $lang ?>" value="&nbsp;<?= $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                <?
+                                                                        <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft <?php echo $lang ?>" value="&nbsp;<?php echo $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <?php
                                                                 }
 
                                                                 if (
@@ -640,19 +640,19 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         )
                                                                 ) {
                                                                 ?>
-                                                                        <input type="submit" name="save_update" id="save_update" hint="<?= "NextStep:" . $nextStep ?>" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $finish_label ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                <?
+                                                                        <input type="submit" name="save_update" id="save_update" hint="<?php echo "NextStep:" . $nextStep ?>" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?php echo $finish_label ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <?php
                                                                 } else {
                                                                 ?>
-                                                                        <!-- <?= "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
-                                                                <?
+                                                                        <!-- <?php echo "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
+                                                                <?php
                                                                 }
                                                         } else  // not edit by step
                                                         {
                                                                 ?>
-                                                                <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?= $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                                <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?= $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
-                                                        <?
+                                                                <input type="submit" name="save_update" id="save_update" class="fa finish save_update yellowbtn wizardbtn fleft" value="&nbsp;<?php echo $obj->translate('FINISH', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn fright" value="&nbsp;<?php echo $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                        <?php
                                                         }
                                                         ?>
                                                 </p>
@@ -663,7 +663,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                 </div>
 
                         </div> <!-- form_right -->
-                        <?
+                        <?php
                         // calculate form_left
                         $pbm_arr = $obj->getPublicMethodsForUser($objme, "display");
                         if (count($pbm_arr) > 0) {
@@ -720,7 +720,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                 ?>
                                         </div>
                                         <!-- form_left -->
-                        <?
+                        <?php
                                         // $form_right_width = 80;
                                 } else {
                                         // $form_right_width = 100;
@@ -774,12 +774,12 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                 list($help_picture, $logHelpPic) = AfwHtmlHelper::showHelpPicture($obj, $obj->currentStep);
                                 if ($help_picture) {
                         ?>
-                                        <div class="form_left form_left_buttons help_picture_<?= $clStep . "_" . $obj->currentStep ?>" style="/*width: 12%;height:100%;*/">
-                                                <?
+                                        <div class="form_left form_left_buttons help_picture_<?php echo $clStep . "_" . $obj->currentStep ?>" style="/*width: 12%;height:100%;*/">
+                                                <?php
                                                 echo $help_picture;
                                                 ?>
                                         </div>
-                        <?
+                        <?php
                                         $form_right_width = 80;
                                 } else echo "<!-- " . $logHelpPic . " -->";
                         }

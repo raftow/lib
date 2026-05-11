@@ -209,7 +209,7 @@ if($objme)
 ?>      
   <li class="menu-small-item <?=$menu_color?>-item"><a href="#"><i class="fa fa-globe" aria-hidden="true"></i><?=AfwLanguageHelper::translateKeyword("LANGUE", $lang)?></a>
      <ul>
-     <?   
+     <?php   
             foreach($uri_arr as $lang_code => $uri_item)
             {
                 $menu_item_title = $LANG_NAMES[$lang][$lang_code];
@@ -347,7 +347,7 @@ if($objme)
                 </ul><!--ul-options-close-->
           </li>
 
-     <?   
+     <?php   
             foreach($right_menu as $menu_item)
             {
                 $menu_item_page = $menu_item["href"];

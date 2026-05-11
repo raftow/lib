@@ -97,11 +97,11 @@ if (!$liste_obj) {
                 $obj->where($sql_conds);
         } else {
                 $obj->select_visibilite_horizontale();
-                $count_liste_obj = $obj->func("count(*)");                
+                $count_liste_obj = $obj->func("count(*)");
         }
 
         $obj->select_visibilite_horizontale();
-        if($special_filter) $obj->$special_filter();
+        if ($special_filter) $obj->$special_filter();
 
         // die("DBG-where select_visibilite_horizontale");
 
@@ -300,14 +300,14 @@ if (true) {
                                 <table width="100%">
                                         <tr>
                                                 <td>
-                                                        <h5 class='bluetitle search'><i></i><?= $result_page_title ?></h5>
+                                                        <h5 class='bluetitle search'><i></i><?php echo $result_page_title ?></h5>
                                                 </td>
                                         </tr>
                                         <tr>
                                                 <td id='bloc_result'>
 
-                                                        <?
-                                                        
+                                                        <?php
+
 
                                                         // die("can_action_arr = ".var_export($can_action_arr,true)); 
                                                         ?>
@@ -315,7 +315,7 @@ if (true) {
                                                         <table id="example" class="display" cellpadding="4" cellspacing="3" width="100%">
                                                                 <thead>
                                                                         <tr>
-                                                                                <?= $datatable_header ?>
+                                                                                <?php echo $datatable_header ?>
                                                                         </tr>
                                                                 </thead>
                                                                 <?php
@@ -323,21 +323,21 @@ if (true) {
                                                                 ?>
                                                                         <tfoot>
                                                                                 <tr>
-                                                                                        <?= $datatable_header ?>
+                                                                                        <?php echo $datatable_header ?>
                                                                                 </tr>
                                                                         </tfoot>
-                                                                <?
+                                                                <?php
                                                                 }
                                                                 ?>
                                                                 <tbody>
-                                                                        <?php 
-                                                                                $result = AfwRetrieveHelper::showDataRetrieve($obj, $data, $header, $class_db_structure, $liste_obj, $isAvail, $cl_tr, $class_td1, $class_td2, $class_td_off, $cl, $currmod, $popup_t, $target, $images, $objme, $fixms, $lang); 
-                                                                                echo $result["html"];
-                                                                                $ids = $result["ids"];
-                                                                                $ids_count = $result["ids_count"];
-                                                                                $datatable_header = $result["datatable_header"];
-                                                                                $data_count = $result["data_count"];
-                                                                                $fixmlist = $result["fixmlist"];
+                                                                        <?php
+                                                                        $result = AfwRetrieveHelper::showDataRetrieve($obj, $data, $header, $class_db_structure, $liste_obj, $isAvail, $cl_tr, $class_td1, $class_td2, $class_td_off, $cl, $currmod, $popup_t, $target, $images, $objme, $fixms, $lang);
+                                                                        echo $result["html"];
+                                                                        $ids = $result["ids"];
+                                                                        $ids_count = $result["ids_count"];
+                                                                        $datatable_header = $result["datatable_header"];
+                                                                        $data_count = $result["data_count"];
+                                                                        $fixmlist = $result["fixmlist"];
                                                                         ?>
                                                                 </tbody>
                                                         </table><br>

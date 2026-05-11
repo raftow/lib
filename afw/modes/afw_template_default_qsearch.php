@@ -68,7 +68,7 @@ if ($obj->specialStructure) {
         $specialStructure = [];
 }
 
-$my_log="";
+$my_log = "";
 
 foreach ($formColumns as $nom_col) {
         $desc = $class_db_structure[$nom_col];
@@ -110,36 +110,30 @@ foreach ($formColumns as $nom_col) {
                         $oper_qsearch = $desc["QSEARCH_OPER"];
                         if (!$oper_qsearch) {
                                 if (
-                                        ($desc["TYPE"] == "DATE") or 
+                                        ($desc["TYPE"] == "DATE") or
                                         ($desc["TYPE"] == "GDAT") or
                                         ($desc["TYPE"] == "PCTG") or
                                         ($desc["TYPE"] == "INT") or
                                         ($desc["TYPE"] == "AMNT")
-                                    ) 
-                                {
+                                ) {
                                         $oper_qsearch = "between";
-                                }
-                                elseif ($desc["SEARCH-MULTIPLE"])
-                                {
+                                } elseif ($desc["SEARCH-MULTIPLE"]) {
                                         $oper_qsearch = "in";
-                                }
-                                else $oper_qsearch = "=";
+                                } else $oper_qsearch = "=";
                         }
                         ob_start();
                         AfwQsearchMotor::hidden_input("oper_" . $nom_col, null, $oper_qsearch, null);
                         $data[$nom_col]["oper"] = ob_get_clean();
-                }
-                else {
+                } else {
                         $my_log .= "<!--  $nom_col is not in qsearch mode because max capacity of form ($max_total_qsize) is reached, so no space to put this input -->\n";
                 }
                 //if($nom_col=="id_domain")  $obj->_error("data[$nom_col] = ".var_export($data[$nom_col],true));
 
-        }
-        else {
+        } else {
 
                 $reason_not_qsearch = AfwPrevilegeHelper::isNotQSearchColReason($obj, $nom_col, $desc);
                 $my_log .= "<!--  $nom_col is not in qsearch mode because $reason_not_qsearch -->\n";
-        } 
+        }
         //elseif($nom_col=="id_domain")  $obj->_error("desc [$nom_col] = ".var_export($desc,true));
 }
 
@@ -148,7 +142,7 @@ foreach ($formColumns as $nom_col) {
 
 
 
-<?
+<?php
 if ($obj->qsearchByTextEnabled()) {
         $qs_by_txt_qsize = 99 - $total_qsize;
         if ($qs_by_txt_qsize > 3) $qs_by_txt_qsize = 3;
@@ -200,15 +194,15 @@ if (true) {
                                 $class_label = "class='$class_label0'";
                         }
 
-        ?>
-                        <div class="col-md-<?= $qsize . " col-filter-" . $col ?>">
+?>
+                        <div class="col-md-<?php echo $qsize . " col-filter-" . $col ?>">
                                 <div class="form-group">
                                         <label <?php echo $class_label; ?>><?php echo $info["trad"]; ?>
                                         </label>
                                         <?php echo $info["input"] . $info["oper"]; ?>
                                 </div>
                         </div>
-                        <?
+                        <?php
                         $need_to_close_div = true; // false;
                         $totqsize += $qsize;
                         if ($totqsize >= 12) {
@@ -217,33 +211,33 @@ if (true) {
                         ?>
                                 </div>
                                 <div class="row">
-                        <?
+                        <?php
                         }
                 }
         }
         // echo "rafik !!!!!!!!!!!!!!!!!! : ".var_export($qsearch_by_text_cols,true);
         if (count($qsearch_by_text_cols) > 0) {
                         ?>
-                        <div class="col-md-<?= $qs_by_txt_qsize ?>">
+                        <div class="col-md-<?php echo $qs_by_txt_qsize ?>">
                                 <div class="form-group">
                                         <label><?php echo $trad_qsearch_by_text; ?>
-                                                <img src='../lib/images/tooltip.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='<?= $translated_text_searchable_cols_txt ?>' width='20' heigth='20'>
+                                                <img src='../lib/images/tooltip.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='<?php echo $translated_text_searchable_cols_txt ?>' width='20' heigth='20'>
                                         </label>
 
                                         <?php echo $trad_qsearch_by_text_input; ?>
                                 </div>
                         </div>
-                <?
+                <?php
         }
         if ($need_to_close_div) {
                 ?>
 
-                <?
+                <?php
         }
 } else {
                 ?>
 
-        <?
+        <?php
 }
 
 //$can = $objme->iCanDoOperationOnObjClass($obj,"search");
@@ -267,7 +261,7 @@ $file_js_path = "$file_dir_name/../$md/js/$file_js";
 
 if (file_exists($file_js_path)) {
         ?>
-                <script src="./js/<?= $file_js ?>"></script>
+                <script src="./js/<?php echo $file_js ?>"></script>
         <?php
 }
         ?>
