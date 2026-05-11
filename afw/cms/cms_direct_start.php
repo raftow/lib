@@ -9,6 +9,16 @@ else $loops++;
 
 if($loops>3) throw new AfwRuntimeException("Seems infinite loop call of afw direct page");
 
+/**
+ * @var string $MODULE
+ * @var string $current_module
+ * @var string $currmod
+ * @var string $direct_page_name
+ * @var string $header_template
+ * @var string $menu_template
+ * @var string $body_template
+ * @var string $footer_template
+ */
 
 if (!$MODULE) $MODULE = $current_module;
 $file_dir_name = dirname(__FILE__);
@@ -25,6 +35,10 @@ if (!$MODULE) {
     if (!$currmod) $currmod = $_GET["currmod"];
     // die("afw main page MODULE is $MODULE currmod is $currmod");
 }
+/**
+ * @var array $config_arr
+ * @var Auser $objme
+ */
 require_once("$module_path/ini.php");
 require_once("$module_path/module_config.php");
 // throw new AfwRuntimeException("application_config is MODULE = $MODULE , current_module=$current_module config path = $module_path/application_config.php");
@@ -76,6 +90,8 @@ else
 {
     $default_page_template = "";
 }
+
+
 
 if(!$header_template) $header_template = AfwSession::config("$direct_page_name-header-template", $default_page_template); 
 if(!$menu_template) $menu_template = AfwSession::config("$direct_page_name-menu-template", $default_page_template);

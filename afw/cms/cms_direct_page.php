@@ -23,6 +23,9 @@ $uri_module = UfwUrlManager::currentURIModule();
 $direct_dir_name = dirname(__FILE__)."/../../../$uri_module";
 include_once ("$direct_dir_name/ini.php");
 //die("$direct_dir_name/application_config.php");
+/**
+ * @var array $config_arr
+ */
 include_once ("$direct_dir_name/application_config.php");
 AfwSession::initConfig($config_arr, "system", "$direct_dir_name/application_config.php");
 $parent_module = AfwSession::config("main_module", "");

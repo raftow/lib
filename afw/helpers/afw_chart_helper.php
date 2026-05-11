@@ -316,6 +316,7 @@ class AfwChartHelper
         $dateColumn = '',
         $dateSys = 'greg'
     ) {
+        $unit_value = 0;
         if ($unit == 'd') $unit_value = 1;
         if ($unit == 'm') $unit_value = 30;
         if ($unit == 'y') $unit_value = 360;

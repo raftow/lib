@@ -5,6 +5,9 @@ $file_dir_name = dirname(__FILE__);
 
 class AfwCacheSystem
 {
+    /**
+     * @var AfwCacheSystem
+     */
     private static $cacheSystemSingleton = null;
     
     private $cacheObjects = array();

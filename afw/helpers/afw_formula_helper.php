@@ -57,9 +57,7 @@ class AfwFormulaHelper extends AFWRoot
     public static final function calcFormulaFromItems($extraction_field, $list_item_col, $list_item_type, $obj, $extract_only_ok_items = true, $lang="ar")
     {
             $list_items_attr = $obj->get($extraction_field);
-            if (!$list_items_attr) {
-                $list_items_arr = [];
-            }
+            $list_items_arr = [];
 
             foreach ($list_items_attr as $list_item) 
             {

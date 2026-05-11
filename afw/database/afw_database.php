@@ -8,12 +8,13 @@ class AfwDatabase extends AFWRoot
      * @var boolean
      */
     private static $connect = false;
-    private static $first_query = true;
+    
+    // private static $first_query = true;
 
     /**
      *
      * Link of connection
-     * @var resource
+     * @var array
      */
     private static $link = [];
 
@@ -54,6 +55,9 @@ class AfwDatabase extends AFWRoot
             if (!self::$link[$project_link_name]) {
                 if (AfwSession::config('MODE_DEVELOPMENT', false)) {
                     $infos = "with following params :\n host = $hostname, user = $username";
+                }
+                else {
+                    $infos = "******";
                 }
                 throw new AfwRuntimeException("Failed to connect to server $infos.");
             }

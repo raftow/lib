@@ -57,17 +57,16 @@ class AfwMenuConstructHelper
 
     public static function genereControllerMenu($menu_template, $module, $controllerObj, $lang, $module_languages, $role)
     {
-        if(!$menu_template) $menu_template = AfwSession::currentMenuTemplate();
+        if (!$menu_template) $menu_template = AfwSession::currentMenuTemplate();
         $tpl_path = "";
-        
-        if($controllerObj) $userAuthenticated = $controllerObj->checkLoggedIn();
+
+        if ($controllerObj) $userAuthenticated = $controllerObj->checkLoggedIn();
         else $userAuthenticated = null;
 
-        $file_helper_dir_name = dirname(__FILE__); 
+        $file_helper_dir_name = dirname(__FILE__);
         $html_hzm_menu = "";
         self::$current_arole = $role;
-        if(!self::$current_arole and $_REQUEST["role"])
-        {
+        if (!self::$current_arole and $_REQUEST["role"]) {
             self::$current_arole = $_REQUEST["role"];
         }
 
@@ -84,14 +83,13 @@ class AfwMenuConstructHelper
                 $lang_menu_tokens["menu_icon"] = "globe";
                 $lang_menu_tokens["menu_item_css"] = "";
                 $lang_menu_tokens["menu_title"] = $menu_item_title;
-                
 
 
-                if ($uri_item) 
-                {
+
+                if ($uri_item) {
                     $tpl_path = AfwHtmlHelper::hzmTplPath();
-                    $li_template_file = "$tpl_path/$menu_template"."_menu_li_tpl.php";
-                    $html_hzm_menu .= "\n" . AfwHtmlHelper::showUsingHzmTemplate($li_template_file, $lang_menu_tokens, $lang);                    
+                    $li_template_file = "$tpl_path/$menu_template" . "_menu_li_tpl.php";
+                    $html_hzm_menu .= "\n" . AfwHtmlHelper::showUsingHzmTemplate($li_template_file, $lang_menu_tokens, $lang);
                 }
             }
             // $menu_color = $menu_next_color[$menu_color];
@@ -99,10 +97,8 @@ class AfwMenuConstructHelper
 
         $i = 0;
         $arrMenu = include("$file_helper_dir_name/../../../$module/front_main_menu_arr.php");
-        foreach($arrMenu as $mi => $rowMenu)
-        {
-            if($userAuthenticated or $rowMenu["guest"])
-            {
+        foreach ($arrMenu as $mi => $rowMenu) {
+            if ($userAuthenticated or $rowMenu["guest"]) {
                 $menu_folder = [];
                 $menu_folder["color_class"] = "menu-color";
                 $menu_folder["id"] = $mi;
@@ -110,7 +106,7 @@ class AfwMenuConstructHelper
                 $menu_folder["items"] = [];
                 $menu_folder["showme"] = true;
                 $menu_folder["menu_name"] = $rowMenu["methodTitle"];
-                $menu_folder["page"] = "i.php?cn=".$rowMenu["controller"]."&mt=".$rowMenu["methodName"];
+                $menu_folder["page"] = "i.php?cn=" . $rowMenu["controller"] . "&mt=" . $rowMenu["methodName"];
                 $menu_folder["css"] = ($methodName === $rowMenu["methodName"]) ? "active" : "";
                 $menu_folder["icon"] = $rowMenu["icon"];
                 $menu_folder_i_html = CmsFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder, $module, $lang, $r, true, $iamAdmin);
@@ -133,21 +129,20 @@ class AfwMenuConstructHelper
         // $me = $objme->id;
         // if (is_object($objme) or (!$me)) throw new AfwRuntimeException("objme should have id for AfwMenuConstructHelper::geneMenu");
 
-        $file_helper_dir_name = dirname(__FILE__); 
+        $file_helper_dir_name = dirname(__FILE__);
         $html_hzm_menu = "";
         self::$current_arole = $r;
-        if(!self::$current_arole and $_REQUEST["r"])
-        {
+        if (!self::$current_arole and $_REQUEST["r"]) {
             self::$current_arole = $_REQUEST["r"];
         }
-        
+
         list($LANG_NAMES, $uri_arr, $active_lang_count) = self::getLangues($lang, $module_languages);
         /*
         if ($objme) {
             include "$file_helper_dir_name/../../../ums/module_options.php";
             include "$file_helper_dir_name/../../../$module/special_module_options.php";
         }*/
-        
+
         $enable_language_switch = AfwSession::config("enable_language_switch", true);
         // die("enable_language_switch=$enable_language_switch active_lang_count=$active_lang_count uri_arr = ".var_export($uri_arr,true));
         if (($active_lang_count > 0) and $enable_language_switch) {
@@ -160,32 +155,37 @@ class AfwMenuConstructHelper
                 $lang_menu_tokens["menu_icon"] = "globe";
                 $lang_menu_tokens["menu_item_css"] = "";
                 $lang_menu_tokens["menu_title"] = $menu_item_title;
-                
 
 
-                if ($uri_item) 
-                {
+
+                if ($uri_item) {
                     $tpl_path = AfwHtmlHelper::hzmTplPath();
-                    $li_template_file = "$tpl_path/$menu_template"."_menu_li_tpl.php";
-                    $html_hzm_menu .= "\n" . AfwHtmlHelper::showUsingHzmTemplate($li_template_file, $lang_menu_tokens, $lang);                    
+                    $li_template_file = "$tpl_path/$menu_template" . "_menu_li_tpl.php";
+                    $html_hzm_menu .= "\n" . AfwHtmlHelper::showUsingHzmTemplate($li_template_file, $lang_menu_tokens, $lang);
                 }
             }
             //$menu_color = $menu_next_color[$menu_color];
         }
 
-        if($objme and ($objme instanceof Auser))
-        {
+        if ($objme and ($objme instanceof Auser)) {
             $iamAdmin = $objme->isAdmin();
 
-            $application_id = AfwSession::config($module."_application_id", 0);
+            $application_id = AfwSession::config($module . "_application_id", 0);
             $no_cache_use_for_ums = AfwSession::config("no-cache-use-for-ums", false);
             if (!$application_id) {
-                throw new AfwRuntimeException("HZM Error : ".$module."_application_id should be defined in application_config.php file");
+                throw new AfwRuntimeException("HZM Error : " . $module . "_application_id should be defined in application_config.php file");
             } else {
                 $me_id = $objme->id;
 
                 if (!$no_cache_use_for_ums) {
-                    list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = CmsFrontMenu::loadUmsCacheForUser($me_id, $lang);
+                    list(
+                        $cache_found,
+                        $quick_links_arr,
+                        $mau_info,
+                        $menu,
+                        $user_info,
+                        $user_cache_file_path
+                    ) = CmsFrontMenu::loadUmsCacheForUser($me_id, $lang);
                 } else {
                     $cache_found = false;
                     $quick_links_arr = null;
@@ -194,12 +194,17 @@ class AfwMenuConstructHelper
                     $user_cache_file_path = null;
                 }
 
+                /**
+                 * @var array|null $mau_info
+                 * @var array|null $menu
+                 */
+
                 if (!$no_cache_use_for_ums and $cache_found) // ncu = get option to say "no cache use" to retrieve roles and menus (ums)
                 {
                     $application_code = $mau_info["m$application_id"]["code"];
                     $menu_folders_arr = $menu[$application_code]["all"];
                     // temporary until regenrate all user cache files
-                    if(!$menu_folders_arr) $menu_folders_arr = $menu[$application_code]["ar"];
+                    if (!$menu_folders_arr) $menu_folders_arr = $menu[$application_code]["ar"];
 
                     if (!$menu_folders_arr) AfwSession::pushWarning("System cache X <!-- $user_cache_file_path --> gived application_code=[$application_code] for application id [$application_id] and and no menu for this user for this application code");
                 } elseif (!$no_cache_use_for_ums) AfwSession::pushWarning("System need cache optimisation file for user $me_id <!-- file not found $user_cache_file_path -->");
@@ -228,7 +233,7 @@ class AfwMenuConstructHelper
                 $html_hzm_menu .= "<l i class=\"front-small-item front-$menu_color-item\"><a href=\"main.php?Main_Page=fm.php&m=control\"><i class=\"fa fa-cogs\"></i>" . AfwLanguageHelper::translateKeyword("CONTROL", $lang) . "</a></l i>";
             }*/
         }
-        
+
         return $html_hzm_menu;
     }
 }

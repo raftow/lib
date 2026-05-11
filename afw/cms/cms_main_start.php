@@ -4,7 +4,14 @@ set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 ini_set('zend.exception_ignore_args', 0);
 
-
+/**
+ * @var string $current_module
+ * @var string $currmod
+ * @var string $Main_Page
+ * @var array $config_arr
+ * @var Auser $objme
+ * @var string $current_module
+ */
 
 if (!$MODULE) $MODULE = $current_module;
 
@@ -33,11 +40,8 @@ if (!$objme) $objme = AfwSession::getUserConnected();
 // die("DBG-User Connected Got");
 // $mode_analysis = (AfwSession::config("MODE_DEVELOPMENT", false) or ($objme and $objme->isAdmin() and AfwSession::config("MODE_ANALYSIS", false)));
 
-$lang = $_GET["lang"];
-if(!$lang) $lang = AfwSession::getSessionVar("current_lang", "ar");
-else AfwSession::setSessionVar("current_lang", $lang);
-if(!$lang) $lang = "ar";
-// die("main start lang = ".$lang);
+$lang = $_REQUEST["lang"];
+if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
 
 $parent_module = AfwSession::config("main_module", "");
 if ($parent_module) AfwAutoLoader::addMainModule($parent_module);

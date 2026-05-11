@@ -7,12 +7,18 @@ if (!defined('PHP_VERSION_ID')) {
 
 class AfwMysql
 {
+    /**
+     * @param mysqli $link
+     */
     public static function get_error($link)
     {
         if (self::php_is_old()) return null; // mysql_error($link);    
         else return mysqli_error($link);
     }
 
+    /**
+     * @param mysqli $link
+     */
     public static function insert_id($link)
     {
         if (self::php_is_old()) return null; // mysql_insert_id($link);    
@@ -20,6 +26,9 @@ class AfwMysql
     }
 
 
+    /**
+     * @param mysqli_result $mysqli_result
+     */
     public static function rows_count($mysqli_result)
     {
         if (self::php_is_old()) return null;
@@ -31,12 +40,18 @@ class AfwMysql
         }
     }
 
+    /**
+     * @param mysqli_result $result
+     */
     public static function fetch_array($result)
     {
         if (self::php_is_old()) return null; // mysql_fetch_array($result);
         else return mysqli_fetch_array($result);
     }
 
+    /**
+     * @param mysqli $link
+     */
     public static function affected_rows($link)
     {
         if (self::php_is_old()) return null; // mysql_affected_rows($link);    
@@ -63,7 +78,11 @@ class AfwMysql
 
 
 
-
+    /**
+     * @param string $sql
+     * @param mysqli $link
+     */
+    
     public static function query($sql, $link, $is_update = false)
     {
         if (self::php_is_old()) return null; // mysql_query($sql, $link);    
@@ -71,8 +90,8 @@ class AfwMysql
             if (self::queryToCapture($sql)) {
                 throw new AfwRuntimeException("queryToCapture : $sql");
             }
-            try {
-                $sql_html = strip_tags($sql);
+            $sql_html = strip_tags($sql);
+            try {                
                 if (strlen($sql_html) > 32807) {
                     $sql_html = "[[" . substr($sql_html, 0, 32800) . "...]]";
                 }
@@ -88,6 +107,14 @@ class AfwMysql
         }
     }
 
+
+    /**
+     * @param string $hostname
+     * @param string $username
+     * @param string $password
+     * @param string $database
+     * @param int $port
+     */
     public static function connection($hostname, $username, $password, $database, $port = 3306)
     {
         if (self::php_is_old()) {

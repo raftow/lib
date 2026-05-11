@@ -140,6 +140,7 @@ class AfwController extends AFWRoot
 
         public function renderHzm($view_name, $object, $data, $structure = "", $objme = null, $public_show = false)
         {
+                $token_arr = [];
                 foreach ($data as $key => $value) $token_arr["[$key]"] = $value;
                 $lang = AfwLanguageHelper::getGlobalLanguage();
                 if ($view_name == "minibox") echo AfwShowHelper::showMinibox($object, $structure, $lang, $token_arr, $objme, $public_show);

@@ -392,7 +392,8 @@ class AfwSession extends AFWRoot
                 global $log_counter, $MODE_BATCH_LOURD;
                 if (!$log_counter) $log_counter = 0;
                 $log_counter++;
-
+                $critical = "";
+                $durationSinceLastLog = 0;
                 $MODE_DEV = self::config("MODE_DEVELOPMENT", false);
 
                 if ($MODE_DEV) {
@@ -412,7 +413,7 @@ class AfwSession extends AFWRoot
                         $oldLastLogTime = self::getMyLogTime();
                         $now_time = self::currTime();
                         self::setMyLogTime($now_time);
-                        $critical = "";
+                        
                         if ($oldLastLogTime) {
                                 $durationSinceLastLog = $now_time - $oldLastLogTime;
                                 if ($durationSinceLastLog > 3) $critical = "top critical";

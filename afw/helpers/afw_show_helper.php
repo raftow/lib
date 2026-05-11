@@ -1573,7 +1573,7 @@ class AfwShowHelper
                         $return .= "<!-- quickShowAttribute case FK no value :  $empty_case -->";
                     } else {
                         $emptyMessage = $objItem->translate('obj-empty', $lang);
-                        $return = AfwLoadHelper::decodeLookupValue($nom_module_fk, $nom_table_fk, $val, $separator = $newline, $emptyMessage, $pk, $small_lookup);
+                        $return = AfwLoadHelper::decodeLookupValue($nom_module_fk, $nom_table_fk, $val, $separator = $newline, $emptyMessage, $pk, $lang, $small_lookup);
                         if ($val and (!$return))
                             $return = $val . '<!-- val only -->';
                         /* $htr_e = hrtime()[1];
@@ -1616,11 +1616,11 @@ class AfwShowHelper
                     $pk = '((id))';
                 $val = $objItem->getVal($col);
                 $emptyMessage = $objItem->translate('obj-empty', $lang);
-                $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator = $newline, $emptyMessage, $pk, $small_lookup);
+                $return = AfwLoadHelper::lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator = $newline, $emptyMessage, $pk, $lang, $small_lookup);
                 break;
 
             case 'ANSWER':
-                $return = $objItem->decode($col);
+                $return = $objItem->decode($col, '', false, $lang);
                 break;
 
             case 'YN':

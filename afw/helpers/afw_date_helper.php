@@ -1105,7 +1105,7 @@ class AfwDateHelper
             }
 
             $counter = -99;
-            
+
             if ($increment_days > 0) {
                 $counter = substr($hdate, 4, 4);
             } elseif ($increment_months > 0) {
@@ -1806,6 +1806,13 @@ class AfwDateHelper
         return $gdate_shifted;
     }
 
+    /**
+     * @param string $hdate2 if omitted we take current hijri date
+     * @param string $time2 if omitted we take current time
+     * @param string $hdate1 if omitted we take current hijri date
+     * @param string $time1 if omitted we take current time
+     * @return integer number of days between the 2 hijri dates (hdate2 - hdate1) if round is true, otherwise return float with more precision
+     */
     public static function hijriDateTimeDiff(
         $hdate2 = '',
         $time2 = '',
@@ -1878,13 +1885,28 @@ class AfwDateHelper
 
     public static function timeDiffInHours($gdate2, $gdate1, $round = true)
     {
-        $result_diff = self::timeDiffInSeconds($gdate2, $gdate1);
-        $result_diff = $result_diff / 3600;
+        $result_diff_s = self::timeDiffInSeconds($gdate2, $gdate1);
+        $result_diff_h = $result_diff_s / 3600;
         if ($round) {
-            $result_diff = round($result_diff);
+            $result_diff_h = round($result_diff_h);
         }
 
-        return $result_diff;
+        if($result_diff_h>20000) {
+            $result_diff_s_report = self::timeDiffInSecondsReport($gdate2, $gdate1);
+            die("timeDiffInSecondsReport($gdate2, $gdate1) => $result_diff_s <br>\n
+               result_diff_s_report => $result_diff_s_report <br>\n
+               => result_diff_h = $result_diff_h");
+        }
+
+        return $result_diff_h;
+    }
+
+    public static function timeDiffInSecondsReport($gdate2, $gdate1)
+    {
+        $stmp2 = self::gregToTimestamp($gdate2);
+        $stmp1 = self::gregToTimestamp($gdate1);
+
+        return "stmp2($gdate2) = $stmp2 <br>\n stmp1($gdate1) = $stmp1 <br>\n stmp2 - stmp1 = ".($stmp2 - $stmp1);
     }
 
     public static function timeDiffInSeconds($gdate2, $gdate1)

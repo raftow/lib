@@ -3,6 +3,7 @@
 
 class AfwLanguageHelper
 {
+    private $trad = [];
 
     public static function setGlobalLanguage($lang)
     {
@@ -103,12 +104,19 @@ class AfwLanguageHelper
         
     }
 
+    /**
+     * @param string $text
+     */
 
     public static function tarjemText($text, $langue = 'ar')
     {
         return self::tarjem($text, $langue, false, '', '');
     }
 
+
+    /**
+     * @param string $nom_col
+     */
 
     public static function tarjem(
         $nom_col,
@@ -125,15 +133,15 @@ class AfwLanguageHelper
             throw new AfwRuntimeException("\$lang should be defined to be able to translate");
         }
 
-        $langue = strtolower($langue);
-        if (isset($trad) and $trad and (!is_array($trad))) {
-            $trad = [];
+        $langue = strtolower($langue);        
+        if (isset(self::$trad[$langue]) and self::$trad[$langue] and (!is_array(self::$trad[$langue]))) {
+            self::$trad[$langue] = [];
             // throw new AfwRuntimeException("before any include trad 0 is ".var_export($trad,true));
         }
 
-        if ($trad[$nom_table][$nom_col]) {
-            if(($module=="lib/afw") and ($nom_table=="all") and ($nom_col=="qsearch_by_help")) die("debugg $nom_table trad of $nom_col = ".var_export($trad,true));
-            return $trad[$nom_table][$nom_col];
+        if (self::$trad[$langue][$nom_table][$nom_col]) {
+            if(($module=="lib/afw") and ($nom_table=="all") and ($nom_col=="qsearch_by_help")) die("debugg $nom_table trad of $nom_col => ".var_export(self::$trad[$langue],true));
+            return self::$trad[$langue][$nom_table][$nom_col];
         }
 
 
@@ -160,6 +168,7 @@ class AfwLanguageHelper
                     }
 
                     if ($trad[$nom_table][$nom_col]) {
+                        self::$trad[$langue][$nom_table][$nom_col] = $trad[$nom_table][$nom_col];
                         return $trad[$nom_table][$nom_col];
                     }
                 }
@@ -182,7 +191,7 @@ class AfwLanguageHelper
                     
                     if(class_exists($classTranslator,false))
                     {
-                        $trad = $classTranslator::initData();
+                        $trad = $classTranslator::initData();                        
                         $caseTrans = "$classTranslator::initData()";
                     }
                     
@@ -200,6 +209,7 @@ class AfwLanguageHelper
                     // if(($module=="lib/afw") and ($nom_table=="all") and ($nom_col=="qsearch_by_help")) echo(" 2. tarjem has found the file nom_file=$nom_file : caseTrans=$caseTrans<br> trad[*][$nom_col]=".$trad["*"][$nom_col]);
                     if($nom_table=="all") $nom_table = "*";
                     if ($trad[$nom_table][$nom_col]) {
+                        self::$trad[$langue][$nom_table][$nom_col] = $trad[$nom_table][$nom_col];
                         return $trad[$nom_table][$nom_col];
                     }
 
@@ -212,8 +222,8 @@ class AfwLanguageHelper
             }
             
             if (
-                !isset($trad[$nom_table][$nom_col]) ||
-                empty($trad[$nom_table][$nom_col])
+                !isset(self::$trad[$lang][$nom_table][$nom_col]) ||
+                 empty(self::$trad[$lang][$nom_table][$nom_col])
             ) 
             {
                 $general_nom_file = "$file_dir_name/tr/trad_" .$langue . '_all.php';
@@ -231,6 +241,7 @@ class AfwLanguageHelper
                         isset($trad['*'][$nom_col]) &&
                         !empty($trad['*'][$nom_col])
                     ) {
+                        self::$trad[$langue]['*'][$nom_col] = $trad['*'][$nom_col];
                         return $trad['*'][$nom_col];
                     }
                 }
@@ -238,7 +249,7 @@ class AfwLanguageHelper
                 return $nom_col;
             } else {
                 //echo "<br>4)translate $nom_table.$nom_col in $langue from memory = ".$trad[$nom_table][$nom_col]."=".$trad[$nom_table][$nom_col];
-                return $trad[$nom_table][$nom_col];
+                return self::$trad[$lang][$nom_table][$nom_col];
             }
         } 
         else // case operator translation
@@ -254,6 +265,7 @@ class AfwLanguageHelper
             $trad = $classTranslator::initData();
             
             if ($trad['OPERATOR'][$nom_col]) {
+                self::$trad[$lang]['OPERATOR'][$nom_col] = $trad['OPERATOR'][$nom_col];
                 return $trad['OPERATOR'][$nom_col];
             }
 
@@ -477,8 +489,8 @@ class AfwLanguageHelper
             $tableLower = $tableLowerOrigin;
         }
 
-        if ($maksour) {
-            $tableLowerNotMaksour = $tableLower;
+        $tableLowerNotMaksour = $tableLower;
+        if ($maksour) {            
             $tableLower = $tableLower . '_';
         }
 

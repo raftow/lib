@@ -3,8 +3,16 @@
 class AfwStatsHelper
 {
 
-    public static function prepareShowRow($myClassInstance, $list_cols, $row)
+    /**
+     * @param AFWObject $myClassInstance
+     * @param array $list_cols : list of columns to show in group by with their display format (val, decode or show)
+     * @param array $row : the row data
+     * @param string $lang : the language to use for display
+
+     */
+    public static function prepareShowRow($myClassInstance, $list_cols, $row, $lang)
     {
+        $group_col_show_arr = [];
         foreach ($list_cols as $col_index => $group_col_item) {
             $group_col          = $group_col_item['COLUMN'];
             $col_display_format = $group_col_item['DISPLAY-FORMAT'];
@@ -16,7 +24,7 @@ class AfwStatsHelper
             if ($col_display_format == 'val') {
                 $group_col_display = $col_val;
             } elseif ($col_display_format == 'decode') {
-                $group_col_display = AfwLoadHelper::decodeFkAttribute($myClassInstance, $group_col, $col_val);
+                $group_col_display = AfwLoadHelper::decodeFkAttribute($myClassInstance, $group_col, $col_val, $lang);
             }
 
             $group_col_show_arr[$group_col]            = $group_col_display;
@@ -25,8 +33,31 @@ class AfwStatsHelper
 
         return $group_col_show_arr;
     }
-    public static function statsDataToStatsCrossArrays($myClassInstance, $statsData, $config_stats_display_cols, $config_cross_stats_cols, $config_group_cols, $group_sep, $config_stats_options, $lang = "ar", $curropt = "")
-    {
+
+    /**
+     * @param AFWObject $myClassInstance
+     * @param array $statsData : the data to prepare for stats display, each row should contain at least the columns specified in config_group_cols and config_cross_stats_cols
+     * @param array $config_stats_display_cols : configuration of columns to display in stats with their options like row sum, footer sum, show unit, url to show, etc.. this is used to prepare data for display and also to prepare footer total if needed
+     * @param array $config_cross_stats_cols : configuration of columns to use for cross stats with their options like big column, filter column, etc.. this is used to prepare data for display and also to prepare big header if needed
+     * @param array $config_group_cols : configuration of columns to use for grouping
+     * @param string $group_sep : separator for grouping
+     * @param array $config_stats_options : options for stats display
+     * @param string $lang : the language to use for display
+     * @param string $curropt : current option
+
+     */
+
+    public static function statsDataToStatsCrossArrays(
+        $myClassInstance,
+        $statsData,
+        $config_stats_display_cols,
+        $config_cross_stats_cols,
+        $config_group_cols,
+        $group_sep,
+        $config_stats_options,
+        $lang = "ar",
+        $curropt = ""
+    ) {
         $stats_data_arr         = [];
         $footer_total_arr       = [];
         $footer_sum_title_arr   = [];
@@ -74,7 +105,7 @@ class AfwStatsHelper
                 if ($big_col_key) {
                     $bigDisplay = $objColItem->decode($big_col_key, '', false, $lang);
                     $bigValue = $big_col_is_formula ? $objColItem->calc($big_col_key) : $objColItem->getVal($big_col_key);
-                } 
+                }
                 if ($bigDisplay and $bigValue) {
                     if (($bigValue != $big_category)) {
                         if ($big_category and $big_category_display) { // previous group exists close it and create new
@@ -104,7 +135,7 @@ class AfwStatsHelper
 
 
         foreach ($statsData as $stats_curr_row => $statsRow) {
-            $group_col_show_arr = self::prepareShowRow($myClassInstance, $config_group_cols, $statsRow);
+            $group_col_show_arr = self::prepareShowRow($myClassInstance, $config_group_cols, $statsRow, $lang);
             $row_id = $group_col_show_arr[$row_key . "_value"];
             $col_id = $group_col_show_arr[$col_key . "_value"];
             if (!$stats_data_arr[$row_id]) {
@@ -149,6 +180,8 @@ class AfwStatsHelper
         $footer_total_arr       = [];
         $footer_sum_title_arr   = [];
         $stat_trad              = [];
+        $bloc_col_end    = [];
+        $url_to_show_arr = [];
 
         foreach ($statsData as $stats_curr_row => $statsRow) {
             $group_value = '';
@@ -166,7 +199,7 @@ class AfwStatsHelper
                 if ($col_display_format == 'val') {
                     $group_col_display = $group_col_val;
                 } elseif ($col_display_format == 'decode') {
-                    $group_col_display = AfwLoadHelper::decodeFkAttribute($myClassInstance, $group_col, $group_col_val);
+                    $group_col_display = AfwLoadHelper::decodeFkAttribute($myClassInstance, $group_col, $group_col_val, $lang);
                 }
 
                 $group_col_show_arr[$group_col]            = $group_col_display;
@@ -197,8 +230,7 @@ class AfwStatsHelper
                 }
             }
 
-            $bloc_col_end    = [];
-            $url_to_show_arr = [];
+
 
             foreach ($config_stats_display_cols as $config_stats_display_col_index => $config_stats_display_col_item) {
                 $stats_display_col = $config_stats_display_col_item['COLUMN'];
@@ -266,11 +298,32 @@ class AfwStatsHelper
     }
 
 
+    /**
+     * @param AFWObject[] $myObj_list
+     * @param array $config_stats_display_cols
+     * @param array $config_group_cols
+     * @param string $group_sep
+     * @param array $config_stats_options
+     * 
+     */
 
-    public static function objectListToStatsArrays($myObj_list, $config_stats_display_cols, $config_group_cols, $group_sep, $config_stats_options, $lang = "ar", $curropt = "")
-    {
+    public static function objectListToStatsArrays(
+        $myObj_list,
+        $config_stats_display_cols,
+        $config_group_cols,
+        $group_sep,
+        $config_stats_options,
+        $lang = "ar",
+        $curropt = ""
+    ) {
         $sum_by_col_arr         = [];
         $count_by_col_arr       = [];
+        $stat_trad              = [];
+        $footer_total_arr       = [];
+        $stats_data_arr         = [];
+        $footer_sum_title_arr   = [];
+        $bloc_col_end    = [];
+        $url_to_show_arr = [];
 
         $stats_row_code_arr_len = 0;
         foreach ($myObj_list as $myObj_id => $myObj_item) {
@@ -309,7 +362,7 @@ class AfwStatsHelper
                 $stats_data_arr[$stats_curr_row][$group_col] = $group_col_show_arr[$group_col];
                 $stats_data_arr[$stats_curr_row][$group_col . '_value'] = $group_col_show_arr[$group_col . '_value'];
 
-                if (! $stat_trad[$group_col]) {
+                if (!$stat_trad[$group_col]) {
                     $nom_col_short  = "$group_col.stat";
                     $trad_col_short = $myObj_item->translate($nom_col_short, $lang);
                     if ($trad_col_short == $nom_col_short) {
@@ -324,8 +377,7 @@ class AfwStatsHelper
                 }
             }
 
-            $bloc_col_end    = [];
-            $url_to_show_arr = [];
+            
             foreach ($config_stats_display_cols as $config_stats_display_col_index => $config_stats_display_col_item) {
                 $stats_display_col = $config_stats_display_col_item['COLUMN'];
 
@@ -362,7 +414,7 @@ class AfwStatsHelper
                         $stats_display_col_val = $myObj_item->getVal($stats_display_col);
                     }
 
-                    if (! $stat_trad[$show_name]) {
+                    if (!$stat_trad[$show_name]) {
                         $nom_col_short  = "$show_name.stat";
                         $trad_col_short = $myObj_item->translate($nom_col_short, $lang);
                         if ($trad_col_short == $nom_col_short) {
@@ -400,7 +452,7 @@ class AfwStatsHelper
                     }
 
                     if ($footer_sum) {
-                        if (! $footer_total_arr[$show_name]) {
+                        if (!$footer_total_arr[$show_name]) {
                             $footer_total_arr[$show_name] = 0;
                         }
 
@@ -439,6 +491,12 @@ class AfwStatsHelper
         }
 
         $config_stats_formula_cols = $stats_config['FORMULA_COLS'];
+
+        $footer_total_arr = [];
+        $footer_sum_title_arr = [];
+        $url_to_show_arr = [];
+        $stats_big_header = "";
+        $bloc_col_end = "";
 
         $filter_arr = [];
         $sfilter_list = $stats_config["SFILTER"];
@@ -507,6 +565,8 @@ class AfwStatsHelper
                 }
             }
         }
+
+        
 
         return [$stat_trad, $stats_data_arr, $stats_big_header, $case, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr];
     }
@@ -589,7 +649,7 @@ class AfwStatsHelper
         }
         $myClass = get_class($myClassInstance);
         $url_settings          = $stats_config['URL_SETTINGS'];
-        if($url_settings) {
+        if ($url_settings) {
             $settings_label = AfwLanguageHelper::translateKeyword("SETTINGS", $lang);
             $url_settings = "$url_settings&stc=$stats_code&stccl=$myClass&stccurrmod=$currmod";
             CmsMainPage::addOutput("<h3 class='righttitle specialtitle'><a target='_settings' href='$url_settings'>$settings_label</a></h3>");
@@ -725,7 +785,7 @@ class AfwStatsHelper
 
         CmsMainPage::addOutput($thead_html);
         CmsMainPage::addOutput("</thead>");
-        
+
 
         // STEP 4.0 Data
         $repeat_titles_nb_rows = $stats_config['REPEAT_TITLES_NB_ROWS'];

@@ -65,6 +65,8 @@ class AfwDataUpdateHelper
         $executionLog = $table_config['executionLog'];
         $run_date = $table_config['run_date'];
 
+        $apiExecObj = null;
+
         if ($executionLog) {
             if (!$mapping_job_id) throw new AfwRuntimeException("data_update : mapping_job_id is mandatory field in table_config when executionLog is true");
             if (!$data_api_id) throw new AfwRuntimeException("data_update : data_api_id is mandatory field in table_config when executionLog is true");
@@ -449,6 +451,7 @@ class AfwDataUpdateHelper
 
     public static function consume_api($apiConfig, $url, $data = null, $recursive = true, $max_tentatives = 20, $print_debugg = true, $force_mode = false, $lang = 'ar', $throwError = true, $sleep_time_in_seconds = 10)
     {
+        $warning = "";
         $itemsAttribute = $apiConfig['items-attribute'];
         if (! $itemsAttribute) {
             throw new AfwRuntimeException('items-attribute missed in the apiConfig array : ' . var_export($apiConfig, true));
@@ -504,6 +507,8 @@ class AfwDataUpdateHelper
         if ($max_tentatives < 1) {
             $max_tentatives = 1;
         }
+
+        $result = null;
 
         $tentative = 1;
         while ($tentative <= $max_tentatives) {
@@ -574,7 +579,7 @@ class AfwDataUpdateHelper
             $pageTotal = $pageCount = $result['result']->$metaAttribute->$pageCountAttribute;
 
 
-            $warning = "";
+            
 
             if ($recursive) {
 
@@ -589,6 +594,8 @@ class AfwDataUpdateHelper
                         // do all pages keep $pageCount as is
                     }
                 }
+
+                $result_2 = null;
 
                 for ($page = $currentPage + 1; $page <= $pageCount; $page++) {
                     $apiConfigObject->setData($inputPageAttribute, $page);

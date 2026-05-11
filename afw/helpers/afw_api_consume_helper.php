@@ -83,6 +83,8 @@ class AfwApiConsumeHelper
                     $http_header_array[] = "Authorization: Bearer $token";                    
                 }
 
+                $proxy_host = null;
+                $proxy_port = null;
                 
                 $curl_options[CURLOPT_HTTPHEADER] = $http_header_array;
                 // $curl_commands[] = "curl_setopt(\$curl, CURLOPT_HTTPHEADER, ".var_export($http_header_array, true).");";

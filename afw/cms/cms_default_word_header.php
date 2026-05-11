@@ -1,5 +1,8 @@
 <?php
 
+        /**
+         * @var string $file_dir_name
+         */
         $module_dir_name = $file_dir_name;
         
         $uri_module = UfwUrlManager::currentURIModule();

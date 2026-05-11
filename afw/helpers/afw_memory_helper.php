@@ -41,6 +41,9 @@ class AfwMemoryHelper extends AFWRoot
         }
     }
 
+    /**
+     * @param AFWObject $objInstanciating
+     */
 
     public static final function checkMemoryBeforeInstanciating($objInstanciating)
     {

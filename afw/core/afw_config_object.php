@@ -1,12 +1,22 @@
 <?php
 class AfwConfigObject extends AFWRoot
 {
+    /**
+     * @var array
+     */
     private $configArr;
+
+    /** 
+     * @var array
+    */
     private $data;
+
+    
     /**
      * __construct
      * Constructor
-     * @param string $table
+     * @param array $configArr
+     * @param array $data
      */
     public function __construct($configArr, $data) 
     {        

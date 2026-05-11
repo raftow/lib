@@ -6,6 +6,8 @@ class AfwDataMigrator extends AFWRoot {
     public static function migrateData($migration_config, $partition=0, $phase="", $case="", $lang="ar", $returnLog=false, $forced_print_full_debugg=true)
     {
         global $tab_instances;
+
+        $log = "";
         $source = $migration_config["source"];
         $destination = $migration_config["destination"];
         $updateProgressFrequency = $migration_config["updateProgressFrequency"];
@@ -83,12 +85,12 @@ class AfwDataMigrator extends AFWRoot {
         $log_arr[] = "getDataFromSQL($source,$sql_data_from) => $total_count record(s)";
 
         $updateProgressField_value = "";
-
+        
         foreach($data as $irow => $row)
         {
             try
             {
-                $log = "";
+                
                 // die("stopped by rafik-1 when migrateData for row=".var_export($row,true));
                 if($total_count>0) $progress = floor(100*$irow/$total_count);
                 else $progress = 100;
@@ -107,6 +109,9 @@ class AfwDataMigrator extends AFWRoot {
                 }
                 else
                 {
+                    $created = false;
+                    $updated = false;
+                    $skipped = false;
                     $log = "BUG IN CONFIG : no mdestination_table no destinationClass";
                 } 
                 if($created) $created_count++;
@@ -155,7 +160,7 @@ class AfwDataMigrator extends AFWRoot {
             }
             catch(Exception $e)
             {
-                $log .= " $destination_db/$destinationClass/$destination_table Exception happened on record : ".var_export($row,true)."\n The message is ".$e->getMessage()."\n The stack trace is : ".$e->getTraceAsString();
+                $log = " $destination_db/$destinationClass/$destination_table Exception happened on record : ".var_export($row,true)."\n The message is ".$e->getMessage()."\n The stack trace is : ".$e->getTraceAsString();
                 $res_log = " log >> ".$log;
                 if($returnLog) $log_arr[] = $res_log; 
                 else UfwBatch::print_debugg($res_log);
@@ -164,7 +169,7 @@ class AfwDataMigrator extends AFWRoot {
             }
             catch(Error $e)
             {
-                $log .= " $destination_db/$destinationClass/$destination_table Error happened on record : ".var_export($row,true)."\n The error message is ".$e->__toString();
+                $log = " $destination_db/$destinationClass/$destination_table Error happened on record : ".var_export($row,true)."\n The error message is ".$e->__toString();
                 $res_log = " log >> ".$log;
                 if($returnLog) $log_arr[] = $res_log; 
                 else UfwBatch::print_debugg($res_log);
@@ -301,6 +306,7 @@ class AfwDataMigrator extends AFWRoot {
         if(!$destinationLoadMethod) $destinationLoadMethod = "loadFromRow";
         $destinationObj = $destinationClass::$destinationLoadMethod($rowMapped);
         if($returnLog) $log_initial = ob_get_clean();
+        else $log_initial = "";
         $created = false;
         $updated = false;
         $skipped = true;

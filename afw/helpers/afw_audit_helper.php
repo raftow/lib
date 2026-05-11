@@ -97,6 +97,9 @@ class AfwAuditHelper extends AFWRoot
             throw new AfwRuntimeException("THe 'update context' information is mandatory to perform audit actions");
         }
 
+        $update_context = addslashes($update_context);
+        
+
         $table_name = $object->getTableName();
         $table_audit = $table_name . '_braudit';
 
@@ -109,6 +112,7 @@ class AfwAuditHelper extends AFWRoot
         
         $action_at = $now = date("Y-m-d H:i:s");
         list($action_browser, $action_ip) = self::getClientInfos();
+        $action_browser = addslashes($action_browser);
 
         $query = 'INSERT INTO ' . $object::_prefix_table($table_audit) . "($insert_columns,  action,  action_by,   action_at,    action_browser,    action_ip,  update_context) 
                                                                     SELECT $insert_columns, '$action', $action_by, '$action_at', '$action_browser', '$action_ip','$update_context' 
@@ -162,7 +166,7 @@ class AfwAuditHelper extends AFWRoot
 
     public static function auditByHtml($initialRow, $dataTuple, $object, $lang='ar') {
         $action_by = $initialRow["action_by"];
-        $by = AfwLoadHelper::decodeLookupValue("ums", "auser", $action_by, "", "", "id");
+        $by = AfwLoadHelper::decodeLookupValue("ums", "auser", $action_by, "", "", "", $lang, false);
         return "<div class='audit-cell by'>$by</div>";
     }    
 
@@ -184,7 +188,7 @@ class AfwAuditHelper extends AFWRoot
         // $datetime = $initialRow["action_at"];
         //$dtv .= "<div class='audit-cell dt'>$datetime</div>";
         // $action_by = $initialRow["action_by"];
-        // $by = AfwLoadHelper::decodeLookupValue("ums", "auser", $action_by, "", "", "id");
+        // $by = AfwLoadHelper::decodeLookupValue("ums", "auser", $action_by, "", "", "", $lang, false);
         $context = AfwLanguageHelper::translateKeyword($initialRow["update_context"], $lang);     
         $action_text = AfwLanguageHelper::translateKeyword("action.".$action, $lang);
         $using = AfwLanguageHelper::translateKeyword("using", $lang);

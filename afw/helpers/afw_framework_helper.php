@@ -152,7 +152,7 @@ class AfwFrameworkHelper extends AFWRoot
         if ($p == 0) {
             return null;
         }
-
+        $display_field = "";
         if ($all_fields_mode) {
             $display_field = AfwFrameworkHelper::getAllAttributesInMode(
                 $obj,

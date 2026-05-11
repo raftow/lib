@@ -4,6 +4,9 @@
 
 class CmsFrontMenu extends AFWRoot {
 
+        /**
+         * @return array<bool,array,array,array,array,string>
+         */
         public static function loadUmsCacheForUser($userId, $lang)
         {
                 $company = AfwSession::currentCompany();

@@ -23,40 +23,53 @@ class AfwLoadHelper extends AFWRoot
         return self::$lookupProps["$nom_module_fk-$nom_table_fk"];
     }
 
-    public static function getLookupData($nom_module_fk, $nom_table_fk, $where = "--", $order_by = "", $oneId = false)
+    /**
+     * getLookupData
+     * @param string $nom_module_fk
+     * @param string $nom_table_fk
+     * @param string $where : if omitted we take all active records (ie. where = "--"), if you want all records even non active you can put "1" as where, if you want all records after HV you can put "++" as where
+     * @param string $order_by
+     * @param string $lang
+     * @param bool $oneId : if we want to load only one id and not all data of the lookup table, in this case we will not load all data of the lookup table but only the one with this id, it is used to optimize performance when we want to decode only one value of the lookup table without loading all data of the lookup table in cache, but if we want to decode more than one value of the lookup table we have to load all data of the lookup table in cache because we need to use "where in (val1, val2, ...)" for decoding values and in this case we can't decode values without loading all data of the lookup table in cache
+     */
+    public static function getLookupData($nom_module_fk, $nom_table_fk, $where, $order_by, $oneId, $lang)
     {
         if (!$nom_module_fk) throw new AfwRuntimeException("nom_module_fk is mandatory attribute for AfwLoadHelper::getLookupData");
         if (!$where) $where = "--"; // `1` means all, `--` means all active and `++` means all after HV
 
-        if ((!($oneId and self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$oneId])) and (!self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"])) {
+        if ($oneId and self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$lang"][$oneId]) {
+            $case = "cache-oneId-$oneId";
+            $dataLookup = self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$lang"];
+        } elseif ($where and self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$lang.$where"]) {
+            $case = "cache-where-$where";
+            $dataLookup = self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$lang.$where"];
+        } else {
             $case = "sql";
             $nom_class_fk   = AfwStringHelper::tableToClass($nom_table_fk);
             $object = new $nom_class_fk();
             $where_cleaned = str_replace("((id))", $object->getPKField(), $where);
-            $dataLookup = self::loadAllLookupData($object, $where_cleaned, $order_by);
-            // if($nom_table_fk=="crm_customer") throw new AfwRuntimeException("Shoof self::loadAllLookupData(object of $nom_class_fk, $where_cleaned) = ".var_export($dataLookup, true));
-
-            // merge into global lookup data
+            $dataLookup = self::loadAllLookupData($object, $where_cleaned, $order_by, "", $lang);
             foreach ($dataLookup as $lkp_id => $lkp_val) {
-                self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$lkp_id] = $lkp_val;
+                self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$lang"][$lkp_id] = $lkp_val;
             }
             if (($where == "1") or ($where == "--") or ($where == "++")) {
-                self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"] = $dataLookup;
+                self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$lang.$where"] = $dataLookup;
             } else {
                 // if($nom_table_fk=="identity_type") throw new RuntimeException("$nom_table_fk table where = $where : why not optimized and load all");
             }
+
+
+            // if($nom_table_fk=="crm_customer") throw new AfwRuntimeException("Shoof self::loadAllLookupData(object of $nom_class_fk, $where_cleaned) = ".var_export($dataLookup, true));
+
+            // merge into global lookup data
+
+
 
             /*
             if($oneId and (!self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$oneId]))
             {
 
             }*/
-        } elseif ($oneId and self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$oneId]) {
-            $case = "cache-oneId-$oneId";
-            $dataLookup = self::$lookupMatrix["$nom_module_fk.$nom_table_fk"];
-        } else {
-            $case = "cache-where-$where";
-            $dataLookup = self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$where"];
         }
 
         //if(($nom_table_fk=="academic_level") and ($case!="cache")) throw new AfwRuntimeException("from $case getLookupData($nom_module_fk, $nom_table_fk, $where) will use self::lookupMatrix=".var_export(self::$lookupMatrix,true));
@@ -182,8 +195,12 @@ class AfwLoadHelper extends AFWRoot
         return AfwLoadHelper::vhGetListe($objRep, $attribute, $object->getTableName(), $desc["WHERE"], $action = "loadManyFollowingStructure", $lang, null, $desc['ORDERBY'], $dropdown = true, $optim = true);
     }
 
+    /**
+     * @param AFWObject $obj
+     */
     public static function vhGetListe(&$obj, $fk_attribute, $fk_table, $where, $action = "default", $lang = "ar", $val_to_keep = null, $order_by = "", $dropdown = false, $optim = true, $max_items_count = true)
     {
+        $listeRep = [];
         $return = [];
         $case = "no case";
         if (!$where) $where = "1";
@@ -211,8 +228,8 @@ class AfwLoadHelper extends AFWRoot
             }
             $module_code = $obj->getMyModule();
             $table_name = $obj->getMyTable();
-            $return = self::getLookupData($module_code, $table_name, $where, $order_by);
-            $case = "self::getLookupData($module_code, $table_name, $where, $order_by)";
+            $return = self::getLookupData($module_code, $table_name, $where, $order_by,false,$lang);
+            $case = "self::getLookupData($module_code, $table_name, $where, $order_by,false,$lang)";
         } else {
             $obj->select_visibilite_horizontale();
             if ($where) $obj->where($where);
@@ -280,9 +297,22 @@ class AfwLoadHelper extends AFWRoot
         return $l_rep;
     }
 
-    public static function lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator, $emptyMessage, $pk, $small_lookup = false)
+    /**
+     * @param string $nom_module_fk
+     * @param string $nom_table_fk
+     * @param mixed $val
+     * @param string $separator
+     * @param string $lang
+     * @param string $emptyMessage
+     * @param mixed $pk
+     * @param bool $small_lookup : if true we will not use "where in (val1, val2, ...)" for decoding values to avoid performance issue when we have too much values to decode, but in this case we will decode only one value if we have one value to decode otherwise we will return empty message because we can't decode more than one value without "where in (val1, val2, ...)"
+     * @return string decoded value or empty message if we can't decode value
+     */
+
+    public static function lookupDecodeValues($nom_module_fk, $nom_table_fk, $val, $separator, $emptyMessage, $pk, $lang, $small_lookup)
     {
         if (!$val) return "";
+        if (!$pk) $pk = "id";
 
         if (is_string($val) and AfwStringHelper::stringContain($val, "Array")) throw new AfwRuntimeException("Stopped by rafik for debugg how value = $val");
 
@@ -316,14 +346,14 @@ class AfwLoadHelper extends AFWRoot
         else $where = "1";
 
         // if(AfwStringHelper::stringContain($where, "Array")) die("rafik dbg : where=$where. case_where=$case_where val=".var_export($val, true));
-        self::getLookupData($nom_module_fk, $nom_table_fk, $where . $case_where, "", $oneId);
+        self::getLookupData($nom_module_fk, $nom_table_fk, $where . $case_where, "", $oneId, $lang);
 
 
 
         if (count($val_arr) > 0) {
             $decodedValues_arr = [];
             foreach ($val_arr as $val_item) {
-                $decodedValues_arr[] = self::$lookupMatrix["$nom_module_fk.$nom_table_fk"][$val_item];
+                $decodedValues_arr[] = self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$lang"][$val_item];
             }
 
             return implode($separator, $decodedValues_arr);
@@ -637,7 +667,7 @@ class AfwLoadHelper extends AFWRoot
                         $tuple['ca-' . $categoryAttribute] = $objItem->calc($categoryAttribute);
                         // if(($categoryAttribute=="request_late") and ($objListItem->id==88210)) die("tuple[ca-$categoryAttribute] = ".$tuple["ca-".$categoryAttribute]." = $objListItem-->calc($categoryAttribute)");
                     } else
-                        $tuple['ca-' . $categoryAttribute] = "-".$objItem->getVal($categoryAttribute)."-$categoryAttribute-000";
+                        $tuple['ca-' . $categoryAttribute] = "-" . $objItem->getVal($categoryAttribute) . "-$categoryAttribute-000";
                 }
 
                 $objIsActive = $objItem->isActive();
@@ -704,13 +734,17 @@ class AfwLoadHelper extends AFWRoot
     /**
      * @param AFWObject $object : afw object instance
      * @param string $attribute : attribute to decode should be of type FK
-     * 
+     * @param mixed $value : value to decode can be a single value or multiple values separated by separator (in case of mfk)
+     * @param string $separator : separator used to split multiple values
+     * @param string $emptyMessage : message to display when no data is found
+     * @param string $lang : language to use for decoding value
+     * @return string decoded value or empty message if we can't decode value
      */
 
-    public static function decodeFkAttribute(&$object, $attribute, $value, $separator = ",", $emptyMessage = "no-data-decoded")
+    public static function decodeFkAttribute(&$object, $attribute, $value, $lang, $separator = ",", $emptyMessage = "no-data-decoded")
     {
-        if (!$object) throw new AfwRuntimeException("decodeFkAttribute function : \$object attribute should not be null");
-        if (!($object instanceof AFWObject)) throw new AfwRuntimeException("decodeFkAttribute function : \$object attribute should be subclass of AFWObject");
+        if (!$object) throw new AfwRuntimeException("decode-FkAttribute function : \$object attribute should not be null");
+        if (!($object instanceof AFWObject)) throw new AfwRuntimeException("decode-FkAttribute function : \$object attribute should be subclass of AFWObject");
         $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         if ($structure["TYPE"] != "FK") throw new AfwRuntimeException("$attribute attribute is not of type FK from class " . $object->getMyClass());
         $ans_module = $structure["ANSMODULE"];
@@ -718,7 +752,7 @@ class AfwLoadHelper extends AFWRoot
         $pk = $object->getPKField();
 
 
-        return self::decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $structure["SMALL-LOOKUP"]);
+        return self::decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $lang, $structure["SMALL-LOOKUP"]);
     }
 
     /**
@@ -728,16 +762,18 @@ class AfwLoadHelper extends AFWRoot
      * @param string $separator
      * @param string $emptyMessage
      * @param mixed $pk
+     * @param string $lang
+     * @param bool $small_lookup : if true we will not use "where in (val1, val2, ...)" for decoding values to avoid performance issue when we have too much values to decode, but in this case we will decode only one value if we have one value to decode otherwise we will return empty message because we can't decode more than one value without "where in (val1, val2, ...)"
      */
-    public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $small_lookup = false)
+    public static function decodeLookupValue($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $lang, $small_lookup)
     {
 
-        if (self::$lookupMatrix["$ans_module.$ans_table"][$value]) return self::$lookupMatrix["$ans_module.$ans_table"][$value];
-        if (self::$lookupMatrix["$ans_module.$ans_table.--"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.--"][$value];
-        if (self::$lookupMatrix["$ans_module.$ans_table.++"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.++"][$value];
-        if (self::$lookupMatrix["$ans_module.$ans_table.1"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.1"][$value];
+        if (self::$lookupMatrix["$ans_module.$ans_table.$lang"][$value]) return self::$lookupMatrix["$ans_module.$ans_table"][$value];
+        if (self::$lookupMatrix["$ans_module.$ans_table.$lang.--"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.--"][$value];
+        if (self::$lookupMatrix["$ans_module.$ans_table.$lang.++"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.++"][$value];
+        if (self::$lookupMatrix["$ans_module.$ans_table.$lang.1"][$value]) return self::$lookupMatrix["$ans_module.$ans_table.1"][$value];
 
-        self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $small_lookup);
+        self::lookupDecodeValues($ans_module, $ans_table, $value, $separator, $emptyMessage, $pk, $lang, $small_lookup);
         /*
         if($ans_table=="crm_customer")
         {
@@ -750,8 +786,12 @@ class AfwLoadHelper extends AFWRoot
 
     /**
      * @param AFWObject $object
+     * @param string $where : if "--" we will use active = 'Y' as where condition, if "++" we will use visibility horizontal condition as where condition, otherwise we will use the where condition specified in this parameter
+     * @param string $order_by : order by condition to add to query, if empty
+     * @param string $pk : primary key field to use in query, if empty we will use the primary key field of object
+     * @param string $lang : language to use for display field in query
      * */
-    public static function loadAllLookupData(&$object, $where = "--", $order_by = "", $pk = "")
+    public static function loadAllLookupData(&$object, $where, $order_by, $pk, $lang)
     {
         $module = $object::$MODULE;
         $table = $object::$TABLE;
@@ -766,7 +806,7 @@ class AfwLoadHelper extends AFWRoot
             $where =  $object->get_visibilite_horizontale();
         }
 
-        $object->initDISPLAY_FIELD();
+        $object->initDISPLAY_FIELD($lang);
         $sep = $object->DISPLAY_SEPARATOR;
         if (!$sep) $sep = "-";
         // if($table=="crm_customer") die("object->DISPLAY_FIELD = ".var_export($object->DISPLAY_FIELD,true));

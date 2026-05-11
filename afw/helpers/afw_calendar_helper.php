@@ -296,24 +296,21 @@ class AfwCalendarHelper {
                 // debugg("c'est un samedi j'avance de $delta jour(s) = $date_dep");
            }
             
-        
+           if($n==0)
+           {
+                return $date_dep;
+           }
         
            if($n>0) 
            {
                 $nb = $n-1;
                 $new_date = self::demain_ouvrable($tms_dep); 
            }
-           elseif($n<0)
+           else
            {
                 $nb = $n+1;
                 $new_date = self::hier_ouvrable($tms_dep);
            }
-           elseif($n==0)
-           {
-                return $date_dep;
-           }
-           
-           // debugg("recursivite - add_njours_ouvrables($nb,$new_date)");
            
            return self::add_njours_ouvrables($nb,$new_date); 
         }

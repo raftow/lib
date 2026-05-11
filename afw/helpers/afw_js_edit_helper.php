@@ -3,7 +3,8 @@
 class AfwJsEditHelper extends AFWRoot 
 {
     /**
-     * @var AFWObject $object
+     * @param AFWObject $object
+     * @param string $attribute
      */
     public static function getJsOfLoadMyProps($object,    
         $attribute,
@@ -253,7 +254,7 @@ $dependencies_values
             }
 
             if ($implode)  $return = implode(". ',' .", $dependencies_value_arr);
-            else  $dependencies_value_arr;
+            else $return = $dependencies_value_arr;
         } else {
             $dependencies_value_arr = [];
             foreach ($desc['DEPENDENCIES'] as $fld) {
