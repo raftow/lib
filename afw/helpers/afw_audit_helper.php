@@ -97,6 +97,7 @@ class AfwAuditHelper extends AFWRoot
             throw new AfwRuntimeException("THe 'update context' information is mandatory to perform audit actions");
         }
 
+        $update_context = substr($update_context,0,254);
         $update_context = addslashes($update_context);
         
 
