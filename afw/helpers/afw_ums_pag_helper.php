@@ -1006,11 +1006,14 @@ class AfwUmsPagHelper extends AFWRoot
             ];
         }
 
-        $actions_tpl_arr['audit'] = [
-            'link' => "Main_Page=$auditFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
-            'img' => $images['audit'],
-            'framework_action' => $auditAction,
-        ];
+        if($object->isAuditable()) {
+            $actions_tpl_arr['audit'] = [
+                'link' => "Main_Page=$auditFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
+                'img' => $images['audit'],
+                'framework_action' => $auditAction,
+            ];
+        }
+        
 
         return $actions_tpl_arr;
     }
