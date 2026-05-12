@@ -307,9 +307,29 @@ if (true) {
                                                 <td id='bloc_result'>
 
                                                         <?php
-
-
                                                         // die("can_action_arr = ".var_export($can_action_arr,true)); 
+                                                        $result = AfwRetrieveHelper::showDataRetrieve(
+                                                                $obj,
+                                                                $data,
+                                                                $header,
+                                                                $class_db_structure,
+                                                                $liste_obj,
+                                                                $isAvail,
+                                                                $cl_tr,
+                                                                $class_td1,
+                                                                $class_td2,
+                                                                $class_td_off,
+                                                                $cl,
+                                                                $currmod,
+                                                                $popup_t,
+                                                                $target,
+                                                                $images,
+                                                                $objme,
+                                                                $fixms,
+                                                                $lang
+                                                        );
+
+                                                        $datatable_header = $result["datatable_header"];
                                                         ?>
 
                                                         <table id="example" class="display" cellpadding="4" cellspacing="3" width="100%">
@@ -331,11 +351,11 @@ if (true) {
                                                                 ?>
                                                                 <tbody>
                                                                         <?php
-                                                                        $result = AfwRetrieveHelper::showDataRetrieve($obj, $data, $header, $class_db_structure, $liste_obj, $isAvail, $cl_tr, $class_td1, $class_td2, $class_td_off, $cl, $currmod, $popup_t, $target, $images, $objme, $fixms, $lang);
+
                                                                         echo $result["html"];
                                                                         $ids = $result["ids"];
                                                                         $ids_count = $result["ids_count"];
-                                                                        $datatable_header = $result["datatable_header"];
+                                                                        
                                                                         $data_count = $result["data_count"];
                                                                         $fixmlist = $result["fixmlist"];
                                                                         ?>
