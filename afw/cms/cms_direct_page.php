@@ -1,4 +1,6 @@
 <?php
+
+include_once(dirname(__FILE__)."/../utilities/ufw_error_handler.php");
 // die("afw direct start");
 // session_start();
 // die("session table : ".var_export($_SE SSION,true));

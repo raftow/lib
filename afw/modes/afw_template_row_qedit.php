@@ -6,12 +6,21 @@ foreach($themeArr as $theme => $themeValue)
     $$theme = $themeValue;
 }*/
 
+/**
+ * @var AFWObject $obj
+ * @var array $qedit_trad_arr
+ * @var bool $log_input_qedit
+ * @var array $miniBoxTemplate
+ * @var string $lang_input
+ * @var string $header_imbedded_default_title
+ * @var string $class_tr1
+ * @var string $class_tr2
+ * @var string $cl
+ * @var string $lang
+ * @var array $qedit_trad
+ */
+
 define("LIMIT_INPUT_SELECT", 30);
-
-
-global $TMP_DIR,$TMP_ROOT,$lang,$pack,$sub_pack,$id,$aligntd, $Main_Page,
-  //$class_tr1,$class_tr2, $class_titre, $class_table, $class_inputSubmit, $class_inputLien, $class_inputNew, 
-  $pct_tab_edit_mode, $objme, $first_disp, $first_val, $diff_val, $not_filled, $filled, $nb_objs, $qedit_trad;
 
 if(!$lang) $lang = 'ar';
 if(!$obj) die("row-qedit-error : no object sent to the template");
@@ -26,6 +35,14 @@ $obj_class = $obj->getMyClass();
 $obj_mod = $obj->getMyModule();
 $qedit_input_arr = array();
 $qedit_orig_nom_col = array();
+$first_disp = [];
+$first_val = [];
+$diff_val = [];
+$not_filled = [];
+$filled = [];
+$diff_val = [];
+
+
 //$btn_each_record = $obj->QEDIT_SUBMIT_BTN_EACH_RECORD;
 //$qedit_trad_arr = array(); because keeped in global var
 
@@ -37,6 +54,12 @@ $submode          = $obj->submode;
 
 $col_num = 1;
 $qedit_hidden_pk_input = "";
+$data_errors = "";
+$css_style="";
+$is_disabled = "";
+$miniBoxTemplate = null;
+$miniBoxTemplateArr = null;
+$qerow = null;
 if($obj->qedit_minibox)
 {
         $miniBoxTemplate = $obj->getMiniBoxTemplateArr("qedit");
@@ -46,7 +69,7 @@ if($obj->qedit_minibox)
 
 $qerow_exists = [0=>false, 1=>true, 2=>false];
 
-if(!$class_db_structure) $class_db_structure = $obj->getMyDbStructure();
+if(!isset($class_db_structure)) $class_db_structure = $obj->getMyDbStructure();
 $nb_cols_qedit = count($class_db_structure);
 
 $column_order = 0;
@@ -181,7 +204,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                                 $col_val = $obj->getVal($nom_col);
                                                 if(($desc['TYPE'] == 'PK') && empty($col_val))
                                                 {
-                                                        $type_input_ret = AfwQeditMotor::type_input($qedit_nom_col, $desc, $id, $obj, $separator, $data_loaded, "", $qedit_orderindex);
+                                                        $type_input_ret = AfwQeditMotor::type_input($qedit_nom_col, $desc, $obj_id, $obj, $separator, $data_loaded, "", $qedit_orderindex);
                                                 }
                                                 else
                                                 {
@@ -197,16 +220,16 @@ foreach($class_db_structure as $nom_col => $desc)
                                                 $start_row = $obj->qeditNum;
                                                 /*
                                                 $input_html = $qedit _input[$qedit_nom_col];
-                                                if(false)   //  ($objme->isAdmin())  //    
+                                                if(false)   //  ($ob jme->isAdmin())  //    
                                                 {
                                                         if($type_input_ret=="text")
                                                         {
-                                                                $icon_unifyall = "<a id=\"imgUnifyAll$qedit_nom_col\" href=\"#\" class=\"copy_down\" onclick=\"unify_all_text('$nom_col','$obj_val',$start_row,$nb_objs)\">&nbsp;&nbsp;&nbsp;</a>";
+                                                                $icon_unifyall = "<a id=\"imgUnifyAll$qedit_nom_col\" href=\"#\" class=\"copy_down\" onclick=\"unify_all_text('$nom_col','$obj_val',$start_row,$nb_ objs)\">&nbsp;&nbsp;&nbsp;</a>";
                                                         }
                                                         else
                                                         {
                                                                 $obj_val_lab = $obj->displayAttribute($nom_col,true,$lang, false);
-                                                                $icon_unifyall = "<a id=\"imgUnifyAll$qedit_nom_col\" href=\"#\" class=\"copy_down\" onclick=\"unify_all_select('$nom_col','$obj_val','$obj_val_lab',$start_row,$nb_objs)\">&nbsp;&nbsp;&nbsp;</a>";
+                                                                $icon_unifyall = "<a id=\"imgUnifyAll$qedit_nom_col\" href=\"#\" class=\"copy_down\" onclick=\"unify_all_select('$nom_col','$obj_val','$obj_val_lab',$start_row,$nb_ objs)\">&nbsp;&nbsp;&nbsp;</a>";
                                                         }
                                                 }
                                                 else $icon_unifyall = "";
@@ -411,7 +434,7 @@ if(!$obj->qedit_minibox)
                                                 if(false)
                                                 {
                         ?>
-                                     <td <?=$input_html_colspan_html?> <?=$class_xqe_prop?> align="<?=$aligntd?>" >
+                                     <td <?=$input_html_colspan_html?> <?=$class_xqe_prop?> >
                                         <?=$col_translated?>
                                         <!-- input type="hidden" name="<?=$orig_nom_col?>_on" value="1" -->
                                      </td>
@@ -462,6 +485,7 @@ if(!$obj->qedit_minibox)
         if(!$total_sahm) $total_sahm = 5;
         //die(var_export($arrErrors,true));
         // if($qerow_num==1) die("qedit_input_arr=".var_export($qedit_input_arr,true));
+        $tr_obj = "";
         foreach($qedit_input_arr[$qerow_num] as $col => $input_html_row)
         {
              $input_html = $input_html_row["input"];
@@ -540,7 +564,7 @@ if(!$obj->qedit_minibox)
                         $col_translated = $qedit_trad_arr[$orig_nom_col];
                         
 ?>
-			<td hint="orig_nom_col=<?php echo $orig_nom_col?>" <?php echo $input_html_colspan_html?> <?php echo $class_xqe_prop?> align="<?php echo $aligntd?>" <?php echo $css_style?> >
+			<td hint="orig_nom_col=<?php echo $orig_nom_col?>" <?php echo $input_html_colspan_html?> <?php echo $class_xqe_prop?> <?php echo $css_style?> >
                         <?php 
                                 
                                 if($header_imbedded)

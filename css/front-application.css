@@ -4944,7 +4944,7 @@ span.json.error {
 
 .js-check-all,
 .js-check-box {
-    background-image: url(http://10.108.72.48/lib/images/unchecked.png);
+    background-image: url(../images/unchecked.png);
     background-size: cover;
     background-position: center;
     width: 32px;
@@ -4954,7 +4954,7 @@ span.json.error {
 
 .js-check-all.checked,
 .js-check-box.checked {
-    background-image: url(http://10.108.72.48/lib/images/checked.png) !important;
+    background-image: url(../images/checked.png) !important;
     background-size: cover;
     background-position: center;
     width: 32px;

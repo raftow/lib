@@ -1,7 +1,9 @@
 <?php
 //die("utilities/ufw_error_handler.php");
 include_once("utilities/ufw_error_handler.php");
-
+/**
+ * @var string $MODULE
+ */
 if(!$MODULE) throw new AfwRuntimeException("the index of the MVC system require that MODULE be defined");
 $file_dir_name = dirname(__FILE__);
 
