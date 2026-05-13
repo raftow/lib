@@ -6,7 +6,7 @@ if (!$lang) $lang = 'ar';
 
 $themeArr = AfwThemeHelper::loadTheme("handle-braudit");
 foreach ($themeArr as $theme => $themeValue) {
-        $$theme = $themeValue;
+    $$theme = $themeValue;
 }
 $images = AfwThemeHelper::loadTheme();
 
@@ -33,44 +33,56 @@ if (count($header) == 0) {
     throw new AfwBusinessException("For class $cl no audit columns defined to retrieve for fields=$fields groups=$agroup lang=$lang");
 }
 
-$myBRAuditTableName = $myClassInstance->getMyTable(true)."_braudit";
+$myBRAuditTableName = $myClassInstance->getMyTable(true) . "_braudit";
+
+$audit_nb_rows_by_header = $myClassInstance->AUDIT_NB_ROWS_BY_HEADER;
+if (!$audit_nb_rows_by_header) $audit_nb_rows_by_header = 12;
 
 $sql_braudit = "select * from $myBRAuditTableName " . $myClassInstance->sqlCondPK();
 
 $rows_braudit = AfwDatabase::db_recup_rows($sql_braudit);
 
 $newColumnsRules = [];
-$newColumnsRules["audit_action"] = ["calcClass"=>"AfwAuditHelper", "calcMethod"=>"auditActionHtml"];
-$newColumnsRules["audit_by"] = ["calcClass"=>"AfwAuditHelper", "calcMethod"=>"auditByHtml"];
-$newColumnsRules["audit_datetime"] = ["calcClass"=>"AfwAuditHelper", "calcMethod"=>"auditDatimeHtml"];
-$newColumnsRules["audit_advanced"] = ["calcClass"=>"AfwAuditHelper", "calcMethod"=>"auditAdvancedHtml"];
+$newColumnsRules["audit_action"] = ["calcClass" => "AfwAuditHelper", "calcMethod" => "auditActionHtml"];
+$newColumnsRules["audit_by"] = ["calcClass" => "AfwAuditHelper", "calcMethod" => "auditByHtml"];
+$newColumnsRules["audit_datetime"] = ["calcClass" => "AfwAuditHelper", "calcMethod" => "auditDatimeHtml"];
+$newColumnsRules["audit_advanced"] = ["calcClass" => "AfwAuditHelper", "calcMethod" => "auditAdvancedHtml"];
 
 
 $data_braudit = AfwShowHelper::formatDataRows($rows_braudit, $cl, $header, $myClassInstance, $lang, $newColumnsRules);
 
-list($html, $ids) = 
-AfwShowHelper::tableToHtml($data_braudit, 
-                            $header,
-                            false,
-                            null,
-                            null,
-                            'grid',
-                            'altitem',
-                            'item',
-                            [],
-                            $lang,
-                            '',
-                            '',
-                            'bigtitle',
-                            [],
-                            '',
-                            0,'','','audit','off','',null,[],
-                            3,
-                            "audit_action",
-                            ["changed"=>[
-                                            'css'=>"cell-changed",
-                                            'exceptions'=>["audit_by","audit_datetime"]
-                                           ]]);
+list($html, $ids) =
+    AfwShowHelper::tableToHtml(
+        $data_braudit,
+        $header,
+        false,
+        null,
+        null,
+        'grid',
+        'altitem',
+        'item',
+        [],
+        $lang,
+        '',
+        '',
+        'bigtitle',
+        [],
+        '',
+        0,
+        '',
+        '',
+        'audit',
+        'off',
+        '',
+        null,
+        [],
+        $audit_nb_rows_by_header,
+        "audit_action",
+        ["changed" => [
+            'css' => "cell-changed",
+            'exceptions' => ["audit_by", "audit_datetime"]
+        ]]
+    );
 
 $html .= "<script>
             $(document).ready(function() {
@@ -92,10 +104,10 @@ $html .= "<script>
             });
         </script>";
 
-if($me==1) {
+if ($me == 1) {
     $html .= "<hr class='separator'><pre class='sql hide'>$sql_braudit</pre>";
 }
 
 
 
-return ['audit_result_html'=>$html];
+return ['audit_result_html' => $html];
