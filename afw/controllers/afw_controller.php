@@ -100,32 +100,40 @@ class AfwController extends AFWRoot
                 return false;
         }
 
+        /**
+         * @param string $view_module 
+         * @param string $view_name
+         * @param array $data 
+         */
         public function render($view_module, $view_name, $data)
         {
                 $lang = AfwLanguageHelper::getGlobalLanguage();
                 foreach ($data as $key => $value) $$key = $value;
-                $file_dir_name = dirname(__FILE__);
                 $view_name_tpl = $view_name . "_tpl";
-                $view_template_path = "$file_dir_name/../../../$view_module/tpl/$view_name_tpl.php";
+                $view_template_path = dirname(__FILE__)."/../../../$view_module/tpl/$view_name_tpl.php";
                 if (!file_exists($view_template_path)) {
                         throw new AfwRuntimeException("view template not found : $view_template_path");
                 } else {
-                        if($mt=="survey_request") die("view_template_path is : ".$view_template_path);
+                        //if($mt=="survey_request") die("view_template_path is : ".$view_template_path);
                         include_once($view_template_path);
                 }
         }
 
-
+        /**
+         * @param string $view_module 
+         * @param string $view_page
+         * @param array $data 
+         */
         public function renderPage($view_module, $view_page, $data, $error = null, $warning = null, $info = null, $success = null)
         {
                 $lang = AfwLanguageHelper::getGlobalLanguage();
                 foreach ($data as $key => $value) $$key = $value;
-                $file_dir_name = dirname(__FILE__);
+                
                 if ($error) AfwSession::pushError($error);
                 if ($warning) AfwSession::pushWarning($warning);
                 if ($info) AfwSession::pushInformation($info);
                 if ($success) AfwSession::pushSuccess($success);
-                $view_page_full_path = "$file_dir_name/../../../$view_module/$view_page.php";
+                $view_page_full_path = dirname(__FILE__)."/../../../$view_module/$view_page.php";
                 if (!file_exists($view_page_full_path)) {
                         $this->renderError("view page not found : $view_page_full_path");
                 } else include_once($view_page_full_path);

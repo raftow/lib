@@ -338,17 +338,7 @@ if (true) {
                                                                                 <?php echo $datatable_header ?>
                                                                         </tr>
                                                                 </thead>
-                                                                <?php
-                                                                if (count($data) > 50) {
-                                                                ?>
-                                                                        <tfoot>
-                                                                                <tr>
-                                                                                        <?php echo $datatable_header ?>
-                                                                                </tr>
-                                                                        </tfoot>
-                                                                <?php
-                                                                }
-                                                                ?>
+                                                                
                                                                 <tbody>
                                                                         <?php
 
@@ -360,6 +350,17 @@ if (true) {
                                                                         $fixmlist = $result["fixmlist"];
                                                                         ?>
                                                                 </tbody>
+                                                                <?php
+                                                                if (count($data) > 20) {
+                                                                ?>
+                                                                        <tfoot>
+                                                                                <tr>
+                                                                                        <?php echo $datatable_header ?>
+                                                                                </tr>
+                                                                        </tfoot>
+                                                                <?php
+                                                                }
+                                                                ?>
                                                         </table><br>
                                                 </td>
                                         </tr>

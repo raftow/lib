@@ -312,15 +312,18 @@ class AfwLanguageHelper
         return $trad_col_short;
     }
 
+    /**
+     * @param string $message 
+     * @param string $module
+     */
 
     public static function tarjemMessage($message, $module, $lang = 'ar')
     {
-            global $messages;
-            $file_dir_name = dirname(__FILE__)."/..";
+            $afw_dir_name = dirname(__FILE__)."/..";
 
-            include_once "$file_dir_name/../../lib/messages_$lang.php";
-            include_once "$file_dir_name/../../$module/messages_$lang.php";
-
+            include_once "$afw_dir_name/../messages_$lang.php";
+            include_once "$afw_dir_name/../../$module/messages_$lang.php";
+            // die("$afw_dir_name/../../$module/messages_$lang.php => messages = ".var_export($messages, true));
             if ($messages[$message]) {
                     return $messages[$message];
             } else {
@@ -330,8 +333,9 @@ class AfwLanguageHelper
 
     /**
      * @param AFWObject $object
-     * 
-     * 
+     * @param string $attribute
+     * @param string $attribute_property
+     * @param string $lang
      */
 
     public static function getTranslatedAttributeProperty(
