@@ -1344,7 +1344,7 @@ class AfwShowHelper
 \$(document).ready(function() {
     \$('#$showAsDataTable').DataTable({
         pagingType: \"full_numbers\",
-        pageLength: 20,
+        pageLength: 25,
         lengthMenu: [
                 [10, 25, 50, -1],
                 [10, 25, 50, \"All\"]
