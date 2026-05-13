@@ -1343,7 +1343,7 @@ class AfwShowHelper
                 $html .= "<script type=\"text/javascript\">
 \$(document).ready(function() {
     \$('#$showAsDataTable').DataTable({
-        pagingType: \"full_numbers\"
+        pagingType: \"full_numbers\",
         pageLength: 20,
         lengthMenu: [
                 [10, 25, 50, -1],
