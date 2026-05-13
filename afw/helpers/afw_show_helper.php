@@ -1342,10 +1342,15 @@ class AfwShowHelper
             {
                 $html .= "<script type=\"text/javascript\">
 \$(document).ready(function() {
-\$('#$showAsDataTable').DataTable( {
-\"pagingType\": \"full_numbers\"
-} );
-} );
+    \$('#$showAsDataTable').DataTable({
+        pagingType: \"full_numbers\"
+        pageLength: 20,
+        lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, \"All\"]
+        ]
+    });
+});
 </script>";
             } else {
                 $html .= '<!-- show As Data Table off -->';
@@ -2302,7 +2307,7 @@ class AfwShowHelper
      */
     public static function showFK($object, $attribute, $value, $lang = 'ar', $structure = null, $getlink = false, $debugg = false)
     {
-        if($attribute=="college_id") $debugg = true;
+        if ($attribute == "college_id") $debugg = true;
         // $val_class = $object->getMyClass();
         $link_to_display = '';
         $data_to_display = '';
@@ -2875,7 +2880,7 @@ class AfwShowHelper
                                 $col_trans = AfwLanguageHelper::translateKeyword($col, $lang);
                                 $tuple[$col_trans] = self::showAuditIcon($objListItem, $objme, $desc, $images, $class_origin, $lang);
 
-                                break;    
+                                break;
                             case 'FK':
                                 if (AfwStructureHelper::isLookupAttribute($objListItem, $col, $desc)) {
                                     $val_decoded = $objListItem->getVal($col);
@@ -3169,33 +3174,33 @@ class AfwShowHelper
 
     public static function showDeleteIcon($objListItem, $objme, $desc, $images, $class_origin, $lang = 'ar')
     {
-                                        $val_id = $objListItem->getId();
-                                $val_class = $objListItem->getMyClass();
-                                $val_currmod = $objListItem->getMyModule();
-                                $lvl = $desc['DEL_LEVEL'];
-                                if (!$lvl) {
-                                    $lvl = 2;
-                                }
-                                $userCanDel = $objListItem->userCanDeleteMe($objme);
-                                if ($userCanDel > 0) {
-                                    $delete_button_path = $images['delete'];
-                                    $lbl = $objListItem->getShortDisplay($lang);
-                                    // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
-                                    return "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='$delete_button_path' style='height: 22px !important;'></a>";
-                                } else {
-                                    if ($userCanDel == -1) {
-                                        $explanation = 'لا يوجد لديك صلاحية لمسح هذا النوع من السجلات';
-                                    } else {
-                                        $explanation = 'انك تحتاج لصلاحية خاصة لمسح هذا السجل بعينه';
-                                    }
-                                    return "<a href='#'>
+        $val_id = $objListItem->getId();
+        $val_class = $objListItem->getMyClass();
+        $val_currmod = $objListItem->getMyModule();
+        $lvl = $desc['DEL_LEVEL'];
+        if (!$lvl) {
+            $lvl = 2;
+        }
+        $userCanDel = $objListItem->userCanDeleteMe($objme);
+        if ($userCanDel > 0) {
+            $delete_button_path = $images['delete'];
+            $lbl = $objListItem->getShortDisplay($lang);
+            // <a target='del_record' href='main.php?Main_Page=afw_mode_delete.php&cl=$val_class&currmod=$currmod&id=$val_id' >
+            return "<a href='#' here='afw_shwr' id='$val_id' cl='$val_class' md='$val_currmod' lbl='$lbl' lvl='$lvl' class='trash showmany'><img src='$delete_button_path' style='height: 22px !important;'></a>";
+        } else {
+            if ($userCanDel == -1) {
+                $explanation = 'لا يوجد لديك صلاحية لمسح هذا النوع من السجلات';
+            } else {
+                $explanation = 'انك تحتاج لصلاحية خاصة لمسح هذا السجل بعينه';
+            }
+            return "<a href='#'>
                                               <img src='../lib/images/lock.png' 
                                                    data-toggle='tooltip' 
                                                    data-placement='top' 
                                                    title='$explanation'  width='24' heigth='24'>
                                             </a>";
-                                }
-                                // if($objListItem instanceof Atable) die("tuple = ".var_export($tuple, true));
+        }
+        // if($objListItem instanceof Atable) die("tuple = ".var_export($tuple, true));
 
     }
 
