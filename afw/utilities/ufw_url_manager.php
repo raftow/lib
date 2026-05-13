@@ -374,6 +374,7 @@ class UfwUrlManager extends AFWRoot
         }
         $pageCode = null;
         $log_explain_advanced = "";
+        $log_explain = "";
         if ($theClass and $theModule) {
             $theStructureClass = ucfirst($theModule) . $theClass . "AfwStructure";
             if (!AfwAutoLoader::afwClassExists($theStructureClass)) {

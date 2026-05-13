@@ -1,4 +1,17 @@
 <?php
+/**
+ * @var bool $datatable_on
+ * @var bool $ivviewer_activate
+ * @var bool $no_common_css
+ * @var bool $fancybox_activate
+ * @var string $lang
+ * @var string $page_charset
+ * @var string $main_module
+ * @var string $pagecode
+ * @var array $config
+ * @var array $NOM_SITE
+ * @var array $custom_scripts
+ */
 if (!$lang) $lang = "ar";
 if (!$my_font) $my_font = "front";
 $crst = md5("crst".date("YmdHis"));
@@ -96,7 +109,7 @@ $crst = md5("crst".date("YmdHis"));
   }
   $cmodule = UfwUrlManager::currentURIModule();
   $xmodule = AfwSession::getCurrentlyExecutedModule();
-  $pagecode = UfwUrlManager::currentPageCode();
+  list($pagecode, $log_explain) = UfwUrlManager::currentPageCode();
   
   ?>
   <!-- end plugins -->
@@ -111,11 +124,11 @@ $crst = md5("crst".date("YmdHis"));
     if (!$Main_Page) $Main_Page = $_GET["Main_Page"];
 
     /*
-      if($Main_Page=="afw_mode_search.php") include("../lib/datatable/datatable_search_css.php");
+      if($Main_Page=="afw_mode_search.php") include("../lib/datatable/datatab le_search_css.php");
       // elseif($datatable_css_file) die($datatable_css_file);
       elseif($datatable_css_file) include($datatable_css_file);
-      //else die("../lib/datatable/datatable_css.php"); 
-      else include("../lib/datatable/datatable_css.php");*/
+      //else die("../lib/datatable/datatab le_css.php"); 
+      else include("../lib/datatable/datata ble_css.php");*/
   }
 
   if ($datatable_on) {
@@ -222,8 +235,6 @@ $crst = md5("crst".date("YmdHis"));
     } else die($custom_script["path"] . " has unknown type");
   }
   //die(var_export($custom_scripts,true));
-
-
   if ($fancybox_activate) {
   ?>
     <link rel="stylesheet" type="text/css" media="screen" href="../lib/fancy-box/jquery.fancybox-1.3.4.css" />

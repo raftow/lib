@@ -29,7 +29,7 @@ class AfwRetrieveHelper
 
     public static function showDataRetrieve($obj, $data, $header, $class_db_structure, $liste_obj, $isAvail, 
                $cl_tr, $class_td1, $class_td2, $class_td_off, 
-               $cl, $currmod, $popup_t, $target, $images, $objme, $fixms, $lang)
+               $cl, $currmod, $popup_t, $target, $images, $objme, $fixms, $lang, $addHeader=false)
     {
         AfwSession::log("Before execute UmsPagHelper::getActionsMatrix in afw_handle_default_search");
         $actions_tpl_matrix = AfwUmsPagHelper::getActionsMatrix($liste_obj);
@@ -108,7 +108,7 @@ class AfwRetrieveHelper
         AfwSession::log("After prepare of header and can_action array matrix in afw_handle_default_search");
         AfwSession::log("Before show data retrieve in afw_handle_default_search");
         $html = "";
-        $html .= "<thead><tr>$datatable_header</tr></thead>";
+        if($addHeader) $html .= "<thead><tr>$datatable_header</tr></thead>";
         $ids = "";
         $ids_count = 0;
         $maxRecordsUmsCheck = $obj->maxRecordsUmsCheck();

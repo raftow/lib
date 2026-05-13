@@ -332,20 +332,22 @@ if (true) {
                                                         $datatable_header = $result["datatable_header"];
                                                         ?>
 
-                                                        <table id="example" class="display" cellpadding="4" cellspacing="3" width="100%">
+                                                        <table id="dtbl_<?php echo $cl ?>" class="display" cellpadding="4" cellspacing="3" width="100%">
                                                                 <thead>
                                                                         <tr>
                                                                                 <?php echo $datatable_header ?>
                                                                         </tr>
                                                                 </thead>
-                                                                
+
                                                                 <tbody>
                                                                         <?php
 
+                                                                        echo "<!-- start of search result table body html -->\n";
                                                                         echo $result["html"];
+                                                                        echo "\n<!-- end of search result table body html -->\n";
                                                                         $ids = $result["ids"];
                                                                         $ids_count = $result["ids_count"];
-                                                                        
+
                                                                         $data_count = $result["data_count"];
                                                                         $fixmlist = $result["fixmlist"];
                                                                         ?>
@@ -361,7 +363,30 @@ if (true) {
                                                                 <?php
                                                                 }
                                                                 ?>
-                                                        </table><br>
+                                                        </table>
+                                                        <script>
+                                                                $(document).ready(function() {
+                                                                        $('#dtbl_<?php echo $cl ?>').DataTable({
+                                                                                pagingType: "full_numbers",
+                                                                                pageLength: -1,
+                                                                                lengthMenu: [
+                                                                                        [10, 25, 50, -1],
+                                                                                        [10, 25, 50, "All"]
+                                                                                ]
+                                                                        });
+                                                                        /*
+                                                                        new DataTable('#dtbl_<?php echo $cl ?>', {
+                                                                                columnControl: {
+                                                                                        target: 1,
+                                                                                        content: ['search']
+                                                                                }
+                                                                        });
+                                                                        */
+
+
+                                                                });
+                                                        </script>
+                                                        <br>
                                                 </td>
                                         </tr>
                                 </table>

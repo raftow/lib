@@ -54,12 +54,18 @@ class AfwHtmlIncluderHelper
           $options["calendars"] = true;
         }
 
-        $jquery_version = AfwSession::config('jquery-version', '3.6.0');
+        $jquery_version = AfwSession::config('jquery-version', '3.7.1');
         $jquery_ui_version = AfwSession::config('jquery-ui-version', '1.14.0');
         $bootstrap_version = AfwSession::config('bootstrap-version', '5.3.3');
+        $bootstrap_bundle = AfwSession::config("bootstrap.bundle", false);
+        $bootstrap_dist = AfwSession::config("bootstrap.dist", false);
+
+
+        $dataTablesNewStrcuture = AfwSession::config("dataTable.newStructure", false);
+        
         
         $header = "<head>
-          <script src='../lib/js/jquery-$jquery_version.min.js'></script>
+          <script src='../lib/js/jquery-$jquery_version.js'></script>
           <script src='../lib/js/jquery.validate.js'></script>
           <link rel='stylesheet' href='../lib/css/jquery-ui-$jquery_ui_version.css'>
           <script src='../lib/js/jquery-ui-$jquery_ui_version.js'></script>
@@ -132,22 +138,33 @@ class AfwHtmlIncluderHelper
 
         if($options["bootstrap"]) 
         {
-          // This is to resolve problem of : TypeError: i.createPopper is not a function
-          // found when we use bootstrap-v5.3.3 resolved in bootstrap.bundle version until will be fixed 
-          // in next bootstrap versions
-            if(AfwSession::config("bootstrap.bundle", false))
-            {
-              $bootstrap_script = "<script src='../lib/bootstrap/bootstrap.bundle.min.js'></script>";
-              $bootstrap_script = "<script src='../lib/bootstrap/bootstrap-v$bootstrap_version.min.js'></script>";
-            }
-            else
-            {
-              $bootstrap_script = "<script src='../lib/bootstrap/bootstrap-v$bootstrap_version.min.js'></script>";
-            }
+          if($bootstrap_dist)
+          {
+              $bootstrap_js_script  = "<script src='../lib/bootstrap/bootstrap-$bootstrap_version/js/bootstrap.min.js'></script>";           
+              $bootstrap_js_script .= "<script src='../lib/bootstrap/bootstrap-$bootstrap_version/js/bootstrap.bundle.min.js'></script>";
+              $bootstrap_css_script = "<link rel='stylesheet' href='../lib/bootstrap/bootstrap-$bootstrap_version/css/bootstrap.min.css'>";
+          }          
+          else
+          {
+              // This is to resolve problem of : TypeError: i.createPopper is not a function
+              // found when we use bootstrap-v5.3.3 resolved in bootstrap.bundle version until will be fixed 
+              // in next bootstrap versions
+              if($bootstrap_bundle)
+              {
+                $bootstrap_js_script = "";
+                // $bootstrap_js_script .= "<script src='../lib/bootstrap/bootstrap.bundle.min.js'></script>";
+                $bootstrap_js_script .= "<script src='../lib/bootstrap/bootstrap-v$bootstrap_version.min.js'></script>";
+              }
+              else
+              {
+                $bootstrap_js_script = "<script src='../lib/bootstrap/bootstrap-v$bootstrap_version.min.js'></script>";
+              }
 
-            $header .= "$bootstrap_script
-          <link rel='stylesheet' href='../lib/bootstrap/bootstrap-v$bootstrap_version.min.css'>
-          ";
+              $bootstrap_css_script = "<link rel='stylesheet' href='../lib/bootstrap/bootstrap-v$bootstrap_version.min.css'>";
+          }
+
+          $header .= "\t\t\t$bootstrap_js_script\n\t\t\t$bootstrap_css_script";
+              
         }
         
 
@@ -237,9 +254,28 @@ class AfwHtmlIncluderHelper
           <script src='../lib/js/localization/messages_$lang.js'></script>
           ";
 
-          if($options["dataTables"]) $header .= "
-          <script src='../lib/js/jquery.dataTables_$lang.min.js'></script>
-          ";
+          if($options["dataTables"])  {
+              if(!$dataTablesNewStrcuture) {
+                    $header .= "
+                              <script src='../lib/datatable/js/jquery.dataTables_$lang.min.js'></script>
+                              ";
+              }
+              else {
+                    $header .= " 
+                              <link href='../lib/datatable/css/dataTables.dataTables-2.3.8' rel='stylesheet' type='text/css'>
+                              <link href='../lib/datatable/css/columnControl.dataTables-1.2.1' rel='stylesheet' type='text/css'>  
+
+                              <script src='../lib/datatable/js/dataTables-2.3.8.js'></script>
+                              <script src='../lib/datatable/js/dataTables.columnControl-1.2.1'></script>
+                              <script src='../lib/datatable/js/columnControl.dataTables-1.2.1'></script>
+                              
+                              ";
+              }
+          }
+          
+          
+
+          
 
 
           if($options["autocomplete"]) $header .= "

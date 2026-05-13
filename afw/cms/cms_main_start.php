@@ -47,6 +47,7 @@ $parent_module = AfwSession::config("main_module", "");
 if ($parent_module) AfwAutoLoader::addMainModule($parent_module);
 if ($MODULE) AfwAutoLoader::addModule($MODULE);
 if ($currmod) AfwAutoLoader::addModule($currmod);
+AfwAutoLoader::addModule("cmn");
 
 $required_modules = AfwSession::config("required_modules", []);
 foreach($required_modules as $required_module)

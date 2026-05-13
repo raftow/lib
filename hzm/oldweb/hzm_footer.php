@@ -1,4 +1,11 @@
 <?php
+/**
+ * @var bool $datatable_on
+ * @var bool $nomenu
+ * @var string $copyright_phrase
+ * @var array $_sql_picture 
+ * @var float $start_main_time
+ */
 
 $objme = AfwSession::getUserConnected();
 // die("rafik . objme = ".var_export($objme, true));
@@ -89,20 +96,21 @@ include_once("hzm_footer_features_js.php");
 <?
   if($datatable_on) include("../lib/datatable/datatable_js.php");
   
+  $date_color = "";
+  $date_pos_left = "";
+  $date_pos_top = "";
+  $date_font_weight = "";
+  $date_font_size = "";
+  $date_font_family = "";
+  $date_bgcolor = "";
+  $welcome_bgcolor = "";
+  $welcome_color = "";
   
   
   if(!$custom_header) 
   {
-        $date_color = "";
-        $date_pos_left = "";
-        $date_pos_top = "";
-        $date_font_weight = "";
-        $date_font_size = "";
-        $date_font_family = "";
-        $date_bgcolor = "";
   
-        $welcome_bgcolor = $date_bgcolor;
-        $welcome_color = $date_color;
+        
         $welcome_pos_left = "";
         $welcome_pos_top = "";
         $welcome_font_weight = "";
@@ -166,6 +174,7 @@ include_once("hzm_footer_features_js.php");
   $footer_newsletter = AfwSession::config("footer_newsletter", false);
   $footer_stats = AfwSession::config("footer_stats", false);
   $quick_links = AfwSession::config("quick_links", true);
+  $tocheck = "nothing";
   if($quick_links)
   {
     if($objme)
@@ -186,7 +195,7 @@ include_once("hzm_footer_features_js.php");
         } 
     }
      
-    if($quick_links_arr and is_array($quick_links_arr) and count($quick_links_arr)>0)
+    if(isset($quick_links_arr) and is_array($quick_links_arr) and count($quick_links_arr)>0)
     {
       $quick_links_title = AfwSession::config("quick_links_title", "روابط سريعة");
 ?>
