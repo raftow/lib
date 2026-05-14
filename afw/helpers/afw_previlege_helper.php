@@ -39,7 +39,18 @@ class AfwPrevilegeHelper
         return $canDisplay ? $structure : false;
     }
 
-    // هنا نتكلم عن العمود ككل وليس البيانات في العمود بحسب السجل
+    // 
+    /**
+     * keyIsToDisplayForUser
+     * هنا نتكلم عن العمود ككل وليس البيانات في العمود بحسب السجل
+     * Here we are talking about the column as a whole, 
+     * not the data in the column per record.
+     * @param AFWObject $object
+     * @param string $key
+     * @param Auser $auser
+     * 
+     * @return array|boolean  (structure array if can display|false otherwise)
+     */
     public static final function keyIsToDisplayForUser($object, $key, $auser, $mode = 'DISPLAY')
     {
         $mode = strtoupper($mode);

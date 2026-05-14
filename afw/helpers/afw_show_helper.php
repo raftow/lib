@@ -107,7 +107,7 @@ class AfwShowHelper
 
         $report_arr = [];
         $isAvail = [];
-        $dataImportance = [];
+        
 
         if (count($arr_col) == 0) {
             throw new AfwRuntimeException('afw-shower error : no mini-box cols');
@@ -610,12 +610,14 @@ class AfwShowHelper
     }
 
     /**
-     * @param array of AFWObject $liste_obj
+     * @param array<AFWObject> $liste_obj 
      *   @param AFWObject $obj
      *   @param Auser $objme
-     *   @param array
+     *   @param string lang 
+     *   @param array $options
      *   @return array
      */
+
     public static function showManyObj($liste_obj, $obj, $objme, $lang, $options = [])
     {
         $mode_force_cols = null;
@@ -638,6 +640,11 @@ class AfwShowHelper
         $hide_retrieve_cols = null;
         $force_retrieve_cols = null;
         $cl_tr = '';
+
+        $dataImportance = [];
+        $dataDirection = [];
+
+        
 
         // if($options and (count($options)>0)) AfwStructureHelper::dd("rafik options not empty");
 
@@ -717,8 +724,12 @@ class AfwShowHelper
         }
 
         foreach ($arr_col as $cc => $nom_col) {
+            
             $desc = AfwPrevilegeHelper::keyIsToDisplayForUser($obj, $nom_col, $objme);
             if ($desc) {
+                $dataImportance[$nom_col] = $desc["IMPORTANT"];
+                $dataDirection[$nom_col] = AfwFormatHelper::getDirectionFromStructure($desc);
+                
                 if (
                     $nom_col != $obj->getPKField() or
                     $obj->getOptionValue('showId') or
@@ -901,7 +912,12 @@ class AfwShowHelper
             'off',
             $order_key,
             null,
-            $popupEditSettings
+            $popupEditSettings,
+            10,
+            null,
+            null,
+            $dataDirection
+
         );
 
         if (!$mode_show_all_records) {
@@ -917,7 +933,9 @@ class AfwShowHelper
         return [$html, $liste_obj, $ids];
     }
 
+    // اللهم إني أعوذ بك أن أشرك بك وأنا أعلم وأستغفرك لما لا أعلم
     /**
+     * 
      * @param array $data 
      * @param array $header_trad 
      */
@@ -948,7 +966,8 @@ class AfwShowHelper
         $popupEditSettings = [],
         $repeat_header_after = 10,
         $colFarcha = null,
-        $cellStylingRules = null
+        $cellStylingRules = null,
+        $dataDirection = [],
     ) {
         if (!AfwFormatHelper::isDataRowsFormat($data))
             return [var_export($data), ""];
@@ -1173,18 +1192,14 @@ class AfwShowHelper
                 $colspan = 0;
                 $myTr .= "   <tr id='tr-object-$order' class='ky$order_key $cl_tr $row_class_css' alt='old_cl=$old_cl'>\n";
 
-                foreach ($header_trad as $nom_col => $desc) {
+                foreach ($header_trad as $nom_col => $label) {
                     $importance = ($dataImportance and is_array($dataImportance)) ? $dataImportance[$nom_col] : '';
                     $nom_col_ltn = AfwStringHelper::arabic_to_latin_chars($nom_col);
                     $type_col = substr($nom_col_ltn, 0, 5);
                     if (!$my_class_name) {
                         $my_class_name = 'afw';
                     }
-                    $text_direction = $desc["DIRECTION"];
-                    if (!$text_direction) {
-                        if ($desc["UTF8"]) $text_direction = "rtl";
-                        else $text_direction = "ltr";
-                    }
+                    $text_direction = ($dataDirection and is_array($dataDirection)) ? $dataDirection[$nom_col] : 'rtl';                    
                     $col_class_css =
                         "hzm_col hzm_col_$my_class_name hzm_col_"
                         . $my_class_name
@@ -1297,7 +1312,7 @@ class AfwShowHelper
             if ($total_cols and count($total_cols) > 0) {
                 $html .= "   <tr class='$cl_tr' alt='old_cl=$old_cl'>\n";
                 $col_ord = 0;
-                foreach ($header_trad as $nom_col => $desc) {
+                foreach ($header_trad as $nom_col => $label) {
                     if (false)
                     //if (AfwStyling::$styled_ data_arr[$nom_col]) 
                     {

@@ -245,6 +245,28 @@ class AfwFormatHelper
         return false;
     }
 
+    /**
+     * @param array $structure attribute afw structure
+     */
+    final public static function getDirectionFromStructure($structure) 
+    {
+        if (!$structure['DIR']) $structure['DIR'] = $structure['DIRECTION'];
+        if ($structure['DIR']) {
+            if ($structure['DIR'] == 'BYLANG') {
+                $lang = AfwLanguageHelper::getGlobalLanguage();
+                $dir = AfwLanguageHelper::getLanguageDir($lang);
+            } else {
+                $dir = $structure['DIR'];
+            }
+        } elseif ($structure['UTF8']) {
+            $dir = 'rtl';
+        } else {
+            $dir = 'ltr';
+        }
+        return $dir;
+    }
+                    
+
     final public static function formatValue(
         $value,
         $key,
@@ -597,17 +619,7 @@ class AfwFormatHelper
                         $text_align = 'text-align:left';
                     }
 
-                    if ($structure['DIR']) {
-                        if ($structure['DIR'] == 'BYLANG') {
-                            $dir = AfwLanguageHelper::getLanguageDir($lang);
-                        } else {
-                            $dir = $structure['DIR'];
-                        }
-                    } elseif ($structure['UTF8']) {
-                        $dir = 'rtl';
-                    } else {
-                        $dir = 'ltr';
-                    }
+                    $dir = self::getDirectionFromStructure($structure); 
                     if ($structure['WIDTH']) {
                         $wd = $structure['WIDTH'];
                     } else {
