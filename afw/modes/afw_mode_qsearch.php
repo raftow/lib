@@ -119,7 +119,13 @@ $search_result_html = "";
 // $myClassInstance->debuggObj($_POST);
 if ($datatable_on) {
         // die("DBG-before afw_handle_default_search");
+        if($myClassInstance->estimatedTotalRows()>1400) {
+                UfwQueryAnalyzer::startProcessLourdMode();
+        }
         $handle_return = include 'afw_handle_default_search.php';
+        if($myClassInstance->estimatedTotalRows()>1400) {
+                UfwQueryAnalyzer::stopProcessLourdMode();
+        }
         $excel_link = $handle_return['excel_link'];
         $search_result_html = $handle_return['search_result_html'];
         AfwSession::log("End of afw_handle_default_search");

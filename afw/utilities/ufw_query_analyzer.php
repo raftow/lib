@@ -1,13 +1,53 @@
 <?php
 class UfwQueryAnalyzer
 {
+    
+    /**
+     * var int
+     */
+    // public static $old_mode_sql_process_lourd;
+
+    /**
+     * @var int
+     */
+    public static $mode_sql_process_lourd = 0;
+    /**
+     * @var array
+     */
     public static $_sql_analysis;
+    /**
+     * @var string
+     */
     public static $the_last_sql;
-    public static $nb_queries_executed;
+
+    /**
+     * @var int
+     */
+    public static $old_nb_queries_executed = 0;
+
+    /**
+     * @var int
+     */
+    public static $nb_queries_executed = 0;
+    /**
+     * @var bool
+     */
     public static $print_debugg;
+    /**
+     * @var bool
+     */
     public static $print_sql;
+    /**
+     * @var bool
+     */
     public static $print_row;
+    /**
+     * @var int
+     */
     public static $duree_sql_total;
+    /**
+     * @var array
+     */
     public static $sql_picture_arr;
 
     private static $excluded_tables = array(
@@ -19,10 +59,35 @@ class UfwQueryAnalyzer
         self::$nb_queries_executed = 1;
     }
 
+    /**
+     * @return bool
+     */
+    public static function isProcessLourdMode() {
+        return (self::$mode_sql_process_lourd>0);
+    }
+    // we have changed mode_sql_process_lourd from boolean to int 
+    // to store the multuple mode_sql_process_lourd imbrique
+    // each start is new deep level and each stop is a close of this level
+    public static function startProcessLourdMode() {        
+        self::$old_nb_queries_executed = self::$nb_queries_executed;
+        // self::$old_mode_sql_process_lourd = self::$mode_sql_process_lourd;
+        if(!self::$mode_sql_process_lourd) self::$mode_sql_process_lourd = 0; 
+        self::$mode_sql_process_lourd++; 
+    }
+
+    public static function stopProcessLourdMode() {        
+        self::$mode_sql_process_lourd--;
+        // self::$mode_sql_process_lourd = self::$old_mode_sql_process_lourd;
+        if (!self::$mode_sql_process_lourd) {
+            self::$nb_queries_executed = 0;
+            self::$mode_sql_process_lourd = 0;
+        }
+        else self::$nb_queries_executed = self::$old_nb_queries_executed;
+    }
+
+
     public static function preAnalyseQuery($sql_query, $is_update)
     {
-        global $MODE_BATCH_LOURD,
-            $MODE_SQL_PROCESS_LOURD;
         // coming bad from outside so I will reparse
         $this_module = 'hzm';
         $this_table = 'hzm';
@@ -135,11 +200,11 @@ class UfwQueryAnalyzer
 
 
 
-        $we_can_not_throw_analysis_exception = ($MODE_SQL_PROCESS_LOURD or $MODE_BATCH_LOURD);
+        $we_can_not_throw_analysis_exception = self::isProcessLourdMode();
         $we_should_throw_analysis_exception = (AfwSession::config('MODE_DEVELOPMENT', false) and (self::$nb_queries_executed > $_sql_analysis_seuil_calls));
         if ($we_should_throw_analysis_exception and !$we_can_not_throw_analysis_exception) {
             $backtrace = debug_backtrace(1, 20);
-            throw new AfwRuntimeException("Too much queries executed when mode is not MODE_BATCH_LOURD or MODE_SQL_PROCESS_LOURD !<br>
+            throw new AfwRuntimeException("Too much queries executed when mode is not lourd process mode !<br>
                                            Nb Queries Executed = " . self::$nb_queries_executed . " > $_sql_analysis_seuil_calls = Max <br> 
                                            Sql Picture = " . var_export(self::$sql_picture_arr, true) .
                 "Backtrace = " . var_export($backtrace, true));
@@ -158,8 +223,6 @@ class UfwQueryAnalyzer
 
         list($this_module, $this_table, $sql_info_class, $start_q_time, $start_m_time, $row_count, $affected_row_count) = $preArr;
 
-        global $MODE_BATCH_LOURD,
-            $MODE_SQL_PROCESS_LOURD;
         $end_m_time = 0;
         $end_m_time = microtime();
         $end_q_time = date('Y-m-d H:i:s');
@@ -174,7 +237,7 @@ class UfwQueryAnalyzer
         $title_duration = '';
         $this_table_lower = strtolower($this_table);
 
-        if ((!self::$excluded_tables[$this_table_lower]) and AfwSession::config('MODE_DEVELOPMENT', false) and (!$MODE_BATCH_LOURD) and (!$MODE_SQL_PROCESS_LOURD) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
+        if ((!self::$excluded_tables[$this_table_lower]) and AfwSession::config('MODE_DEVELOPMENT', false) and (!self::isProcessLourdMode()) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
             if (!self::$_sql_analysis[$this_module][$this_table][$sql_query]) {
                 self::$_sql_analysis[$this_module][$this_table][$sql_query] = 1;
             } else {
@@ -216,7 +279,7 @@ class UfwQueryAnalyzer
                     throw new AfwRuntimeException(
                         "<p>static analysis crash : The table $this_module-$this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times ($this_table_lower-sql-analysis-max-calls)</p>
                              <h5>$sql_query</h5><br> 
-                             If this is absolutely needed please define global variable MODE_SQL_PROCESS_LOURD to true
+                             If this is absolutely needed please start the process lourd mode
                              <div class='technical'>
                              So it is to be optimized sql_picture => " . var_export(self::$sql_picture_arr, true) .
                             " all_vars => " . AfwSession::log_all_data() .
@@ -233,7 +296,7 @@ class UfwQueryAnalyzer
 
         $sql_capture_and_backtrace = AfwSession::config("sql_to_capture", "");
 
-        if (((!$MODE_BATCH_LOURD) and (!$MODE_SQL_PROCESS_LOURD)) or $sql_capture_and_backtrace) {
+        if (((!self::isProcessLourdMode())) or $sql_capture_and_backtrace) {
             if (!$sql_time_max_in_milli_sec) {
                 $sql_time_max_in_milli_sec = 30.0;
             }
@@ -257,7 +320,10 @@ class UfwQueryAnalyzer
             $analyses_log = "<b>start time</b> : $start_q_time,\n
             <b>end_time</b> : $end_q_time,\n
             <b>duration $title_duration</b> : $duree_q milli-sec
-            <b>duration total</b> : $duree_total milli-sec";
+            <b>duration total</b> : $duree_total milli-sec
+            <b>Query number</b> : $nb_queries_exec\n   
+            <b>back trace</b>\n<br> : $backtrace_html\n                                             
+                                                    ";
         } else {
             $analyses_log = "";
         }
@@ -265,12 +331,10 @@ class UfwQueryAnalyzer
         $information = "<div class='$sql_info_class'>
                                                     <b>Module</b> : $this_module,\n
                                                     <b>Table</b> : $this_table,\n
-                                                    <b>Query number</b> : $nb_queries_exec,\n                                                
                                                     <b>sql</b> :\n $sql_query\n 
                                                     <b>rows</b> : $row_count,\n 
                                                     <b>affected</b> : $affected_row_count,\n 
-                                                    $analyses_log
-                                                    <b>back trace</b>\n<br> : $backtrace_html 
+                                                    $analyses_log                                                     
                                                     
                                                     </div>";
         // die("will sql log :<br>$information, $this_module");

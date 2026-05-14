@@ -15,7 +15,7 @@ $transformClass = $argv[3];
 $transformModule = $argv[4];
 if(!$transformClass) $transformClass = "AfwDataMigrator";
 
-$MODE_BATCH_LOURD = true;
+UfwQueryAnalyzer::startProcessLourdMode();
 $DISABLE_CACHE_MANAGEMENT = true;
 $lib_root_path = "/var/www/html/v3/lib";
 $batch_root_path = "/var/www/hub_batch";
@@ -28,6 +28,9 @@ require_once("$lib_root_path/afw/core/afw_autoloader.php");
 if($transformModule)
 {
         AfwAutoLoader::addMainModule($transformModule);
+        /**
+         * @var array $config_arr
+         */
         require_once ("$lib_root_path/$transformModule/application_config.php");
         AfwSession::initConfig($config_arr);
         AfwSession::setConfig("MODE_BATCH", true);
@@ -58,7 +61,7 @@ if($success) UfwBatch::print_important("> sucess of $transformClass => $transfor
 else UfwBatch::print_error("> fail of $transformClass => $transform ($value) => $new_value");
 
 
-
+UfwQueryAnalyzer::stopProcessLourdMode();
 
 
 ?>

@@ -389,7 +389,7 @@ class AfwSession extends AFWRoot
         public static function log($string, $css_class = "paglog hzmlog", $separator = "<br>\n", $show_time = true, $context = "log")
         {
 
-                global $log_counter, $MODE_BATCH_LOURD;
+                global $log_counter;
                 if (!$log_counter) $log_counter = 0;
                 $log_counter++;
                 $critical = "";
@@ -402,7 +402,7 @@ class AfwSession extends AFWRoot
                         $log_counter_limit = 300;
                 }
 
-                if ($MODE_BATCH_LOURD) $log_counter_limit = 5 * $log_counter_limit;
+                if (UfwQueryAnalyzer::isProcessLourdMode()) $log_counter_limit = 5 * $log_counter_limit;
 
                 if ($log_counter > $log_counter_limit) {
                         return;

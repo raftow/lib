@@ -47,9 +47,11 @@ $stats_config = $myClassInstance::$STATS_CONFIG[$stc];
 //echo( "myClassInstance::STATS_CONFIG[$stc] = stats_config = ".var_export( $stats_config, true ).'<br>\n' );
 // die();
 $config_stats_options      = $stats_config['OPTIONS'];
-global $MAX_MEMORY_BY_REQUEST, $MODE_BATCH_LOURD;
+global $MAX_MEMORY_BY_REQUEST;
 $MAX_MEMORY_BY_REQUEST = $config_stats_options['MAX_MEMORY_BY_REQUEST'];
-$MODE_BATCH_LOURD      = $config_stats_options['MODE_BATCH_LOURD'];
+if($config_stats_options['processLourd']) {
+    UfwQueryAnalyzer::startProcessLourdMode();
+}
 
 
 
@@ -112,3 +114,7 @@ AfwStatsHelper::outputModeStatsTable(
 
 
 AfwStatsHelper::outputModeStatsFooter($myClassInstance, $stats_config, $stat_trad, $stats_data_arr, $stats_code, $footer_sum_title_arr, $footer_total_arr, $currmod, $lang);
+
+if($config_stats_options['processLourd']) {
+    UfwQueryAnalyzer::stopProcessLourdMode();
+}

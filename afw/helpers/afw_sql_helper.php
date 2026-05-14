@@ -1007,7 +1007,7 @@ class AfwSqlHelper extends AFWRoot
      */
     public static function insertObject(&$object, $pk = '', $check_if_exists_by_uk = true, $disableAfterCommitDBEvent = false)
     {
-        global $lang, $print_debugg, $print_sql, $MODE_BATCH_LOURD;
+        global $lang, $print_debugg, $print_sql;
 
         // if($object::$TABLE == "afield") die("object->insert on : ".var_export($object,true));
         if ($object->IS_VIRTUAL) {
@@ -1067,7 +1067,7 @@ class AfwSqlHelper extends AFWRoot
                 $debugg_tech_notes =
                     'warning : beforeInsert refused insert operation. declined insert into '
                     . $object::$TABLE;
-                if ($MODE_BATCH_LOURD) {
+                if (UfwQueryAnalyzer::isProcessLourdMode()) {
                     UfwBatch::print_warning($debugg_tech_notes);
                 }
                 $information = "<div class='sql warning'> $debugg_tech_notes </div>";
@@ -1102,7 +1102,7 @@ class AfwSqlHelper extends AFWRoot
                 $debugg_tech_notes =
                     'warning : insert operation aborted because no field filled to insert declined insert into '
                     . $object::$TABLE;
-                if ($MODE_BATCH_LOURD) {
+                if (UfwQueryAnalyzer::isProcessLourdMode()) {
                     UfwBatch::print_warning($debugg_tech_notes);
                 }
                 $information = "<div class='sql warning'> $debugg_tech_notes </div>";

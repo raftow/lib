@@ -47,7 +47,7 @@ class AfwMemoryHelper extends AFWRoot
 
     public static final function checkMemoryBeforeInstanciating($objInstanciating)
     {
-        global $nb_instances_total, $nb_instances, $tab_instances, $MODE_BATCH_LOURD;
+        global $nb_instances_total, $nb_instances, $tab_instances;
         if (!$tab_instances) {
             $tab_instances = [];
         }
@@ -81,8 +81,8 @@ class AfwMemoryHelper extends AFWRoot
                 //throw new AfwRuntimeException("MOMKEN OUT OF MEMORY", $throwed_arr=array("ALL"=>true, "FIELDS_UPDATED"=>true, "SQL"=>true, "DEBUGG"=>true, "CACHE"=>true));
             }
         }
-        if ($nb_instances > $MAX_INSTANCES_BY_REQUEST and (!$MODE_BATCH_LOURD)) {
-            die("too much objects created : $nb_instances > $MAX_INSTANCES_BY_REQUEST : " . var_export($tab_instances, true) . "\n and MODE_BATCH_LOURD=" . var_export($MODE_BATCH_LOURD, true));
+        if ($nb_instances > $MAX_INSTANCES_BY_REQUEST and (!UfwQueryAnalyzer::isProcessLourdMode())) {
+            die("too much objects created : $nb_instances > $MAX_INSTANCES_BY_REQUEST : " . var_export($tab_instances, true) . "\n and process lourd mode is not activated");
         }
     }
 }

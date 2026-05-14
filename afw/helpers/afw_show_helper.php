@@ -1126,7 +1126,6 @@ class AfwShowHelper
             }
         } else {
             $html = $html_header;
-            $html .= '<tbody>';
             $ids = '';
 
             $sum_cols_total = [];

@@ -420,8 +420,7 @@ class AfwLoadHelper extends AFWRoot
 
     public static function loadObjectFKFor($myObject, $attribute, $integrity = true, $optim_lookup = true)
     {
-        global $MODE_BATCH_LOURD,
-            $boucle_loadObjectFK,
+        global $boucle_loadObjectFK,
             $boucle_loadObjectFK_arr,
             $object_id_to_check_repeat_of_load,
             $object_attribute_to_check_repeat_of_load,
@@ -434,7 +433,7 @@ class AfwLoadHelper extends AFWRoot
         $this_table = $myObject->getTableName();
         $object_id = $myObject->getAfieldValue($attribute);
         $call_method = "loadObjectFKFor(object[$this_getId], attribute = $attribute, integrity = $integrity)";
-        if (!$MODE_BATCH_LOURD) {
+        if (!UfwQueryAnalyzer::isProcessLourdMode()) {
             if (!$boucle_loadObjectFK) {
                 $boucle_loadObjectFK = 0;
                 $boucle_loadObjectFK_arr = [];
@@ -447,7 +446,7 @@ class AfwLoadHelper extends AFWRoot
 
             if ($boucle_loadObjectFK > 200000) {
                 // 20000 because many calls are just to get data from cache so very quick
-                throw new AfwRuntimeException("heavy process without setting MODE_BATCH_LOURD, so halted after $boucle_loadObjectFK enter to method $call_method in one request, " . var_export($boucle_loadObjectFK_arr, true));
+                throw new AfwRuntimeException("heavy process without setting lourd process mode, so halted after $boucle_loadObjectFK enter to method $call_method in one request, " . var_export($boucle_loadObjectFK_arr, true));
             }
         }
 
@@ -892,7 +891,7 @@ class AfwLoadHelper extends AFWRoot
      */
     public static function loadAfwObject(&$object, $value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '')
     {
-        global $MODE_BATCH_LOURD, $load_count;
+        global $load_count;
 
         // $time_start = microtime(true);
 
@@ -912,7 +911,7 @@ class AfwLoadHelper extends AFWRoot
             {
                 if (!$load_count[$className]["any"]) $load_count[$className]["any"] = 0;
                 $load_count[$className]["any"]++;
-                if ($MODE_OPTIMIZE_MAX and (!$MODE_BATCH_LOURD) and ($load_count[$className]["any"] > 3)) {
+                if ($MODE_OPTIMIZE_MAX and (!UfwQueryAnalyzer::isProcessLourdMode()) and ($load_count[$className]["any"] > 3)) {
                     throw new AfwRuntimeException("All the lookup table $className should be loaded once, not record by record");
                 }
             }
@@ -1872,7 +1871,6 @@ class AfwLoadHelper extends AFWRoot
         $optim_lookup = true,
         $lang = null
     ) {
-        global $get_stats_analysis, $MODE_BATCH_LOURD, $MODE_SQL_PROCESS_LOURD;
         if (!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
         // $cache_management = AfwLoadHelper::cacheManagement($object);
         // $target = '';
@@ -1961,14 +1959,6 @@ class AfwLoadHelper extends AFWRoot
             );
         }
 
-        if ((($called_times > 50) and (!$MODE_BATCH_LOURD)  and (!$MODE_SQL_PROCESS_LOURD)) or ($called_times > 500)) 
-        {
-            throw new AfwRuntimeException(
-                "same $this_TABLE (record id = $this_id) ->get($attribute,$what) called " .
-                    $called_times .
-                    ' time should be optimized'
-            );
-        }
         if ($return) $get_stats_analysis[$this_TABLE][$attribute][$this_id][$what]++;
         */
 

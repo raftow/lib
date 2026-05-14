@@ -3617,6 +3617,10 @@ class AFWObject extends AFWRoot
         return static::deleteWhere($where_clause);
     }
 
+    public function estimatedTotalRows() {
+        return 100;
+    }
+
     /**
      * deleteWhere
      * Delete rows based on SQL condition
