@@ -1236,6 +1236,28 @@ class AfwDateHelper
         return $format;
     }
 
+    public static function oracleToPhp03DatetimeFormat($oracle_format)
+    {
+        $format = str_replace('YYYY', 'Y', $oracle_format);
+        $format = str_replace('MM', 'm', $format);
+        $format = str_replace('DD', 'j', $format);
+        $format = str_replace('HH24', 'H', $format);
+        $format = str_replace('MI', 'i', $format);
+        $format = str_replace('SS', 's', $format);
+        return $format;
+    }
+
+    public static function oracleToPhp04DatetimeFormat($oracle_format)
+    {
+        $format = str_replace('YYYY', 'Y', $oracle_format);
+        $format = str_replace('MM', 'n', $format);
+        $format = str_replace('DD', 'j', $format);
+        $format = str_replace('HH24', 'H', $format);
+        $format = str_replace('MI', 'i', $format);
+        $format = str_replace('SS', 's', $format);
+        return $format;
+    }
+
     public static function phpToOracleDatetimeFormat($oracle_format)
     {
         $format = str_replace('Y', 'YYYY', $oracle_format);
@@ -1254,9 +1276,16 @@ class AfwDateHelper
             $original_format = $format;
             $format = self::oracleToPhpDatetimeFormat($original_format);
             $format2 = self::oracleToPhp02DatetimeFormat($original_format);
+            $format3 = self::oracleToPhp03DatetimeFormat($original_format);
+            $format4 = self::oracleToPhp04DatetimeFormat($original_format);
             $d = DateTime::createFromFormat($format, $gdate);
             $d2 = DateTime::createFromFormat($format2, $gdate);
-            return (($d && $d->format($format) === $gdate) or ($d2 && $d2->format($format2) === $gdate));
+            $d3 = DateTime::createFromFormat($format3, $gdate);
+            $d4 = DateTime::createFromFormat($format4, $gdate);
+            return (($d && $d->format($format) === $gdate) or 
+                    ($d2 && $d2->format($format2) === $gdate) or
+                    ($d3 && $d3->format($format3) === $gdate) or
+                    ($d4 && $d4->format($format4) === $gdate));
         }
         else {
             $d = DateTime::createFromFormat($format, $gdate);

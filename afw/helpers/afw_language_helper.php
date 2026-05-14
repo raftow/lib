@@ -396,17 +396,23 @@ class AfwLanguageHelper
     {
         if (!$module) throw new AfwRuntimeException("\$module param should be defined for translateCompanyMessage method");
         $return = $message;
-        $file_dir_name = dirname(__FILE__)."/..";
+        $root_dir_name = dirname(__FILE__)."/../../..";
 
-        include "$file_dir_name/../../$module/messages_$lang.php";
+        include "$root_dir_name/$module/messages_$lang.php";
         if ($company) {
-            include "$file_dir_name/../../client-$company/translate/$module/messages_$company" . "_$lang.php";
+            include "$root_dir_name/client-$company/translate/$module/messages_$company" . "_$lang.php";
         }
+
+        /*
+        if($message=="We encourage you to evaluate our platform to help us improve our service. This evaluation focuses on the user experience and technical quality of the online platform.") {
+            die("from $root_dir_name/$module/messages_$lang.php we translateCompanyMessage($message, $module, $lang, $company) used array messages = ".var_export($messages, true));
+        }*/
+        
 
         if ($messages[$message]) {
             $return = $messages[$message];
         } else {
-            include "$file_dir_name/../../lib/messages_$lang.php";
+            include "$root_dir_name/lib/messages_$lang.php";
 
             if ($messages[$message]) {
                 $return = $messages[$message];
@@ -419,6 +425,10 @@ class AfwLanguageHelper
     }
 
 
+    /**
+     * @param AFWObject $object
+     * @param array $cols
+     */
     public static function translateCols($object, $cols, $lang = 'ar', $short = false)
     {
         $tableau = [];

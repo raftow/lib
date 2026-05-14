@@ -1180,6 +1180,11 @@ class AfwShowHelper
                     if (!$my_class_name) {
                         $my_class_name = 'afw';
                     }
+                    $text_direction = $desc["DIRECTION"];
+                    if (!$text_direction) {
+                        if ($desc["UTF8"]) $text_direction = "rtl";
+                        else $text_direction = "ltr";
+                    }
                     $col_class_css =
                         "hzm_col hzm_col_$my_class_name hzm_col_"
                         . $my_class_name
@@ -1259,8 +1264,7 @@ class AfwShowHelper
                     } else {
                         $istyle = '';
                     }
-
-                    $myTr .= "         <td id='$td_id' class='$istyle col-importance-$importance $col_class_css' $nowrap_col>$data_aff</td>\n";
+                    $myTr .= "         <td id='$td_id' class='$istyle col-importance-$importance text_$text_direction $col_class_css' $nowrap_col>$data_aff</td>\n";
                     $colspan++;
                     if ($total_cols[$nom_col]) {
                         // if($nom_col == "perf_total") die("summing $nom_col : currval = ".$tuple[$nom_col]." data = ".var_export($data,true));
