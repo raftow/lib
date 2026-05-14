@@ -837,7 +837,7 @@ class AfwShowHelper
                         }
                     }
 
-                    $data[$id] = self::objectItemToTuple($objListItem, $header, $viewIcon);
+                    $data[$id] = self::objectItemToTuple($objListItem, $header, $lang, $viewIcon);
                     // ----****************
                     $recordArr[$id] = $objListItem->getShortDisplay($lang);
                     $isAvail[$id] = $objIsActive;
@@ -2803,7 +2803,7 @@ class AfwShowHelper
      * @return array
      */
 
-    public static function objectItemToTuple($objListItem, $header, $viewIcon = 'view_ok')
+    public static function objectItemToTuple($objListItem, $header, $lang, $viewIcon = 'view_ok')
     {
         $tuple = [];
         $images = AfwThemeHelper::loadTheme();
@@ -3131,7 +3131,7 @@ class AfwShowHelper
              */
             $objListItem = new $className();
             $objListItem->load('', $row);
-            $data[$k] = self::objectItemToTuple($objListItem, $header);
+            $data[$k] = self::objectItemToTuple($objListItem, $header, $lang);
             foreach ($newColumnsRules as $newCol => $newColDefinition) {
                 if ($newColDefinition["calcMethod"]) {
                     $calcMethod = $newColDefinition["calcMethod"];
