@@ -1,8 +1,8 @@
 <?php
 if (!class_exists('AfwAutoLoader')) {
         $autol_file_dir_name = dirname(__FILE__);
-        require_once ("$autol_file_dir_name/afw_root.php");
-        require_once ("$autol_file_dir_name/../helpers/afw_string_helper.php");
+        require_once("$autol_file_dir_name/afw_root.php");
+        require_once("$autol_file_dir_name/../helpers/afw_string_helper.php");
 
         class AfwAutoLoader extends AFWRoot
         {
@@ -12,6 +12,7 @@ if (!class_exists('AfwAutoLoader')) {
                         '/',
                         '/../ums/',
                         '/../hrm/',
+                        '/../cmn/',
                 ];  // "/../crm/","/../p-ag/", "/../b-au/",
 
                 public static function haveModule($module)
@@ -59,13 +60,13 @@ if (!class_exists('AfwAutoLoader')) {
 
                 public static function getClassPath($class)
                 {
-                        $autol_file_dir_name = dirname(__FILE__)."/..";
-                        
+                        $autol_file_dir_name = dirname(__FILE__) . "/..";
+
                         if (!class_exists($class, FALSE)) {
                                 if ($class == 'AFWObject') {
                                         $file_path_to_load = $autol_file_dir_name . '/core/afw.php';
 
-                                        require_once ($file_path_to_load);
+                                        require_once($file_path_to_load);
                                         if (class_exists($class, FALSE))
                                                 return array(true, $file_path_to_load, []);
                                         else
@@ -80,50 +81,43 @@ if (!class_exists('AfwAutoLoader')) {
                                 if (AfwStringHelper::stringStartsWith($file_name, 'afw_')) {
                                         if (AfwStringHelper::stringEndsWith($file_name, '_helper.php')) {
                                                 $file_path_to_load = $autol_file_dir_name . "/helpers/$file_name";
-                                        } 
-                                        elseif (AfwStringHelper::stringStartsWith($file_name, 'afw_d_b') or
-                                            AfwStringHelper::stringStartsWith($file_name, 'afw_db') or    
-                                            AfwStringHelper::stringStartsWith($file_name, 'afw_data') or
-                                            AfwStringHelper::stringStartsWith($file_name, 'afw_mysql')
-                                                ) 
-                                        {
+                                        } elseif (
+                                                AfwStringHelper::stringStartsWith($file_name, 'afw_d_b') or
+                                                AfwStringHelper::stringStartsWith($file_name, 'afw_db') or
+                                                AfwStringHelper::stringStartsWith($file_name, 'afw_data') or
+                                                AfwStringHelper::stringStartsWith($file_name, 'afw_mysql')
+                                        ) {
                                                 $file_path_to_load = $autol_file_dir_name . "/database/$file_name";
-                                        }
-                                        elseif (AfwStringHelper::stringEndsWith($file_name, '_motor.php')) {
+                                        } elseif (AfwStringHelper::stringEndsWith($file_name, '_motor.php')) {
                                                 $file_path_to_load = $autol_file_dir_name . "/motors/$file_name";
-                                        } 
-                                        elseif (AfwStringHelper::stringEndsWith($file_name, '_controller.php')) {
+                                        } elseif (AfwStringHelper::stringEndsWith($file_name, '_controller.php')) {
                                                 $file_path_to_load = $autol_file_dir_name . "/controllers/$file_name";
-                                        } 
-                                        elseif (AfwStringHelper::stringEndsWith($file_name, '_controller.php')) {
+                                        } elseif (AfwStringHelper::stringEndsWith($file_name, '_controller.php')) {
                                                 $file_path_to_load = $autol_file_dir_name . "/controllers/$file_name";
-                                        } 
-                                        elseif (AfwStringHelper::stringEndsWith($file_name, '_exception.php')) {
+                                        } elseif (AfwStringHelper::stringEndsWith($file_name, '_exception.php')) {
                                                 $file_path_to_load = $autol_file_dir_name . "/exceptions/$file_name";
-                                        }
-                                        else {
+                                        } else {
                                                 $file_path_to_load = $autol_file_dir_name . "/core/$file_name";
                                                 $file_path2_to_load = $autol_file_dir_name . "/$file_name";
                                         }
 
-                                        include_once ($file_path_to_load);
+                                        include_once($file_path_to_load);
                                         if (class_exists($class, FALSE))
                                                 return array(true, $file_path_to_load, []);
-                                        elseif($file_path2_to_load) {                                                
-                                                require_once ($file_path2_to_load);
+                                        elseif ($file_path2_to_load) {
+                                                require_once($file_path2_to_load);
                                                 if (class_exists($class, FALSE))
                                                         return array(true, $file_path2_to_load, []);
                                         }
                                         return array(true, "failed to find $class into $file_path_to_load", []);
-                                                
                                 }
-                                
+
                                 if (AfwStringHelper::stringStartsWith($file_name, 'ufw_')) {
                                         $file_path_to_load = $autol_file_dir_name . "/utilities/$file_name";
                                         if (!file_exists($file_path_to_load)) {
                                                 throw new AfwRuntimeException("when loading class $class from $file_path_to_load it failed because this file does not exists");
                                         }
-                                        require_once ($file_path_to_load);
+                                        require_once($file_path_to_load);
                                         if (class_exists($class, FALSE))
                                                 return array(true, $file_path_to_load, []);
                                         else
@@ -135,7 +129,7 @@ if (!class_exists('AfwAutoLoader')) {
                                         if (!file_exists($file_path_to_load)) {
                                                 throw new AfwRuntimeException("when loading class $class from $file_path_to_load it failed because this file does not exists");
                                         }
-                                        require_once ($file_path_to_load);
+                                        require_once($file_path_to_load);
                                         if (class_exists($class, FALSE))
                                                 return array(true, $file_path_to_load, []);
                                         else
@@ -157,7 +151,7 @@ if (!class_exists('AfwAutoLoader')) {
                                         if (!file_exists($file_path_to_load)) {
                                                 throw new AfwRuntimeException("when loading $class from $file_path_to_load it failed because file does not exists");
                                         }
-                                        require_once ($file_path_to_load);
+                                        require_once($file_path_to_load);
                                         if (class_exists($class, FALSE))
                                                 return array(true, $file_path_to_load, []);
                                         else
@@ -174,7 +168,7 @@ if (!class_exists('AfwAutoLoader')) {
                                         if (!file_exists($file_path_to_load)) {
                                                 throw new AfwRuntimeException("when loading $class from $file_path_to_load it failed because file does not exists, if $moduleCurr is not the correct module where we should find this structure class lease check the constructor of the model class it seams mistake of copy paste");
                                         }
-                                        require_once ($file_path_to_load);
+                                        require_once($file_path_to_load);
                                         if (class_exists($class, FALSE))
                                                 return array(true, $file_path_to_load, []);
                                         else
@@ -211,7 +205,7 @@ if (!class_exists('AfwAutoLoader')) {
                                                 continue;
                                         }
 
-                                        require_once ($file_path_to_load);
+                                        require_once($file_path_to_load);
                                         if (class_exists($class, FALSE))
                                                 return array(true, $file_path_to_load, $failed_loadings_arr);
                                         else {
@@ -258,5 +252,3 @@ if (!class_exists('AfwAutoLoader')) {
 
         AfwAutoLoader::init();
 }
-
-?>

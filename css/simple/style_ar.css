@@ -2575,7 +2575,9 @@ not logic to put specific css into common css file
 
 .ui-state-active,
 .ui-widget-content .ui-state-active {
-	background-color: #266CC6 !important;
+	/*background-color: #266CC6 !important; 
+	should not be for all applications and everywhere 
+	in mode qsearch for any new application, it appear very bad*/
 	color: #ffffff !important;
 }
 

@@ -2175,7 +2175,7 @@ class AFWObject extends AFWRoot
             // $case = "this->get($attribute,decodeme,$format, $integrity, false, true, $lang)";
         }
         // if($attribute == "college_id") die("rafik debugging ... case = $case = $return");
-        return $return;    
+        return $return;
     }
 
     public function setOrder($order)
@@ -3617,7 +3617,8 @@ class AFWObject extends AFWRoot
         return static::deleteWhere($where_clause);
     }
 
-    public function estimatedTotalRows() {
+    public function estimatedTotalRows()
+    {
         return 100;
     }
 
@@ -4231,10 +4232,20 @@ class AFWObject extends AFWRoot
      */
     public function afterHide($id) {}
 
+    /**
+     * @param string $id
+     * @param array $fields_updated
+     */
+
     public function beforeMaj($id, $fields_updated)
     {
         return true;
     }
+
+    /**
+     * @param string $id
+     * @param array $fields_updated
+     */
 
     public function afterMaj($id, $fields_updated)
     {
@@ -4664,7 +4675,7 @@ class AFWObject extends AFWRoot
         $getFormatLink = true,
         $debugg = false
     ) {
-        if($attribute=="college_id") $debugg = true;
+        if ($attribute == "college_id") $debugg = true;
         $val_class = $this->getMyClass();
         $lang = AfwLanguageHelper::getGlobalLanguage();
         // $objme = AfwSession::getUserConnected();
@@ -4741,10 +4752,10 @@ class AFWObject extends AFWRoot
         } elseif ($structure['TYPE'] == 'FK') {
             if (empty($structure['CATEGORY'])) {
                 list($data_to_display, $link_to_display) = AfwShowHelper::showFK($this, $attribute, $value, $langue, $structure, $getlink, $debugg);
-                if($debugg) $data_to_display .= " comes from showFK";
+                if ($debugg) $data_to_display .= " comes from showFK";
             } else {
                 list($data_to_display, $link_to_display) = AfwShowHelper::showVirtualAttribute($this, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $langue, $structure, $getlink);
-                if($debugg) $data_to_display .= " comes from showVirtualAttribute(this, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $langue, structure, $getlink)";
+                if ($debugg) $data_to_display .= " comes from showVirtualAttribute(this, $attribute, $intelligent_category, $value, $id_origin, $class_origin, $module_origin, $langue, structure, $getlink)";
                 /*
                  * if($key == "adm_orgunit_id" and $getlink) throw new AfwRuntimeException("dbg 44599925 rafik : list($data_to_display, $link_to_display) = AfwShowHelper::showVirtualAttribute($this, attribute=$attribute, <br>
                  *                  intelligent_category=$intelligent_category, value=$value, id_origin=$id_origin, class_origin=$class_origin, module_origin=$module_origin, <br>
@@ -4753,11 +4764,11 @@ class AFWObject extends AFWRoot
             }
         } elseif ($structure['TYPE'] == 'MFK') {
             list($data_to_display, $link_to_display) = AfwShowHelper::showMFK($this, $attribute, $langue, $structure, $getlink);
-            if($debugg) $data_to_display .= " comes from showMFK(this, $attribute, $langue, structure, $getlink)";
+            if ($debugg) $data_to_display .= " comes from showMFK(this, $attribute, $langue, structure, $getlink)";
         } elseif ($structure['TYPE'] == 'YN') {
             $ynCode = strtoupper($this->decode($key, '', false, $langue));
             $data_to_display = $this->showYNValueForAttribute($ynCode, $key, $langue);
-            if($debugg) $data_to_display .= " comes from showYNValueForAttribute($ynCode, $key, $langue)";
+            if ($debugg) $data_to_display .= " comes from showYNValueForAttribute($ynCode, $key, $langue)";
         } elseif ($structure['TYPE'] == 'PK') {
             if (!$structure['OFFSET']) {
                 $data_to_display = $this->getId();
@@ -4777,10 +4788,10 @@ class AFWObject extends AFWRoot
             }
             else*/
             list($data_to_display, $link_to_display) = AfwShowHelper::showEnum($this, $attribute, $value, $langue, $structure);
-            if($debugg) $data_to_display .= " comes from showEnum(this, $attribute, $value, $langue, structure)";
+            if ($debugg) $data_to_display .= " comes from showEnum(this, $attribute, $value, $langue, structure)";
         } else {
             $data_to_display = $this->decode($key, '', false, $langue);
-            if($debugg) $data_to_display .= " comes from decode($key, '', false, $langue)";
+            if ($debugg) $data_to_display .= " comes from decode($key, '', false, $langue)";
             // if($key=="response_templates") die("data_to_display of ($key val:$value) is $data_to_display");
         }
 

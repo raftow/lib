@@ -54,7 +54,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
 ?>
 
 <tfoot>
-  <?
+  <?php
   if (!$obj->qedit_minibox) {
     $header_imbedded_arr = $obj->qeditHeaderFooterEmbedded($obj->submode, $obj->fgroup);
 
@@ -101,12 +101,12 @@ foreach ($class_db_structure as $nom_col => $desc) {
 
             $th_props = "style='text-align:$aligntd !important' $class_xqe_prop";
           ?>
-            <th hint='for-sum' <?= $th_props ?>><?= $text_input ?></th>
+            <th hint='for-sum' <?php echo  $th_props ?>><?php echo  $text_input ?></th>
 
           <?php  }
           ?>
         </tr>
-    <?
+    <?php
       }
     }
     ?>
@@ -140,14 +140,14 @@ foreach ($class_db_structure as $nom_col => $desc) {
             echo " ";
           } else {
       ?>
-            <th <?= $class_xqe_prop ?> <?= $style ?> align="<?= $aligntd ?>"><?= $info ?></th>
+            <th <?php echo  $class_xqe_prop ?> <?php echo  $style ?> align="<?php echo  $aligntd ?>"><?php echo  $info ?></th>
       <?php
           }
         }
       }
       ?>
     </tr>
-  <?
+  <?php
   }
 
   if ($obj::$copypast or AfwSession::hasOption("COPY_PAST_M")) {
@@ -158,21 +158,21 @@ foreach ($class_db_structure as $nom_col => $desc) {
         if ($col != "id") {
       ?>
           <th class="<?php echo "al-" . $aligntd . " col-" . $col ?>">
-            <?
+            <?php
             if (false) //(($col!="id") and (($not_filled[$col]>=4) or ($diff_val[$col])) and ($first_disp[$col]))
             {
               $disp_unify = substr($first_disp[$col], 0, 24) . "..";
 
             ?>
-              <input type="button" name="unify_all_<?= $col ?>" id="unify_all_<?= $col ?>" class="yellowbtn submit-btn fright" value="تعميم إلى '<?= $disp_unify ?>'" height="30px" onClick="unify_all_select('<?= $col ?>','<?= $first_val[$col] ?>','<?= $disp_unify ?>',0,<?= $nb_objs ?>);" />
-            <?
+              <input type="button" name="unify_all_<?php echo  $col ?>" id="unify_all_<?php echo  $col ?>" class="yellowbtn submit-btn fright" value="تعميم إلى '<?php echo  $disp_unify ?>'" height="30px" onClick="unify_all_select('<?php echo  $col ?>','<?php echo  $first_val[$col] ?>','<?php echo  $disp_unify ?>',0,<?php echo  $nb_objs ?>);" />
+            <?php
             }
 
             if (($col != "id") and ($col != "show")) //($col!="id")     
             {
             ?>
-              <a href="#" class="copy_paste" onClick="paste_col('<?= $col ?>',0);">&nbsp;&nbsp;&nbsp;</a>
-            <?
+              <a href="#" class="copy_paste" onClick="paste_col('<?php echo  $col ?>',0);">&nbsp;&nbsp;&nbsp;</a>
+            <?php
             }
             ?>
           </th>
@@ -186,12 +186,12 @@ foreach ($class_db_structure as $nom_col => $desc) {
   }
   ?>
   </table>
-  <?
+  <?php
   if ($obj::$copypast or AfwSession::hasOption("COPY_PAST_M")) {
   ?>
     <table cellspacing="3" cellpadding="4" style="width: 100% !important;">
       <tr class="table_obj">
-        <th align="center" colspan="<?= $col_count ?>" height="72" valign="middle">
+        <th align="center" colspan="<?php echo  $col_count ?>" height="72" valign="middle">
           <div id="accordion">
             <h3 class='th_data'>وسيلة لتسهيل نسخ - لصق للنصوص المستوردة من ملفات أخرى</h3>
             <div>
@@ -217,7 +217,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
         $submit_name = "submit";
       }
       ?>
-      <input type="submit" name="<?= $submit_name ?>" id="<?= $submit_name ?>" class="<?= $class_inputSubmit ?>" value="&nbsp;<?= $obj->translate($submit_qedit_title_code, $lang, true) ?>&nbsp;" width="200px" height="30px" />
+      <input type="submit" name="<?php echo  $submit_name ?>" id="<?php echo  $submit_name ?>" class="<?php echo  $class_inputSubmit ?>" value="&nbsp;<?php echo  $obj->translate($submit_qedit_title_code, $lang, true) ?>&nbsp;" width="200px" height="30px" />
 
       <?php
       $parent = $obj->getParentObject();
@@ -231,7 +231,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
           else $back_to_last_form = $obj->tf("back_to_last_form");
           if ($back_to_last_form == "back_to_last_form") $back_to_last_form = $back_to_last_form_old;
       ?>
-          <a href="main.php?Main_Page=afw_mode_<?= $mode_origin ?>.php&cl=<?= $obj->class_origin ?>&id=<?= $obj->id_origin ?>&currmod=<?= $obj->module_origin ?>&currstep=<?= $obj->step_origin ?>"><span class="yellowbtn submit-btn fright"><?= $back_to_last_form ?></span></a>
+          <a href="main.php?Main_Page=afw_mode_<?php echo  $mode_origin ?>.php&cl=<?php echo  $obj->class_origin ?>&id=<?php echo  $obj->id_origin ?>&currmod=<?php echo  $obj->module_origin ?>&currstep=<?php echo  $obj->step_origin ?>"><span class="yellowbtn submit-btn fright"><?php echo  $back_to_last_form ?></span></a>
 
         <?php
           $col_num++;
@@ -240,13 +240,13 @@ foreach ($class_db_structure as $nom_col => $desc) {
         //@todo : not implemented 
         if ($obj->coming_from_search) {
         ?>
-          <a href="main.php?Main_Page=afw_mode_search.php&cl=<?= $cl ?>"><span class="bluebtn submit-btn fleft"><?= $new_search_operation ?></span></a>
+          <a href="main.php?Main_Page=afw_mode_search.php&cl=<?php echo  $cl ?>"><span class="bluebtn submit-btn fleft"><?php echo  $new_search_operation ?></span></a>
       <?php
         }
       }
       ?>
     </div>
-    <?
+    <?php
     $col_num++;
     $other_links = $obj->getOtherLinksForUser("qedit", $objme);
 
@@ -275,10 +275,10 @@ foreach ($class_db_structure as $nom_col => $desc) {
         if (!$link_color) $link_color = "red";
 
     ?>
-        <a class="<?= $falign ?>" href="<?= $other_link["URL"] ?>">
-          <span class="<?= $link_color ?>btn submit-btn <?= $falign ?>"><?= $other_link["TITLE"] ?></span>
+        <a class="<?php echo  $falign ?>" href="<?php echo  $other_link["URL"] ?>">
+          <span class="<?php echo  $link_color ?>btn submit-btn <?php echo  $falign ?>"><?php echo  $other_link["TITLE"] ?></span>
         </a>
-    <?
+    <?php
         $col_num++;
       }
     } elseif (count($other_links) > 0) {

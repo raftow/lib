@@ -4,6 +4,14 @@ const MAX_OUTPUT = 50;
 class UfwUtils
 {
 
+        /**
+         * @param string $message
+         * @param mixed $var
+         */
+        public static function dieWithVar($message, $var)
+        {
+                throw new AfwRuntimeException($message . " : <br>\n" . var_export($var, true));
+        }
 
         public static function hzm_start_immediate_output()
         {
