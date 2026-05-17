@@ -974,12 +974,15 @@ class AFWObject extends AFWRoot
         return $fields_updated;
     }
 
-    public function resetAsCopy($field_vals = [])
+    public function resetAsCopy($field_vals = [], $replaces = [])
     {
         $all_real_fields = AfwStructureHelper::getAllRealFields($this);
         foreach ($all_real_fields as $field_name) {
             if ($field_name != $this->getPKField()) {
                 $val = $this->getVal($field_name);
+                foreach ($replaces as $toreplace => $replaceby) {
+                    if (is_string($val)) $val = str_replace($toreplace, $replaceby, $val);
+                }
                 $this->set($field_name, null);
                 $this->set($field_name, $val);
             }
