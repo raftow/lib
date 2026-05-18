@@ -1,7 +1,7 @@
 <?php
 class UfwQueryAnalyzer
 {
-    
+
     /**
      * var int
      */
@@ -62,27 +62,29 @@ class UfwQueryAnalyzer
     /**
      * @return bool
      */
-    public static function isProcessLourdMode() {
-        return (self::$mode_sql_process_lourd>0);
+    public static function isProcessLourdMode()
+    {
+        return (self::$mode_sql_process_lourd > 0);
     }
     // we have changed mode_sql_process_lourd from boolean to int 
     // to store the multuple mode_sql_process_lourd imbrique
     // each start is new deep level and each stop is a close of this level
-    public static function startProcessLourdMode() {        
+    public static function startProcessLourdMode()
+    {
         self::$old_nb_queries_executed = self::$nb_queries_executed;
         // self::$old_mode_sql_process_lourd = self::$mode_sql_process_lourd;
-        if(!self::$mode_sql_process_lourd) self::$mode_sql_process_lourd = 0; 
-        self::$mode_sql_process_lourd++; 
+        if (!self::$mode_sql_process_lourd) self::$mode_sql_process_lourd = 0;
+        self::$mode_sql_process_lourd++;
     }
 
-    public static function stopProcessLourdMode() {        
+    public static function stopProcessLourdMode()
+    {
         self::$mode_sql_process_lourd--;
         // self::$mode_sql_process_lourd = self::$old_mode_sql_process_lourd;
         if (!self::$mode_sql_process_lourd) {
             self::$nb_queries_executed = 0;
             self::$mode_sql_process_lourd = 0;
-        }
-        else self::$nb_queries_executed = self::$old_nb_queries_executed;
+        } else self::$nb_queries_executed = self::$old_nb_queries_executed;
     }
 
 

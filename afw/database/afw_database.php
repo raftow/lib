@@ -114,8 +114,9 @@ class AfwDatabase extends AFWRoot
         //die("mysql_query($sql_query, AfwDatabase::getLinkByName($project_link_name))");
         $arrPre = UfwQueryAnalyzer::preAnalyseQuery($sql_query, $is_update);
         $result = AfwMysql::query($sql_query, AfwDatabase::getLinkByName($project_link_name), $is_update);
-        // var_dump($result);
-        // die("AfwMysql::query($sql_query) result above");
+        
+        
+
         if (!$result) {
             $sql_error = "SQL Error on [$project_link_name] query :[$sql_query] ==> " . AfwMysql::get_error(AfwDatabase::getLinkByName($project_link_name));
             throw new AfwRuntimeException($sql_error);

@@ -4,7 +4,13 @@
 
 class AFWRelation extends AFWRoot {
 
+     /**
+      * @var AFWObject
+      */
      private $myParentObject = null;
+     /**
+      * @var AFWObject
+      */
      private $myObject = null;
      private $items = null;
 

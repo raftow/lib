@@ -1841,7 +1841,6 @@ class AfwSqlHelper extends AFWRoot
      * old count on AFWObject become here and renamed as aggregCount
      * return execute of aggregFunction on table after filter where
      * @param AFWObject $object
-     * @param string $function
      */
     public static function aggregCount($object, $throw_error = true, $throw_analysis_crash = true)
     {

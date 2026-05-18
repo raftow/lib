@@ -204,8 +204,9 @@ class AfwFormulaHelper extends AFWRoot
         } 
         elseif ($formulaFunction == 'count') 
         {
-            $listObj = $obj->get($formulaAttribute1);
-            return count($listObj);
+            // $listObj = $obj->get($formulaAttribute1);
+            // return count($listObj);
+            return "NOP"; // not optimized so obsoleted
         } 
         elseif ($formulaFunction == 'list_extract') 
         {

@@ -397,7 +397,7 @@ class AfwSession extends AFWRoot
                 $MODE_DEV = self::config("MODE_DEVELOPMENT", false);
 
                 if ($MODE_DEV) {
-                        $log_counter_limit = 100;
+                        $log_counter_limit = 600;
                 } else {
                         $log_counter_limit = 300;
                 }
@@ -405,6 +405,10 @@ class AfwSession extends AFWRoot
                 if (UfwQueryAnalyzer::isProcessLourdMode()) $log_counter_limit = 5 * $log_counter_limit;
 
                 if ($log_counter > $log_counter_limit) {
+                        $html = trim(self::getVar($context));
+                        if ($html) $html .= $separator;
+                        $html .= "<hr><span class='error limit'>Limit reached : counter = $log_counter</span>"; 
+                        self::setVar($context, $html);
                         return;
                 }
 

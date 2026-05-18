@@ -221,11 +221,7 @@ class AfwDB extends AFWRoot
             if($rtab>0) $ctab = count($tableau[0]);
             else $ctab = 0;
             
-            if(AfwSession::hasOption("SQL_LOG"))
-            {
-                $information = "<br>\n<pre class='sql hzmlib'><b>DB</b> : $database,\n<b>sql</b> :\n $sql\n <b>rows</b> : $rtab </pre>";
-                //throw new AfwRuntimeException($information);
-            }
+            
             
             return $tableau;
             
