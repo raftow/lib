@@ -3174,10 +3174,13 @@ screen and (max-width: 660px) {
     border: 1px solid rgba(44, 118, 190, 0.5);
 }
 
-.panel_links {
+.panel_links
+ {
     float: right;
     width: 100%;
     height: auto;
+    margin-top: 25px;
+    padding: 10px 20px 10px 35px;
 }
 
 .hzm_data.form-control.inputreadonly {
