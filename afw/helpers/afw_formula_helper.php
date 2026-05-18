@@ -107,6 +107,10 @@ class AfwFormulaHelper extends AFWRoot
             return $return;
     }
 
+    /**
+     * @param string $formula
+     * @param AFWObject $obj
+     */
     public static final function calcPhpFormula($formula, $obj, $lang="ar")
     {
         list(
