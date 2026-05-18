@@ -293,11 +293,15 @@ class AfwChartHelper
             
     public static function objectNumberAt($className, $gdate, $dateColumn='', $dateSys='greg')
     {
-        if(!$dateColumn) $dateColumn = "created_at";
         if($dateSys=='hijri') $idate = AfwDateHelper::to_hijri($gdate);
         else $idate = $gdate;
 
+        /**
+         * @var AFWObject $obj
+         */
         $obj = new $className();
+        if(!$dateColumn) $dateColumn = $obj->fld_CREATION_DATE();
+        
         $obj->where("$dateColumn <= '$idate'");
         return $obj->count();
     }
