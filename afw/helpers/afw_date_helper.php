@@ -1135,8 +1135,14 @@ class AfwDateHelper
         return $arr_hij_period;
     }
 
+    /**
+     * @param string $gdate
+     */
     public static function parseGregDate($gdate, $sep = '/', $format = 'd/m/Y')
     {
+        // 1.remove time if exists
+        list($gdate,) = explode(" ", $gdate);
+        // 2.check format
         $formatExploded = explode($sep, $format);
         $formatItemIndex = array_flip($formatExploded);
         $gdateItems = explode($sep, $gdate);

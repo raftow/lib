@@ -33,15 +33,26 @@ class AfwSqlHelper extends AFWRoot
             elseif ($isDatetime[$row_col]) {
                 list($dateformat_tmp, $timeformat_tmp) = explode(' ', $datetimeformat);
                 list($row_val_date, $row_val_time) = explode(' ', $row_val);
+                $row_val_time_parts = explode(":",$row_val_time);
+                $row_val_time_parts_repared = [];
+                foreach($row_val_time_parts as $tpi => $row_val_time_part) {
+                    $row_val_time_part = intval($row_val_time_part);
+                    if($row_val_time_part<10) $row_val_time_part = "0".$row_val_time_part;
+                    else $row_val_time_part = "".$row_val_time_part;
+                    $row_val_time_parts_repared[$tpi] = $row_val_time_part;
+                }
+
+                $row_val_time = implode(':', $row_val_time_parts_repared);
+
                 if (!AfwDateHelper::checkDateFormat($row_val_date, $dateformat_tmp,true)) {
-                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], date-part-value=[$row_val_date] does not match date format $dateformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."] ".AfwDateHelper::checkDateFormatReason($row_val_date, $dateformat_tmp,true);
+                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], date-part-value is incorrect || [$row_val_date] does not match date format $dateformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."] ".AfwDateHelper::checkDateFormatReason($row_val_date, $dateformat_tmp,true);
                 } elseif (!AfwDateHelper::checkTimeFormat($row_val_time, $timeformat_tmp,true)) {
-                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], time-part-value=[$row_val_time] does not match time format $timeformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."]";
+                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], time-part-value is incorrect || [$row_val_time] does not match time format $timeformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."]";
                 } 
                 $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
             } elseif ($isDate[$row_col]) {
                 if (!AfwDateHelper::checkDateFormat($row_val, $dateformat,true)) {
-                    $errors[] = "$row_col is Date field, value=[$row_val] does not match date format $dateformat canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."] ".AfwDateHelper::checkDateFormatReason($row_val, $dateformat,true);
+                    $errors[] = "$row_col is Date field || value=[$row_val] does not match date format $dateformat canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."] ".AfwDateHelper::checkDateFormatReason($row_val, $dateformat,true);
                 }
                 $row_val_string = "TO_DATE('$row_val', '$dateformat')";
             } else {
@@ -57,7 +68,7 @@ class AfwSqlHelper extends AFWRoot
 
 
             if ($isScalarCol[$row_col] and !is_numeric($row_val) and (strtolower(trim($row_val)) != 'null')) {
-                $errors[] = "$row_col is Numeric field, value=[$row_val=" . var_export($old_row_val) . "] is not numeric";
+                $errors[] = "$row_col is Numeric field || value=[$row_val=" . var_export($old_row_val) . "] is not numeric";
             }
 
             if (!$isPKCol[$row_col]) {
@@ -69,7 +80,7 @@ class AfwSqlHelper extends AFWRoot
                     $row_val = 'null';
 
                 if ($isMandatory[$row_col] and ($row_val == 'null')) {
-                    $errors[] = "$row_col is Mandatory field can't be null [$row_col=$row_val=" . var_export($old_row_val, true) . "]";
+                    $errors[] = "$row_col is Mandatory field can't be null || [$row_col=$row_val=" . var_export($old_row_val, true) . "]";
                 }
                 if ($isScalarCol[$row_col]) {
 
