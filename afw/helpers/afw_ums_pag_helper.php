@@ -1110,6 +1110,8 @@ class AfwUmsPagHelper extends AFWRoot
             $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang, true);
         }
 
+        $cols_retrieve_before = $cols_retrieve;
+
         foreach ($forced_cols as $nom_col) {
             if (!isset($cols_retrieve[$nom_col])) {
                 $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang, true);
@@ -1118,6 +1120,10 @@ class AfwUmsPagHelper extends AFWRoot
 
         foreach ($hide_cols as $nom_col) {
             unset($cols_retrieve[$nom_col]);
+        }
+
+        if (in_array('workflow_sub_scope_id', $hide_cols)) {
+            die("cols_retrieve_before= " . var_export($cols_retrieve_before, true) . "cols_retrieve_after= " . var_export($cols_retrieve, true));
         }
 
         return $cols_retrieve;
