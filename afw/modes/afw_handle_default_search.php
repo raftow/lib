@@ -47,7 +47,9 @@ $tentative = "first";
 $header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang, false, $forced_retrieve_cols, $hide_retrieve_cols);
 
 
-// die("AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang) = ".var_export($header_retrieve,true));
+die(" forced_retrieve_cols = " . var_export($forced_retrieve_cols, true) .
+        " hide_retrieve_cols = " . var_export($hide_retrieve_cols, true) .
+        " AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang, false, forced_retrieve_cols, hide_retrieve_cols) = " . var_export($header_retrieve, true));
 
 if (count($header_retrieve) == 0) {
         $tentative = "second";
