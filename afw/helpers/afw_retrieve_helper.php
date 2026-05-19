@@ -4,45 +4,66 @@ class AfwRetrieveHelper
 {
     /**
      * showDataRetrieve
-      * show the html of data retrieve table with actions buttons
-      * @param AFWObject $obj the class object of the retrieved entity, used to get labels and descriptions of attributes and also to get some configuration from it like maxRecordsUmsCheck and repeatRetrieveHeader
-      * @param array $data the data to show in retrieve result, it's an array with id as key and tuple as value, tuple is an array with attribute name as key and value as value, and also must contain "display_object" key with the value to show in action buttons tooltip, and can contain "ca-col" key with the name of column used for coloring the row according to its value
-      * @param array $header the header of retrieve result, it's an array with attribute name as key and column label as value, if column label is empty or same as attribute name or same as attribute name with .short suffix then the label will be translated using getAttributeLabel method of object class
-      * @param array $class_db_structure the database structure of the retrieved entity class, it's an array with attribute name as key and its description as value, used to get unit of attributes to show it in header if configured in session and also to get importance of attributes to set css class for columns
-      * @param array $liste_obj the list of retrieved AFWObjects with id as key and object as value, used to get actions matrix and also to check permissions on each object for each action
-      * @param array $isAvail an array with id as key and boolean as value to indicate if the object is available or not, used to set css class for unavailable rows
+     * show the html of data retrieve table with actions buttons
+     * @param AFWObject $obj the class object of the retrieved entity, used to get labels and descriptions of attributes and also to get some configuration from it like maxRecordsUmsCheck and repeatRetrieveHeader
+     * @param array $data the data to show in retrieve result, it's an array with id as key and tuple as value, tuple is an array with attribute name as key and value as value, and also must contain "display_object" key with the value to show in action buttons tooltip, and can contain "ca-col" key with the name of column used for coloring the row according to its value
+     * @param array $header the header of retrieve result, it's an array with attribute name as key and column label as value, if column label is empty or same as attribute name or same as attribute name with .short suffix then the label will be translated using getAttributeLabel method of object class
+     * @param array $class_db_structure the database structure of the retrieved entity class, it's an array with attribute name as key and its description as value, used to get unit of attributes to show it in header if configured in session and also to get importance of attributes to set css class for columns
+     * @param array $liste_obj the list of retrieved AFWObjects with id as key and object as value, used to get actions matrix and also to check permissions on each object for each action
+     * @param array $isAvail an array with id as key and boolean as value to indicate if the object is available or not, used to set css class for unavailable rows
       
-      * @param string $cl_tr the css class for the first row, used to alternate row colors
-      * @param string $class_td1 the css class for the first column, used to alternate column colors
-      * @param string $class_td2 the css class for the second column, used to alternate column colors
-      * @param string $class_td_off the css class for unavailable rows, used to set specific style for unavailable rows
+     * @param string $cl_tr the css class for the first row, used to alternate row colors
+     * @param string $class_td1 the css class for the first column, used to alternate column colors
+     * @param string $class_td2 the css class for the second column, used to alternate column colors
+     * @param string $class_td_off the css class for unavailable rows, used to set specific style for unavailable rows
 
-      * @param string $cl the class of retrieved entity, used to check configuration for showing unit in header
-      * @param string $currmod the current module, used to check configuration for showing unit in header
-      * @param string $popup_t the popup type, used to replace in action links if they contain [popup_t] placeholder
-      * @param string $target the target for action links, used to set target attribute in action links
-      * @param array $images an array of images paths used in action buttons, with image name as key and path as value, used to set src attribute in action buttons images
-      * @param Auser $objme the current user object, used to check permissions on each object for each action
-      * @param array $fixms an array of fixed columns to show in retrieve result, used to set css class for fixed columns 
-      * @param string $lang the current language, used to translate action item names and also to get attribute labels in case they are not set in header
+     * @param string $cl the class of retrieved entity, used to check configuration for showing unit in header
+     * @param string $currmod the current module, used to check configuration for showing unit in header
+     * @param string $popup_t the popup type, used to replace in action links if they contain [popup_t] placeholder
+     * @param string $target the target for action links, used to set target attribute in action links
+     * @param array $images an array of images paths used in action buttons, with image name as key and path as value, used to set src attribute in action buttons images
+     * @param Auser $objme the current user object, used to check permissions on each object for each action
+     * @param array $fixms an array of fixed columns to show in retrieve result, used to set css class for fixed columns 
+     * @param string $lang the current language, used to translate action item names and also to get attribute labels in case they are not set in header
      */
 
-    public static function showDataRetrieve($obj, $data, $header, $class_db_structure, $liste_obj, $isAvail, 
-               $cl_tr, $class_td1, $class_td2, $class_td_off, 
-               $cl, $currmod, $popup_t, $target, $images, $objme, $fixms, $lang, $addHeader=false)
-    {
+    public static function showDataRetrieve(
+        $obj,
+        $data,
+        $header,
+        $class_db_structure,
+        $liste_obj,
+        $isAvail,
+        $cl_tr,
+        $class_td1,
+        $class_td2,
+        $class_td_off,
+        $cl,
+        $currmod,
+        $popup_t,
+        $target,
+        $images,
+        $objme,
+        $fixms,
+        $lang,
+        $addHeader = false,
+        $takeViewIcon = false,
+        $takeEditAction = true,
+        $takeDeleteAction = true,
+        $takeAuditAction = true
+    ) {
         AfwSession::log("Before execute UmsPagHelper::getActionsMatrix in afw_handle_default_search");
         $actions_tpl_matrix = AfwUmsPagHelper::getActionsMatrix($liste_obj);
         AfwSession::log("After execute UmsPagHelper::getActionsMatrix in afw_handle_default_search");
 
-        $actions_tpl_arr = AfwUmsPagHelper::getAllActions($obj, 0, false);
+        $actions_tpl_arr = AfwUmsPagHelper::getAllActions($obj, 0, $takeViewIcon, $takeEditAction, $takeDeleteAction, $takeAuditAction);
         // throw new AfwRun timeException("debugg :: actions_tpl_arr of $cl = ".var_export($actions_tpl_arr,true));
 
         $cant_do_action_log_arr = array();
         $can_action_arr = array();
         $datatable_header = "";
         AfwSession::log("Before prepare of header and can_action array matrix in afw_handle_default_search");
-        if (count($header) != 0) {            
+        if (count($header) != 0) {
             foreach ($header as $nom_col => $tr_col) {
                 // if(!is_array($desc)) throw new AfwRun timeException("desc is not an array : ".var_export($desc,true));
                 $nom_col_short = "$nom_col.short";
@@ -100,15 +121,14 @@ class AfwRetrieveHelper
                 if (!$cant_do_action_log_arr[$action_item]) $cant_do_action_log_arr[$action_item] = "but reason not explained";
                 $cant_do_action_log_arr[$action_item] .= " ($can_case)";
             }
-        }
-        else {
+        } else {
             throw new AfwBusinessException("For class $cl no header columns defined to retrieve lang=$lang");
         }
 
         AfwSession::log("After prepare of header and can_action array matrix in afw_handle_default_search");
         AfwSession::log("Before show data retrieve in afw_handle_default_search");
         $html = "";
-        if($addHeader) $html .= "<thead><tr>$datatable_header</tr></thead>";
+        if ($addHeader) $html .= "<thead><tr>$datatable_header</tr></thead>";
         $ids = "";
         $ids_count = 0;
         $maxRecordsUmsCheck = $obj->maxRecordsUmsCheck();
@@ -264,7 +284,7 @@ class AfwRetrieveHelper
                                 if ($icon_help) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='$icon_help' data-original-title=' - Tooltip on bottom 0' class='red-tooltip'";
 
                                 if ($ajax_class) {
-                                $html .= "
+                                    $html .= "
                                     <td class='ajax col-importance-$importance $frameworkAction'>
                                          <a href=\"#\" id=\"$id\" cl=\"$cl\" md=\"$currmod\" lbl=\"$lbl\" class=\"$ajax_class\">
                                             <img lbl='ajax' src=\"$img\" width=\"24\" heigth=\"24\" $tooltip >
@@ -273,13 +293,11 @@ class AfwRetrieveHelper
                                 } else {
                                     if ($link) $the_action_link = "main.php" . "?" . $link;
                                     else $the_action_link = "#";
-                                $html .= "
+                                    $html .= "
                                     <td class='action-link col-importance-$importance $frameworkAction'><a $target_action href=\"$the_action_link\">
                                             <img lbl='no-ajax' src=\"$img\" width=\"24\" heigth=\"24\" $tooltip >
                                         </a>
                                     </td>";
-                            
-
                                 }
 
                                 // die("DBG-after ajax test\n"); 
@@ -303,7 +321,7 @@ class AfwRetrieveHelper
                         ";
                         }
                     } elseif ($can and (!$canOnMe)) {
-                        if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) 
+                        if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false))
                             $tooltip = "data-toggle='tooltip' data-placement='bottom' title='عندما تكون نتائج البحث كثيرة يتم ايقاف التعديلات على جزء من السجلات. قم باختيار معايير اكثر دقة للبحث' data-original-title='$action_item -> $cant_do_action_log - Tooltip on bottom 2' class='red-tooltip'";
                         else $tooltip = "";
                         if ($canOnMe === null) {
@@ -329,8 +347,8 @@ class AfwRetrieveHelper
         $data_count = count($data);
         if (is_array($fixms)) $fixmlist = implode(",", $fixms);
         else $fixmlist = "";
-        
-        
+
+
         return [
             "html" => $html,
             "ids" => $ids,
@@ -341,4 +359,3 @@ class AfwRetrieveHelper
         ];
     }
 }
-?>

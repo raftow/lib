@@ -307,6 +307,11 @@ if (true) {
                                                 <td id='bloc_result'>
 
                                                         <?php
+                                                        if (!isset($addHeader)) $addHeader = false;
+                                                        if (!isset($takeViewIcon)) $takeViewIcon = false;
+                                                        if (!isset($takeEditAction)) $takeEditAction = true;
+                                                        if (!isset($takeDeleteAction)) $takeDeleteAction = true;
+                                                        if (!isset($takeAuditAction)) $takeAuditAction = true;
                                                         // die("can_action_arr = ".var_export($can_action_arr,true)); 
                                                         $result = AfwRetrieveHelper::showDataRetrieve(
                                                                 $obj,
@@ -326,7 +331,12 @@ if (true) {
                                                                 $images,
                                                                 $objme,
                                                                 $fixms,
-                                                                $lang
+                                                                $lang,
+                                                                $addHeader,
+                                                                $takeViewIcon,
+                                                                $takeEditAction,
+                                                                $takeDeleteAction,
+                                                                $takeAuditAction
                                                         );
 
                                                         $datatable_header = $result["datatable_header"];

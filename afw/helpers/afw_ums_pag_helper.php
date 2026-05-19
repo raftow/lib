@@ -933,8 +933,14 @@ class AfwUmsPagHelper extends AFWRoot
      * @return array
 
      */
-    public static final function getAllActions($object, $step = 0, $takeViewIcon = true)
-    {
+    public static final function getAllActions(
+        $object,
+        $step = 0,
+        $takeViewIcon = true,
+        $takeEditAction = true,
+        $takeDeleteAction = true,
+        $takeAuditAction = true
+    ) {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         $images = AfwThemeHelper::loadTheme();
         // $objme = AfwSession::getUserConnected();
@@ -975,7 +981,7 @@ class AfwUmsPagHelper extends AFWRoot
                 $data_errors .= ' في العرض الاستردادي (retrieve mode)';
             }
         }
-        if ($takeViewIcon) {
+        if ($takeViewIcon and $displayAction) {
             $actions_tpl_arr['view'] = [
                 'link' => "Main_Page=$displayFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
                 'img' => "../lib/images/$viewIcon.png",
@@ -984,13 +990,15 @@ class AfwUmsPagHelper extends AFWRoot
             ];
         }
 
-        $actions_tpl_arr['edit'] = [
-            'link' => "Main_Page=$editFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
-            'img' => $images['modifier'],
-            'framework_action' => $editAction,
-        ];
+        if ($takeEditAction and $editAction) {
+            $actions_tpl_arr['edit'] = [
+                'link' => "Main_Page=$editFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
+                'img' => $images['modifier'],
+                'framework_action' => $editAction,
+            ];
+        }
         // $actions_tpl_arr["delete"] = array("link"=>"Main_Page=$deleteFilename&cl=$cl&currmod=$currmod&id=[id]&popup=", "img"=>$images['delete'],"target"=>"_del_popup","framework_action"=>$deleteAction);
-        if ($deleteAction) {
+        if ($takeDeleteAction and $deleteAction) {
             $actions_tpl_arr['delete'] = [
                 'link' => '#todo',
                 'img' => $images['delete'],
@@ -1006,14 +1014,14 @@ class AfwUmsPagHelper extends AFWRoot
             ];
         }
 
-        if($object->isAuditable()) {
+        if ($object->isAuditable() and $takeAuditAction and $auditAction) {
             $actions_tpl_arr['audit'] = [
                 'link' => "Main_Page=$auditFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
                 'img' => $images['audit'],
                 'framework_action' => $auditAction,
             ];
         }
-        
+
 
         return $actions_tpl_arr;
     }
@@ -1046,7 +1054,7 @@ class AfwUmsPagHelper extends AFWRoot
     }*/
 
 
-        
+
 
     /**
      * @param AFWObject $object
@@ -1054,13 +1062,16 @@ class AfwUmsPagHelper extends AFWRoot
 
     public static final function getAuditHeader(
         $object,
-        $agroup = 'all', 
+        $agroup = 'all',
         $fields = 'all',
         $lang = 'ar'
     ) {
-        $cols = AfwPrevilegeHelper::getAuditCols($object, $agroup, 
-        $fields,
-        $lang);
+        $cols = AfwPrevilegeHelper::getAuditCols(
+            $object,
+            $agroup,
+            $fields,
+            $lang
+        );
 
         $cols_retrieve = [];
 
@@ -1068,13 +1079,13 @@ class AfwUmsPagHelper extends AFWRoot
             $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang, true);
         }
 
-        $cols_retrieve["audit_action"] = $object->translateOperator("audit_action",$lang);
-        $cols_retrieve["audit_by"] = $object->translateOperator("audit_by",$lang);
-        $cols_retrieve["audit_datetime"] = $object->translateOperator("audit_datetime",$lang);
-        $cols_retrieve["audit_advanced"] = $object->translateOperator("audit_advanced",$lang);
+        $cols_retrieve["audit_action"] = $object->translateOperator("audit_action", $lang);
+        $cols_retrieve["audit_by"] = $object->translateOperator("audit_by", $lang);
+        $cols_retrieve["audit_datetime"] = $object->translateOperator("audit_datetime", $lang);
+        $cols_retrieve["audit_advanced"] = $object->translateOperator("audit_advanced", $lang);
 
         return $cols_retrieve;
-    }    
+    }
 
     /**
      * @param AFWObject $object
