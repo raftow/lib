@@ -998,21 +998,24 @@ class AfwUmsPagHelper extends AFWRoot
             ];
         }
         // $actions_tpl_arr["delete"] = array("link"=>"Main_Page=$deleteFilename&cl=$cl&currmod=$currmod&id=[id]&popup=", "img"=>$images['delete'],"target"=>"_del_popup","framework_action"=>$deleteAction);
-        if ($takeDeleteAction and $deleteAction) {
-            $actions_tpl_arr['delete'] = [
-                'link' => '#todo',
-                'img' => $images['delete'],
-                'framework_action' => $deleteAction,
-                'ajax_class' => 'trash',
-            ];
-        } else {
-            $actions_tpl_arr['delete'] = [
-                'link' => '',
-                'img' => $images['locked'],
-                'framework_action' => '',
-                'ajax_class' => '',
-            ];
+        if ($takeDeleteAction) {
+            if ($deleteAction) {
+                $actions_tpl_arr['delete'] = [
+                    'link' => '#todo',
+                    'img' => $images['delete'],
+                    'framework_action' => $deleteAction,
+                    'ajax_class' => 'trash',
+                ];
+            } else {
+                $actions_tpl_arr['delete'] = [
+                    'link' => '',
+                    'img' => $images['locked'],
+                    'framework_action' => '',
+                    'ajax_class' => '',
+                ];
+            }
         }
+
 
         if ($object->isAuditable() and $takeAuditAction and $auditAction) {
             $actions_tpl_arr['audit'] = [
