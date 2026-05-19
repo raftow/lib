@@ -1117,13 +1117,14 @@ class AfwUmsPagHelper extends AFWRoot
                 $cols_retrieve[$nom_col] = $object->getAttributeLabel($nom_col, $lang, true);
             }
         }
-
+        $not_tech = "";
         foreach ($hide_cols as $nom_col) {
             unset($cols_retrieve[$nom_col]);
+            $not_tech .= " >> $nom_col has been unsetted";
         }
 
         // if (in_array('workflow_sub_scope_id', $hide_cols)) {
-        die("rafik debugging hide_cols= " . var_export($hide_cols, true) . " cols_retrieve_before= " . var_export($cols_retrieve_before, true) . " cols_retrieve_after= " . var_export($cols_retrieve, true));
+        die("rafik debugging getRetrieveHeader \n<br> hide_cols= " . var_export($hide_cols, true) . "\n<br> $not_tech \n<br> cols_retrieve_before= " . var_export($cols_retrieve_before, true) . " \n<br> cols_retrieve_after= " . var_export($cols_retrieve, true));
         // }
 
         return $cols_retrieve;
