@@ -28,7 +28,7 @@ class AfwSqlHelper extends AFWRoot
             }
             $row_val = trim($my_row[$row_col]);
             $old_row_val = $row_val;
-            if ($isToSetNullWhenEmptyString[$row_col] and (!$row_val or (strtoupper($row_val) == 'NULL')))
+            if ($isToSetNullWhenEmptyString[$row_col] and ((!$row_val) or (strtoupper($row_val) == 'NULL')))
                 $row_val_string = 'null';
             elseif ($isDatetime[$row_col]) {
                 list($dateformat_tmp, $timeformat_tmp) = explode(' ', $datetimeformat);
@@ -67,8 +67,12 @@ class AfwSqlHelper extends AFWRoot
                 $insert_vals .= ", $row_val_string -- $row_col -- nonscalar -- $specialDescFound\n";
 
 
-            if ($isScalarCol[$row_col] and !is_numeric($row_val) and (strtolower(trim($row_val)) != 'null')) {
-                $errors[] = "$row_col is Numeric field || value=[$row_val=" . var_export($old_row_val) . "] is not numeric";
+            if ($isScalarCol[$row_col] and 
+                !is_numeric($row_val) and 
+                (strtolower(trim($row_val)) != 'null') and
+                (strtolower(trim($row_val_string)) != 'null')
+                ) {
+                $errors[] = "$row_col is Numeric field || value=[row_val=$row_val,old_row_val=" . var_export($old_row_val) . "] is not numeric";
             }
 
             if (!$isPKCol[$row_col]) {
