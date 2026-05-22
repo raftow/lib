@@ -64,8 +64,8 @@ class CmsFrontMenu extends AFWRoot
 
                 $html = "";
 
-                if (!is_array($menu_folder["items"]) or !is_array($menu_folder["folders"])) {
-                        throw new AfwRuntimeException("strange menu folder data folders or items is not an array : " . var_export($menu_folder, true));
+                if (!is_array($menu_folder["items"]) or !is_array($menu_folder["sub-folders"])) {
+                        throw new AfwRuntimeException("strange menu folder's data. In fact folders or items is not an array : " . var_export($menu_folder, true));
                 }
 
                 if ((count($menu_folder["items"]) > 0) or (count($menu_folder["sub-folders"]) > 0) or $menu_folder["showme"]) {
