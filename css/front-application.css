@@ -2160,8 +2160,8 @@ input.ui-autocomplete-input {
 
 .class_input_width_90>textarea.form-control,
 .class_input_width_90>input.form-control {
-    max-width: 83%;
-    width: 83% !important;
+    /*max-width: 83%; not good*/
+    width: calc(99% - 42px) !important;
     height: 100% !important;
     border: none !important;
     border-color: white !important;
@@ -3174,8 +3174,7 @@ screen and (max-width: 660px) {
     border: 1px solid rgba(44, 118, 190, 0.5);
 }
 
-.panel_links
- {
+.panel_links {
     float: right;
     width: 100%;
     height: auto;
@@ -5025,24 +5024,34 @@ div.hzm_xgreen>a {
 }
 
 .hzm_blink {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  /* Apply the animation */
-  animation: blink-animation 3s steps(25, start) infinite;
-  -webkit-animation: blink-animation 3s steps(25, start) infinite;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    /* Apply the animation */
+    animation: blink-animation 3s steps(25, start) infinite;
+    -webkit-animation: blink-animation 3s steps(25, start) infinite;
 }
 
 @keyframes blink-animation {
-  from { opacity: 1.0; }
-  to { opacity: 0.0; }
+    from {
+        opacity: 1.0;
+    }
+
+    to {
+        opacity: 0.0;
+    }
 }
 
 @-webkit-keyframes blink-animation {
-  from { opacity: 1.0; }
-  to { opacity: 0.0; }
+    from {
+        opacity: 1.0;
+    }
+
+    to {
+        opacity: 0.0;
+    }
 }
 
 hr.separator {
