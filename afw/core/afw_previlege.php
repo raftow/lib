@@ -73,4 +73,31 @@ class AfwPrevilege extends AFWRoot
 
         return [$found, $tab_info, $tbf_info, $previlege_sys_file . " (should be $previlege_table_file)"];
     }
+
+    /**
+     * @param string $module_code
+     * @param string $role_id
+     * @return array
+     */
+    public static function loadModuleRolePrevileges($module_code, $role_id, $full_optimization = false)
+    {
+        $fileName = "previleges_$module_code" . "_role$role_id"  . ".php";
+        $previlege_role_file =  dirname(__FILE__) . "/../../../$module_code/previleges/role/$fileName";
+        if (file_exists($previlege_role_file)) {
+            include($previlege_role_file);
+            return [true, $role_info, $previlege_role_file];
+        }
+
+
+        list($found, $role_info, $tab_info, $tbf_info, $previlege_sys_file) = self::loadModulePrevileges($module_code);
+        if ($found or $full_optimization) return [$found, $role_info, $previlege_sys_file . " (should be $previlege_role_file)"];
+
+        $roleItem = Arole::loadById($role_id);
+        $role_info = null;
+        if ($roleItem) list($role_info,) = UmsManager::genereRolePrevilegesFile($module_code, $roleItem, $genereFile = false);
+
+        $found = (($roleItem and $role_info) ? true : false);
+
+        return [$found, $role_info, "from database"];
+    }
 }
