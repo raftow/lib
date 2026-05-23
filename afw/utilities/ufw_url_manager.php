@@ -155,7 +155,8 @@ class UfwUrlManager extends AFWRoot
                             $module_code,
                             $object_table,
                             $afw_action,
-                            $create_if_not_found_with_name
+                            $create_if_not_found_with_name,
+                            AfwSession::hasOption("IGNORE_PREVILEGE_CACHE")
                         );
                     }
                 } else {
