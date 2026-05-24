@@ -5388,15 +5388,34 @@ class AFWObject extends AFWRoot
         }
     }
 
+
+
+    public function newLabel($lang)
+    {
+
+        $new_cl = strtolower("me.new.full");
+        $new_cl_tr = $this->translate($new_cl, $lang);
+        if ($new_cl_tr == $new_cl) {
+            $new_cl = strtolower("me.new");
+            $new_cl_tr = $this->translate($new_cl, $lang);
+            if ($new_cl_tr == $new_cl) {
+                $cl = $this->getMyClass();
+                $new_cl = strtolower("$cl.new");
+                $new_cl_tr = $this->translate($new_cl, $lang);
+            }
+
+            if ($lang == "ar") return $this->singleTranslation($lang) . ' '  . $new_cl_tr;
+            else return $new_cl_tr . ' '  . $this->singleTranslation($lang);
+        } else  return $new_cl_tr;
+    }
+
     public function insertNewLabel($lang)
     {
         $cl = $this->getMyClass();
 
         return $this->translate('INSERT', $lang, true)
             . ' '
-            . $this->singleTranslation($lang)
-            . ' '
-            . $this->translate(strtolower("$cl.new"), $lang);
+            . $this->newLabel($lang);
     }
 
     public function operationLabel($operation, $lang, $table_id)

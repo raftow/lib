@@ -7,19 +7,18 @@ class AfwLanguageHelper
 
     public static function setGlobalLanguage($lang)
     {
-        AfwSession::setSessionVar("current_lang", $lang);        
+        AfwSession::setSessionVar("current_lang", $lang);
     }
 
     public static function getGlobalLanguage()
     {
         $langue = AfwSession::getSessionVar("current_lang");
-        if (!$langue) 
-        {
+        if (!$langue) {
             global $lang;
             $langue = $lang;
             if (!$langue) $langue = 'ar';
-        }    
-        
+        }
+
         return $langue;
     }
 
@@ -45,7 +44,7 @@ class AfwLanguageHelper
         return $dir;
     }
 
-    
+
 
     /**
      * @param AFWObject $object
@@ -71,17 +70,17 @@ class AfwLanguageHelper
 
     public static function getTranslationPaths($module = "", $parent_module = "")
     {
-        $file_dir_name = dirname(__FILE__)."/..";
+        $file_dir_name = dirname(__FILE__) . "/..";
 
         $paths = array();
 
         if ($module) $paths[] = "$file_dir_name/../../$module";
         if ($parent_module) $paths[] = "$file_dir_name/../../$parent_module";
-        if(($module!="lib") and ($parent_module!="lib")) $paths[] = "$file_dir_name/../../lib";
-        if(($module!="ums") and ($parent_module!="ums")) $paths[] = "$file_dir_name/../../ums";
-        if(($module!="hrm") and ($parent_module!="hrm")) $paths[] = "$file_dir_name/../../hrm";
-        if(($module!="crm") and ($parent_module!="crm")) $paths[] = "$file_dir_name/../../crm";
-        
+        if (($module != "lib") and ($parent_module != "lib")) $paths[] = "$file_dir_name/../../lib";
+        if (($module != "ums") and ($parent_module != "ums")) $paths[] = "$file_dir_name/../../ums";
+        if (($module != "hrm") and ($parent_module != "hrm")) $paths[] = "$file_dir_name/../../hrm";
+        if (($module != "crm") and ($parent_module != "crm")) $paths[] = "$file_dir_name/../../crm";
+
 
         return $paths;
     }
@@ -89,19 +88,17 @@ class AfwLanguageHelper
     public static function tt($text, $lang = "ar", $module = "", $parent_module = "")
     {
         global $messages;
-        $file_dir_name = dirname(__FILE__)."/..";
+        $file_dir_name = dirname(__FILE__) . "/..";
 
 
         $paths = self::getTranslationPaths($module, $parent_module);
-        foreach ($paths as $path) 
-        {
+        foreach ($paths as $path) {
             include $path . "/messages_$lang.php";
             if ($messages[$text]) return $messages[$text];
-            elseif($text=="save responses") return $text." we take $path/messages_$lang.php but not found => ".var_export($messages,true); 
-        }    
-        
+            elseif ($text == "save responses") return $text . " we take $path/messages_$lang.php but not found => " . var_export($messages, true);
+        }
+
         return $text;
-        
     }
 
     /**
@@ -124,32 +121,29 @@ class AfwLanguageHelper
         $operator = null,
         $nom_table = '',
         $module = ''
-    ) 
-    {
+    ) {
         //if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("debugg $nom_table trad of $nom_col is here 1 ");
         $company = AfwSession::currentCompany();
-        $file_dir_name = dirname(__FILE__)."/..";
+        $file_dir_name = dirname(__FILE__) . "/..";
         if (!$langue) {
             throw new AfwRuntimeException("\$lang should be defined to be able to translate");
         }
 
-        $langue = strtolower($langue);        
+        $langue = strtolower($langue);
         if (isset(self::$trad[$langue]) and self::$trad[$langue] and (!is_array(self::$trad[$langue]))) {
             self::$trad[$langue] = [];
             // throw new AfwRuntimeException("before any include trad 0 is ".var_export($trad,true));
         }
 
         if (self::$trad[$langue][$nom_table][$nom_col]) {
-            if(($module=="lib/afw") and ($nom_table=="all") and ($nom_col=="qsearch_by_help")) die("debugg $nom_table trad of $nom_col => ".var_export(self::$trad[$langue],true));
+            if (($module == "lib/afw") and ($nom_table == "all") and ($nom_col == "qsearch_by_help")) die("debugg $nom_table trad of $nom_col => " . var_export(self::$trad[$langue], true));
             return self::$trad[$langue][$nom_table][$nom_col];
         }
 
 
 
-        if (empty($operator)) 
-        {
-            if ($nom_table) 
-            {
+        if (empty($operator)) {
+            if ($nom_table) {
                 $nom_file  = "$file_dir_name/../../$module/tr/trad_" . $langue . "_$nom_table.php";
                 $nom_file2 = "$file_dir_name/../../client-$company/translate/$module/trad_" . $langue . "_$nom_table.php";
                 //if($object->MY_DEBUG)
@@ -174,27 +168,25 @@ class AfwLanguageHelper
                 }
 
                 if (file_exists($nom_file)) {
-                    
+
                     //if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire include_once $nom_file ");
 
-                    $classTranslator = AfwStringHelper::tableToClass($nom_table."_".$langue."_translator");
-                    if(!class_exists($classTranslator,false))
-                    {
+                    $classTranslator = AfwStringHelper::tableToClass($nom_table . "_" . $langue . "_translator");
+                    if (!class_exists($classTranslator, false)) {
                         $caseTrans = "include $nom_file";
                         include $nom_file;
                     }
-                    
+
                     // if($object->MY_DEBUG)
                     //    AFWDebugg::log("traduire $nom_table.$nom_col in $langue from $nom_file"."=".$trad[$nom_table][$nom_col]);
 
-                    
-                    if(class_exists($classTranslator,false))
-                    {
-                        $trad = $classTranslator::initData();                        
+
+                    if (class_exists($classTranslator, false)) {
+                        $trad = $classTranslator::initData();
                         $caseTrans = "$classTranslator::initData()";
                     }
-                    
+
                     // if(($langue=="en") and ($module=="adm") and ($nom_table=="program_track") and ($nom_col=="programtrack.single")) die("from caseTrans=$caseTrans / lang=$langue: trad[$nom_table][$nom_col] = ".$trad[$nom_table][$nom_col]);
 
                     if (isset($trad) and $trad and (!is_array($trad))) {
@@ -207,26 +199,21 @@ class AfwLanguageHelper
                     }*/
 
                     // if(($module=="lib/afw") and ($nom_table=="all") and ($nom_col=="qsearch_by_help")) echo(" 2. tarjem has found the file nom_file=$nom_file : caseTrans=$caseTrans<br> trad[*][$nom_col]=".$trad["*"][$nom_col]);
-                    if($nom_table=="all") $nom_table = "*";
+                    if ($nom_table == "all") $nom_table = "*";
                     if ($trad[$nom_table][$nom_col]) {
                         self::$trad[$langue][$nom_table][$nom_col] = $trad[$nom_table][$nom_col];
                         return $trad[$nom_table][$nom_col];
                     }
-
-                    
                 }
-            } 
-            else 
-            {
+            } else {
                 $nom_table = '*';
             }
-            
+
             if (
                 !isset(self::$trad[$lang][$nom_table][$nom_col]) ||
-                 empty(self::$trad[$lang][$nom_table][$nom_col])
-            ) 
-            {
-                $general_nom_file = "$file_dir_name/tr/trad_" .$langue . '_all.php';
+                empty(self::$trad[$lang][$nom_table][$nom_col])
+            ) {
+                $general_nom_file = "$file_dir_name/tr/trad_" . $langue . '_all.php';
                 //die("tarjem with general_nom_file=$general_nom_file");
                 if (file_exists($general_nom_file)) {
                     // die("exists general_nom_file=$general_nom_file");
@@ -251,19 +238,17 @@ class AfwLanguageHelper
                 //echo "<br>4)translate $nom_table.$nom_col in $langue from memory = ".$trad[$nom_table][$nom_col]."=".$trad[$nom_table][$nom_col];
                 return self::$trad[$lang][$nom_table][$nom_col];
             }
-        } 
-        else // case operator translation
+        } else // case operator translation
         {
             $file_name = "$file_dir_name/tr/trad_" . $langue . '_afw.php';
-            $classTranslator = AfwStringHelper::tableToClass("afw_operator_".$langue."_translator");
+            $classTranslator = AfwStringHelper::tableToClass("afw_operator_" . $langue . "_translator");
             // if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("debugg $nom_table trad of $nom_col will be with classTranslator=$classTranslator in $file_name");
-            if(!class_exists($classTranslator,false))
-            {
+            if (!class_exists($classTranslator, false)) {
                 include $file_name;
             }
-                    
+
             $trad = $classTranslator::initData();
-            
+
             if ($trad['OPERATOR'][$nom_col]) {
                 self::$trad[$lang]['OPERATOR'][$nom_col] = $trad['OPERATOR'][$nom_col];
                 return $trad['OPERATOR'][$nom_col];
@@ -275,7 +260,7 @@ class AfwLanguageHelper
 
     public static function translateKeyword($text, $lang = null)
     {
-        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage(); 
+        if (!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
         return AfwLanguageHelper::tarjem($text, $lang, true, '', '');
     }
 
@@ -284,22 +269,20 @@ class AfwLanguageHelper
         $yes = "Y";
         $no = "N";
         $euh = "W";
-        if($what=="decodeme")
-        {
-            if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+        if ($what == "decodeme") {
+            if (!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
             $yes = AfwLanguageHelper::translateKeyword($yes, $lang);
             $no = AfwLanguageHelper::translateKeyword($no, $lang);
             $euh = AfwLanguageHelper::translateKeyword($euh, $lang);
         }
-        return [$yes,$no,$euh];
-        
+        return [$yes, $no, $euh];
     }
 
     // 
 
-    public static function translateStatsColumn($attribute, $myClass, $myObj=null, $lang = 'ar')
+    public static function translateStatsColumn($attribute, $myClass, $myObj = null, $lang = 'ar')
     {
-        if(!$myObj) $myObj = new $myClass();
+        if (!$myObj) $myObj = new $myClass();
         $nom_col_short  = "$attribute.stat";
         $trad_col_short = $myObj->translate($nom_col_short, $lang);
         if ($trad_col_short == $nom_col_short) {
@@ -319,16 +302,16 @@ class AfwLanguageHelper
 
     public static function tarjemMessage($message, $module, $lang = 'ar')
     {
-            $afw_dir_name = dirname(__FILE__)."/..";
+        $afw_dir_name = dirname(__FILE__) . "/..";
 
-            include_once "$afw_dir_name/../messages_$lang.php";
-            include_once "$afw_dir_name/../../$module/messages_$lang.php";
-            // die("$afw_dir_name/../../$module/messages_$lang.php => messages = ".var_export($messages, true));
-            if ($messages[$message]) {
-                    return $messages[$message];
-            } else {
-                    return $message;
-            }
+        include_once "$afw_dir_name/../messages_$lang.php";
+        include_once "$afw_dir_name/../../$module/messages_$lang.php";
+        // die("$afw_dir_name/../../$module/messages_$lang.php => messages = ".var_export($messages, true));
+        if ($messages[$message]) {
+            return $messages[$message];
+        } else {
+            return $message;
+        }
     }
 
     /**
@@ -359,7 +342,7 @@ class AfwLanguageHelper
         if ($attribute_property_trans == $attribute_property_code) {
             $attribute_property_trans = '';
         }
-        
+
         if (!$attribute_property_trans) {
             $attribute_property_code = strtoupper($attribute_property_code);
             $attribute_property_trans = $object->translateMessage(
@@ -370,7 +353,7 @@ class AfwLanguageHelper
                 $attribute_property_trans = '';
             }
         }
-        
+
         if (!$attribute_property_trans) {
             $attribute_property_code = strtolower($attribute_property_code);
             $attribute_property_trans = $object->translate(
@@ -396,7 +379,7 @@ class AfwLanguageHelper
     {
         if (!$module) throw new AfwRuntimeException("\$module param should be defined for translateCompanyMessage method");
         $return = $message;
-        $root_dir_name = dirname(__FILE__)."/../../..";
+        $root_dir_name = dirname(__FILE__) . "/../../..";
 
         include "$root_dir_name/$module/messages_$lang.php";
         if ($company) {
@@ -407,7 +390,7 @@ class AfwLanguageHelper
         if($message=="We encourage you to evaluate our platform to help us improve our service. This evaluation focuses on the user experience and technical quality of the online platform.") {
             die("from $root_dir_name/$module/messages_$lang.php we translateCompanyMessage($message, $module, $lang, $company) used array messages = ".var_export($messages, true));
         }*/
-        
+
 
         if ($messages[$message]) {
             $return = $messages[$message];
@@ -495,59 +478,81 @@ class AfwLanguageHelper
      */
     public static function transClassPlural($object, $lang = 'ar', $short = false, $maksour = false)
     {
-        $tableLowerOrigin = strtolower($object::$TABLE);
+        $tableLowerOrigin_arr = [];
+        $tableLowerOrigin_arr[] = "me.plural";
+        $tableLowerOrigin_arr[] = strtolower($object::$TABLE);
+        $translate_done = false;
+        foreach ($tableLowerOrigin_arr as $tableLowerOrigin) {
+            if ($short) {
+                $tableLower = $tableLowerOrigin . '.short';
+            } else {
+                $tableLower = $tableLowerOrigin;
+            }
 
-        if ($short) {
-            $tableLower = $tableLowerOrigin . '.short';
-        } else {
-            $tableLower = $tableLowerOrigin;
-        }
+            $tableLowerNotMaksour = $tableLower;
+            if ($maksour) {
+                $tableLower = $tableLower . '_';
+            }
 
-        $tableLowerNotMaksour = $tableLower;
-        if ($maksour) {            
-            $tableLower = $tableLower . '_';
-        }
-
-        $return = $object->translate($tableLower, $lang);
-        if ($return == $tableLower and $maksour) {
-            $tableLower = $tableLowerNotMaksour;
             $return = $object->translate($tableLower, $lang);
+            $translate_done = ($return != $tableLower);
+            if ((!$translate_done) and $maksour) {
+                $tableLower = $tableLowerNotMaksour;
+                $return = $object->translate($tableLower, $lang);
+                $translate_done = ($return != $tableLower);
+            }
+
+            if ((!$translate_done) and $short) {
+                $tableLower = $tableLowerOrigin;
+                $return = $object->translate($tableLower, $lang);
+                $translate_done = ($return != $tableLower);
+            }
+
+            if ($translate_done) return $return;
         }
 
-        if ($return == $tableLower and $short) {
-            $tableLower = $tableLowerOrigin;
-            $return = $object->translate($tableLower, $lang);
-        }
-
-        if ($return == $tableLower) {
+        if ((!$translate_done) and ($lang == "en")) {
             $return = AfwStringHelper::toEnglishText(trim($return)) . 's';
         }
 
         return $return;
     }
 
+    /**
+     * @param AFWObject $object
+     */
     public static function transClassSingle($object, $lang = 'ar', $short = false)
     {
         $tableLower = strtolower($object::$TABLE);
-        $classLower = strtolower(AfwStringHelper::tableToClass($object::$TABLE));
+        $classLower_arr = [];
+        // new version of afw
+        $classLower_arr[] = "me";
+        // old version of afw
+        $classLower_arr[] = strtolower(AfwStringHelper::tableToClass($object::$TABLE));
+        $translate_done = false;
+        foreach ($classLower_arr as $classLower) {
 
-        $classSingleOrigin = $classLower . '.single';
+            $classSingleOrigin = $classLower . '.single';
 
-        if ($short) {
-            $classSingle = $classSingleOrigin . '.short';
-        } else {
-            $classSingle = $classSingleOrigin;
-        }
+            if ($short) {
+                $classSingle = $classSingleOrigin . '.short';
+            } else {
+                $classSingle = $classSingleOrigin;
+            }
 
-        $return = $object->translate($classSingle, $lang);
-        // if($lang=="en") die("$return = this->translate($classSingle, $lang)");
-
-        if ($return == $classSingle and $short) {
-            $classSingle = $classSingleOrigin;
             $return = $object->translate($classSingle, $lang);
+            // if($lang=="en") die("$return = this->translate($classSingle, $lang)");
+            $translate_done = ($return != $classSingle);
+            if ((!$translate_done) and $short) {
+                $classSingle = $classSingleOrigin;
+                $return = $object->translate($classSingle, $lang);
+                $translate_done = ($return != $classSingle);
+            }
+
+            if ($translate_done) return $return;
         }
 
-        if ($return == $classSingle) {
+        if (!$translate_done) {
             $return = AfwStringHelper::toEnglishText(trim($tableLower));
         }
 
