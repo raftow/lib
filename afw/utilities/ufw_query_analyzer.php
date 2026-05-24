@@ -209,7 +209,7 @@ class UfwQueryAnalyzer
             throw new AfwRuntimeException("Too much queries executed when mode is not lourd process mode !<br>
                                            Nb Queries Executed = " . self::$nb_queries_executed . " > $_sql_analysis_seuil_calls = Max <br> 
                                            Sql Picture = " . var_export(self::$sql_picture_arr, true) .
-                "Backtrace = " . var_export($backtrace, true));
+                "<!-- Backtrace = " . var_export($backtrace, true) . " -->");
         }
 
         $sql_info_class = 'sqlinfo';
