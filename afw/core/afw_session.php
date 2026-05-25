@@ -461,6 +461,7 @@ class AfwSession extends AFWRoot
          */
         public static function console($varMixed, $special_class = "", $tabulation = "", $show_time = false)
         {
+                $indexAI = 0;
                 $separator = "\n";
                 if (is_string($varMixed) or is_integer($varMixed)) {
                         $string = $varMixed . "";
@@ -475,7 +476,9 @@ class AfwSession extends AFWRoot
                 } elseif (is_array($varMixed)) {
                         $varArray = $varMixed;
                         foreach ($varArray as $varName => $varItem) {
-                                self::console($varName . " : ", $special_class, $tabulation);
+                                if ($indexAI != $varName)
+                                        self::console($varName . " : ", $special_class, $tabulation);
+                                else $indexAI++;
                                 $tabulation2 = $tabulation . "&nbsp;&nbsp;&nbsp;";
                                 self::console($varItem, $special_class, $tabulation2);
                         }
