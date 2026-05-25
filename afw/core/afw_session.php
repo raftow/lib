@@ -455,9 +455,9 @@ class AfwSession extends AFWRoot
         /**
          * @param mixed $varMixed
          */
-        public static function console($varMixed, $special_class = "", $tabulation = "")
+        public static function console($varMixed, $special_class = "", $tabulation = "", $show_time = false)
         {
-                $separator = "<br>\n";
+                $separator = "\n";
                 if (is_string($varMixed) or is_integer($varMixed)) {
                         $string = $varMixed . "";
                         $string = strip_tags($string);
@@ -467,7 +467,7 @@ class AfwSession extends AFWRoot
                                 $string = substr($string, 0, 128) . "...";
                         }
                         $odd_even = self::switchOddEven();
-                        self::log($tabulation . $string, "console $odd_even hzmlog $special_class", $separator, true, "console");
+                        self::log($tabulation . $string, "$odd_even hzmlog $special_class", $separator, $show_time, "console");
                 } elseif (is_array($varMixed)) {
                         $varArray = $varMixed;
                         foreach ($varArray as $varName => $varItem) {
