@@ -107,7 +107,7 @@ class AfwShowHelper
 
         $report_arr = [];
         $isAvail = [];
-        
+
 
         if (count($arr_col) == 0) {
             throw new AfwRuntimeException('afw-shower error : no mini-box cols');
@@ -644,7 +644,7 @@ class AfwShowHelper
         $dataImportance = [];
         $dataDirection = [];
 
-        
+
 
         // if($options and (count($options)>0)) AfwStructureHelper::dd("rafik options not empty");
 
@@ -724,12 +724,12 @@ class AfwShowHelper
         }
 
         foreach ($arr_col as $cc => $nom_col) {
-            
+
             $desc = AfwPrevilegeHelper::keyIsToDisplayForUser($obj, $nom_col, $objme);
             if ($desc) {
                 $dataImportance[$nom_col] = $desc["IMPORTANT"];
                 $dataDirection[$nom_col] = AfwFormatHelper::getDirectionFromStructure($desc);
-                
+
                 if (
                     $nom_col != $obj->getPKField() or
                     $obj->getOptionValue('showId') or
@@ -1199,7 +1199,7 @@ class AfwShowHelper
                     if (!$my_class_name) {
                         $my_class_name = 'afw';
                     }
-                    $text_direction = ($dataDirection and is_array($dataDirection)) ? $dataDirection[$nom_col] : 'rtl';                    
+                    $text_direction = ($dataDirection and is_array($dataDirection)) ? $dataDirection[$nom_col] : 'rtl';
                     $col_class_css =
                         "hzm_col hzm_col_$my_class_name hzm_col_"
                         . $my_class_name
@@ -2684,6 +2684,8 @@ class AfwShowHelper
             $objectList = null;
             $object = null;
         }
+
+        if ($options['view_icon']) $object->viewIcon = true;
 
         list($html_table, $objectList, $ids,) = AfwShowHelper::showManyObj(
             $objectList,
