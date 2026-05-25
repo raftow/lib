@@ -613,7 +613,7 @@ class AfwShowHelper
      * @param array<AFWObject> $liste_obj 
      *   @param AFWObject $obj
      *   @param Auser $objme
-     *   @param string lang 
+     *   @param string $lang 
      *   @param array $options
      *   @return array
      */
@@ -622,7 +622,7 @@ class AfwShowHelper
     {
         $mode_force_cols = null;
 
-        $arr_col = 0;
+        $arr_col = null;
         $trad_erase = [];
         $limit = '';
         $order_by = '';
@@ -2686,6 +2686,8 @@ class AfwShowHelper
         }
 
         if ($options['view_icon']) $object->viewIcon = true;
+        if ($options['edit_icon']) $object->editIcon = true;
+        if ($options['delete_icon']) $object->deleteIcon = true;
 
         list($html_table, $objectList, $ids,) = AfwShowHelper::showManyObj(
             $objectList,
