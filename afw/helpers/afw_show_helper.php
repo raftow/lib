@@ -766,7 +766,7 @@ class AfwShowHelper
             $header = ['description' => 'AAA'];
         }
 
-        if (!$mode_force_cols) {
+        if (true or !$mode_force_cols) {
             $del_level = $obj->del_level;
             if ($obj->viewIcon) {
                 $col_trans = AfwLanguageHelper::translateKeyword('DISPLAY', $lang);
