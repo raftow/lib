@@ -463,8 +463,8 @@ class AfwSession extends AFWRoot
                         $string = strip_tags($string);
                         $string = str_replace("\n", " > ", $string);
                         $string = str_replace("\r", " ", $string);
-                        if (strlen($string) > 255) {
-                                $string = substr($string, 0, 255) . "...";
+                        if (strlen($string) > 777) {
+                                $string = substr($string, 0, 777) . "...";
                         }
                         $odd_even = self::switchOddEven();
                         self::log($tabulation . $string, "$odd_even hzmlog $special_class", $separator, $show_time, "console");
