@@ -6,11 +6,22 @@ class AfwSession extends AFWRoot
 {
         private static $singleton = null;
 
+        private static $oddEven = "odd";
+
         private $data = array();
         private $userConnected = null;
         private $customerConnected = null;
         private $studentConnected = null;
         private $lastLogTime = null;
+
+
+        public static function switchOddEven()
+        {
+                if (self::$oddEven == "odd") self::$oddEven = "even";
+                else self::$oddEven = "odd";
+
+                return self::$oddEven;
+        }
 
         public static function getSingleton()
         {
@@ -407,7 +418,7 @@ class AfwSession extends AFWRoot
                 if ($log_counter > $log_counter_limit) {
                         $html = trim(self::getVar($context));
                         if ($html) $html .= $separator;
-                        $html .= "<hr><span class='error limit'>Limit reached : counter = $log_counter</span>"; 
+                        $html .= "<hr><span class='error limit'>Limit reached : counter = $log_counter</span>";
                         self::setVar($context, $html);
                         return;
                 }
@@ -417,7 +428,7 @@ class AfwSession extends AFWRoot
                         $oldLastLogTime = self::getMyLogTime();
                         $now_time = self::currTime();
                         self::setMyLogTime($now_time);
-                        
+
                         if ($oldLastLogTime) {
                                 $durationSinceLastLog = $now_time - $oldLastLogTime;
                                 if ($durationSinceLastLog > 3) $critical = "top critical";
@@ -438,6 +449,37 @@ class AfwSession extends AFWRoot
                 $html .= "<pre class='$css_class $context $critical'>$string</pre>"; //  N$now_time O$oldLastLogTime D$durationSinceLastLog
                 //if($css_class != "hzm") die("[[[[[$string]]]]]");
                 self::setVar($context, $html);
+        }
+
+
+        /**
+         * @param mixed $varMixed
+         */
+        public static function console($varMixed, $special_class = "", $tabulation = "")
+        {
+                $separator = "<br>\n";
+                if (is_string($varMixed) or is_integer($varMixed)) {
+                        $string = $varMixed . "";
+                        $string = strip_tags($string);
+                        $string = str_replace("\n", " > ", $string);
+                        $string = str_replace("\r", " ", $string);
+                        if (strlen($string) > 128) {
+                                $string = substr($string, 0, 128) . "...";
+                        }
+                        $odd_even = self::switchOddEven();
+                        self::log($tabulation . $string, "console $odd_even hzmlog $special_class", $separator, true, "console");
+                } elseif (is_array($varMixed)) {
+                        $varArray = $varMixed;
+                        foreach ($varArray as $varName => $varItem) {
+                                self::console($varName . " : ", $special_class, $tabulation);
+                                $tabulation2 = $tabulation . "&nbsp;&nbsp;&nbsp;";
+                                self::console($varItem, $special_class, $tabulation2);
+                        }
+                } elseif ($varMixed instanceof AFWObject) {
+                        $lang = AfwLanguageHelper::getGlobalLanguage();
+                        $string = $varMixed->getNodeDisplay($lang);
+                        self::console($string, $special_class, $tabulation);
+                } else throw new AfwRuntimeException("var " . var_export($varMixed, true) . " has a type not managed by afw console");
         }
 
         public static function warning($string, $separator = "<br>\n")
@@ -472,6 +514,11 @@ class AfwSession extends AFWRoot
         public static function sqlError($string, $module_info, $separator = "<br>\n")
         {
                 self::log($string, $css_class = "sql error $module_info", $separator);
+        }
+
+        public static function renderConsole()
+        {
+                return self::getLog($context = "console");
         }
 
         public static function getLog($context = "log")
@@ -782,7 +829,7 @@ class AfwSession extends AFWRoot
         {
                 $contextAlreadyLoaded = self::config("$configContext-config-already-loaded", false, $configContext);
                 if ($reload or !$contextAlreadyLoaded) {
-                        $this_dir_name = dirname(__FILE__)."/..";
+                        $this_dir_name = dirname(__FILE__) . "/..";
                         $context_config_file = "$this_dir_name/../../config/" . $configContext . "_config.php";
                         if (file_exists($context_config_file)) {
                                 $the_config_arr = include($context_config_file);
