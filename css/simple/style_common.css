@@ -5348,16 +5348,21 @@ pre.hzmlog {
     width: 100%;
 }
 
+pre.hzmlog.console {
+    margin: 0 0 2px !important;
+    text-align: left !important;
+    vertical-align: middle !important;
+}
+
+
 pre.hzmlog.console.even {
     background-color: #b1d9fc;
     border-color: #70a7d8;
-    margin: 0 0 2px !important;
 }
 
 pre.hzmlog.console.odd {
     background-color: #e0f0ff;
     border-color: #a0cff9;
-    margin: 0 0 2px !important;
 }
 
 textarea.form-control {
