@@ -98,6 +98,8 @@ class AfwLanguageHelper
             elseif ($text == "save responses") return $text . " we take $path/messages_$lang.php but not found => " . var_export($messages, true);
         }
 
+        $text = UfwReplacement::trans_replace($text, $module, $lang);
+
         return $text;
     }
 
