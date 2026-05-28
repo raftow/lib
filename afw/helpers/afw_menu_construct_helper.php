@@ -117,6 +117,15 @@ class AfwMenuConstructHelper
         return $html_hzm_menu;
     }
 
+    /**
+     * @param string $menu_template
+     * @param string $module current module we genere menu for
+     * @param Auser $objme : user authenticated
+     * @param string $lang current language of menu
+     * @param array<string> $module_languages possible languages for menu
+     * @param string $r current role folder
+     */
+
     public static function genereMenu($menu_template, $module, $objme, $lang, $module_languages, $r)
     {
         $menu_template = AfwSession::currentMenuTemplate();
