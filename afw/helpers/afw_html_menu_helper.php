@@ -22,7 +22,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $login_page = "login-$login_template.php";
 
         $login_title = AfwLanguageHelper::translateKeyword("LOGIN", $lang);
-        $logout_title = AfwLanguageHelper::translateKeyword("LOGOUT", $lang);  
+        $logout_title = AfwLanguageHelper::translateKeyword("LOGOUT", $lang);
 
         $login_out_css = "sign-out";
         $login_out_cl = "logout $login_template";
@@ -30,7 +30,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
 
         if (!$options["system_date_format"]) $options["system_date_format"] = AfwSession::currentSystemDateFormat();
 
-        if ($options["system_date_format"] != "greg")  {
+        if ($options["system_date_format"] != "greg") {
             $hijri_date = AfwDateHelper::currentHijriDate("hdate_long", $DateSeparator = "/");
             // die("hijri_date=$hijri_date");
             $hijri_date_arr = explode($DateSeparator, $hijri_date);
@@ -39,14 +39,17 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $display_date_month = $hijri_date_arr[2];
         } else {
             $display_date_day = date("d");
-             $display_date_month = AfwDateHelper::getFullMonthName(date("m"), $lang); 
-             $display_date_year = date("Y");
+            $display_date_month = AfwDateHelper::getFullMonthName(date("m"), $lang);
+            $display_date_year = date("Y");
         }
         $system_date = "Date : " . date("d/m/Y");
 
         $welcome_user = "";
         if ($objme) {
             $me_id = $objme->id;
+            /**
+             * @var mixed $user_info
+             */
 
             list($cache_found, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path) = CmsFrontMenu::loadUmsCacheForUser($me_id, $lang);
 
@@ -55,14 +58,10 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
                 $user_dep = $user_info["user_department"][$lang];
                 $user_job = $user_info["user_job"][$lang];
                 if (!$user_full) AfwSession::pushWarning("System cache $user_cache_file_path gived user_full_name=[$user_full] for uid=$me_id");
-            } 
-            else 
-            {
-                if(AfwSession::config('cache-auto-update',true))
-                {
-                    $objme->generateCacheFile($lang, $onlyIfNotDone=true, $throwError=true);
-                }
-                else AfwSession::pushWarning("System need cache optimisation file for user $me_id <!-- file not found $user_cache_file_path -->");
+            } else {
+                if (AfwSession::config('cache-auto-update', true)) {
+                    $objme->generateCacheFile($lang, $onlyIfNotDone = true, $throwError = true);
+                } else AfwSession::pushWarning("System need cache optimisation file for user $me_id <!-- file not found $user_cache_file_path -->");
 
                 $user_full = $objme->getShortDisplay($lang);
                 $user_dep = $objme->getMyDepartmentName($lang);
@@ -75,10 +74,8 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $user_admin = $objme->isAdmin() ? "admin" : "";
             $user_account_page = "user_account.php";
             $ord = $objme->id % 5;
-            $user_bg_class = "ubg".$ord;
-        }
-        else
-        {
+            $user_bg_class = "ubg" . $ord;
+        } else {
             $user_picture = '<i class="hzm-container-center hzm-vertical-align-middle hzm-icon-std hzm-user-account fa-user"></i></a>';
             $user_account_page = "login.php";
             $user_bg_class = "ubg0";
@@ -90,44 +87,41 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         if ($objme) {
             $welcome_div = "<div class=\"title_company_user\">$welcome_user</div>";
         }
-        $module_languages = AfwSession::config("languages", ["ar"=>true, "en"=>true]);
+        $module_languages = AfwSession::config("languages", ["ar" => true, "en" => true]);
         $run_mode_var = AfwSession::config("run_mode_var", "run_mode");
         $run_mode = AfwSession::config($run_mode_var, "");
         if ($run_mode) $run_mode = "-" . $run_mode;
 
-        
-        
+
+
 
         $data_tokens = array();
         $data_tokens["lang"] = $lang;
         $data_tokens["user_picture"] = $user_picture;
         $data_tokens["user_admin"] = $user_admin;
         $enable_search_box = AfwSession::config("enable_search_box", false);
-        if($enable_search_box)
-        {
+        if ($enable_search_box) {
             $data_tokens["enable_search_box_s"] = "";
             $data_tokens["enable_search_box_e"] = "";
-        }
-        else
-        {
+        } else {
             $data_tokens["enable_search_box_s"] = "<!-- ";
             $data_tokens["enable_search_box_e"] = " -->";
         }
-        
-        
+
+
         $data_tokens["user_bg_class"] = $user_bg_class;
-        $data_tokens["user_account_page"] = $user_account_page;        
-        $data_tokens["search_here"] = AfwLanguageHelper::translateKeyword("Search here", $lang);;        
+        $data_tokens["user_account_page"] = $user_account_page;
+        $data_tokens["search_here"] = AfwLanguageHelper::translateKeyword("Search here", $lang);;
         $data_tokens["logo-width"] = AfwSession::config("logo-width", 42, "display", "force-client", $company);
         $data_tokens["logo-height"] = AfwSession::config("logo-height", 42, "display", "force-client", $company);
-        
+
         $data_tokens["run_mode"] = $run_mode;
         $data_tokens["welcome_div"] = $welcome_div;
-        if(!$options["img-path"]) $options["img-path"] = "pic/";
-        if(!$options["img-company-path"]) $options["img-company-path"] = "../client-$company/pic";        
+        if (!$options["img-path"]) $options["img-path"] = "pic/";
+        if (!$options["img-company-path"]) $options["img-company-path"] = "../client-$company/pic";
         $data_tokens["img-path"] = $options["img-path"];
         $data_tokens["img-company-path"] = $options["img-company-path"];
-        
+
         if ($xmodule) $data_tokens["xmodule"] = "-" . $xmodule;
         else $data_tokens["xmodule"] = "";
 
@@ -189,7 +183,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $data_tokens["no_scroll_banner_e"] = "";
         }
         $no_menu = (AfwSession::config("disable-menu", false) and (!$options["no-menu"]));
-        if($no_menu)  {
+        if ($no_menu) {
             $data_tokens["main_menu_item_s"] = "<!--";
             $data_tokens["main_menu_item_e"] = "-->";
         } else {
@@ -198,7 +192,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         }
 
         $no_orgunit = AfwSession::config("disable-orgunit-name-showing", false);
-        if($no_orgunit)  {
+        if ($no_orgunit) {
             $data_tokens["orgunit_name_s"] = "<!--";
             $data_tokens["orgunit_name_e"] = "-->";
         } else {
@@ -256,13 +250,13 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         return $data_tokens;
     }
 
-    public static function prepareMenuAndHeaderTokens($lang,
-            $role,
-            $selected_menu,
-            $options)
-    {
-        if($options["controllerObj"])
-        {
+    public static function prepareMenuAndHeaderTokens(
+        $lang,
+        $role,
+        $selected_menu,
+        $options
+    ) {
+        if ($options["controllerObj"]) {
             $data_tokens = $options["controllerObj"]->prepareMenuTokens(
                 $lang,
                 $role,
@@ -270,11 +264,9 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
                 $options
             );
             // die("DGB241210 data_tokens=".var_export($data_tokens,true));
-        }
-        else
-        {
+        } else {
             // die("DGB241210 options=".var_export($options,true));
-            if($options["user-is-customer"]) $objme = AfwSession::getCustomerConnected();
+            if ($options["user-is-customer"]) $objme = AfwSession::getCustomerConnected();
             else $objme = AfwSession::getUserConnected();
 
             $data_tokens = self::prepareTokens(
@@ -288,47 +280,49 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
 
         return $data_tokens;
     }
-    
 
-    public static function renderMenu($menu_template,
+
+    public static function renderMenu(
+        $menu_template,
+        $lang,
+        $role,
+        $tpl_path = "",
+        $selected_menu = "",
+        $options = []
+    ) {
+        $data_tokens = self::prepareMenuAndHeaderTokens(
             $lang,
             $role,
-            $tpl_path = "",
-            $selected_menu = "",
-            $options = []
-    ) 
-    {
-        $data_tokens = self::prepareMenuAndHeaderTokens($lang,
-                                $role,
-                                $selected_menu,
-                                $options);
-        
-        if(!$tpl_path) $tpl_path = self::hzmTplPath();
-        $html_template_file = "$tpl_path/$menu_template"."_menu_tpl.php";
-                             
-        return self::showUsingHzmTemplate($html_template_file, $data_tokens, $lang);
+            $selected_menu,
+            $options
+        );
 
+        if (!$tpl_path) $tpl_path = self::hzmTplPath();
+        $html_template_file = "$tpl_path/$menu_template" . "_menu_tpl.php";
+
+        return self::showUsingHzmTemplate($html_template_file, $data_tokens, $lang);
     }
 
 
-    public static function renderHeader($header_template,
+    public static function renderHeader(
+        $header_template,
+        $lang,
+        $role,
+        $tpl_path = "",
+        $selected_menu = "",
+        $options = []
+    ) {
+        $data_tokens = self::prepareMenuAndHeaderTokens(
             $lang,
             $role,
-            $tpl_path = "",
-            $selected_menu = "",
-            $options = []
-    ) 
-    {
-        $data_tokens = self::prepareMenuAndHeaderTokens($lang,
-                            $role,
-                            $selected_menu,
-                            $options);
+            $selected_menu,
+            $options
+        );
 
 
-        if(!$tpl_path) $tpl_path = self::hzmTplPath();
-        $html_template_file = "$tpl_path/$header_template"."_header_tpl.php";
-                             
+        if (!$tpl_path) $tpl_path = self::hzmTplPath();
+        $html_template_file = "$tpl_path/$header_template" . "_header_tpl.php";
+
         return self::showUsingHzmTemplate($html_template_file, $data_tokens, $lang);
-
     }
 }

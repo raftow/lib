@@ -855,7 +855,7 @@ class AfwDateHelper
 
     public static function addHijriPeriodToHijriDate($hdate, $nb_months, $nb_years = 0)
     {
-        if(!$hdate) $hdate = self::currentHijriDate();
+        if (!$hdate) $hdate = self::currentHijriDate();
         if (strpos($hdate, '-') === false) {
             $hdate = self::add_dashes($hdate);
         }
@@ -1276,9 +1276,9 @@ class AfwDateHelper
         return $format;
     }
 
-    public static function checkDateFormat($gdate, $format, $oracle=false)
+    public static function checkDateFormat($gdate, $format, $oracle = false)
     {
-        if($oracle) {
+        if ($oracle) {
             $original_format = $format;
             $format = self::oracleToPhpDatetimeFormat($original_format);
             $format2 = self::oracleToPhp02DatetimeFormat($original_format);
@@ -1288,58 +1288,52 @@ class AfwDateHelper
             $d2 = DateTime::createFromFormat($format2, $gdate);
             $d3 = DateTime::createFromFormat($format3, $gdate);
             $d4 = DateTime::createFromFormat($format4, $gdate);
-            return (($d && $d->format($format) === $gdate) or 
-                    ($d2 && $d2->format($format2) === $gdate) or
-                    ($d3 && $d3->format($format3) === $gdate) or
-                    ($d4 && $d4->format($format4) === $gdate));
-        }
-        else {
+            return (($d && $d->format($format) === $gdate) or
+                ($d2 && $d2->format($format2) === $gdate) or
+                ($d3 && $d3->format($format3) === $gdate) or
+                ($d4 && $d4->format($format4) === $gdate));
+        } else {
             $d = DateTime::createFromFormat($format, $gdate);
             return ($d && $d->format($format) === $gdate);
         }
-        
     }
 
-    public static function checkDateFormatReason($gdate, $format, $oracle=false)
+    public static function checkDateFormatReason($gdate, $format, $oracle = false)
     {
-        if($oracle) {
+        if ($oracle) {
             $original_format = $format;
             $format = self::oracleToPhpDatetimeFormat($original_format);
             $format2 = self::oracleToPhp02DatetimeFormat($original_format);
             $d = DateTime::createFromFormat($format, $gdate);
             $d2 = DateTime::createFromFormat($format2, $gdate);
             $return = "Reason : (original_format=$original_format, phpformat=$format, php2format=$format2)";
-            if(!$d) $return .= "<br>\nDateTime::createFromFormat($format, $gdate) failed";
+            if (!$d) $return .= "<br>\nDateTime::createFromFormat($format, $gdate) failed";
             else {
                 $df = $d->format($format);
                 $return .= "<br>\nDateTime::createFromFormat($format, $gdate)->format($format) = $df vs original $gdate";
             }
-            if(!$d2) $return .= "<br>\nDateTime::createFromFormat($format2, $gdate) failed";
+            if (!$d2) $return .= "<br>\nDateTime::createFromFormat($format2, $gdate) failed";
             else {
                 $d2f = $d2->format($format2);
                 $return .= "<br>\nDateTime::createFromFormat($format2, $gdate)->format($format2) = $d2f vs original $gdate <br>";
             }
-
-        }
-        else {
+        } else {
             $d = DateTime::createFromFormat($format, $gdate);
             $return = "Reason :";
-            if(!$d) $return .= "<br>\nDateTime::createFromFormat($format, $gdate) failed";
+            if (!$d) $return .= "<br>\nDateTime::createFromFormat($format, $gdate) failed";
             else {
                 $df = $d->format($format);
                 $return .= "<br>\nDateTime::createFromFormat($format, $gdate)->format($format) = $df vs original $gdate";
             }
-
         }
 
         return $return;
-        
     }
 
 
-    public static function checkTimeFormat($time, $format, $oracle=false)
+    public static function checkTimeFormat($time, $format, $oracle = false)
     {
-        if($oracle) {
+        if ($oracle) {
             $format = self::oracleToPhpDatetimeFormat($format);
         }
         $dtime = "01/25/2000 $time";
@@ -1926,7 +1920,7 @@ class AfwDateHelper
             $result_diff_h = round($result_diff_h);
         }
 
-        if($result_diff_h>20000) {
+        if ($result_diff_h > 20000) {
             $result_diff_s_report = self::timeDiffInSecondsReport($gdate2, $gdate1);
             die("timeDiffInSecondsReport($gdate2, $gdate1) => $result_diff_s <br>\n
                result_diff_s_report => $result_diff_s_report <br>\n
@@ -1941,7 +1935,7 @@ class AfwDateHelper
         $stmp2 = self::gregToTimestamp($gdate2);
         $stmp1 = self::gregToTimestamp($gdate1);
 
-        return "stmp2($gdate2) = $stmp2 <br>\n stmp1($gdate1) = $stmp1 <br>\n stmp2 - stmp1 = ".($stmp2 - $stmp1);
+        return "stmp2($gdate2) = $stmp2 <br>\n stmp1($gdate1) = $stmp1 <br>\n stmp2 - stmp1 = " . ($stmp2 - $stmp1);
     }
 
     public static function timeDiffInSeconds($gdate2, $gdate1)
@@ -2445,5 +2439,71 @@ class AfwDateHelper
     public static function addXDaysToGregDate($nb_days, $from_date = '')
     {
         return self::addPeriodToGregDate($nb_days, 0, 0, $from_date);
+    }
+
+    public static function currentGregDateArr()
+    {
+        return self::gregDateArr();
+    }
+
+    public static function explicitGregDate($MyDate = "", $WeekDayOn = 1, $YearOn = 1, $MonthNameOn = 1, $Separator = " ")
+    {
+        return self::gregDateArr($MyDate, $WeekDayOn, $YearOn, $MonthNameOn, $Separator, $return_array = false);
+    }
+
+
+    public static function gregDateArr($MyDate = "", $WeekDayOn = 1, $YearOn = 1, $MonthNameOn = 1, $Separator = " ", $return_array = true)
+    {
+        if (!$MyDate) $MyDate = date("Y-m-d H:i:s");
+
+        $MyMonths = array(
+            "يناير",
+            "فبراير",
+            "مارس",
+            "أبريل",
+            "مايو",
+            "يونيو",
+            "يوليو",
+            "أغسطس",
+            "سبتمبر",
+            "أكتوبر",
+            "نوفمبر",
+            "ديسمبر"
+        );
+
+        /*$MyMonths = array("جانفي", "فيفري", "مارس", "أفريل", "ماي", "جوان",
+        "جويلية", "أوت", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر");*/
+        $MyDays = array(
+            "الأحد",
+            "الأثنين",
+            "الثلاثاء",
+            "الإربعاء",
+            "الخميس",
+            "الجمعة",
+            "السبت"
+        );
+        list($MyDate2, $MyDate3) = explode(' ', $MyDate);
+        $DF = explode('-', $MyDate2);
+        $TheDay = getdate(mktime(0, 0, 0, $DF[1], $DF[2], $DF[0]));
+
+        $MyDateFinal_arr = array();
+
+
+        //week day
+        if ($WeekDayOn) $MyDateFinal_arr[] = $MyDays[$TheDay["wday"]];
+
+        //day
+        $MyDateFinal_arr[] = $DF[2];
+
+        //month
+        if ($MonthNameOn)
+            $MyDateFinal_arr[] = $MyMonths[$DF[1] - 1];
+        else
+            $MyDateFinal_arr[] = $DF[1];
+
+        if ($YearOn) $MyDateFinal_arr[] = $DF[0];
+
+        if ($return_array) return $MyDateFinal_arr;
+        else return implode($Separator, $MyDateFinal_arr);
     }
 }

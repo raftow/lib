@@ -6,7 +6,7 @@ class CmsFrontMenu extends AFWRoot
 {
 
         /**
-         * @return array<bool,array,array,array,array,string>
+         * @return array<bool,array,array,array,mixed,string>
          */
         public static function loadUmsCacheForUser($userId, $lang)
         {
