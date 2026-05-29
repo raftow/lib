@@ -248,7 +248,7 @@ class AfwFormatHelper
     /**
      * @param array $structure attribute afw structure
      */
-    final public static function getDirectionFromStructure($structure) 
+    final public static function getDirectionFromStructure($structure)
     {
         if (!$structure['DIR']) $structure['DIR'] = $structure['DIRECTION'];
         if ($structure['DIR']) {
@@ -265,7 +265,7 @@ class AfwFormatHelper
         }
         return $dir;
     }
-                    
+
 
     final public static function formatValue(
         $value,
@@ -290,7 +290,8 @@ class AfwFormatHelper
         $formatted = true;
 
         if (($structure['TYPE'] == 'GDAT') or
-            ($structure['TYPE'] == 'GDATE')
+            ($structure['TYPE'] == 'GDATE') or
+            ($structure['TYPE'] == 'DATETIME')
         ) {
             // list($data_to_display,) = explode(" ",$value);
             $data_to_display = $value;
@@ -339,7 +340,8 @@ class AfwFormatHelper
                 // die("$data_to_display = mysqldate_to_explicit_fr_date_arr(date_to_display=$date_to_display, WeekDayOn=$WeekDayOn, YearOn=$YearOn, MonthNameOn=$MonthNameOn,Separator=' ',return_array=false);");
             }             
             else*/
-            if ($structure['FORMAT'] == 'DATETIME') {
+            if (($structure['FORMAT'] == 'GDATE') or ($structure['FORMAT'] == 'GDAT')) {
+                $data_to_display = $date_to_display;
             } elseif ($structure['FORMAT'] == 'CONVERT_HIJRI') {
                 if ($date_to_display) {
                     $hijri_date = AfwDateHelper::gregToHijri($date_to_display, 'hdate-dashed', $structure['IF-SEEMS-HIJRI-KEEP']);
@@ -619,7 +621,7 @@ class AfwFormatHelper
                         $text_align = 'text-align:left';
                     }
 
-                    $dir = self::getDirectionFromStructure($structure); 
+                    $dir = self::getDirectionFromStructure($structure);
                     if ($structure['WIDTH']) {
                         $wd = $structure['WIDTH'];
                     } else {
@@ -1573,7 +1575,8 @@ class AfwFormatHelper
                     'Check if ANSWER property is defined for attribute '
                         . $attribute
                         . ' having type ITEMS in DB_STRUCTURE of table '
-                        . $table_name);
+                        . $table_name
+                );
             }
         }
 
@@ -2022,19 +2025,19 @@ class AfwFormatHelper
 
     /**
      * getCategorizedAttribute
-      * Return value of attribute according to its category (ITEMS, FORMULA, VIRTUAL, SHORTCUT)
-       * @param AFWObject $object
-       * @param string $attribute
-       * @param string $attribute_category
-       * @param string $attribute_type
-       * @param array $structure
-       * @param string $what
-       * @param string $format
-       * @param bool $integrity
-       * @param int|null $max_items
-       * @param string $lang
-       * @param string $call_method
-       * @return mixed
+     * Return value of attribute according to its category (ITEMS, FORMULA, VIRTUAL, SHORTCUT)
+     * @param AFWObject $object
+     * @param string $attribute
+     * @param string $attribute_category
+     * @param string $attribute_type
+     * @param array $structure
+     * @param string $what
+     * @param string $format
+     * @param bool $integrity
+     * @param int|null $max_items
+     * @param string $lang
+     * @param string $call_method
+     * @return mixed
      */
     public static function getCategorizedAttribute(&$object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = '')
     {
@@ -2195,13 +2198,13 @@ class AfwFormatHelper
 
     /**
      * Parse a value according to the attribute type and set it to the object if needed
-      * @param AFWObject $object
-      * @param string $attribute
-      * @param string $val_to_parse
-      * @param string $lang
-      * @param bool $set_to_object whether to set the parsed value to the object or just return it
-       * @return array [success, parsed_value]
-       *
+     * @param AFWObject $object
+     * @param string $attribute
+     * @param string $val_to_parse
+     * @param string $lang
+     * @param bool $set_to_object whether to set the parsed value to the object or just return it
+     * @return array [success, parsed_value]
+     *
      */
     public static final function parseAttribute(
         $object,
@@ -2219,9 +2222,7 @@ class AfwFormatHelper
             $big_thousand = 2000;
             if ($desc['TYPE'] == 'GDAT') {
                 $std_separator = '-';
-                
-            }
-            else { // ($desc['TYPE'] == 'DATE') 
+            } else { // ($desc['TYPE'] == 'DATE') 
                 $std_separator = '';
             }
 
