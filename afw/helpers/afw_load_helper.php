@@ -228,7 +228,7 @@ class AfwLoadHelper extends AFWRoot
             }
             $module_code = $obj->getMyModule();
             $table_name = $obj->getMyTable();
-            $return = self::getLookupData($module_code, $table_name, $where, $order_by,false,$lang);
+            $return = self::getLookupData($module_code, $table_name, $where, $order_by, false, $lang);
             $case = "self::getLookupData($module_code, $table_name, $where, $order_by,false,$lang)";
         } else {
             $obj->select_visibilite_horizontale();
@@ -676,7 +676,8 @@ class AfwLoadHelper extends AFWRoot
                     foreach ($header as $col => $titre) {
                         if ($col == "check-id") {
                             $tuple[$col] = "<div id='check-$id' class='js-check-box'></div>";
-                        } else {
+                        } elseif ($titre) // if titre is empty means that $col should be hidden from retrieved data
+                        {
                             if (!$col) throw new AfwRuntimeException('header columns erroned, column empty : ' . var_export($header, true));
                             if (!$descArr[$col]) $descArr[$col] = AfwStructureHelper::getStructureOf($objItem, $col);
                             $desc = $descArr[$col];
