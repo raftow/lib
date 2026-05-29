@@ -1126,7 +1126,7 @@ class AfwUmsPagHelper extends AFWRoot
         }
 
 
-        if (in_array('application_class_enum', $hide_cols)) {
+        if (true or in_array('application_class_enum', $hide_cols)) {
             die("rafik debugging getRetrieveHeader \n<br> hide_cols= " . var_export($hide_cols, true) . "\n<br> $not_tech \n<br> cols_retrieve_before= " . var_export($cols_retrieve_before, true) . " \n<br> cols_retrieve_after= " . var_export($cols_retrieve, true));
         }
 
