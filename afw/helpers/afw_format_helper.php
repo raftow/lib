@@ -870,6 +870,7 @@ class AfwFormatHelper
                 break;
             case 'GDAT':
             case 'GDATE':
+            case 'DATETIME':
                 list($gdatformatted, $return, $gdatlink_to_display) = self::formatValue(
                     $attribute_value,
                     $attribute,
