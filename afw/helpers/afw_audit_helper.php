@@ -33,7 +33,7 @@ class AfwAuditHelper extends AFWRoot
     public static final function audit_on_update($object, $arr_fields_updated, $action, $update_context = '')
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        if(!$update_context) {
+        if (!$update_context) {
             $update_context = UfwWorkContext::getAllContextTranslated($lang);
         }
         $table_name = $object->getTableName();
@@ -43,8 +43,8 @@ class AfwAuditHelper extends AFWRoot
             $rowsCount = 0;
             if ($object->isByRowAuditable()) {
                 $rowsCount += self::byrow_audit($object, $action, $update_context);
-            } 
-            
+            }
+
             if ($object->isByColumnAuditable()) {
                 foreach ($arr_fields_updated as $key => $new_value) {
                     if (AfwStructureHelper::attributeIsAuditable($object, $key)) {
@@ -59,23 +59,24 @@ class AfwAuditHelper extends AFWRoot
         return $rowsCount;
     }
 
-    public static function getClientInfos() {
-            // Check if client is using shared internet
-            if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-                $ip_adrs = $_SERVER['HTTP_CLIENT_IP'];
-            }
-            // Check if client is behind a proxy
-            elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-                $ip_adrs = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            }
-            // Default to the remote address
-            else {
-                $ip_adrs = $_SERVER['REMOTE_ADDR'];
-            }
+    public static function getClientInfos()
+    {
+        // Check if client is using shared internet
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+            $ip_adrs = $_SERVER['HTTP_CLIENT_IP'];
+        }
+        // Check if client is behind a proxy
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip_adrs = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+        // Default to the remote address
+        else {
+            $ip_adrs = $_SERVER['REMOTE_ADDR'];
+        }
 
-            $browser = $_SERVER['HTTP_USER_AGENT'];
+        $browser = $_SERVER['HTTP_USER_AGENT'];
 
-            return [$browser, $ip_adrs];
+        return [$browser, $ip_adrs];
     }
 
     /**
@@ -84,22 +85,22 @@ class AfwAuditHelper extends AFWRoot
     public static function byrow_audit(&$object, $action, $update_context)
     {
         $action_by = AfwSession::getUserIdActing();
-        if(!$action_by) {
+        if (!$action_by) {
             throw new AfwRuntimeException("THe 'action by' information is mandatory to perform audit actions");
         }
 
-        if(!$action) {
+        if (!$action) {
             throw new AfwRuntimeException("THe 'action by' information is mandatory to perform audit actions");
         }
 
-        
-        if(!$update_context) {
+
+        if (!$update_context) {
             throw new AfwRuntimeException("THe 'update context' information is mandatory to perform audit actions");
         }
 
-        $update_context = substr($update_context,0,254);
+        $update_context = substr($update_context, 0, 254);
         $update_context = addslashes($update_context);
-        
+
 
         $table_name = $object->getTableName();
         $table_audit = $table_name . '_braudit';
@@ -110,7 +111,7 @@ class AfwAuditHelper extends AFWRoot
 
         $pk_cond = AfwSqlHelper::getPKCondSQL($object, $object->id);
 
-        
+
         $action_at = $now = date("Y-m-d H:i:s");
         list($action_browser, $action_ip) = self::getClientInfos();
         $action_browser = addslashes($action_browser);
@@ -123,17 +124,19 @@ class AfwAuditHelper extends AFWRoot
         // an exception happen and the process aborted.
         // so in this case nothing to do
 
-        $audit_already_exists = AfwDatabase::db_recup_value("SELECT count(*) as audit_exists from $prefixed_table_audit $pk_cond and `version`='$current_version' and `action`='$action'");
+        $audit_already_exists = AfwDatabase::db_recup_value("SELECT count(*) as audit_exists 
+        from $prefixed_table_audit 
+           $pk_cond 
+           and `version`='$current_version' 
+           and `action`='$action'");
         $audit_already_exists = intval($audit_already_exists);
-        if(!$audit_already_exists) {
+        if (!$audit_already_exists) {
             $query = "INSERT INTO $prefixed_table_audit ($insert_columns,  `action`,  action_by,   action_at,    action_browser,    action_ip,  update_context) 
                                                                         SELECT $insert_columns, '$action', $action_by, '$action_at', '$action_browser', '$action_ip','$update_context' 
-                                                                        from ".$object::_prefix_table($table_name)." $pk_cond";
+                                                                        from " . $object::_prefix_table($table_name) . " $pk_cond";
 
             return $object->execQuery($query);
-        }
-        else return -99;
-        
+        } else return -99;
     }
 
     /**
@@ -154,7 +157,7 @@ class AfwAuditHelper extends AFWRoot
         $update_date_col = $object->fld_UPDATE_DATE();
         $update_auser_id_col = $object->fld_UPDATE_USER_ID();
 
-        
+
 
         return $object->execQuery("INSERT INTO $table_audit(id, version, val, update_date, update_auser_id, update_context)
                             select $id, version, $old_value, $update_date_col, $update_auser_id_col, _utf8'$update_context' from $table_name where id = $id");
@@ -167,23 +170,25 @@ class AfwAuditHelper extends AFWRoot
      * 
      */
 
-    public static function auditDatimeHtml($initialRow, $dataTuple, $object, $lang='ar') {
+    public static function auditDatimeHtml($initialRow, $dataTuple, $object, $lang = 'ar')
+    {
         $datetime = $initialRow["action_at"];
         return "<div class='audit-cell datetime'>$datetime</div>";
-    }    
+    }
 
-        /**
+    /**
      * @param array $initialRow
      * @param array $dataTuple
      * @param AFWObject $object
      * 
      */
 
-    public static function auditByHtml($initialRow, $dataTuple, $object, $lang='ar') {
+    public static function auditByHtml($initialRow, $dataTuple, $object, $lang = 'ar')
+    {
         $action_by = $initialRow["action_by"];
         $by = AfwLoadHelper::decodeLookupValue("ums", "auser", $action_by, "", "", "", $lang, false);
         return "<div class='audit-cell by'>$by</div>";
-    }    
+    }
 
 
     /**
@@ -193,10 +198,11 @@ class AfwAuditHelper extends AFWRoot
      * 
      */
 
-    public static function auditActionHtml($initialRow, $dataTuple, $object, $lang='ar') {
+    public static function auditActionHtml($initialRow, $dataTuple, $object, $lang = 'ar')
+    {
         $html = "";
-        $id = $initialRow["id"]."_". $initialRow["version"]."_". $initialRow["action"];        
-        $version = AfwLanguageHelper::translateKeyword("version", $lang)." ".$initialRow["version"];
+        $id = $initialRow["id"] . "_" . $initialRow["version"] . "_" . $initialRow["action"];
+        $version = AfwLanguageHelper::translateKeyword("version", $lang) . " " . $initialRow["version"];
         $dtv = "<div class='audit-cell version'>$version</div>";
         $html .= "<div class='audit-row audit-dtv'>$dtv</div>";
         $action = $initialRow["action"];
@@ -204,12 +210,12 @@ class AfwAuditHelper extends AFWRoot
         //$dtv .= "<div class='audit-cell dt'>$datetime</div>";
         // $action_by = $initialRow["action_by"];
         // $by = AfwLoadHelper::decodeLookupValue("ums", "auser", $action_by, "", "", "", $lang, false);
-        $context = AfwLanguageHelper::translateKeyword($initialRow["update_context"], $lang);     
-        $action_text = AfwLanguageHelper::translateKeyword("action.".$action, $lang);
+        $context = AfwLanguageHelper::translateKeyword($initialRow["update_context"], $lang);
+        $action_text = AfwLanguageHelper::translateKeyword("action." . $action, $lang);
         $using = AfwLanguageHelper::translateKeyword("using", $lang);
-        $action_by_sentence = $action_text." ".$using." ".$context;
-        $browser = $initialRow["action_browser"];     
-        $fromip = $initialRow["action_ip"];     
+        $action_by_sentence = $action_text . " " . $using . " " . $context;
+        $browser = $initialRow["action_browser"];
+        $fromip = $initialRow["action_ip"];
         $html .= "<div class='audit-row audit-action'>$action_by_sentence</div>";
         // $html .= "<div class='audit-row audit-context'>$context</div>";
         $html .= "<div class='audit-row audit-fromip'>$fromip</div>";
@@ -224,12 +230,12 @@ class AfwAuditHelper extends AFWRoot
      * 
      */
 
-    public static function auditAdvancedHtml($initialRow, $dataTuple, $object, $lang='ar') {
-        $id = $initialRow["id"]."_". $initialRow["version"]."_". $initialRow["action"];        
-        $auditId = "V".$initialRow["version"]. strtoupper(substr($initialRow["action"],0,1));
-        $icon_advanced = "<span id='icon-audit-$id' class='fa advanced-audit icon-plus' title='".AfwLanguageHelper::translateKeyword("audit_advanced", $lang)."'></span>";
+    public static function auditAdvancedHtml($initialRow, $dataTuple, $object, $lang = 'ar')
+    {
+        $id = $initialRow["id"] . "_" . $initialRow["version"] . "_" . $initialRow["action"];
+        $auditId = "V" . $initialRow["version"] . strtoupper(substr($initialRow["action"], 0, 1));
+        $icon_advanced = "<span id='icon-audit-$id' class='fa advanced-audit icon-plus' title='" . AfwLanguageHelper::translateKeyword("audit_advanced", $lang) . "'></span>";
         $icon_advanced .= "<div class='identifier'>$auditId</div>";
         return "<div class='audit-advanced' id='audit-advanced-$id'>$icon_advanced</div>";
     }
-
 }

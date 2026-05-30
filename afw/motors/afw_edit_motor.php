@@ -1027,6 +1027,7 @@ class AfwEditMotor
         $colspan = '';
         $css_class = '';
         $step_curr = $desc['STEP'];
+        if (strtolower($step_curr) == "all") $step_curr = $obj->currentStep;
         $no_fgroup = $desc['NO-FGROUP'];
         $new_fgroup = $desc['FGROUP'];
         $noheader_fgroup = $desc['FGROUP_NOHEADER'];
