@@ -6106,7 +6106,8 @@ class AFWObject extends AFWRoot
 
     public function takeAuditAction($mode = 'search')
     {
-        return true;
+
+        return $this->connectedUserConvenientForAction('audit');
     }
 
     public function getSpecificActions($step)

@@ -692,7 +692,7 @@ class AfwSession extends AFWRoot
                 return (self::getSessionVar("customer_id") > 0);
         }
 
-        public static function pushString($text, $string_to_push)
+        private static function pushString($text, $string_to_push)
         {
                 $string_to_push = trim($string_to_push);
                 $new_string_to_push = str_replace("<br>", "", $string_to_push);
@@ -704,7 +704,19 @@ class AfwSession extends AFWRoot
         }
 
 
+        /**
+         * @param string $alert
+         */
 
+        public static function pushAlert($alert, $css_class = "")
+        {
+                self::setSessionVar("alert", self::pushString(self::getSessionVar("alert"), $alert));
+                if ($css_class) self::setSessionVar("alert-class", $css_class);
+        }
+
+        /**
+         * @param string $success
+         */
 
         public static function pushSuccess($success, $css_class = "")
         {
@@ -712,12 +724,19 @@ class AfwSession extends AFWRoot
                 if ($css_class) self::setSessionVar("success-class", $css_class);
         }
 
+
+        /**
+         * @param string $slog
+         */
         public static function pushLog($slog, $css_class = "")
         {
                 self::setSessionVar("slog", self::pushString(self::getSessionVar("slog"), $slog));
                 if ($css_class) self::setSessionVar("slog-class", $css_class);
         }
 
+        /**
+         * @param string $information
+         */
 
         public static function pushInformation($information, $css_class = "")
         {
@@ -725,12 +744,20 @@ class AfwSession extends AFWRoot
                 if ($css_class) self::setSessionVar("information-class", $css_class);
         }
 
+        /**
+         * @param string $warning
+         */
+
         public static function pushWarning($warning, $css_class = "")
         {
                 // throw new AfwRuntimeException("who sent this warning");
                 self::setSessionVar("warning", self::pushString(self::getSessionVar("warning"), $warning));
                 if ($css_class) self::setSessionVar("warning-class", $css_class);
         }
+
+        /**
+         * @param string $error
+         */
 
         public static function pushError($error, $css_class = "")
         {
@@ -751,6 +778,11 @@ class AfwSession extends AFWRoot
                 if ($warn) AfwSession::pushWarning($warn);
         }
 
+
+        public static function pullAlert()
+        {
+                return self::pullSessionVar("alert");
+        }
 
         public static function pullSuccess()
         {
