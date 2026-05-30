@@ -310,10 +310,10 @@ if (true) {
 
                                                         <?php
                                                         if (!isset($addHeader)) $addHeader = false;
-                                                        if (!isset($takeViewIcon)) $takeViewIcon = false;
-                                                        if (!isset($takeEditAction)) $takeEditAction = true;
-                                                        if (!isset($takeDeleteAction)) $takeDeleteAction = true;
-                                                        if (!isset($takeAuditAction)) $takeAuditAction = true;
+                                                        if (!isset($takeViewIcon)) $obj->takeViewIcon('search');
+                                                        if (!isset($takeEditAction)) $obj->takeEditAction('search');
+                                                        if (!isset($takeDeleteAction)) $obj->takeDeleteAction('search');
+                                                        if (!isset($takeAuditAction)) $obj->takeAuditAction('search');
                                                         // die("can_action_arr = ".var_export($can_action_arr,true)); 
                                                         $result = AfwRetrieveHelper::showDataRetrieve(
                                                                 $obj,

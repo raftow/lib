@@ -6088,6 +6088,27 @@ class AFWObject extends AFWRoot
         return ['delete', ''];
     }
 
+
+    public function takeViewIcon($mode = 'search')
+    {
+        return false;
+    }
+
+    public function takeEditAction($mode = 'search')
+    {
+        return true;
+    }
+
+    public function takeDeleteAction($mode = 'search')
+    {
+        return true;
+    }
+
+    public function takeAuditAction($mode = 'search')
+    {
+        return true;
+    }
+
     public function getSpecificActions($step)
     {
         $actions_tpl_arr = [];
