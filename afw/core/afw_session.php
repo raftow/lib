@@ -692,14 +692,21 @@ class AfwSession extends AFWRoot
                 return (self::getSessionVar("customer_id") > 0);
         }
 
-        private static function pushString($text, $string_to_push)
+        /**
+         * @param string $text, 
+         * @param string $string_to_push
+         */
+        private static function pushString($text, $string_to_push, $once = false, $separator = "<br>", $separatorToRemove = "<br>")
         {
                 $string_to_push = trim($string_to_push);
-                $new_string_to_push = str_replace("<br>", "", $string_to_push);
+                $new_string_to_push = str_replace($separatorToRemove, "", $string_to_push);
+                if ($once) {
+                        if (AfwStringHelper::stringContain($text, $new_string_to_push)) $new_string_to_push = "";
+                }
                 if ($new_string_to_push) {
                         $text = trim($text);
-                        if ($text) return $text . "<br>" . $string_to_push;
-                        else return $string_to_push;
+                        if ($text) return $text . $separator . $new_string_to_push;
+                        else return $new_string_to_push;
                 } else return $text;
         }
 
@@ -710,7 +717,7 @@ class AfwSession extends AFWRoot
 
         public static function pushAlert($alert, $css_class = "")
         {
-                self::setSessionVar("alert", self::pushString(self::getSessionVar("alert"), $alert));
+                self::setSessionVar("alert", self::pushString(self::getSessionVar("alert"), $alert, true, "\n"));
                 if ($css_class) self::setSessionVar("alert-class", $css_class);
         }
 
