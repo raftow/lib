@@ -6580,7 +6580,7 @@ class AFWObject extends AFWRoot
     public function getDefautDisplaySettings()
     {
         // to be overridden
-        return null;
+        return [];
     }
 
     public function isLourde()

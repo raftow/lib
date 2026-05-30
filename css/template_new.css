@@ -1180,9 +1180,11 @@ div.body_nav_hzm>p {
     background-color: transparent;
     border-bottom: none;
     border-top: none;
-    width: auto;
     margin: 5px;
     padding: 12px 0px 0px;
+    width: auto !important;
+    max-width: 340px !important;
+    min-width: 160px !important;
 }
 
 .wizard_buttons {
@@ -1488,11 +1490,10 @@ div.audit-row.audit-context {
     margin-right: 1%;
     float: right;
     white-space: nowrap;
-        padding: 3px;
+    padding: 3px;
 }
 
-.audit-cell.version
-{
+.audit-cell.version {
     background-color: #ddeefd;
     border-radius: 8px;
     padding-left: 9px;
@@ -1515,18 +1516,18 @@ div.audit-row.audit-context {
 }
 
 .icon-minus:before {
-    content : "\f106";
+    content: "\f106";
     font-size: 24px !important;
 }
 
-table.grid tr td.cell-changed > span,
+table.grid tr td.cell-changed>span,
 div.cell-changed {
     background-color: #307bfbd4 !important;
     border: 2px solid #1463b1;
     color: #ffffff;
 }
 
-table.grid tr td.cell-changed > span{
+table.grid tr td.cell-changed>span {
     display: block;
     padding: 9px;
 }
@@ -1564,7 +1565,8 @@ div.audit-enabled {
     font-weight: normal;
 }
 
-div#audit_result_div th, div#audit_result_div td {
+div#audit_result_div th,
+div#audit_result_div td {
     border: 1px solid silver;
 }
 
@@ -1572,6 +1574,7 @@ tr.audit:hover {
     background-color: #fdf06f !important;
 }
 
-table.dataTable tbody tr.audit:hover>td, table.grid tbody tr.audit:hover>td {
+table.dataTable tbody tr.audit:hover>td,
+table.grid tbody tr.audit:hover>td {
     opacity: 100% !important;
 }
