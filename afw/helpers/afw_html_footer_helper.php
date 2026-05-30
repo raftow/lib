@@ -73,17 +73,17 @@ class AfwHtmlFooterHelper extends AfwHtmlHelper
         );
         if (!$tpl_path) $tpl_path = self::hzmTplPath();
         $html_template_file = "$tpl_path/$footer_template" . "_footer_tpl.php";
-        $html_footer_alter_js = "";
+        $html_footer_alert_js = "";
 
         $alert_pulled = AfwSession::pullAlert();
         if ($alert_pulled) {
-            $html_footer_alter_js .= "<script>
+            $html_footer_alert_js .= "<script>
                 swal(\"$alert_pulled\", {
                         icon: \"warning\",
                       });
             </script>";
         }
 
-        return self::showUsingHzmTemplate($html_template_file, $data_tokens, $lang) . $html_footer_alter_js;
+        return self::showUsingHzmTemplate($html_template_file, $data_tokens, $lang) . $html_footer_alert_js;
     }
 }
