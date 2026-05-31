@@ -463,7 +463,7 @@ class AfwSession extends AFWRoot
         {
                 $indexAI = 0;
                 $separator = "\n";
-                if (is_string($varMixed) or is_integer($varMixed)) {
+                if (is_string($varMixed) or is_integer($varMixed) or is_bool($varMixed) or is_float($varMixed)) {
                         $string = $varMixed . "";
                         $string = strip_tags($string);
                         $string = str_replace("\n", " > ", $string);
