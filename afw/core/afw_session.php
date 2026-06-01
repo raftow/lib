@@ -457,6 +457,25 @@ class AfwSession extends AFWRoot
 
 
         /**
+         * @param array $errors_arr, 
+         * @param array $infos_arr, 
+         * @param array $war_arr
+         */
+        public static function consolePbmResult($errors_arr, $infos_arr, $war_arr)
+        {
+                if (count($errors_arr) > 0) {
+                        AfwSession::console($errors_arr, "error");
+                }
+                if (count($infos_arr) > 0) {
+                        AfwSession::console($infos_arr, "information");
+                }
+                if (count($war_arr) > 0) {
+                        AfwSession::console($war_arr, "warning");
+                }
+        }
+
+
+        /**
          * @param mixed $varMixed
          */
         public static function console($varMixed, $special_class = "", $tabulation = "", $show_time = false)

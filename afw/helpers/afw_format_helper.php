@@ -266,6 +266,54 @@ class AfwFormatHelper
         return $dir;
     }
 
+    /**
+     * @param string $new_mfk, 
+     * @param string $old_mfk
+     */
+
+    final public static function mfkDiff($new_mfk, $old_mfk)
+    {
+        $idsAdded = [];
+        $idsRemoved = [];
+
+        $idsNewIndex = [];
+        $idsOldIndex = [];
+        $idsAllIndex = [];
+
+        $id_arr = explode(',', trim($new_mfk, ','));
+        $old_id_arr = explode(',', trim($old_mfk, ','));
+
+        foreach ($old_id_arr as $num => $oldid) {
+            $idsOldIndex[$oldid] = true;
+            $idsAllIndex[$oldid] = true;
+        }
+
+        foreach ($id_arr as $num => $id) {
+            $idsNewIndex[$id] = true;
+            $idsAllIndex[$id] = true;
+        }
+
+        foreach ($idsAllIndex as $id => $xx) {
+            if ($idsNewIndex[$id]) {
+                if ($idsOldIndex[$id]) {
+                    // not added
+                } else {
+                    // added
+                    $idsAdded[] = $id;
+                }
+            } else {
+
+                if ($idsOldIndex[$id]) {
+                    // removed
+                    $idsRemoved[] = $id;
+                } else {
+                    // not removed (never happen why in idsAllIndex)
+                }
+            }
+        }
+
+        return [$idsAdded, $idsRemoved];
+    }
 
     final public static function formatValue(
         $value,

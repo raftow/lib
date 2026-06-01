@@ -5354,6 +5354,10 @@ pre.hzmlog.console {
     vertical-align: middle !important;
 }
 
+pre.hzmlog.title.console {
+    background-color: blueviolet;
+    color: white;
+}
 
 pre.hzmlog.console.even {
     background-color: #b1d9fc;
