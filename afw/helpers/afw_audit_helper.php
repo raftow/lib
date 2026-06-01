@@ -79,6 +79,16 @@ class AfwAuditHelper extends AFWRoot
         return [$browser, $ip_adrs];
     }
 
+
+    /**
+     * @param int $id
+     */
+    public static function deleteAllAuditFor($id)
+    {
+        // not logic to remove audit after delete (it is AUDIT should REMAIN !!!!!!)
+        // so this is obsolete
+    }
+
     /**
      * @param AFWObject $object
      */
