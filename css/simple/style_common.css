@@ -5355,9 +5355,15 @@ pre.hzmlog.console {
 }
 
 pre.hzmlog.title.console {
-    background-color: blueviolet;
+    background-color: blueviolet !important;
     color: white;
 }
+
+pre.hzmlog.title.reason {
+    background-color: greenyellow !important;
+    color: black;
+}
+
 
 pre.hzmlog.console.even {
     background-color: #b1d9fc;
