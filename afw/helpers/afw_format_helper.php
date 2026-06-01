@@ -299,13 +299,13 @@ class AfwFormatHelper
                     // not added
                 } else {
                     // added
-                    $idsAdded[] = $id;
+                    if (is_integer($id)) $idsAdded[] = $id;
                 }
             } else {
 
                 if ($idsOldIndex[$id]) {
                     // removed
-                    $idsRemoved[] = $id;
+                    if (is_integer($id)) $idsRemoved[] = $id;
                 } else {
                     // not removed (never happen why in idsAllIndex)
                 }

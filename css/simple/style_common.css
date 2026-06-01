@@ -5365,7 +5365,7 @@ pre.hzmlog.title.reason {
 }
 
 pre.hzmlog.information.console {
-    background-color: #19a119;
+    background-color: #19a119 !important;
     color: white;
     box-shadow: none !important;
 }

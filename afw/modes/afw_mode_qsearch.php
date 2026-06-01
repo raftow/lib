@@ -80,8 +80,16 @@ if ($datatable_on and count($_POST) > 0) $accordion_expanded = 'false';
 $cl_short = strtolower(substr($cl, 0, 10));
 /**
  * @var AFWObject $myClassInstance
+ * @var string $selection
  * 
  */
+if (!$selection) $selection = "default";
+$clAfwStructure = ucfirst($currmod . $cl . "AfwStructure");
+if (method_exists($clAfwStructure, "getParameters")) {
+        $arrParameters =  $clAfwStructure::getParameters("qsearch", $selection);
+        foreach ($arrParameters as $aparameter => $aparameterValue) $$aparameter = $aparameterValue;
+}
+
 $myClassInstance = new $cl();
 $my_contextCols = $myClassInstance->getContextCols();
 $take_context = true;
@@ -106,7 +114,7 @@ if ($objme) {
 }
 
 $rpbm_list = $myClassInstance->retrieveModePublicMethodsForUser($objme); // []; //
-$rpbm = $show_checkboxes = (count($rpbm_list)>0);
+$rpbm = $show_checkboxes = (count($rpbm_list) > 0);
 
 if ($resetcrit) {
         $_POST = array();
@@ -119,11 +127,11 @@ $search_result_html = "";
 // $myClassInstance->debuggObj($_POST);
 if ($datatable_on) {
         // die("DBG-before afw_handle_default_search");
-        if($myClassInstance->estimatedTotalRows()>1400) {
+        if ($myClassInstance->estimatedTotalRows() > 1400) {
                 UfwQueryAnalyzer::startProcessLourdMode();
         }
         $handle_return = include 'afw_handle_default_search.php';
-        if($myClassInstance->estimatedTotalRows()>1400) {
+        if ($myClassInstance->estimatedTotalRows() > 1400) {
                 UfwQueryAnalyzer::stopProcessLourdMode();
         }
         $excel_link = $handle_return['excel_link'];
@@ -219,10 +227,10 @@ if ($datatable_on) {
 
         $btns_display["qedit-result"] = ($ids and ($ids_count < 101) and (!$myClassInstance->OwnedBy) and $objme and $objme->isAdmin()) ? 1 : 0;
         $btns_total += $btns_display["qedit-result"];
-        
+
         $btns_display["rpbm"] = $rpbm ? 1 : 0;
         $btns_total += $btns_display["rpbm"];
-        
+
         $out_scr_btns .= "<div class='btns-qsearch'>";
 
         $out_scr_btns .= "<!-- ";
@@ -286,7 +294,7 @@ if ($datatable_on) {
 
         if ($btns_display["rpbm"]) { // retrieve mode public method block execute
                 $langUp = strtoupper($lang);
-                $out_scr_btns .= '<div class="btn-qsearch btn-centered-' . $btns_total . '-btn-' . $btn_num . '" style="">';                
+                $out_scr_btns .= '<div class="btn-qsearch btn-centered-' . $btns_total . '-btn-' . $btn_num . '" style="">';
                 $out_scr_btns .= '<form name="rpbmForm" id="rpbmForm" method="post" action="' . "main.php" . '">';
                 $out_scr_btns .= '<input type="hidden" id="checked_ids" name="checked_ids"  value=","/>';
                 $out_scr_btns .= '<input type="hidden" name="cl" value="' . $cl . '"/>';
@@ -294,18 +302,17 @@ if ($datatable_on) {
                 $out_scr_btns .= '<input type="hidden" name="Main_Page" value="afw_mode_rpbm.php"/>';
                 $out_scr_btns .= AfwShowHelper::showObject($myClassInstance, "HTML", "afw_hidden_search_criteria.php");
                 $for_selected_items = $myClassInstance->translateOperator("for selected items", $lang);
-                foreach($rpbm_list as $rpbm_item_code => $rpbm_item) {                        
+                foreach ($rpbm_list as $rpbm_item_code => $rpbm_item) {
                         $rpbm_item_method = $rpbm_item['METHOD'];
-                        if($rpbm_item_method) {
+                        if ($rpbm_item_method) {
                                 $rpbm_item_title_ar = $rpbm_item['LABEL_AR'];
-                                $rpbm_item_title = $rpbm_item['LABEL_'.$langUp]." ".$for_selected_items;
-                                if(!$rpbm_item_title) $rpbm_item_title = $rpbm_item_title_ar;
-                                if(!$rpbm_item_title) $rpbm_item_title = $rpbm_item_method;
+                                $rpbm_item_title = $rpbm_item['LABEL_' . $langUp] . " " . $for_selected_items;
+                                if (!$rpbm_item_title) $rpbm_item_title = $rpbm_item_title_ar;
+                                if (!$rpbm_item_title) $rpbm_item_title = $rpbm_item_method;
                                 $out_scr_btns .= "<input type=\"submit\" class=\"longbtn greenbtn submit-btn rpbm fright\" name=\"submit_rpbm_$rpbm_item_code\"  id=\"submit_rpbm_$rpbm_item_code\" value=\"$rpbm_item_title\" disabled/>\n";
                         }
-                        
                 }
-                
+
                 $out_scr_btns .= '</form>';
                 $out_scr_btns .= '</div>';
                 $btn_num++;
@@ -524,7 +531,7 @@ if ($action == "retrieve") {
                 $select_view = "<div class='qsearchview_select'><select id='qsearchview' name='qsearchview' class='form-control lang_$lang'>
                   <option value='all' $fgroup_all_selected >$all_fields</option>
                 ";
-                $qsrch_fgroups = AfwStructureHelper::getFieldGroupArr($myClassInstance,$lang);
+                $qsrch_fgroups = AfwStructureHelper::getFieldGroupArr($myClassInstance, $lang);
                 $size_qsearch_text = ${"size_qsearch_" . $myClassInstance};
                 if (!$size_qsearch_text) $size_qsearch_text = 3;
                 foreach ($qsrch_fgroups as $fgroupcode => $fgroupname) {
