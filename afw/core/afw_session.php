@@ -461,16 +461,18 @@ class AfwSession extends AFWRoot
          * @param array $infos_arr, 
          * @param array $war_arr
          */
-        public static function consolePbmResult($errors_arr, $infos_arr, $war_arr)
+        public static function consolePbmResult($errors_arr, $infos_arr, $war_arr, $prefix = "")
         {
+                $tabulation = "\t";
+                if ($prefix) $tabulation .=  $prefix . " : ";
                 if (count($errors_arr) > 0) {
-                        AfwSession::console($errors_arr, "error");
+                        AfwSession::console($errors_arr, "error", $tabulation);
                 }
                 if (count($infos_arr) > 0) {
-                        AfwSession::console($infos_arr, "information");
+                        AfwSession::console($infos_arr, "information", $tabulation);
                 }
                 if (count($war_arr) > 0) {
-                        AfwSession::console($war_arr, "warning");
+                        AfwSession::console($war_arr, "warning", $tabulation);
                 }
         }
 
