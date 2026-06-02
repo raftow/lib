@@ -199,13 +199,13 @@ class AfwUmsPagHelper extends AFWRoot
         ) = AfwUmsPagHelper::getMyModuleAndAtable($id_main_sh, $mcode, $table_name);
 
         if (!$mdl_id) {
-            $obj->simpleError(
+            throw new AfwRuntimeException(
                 "can't find or create module [$mcode] in related orgunit [$id_main_sh]."
             );
         }
 
         if (!$tbl_id) {
-            $obj->simpleError(
+            throw new AfwRuntimeException(
                 "can't find or create table [$table_name] in module [$mcode/$mdl_id]."
             );
         }

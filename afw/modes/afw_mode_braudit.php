@@ -96,7 +96,7 @@ if ($objme) {
         $can = $myClassInstance->public_audit;
 }
 // $objme->showICanDoLog();
-// $myClassInstance->simpleError("debugg :: iCanDoOperationLog ::");
+// throw new AfwRuntimeException("debugg :: iCanDoOperationLog ::");
 
 if (!$can) {
         AfwSession::setSessionVar("operation", "audit by row on $myClass class");

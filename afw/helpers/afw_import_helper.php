@@ -228,12 +228,12 @@ class AfwImportHelper extends AFWRoot
                         $my_errors_arr[] = "$importedObject_desc : $error_record";
                     }
 
-                    // if(count($errors)>0) $object->simpleError("XXError while importing record : ".implode(",<br>",$errors)." after merge : ".implode("/<br>",$my_errors_arr));
+                    // if(count($errors)>0) throw new AfwRuntimeException("XXError while importing record : ".implode(",<br>",$errors)." after merge : ".implode("/<br>",$my_errors_arr));
                 } else {
-                    // if(count($errors)>0) $object->simpleError("YYError while importing record : ".implode(",<br>",$errors)." after merge : ".implode("/<br>",$my_errors_arr));
+                    // if(count($errors)>0) throw new AfwRuntimeException("YYError while importing record : ".implode(",<br>",$errors)." after merge : ".implode("/<br>",$my_errors_arr));
                     $importOk = false;
                     if (!$skip_error and $halt_if_error) {
-                        $object->simpleError(
+                        throw new AfwRuntimeException(
                             "can't create the principal object " .
                                 implode(' / ', $my_errors_arr)
                         );
@@ -425,16 +425,16 @@ class AfwImportHelper extends AFWRoot
                         $importedObj->commit();
                     }
 
-                    // if(count($errors)>0) $object->simpleError("XXError while importing record : ".implode(",<br>",$errors)." after merge : ".implode("/<br>",$my_errors_arr));
+                    // if(count($errors)>0) throw new AfwRuntimeException("XXError while importing record : ".implode(",<br>",$errors)." after merge : ".implode("/<br>",$my_errors_arr));
                 } else {
                     $ignored_object = true;
-                    // if(count($errors)>0) $object->simpleError("YYError while importing record : ".implode(",<br>",$errors)." after merge : ".implode("/<br>",$my_errors_arr));
+                    // if(count($errors)>0) throw new AfwRuntimeException("YYError while importing record : ".implode(",<br>",$errors)." after merge : ".implode("/<br>",$my_errors_arr));
                     $importOk = false;
                     $error_record =
                         "record $recordNum : can't create the principal object : " .
                         implode(' / ', $my_errors_arr);
                     if (!$skip_error and $halt_if_error) {
-                        $object->simpleError($error_record);
+                        throw new AfwRuntimeException($error_record);
                     }
                     $my_errors_arr[] = $error_record;
                 }

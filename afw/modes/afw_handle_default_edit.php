@@ -106,7 +106,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
 
         if ((!$val) and ($auto_c_create) and ($val_atc)) {
             if ($desc["TYPE"] != "FK") {
-                $obj->simpleError("auto create should be only on FK attributes $nom_col is " . $desc["TYPE"]);
+                throw new AfwRuntimeException("auto create should be only on FK attributes $nom_col is " . $desc["TYPE"]);
             }
 
             $obj_at = AfwStructureHelper::getEmptyObject($obj, $nom_col);
@@ -218,7 +218,7 @@ if (!$is_loaded_from_db) {
         if ($can_show_info) AfwSession::pushSuccess($successful_save);
     } else {
 
-        // $obj->simpleError(var_export($obj,true));
+        // throw new AfwRuntimeException(var_export($obj,true));
         if (!$obj->VIEW) {
             $case_of_handle = "nothing updated";
             if ($can_show_info) AfwSession::pushInformation("لا شيء تم تعديله");

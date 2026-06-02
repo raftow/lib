@@ -358,7 +358,7 @@ class AfwSqlHelper extends AFWRoot
                 //    * STRUCTURE AND
                 //    * SHORTNAMES
 
-                // else $obj->simpleError("field $key has value '$value' setted in FIELDS_UPDATED and can not be saved, DB_STRUCTURE : ".var_export($structure,true));
+                // else throw new AfwRuntimeException("field $key has value '$value' setted in FIELDS_UPDATED and can not be saved, DB_STRUCTURE : ".var_export($structure,true));
             } else {
                 $report .= "\n -- ignored tech field $key \n";
             }

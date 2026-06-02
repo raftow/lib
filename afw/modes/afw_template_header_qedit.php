@@ -79,7 +79,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                 if ($trad_col_short == $nom_col_short) $qedit_trad[$nom_col] = $obj->translate($nom_col, $lang);
                 else $qedit_trad[$nom_col] = $trad_col_short;
         } elseif (((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) || $mode_show_field_read_only) {
-                //$obj->simpleError("fixm_array = ".var_export($fixm_array,true));
+                //throw new AfwRuntimeException("fixm_array = ".var_export($fixm_array,true));
                 if ($mode_field_qedit) {
                         //if($nom_col=="symbol") die(var_export($fixm_array,true));
                         if (!isset($fixm_array[$nom_col])) {
@@ -139,7 +139,7 @@ if ($obj->ENABLE_DISPLAY_MODE_IN_QEDIT or (!$obj->IS_LOOKUP)) {
 // @todo if($obj->QEDIT_SHOW_EDIT_MODE) $qedit_trad["edit"] = AfwLanguageHelper::translateKeyword("edit", $lang);
 
 /*
-$obj->simpleError("fixm_input = ".var_export($fixm_input,true)."    
+throw new AfwRuntimeException("fixm_input = ".var_export($fixm_input,true)."    
      ||   ignored   = ".var_export($ignored_qedit_arr,true)."
      ||   fixm_trad = ".var_export($fixm_trad,true)."
      ||   mode_field_qedit_arr = ".var_export($mode_field_qedit_arr,true));*/
@@ -201,7 +201,7 @@ if (!$obj->qedit_minibox) {
                 <?php
                 } else {
                         echo "<!-- ************* list of inputs as hideQeditCommonFields option is enabled *********** -->";
-                        //$obj->simpleError(var_export($fixm_input,true));
+                        //throw new AfwRuntimeException(var_export($fixm_input,true));
                         //echo("obj->fixmtit=$obj->fixmtit");
                         foreach ($fixm_input as $col => $input) {
                                 echo "<!-- fixminput of $col -->" . $input;

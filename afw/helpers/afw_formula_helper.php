@@ -257,7 +257,7 @@ class AfwFormulaHelper extends AFWRoot
             } 
             else 
             {
-                $obj->simpleError("formulaMethod in formula $formula not defined (3rd param)");
+                throw new AfwRuntimeException("formulaMethod in formula $formula not defined (3rd param)");
             }
         }
     }

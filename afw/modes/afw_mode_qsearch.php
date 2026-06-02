@@ -161,7 +161,7 @@ if ($objme) {
         $canEdit = $myClassInstance->public_edit;
 }
 // $objme->showICanDoLog();
-// $myClassInstance->simpleError("debugg :: iCanDoOperationLog ::");
+// throw new AfwRuntimeException("debugg :: iCanDoOperationLog ::");
 
 if (!$can) {
         $myClassInstanceClass = get_class($myClassInstance);
