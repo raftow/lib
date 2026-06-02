@@ -687,7 +687,7 @@ class AfwLoadHelper extends AFWRoot
                                 if (!$hg) $hg = 20;
                                 if ($stripHtmlTags) {
                                     $tuple[$col] = "N/A";
-                                } else $tuple[$col] = "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>";
+                                } else $tuple[$col] = "<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' height='$hg'>";
                             } elseif (
                                 $objItem->umsCheckDisabledInRetrieveMode() or
                                 AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($objItem, $col, AfwSession::getUserConnected(), 'DISPLAY', $desc)

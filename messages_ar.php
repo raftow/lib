@@ -66,6 +66,9 @@ $messages["Total"] = "الإجمــالـي";
 
 $messages["There are more technical details with administrator"] = "يوجد المزيد من التفاصيل الفنية مع المشرف";
 
+$messages["no quick show for [items] attribute except if you activate option [show items attributes] because it is very costly in performance"] 
+  = "لا يمكن عرض حقول ايتمز بشكل سريع إلا إذا قمت بتفعيل الخيار [عرض حقول ايتمز] لأن ذلك يكون مكلفاً من حيث الأداء";
+
 
 $messages["Bad information! user not found."] = "معلومات غير صحيحة! لم يتم العثور على المستخدم ";
 $messages["The mobile number entered does not match with the one saved in database"] = "معلومات غير صحيحة! لم يتم العثور على المستخدم ";

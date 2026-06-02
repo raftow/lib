@@ -1551,15 +1551,21 @@ class AfwShowHelper
         switch ($desc['TYPE']) {
             case 'FK':
                 if ($desc['CATEGORY'] === 'ITEMS') {
-                    /*
-                     * $objs = $objItem->get(
-                     *     $col,
-                     *     'object',
-                     *     '',
-                     *     false
-                     * );
-                     */
-                    $return = 'no quick show for [items] attribute';
+
+                    if(AfwSession::hasOption("SHOW_ITEMS_ATTRIBUTES")) {
+                        $objs = $objItem->get(
+                            $col,
+                            'object',
+                            '',
+                            false
+                        );
+                        $return = self::quickShowOneOrListOfObjects($objs, $lang, $newline);
+                    }
+                    else {
+                        $message = $objItem->tm('no quick show for [items] attribute except if you activate option [show items attributes] because it is very costly in performance', $lang);
+                        $return = "<img src='../lib/images/fail.png' data-toggle='tooltip' data-placement='top' title='$message'  width='24' height='24'>";
+                    }
+                    
                 } elseif (($desc['CATEGORY'] == 'FORMULA') or ($desc['CATEGORY'] == 'SHORTCUT')) {
                     $objs = $objItem->calc($col, true, 'object');
                     // die("for categ = formula, obj = $objItem => calc($col,true, object) = ".var_export($objs));
