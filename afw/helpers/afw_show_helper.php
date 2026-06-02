@@ -1563,7 +1563,7 @@ class AfwShowHelper
                     }
                     else {
                         $message = $objItem->tm('no quick show for [items] attribute except if you activate option [show items attributes] because it is very costly in performance', $lang);
-                        $return = "<img src='../lib/images/fail.png' data-toggle='tooltip' data-placement='top' title='$message'  width='24' height='24'>";
+                        $return = "<img src='../lib/images/fail.png' data-toggle='tooltip' data-placement='top' title='$message'  width='96px' height='96px'>";
                     }
                     
                 } elseif (($desc['CATEGORY'] == 'FORMULA') or ($desc['CATEGORY'] == 'SHORTCUT')) {

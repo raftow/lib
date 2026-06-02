@@ -820,9 +820,13 @@ div#footer_div {
 
 table.dataTable tbody tr:hover>td,
 table.grid tbody tr:hover>td {
-    opacity: 50%;
+    opacity: 100%;
 }
 
+.tooltip.in{
+    filter: none !important;
+    opacity: 100% !important;
+}
 
 div.messages--error>a {
     color: wheat;
@@ -1294,20 +1298,25 @@ h1.modal-title {
 .tooltip.fade.in.top {
     font-family: 'menu';
     font-size: 18px;
-    background-color: #0b83e9;
-    margin-left: 40%;
-    margin-right: 40%;
-    width: 20%;
-
-    /*min-height: 100px !important;
-    position: absolute;
-    top:0 !important;
-    */
+    background-color: #008aff;
+    margin-left: calc(956px - 190px);
+    margin-right: calc(50% - 190px);
+    width: 380px;
     color: white;
+    z-index: 9999;
 }
 
 .tooltip.fade.in.top * {
     background-color: #0b83e9;
+}
+
+.tooltip-inner {
+    max-width: 380px;
+    padding: 3px 8px;
+    color: #fff;
+    text-align: center;
+    background-color: #0759a1 !important;
+    border-radius: 4px;
 }
 
 .hzm3-row-padding.hzm3-center.hzm3-small.hzm_home_bloc {
