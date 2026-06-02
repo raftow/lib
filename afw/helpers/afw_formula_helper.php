@@ -121,7 +121,7 @@ class AfwFormulaHelper extends AFWRoot
         ) = explode('.', $formula);
         //$obj_formula_log[$attribute] = "use of php formula ($formulaFunction,$formulaAttribute1,$formulaAttribute2,$formulaAttribute3)";
 
-        if ($formulaFunction == 'countItems') {
+        if ($formulaFunction == 'countFKItems') {
             return $obj->countFKItems($formulaAttribute1);
         }
         elseif ($formulaFunction == 'pic_info') {
