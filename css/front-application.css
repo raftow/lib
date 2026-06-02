@@ -4595,12 +4595,18 @@ tr.btrace.header {
     background: #d9d987;
 }
 
+tr.btrace.header>th {
+    padding: 5px;
+    background-color: #b0cd37;
+}
+
 tr.btrace>td {
-    background: #bebea3;
+    background: #fbfbd5;
+    padding: 5px;
 }
 
 tr.btrace.odd>td {
-    background: #858577;
+    background: #c9ddba;
 }
 
 th.params {
