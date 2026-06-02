@@ -220,8 +220,20 @@ class UfwQueryAnalyzer
         return [$this_module, $this_table, $sql_info_class, $start_q_time, $start_m_time];
     }
 
+    /**
+     * @param string $sql_query
+     * @param array $preArr
+     */
+
     public static function postAnalyseQuery($sql_query, $preArr)
     {
+        $sql_capture_and_backtrace = AfwSession::config("sql_to_capture", "");
+        // $sql_capture_and_backtrace = "me.arole_id = '404'";
+        if ($sql_capture_and_backtrace) {
+            if (AfwStringHelper::stringContain($sql_query, $sql_capture_and_backtrace)) {
+                throw new AfwRuntimeException('sql ' . $sql_capture_and_backtrace . ' captured');
+            }
+        }
 
         list($this_module, $this_table, $sql_info_class, $start_q_time, $start_m_time, $row_count, $affected_row_count) = $preArr;
 
@@ -296,9 +308,9 @@ class UfwQueryAnalyzer
             50.0
         );
 
-        $sql_capture_and_backtrace = AfwSession::config("sql_to_capture", "");
+        
 
-        if (((!self::isProcessLourdMode())) or $sql_capture_and_backtrace) {
+        if (!self::isProcessLourdMode() or $sql_capture_and_backtrace) {
             if (!$sql_time_max_in_milli_sec) {
                 $sql_time_max_in_milli_sec = 30.0;
             }

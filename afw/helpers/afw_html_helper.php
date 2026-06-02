@@ -67,6 +67,11 @@ class AfwHtmlHelper extends AFWRoot
                 return $html;
         }
 
+        /**
+         * @param array $backtrace         
+         * @param bool $advanced
+         */
+
         public static function htmlBackTrace($backtrace, $advanced = true)
         {
                 $message = "<table dir='ltr' class='hide'>

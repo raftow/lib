@@ -130,13 +130,7 @@ class AfwDatabase extends AFWRoot
         
         UfwQueryAnalyzer::postAnalyseQuery($sql_query,$arrPre);
 
-        $sql_capture_and_backtrace = AfwSession::config("sql_to_capture","");
-        $sql_capture_and_backtrace = "me.arole_id = '404'";
-        if ($sql_capture_and_backtrace) {
-            if (AfwStringHelper::stringContain($sql_query, $sql_capture_and_backtrace)) {
-                throw new AfwRuntimeException('sql ' . $sql_capture_and_backtrace . ' captured');
-            }
-        }
+        
 
         return [$result, $project_link_name, $row_count, $affected_row_count];
     }
