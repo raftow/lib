@@ -1018,7 +1018,7 @@ li {
 input:-webkit-autofill,
 textarea:-webkit-autofill,
 select:-webkit-autofill {
-    background-color: #fff !important;
+    background-color: transparent !important;
 }
 
 
@@ -7488,7 +7488,7 @@ input.inputqe.xqe_data_notloaded {
 
 
 .ppa {
-    width: 80%;
+    width: 100%;
     margin: auto;
     margin-top: 15px;
     margin-bottom: 19px;
