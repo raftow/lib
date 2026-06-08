@@ -3,7 +3,7 @@
 $afw_dir_name = dirname(__FILE__)."/../afw";
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
-$lang = AfwLanguageHelper::getGlobalLanguage();
+
 
 // old include of afw.php
 
@@ -38,6 +38,8 @@ foreach($required_modules as $required_module)
 {
     AfwAutoLoader::addModule($required_module);
 }
+
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 AfwSession::startSession();
 require_once("$afw_dir_name/../../config/global_config.php");
