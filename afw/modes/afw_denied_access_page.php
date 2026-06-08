@@ -4,7 +4,7 @@ $module_dir_name = $file_dir_name;
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 ini_set('zend.exception_ignore_args', 0);
-$lang = "ar";
+
 
 require_once("$file_dir_name/../core/afw_autoloader.php");
 
@@ -16,8 +16,12 @@ AfwSession::startSession();
 $objme = AfwSession::getUserConnected();
 //if(!$objme) header("login.php");
 $uri_module = UfwUrlManager::currentURIModule();
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 include_once("$file_dir_name/../../../$uri_module/application_config.php");
+/**
+ * @var array $config_arr
+ */
 AfwSession::initConfig($config_arr, "system", "$file_dir_name/../../../$uri_module/application_config.php");
 $NOM_SITE = AfwSession::config("application_name", "This Application");
 $MODE_DEV = AfwSession::config("MODE_DEVELOPMENT", true);

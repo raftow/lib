@@ -9,7 +9,7 @@
     $case  = $_REQUEST["case"];
     $subcase  = $_REQUEST["subcase"];
     
-    if(!$lang) $lang = "ar";
+    if (!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
     $myObj = new $class();
     $stats_title = $myObj->translate('stats.' . $stc, $lang);
     $stats_title = $myObj->decodeText($stats_title, $prefix = '', $add_cotes = false, $sepBefore = '[', $sepAfter = ']');

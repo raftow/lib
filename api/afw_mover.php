@@ -32,8 +32,8 @@ if ((!$currmod) or (!$mv_id) or (!$cl) or (!$mv_sens)) die("afw error : nothing 
 $MODULE = $currmod;
 
 include("$afw_dir_name/includes/afw_check_member.php");
-$lang = AfwSession::getSessionVar("lang");
-if (!$lang) $lang = "ar";
+
+if (!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
 
 // 
 

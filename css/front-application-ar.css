@@ -1,0 +1,9 @@
+.hzm3-col,
+.hzm3-half,
+.hzm3-third,
+.hzm3-twothird,
+.hzm3-threequarter,
+.hzm3-quarter {
+    float: right;
+    width: 100%;
+}

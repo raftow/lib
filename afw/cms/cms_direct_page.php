@@ -59,8 +59,8 @@ if(!$force_allow_access_to_customers) $only_members = true;
 foreach($_GET as $col => $val) ${$col} = $val;
 foreach($_POST as $col => $val) ${$col} = $val;
 
-if(!$lang) $lang = AfwSession::getSessionVar("current_lang", "ar");
-else AfwSession::setSessionVar("current_lang", $lang);
+if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+else AfwLanguageHelper::setGlobalLanguage($lang);
 
 
 include(dirname(__FILE__)."/../includes/afw_check_member.php");

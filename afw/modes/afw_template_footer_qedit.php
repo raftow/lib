@@ -2,7 +2,7 @@
 echo "<!-- footer qedit start " . date("Y-m-d H:i:s") . " -->";
 $altern_xy = true;
 $lang = AfwLanguageHelper::getGlobalLanguage();
-if (!$lang) $lang = 'ar';
+
 
 $themeArr = AfwThemeHelper::loadTheme();
 foreach ($themeArr as $theme => $themeValue) {

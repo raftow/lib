@@ -921,15 +921,7 @@ screen and (max-width: 1126px) {
     }
 }
 
-.hzm3-col,
-.hzm3-half,
-.hzm3-third,
-.hzm3-twothird,
-.hzm3-threequarter,
-.hzm3-quarter {
-    float: right;
-    width: 100%;
-}
+
 
 .hzm3-bar a,
 .hzm3-button,

@@ -3,7 +3,36 @@ $file_dir_name = dirname(__FILE__);
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 
-
+/**
+ * @var array $config_arr
+ * @var string $lang
+ * @var array $login_page_options
+ * @var string $DEBUGG_SQL_DIR
+ * @var string $NOM_SITE
+ * @var string $DESC_SITE
+ * @var string $WELCOME_SITE
+ * @var string $USER_PREFIX
+ * @var string $action_page
+ * @var bool $html_debugg_login
+ * @var bool $debugg_login
+ * @var bool $debugg_login_die
+ * @var bool $debugg_after_login
+ * @var bool $debugg_after_ldap
+ * @var bool $debugg_after_golden_or_db
+ * @var bool $debugg_after_session_created
+ * @var array $login_dbg
+ * @var string $nom_site
+ * @var string $desc_site
+ * @var string $welcome_site
+ * @var string $user_prefix
+ * @var string $login_title
+ * @var string $login_by
+ * @var string $login_by_sentence
+ * @var bool $no_menu
+ * @var string $body_css_class
+ * @var string $MODULE
+ * @var string $XMODULE
+ */
 
 if (!$action_page) $action_page = "pwd_reset.php";
 
@@ -19,8 +48,7 @@ require_once("$module_auth_dir_name/../../../$uri_module/module_config.php");
 include_once("$module_auth_dir_name/../../../$uri_module/application_config.php");
 AfwSession::initConfig($config_arr, "system", "$module_auth_dir_name/../../../$uri_module/application_config.php");
 AfwSession::startSession();
-$lang = AfwSession::getSessionVar("lang");
-if (!$lang) $lang = "ar";
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 
 require_once("$module_auth_dir_name/../../../config/global_config.php");

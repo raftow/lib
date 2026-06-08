@@ -41,7 +41,14 @@ if (!$objme) $objme = AfwSession::getUserConnected();
 // $mode_analysis = (AfwSession::config("MODE_DEVELOPMENT", false) or ($objme and $objme->isAdmin() and AfwSession::config("MODE_ANALYSIS", false)));
 
 $lang = $_REQUEST["lang"];
-if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+if(!$lang) {
+    $lang = AfwLanguageHelper::getGlobalLanguage();
+    // echo "main start 1 lang = AfwLanguageHelper::getGlobalLanguage() => $lang <br>";
+}
+else {
+    AfwLanguageHelper::setGlobalLanguage($lang);
+    // echo "main start 1 lang = _REQUEST[lang] => $lang => AfwLanguageHelper::setGlobalLanguage($lang) <br>";
+}
 
 $parent_module = AfwSession::config("main_module", "");
 if ($parent_module) AfwAutoLoader::addMainModule($parent_module);
@@ -66,12 +73,12 @@ if (!$force_allow_access_to_customers) $only_members = true;
 //foreach ($_REQUEST as $col => $val) ${$col} = $val;
 if(!$Main_Page) $Main_Page = $_REQUEST["Main_Page"];
 // die(var_export($_REQUEST,true));
-// die("main start 2 lang = ".$lang);
+// echo ("main start before include of afw_check_member lang = ".$lang." <br>");
 $afw_check_member_file = "$lib_path/afw/includes/afw_check_member.php";
 if (file_exists($afw_check_member_file)) {
     include($afw_check_member_file);
 }
-// die("main start 3 lang = ".$lang);
+// die ("main start after include of afw_check_member lang = ".$lang." <br>");
 $header_template = AfwSession::config("header-template", "modern"); 
 $menu_template = AfwSession::config("menu-template", "modern");
 $body_template = AfwSession::config("body-template", "modern");

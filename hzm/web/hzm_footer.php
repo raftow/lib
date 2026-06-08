@@ -1,9 +1,19 @@
 <?php
-
+/**
+ * @var string $MODULE
+ * @var bool $datatable_on
+ * @var float $start_main_time
+ * @var bool $footer_call
+ * @var bool $nomenu
+ * @var AUser $objme
+ * @var string $lang
+ * @var array $quick_links_arr
+ * @var string $copyright_phrase
+ */
 $objme = AfwSession::getUserConnected();
 // die("rafik . objme = ".var_export($objme, true));
 $lang = AfwLanguageHelper::getGlobalLanguage();
-if(!$lang) $lang="ar";
+
 $please_wait = AFWObject::gtr("PLEASE_WAIT",$lang);
 $loading = AFWObject::gtr("LOADING",$lang);
 $please_wait_loading = $please_wait." ".$loading;
@@ -53,7 +63,7 @@ include_once("hzm_footer_features_js.php");
   else
   {
 ?>
-      <center><a href="index.php">home</a></center>
+      <a href="index.php">home</a>
 
 <?php
   }
@@ -160,7 +170,7 @@ include_once("hzm_footer_features_js.php");
         else
         {
           $quick_links_arr = $objme->getMyQuickLinks($lang, $MODULE);
-          die("rafik objme->getMyQuickLinks($lang, $module) => quick_links_arr = ".var_export($quick_links_arr, true));
+          die("rafik objme->getMyQuickLinks($lang, $MODULE) => quick_links_arr = ".var_export($quick_links_arr, true));
           $tocheck = "from database objme->getMyQuickLinks($lang, $MODULE)";
         } 
     }

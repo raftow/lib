@@ -101,7 +101,7 @@ if(!$can)
 }
 
 
-if(!$lang) $lang = 'ar';
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 
 

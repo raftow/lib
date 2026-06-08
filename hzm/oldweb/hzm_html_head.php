@@ -11,8 +11,10 @@
  * @var array $config
  * @var array $NOM_SITE
  * @var array $custom_scripts
+ * @var array $Main_Page
  */
-if (!$lang) $lang = "ar";
+
+if (!$lang) $lang = "en";
 if (!$my_font) $my_font = "front";
 $crst = md5("crst".date("YmdHis"));
 ?>
@@ -31,6 +33,7 @@ $crst = md5("crst".date("YmdHis"));
   if ($front_header) {
   ?>
     <link rel="stylesheet" href="../lib/css/front-application.css?crst=<?php echo $crst ?>">
+    <link rel="stylesheet" href="../lib/css/front-application-<?php echo $lang?>.css?crst=<?php echo $crst ?>">
     <link rel="stylesheet" href="../lib/css/hzm-v001.css?crst=<?php echo $crst ?>">
     
   <?php

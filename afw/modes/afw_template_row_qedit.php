@@ -22,7 +22,7 @@ foreach($themeArr as $theme => $themeValue)
 
 define("LIMIT_INPUT_SELECT", 30);
 
-if(!$lang) $lang = 'ar';
+$lang = AfwLanguageHelper::getGlobalLanguage();
 if(!$obj) die("row-qedit-error : no object sent to the template");
 $header_imbedded = $obj->qeditHeaderFooterEmbedded($obj->submode, $obj->fgroup);
 if($header_imbedded)

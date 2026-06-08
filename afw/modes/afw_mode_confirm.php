@@ -15,7 +15,7 @@ if(!$currmod)
     $currmod = $uri_module;
 }
 
-if(!$lang) $lang = 'ar';
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 $myObj = new $class();
 $myObj->popup = $popup;

@@ -81,7 +81,7 @@ class CmsMainPage
                 $Main_Table = AfwStringHelper::classToTable($_REQUEST['cl']);
             }
             $lang = $_REQUEST['lang'];
-            // if(!$lang) $lang = "ar";
+            
             if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
             if (count($options) == 0) $options = CmsMainPage::getDefaultOptions($Main_Page, $current_module, $Main_Table);
 
@@ -110,7 +110,7 @@ class CmsMainPage
         // $curr_path = dirname(__FILE__);
         include("cms_direct_start.php");
         $lang = $_REQUEST['lang'];
-        // if(!$lang) $lang = "ar";
+        
         if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
         // die("echoDirectPage 20241119  : after include cms_direct_start.php : header_template=$header_template, menu_template = $menu_template");
         echo self::renderDirectPage($direct_page, $direct_page_path, $header_template, $menu_template, $body_template, $footer_template, $lang, $current_module, $options);

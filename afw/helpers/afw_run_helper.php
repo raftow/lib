@@ -126,6 +126,7 @@ class AfwRunHelper
                                 <link rel='stylesheet' href='../lib/css/font-awesome.min.css'>
                                 <link rel='stylesheet' href='../lib/css/menu_ar.css'>
                                 <link rel='stylesheet' href='../lib/css/front-application.css?crst=$crst'>
+                                <link rel='stylesheet' href='../lib/css/front-application-en.css?crst=$crst'>
                                 <link rel='stylesheet' href='../lib/css/hzm-v001.css?crst=$crst'>                                
                                 
                                 <link rel='stylesheet' href='../lib/css/front_screen_pc.css?crst=$crst'>

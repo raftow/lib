@@ -217,13 +217,21 @@ class AfwSession extends AFWRoot
         public static function setSessionVar($var, $value)
         {
                 if (empty($value)) self::emptingVar($var, "setSessionVar");
+                
+                /* if(($var=="current _lang") and ($value="en") and ($value != $_SESSION[$var]))
+                {
+                        $old_value = $_SESSION[$var];
+                        throw new AfwRuntimeException("Strange attempt to set var [$var] to value=[$value], old value=[$old_value]");
+                }*/
+                
                 $_SESSION[$var] = $value;
+                
                 /*
-                if(($var=="main_company") and ($value!="nauss"))
+                if(($var=="current _lang") and ($value!="en") and ($value!="ar"))
                 {
                         throw new AfwRuntimeException("main_company attempt to be set to [$value] value");
-                }
-                */
+                }*/
+                
                 return $value;
         }
 

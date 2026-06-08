@@ -34,7 +34,7 @@ $l = Array();
 
 $l['a_meta_charset'] = 'UTF-8';
 $l['a_meta_dir'] = 'rtl';
-$l['a_meta_language'] = 'ar';
+$l['a_meta_language'] = 'a'.'r';
 
 // TRANSLATIONS --------------------------------------
 $l['w_page'] = 'صفحة';

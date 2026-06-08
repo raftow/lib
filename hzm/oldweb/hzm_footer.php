@@ -10,22 +10,10 @@
 $objme = AfwSession::getUserConnected();
 // die("rafik . objme = ".var_export($objme, true));
 $lang = AfwLanguageHelper::getGlobalLanguage();
-if(!$lang) $lang="ar";
+
 $please_wait = AFWObject::gtr("PLEASE_WAIT",$lang);
 $loading = AFWObject::gtr("LOADING",$lang);
 $please_wait_loading = $please_wait." ".$loading;
-
-/*
-if($objme) //die(var_export($objme,true));
-{
-    $lang = $_SES SION["lang"];
-    die("lang=$lang");
-    if(!$lang) $lang = "ar";
-} 
-else $lang = "ar";
-
-$lang = strtolower($lang);
-*/
 
 if(!$footer_call) $footer_call = 1;
 else $footer_call++;

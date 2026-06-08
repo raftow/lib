@@ -9,7 +9,7 @@ foreach($themeArr as $theme => $themeValue)
 //global  $TMP_DIR,$cl,$pk,$spk,$TMP_ROOT, $lang, $class_table, $class_tr1, $class_tr2, $pct_tab_search_criteria, $class_tr1_sel, $class_tr2_sel ;
 $objme = AfwSession::getUserConnected();
 $lang = AfwLanguageHelper::getGlobalLanguage();
-if(!$lang) $lang = 'ar';
+
 
 //echo "langue = $lang <br>";
 

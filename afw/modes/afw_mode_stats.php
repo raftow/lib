@@ -63,7 +63,7 @@ if (! $stats_config) {
 
 $stats_code = $stc;
 
-if (! $lang) $lang = 'ar';
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 // 
 

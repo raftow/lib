@@ -4090,12 +4090,11 @@ class AFWObject extends AFWRoot
 
     public function tm($message, $langue = '', $company = '')
     {
-        $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$langue) {
-            $langue = $lang;
+            $langue = AfwLanguageHelper::getGlobalLanguage();
         }
         if (!$langue) {
-            $langue = 'ar';
+            throw new AfwRuntimeException("language needed to do tm($message)");
         }
 
         return $this->translateMessage($message, $langue, $company);
@@ -4103,28 +4102,40 @@ class AFWObject extends AFWRoot
 
     public function tf($message, $langue = '')
     {
-        $lang = AfwLanguageHelper::getGlobalLanguage();
         if (!$langue) {
-            $langue = $lang;
+            $langue = AfwLanguageHelper::getGlobalLanguage();
         }
         if (!$langue) {
-            $langue = 'ar';
+            throw new AfwRuntimeException("language needed to do tf($message)");
         }
 
         $message_tm = $this->translate($message, $langue);
         return $message_tm;
     }
 
-    public function translateMessage($message, $lang = 'ar', $company = '')
+    public function translateMessage($message, $lang = '', $company = '')
     {
+        if (!$lang) {
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+        }
+        if (!$lang) {
+            throw new AfwRuntimeException("language needed to do translateMessage($message)");
+        }
+
         $module = static::$MODULE;
         if (!$module)
             throw new AfwRuntimeException('static::$MODULE should be defined in class : ' . get_class($this));
         return AfwLanguageHelper::translateCompanyMessage($message, $module, $lang, $company);
     }
 
-    public static function transMess($message, $lang = 'ar', $company = '')
+    public static function transMess($message, $lang = '', $company = '')
     {
+        if (!$lang) {
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+        }
+        if (!$lang) {
+            throw new AfwRuntimeException("language needed to do translateMessage($message)");
+        }
         $module = static::$MODULE;
         if (!$module)
             throw new AfwRuntimeException('static::$MODULE should be defined in class : ' . static::class);
@@ -4617,13 +4628,7 @@ class AFWObject extends AFWRoot
         if (!$ynCode)
             return '';
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        // $objme = AfwSession::getUserConnected();
-        if (!$langue) {
-            $langue = $lang;
-        }
-        if (!$langue) {
-            $langue = 'ar';
-        }
+        
         $ynCodeForThis = "$key.$ynCode";
         $ynTranslationForThis = $this->translate($ynCodeForThis, $langue);
 
@@ -4680,13 +4685,11 @@ class AFWObject extends AFWRoot
     ) {
         if ($attribute == "college_id") $debugg = true;
         $val_class = $this->getMyClass();
-        $lang = AfwLanguageHelper::getGlobalLanguage();
-        // $objme = AfwSession::getUserConnected();
         if (!$langue) {
-            $langue = $lang;
+            $langue = AfwLanguageHelper::getGlobalLanguage();
         }
         if (!$langue) {
-            $langue = 'ar';
+            throw new AfwRuntimeException("language needed to do showAttribute($attribute)");
         }
 
         if (!$structure) {

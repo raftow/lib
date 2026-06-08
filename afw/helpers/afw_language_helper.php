@@ -13,12 +13,25 @@ class AfwLanguageHelper
     public static function getGlobalLanguage()
     {
         $langue = AfwSession::getSessionVar("current_lang");
+        // if($langue) echo ("getGlobalLanguage() case 1 : $langue <br>");
         if (!$langue) {
-            global $lang;
-            $langue = $lang;
-            if (!$langue) $langue = 'ar';
+            if(isset($_REQUEST["lang"])) {
+                $langue = $_REQUEST["lang"];            
+                if($langue) AfwLanguageHelper::setGlobalLanguage($langue);
+                // if($langue) echo ("getGlobalLanguage() case 2 : $langue <br>");
+            }
+            else {
+                global $lang;
+                $langue = $lang;
+                if($langue) AfwLanguageHelper::setGlobalLanguage($langue);
+                // if($langue) echo ("getGlobalLanguage() case 3 : $langue <br>");
+            }
+            
+            if (!$langue) {
+                $langue = 'ar';
+                // echo ("getGlobalLanguage() case 4 : $langue <br>");
+            } 
         }
-
         return $langue;
     }
 
@@ -404,7 +417,7 @@ class AfwLanguageHelper
             }
         }
 
-        $return = UfwReplacement::trans_replace($return, $module, $langue);
+        $return = UfwReplacement::trans_replace($return, $module, $lang);
 
         return $return;
     }
@@ -530,6 +543,7 @@ class AfwLanguageHelper
         // new version of afw
         $classLower_arr[] = "me";
         // old version of afw
+        $return = "?!#@$";
         $classLower_arr[] = strtolower(AfwStringHelper::tableToClass($object::$TABLE));
         $translate_done = false;
         foreach ($classLower_arr as $classLower) {

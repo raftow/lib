@@ -1,5 +1,11 @@
 <?php
-
+        /**
+         * @var array $config
+         * @var string $lang
+         * @var string $MODULE
+         * @var bool $haltme
+         * 
+         */
         if(!$objme) $objme = AfwSession::getUserConnected();
         $debugg_start_check_member = false;
         $debugg_before_debugg_activation = false;
@@ -49,17 +55,15 @@
                 AfwSession::pushError($message);
         
         }
-        if(!$cl_dbg) $cl_dbg = date("YmdHis");
+        if(!isset($cl_dbg) or !$cl_dbg) $cl_dbg = date("YmdHis");
         /*if(!$cl) $cl_dbg = $sess_dbg;
         else $cl_dbg = $cl."_".date("Ymd");*/        
-        $debug_name = $MODULE."_".$cl_dbg;
-         
-        $my_debug_file = "debugg_".AfwSession::getSessionVar("user_id")."_${debug_name}_".".txt";
+        // $debug_name = $MODULE."_".$cl_dbg;         
+        // $my_debug_file = "debugg_".AfwSession::getSessionVar("user_id")."_${debug_name}_".".txt";        
+        // if($debugg_before_debugg_activation) AFWDebugg::log("debugg file name will be changed to : $DEBUGG_SQL_DIR,$my_debug_file");
         
-        if($debugg_before_debugg_activation) AFWDebugg::log("debugg file name will be changed to : $DEBUGG_SQL_DIR,$my_debug_file");
-        
-        AFWDebugg::initialiser($DEBUGG_SQL_DIR,$my_debug_file);
-        //AFWDebugg::initialiser("/www/log","debugg_$me.txt");
+        // AFWDebugg::initialiser($DEBUGG_SQL_DIR,$my_debug_file);
+        // AFWDebugg::initialiser("/www/log","debugg_$me.txt");
         if(!AfwSession::sessionStarted())
         {
                 $message = "Error session not started, it should be started at this level";
@@ -75,9 +79,11 @@
         }
         
         $me = AfwSession::getSessionVar("user_id");
+        if(!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+        else AfwLanguageHelper::setGlobalLanguage($lang);
         if(!$me) $me = 0;
         if($me)
-        {       if(!$lang) $lang = AfwSession::getSessionVar("current_lang"); 
+        {       
                 // AFWDebugg::log("user id connected : ".$me." lang $lang ");
                 if(!$objme)
                 {
@@ -118,22 +124,21 @@
                         }
                         // die("objme->load($me) = ".var_export($objme,true));
                         $objme->loadOptions(); 
-                        
-                        if(!$lang)
+                        if(!$lang) 
                         {
                                 $langobj = $objme->hetLang();
                                 if($langobj)
                                 {
                                         $lang = strtolower($langobj->getVal("lookup_code"));
-                                        AfwSession::setSessionVarIfNotSet("current_lang", $lang);
+                                        if($lang) AfwLanguageHelper::setGlobalLanguage($lang);
                                 }
                         }
 
                         if($only_admin and (!$objme->isAdmin()))
                         {
                                 AfwSession::pushError("لا توجد عندك صلاحية ادارة");
-                                if($info) AfwSession::pushInformation($info,"method-$pbMethodCode");
-                                if($error) AfwSession::pushError($error);                                
+                                if(isset($info) and $info) AfwSession::pushInformation($info,"method-$pbMethodCode");
+                                if(isset($error) and $error) AfwSession::pushError($error);                                
                 	        header("Location: index.php");
                 	        exit();
                         }
@@ -177,6 +182,11 @@
              echo "<h1>Admin halt</h1><br>";
              // show_cache_analysis();
              echo(var_export($_SERVER,true));
+
+             /**
+              * @var mixed $hmm
+              * @var mixed $hmc
+              */
              
              if($hmm and $hmc) $halt_obj = $objme->userCanTable[$hmm][$hmc];
              elseif($hmm) $halt_obj = $objme->userCanTable[$hmm];

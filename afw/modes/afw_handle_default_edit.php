@@ -8,7 +8,7 @@ $file  = $_POST["file_obj"];
 $id    = $_POST["id_obj"];
 $posted_currmod = $_POST["currmod"];
 /*$currstep = $_POST["currstep"];*/
-if (!$lang) $lang = "ar";
+if (!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
 $file_dir_name = dirname(__FILE__);
 
 $header_bloc_edit = "";

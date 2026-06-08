@@ -7,12 +7,8 @@
 
         private static function initLanguage()
         {
-                /*
                 $lang = AfwLanguageHelper::getGlobalLanguage(); 
-                $lang = AfwSession::getSessionVar("current_lang");
-                if(!$lang) $lang = "ar";
-                $lang = strtolower($lang);
-                */
+                // die("dbg-001 rafik 20241119 lang = ".$lang);
         }
         
         private static function addHtml($bloc, $title="")

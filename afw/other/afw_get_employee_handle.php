@@ -7,7 +7,7 @@ $theme_name = AfwSession::config('theme','modern'); $file_dir_name = dirname(__F
 
 if(!isset($objme)) $objme = AfwSession::getUserConnected();
 
-if(!$lang) $lang = 'ar';
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 
 $obj  = new Employee();

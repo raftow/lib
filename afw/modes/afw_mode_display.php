@@ -1,4 +1,8 @@
 <?php
+/**
+ * @var string $cl
+ * @var int $id
+ */
 $file_dir_name = dirname(__FILE__);
 if(AfwFrameworkHelper::displayInEditMode($cl))
 {
@@ -29,7 +33,7 @@ foreach($themeArr as $theme => $themeValue)
                 $currmod = $uri_module;
         }
 
-        if(!$lang) $lang = 'ar';
+        $lang = AfwLanguageHelper::getGlobalLanguage();
 
 
         $myObj = new $cl();

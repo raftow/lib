@@ -1,11 +1,13 @@
-<?
+<?php
    $page_charset = "UTF-8";
-   if(!$lang) $lang = "ar";
+   $lang = "a"."r";
    
    if($lang=="ar") $dir = "rtl";
    else $dir = "ltr";  
    
-   if(!$MODULE) $MODULE = "ums";  
+   if(!$MODULE) $MODULE = "ums";
+   
+   $crst = md5("crst".date("YmdHis"));
     
      
 ?>
@@ -19,6 +21,7 @@
 <link rel="stylesheet" href="../../css/font-awesome.min.css">
 <link rel="stylesheet" href="../../css/menu_<?=$lang?>.css?crst=<?php echo $crst ?>">
 <link rel="stylesheet" href="../../css/front-application.css?crst=<?php echo $crst ?>">
+<link rel="stylesheet" href="../../css/front-application-<?php echo $lang?>.css?crst=<?php echo $crst ?>">
 <link rel="stylesheet" href="../../css/hzm-v001.css?crst=<?php echo $crst ?>">
 
 <link rel='stylesheet' href='../lib/css/front_screen_pc.css?crst=<?php echo $crst ?>'>

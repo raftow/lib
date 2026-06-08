@@ -1,7 +1,9 @@
 <?
+   /**
+    * @var string $MODULE;
+    */
    $page_charset = "UTF-8";
-   $lang = AfwSession::getSessionVar("lang");
-   if(!$lang) $lang = "ar";
+   $lang = AfwLanguageHelper::getGlobalLanguage();
    
    if($lang=="ar") $dir = "rtl";
    else $dir = "ltr";  

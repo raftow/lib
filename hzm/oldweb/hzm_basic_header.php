@@ -1,6 +1,7 @@
-<?
+<?php
+   $body_css_class = "";
    $page_charset = "UTF-8";
-   if(!$lang) $lang = "ar";
+   $lang = "a"."r";
    
    if($lang=="ar") $dir = "rtl";
    else $dir = "ltr";  
@@ -10,15 +11,16 @@
    $crst = md5("crst".date("YmdHis"));     
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=<?=$page_charset?>">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo $page_charset?>">
 <!-- <link type="text/css" rel="stylesheet" href="../../css/simple/pag_checkboxes.css"> -->
 <!-- plugins -->
 <link type="text/css" rel="stylesheet" href="../../bmulti/css/bootstrap-multiselect.css"/>
 <!-- end plugins -->
 <link rel="stylesheet" href="../../css/jquery-ui-1.14.0.css">
 <link rel="stylesheet" href="../../css/font-awesome.min.css">
-<link rel="stylesheet" href="../../css/menu_<?=$lang?>.css">
+<link rel="stylesheet" href="../../css/menu_<?php echo $lang?>.css">
 <link rel="stylesheet" href="../../css/front-application.css?crst=<?php echo $crst ?>">
+<link rel="stylesheet" href="../../css/front-application-<?php echo $lang?>.css?crst=<?php echo $crst ?>">
 <link rel="stylesheet" href="../../css/hzm-v001.css?crst=<?php echo $crst ?>">
 
 <link rel="stylesheet" href="../../css/front_app.css">

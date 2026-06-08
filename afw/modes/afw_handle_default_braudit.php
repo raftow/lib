@@ -2,7 +2,7 @@
 // die("DBG-mode handle search");
 require_once(dirname(__FILE__) . "/../../../config/global_config.php");
 
-if (!$lang) $lang = 'ar';
+$lang = 'en';
 
 $themeArr = AfwThemeHelper::loadTheme("handle-braudit");
 foreach ($themeArr as $theme => $themeValue) {
@@ -16,7 +16,7 @@ $me =  $objme->id;
 $MAX_ROW_DEFAULT = AfwSession::config("MAX_ROW", 500);
 $MAX_ROW = AfwSession::config("MAX_ROW-$cl", $MAX_ROW_DEFAULT);
 if (!$objme->isAdmin()) $MAX_ROW = AfwSession::config("MAX_ROW-$cl-not-admin", $MAX_ROW);
-
+$lang = AfwLanguageHelper::getGlobalLanguage();
 $target = "";
 $popup_t = "";
 

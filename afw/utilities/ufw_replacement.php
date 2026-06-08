@@ -3,12 +3,14 @@ class UfwReplacement {
 
     /**
      * 
-     * $module can be string as module code or numeric as module Id
-     * 
+     * @param string $string
+     * @param string $module_code can be string as module code or numeric as module Id
+     * @param string $lang
+     * @return string
      */
     public static function trans_replace($string, $module_code, $lang)    
     {
-        if(!$lang) $lang="ar";
+        if(!$lang) throw new AfwRuntimeException("lang code required to do UfwReplacement::trans_replace (see main_company param in system config file)");
         // $old_module = $module;
         // $module = UmsManager::decodeModuleCodeOrIdToModuleCode($module);
         $company = AfwSession::currentCompany();

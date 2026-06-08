@@ -20,7 +20,8 @@ class AfwControllerHelper
             $body_template =   $controllerObj->bodyTemplate($methodName, $default_body_template);
             $footer_template = $controllerObj->footerTemplate($methodName, $default_footer_template);
             $lang = $request["lang"];
-            if(!$lang) $lang = "ar";
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+            
             $need_ob = true;
             /*
             if($methodName=="survey_request") die("will execute AfwHtmlPageConstructHelper::renderPage(lang=$lang, <br>

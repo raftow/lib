@@ -81,7 +81,7 @@ else
 
 if (!$liste_obj) {
         // require_once $file_obj;
-        if (!$lang) $lang = 'ar';
+        $lang = AfwLanguageHelper::getGlobalLanguage();
 
 
         list($arr_sql_conds, $cond_phrase_arr) = AfwSearchHelper::prepareSQLWhereFromPostedFilter($obj, $arr_sql_conds, $lang);

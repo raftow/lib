@@ -30,8 +30,7 @@ $MODULE = $currmod;
 if (!$MODULE) die("module not defined to access switcher");
 
 include("$afw_dir_name/includes/afw_check_member.php");
-$lang = AfwSession::getSessionVar("lang");
-if (!$lang) $lang = "ar";
+if (!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
 
 // 
 

@@ -2120,9 +2120,7 @@ class AfwFormatHelper
 
                 case 'FORMULA':
                     $lang = AfwLanguageHelper::getGlobalLanguage();
-                    if (!$lang) {
-                        $lang = 'ar';
-                    }
+                    
 
                     $return = AfwFormulaHelper::executeFormulaAttribute($object, $attribute, null, $lang, $what);
                     $return_isset = isset($return);

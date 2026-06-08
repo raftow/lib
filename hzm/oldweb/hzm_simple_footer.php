@@ -1,8 +1,15 @@
 </div>
 <!-- #Footer -->
+ 
 <?php
+/**
+ * @var string $MODULE
+ * @var bool $datatable_on
+ * @var float $start_main_time
+ * 
+ */
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        if(!$lang) $lang="ar";
+        
         $please_wait = AFWObject::gtr("PLEASE_WAIT",$lang);
         $loading = AFWObject::gtr("LOADING",$lang);
         $please_wait_loading = $please_wait." ".$loading;

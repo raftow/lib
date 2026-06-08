@@ -66,7 +66,7 @@ class AfwShowHelper
         $class_tr1 = 'altitem';
         $class_tr2 = 'item';
         $class_td_off = 'off';
-        $lang = 'ar';
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $dir = 'rtl';
         $bigtitle = '';
         $bigtitle_tr_class = 'bigtitle';

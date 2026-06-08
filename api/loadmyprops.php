@@ -7,7 +7,7 @@ require_once("$afw_dir_name/utilities/ufw_error_handler.php");
 
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
-if(!$lang) $lang = "ar";
+$lang = AfwLanguageHelper::getGlobalLanguage();
 // old include of afw.php
 
 

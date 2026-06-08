@@ -3,10 +3,11 @@
 /**
  * @var bool $datatable_on
  * @var float $start_main_time
+ * @var string $MODULE;
  */
 $objme = AfwSession::getUserConnected();
 $lang = AfwLanguageHelper::getGlobalLanguage();
-if (!$lang) $lang = "ar";
+
 $please_wait = AFWObject::gtr("PLEASE_WAIT", $lang);
 $loading = AFWObject::gtr("LOADING", $lang);
 $please_wait_loading = $please_wait . " " . $loading;

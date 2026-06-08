@@ -31,6 +31,7 @@
  * @var int $header_entry_counter
  * @var int $HEADER_PIC_HEIGHT
  * @var int $bg_height
+ * @var string $MODULE
  * 
  * @var Auser $objme
  * 
@@ -54,10 +55,7 @@ if ($header_entry_counter > 1) {
         AfwRunHelper::simpleError("HzmHeader included twice, in general this happen when you include main.php or cms_main_page.php when you are inside body of MainPage");
 }
 if (!$objme) $objme = AfwSession::getUserConnected();
-$lang = AfwSession::getSessionVar("lang");
-if (!$lang) $lang = "ar";
-
-$lang = strtolower($lang);
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 if ($imposed_charset) $page_charset = $imposed_charset;
 else {

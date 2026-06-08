@@ -97,6 +97,7 @@ class AfwHtmlIncluderHelper
         if ($options["front_header"]) {
           $header .= "
           <link rel='stylesheet' href='../lib/css/front-application.css?crst=$crst'>
+          <link rel='stylesheet' href='../lib/css/front-application-$lang.css?crst=$crst'>
           <link rel='stylesheet' href='../lib/css/hzm-v001.css?crst=$crst'>";
         }
 

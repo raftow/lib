@@ -3,7 +3,7 @@
 
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 ini_set('max_execution_time',0);
-$lang = "ar";
+$lang = "en";
 
 
 $project_code = "migrate_test";
@@ -23,7 +23,7 @@ $batch_root_path = "/var/www/hub_batch";
 
 
 require_once("$lib_root_path/afw/core/afw_autoloader.php");
-// AfwAutoLoader::addModule("sis");
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 if($transformModule)
 {

@@ -1,5 +1,6 @@
 <?php
-
+// seems to be obsoleted
+/*
 require_once(dirname(__FILE__)."/../../config/global_config.php");
 
 
@@ -53,7 +54,7 @@ if(!$can)
         exit();
 }
 
-if(!$lang) $lang = 'ar';
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 $plural_obj_name =  $obj->transClassPlural($lang);
 $plural_obj_name_short =  $obj->transClassPlural($lang,true);
@@ -109,7 +110,7 @@ $html_output .= "</div>
 </div>";  
 
 CmsMainPage::addOutput($html_output);
-
+*/
 ?>
 
 
