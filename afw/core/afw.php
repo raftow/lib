@@ -4627,7 +4627,9 @@ class AFWObject extends AFWRoot
     {
         if (!$ynCode)
             return '';
-        $lang = AfwLanguageHelper::getGlobalLanguage();
+        if(!$langue) {
+            $langue = AfwLanguageHelper::getGlobalLanguage();
+        } 
         
         $ynCodeForThis = "$key.$ynCode";
         $ynTranslationForThis = $this->translate($ynCodeForThis, $langue);
