@@ -5,7 +5,7 @@ require_once($afw_dir_name . '/core/afw_autoloader.php');
 include_once($afw_dir_name . "/utilities/ufw_error_handler.php");
 set_time_limit(8400);
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
-$lang = "en";
+
 
 
 
@@ -19,7 +19,7 @@ $debug_name = "autocomplete";
 require("$afw_dir_name/includes/afw_check_member.php");
 
 if (!$objme) $objme = AfwSession::getUserConnected();
-//if (!$lang) $lang = AfwLanguageHelper::getGlobalLanguage();
+$lang = AfwLanguageHelper::getGlobalLanguage();
 
 // 
 

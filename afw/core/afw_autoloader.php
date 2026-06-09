@@ -136,6 +136,18 @@ if (!class_exists('AfwAutoLoader')) {
                                                 return array(true, "failed to find $class into $file_path_to_load", []);
                                 }
 
+                                if (AfwStringHelper::stringStartsWith($file_name, 'htmly_')) {
+                                        $file_path_to_load = $autol_file_dir_name . "/cms/htmly/$file_name";
+                                        if (!file_exists($file_path_to_load)) {
+                                                throw new AfwRuntimeException("when loading class $class from $file_path_to_load it failed because this file does not exists");
+                                        }
+                                        require_once($file_path_to_load);
+                                        if (class_exists($class, FALSE))
+                                                return array(true, $file_path_to_load, []);
+                                        else
+                                                return array(true, "failed to find $class into $file_path_to_load", []);
+                                }
+
                                 if (AfwStringHelper::stringEndsWith($class, 'Translator')) {
                                         $arrParts = explode('_', $file_name);
                                         $moduleCurr = $arrParts[0];

@@ -7946,3 +7946,17 @@ table.stats_table tbody td {
 }
 
 /************* END OF FOR RETIRIEVE AND GRID DEFAULT STYLES *************/
+
+table.debugg td.key {
+    background-color: #f1f1f1;
+    padding: 3px 9px;
+}
+
+table.debugg td.val {
+    background-color: #fff;
+    padding: 3px 9px;
+}
+
+table.debugg tr {
+    border-bottom: 1px dashed #0096ff !important;
+}
