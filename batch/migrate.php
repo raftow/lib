@@ -3,7 +3,7 @@
 
 ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 ini_set('max_execution_time',0);
-$lang = "en";
+
 
 
 $project_code = "migrate_test";

@@ -2,8 +2,6 @@
 // die("DBG-mode handle search");
 require_once(dirname(__FILE__) . "/../../../config/global_config.php");
 
-$lang = 'en';
-
 $themeArr = AfwThemeHelper::loadTheme("handle-braudit");
 foreach ($themeArr as $theme => $themeValue) {
     $$theme = $themeValue;

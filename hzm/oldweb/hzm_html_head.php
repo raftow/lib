@@ -14,7 +14,7 @@
  * @var array $Main_Page
  */
 
-if (!$lang) $lang = "en";
+
 if (!$my_font) $my_font = "front";
 $crst = md5("crst".date("YmdHis"));
 ?>
