@@ -222,7 +222,7 @@ class AfwSession extends AFWRoot
         public static function initSession($var_data, $prefix = "")
         {
                 foreach ($var_data as $col => $val) {
-                        self::setSessionVar($prefix.$col, $val);
+                        self::setSessionVar($prefix . $col, $val);
                 }
         }
 
@@ -241,21 +241,21 @@ class AfwSession extends AFWRoot
         public static function setSessionVar($var, $value)
         {
                 if (empty($value)) self::emptingVar($var, "setSessionVar");
-                
+
                 /* if(($var=="current _lang") and ($value="en") and ($value != $_SESSION[$var]))
                 {
                         $old_value = $_SESSION[$var];
                         throw new AfwRuntimeException("Strange attempt to set var [$var] to value=[$value], old value=[$old_value]");
                 }*/
-                
+
                 $_SESSION[$var] = $value;
-                
+
                 /*
                 if(($var=="current _lang") and ($value!="en") and ($value!="ar"))
                 {
                         throw new AfwRuntimeException("main_company attempt to be set to [$value] value");
                 }*/
-                
+
                 return $value;
         }
 
@@ -278,7 +278,10 @@ class AfwSession extends AFWRoot
                 self::setSessionVar($key, $arr);
         }
 
-        public static function pullSessionVar($var, $source = "pullSessionVar")
+        /**
+         * @param string $var
+         */
+        private static function pullSessionVar($var, $source = "pullSessionVar")
         {
                 $val = $_SESSION[$var];
                 self::emptingVar($var, $source);
@@ -659,7 +662,7 @@ class AfwSession extends AFWRoot
                 return $application_nameArr[$lang];
         }
 
-        
+
         public static function setCurrentCompany($main_company)
         {
                 // if($main_company!="nauss") throw new AfwRuntimeException("debugg rafik main_company=uoh should be nauss");
@@ -842,27 +845,27 @@ class AfwSession extends AFWRoot
 
         public static function pullAlert()
         {
-                return self::pullSessionVar("alert");
+                return self::getVar("alert");
         }
 
         public static function pullSuccess()
         {
-                return self::pullSessionVar("success");
+                return self::getVar("success");
         }
 
         public static function pullInformation()
         {
-                return self::pullSessionVar("information");
+                return self::getVar("information");
         }
 
         public static function pullWarning()
         {
-                return self::pullSessionVar("warning");
+                return self::getVar("warning");
         }
 
         public static function pullError()
         {
-                return self::pullSessionVar("error");
+                return self::getVar("error");
         }
 
         public static function startSession()

@@ -67,15 +67,15 @@ include("$module_dir_name/../../hzm/web/hzm_basic_header.php");
                         </tr>
                         <tr>
                                 <th>الخدمة المطلوبة / Requested service</th>
-                                <td><?php echo AfwSession::pullSessionVar("operation") ?></td>
+                                <td><?php echo AfwSession::getSessionVar("operation") ?></td>
                         </tr>
                         <tr>
                                 <th>النتيجة / Result</th>
-                                <td><?php echo AfwSession::pullSessionVar("result") ?></td>
+                                <td><?php echo AfwSession::getSessionVar("result") ?></td>
                         </tr>
                         <tr>
                                 <th>التقرير / report </th>
-                                <td style='color:red'><?php echo AfwSession::pullSessionVar("report") ?></td>
+                                <td style='color:red'><?php echo AfwSession::getSessionVar("report") ?></td>
                         </tr>
                 </table>
         </div>

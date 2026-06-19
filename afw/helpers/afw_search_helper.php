@@ -7,7 +7,7 @@ class AfwSearchHelper
                 $cond_phrase_arr = array();
                 $myClass = get_class($object);
                 $class_db_structure = $object->getMyDbStructure($return_type = "structure", $attribute = "all");
-                AfwSession::pullSessionVar("search-$myClass");
+                AfwSession::getSessionVar("search-$myClass");
                 //$currmod = $obj->getMyModule();
                 // $newo_qedit = $object->QEDIT_MODE_NEW_OBJECTS_DEFAULT_NUMBER;
                 // $newo = $newo_qedit;

@@ -300,7 +300,7 @@ $user_full
                                                         يوجد أخطاء : <br>
                                                 <?php
                                                 }
-                                                echo AfwSession::pullSessionVar("error", "header");
+                                                echo AfwSession::getVar("error");
                                                 ?>
                                         </div><br>
 
@@ -317,7 +317,7 @@ $user_full
                                                         يوجد تنبيهات : <br>
                                                 <?php
                                                 }
-                                                echo AfwSession::pullSessionVar("warning", "header");
+                                                echo AfwSession::getVar("warning");
                                                 ?>
                                         </div><br>
                                 <?php
@@ -326,7 +326,7 @@ $user_full
                                 if ($h_information) {
                                 ?>
                                         <div class="alert messages xx messages--status  alert-dismissable <?= AfwSession::getSessionVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                                <?php echo AfwSession::pullSessionVar("information", "header"); ?>
+                                                <?php echo AfwSession::getVar("information"); ?>
                                         </div><br>
                                 <?php
                                 }
@@ -334,7 +334,7 @@ $user_full
                                 if ($h_success) {
                                 ?>
                                         <div class="alert messages messages--success alert-dismissable  <?= AfwSession::getSessionVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                                                <?php echo AfwSession::pullSessionVar("success", "header"); ?>
+                                                <?php echo AfwSession::getVar("success"); ?>
                                         </div><br>
                                 <?php
                                 }
@@ -342,7 +342,7 @@ $user_full
                                 if ($h_slog) {
                                 ?>
                                         <!-- SLOG :
-                <?php echo AfwSession::pullSessionVar("slog", "header"); ?>
+                <?php echo AfwSession::getVar("slog"); ?>
                 -->
                                 <?php
                                 }
