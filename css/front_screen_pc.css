@@ -1658,9 +1658,9 @@ div.qsearch_page {
 }
 
 table.search_result_table {
-    margin-right: 10% !important;
-    margin-left: 10% !important;
-    width: 80%;
+    margin-right: 1% !important;
+    margin-left: 1% !important;
+    width: 98%;
 }
 
 .btns-qsearch {
