@@ -659,12 +659,12 @@ class AfwSession extends AFWRoot
                 return $application_nameArr[$lang];
         }
 
-        /*
+        
         public static function setCurrentCompany($main_company)
         {
                 // if($main_company!="nauss") throw new AfwRuntimeException("debugg rafik main_company=uoh should be nauss");
-                self::setSe ssionVar("main_company", $main_company);
-        }*/
+                self::setSessionVar("main_company", $main_company);
+        }
 
         public static function currentDBPrefix()
         {
