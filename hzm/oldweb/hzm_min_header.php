@@ -36,11 +36,11 @@ if (!$MODULE) $MODULE = "ums";
 
 <body dir="<?= $dir ?>">
    <?php
-   $h_error = AfwSession::getSessionVar("error");
-   $h_warning = AfwSession::getSessionVar("warning");
-   $h_information = AfwSession::getSessionVar("information");
-   $h_success = AfwSession::getSessionVar("success");
-   $h_slog = AfwSession::getSessionVar("slog");
+   $h_error = AfwSession::getVar("error");
+   $h_warning = AfwSession::getVar("warning");
+   $h_information = AfwSession::getVar("information");
+   $h_success = AfwSession::getVar("success");
+   $h_slog = AfwSession::getVar("slog");
    if ($h_error or $h_warning or $h_information or $h_success or $h_slog) {
    ?>
       <div class="notification_message_container">
@@ -81,7 +81,7 @@ if (!$MODULE) $MODULE = "ums";
 
          if ($h_information) {
          ?>
-            <div class="alert messages xx messages--status  alert-dismissable <?= AfwSession::getSessionVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <div class="alert messages xx messages--status  alert-dismissable <?= AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                <?php echo AfwSession::getVar("information"); ?>
             </div><br>
          <?php
@@ -89,7 +89,7 @@ if (!$MODULE) $MODULE = "ums";
 
          if ($h_success) {
          ?>
-            <div class="alert messages messages--success alert-dismissable  <?= AfwSession::getSessionVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <div class="alert messages messages--success alert-dismissable  <?= AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                <?php echo AfwSession::getVar("success"); ?>
             </div><br>
          <?php

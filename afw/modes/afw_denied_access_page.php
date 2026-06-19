@@ -89,7 +89,7 @@ include("$module_dir_name/../../hzm/web/hzm_basic_header.php");
                         <tr>
                                 <td>
                                 <?php
-                                echo AfwSession::pullSessionVar("other_log");
+                                echo AfwSession::getSessionVar("other_log");
                                 echo "<br>session context Ican do LOG : <br>";
                                 echo AfwSession::getLog("iCanDo");
                                 echo "<br>userCan table <br>";

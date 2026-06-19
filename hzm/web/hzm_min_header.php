@@ -38,11 +38,11 @@ if (!$MODULE) $MODULE = "ums";
    <div class="notification_message_container">
 
       <?php
-      if (AfwSession::getSessionVar("error")) {
+      if (AfwSession::getVar("error")) {
       ?>
          <div class="alert messages messages--error alert-dismissable" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <?php
-            $cnt = count(explode("<br>", AfwSession::getSessionVar("error")));
+            $cnt = count(explode("<br>", AfwSession::getVar("error")));
             if ($cnt > 1) {
             ?>
                يوجد أخطاء : <br>
@@ -55,11 +55,11 @@ if (!$MODULE) $MODULE = "ums";
       <?php
       }
 
-      if (AfwSession::getSessionVar("warning")) {
+      if (AfwSession::getVar("warning")) {
       ?>
          <div class="alert messages messages--warning alert-dismissable" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <?php
-            $cnt = count(explode("<br>", AfwSession::getSessionVar("warning")));
+            $cnt = count(explode("<br>", AfwSession::getVar("warning")));
             if ($cnt > 1) {
             ?>
                يوجد تنبيهات : <br>
@@ -83,7 +83,7 @@ if (!$MODULE) $MODULE = "ums";
       <?php
       }
 
-      if (AfwSession::getSessionVar("slog")) {
+      if (AfwSession::getVar("slog")) {
       ?>
          <!-- SLOG :
                 <?php echo AfwSession::getVar("slog"); ?>

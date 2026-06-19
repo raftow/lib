@@ -97,7 +97,7 @@ if (AfwSession::userIsAuthenticated()) {
                         //if($info) AfwSession::pushInformation($info);
                         // if($warning) AfwSession::pushWarning($warning);
                         AfwSession::pushInformation(AfwLanguageHelper::tt("A new password has been sent to your mobile number") . " : $mobile");
-                        //die("information = ".AfwSession::getSessionVar("information"));
+                        //die("information = ".AfwSession::getVar("information"));
                         // strange behavior header seems to reset
                         // header("Location: index.php");
                         // header("Location: login.php");

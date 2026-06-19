@@ -35,11 +35,11 @@ include("$file_hzm_dir_name/../lib/hzm/web/hzm_html_head.php");
     <div class="notification_message_container">
 
       <?php
-      if (AfwSession::getSessionVar("error")) {
+      if (AfwSession::getVar("error")) {
       ?>
         <div class="alert messages messages--error alert-dismissable" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           <?php
-          $cnt = count(explode("<br>", AfwSession::getSessionVar("error")));
+          $cnt = count(explode("<br>", AfwSession::getVar("error")));
           if ($cnt > 1) {
           ?>
             يوجد أخطاء : <br>
@@ -52,11 +52,11 @@ include("$file_hzm_dir_name/../lib/hzm/web/hzm_html_head.php");
       <?php
       }
 
-      if (AfwSession::getSessionVar("warning")) {
+      if (AfwSession::getVar("warning")) {
       ?>
         <div class="alert messages messages--warning alert-dismissable" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
           <?php
-          $cnt = count(explode("<br>", AfwSession::getSessionVar("warning")));
+          $cnt = count(explode("<br>", AfwSession::getVar("warning")));
           if ($cnt > 1) {
           ?>
             يوجد تنبيهات : <br>
