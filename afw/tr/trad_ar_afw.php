@@ -176,6 +176,7 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['SETTINGS'] = 'الإعدادات';
 
         $trad['OPERATOR']['select'] = 'اختيار';
+        $trad['OPERATOR']['audit'] = 'تدقيق';
         $trad['OPERATOR']['on'] = 'على';
         $trad['OPERATOR']['at'] = 'بتاريخ';
         $trad['OPERATOR']['dark mode'] = 'ليلي';
@@ -215,7 +216,7 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['action.insert'] = 'إضافة';
         $trad['OPERATOR']['action.update'] = 'تعديل';
         $trad['OPERATOR']['action.delete'] = 'حذف';
-        
+
 
         return $trad;
     }

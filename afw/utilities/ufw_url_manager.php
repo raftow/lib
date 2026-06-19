@@ -304,14 +304,17 @@ class UfwUrlManager extends AFWRoot
         foreach ($_REQUEST as $var => $varval) {
             $var = trim(strtolower($var));
             $var = AfwStringHelper::hardSecureCleanString($var);
-            $varval = AfwStringHelper::hardSecureCleanString($varval);
-            $varval = str_replace('afw_mode_', '', $varval);
-            $varval = str_replace('afw_handle_default_', '', $varval);
-            $varval = str_replace('.php', '', $varval);
+            if (is_string($varval)) {
+                $varval = AfwStringHelper::hardSecureCleanString($varval);
+                $varval = str_replace('afw_mode_', '', $varval);
+                $varval = str_replace('afw_handle_default_', '', $varval);
+                $varval = str_replace('.php', '', $varval);
+            }
+
             if ($var == "class_obj") $var = "cl";
             if ($var == "cl") {
                 $theClass = $varval;
-                $varval = substr($varval, 0, 20);
+                if (is_string($varval)) $varval = substr($varval, 0, 20);
             }
             if ($var == "currmod") $theModule = $varval;
             if ($var == "cm") $theModule = $varval;
