@@ -4455,6 +4455,9 @@ class AFWObject extends AFWRoot
     }
 
 
+    /**
+     * @param Auser $auser
+     */
 
     final public function userCanDeleteMe($auser, $log = true)
     {

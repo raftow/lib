@@ -137,6 +137,9 @@ class UfwUrlManager extends AFWRoot
         if (true) {
             if ($direct_access == 'N') {
                 if ($module_code and $object_table and $afw_action) {
+                    /**
+                     * @var array $tbf_info
+                     */
                     list($found, $tab_info, $tbf_info, $module_sys_file) = AfwPrevilege::loadModuleTablePrevileges($module_code, $object_table);
                     if ($found) {
                         $bf_id = $tbf_info[$object_table][$afw_action]["id"];
@@ -278,9 +281,8 @@ class UfwUrlManager extends AFWRoot
 
     public static function analyseCurrentUrl()
     {
-
-        $original_serv_uri = $serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
-        $serv_uri = trim($_SERVER['REQUEST_URI']);
+        $original_serv_uri = trim(strtolower($_SERVER['REQUEST_URI']));
+        $serv_uri = AfwStringHelper::hardSecureCleanString($original_serv_uri);
         $serv_uri = str_replace('.php', '', $serv_uri);
         $serv_uri = str_replace('?', '/', $serv_uri);
         $serv_uri = str_replace('\\', '/', $serv_uri);
@@ -301,6 +303,8 @@ class UfwUrlManager extends AFWRoot
         $theClass = "";
         foreach ($_REQUEST as $var => $varval) {
             $var = trim(strtolower($var));
+            $var = AfwStringHelper::hardSecureCleanString($var);
+            $varval = AfwStringHelper::hardSecureCleanString($varval);
             $varval = str_replace('afw_mode_', '', $varval);
             $varval = str_replace('afw_handle_default_', '', $varval);
             $varval = str_replace('.php', '', $varval);

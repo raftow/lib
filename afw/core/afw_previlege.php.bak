@@ -24,9 +24,6 @@ class AfwPrevilege extends AFWRoot
      */
     public static function moduleIdOfModuleCode($module_code)
     {
-    	/**
-         * @var array $mod_info
-         */
         list($found, $mod_info) = self::loadAllServerModules();
         if ($found) return $mod_info[$module_code]["id"];
         else return 0;
@@ -38,9 +35,6 @@ class AfwPrevilege extends AFWRoot
      */
     public static function moduleCodeOfModuleId($module_id)
     {
-    	/**
-         * @var array $mod_info
-         */
         list($found, $mod_info, $file_modules_all) = self::loadAllServerModules();
         if ($found) return $mod_info['m' . $module_id]["code"];
         else return "";

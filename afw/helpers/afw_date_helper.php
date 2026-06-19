@@ -1276,6 +1276,12 @@ class AfwDateHelper
         return $format;
     }
 
+    /**
+     * @param string $gdate Gregorian Date
+     * @param string $format Oracle/MySQL Date Format
+     * @param bool $oracle Oracle/MySQL
+     */
+
     public static function checkDateFormat($gdate, $format, $oracle = false)
     {
         if ($oracle) {
@@ -1298,7 +1304,13 @@ class AfwDateHelper
         }
     }
 
-    public static function checkDateFormatReason($gdate, $format, $oracle = false)
+    /**
+     * @param string $gdate Gregorian Date
+     * @param string $format Oracle/MySQL Date Format
+     * @param bool $oracle Oracle/MySQL
+     */
+
+    public static function checkDateFormatReason($gdate, $format, $oracle = false, $oneLineString = false)
     {
         if ($oracle) {
             $original_format = $format;
@@ -1325,6 +1337,12 @@ class AfwDateHelper
                 $df = $d->format($format);
                 $return .= "<br>\nDateTime::createFromFormat($format, $gdate)->format($format) = $df vs original $gdate";
             }
+        }
+
+        if($oneLineString) {
+            $return = str_replace("<br>", " > ", $return);
+            $return = str_replace("\n", " > ", $return);
+            $return = str_replace("\r", " > ", $return);
         }
 
         return $return;

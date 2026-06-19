@@ -95,6 +95,7 @@ nav .logo-name .logo_name{
 nav.close .logo_name{
     opacity: 0;
     pointer-events: none;
+    display: none;
 }
 nav .menu-items{
     margin-top: 40px;

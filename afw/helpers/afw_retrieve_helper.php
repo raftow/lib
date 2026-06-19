@@ -61,6 +61,7 @@ class AfwRetrieveHelper
 
         $cant_do_action_log_arr = array();
         $can_action_arr = array();
+        
         $datatable_header = "";
         AfwSession::log("Before prepare of header and can_action array matrix in afw_handle_default_search");
         if (count($header) != 0) {
@@ -112,10 +113,10 @@ class AfwRetrieveHelper
 
                 if ($bf_code) {
                     $can_action_arr[$action_item] = ($objme and $objme->iCanDoBFCode($bf_system, $bf_code));
-                    $can_case = "objme->iCanDoBFCode($bf_system, $bf_code)";
+                    $can_case = "iCanDoBFCode($bf_system, $bf_code)";
                 } else {
                     $can_action_arr[$action_item] = ($objme and $objme->iCanDoOperationOnObjClass($obj, $frameworkAction));
-                    $can_case = "objme->iCanDoOperationOnObjClass(obj, $frameworkAction)";
+                    $can_case = "iCanDoOperationOnObjClass(obj, $frameworkAction)";
                 }
                 if ($objme and (!$can_action_arr[$action_item])) $cant_do_action_log_arr[$action_item] = $objme->getICantDoReason();
                 if (!$cant_do_action_log_arr[$action_item]) $cant_do_action_log_arr[$action_item] = "but reason not explained";
@@ -334,10 +335,14 @@ class AfwRetrieveHelper
                         <td class='col-importance-$importance $canCss'><img src=\"$canImage\" width=\"24\" heigth=\"24\" $tooltip ></td>
                     ";
                     } else { // means can't ($can is false)
-                        if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='لا يمكنك التعديل على هذا السجل راجع المشرف للتأكد من الصلاحيات وسياسة التعديل' data-original-title='You have not authorization to do $frameworkAction on this entity : [$action_item -> $cant_do_action_log] - Tooltip on bottom 3' class='red-tooltip'";
+                        if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' 
+                                data-placement='bottom' 
+                                title='لا يمكنك القيام بهذا الاجراء على هذا السجل راجع المشرف للتأكد من الصلاحيات وسياسة العمل' 
+                                technical='You have not authorization to do $frameworkAction on this entity : [$action_item -> $cant_do_action_log] - Tooltip on bottom 3' 
+                                class='red-tooltip'";
                         else $tooltip = "";
                         $image_locked = $images["locked"];
-                        $html .= "<td class='col-importance-$importance can-t-case'><img src=\"$image_locked\" width=\"24\" heigth=\"24\" $tooltip ></td>";
+                        $html .= "<td class='col-importance-$importance can-t-case for-$frameworkAction'><img src=\"$image_locked\" width=\"24\" heigth=\"24\" $tooltip ></td>";
                     }
                 }
             }

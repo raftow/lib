@@ -64,6 +64,9 @@ class AfwSession extends AFWRoot
         }
 
 
+        /**
+         * @param int $user_id
+         */
 
         public static function setUser($user_id)
         {
@@ -77,6 +80,9 @@ class AfwSession extends AFWRoot
                 }
         }
 
+        /**
+         * @param int $customer_id
+         */
         public static function setCustomer($customer_id)
         {
                 if ($customer_id > 0) {
@@ -89,6 +95,9 @@ class AfwSession extends AFWRoot
                 }
         }
 
+        /**
+         * @param int $student_id
+         */
         public static function setStudent($student_id)
         {
                 if ($student_id > 0) {
@@ -97,7 +106,7 @@ class AfwSession extends AFWRoot
                         self::getSingleton()->unsetCustomer();
                         self::setSessionVar("customer_id", null);
                         if (self::getSessionVar("student_id") != $student_id) self::getSingleton()->unsetStudent();
-                        self::setSessionVar("customer_id", $student_id);
+                        self::setSessionVar("student_id", $student_id);
                 }
         }
 
@@ -197,23 +206,38 @@ class AfwSession extends AFWRoot
                 return $this->data;
         }
 
+        /**
+         * @param string $var
+         */
+
         public static function getSessionVar($var)
         {
                 return $_SESSION[$var];
         }
 
+
+        /**
+         * @param array $var_data
+         */
         public static function initSession($var_data, $prefix = "")
         {
                 foreach ($var_data as $col => $val) {
-                        self::setSessionVar($col, $val);
+                        self::setSessionVar($prefix.$col, $val);
                 }
         }
 
+        /**
+         * @param array $var_data
+         */
         public static function initUserSession($var_data)
         {
                 self::initSession($var_data, "user_");
         }
 
+        /**
+         * @param string $var
+         * @param mixed $value
+         */
         public static function setSessionVar($var, $value)
         {
                 if (empty($value)) self::emptingVar($var, "setSessionVar");
@@ -635,11 +659,12 @@ class AfwSession extends AFWRoot
                 return $application_nameArr[$lang];
         }
 
+        /*
         public static function setCurrentCompany($main_company)
         {
                 // if($main_company!="nauss") throw new AfwRuntimeException("debugg rafik main_company=uoh should be nauss");
-                self::setSessionVar("main_company", $main_company);
-        }
+                self::setSe ssionVar("main_company", $main_company);
+        }*/
 
         public static function currentDBPrefix()
         {
@@ -746,8 +771,8 @@ class AfwSession extends AFWRoot
 
         public static function pushAlert($alert, $css_class = "")
         {
-                self::setSessionVar("alert", self::pushString(self::getSessionVar("alert"), $alert, true, "\n"));
-                if ($css_class) self::setSessionVar("alert-class", $css_class);
+                self::setVar("alert", self::pushString(self::getVar("alert"), $alert, true, "\n"));
+                if ($css_class) self::setVar("alert-class", $css_class);
         }
 
         /**
@@ -756,8 +781,8 @@ class AfwSession extends AFWRoot
 
         public static function pushSuccess($success, $css_class = "")
         {
-                self::setSessionVar("success", self::pushString(self::getSessionVar("success"), $success));
-                if ($css_class) self::setSessionVar("success-class", $css_class);
+                self::setVar("success", self::pushString(self::getVar("success"), $success));
+                if ($css_class) self::setVar("success-class", $css_class);
         }
 
 
@@ -766,8 +791,8 @@ class AfwSession extends AFWRoot
          */
         public static function pushLog($slog, $css_class = "")
         {
-                self::setSessionVar("slog", self::pushString(self::getSessionVar("slog"), $slog));
-                if ($css_class) self::setSessionVar("slog-class", $css_class);
+                self::setVar("slog", self::pushString(self::getVar("slog"), $slog));
+                if ($css_class) self::setVar("slog-class", $css_class);
         }
 
         /**
@@ -776,8 +801,8 @@ class AfwSession extends AFWRoot
 
         public static function pushInformation($information, $css_class = "")
         {
-                self::setSessionVar("information", self::pushString(self::getSessionVar("information"), $information));
-                if ($css_class) self::setSessionVar("information-class", $css_class);
+                self::setVar("information", self::pushString(self::getVar("information"), $information));
+                if ($css_class) self::setVar("information-class", $css_class);
         }
 
         /**
@@ -787,8 +812,8 @@ class AfwSession extends AFWRoot
         public static function pushWarning($warning, $css_class = "")
         {
                 // throw new AfwRuntimeException("who sent this warning");
-                self::setSessionVar("warning", self::pushString(self::getSessionVar("warning"), $warning));
-                if ($css_class) self::setSessionVar("warning-class", $css_class);
+                self::setVar("warning", self::pushString(self::getVar("warning"), $warning));
+                if ($css_class) self::setVar("warning-class", $css_class);
         }
 
         /**
@@ -797,8 +822,8 @@ class AfwSession extends AFWRoot
 
         public static function pushError($error, $css_class = "")
         {
-                self::setSessionVar("error", self::pushString(self::getSessionVar("error"), $error));
-                if ($css_class) self::setSessionVar("error-class", $css_class);
+                self::setVar("error", self::pushString(self::getVar("error"), $error));
+                if ($css_class) self::setVar("error-class", $css_class);
         }
 
         public static function pushPbmResult($lang, $error, $info, $warn, $technical, $pbMethodCode = "mainpage")

@@ -68,7 +68,7 @@ class AfwMemoryHelper extends AFWRoot
         } else {
             $nb_instances_total++;
         }
-        $MAX_MEMORY_BY_REQUEST = AfwSession::config('MAX_MEMORY_BY_REQUEST', 2000000000);
+        $MAX_MEMORY_BY_REQUEST = AfwSession::config('MAX_MEMORY_BY_REQUEST', 3000000000);
         $MAX_INSTANCES_BY_REQUEST = AfwSession::config('MAX_INSTANCES_BY_REQUEST', 20000);
         $mm = memory_get_usage(true);
         if (($mm > $MAX_MEMORY_BY_REQUEST) and AfwSession::config('MODE_DEVELOPMENT', false)) {

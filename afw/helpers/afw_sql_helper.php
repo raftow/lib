@@ -13,10 +13,29 @@ class AfwSqlHelper extends AFWRoot
         return 'YOU CAN DELETE !! so why get here ?';
     }
 
-    public static final function oracleSqlInsertOrUpdate($table, $tableColsArr, $my_row, $isPKCol = [], $isScalarCol = [], $isToSetNullWhenEmptyString = [], $isDate = [], $isDatetime = [], $isMandatory = [], $datetimeformat = 'MM/DD/YYYY HH24:MI', $dateformat = 'MM/DD/YYYY', $specialFields = [])
-    {
+    /**
+     * @param string $table
+     * @param array $tableColsArr
+     * @param array $my_row
+     */
+
+    public static final function oracleSqlInsertOrUpdate(
+        $table,
+        $tableColsArr,
+        $my_row,
+        $isPKCol = [],
+        $isScalarCol = [],
+        $isToSetNullWhenEmptyString = [],
+        $isDate = [],
+        $isDatetime = [],
+        $isMandatory = [],
+        $datetimeformat = 'MM/DD/YYYY HH24:MI',
+        $specialFields = []
+    ) {
+        $intermediateDateFormat = 'YYYY-MM-DD';
+
         $errors = [];
-        $my_row_cols = array_keys($my_row);
+        // $my_row_cols = array_keys($my_row);
         $insert_cols = '';
         $insert_vals = '';
         $set_update_cols = '';
@@ -33,28 +52,28 @@ class AfwSqlHelper extends AFWRoot
             elseif ($isDatetime[$row_col]) {
                 list($dateformat_tmp, $timeformat_tmp) = explode(' ', $datetimeformat);
                 list($row_val_date, $row_val_time) = explode(' ', $row_val);
-                $row_val_time_parts = explode(":",$row_val_time);
+                $row_val_time_parts = explode(":", $row_val_time);
                 $row_val_time_parts_repared = [];
-                foreach($row_val_time_parts as $tpi => $row_val_time_part) {
+                foreach ($row_val_time_parts as $tpi => $row_val_time_part) {
                     $row_val_time_part = intval($row_val_time_part);
-                    if($row_val_time_part<10) $row_val_time_part = "0".$row_val_time_part;
-                    else $row_val_time_part = "".$row_val_time_part;
+                    if ($row_val_time_part < 10) $row_val_time_part = "0" . $row_val_time_part;
+                    else $row_val_time_part = "" . $row_val_time_part;
                     $row_val_time_parts_repared[$tpi] = $row_val_time_part;
                 }
 
                 $row_val_time = implode(':', $row_val_time_parts_repared);
 
-                if (!AfwDateHelper::checkDateFormat($row_val_date, $dateformat_tmp,true)) {
-                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], date-part-value is incorrect || [$row_val_date] does not match date format $dateformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."] ".AfwDateHelper::checkDateFormatReason($row_val_date, $dateformat_tmp,true);
-                } elseif (!AfwDateHelper::checkTimeFormat($row_val_time, $timeformat_tmp,true)) {
-                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], time-part-value is incorrect || [$row_val_time] does not match time format $timeformat_tmp canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."]";
-                } 
+                if (!AfwDateHelper::checkDateFormat($row_val_date, $dateformat_tmp, true)) {
+                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], date-part-value is incorrect || [$row_val_date] does not match date format $dateformat_tmp canbenull=" . $isToSetNullWhenEmptyString[$row_col] . " null? = [" . strtoupper($row_val) . "] " . AfwDateHelper::checkDateFormatReason($row_val_date, $dateformat_tmp, true, true);
+                } elseif (!AfwDateHelper::checkTimeFormat($row_val_time, $timeformat_tmp, true)) {
+                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], time-part-value is incorrect || [$row_val_time] does not match time format $timeformat_tmp canbenull=" . $isToSetNullWhenEmptyString[$row_col] . " null? = [" . strtoupper($row_val) . "]";
+                }
                 $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
             } elseif ($isDate[$row_col]) {
-                if (!AfwDateHelper::checkDateFormat($row_val, $dateformat,true)) {
-                    $errors[] = "$row_col is Date field || value=[$row_val] does not match date format $dateformat canbenull=".$isToSetNullWhenEmptyString[$row_col]." null? = [".strtoupper($row_val)."] ".AfwDateHelper::checkDateFormatReason($row_val, $dateformat,true);
+                if (!AfwDateHelper::checkDateFormat($row_val, $intermediateDateFormat, true)) {
+                    $errors[] = "$row_col is Date field || value=[$row_val] does not match date format $intermediateDateFormat canbenull=" . $isToSetNullWhenEmptyString[$row_col] . " null? = [" . strtoupper($row_val) . "] " . AfwDateHelper::checkDateFormatReason($row_val, $intermediateDateFormat, true, true);
                 }
-                $row_val_string = "TO_DATE('$row_val', '$dateformat')";
+                $row_val_string = "TO_DATE('$row_val', '$intermediateDateFormat')";
             } else {
                 if (strtoupper($row_val) == 'NULL') $row_val_cleaned = "";
                 else $row_val_cleaned = str_replace("'", "''", $row_val);
@@ -67,11 +86,12 @@ class AfwSqlHelper extends AFWRoot
                 $insert_vals .= ", $row_val_string -- $row_col -- nonscalar -- $specialDescFound\n";
 
 
-            if ($isScalarCol[$row_col] and 
-                !is_numeric($row_val) and 
+            if (
+                $isScalarCol[$row_col] and
+                !is_numeric($row_val) and
                 (strtolower(trim($row_val)) != 'null') and
                 (strtolower(trim($row_val_string)) != 'null')
-                ) {
+            ) {
                 $errors[] = "$row_col is Numeric field || value=[row_val=$row_val,old_row_val=" . var_export($old_row_val) . "] is not numeric";
             }
 
@@ -128,9 +148,9 @@ class AfwSqlHelper extends AFWRoot
 
     public static final function sqlInsertOrUpdate($table, $my_row, $pkCol_arr = null, $tableCol_arr = null)
     {
-        if($tableCol_arr) $my_row_cols = $tableCol_arr;
+        if ($tableCol_arr) $my_row_cols = $tableCol_arr;
         else $my_row_cols = array_keys($my_row);
-        
+
         $set_insert_cols = '';
         $set_update_cols = '';
         $pk_cols_where = '1';
@@ -392,32 +412,33 @@ class AfwSqlHelper extends AFWRoot
      * @param string $id_updated
      */
 
-    final public static function getPKCondSQL($obj, $id_updated) {
+    final public static function getPKCondSQL($obj, $id_updated)
+    {
         $query = "";
-            if ($obj->PK_MULTIPLE) {
-                if ($obj->PK_MULTIPLE === true) {
-                    $sep = '-';
-                } else {
-                    $sep = $obj->PK_MULTIPLE;
-                }
-                $query .= "\n WHERE 1 ";
-                $pk_val_arr = explode($sep, $id_updated);
-                foreach ($obj->PK_MULTIPLE_ARR as $pk_col_order => $pk_col) {
-                    $structurePKAttribute = AfwStructureHelper::getStructureOf($obj, $pk_col);
-                    if ($structurePKAttribute['UTF8']) {
-                        $_utf8 = '_utf8';
-                    } else {
-                        $_utf8 = '';
-                    }
-                    $query .=
-                        " AND $pk_col = $_utf8'" . $pk_val_arr[$pk_col_order] . "'";
-                }
+        if ($obj->PK_MULTIPLE) {
+            if ($obj->PK_MULTIPLE === true) {
+                $sep = '-';
             } else {
-                $query .=
-                    "\n WHERE " . $obj->getPKField() . " = '$id_updated'";
+                $sep = $obj->PK_MULTIPLE;
             }
+            $query .= "\n WHERE 1 ";
+            $pk_val_arr = explode($sep, $id_updated);
+            foreach ($obj->PK_MULTIPLE_ARR as $pk_col_order => $pk_col) {
+                $structurePKAttribute = AfwStructureHelper::getStructureOf($obj, $pk_col);
+                if ($structurePKAttribute['UTF8']) {
+                    $_utf8 = '_utf8';
+                } else {
+                    $_utf8 = '';
+                }
+                $query .=
+                    " AND $pk_col = $_utf8'" . $pk_val_arr[$pk_col_order] . "'";
+            }
+        } else {
+            $query .=
+                "\n WHERE " . $obj->getPKField() . " = '$id_updated'";
+        }
 
-        return $query;    
+        return $query;
     }
 
     /**
@@ -714,15 +735,15 @@ class AfwSqlHelper extends AFWRoot
                 $val_col2_default = '29991230';
                 $between_quote = "'";
                 $val_col = str_replace('-', '', $val_col);
-                $val_col2 = str_replace('-', '', $val_col2);                
-            case 'PCTG':                
-			case 'INT':
-			case 'AMNT':    
+                $val_col2 = str_replace('-', '', $val_col2);
+            case 'PCTG':
+            case 'INT':
+            case 'AMNT':
                 if (!$val_col2) {
                     $val_col2 = $val_col2_default;
                 }
-                if ($oper == 'between') {                    
-                    
+                if ($oper == 'between') {
+
                     // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col,$val_col2] ";
                     $phraseLangWhere =
                         "<span class='crit_field_name'>"
@@ -732,7 +753,7 @@ class AfwSqlHelper extends AFWRoot
                         . "</span> : <span class='crit_field_value'> [$val_col -> $val_col2] </span>";
                     return [
                         $prefixed_nom_col
-                            . " between  $between_quote" . $val_col . "$between_quote" 
+                            . " between  $between_quote" . $val_col . "$between_quote"
                             . " and $between_quote" . $val_col2 . "$between_quote",
                         '',
                         $phraseLangWhere,
@@ -1091,11 +1112,11 @@ class AfwSqlHelper extends AFWRoot
                 return false;
             }
 
-            
+
 
             if ($object->isAuditable()) {
-                    // die("call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
-                    AfwAuditHelper::audit_on_update($object, $object->fieldsHasChanged(), "insert", "first insert");
+                // die("call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                AfwAuditHelper::audit_on_update($object, $object->fieldsHasChanged(), "insert", "first insert");
             } else {
                 // if(....) die("no call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
             }
@@ -1323,7 +1344,7 @@ class AfwSqlHelper extends AFWRoot
      * update
      * commit attributes update to DB
      */
-    public static function updateObject(&$object, $only_me = true, $nocote_fields = null, $onlyReturnSQL = false, $disableAfterCommitDBEvent = false, $update_context="")
+    public static function updateObject(&$object, $only_me = true, $nocote_fields = null, $onlyReturnSQL = false, $disableAfterCommitDBEvent = false, $update_context = "")
     {
         $devMode = AfwSession::config("MODE_DEVELOPMENT", false);
         if ($object->IS_COMMITING)
@@ -1391,7 +1412,7 @@ class AfwSqlHelper extends AFWRoot
             }
 
             if ($can_update) {
-                
+
 
                 // if((!$arr_tables_without_technical_fields) or (array_search(static::$TABLE, $arr_tables_without_technical_fields) === false)) {
 
@@ -1462,20 +1483,17 @@ class AfwSqlHelper extends AFWRoot
                             try {
                                 // die("call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
                                 AfwAuditHelper::audit_on_update($object, $object->fieldsHasChanged(), "update", $update_context);
-                            }
-                            catch(Exception $e) {
+                            } catch (Exception $e) {
                                 $message = "Audit operation failed.";
-                                if($devMode) {
-                                    $message .= "\n >> ".$e->getMessage();
-                                    $message .= "\n >> ".$e->getTraceAsString();
-                                    $message .= "\n >> the query on parent table was ".$query;                                    
+                                if ($devMode) {
+                                    $message .= "\n >> " . $e->getMessage();
+                                    $message .= "\n >> " . $e->getTraceAsString();
+                                    $message .= "\n >> the query on parent table was " . $query;
                                     throw new AfwRuntimeException($message);
-                                }
-                                else throw new AfwBusinessException($message);
+                                } else throw new AfwBusinessException($message);
                             }
-                            
                         } else {
-                            if($object->getMyClass() == "WorkflowRequest") die("no call to AfwAuditHelper::audit _on_update($object,..,update,$update_context) : return==[$return] and isAuditable==[$isAuditable]");
+                            if ($object->getMyClass() == "WorkflowRequest") die("no call to AfwAuditHelper::audit _on_update($object,..,update,$update_context) : return==[$return] and isAuditable==[$isAuditable]");
                         }
                     }
                     if ($only_me and $return > 1) {
@@ -1593,7 +1611,13 @@ class AfwSqlHelper extends AFWRoot
         }
     }
 
-    public static function deleteObject(&$object, $id_replace, $update_context = '') {
+    /**
+     * @param AFWObject $object
+     * @param int $id_replace 
+     */
+
+    public static function deleteObject(&$object, $id_replace, $update_context = '')
+    {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         $objme = AfwSession::getUserConnected();
 
