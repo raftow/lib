@@ -4630,10 +4630,10 @@ class AFWObject extends AFWRoot
     {
         if (!$ynCode)
             return '';
-        if(!$langue) {
+        if (!$langue) {
             $langue = AfwLanguageHelper::getGlobalLanguage();
-        } 
-        
+        }
+
         $ynCodeForThis = "$key.$ynCode";
         $ynTranslationForThis = $this->translate($ynCodeForThis, $langue);
 
@@ -5557,6 +5557,9 @@ class AFWObject extends AFWRoot
         return false;
     }
 
+    /**
+     * @param Auser $auser
+     */
     public function canBeSpeciallyDisplayedBy($auser)
     {
         return false;
