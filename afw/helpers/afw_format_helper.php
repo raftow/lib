@@ -483,7 +483,7 @@ class AfwFormatHelper
                 $structure['HIJRI_UNIT'] = true;
             }
 
-            if ($structure['HIJRI_UNIT']) {
+            if ($structure['HIJRI_UNIT'] or $structure['SHOW_UNIT']) {
                 if ($data_to_display) {
                     $data_to_display .= ' هـ';
                 }
@@ -517,8 +517,10 @@ class AfwFormatHelper
                     $data_to_display =
                         $data_to_display
                         . ' &nbsp;&nbsp;&nbsp; الموافق  '
-                        . AfwDateHelper::hijriToGreg($old_data_to_display)
-                        . ' م';
+                        . AfwDateHelper::hijriToGreg($old_data_to_display);
+                    if ($structure['NASRANI_UNIT'] or $structure['SHOW_UNIT']) {
+                        $data_to_display .= ' م';
+                    }
                 } else {
                     $data_to_display = '';
                 }
@@ -546,8 +548,7 @@ class AfwFormatHelper
                 if ($data_to_display) {
                     if (AfwSession::hasOption('HIJRI_TO_GREG') or true) {  // dont understand why this option HIJRI_TO_GREG is needed
                         $data_to_display =
-                            AfwDateHelper::hijriToGreg($old_data_to_display)
-                            . ' م';
+                            AfwDateHelper::hijriToGreg($old_data_to_display);
                     }
                 } else {
                     $data_to_display = '';
@@ -2120,7 +2121,7 @@ class AfwFormatHelper
 
                 case 'FORMULA':
                     $lang = AfwLanguageHelper::getGlobalLanguage();
-                    
+
 
                     $return = AfwFormulaHelper::executeFormulaAttribute($object, $attribute, null, $lang, $what);
                     $return_isset = isset($return);
