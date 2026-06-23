@@ -241,9 +241,9 @@ class AfwMenuConstructHelper
                 //throw new AfwRuntimeException("objme->getMenuFor($application_id,$lang) = ".var_export($menu_arr,true));
                 foreach ($menu_folders_arr as $menu_folder_id => $menu_folder_i) {
                     if (!$menu_folder_i) {
-                        die("strange menu[$menu_folder_id] of (app$application_code / id$application_id) : " . var_export($menu_folders_arr, true));
-                    }
-                    if (($iamAdmin) or (!$menu_folder_i["need_admin"])) {
+                        // skip empty menu ???!!!
+                        // die("strange menu[$menu_folder_id] of (app$application_code / id$application_id) : " . var_export($menu_folders_arr, true));
+                    } elseif (($iamAdmin) or (!$menu_folder_i["need_admin"])) {
                         //$menu_color = $menu_next_color[$menu_color];
                         //$menu_folder_i["color_class"] = $menu_color;
                         $menu_folder_i_html = CmsFrontMenu::genereFrontMenuItem($tpl_path, $menu_template, $menu_folder_i, $module, $lang, $r, true, $iamAdmin);

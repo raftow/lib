@@ -44,7 +44,7 @@ class CmsFrontMenu extends AFWRoot
 
         public static function genereFrontMenuItem($tpl_path, $menu_template, $menu_folder, $module, $lang, $r, $menu_bar = "", $iamAdmin = false)
         {
-                global $MENU_ICONS;
+                $MENU_ICONS = [];
 
                 $tokens = [];
                 //$iamAdmin = 
