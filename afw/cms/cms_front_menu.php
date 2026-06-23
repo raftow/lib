@@ -12,21 +12,24 @@ class CmsFrontMenu extends AFWRoot
         {
                 $company = AfwSession::currentCompany();
                 $file_afw_dir_name = dirname(__FILE__);
-                /**
-                 * @var array $menu
-                 */
 
                 $user_cache_file_path = "$file_afw_dir_name/../../../cache/chusers/$company" . "_user_$userId" . "_data.php";
-                foreach ($menu as $the_module => $module_menu) {
-                        $module_menu_roles = $module_menu["all"];
-                        foreach ($module_menu_roles as $role_id => $module_menu_role) {
-                                $role_cache_file = "$file_afw_dir_name/../../../$the_module/previleges/role/previleges_" . $the_module . "_role$role_id.php";
-                                include($role_cache_file);
-                                $menu[$the_module]["all"][$role_id] = $role_info[$role_id]['menu'];
-                        }
-                }
+
                 if (file_exists($user_cache_file_path)) {
                         include($user_cache_file_path);
+                        /**
+                         * @var array $menu
+                         */
+
+                        foreach ($menu as $the_module => $module_menu) {
+                                $module_menu_roles = $module_menu["all"];
+                                foreach ($module_menu_roles as $role_id => $module_menu_role) {
+                                        $role_cache_file = "$file_afw_dir_name/../../../$the_module/previleges/role/previleges_" . $the_module . "_role$role_id.php";
+                                        include($role_cache_file);
+                                        $menu[$the_module]["all"][$role_id] = $role_info[$role_id]['menu'];
+                                }
+                        }
+
                         return [true, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path];
                 } else return [false, null, null, null, null, null];
         }
