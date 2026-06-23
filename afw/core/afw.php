@@ -4502,6 +4502,19 @@ class AFWObject extends AFWRoot
     }
 
     /**
+     * @param Auser $auser
+     */
+    protected function canBeSpeciallyEditedBy($auser)
+    {
+        if (!$auser) return false;
+        $table_name = $this->getMyTable();
+        $table_hierarchy_level_needed = AfwSession::config($table_name . "_edit_hierarchy_level_needed", 999);
+        $user_hierarchy_level_enum = $auser->getVal('hierarchy_level_enum');
+        if (!$user_hierarchy_level_enum) $user_hierarchy_level_enum = 9999;
+        return ($user_hierarchy_level_enum <= $table_hierarchy_level_needed);
+    }
+
+    /**
      * userCanEditMeWithoutRole
      * @param Auser $auser
      */
@@ -4511,7 +4524,10 @@ class AFWObject extends AFWRoot
             return $this->adminCanEditMe();
         if ($auser and $auser->isSupervisor())
             return $this->supervisorCanEditMe();
-        return [false, 'userCanEditMeWithoutRole not implemented for non admin users'];
+        if ($this->canBeSpeciallyEditedBy($auser)) {
+            return [true, 'Allowed by institution/company policy as per the hierarchy level of user'];
+        }
+        return [false, 'Not allowed by institution/company policy'];
     }
 
     /**
@@ -5562,7 +5578,12 @@ class AFWObject extends AFWRoot
      */
     public function canBeSpeciallyDisplayedBy($auser)
     {
-        return false;
+        if (!$auser) return false;
+        $table_name = $this->getMyTable();
+        $table_hierarchy_level_needed = AfwSession::config($table_name . "_hierarchy_level_needed", 999);
+        $user_hierarchy_level_enum = $auser->getVal('hierarchy_level_enum');
+        if (!$user_hierarchy_level_enum) $user_hierarchy_level_enum = 9999;
+        return ($user_hierarchy_level_enum <= $table_hierarchy_level_needed);
     }
 
     public function canBeDeletedWithoutRoleBy($auser)
