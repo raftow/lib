@@ -212,6 +212,9 @@ class AfwMenuConstructHelper
                 {
                     $application_code = $mau_info["m$application_id"]["code"];
                     $menu_folders_arr = $menu[$application_code]["all"];
+                    if ($objme->id == 1 and !$menu_folders_arr) {
+                        die("menu of ($application_code) for rafik is : " . var_export($menu, true));
+                    }
                     // temporary until regenrate all user cache files
                     if (!$menu_folders_arr) $menu_folders_arr = $menu[$application_code]["ar"];
 
