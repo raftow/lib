@@ -107,8 +107,7 @@ class UfwLoginUtilities extends AFWRoot
                 }
 
 
-                if($user_connected)
-                {
+                if ($user_connected) {
                         self::login_done($username);
                 }
 
@@ -118,9 +117,13 @@ class UfwLoginUtilities extends AFWRoot
 
         public static function login_done($username)
         {
-                $objUser = Auser::loadByUsername($username);     
-                if($objUser) return $objUser->generateCacheFile("en", true);
+                $objUser = Auser::loadByUsername($username);
+                if ($objUser) return $objUser->generateCacheFile("en", true);
         }
+
+        /**
+         * @return array 
+         */
 
         public static function db_or_golden_login($username, $user_password)
         {
@@ -139,6 +142,7 @@ class UfwLoginUtilities extends AFWRoot
 
                 //$time_e = date("Y-m-d H:i:s");
                 $user_connected = ($username and $user_infos_golden["id"]);
+                $user_not_connected_reason = "";
                 if (!$user_connected) {
                         $user_not_connected_reason = "$enc_pwd gldn/db login failed : $sql_login_golden_or_db";
                         $ldap_dbg = $user_not_connected_reason . " user_infos_golden=" . var_export($user_infos_golden, true);
@@ -146,16 +150,20 @@ class UfwLoginUtilities extends AFWRoot
                         $ldap_dbg = "login success to user $username id = " . $user_infos_golden["id"];
                 }
 
-                if($user_connected)
-                {
+                if ($user_connected) {
                         list($err_ld, $inf_ld, $war_ld) = self::login_done($username);
-                        if($err_ld) $ldap_dbg .= " Error : $err_ld";
-                        if($war_ld) $ldap_dbg .= " Warning : $war_ld";
+                        if ($err_ld) $ldap_dbg .= " Error : $err_ld";
+                        if ($war_ld) $ldap_dbg .= " Warning : $war_ld";
                 }
 
                 //die("return array(user_connected=$user_connected, reason=$user_not_connected_reason, $user_infos_golden, dbg=$ldap_dbg)");
                 return array($user_connected, $user_not_connected_reason, $user_infos_golden, $ldap_dbg);
         }
+
+        /**
+         * @param string $username
+         * @return array
+         */
 
         public static function db_retrieve_user_info($username)
         {
@@ -167,6 +175,7 @@ class UfwLoginUtilities extends AFWRoot
                 $user_infos = AfwDatabase::db_recup_row($sql_db_retrieve_user_info);
                 //$time_e = date("Y-m-d H:i:s");
                 $user_connected = ($username and $user_infos["id"]);
+                $user_not_connected_reason = "";
                 if (!$user_connected) $user_not_connected_reason = "retrieve user info failed : $sql_db_retrieve_user_info";
 
                 return array($user_connected, $user_not_connected_reason, $user_infos, $ldap_dbg);
@@ -177,6 +186,4 @@ class UfwLoginUtilities extends AFWRoot
         {
                 return (substr(md5("afw" . $word . "rb"), 1, 10));
         }
-
-        
 }
