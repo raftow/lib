@@ -222,10 +222,10 @@ class AfwMenuConstructHelper
                 {
                     $application_code = $mau_info["m$application_id"]["code"];
                     $menu_folders_arr = $menu[$application_code]["all"];
-
+                    /*
                     if ($objme->id == 1) {
                         die("menu of ($application_code / $application_id) for rafik is : " . var_export($menu_folders_arr, true));
-                    }
+                    }*/
                     // temporary until regenrate all user cache files
                     if (!$menu_folders_arr) $menu_folders_arr = $menu[$application_code]["ar"];
 
@@ -240,6 +240,9 @@ class AfwMenuConstructHelper
                 $i = 0;
                 //throw new AfwRuntimeException("objme->getMenuFor($application_id,$lang) = ".var_export($menu_arr,true));
                 foreach ($menu_folders_arr as $menu_folder_id => $menu_folder_i) {
+                    if (!$menu_folder_i) {
+                        die("strange menu[$menu_folder_id] of (app$application_code / id$application_id) : " . var_export($menu_folders_arr, true));
+                    }
                     if (($iamAdmin) or (!$menu_folder_i["need_admin"])) {
                         //$menu_color = $menu_next_color[$menu_color];
                         //$menu_folder_i["color_class"] = $menu_color;
