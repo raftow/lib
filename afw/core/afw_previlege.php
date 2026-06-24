@@ -24,7 +24,7 @@ class AfwPrevilege extends AFWRoot
      */
     public static function moduleIdOfModuleCode($module_code)
     {
-    	/**
+        /**
          * @var array $mod_info
          */
         list($found, $mod_info) = self::loadAllServerModules();
@@ -38,7 +38,7 @@ class AfwPrevilege extends AFWRoot
      */
     public static function moduleCodeOfModuleId($module_id)
     {
-    	/**
+        /**
          * @var array $mod_info
          */
         list($found, $mod_info, $file_modules_all) = self::loadAllServerModules();
@@ -78,6 +78,36 @@ class AfwPrevilege extends AFWRoot
         list($found, $role_info, $tab_info, $tbf_info, $previlege_sys_file) = self::loadModulePrevileges($module_code);
 
         return [$found, $tab_info, $tbf_info, $previlege_sys_file . " (should be $previlege_table_file)"];
+    }
+
+    /**
+     * @param string $module_code
+     * @param string $bf_id
+     * @return array
+     */
+    public static function loadModuleBfCache($module_code, $bf_id)
+    {
+        $fileName = "bf$bf_id"  . ".php";
+        $cache_bf_file =  dirname(__FILE__) . "/../../../cache/$module_code/previleges/role/$fileName";
+        if (file_exists($cache_bf_file)) {
+            $bf_info = include($cache_bf_file);
+            return [true, $bf_info, $cache_bf_file];
+        } else {
+            $cache_bf_file =  dirname(__FILE__) . "/../../../$module_code/previleges/role/$fileName";
+            if (file_exists($cache_bf_file)) {
+                $bf_info = include($cache_bf_file);
+                return [true, $bf_info, $cache_bf_file];
+            }
+        }
+
+
+        $bfItem = Bfunction::loadById($bf_id);
+        $bf_info = null;
+        if ($bfItem) list($bf_info,) = UmsManager::genereBfCacheFile($module_code, $bfItem, $genereFile = false, $generePhp = false);
+
+        $found = (($bfItem and $bf_info) ? true : false);
+
+        return [$found, $bf_info, "from database"];
     }
 
     /**

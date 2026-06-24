@@ -11,14 +11,14 @@ class AfwCodeHelper
 
     /**
      * Show code lines in html format with line numbers and focus on a specific line if needed
-      * @param string|array $file_or_lines file path or array of lines to show
-      * @param int $line line number to focus on (1-based index)
-      * @param int $lines_before number of lines to show before the focused line
-      * @param int $lines_after number of lines to show after the focused line
-      * @param string $title title to show above the code block
-      * @param string $language language for syntax highlighting (e.g. 'php', 'js', 'html')
-      * @param string $focus_class css class to apply to the focused line
-      * @return string html code to display the code block
+     * @param string|array $file_or_lines file path or array of lines to show
+     * @param int $line line number to focus on (1-based index)
+     * @param int $lines_before number of lines to show before the focused line
+     * @param int $lines_after number of lines to show after the focused line
+     * @param string $title title to show above the code block
+     * @param string $language language for syntax highlighting (e.g. 'php', 'js', 'html')
+     * @param string $focus_class css class to apply to the focused line
+     * @return string html code to display the code block
      */
     public static function showCodeLines($file_or_lines, $line = 0, $lines_before = 0, $lines_after = 0, $title = '', $language = 'php', $focus_class = 'line')
     {
@@ -27,8 +27,7 @@ class AfwCodeHelper
             if (file_exists($file)) {
                 $lines = file($file);
                 $title .= '<i>modified at ' . date('F d Y H:i:s.', filemtime($file)) . '</i>';
-            }
-            else {
+            } else {
                 $lines = null;
                 $title .= '<i>file not found</i>';
             }
@@ -75,11 +74,22 @@ class AfwCodeHelper
         return $html;
     }
 
-    public static function generatePhpFile($module_code, $fileName, $php, $subFolder)
+    /**
+     * @param string $module_code
+     * @param string $fileName
+     * @param string $php
+     * @param string $subFolder
+     */
+
+    public static function generatePhpFile($module_code, $fileName, $php, $subFolder, $genFolder = "cache")
     {
-        $php_generation_folder = AfwSession::config("php_generation_folder", "C:/gen/php");
         $dir_sep = AfwSession::config("dir_sep", "/");
         $root_www_path = AfwSession::config("root_www_path", AfwSession::config("parent_project_path", "C:/dev-folder"));
+        if ($genFolder == "cache") {
+            $php_generation_folder = $root_www_path . $dir_sep . "cache" . $dir_sep . $module_code . $dir_sep . $subFolder;
+        } else {
+            $php_generation_folder = AfwSession::config("php_generation_folder", "C:/gen/php");
+        }
         $merge_tool = AfwSession::config("merge_tool", "ex winmerge");
         $mv_command = AfwSession::config("mv_command", "mv ");
         $command_lines_arr = [];
