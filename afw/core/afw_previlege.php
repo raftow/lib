@@ -69,10 +69,16 @@ class AfwPrevilege extends AFWRoot
     public static function loadModuleTablePrevileges($module_code, $table_name)
     {
         $fileName = "previleges_$module_code" . "_table_$table_name"  . ".php";
-        $previlege_table_file =  dirname(__FILE__) . "/../../../$module_code/previleges/table/$fileName";
+        $previlege_table_file =  dirname(__FILE__) . "/../../../cache/$module_code/previleges/table/$fileName";
         if (file_exists($previlege_table_file)) {
             include($previlege_table_file);
             return [true, $tab_info, $tbf_info, $previlege_table_file];
+        } else {
+            $previlege_table_file =  dirname(__FILE__) . "/../../../$module_code/previleges/table/$fileName";
+            if (file_exists($previlege_table_file)) {
+                include($previlege_table_file);
+                return [true, $tab_info, $tbf_info, $previlege_table_file];
+            }
         }
 
         list($found, $role_info, $tab_info, $tbf_info, $previlege_sys_file) = self::loadModulePrevileges($module_code);
@@ -118,10 +124,16 @@ class AfwPrevilege extends AFWRoot
     public static function loadModuleRolePrevileges($module_code, $role_id, $full_optimization = false)
     {
         $fileName = "previleges_$module_code" . "_role$role_id"  . ".php";
-        $previlege_role_file =  dirname(__FILE__) . "/../../../$module_code/previleges/role/$fileName";
+        $previlege_role_file =  dirname(__FILE__) . "/../../../cache/$module_code/previleges/role/$fileName";
         if (file_exists($previlege_role_file)) {
             include($previlege_role_file);
             return [true, $role_info, $previlege_role_file];
+        } else {
+            $previlege_role_file =  dirname(__FILE__) . "/../../../$module_code/previleges/role/$fileName";
+            if (file_exists($previlege_role_file)) {
+                include($previlege_role_file);
+                return [true, $role_info, $previlege_role_file];
+            }
         }
 
 
