@@ -273,16 +273,47 @@ class AfwUmsPagHelper extends AFWRoot
             if ($obj->editByStep) {
                 $tbl->addRemoveInMfk(
                     'tboption_mfk',
-                    $ids_to_add_arr = [5],
-                    $ids_to_remove_arr = [6]
+                    $ids_to_add_arr = [Atable::$TBOPTION_OPEN_ROLES_ON_SCREEN_TABS],
+                    $ids_to_remove_arr = [Atable::$TBOPTION_OPEN_ROLES_ON_FULL_SCREEN]
                 );
             } else {
                 $tbl->addRemoveInMfk(
                     'tboption_mfk',
-                    $ids_to_add_arr = [6],
-                    $ids_to_remove_arr = [5]
+                    $ids_to_add_arr = [Atable::$TBOPTION_OPEN_ROLES_ON_FULL_SCREEN],
+                    $ids_to_remove_arr = [Atable::$TBOPTION_OPEN_ROLES_ON_SCREEN_TABS]
                 );
             }
+
+            if ($obj->OwnedBy) {
+                $tbl->addRemoveInMfk(
+                    'tboption_mfk',
+                    $ids_to_add_arr = [Atable::$TBOPTION_FULL_DETAIL],
+                    $ids_to_remove_arr = []
+                );
+            } else {
+                $tbl->addRemoveInMfk(
+                    'tboption_mfk',
+                    $ids_to_add_arr = [],
+                    $ids_to_remove_arr = [Atable::$TBOPTION_FULL_DETAIL]
+                );
+            }
+
+            if ($obj->AutoGenerateMethod) {
+                $tbl->addRemoveInMfk(
+                    'tboption_mfk',
+                    $ids_to_add_arr = [Atable::$TBOPTION_DATA_IS_AUTO_GENERATED],
+                    $ids_to_remove_arr = []
+                );
+            } else {
+                $tbl->addRemoveInMfk(
+                    'tboption_mfk',
+                    $ids_to_add_arr = [],
+                    $ids_to_remove_arr = [Atable::$TBOPTION_DATA_IS_AUTO_GENERATED]
+                );
+            }
+
+
+
 
             // die(var_export($tbl,true));
 
