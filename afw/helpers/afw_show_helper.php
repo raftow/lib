@@ -2585,7 +2585,9 @@ class AfwShowHelper
             $header_cells["matrix-$x_val"] = $x_disp[$lang];
         }
 
-        $tbl->addElement(new HtmlyRowBody("", "", "", $header_cells));
+        $hrbElement = new HtmlyRowBody("", "", "", $header_cells);
+        $hrbElement->addClass("header-matrix");
+        $tbl->addElement($hrbElement);
 
         foreach ($y_list as $y_val => $y_disp) {
             $row_cells = [];
