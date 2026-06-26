@@ -315,6 +315,10 @@ class AfwFormatHelper
         return [$idsAdded, $idsRemoved];
     }
 
+    /**
+     * @param mixed $value
+     * @param string $key
+     */
     final public static function formatValue(
         $value,
         $key,
@@ -334,6 +338,7 @@ class AfwFormatHelper
         }
 
         $data_to_display = $value;
+        $link_to_display = "";
 
         $formatted = true;
 
@@ -576,6 +581,7 @@ class AfwFormatHelper
         } elseif (!in_array(
             $structure['TYPE'],
             [
+                'MATRIX',
                 'MFK',
                 'FK',
                 'ANSWER',
@@ -588,139 +594,7 @@ class AfwFormatHelper
                 'SHOW',
             ]
         )) {
-            if (($structure['TYPE'] == 'FLOAT') and
-                AfwStringHelper::stringStartsWith($structure['FORMAT'], '*.')
-            ) {
-                list($a, $b) = explode('.', $structure['FORMAT']);
-                // if($attribute) die("$attribute : list($a,$b) = ".$structure["FORMAT"]);
-                if (!$data_to_display) {
-                    $data_to_display = 0;
-                }
-
-                $old_data_to_display = $data_to_display;
-                $data_to_display = number_format(
-                    $data_to_display,
-                    intval($b),
-                    '.',
-                    ' '
-                );
-                // if($key=="price5") die("$key : list($a,$b) = ".$structure["FORMAT"]." $data_to_display = number_format($old_data_to_display, intval($b), '.', ' ') ");
-                $zero = number_format(0, intval($b), '.', ' ');
-                if ($a == '*' and $data_to_display == $zero) {
-                    $data_to_display = '';
-                }
-                if ($data_to_display and $structure['UNIT']) {
-                    $data_to_display .= ' ' . $structure['UNIT'];
-                }
-            } elseif ($structure['TYPE'] == 'PCTG') {
-                // $a = "*";
-                $b = 1;
-                if ($data_to_display) {
-                    $data_to_display = number_format(
-                        $data_to_display,
-                        intval($b),
-                        '.',
-                        ' '
-                    );
-                }
-
-                // if($key=="price5") die("$key : list($a,$b) = ".$structure["FORMAT"]." $data_to_display = number_format($old_data_to_display, intval($b), '.', ' ') ");
-                // $zero = number_format(0, intval($b), '.', ' ');
-                // if(($a=="*") and ($data_to_display==$zero)) $data_to_display= "";
-                if ($data_to_display) {
-                    $data_to_display .= ' %';
-                }
-            } elseif ($structure['TYPE'] == 'TEXT') {
-                // if($attribute=="warning_nb") die("getVal of ($key) is $data_to_display");
-                if ($structure['FORMAT'] == 'TOHTML') {
-                    $data_to_display = self::toHtml($data_to_display);
-                } elseif ($structure['FORMAT'] == 'PARAGRAPH-TOHTML') {
-                    $data_to_display = self::toHtml($data_to_display);
-                    $data_to_display = "<span class='page_paragraph'>$data_to_display</span>";
-                } elseif (
-                    $structure['FORMAT'] == 'CSSED' and
-                    $structure['CSSED_TO_CLASS']
-                ) {
-                    $cssed_to_class = $structure['CSSED_TO_CLASS'];
-                    if ($data_to_display) {
-                        $data_to_display =
-                            "<div class='$cssed_to_class'>"
-                            . $data_to_display
-                            . '</div>';
-                    }
-                    // if($attribute=="warning_nb") die("CSSED($cssed_to_class) : data_to_display of ($key) is $data_to_display");
-                }
-
-                if ($structure['FORMAT'] == 'PRE' or $structure['PRE']) {
-                    $pre_class = $structure['PRE'];
-                    if ($pre_class) {
-                        $pre_class = " class='$pre_class' ";
-                    }
-                    if ($structure['TEXT-ALIGN']) {
-                        if ($structure['TEXT-ALIGN'] == 'BYLANG') {
-                            $text_algn = AfwLanguageHelper::getLanguageAlign($lang);
-                        } else {
-                            $text_algn = $structure['TEXT-ALIGN'];
-                        }
-
-                        $text_align = 'text-align:' . $text_algn;
-                    } elseif ($structure['UTF8']) {
-                        $text_align = 'text-align:right';
-                    } else {
-                        $text_align = 'text-align:left';
-                    }
-
-                    $dir = self::getDirectionFromStructure($structure);
-                    if ($structure['WIDTH']) {
-                        $wd = $structure['WIDTH'];
-                    } else {
-                        $wd = '100%';
-                    }
-                    if ($structure['MIN-WIDTH']) {
-                        $min_wd = $structure['MIN-WIDTH'];
-                    } else {
-                        $min_wd = '100px';
-                    }
-
-                    $key_struct = var_export($structure, true);
-                    $data_to_display = "<pre id='$key-$key' $pre_class style='direction: $dir;padding:8px;height: 100%;overflow: scroll;min-width:${min_wd};width:${wd};$text_align'>$data_to_display </pre>";  // .$key_struct;
-                }
-
-                if ($getFormatLink) {
-                    if ($structure['FORMAT'] == 'EMAIL') {
-                        $link_to_display = 'mailto:' . $data_to_display;
-                    } elseif ($structure['FORMAT'] == 'WEB') {
-                        $link_to_display = $data_to_display;
-                    }
-                }
-            } elseif (
-                $structure['TYPE'] == 'INT' and
-                ($structure['FORMAT'] == 'CAN_ZERO' or $structure['CAN_ZERO'])
-            ) {
-                if ($structure['EMPTY_IS_ALL'] and !$data_to_display) {
-                    $all_code = "ALL-$key";
-                    if ($obj) {
-                        $return = $obj->translate($all_code, $lang);
-                        if ($return == $all_code) {
-                            $return = $obj->translateOperator('ALL', $lang);
-                        }
-                    } else {
-                        $return = $all_code;
-                    }
-
-                    // die("raf, $key : data_to_display=$data_to_display, return=$return");
-                    $data_to_display = $return;
-                } else {
-                    if (!$data_to_display) {
-                        $data_to_display = '0';
-                    }
-                    if ($structure['UNIT'] and (!$structure['DISPLAY_HIDE_UNIT'])) {
-                        $data_to_display .= ' ' . $structure['UNIT'];
-                    }
-                }
-            } elseif ($data_to_display and $structure['UNIT'] and (!$structure['DISPLAY_HIDE_UNIT'])) {
-                $data_to_display .= ' ' . $structure['UNIT'];
-            }
+            list($data_to_display, $link_to_display) = self::caseNotComplexAttribute($obj, $key, $data_to_display, $structure, $lang, $getFormatLink);
         } else {
             $data_to_display = null;
             $link_to_display = null;
@@ -728,6 +602,157 @@ class AfwFormatHelper
         }
         // if($key=="price5") die("return of formatValue($value,$key) : $formatted=formatted, data_to_display=$data_to_display, link_to_display=$link_to_display");
         return [$formatted, $data_to_display, $link_to_display];
+    }
+
+
+    /**
+     * @param AFWObject $obj
+     * @param string $key
+     * @param string $data_to_display, 
+     * @param array $structure
+     * 
+     * @return list(string, string)
+     * 
+     */
+    final public static function caseNotComplexAttribute($obj, $key, $data_to_display, $structure, $lang = 'ar', $getFormatLink = false)
+    {
+        $link_to_display = "";
+        if (($structure['TYPE'] == 'FLOAT') and
+            AfwStringHelper::stringStartsWith($structure['FORMAT'], '*.')
+        ) {
+            list($a, $b) = explode('.', $structure['FORMAT']);
+            // if($attribute) die("$attribute : list($a,$b) = ".$structure["FORMAT"]);
+            if (!$data_to_display) {
+                $data_to_display = 0;
+            }
+
+            $old_data_to_display = $data_to_display;
+            $data_to_display = number_format(
+                $data_to_display,
+                intval($b),
+                '.',
+                ' '
+            );
+            // if($key=="price5") die("$key : list($a,$b) = ".$structure["FORMAT"]." $data_to_display = number_format($old_data_to_display, intval($b), '.', ' ') ");
+            $zero = number_format(0, intval($b), '.', ' ');
+            if ($a == '*' and $data_to_display == $zero) {
+                $data_to_display = '';
+            }
+            if ($data_to_display and $structure['UNIT']) {
+                $data_to_display .= ' ' . $structure['UNIT'];
+            }
+        } elseif ($structure['TYPE'] == 'PCTG') {
+            // $a = "*";
+            $b = 1;
+            if ($data_to_display) {
+                $data_to_display = number_format(
+                    $data_to_display,
+                    intval($b),
+                    '.',
+                    ' '
+                );
+            }
+
+            // if($key=="price5") die("$key : list($a,$b) = ".$structure["FORMAT"]." $data_to_display = number_format($old_data_to_display, intval($b), '.', ' ') ");
+            // $zero = number_format(0, intval($b), '.', ' ');
+            // if(($a=="*") and ($data_to_display==$zero)) $data_to_display= "";
+            if ($data_to_display) {
+                $data_to_display .= ' %';
+            }
+        } elseif ($structure['TYPE'] == 'TEXT') {
+            // if($attribute=="warning_nb") die("getVal of ($key) is $data_to_display");
+            if ($structure['FORMAT'] == 'TOHTML') {
+                $data_to_display = self::toHtml($data_to_display);
+            } elseif ($structure['FORMAT'] == 'PARAGRAPH-TOHTML') {
+                $data_to_display = self::toHtml($data_to_display);
+                $data_to_display = "<span class='page_paragraph'>$data_to_display</span>";
+            } elseif (
+                $structure['FORMAT'] == 'CSSED' and
+                $structure['CSSED_TO_CLASS']
+            ) {
+                $cssed_to_class = $structure['CSSED_TO_CLASS'];
+                if ($data_to_display) {
+                    $data_to_display =
+                        "<div class='$cssed_to_class'>"
+                        . $data_to_display
+                        . '</div>';
+                }
+                // if($attribute=="warning_nb") die("CSSED($cssed_to_class) : data_to_display of ($key) is $data_to_display");
+            }
+
+            if ($structure['FORMAT'] == 'PRE' or $structure['PRE']) {
+                $pre_class = $structure['PRE'];
+                if ($pre_class) {
+                    $pre_class = " class='$pre_class' ";
+                }
+                if ($structure['TEXT-ALIGN']) {
+                    if ($structure['TEXT-ALIGN'] == 'BYLANG') {
+                        $text_algn = AfwLanguageHelper::getLanguageAlign($lang);
+                    } else {
+                        $text_algn = $structure['TEXT-ALIGN'];
+                    }
+
+                    $text_align = 'text-align:' . $text_algn;
+                } elseif ($structure['UTF8']) {
+                    $text_align = 'text-align:right';
+                } else {
+                    $text_align = 'text-align:left';
+                }
+
+                $dir = self::getDirectionFromStructure($structure);
+                if ($structure['WIDTH']) {
+                    $wd = $structure['WIDTH'];
+                } else {
+                    $wd = '100%';
+                }
+                if ($structure['MIN-WIDTH']) {
+                    $min_wd = $structure['MIN-WIDTH'];
+                } else {
+                    $min_wd = '100px';
+                }
+
+                $key_struct = var_export($structure, true);
+                $data_to_display = "<pre id='pre-$key' $pre_class style='direction: $dir;padding:8px;height: 100%;overflow: scroll;min-width:${min_wd};width:${wd};$text_align'>$data_to_display </pre>";  // .$key_struct;
+            }
+
+            if ($getFormatLink) {
+                if ($structure['FORMAT'] == 'EMAIL') {
+                    $link_to_display = 'mailto:' . $data_to_display;
+                } elseif ($structure['FORMAT'] == 'WEB') {
+                    $link_to_display = $data_to_display;
+                }
+            }
+        } elseif (
+            $structure['TYPE'] == 'INT' and
+            ($structure['FORMAT'] == 'CAN_ZERO' or $structure['CAN_ZERO'])
+        ) {
+            if ($structure['EMPTY_IS_ALL'] and !$data_to_display) {
+                $all_code = "ALL-$key";
+                if ($obj) {
+                    $return = $obj->translate($all_code, $lang);
+                    if ($return == $all_code) {
+                        $return = $obj->translateOperator('ALL', $lang);
+                    }
+                } else {
+                    $return = $all_code;
+                }
+
+                // die("raf, $key : data_to_display=$data_to_display, return=$return");
+                $data_to_display = $return;
+            } else {
+                if (!$data_to_display) {
+                    $data_to_display = '0';
+                }
+                if ($structure['UNIT'] and (!$structure['DISPLAY_HIDE_UNIT'])) {
+                    $data_to_display .= ' ' . $structure['UNIT'];
+                }
+            }
+        } elseif ($data_to_display and $structure['UNIT'] and (!$structure['DISPLAY_HIDE_UNIT'])) {
+            $data_to_display .= ' ' . $structure['UNIT'];
+        }
+
+
+        return [$data_to_display, $link_to_display];
     }
 
     /**
