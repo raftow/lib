@@ -291,7 +291,7 @@ class AfwSqlHelper extends AFWRoot
         // if($obj->getMyClass()=='Afield') throw new AfwRuntimeException("logicDelete after setting active false . hasChanged=".var_export($obj->hasChanged(),true)." fieldsHasChanged=".var_export($obj->fieldsHasChanged(),true));
         foreach ($obj->fieldsHasChanged() as $key => $old_value) {
             $value = $obj->getAfieldValue($key);
-            if ($key == "atable_mfk") die("dbg 20260626 : $key new val = $value , old val = $old_value");
+            // if ($key == "atable_mfk") die("dbg 20260626 : $key new val = $value when old val = $old_value");
             if (is_array($value)) {
                 die("how to update value of afield $key when it is an array : "
                     . var_export($value, true));
