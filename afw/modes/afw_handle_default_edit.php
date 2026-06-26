@@ -145,7 +145,8 @@ foreach ($class_db_structure as $nom_col => $desc) {
         }
 
         if ($nom_col == "atable_mfk") {
-            die("before set $nom_col old val = $val when new val in _POST : " . var_export($_POST, true));
+            $old_val = $obj->getVal($nom_col);
+            die("before set $nom_col old val = $old_val when new val in _POST : " . var_export($_POST, true));
         }
 
 
