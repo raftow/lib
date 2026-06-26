@@ -2004,7 +2004,7 @@ class AFWObject extends AFWRoot
         }
 
         $value = $this->getVal($attribute);
-        $value_arr = json_decode($value);
+        $value_arr = json_decode($value, true);
         return $value_arr['data'][$x_val][$y_val];
     }
 
@@ -2026,7 +2026,7 @@ class AFWObject extends AFWRoot
         }
 
         $value = $this->getVal($attribute);
-        $value_arr = json_decode($value);
+        $value_arr = json_decode($value, true);
         $old_cell_value = $value_arr['data'][$x_val][$y_val];
 
         if ($old_cell_value != $cell_value) {

@@ -2577,7 +2577,7 @@ class AfwShowHelper
         $cssClass = "matrix $attribute";
         $tbl->addClass($cssClass);
         $value = $object->getVal($attribute);
-        $value_arr = json_decode($value);
+        $value_arr = json_decode($value, true);
         $header_cells = [];
 
         $header_cells["matrix-yCol"] = "&nbsp;";
