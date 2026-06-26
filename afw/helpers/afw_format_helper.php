@@ -773,23 +773,30 @@ class AfwFormatHelper
         return "<div class='empty_message'>" . $empty_message . '</div>';
     }
 
-    public static function getEnumVal(&$object, $attribute, $field_value)
+    /**
+     * @param AFWObject $object
+     * @param string $attribute
+     * @param mixed $field_value
+     */
+    public static function getEnumVal($object, $attribute, $field_value, $structure = null, $class_name = "")
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
-
-        $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        if (!$structure and !$object) throw new AfwRuntimeException("getEnumVal need at least object or structure");
+        if (!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         if (!$field_value and $structure['EMPTY_IS_ALL']) {
-            $all_code = "ALL-$attribute";
-            $return = $object->translate($all_code, $lang);
+            $return = $all_code = "ALL-$attribute";
+            if ($object) $return = $object->translate($all_code, $lang);
             if ($return == $all_code) {
-                $return = $object->translateOperator('ALL', $lang);
+                $return = AfwLanguageHelper::translateKeyword('ALL', $lang);
             }
 
             return $return;
         }
         // $call_method = "get EnumVal(attribute = $attribute, field_value = $field_value)";
-
-        $answerTable = AfwLoadHelper::getEnumTotalAnswerList($object, $attribute);
+        $answerTable = [];
+        $answerTable[$field_value] = $field_value;
+        if ($object) $answerTable = AfwLoadHelper::getEnumTotalAnswerList($object, $attribute, '', $structure);
+        elseif ($class_name) $answerTable = AfwLoadHelper::getStaticEnumTotalAnswerList($class_name, $attribute, $structure);
         $return = $answerTable[$field_value];
 
         /*
@@ -818,11 +825,47 @@ class AfwFormatHelper
         return $return;
     }
 
+
     /**
+     * @param array $structure
+     * @param mixed $the_value
+     * @param string $class_name AFWObject subclass name
+     */
+
+    final public static function decodeOnlyWithStructure($structure, $the_value, $class_name, $lang = 'ar')
+    {
+        return self::decode(
+            "NOATTRIBUTE",
+            $structure["TYPE"],
+            $structure["FORMAT"],
+            $the_value,
+            true,
+            $lang,
+            $structure,
+            null,
+            true,
+            $class_name
+        );
+    }
+    /**
+     * @param string $attribute
+     * @param string $typattr
+     * @param string $decode_format
+     * @param mixed $attribute_value
      * @param AFWObject $obj
      */
-    final public static function decode($attribute, $typattr, $decode_format, $attribute_value, $integrity = true, $lang = 'ar', $structure = null, $obj = null, $translate_if_needed = true)
-    {
+    final public static function decode(
+        $attribute,
+        $typattr,
+        $decode_format,
+        $attribute_value,
+        $integrity = true,
+        $lang = 'ar',
+        $structure = null,
+        $obj = null,
+        $translate_if_needed = true,
+        $class_name = ""
+    ) {
         switch ($typattr) {
             case 'INT':
                 switch ($decode_format) {
@@ -927,8 +970,9 @@ class AfwFormatHelper
                 } else {
                     $return = $val;
                 }
-                if ($translate_if_needed and $obj) {
-                    $return = $obj->showYNValueForAttribute(strtoupper($return), $attribute);
+                if ($translate_if_needed) {
+                    if ($obj) $return = $obj->showYNValueForAttribute(strtoupper($return), $attribute);
+                    else $return = AfwLanguageHelper::translateKeyword(strtoupper($return), $lang);
                 }
 
                 break;
@@ -981,8 +1025,8 @@ class AfwFormatHelper
                 if (!$attribute_value) {
                     $return = '';
                     if ($structure['EMPTY_IS_ALL']) {
-                        $all_code = "ALL-$attribute";
-                        $return = $obj->translate($all_code, $lang);
+                        $return = $all_code = "ALL-$attribute";
+                        if ($obj) $return = $obj->translate($all_code, $lang);
                         if ($return == $all_code) {
                             $return = AfwLanguageHelper::translateKeyword('ALL', $lang);
                         }
@@ -1108,7 +1152,7 @@ class AfwFormatHelper
                 break;
             case 'ANSWER':
                 if (!$obj) {
-                    throw new AfwRuntimeException('structure and obj should not be both null if we decode an ANSWER field');
+                    throw new AfwRuntimeException('obj should not be null if we decode an ANSWER field');
                 }
 
                 $valfld = $attribute_value;
@@ -1121,20 +1165,21 @@ class AfwFormatHelper
 
                 $valfld = $attribute_value;
                 // if($attribute == 'unit_type_id') die("decode of enum field " . get_class($object)  . "->get EnumVal(attribute=$attribute, valfld = $valfld)");
-                $return = self::getEnumVal($obj, $attribute, $valfld);
+                $return = self::getEnumVal($obj, $attribute, $valfld, $structure, $class_name);
                 break;
             case 'MENUM':
                 if (!$obj) {
                     throw new AfwRuntimeException('structure and obj should not be both null if we decode an MENUM field');
                 }
 
-                $sep = $obj->getSeparatorFor($attribute);
+                if ($obj) $sep = $obj->getSeparatorFor($attribute);
+                else $sep = ",";
                 $valfld = $attribute_value;
                 $val_arr = explode($sep, $valfld);
                 $return = '';
                 $array = [];
                 foreach ($val_arr as $vv => $valval) {
-                    $decvalval = self::getEnumVal($obj, $attribute, $valval);
+                    $decvalval = self::getEnumVal($obj, $attribute, $valval, $structure, $class_name);
                     $array[] = $decvalval;
                     // $return .= " " . $decvalval;
                 }
@@ -1193,7 +1238,7 @@ class AfwFormatHelper
             $link_css_class = 'nice_link';
         }
 
-        $link_url = $obj->decodeText($link_url, '', false);
+        if ($obj) $link_url = $obj->decodeText($link_url, '', false);
 
         $target = '';
         $popup_t = '';

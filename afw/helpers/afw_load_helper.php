@@ -2126,7 +2126,19 @@ class AfwLoadHelper extends AFWRoot
         return AfwStringHelper::afw_explode($answer);
     }
 
+    /**
+     * @param string $className
+     * @param string $attribute
+     */
+    public static final function getStaticEnumTable($className, $attribute)
+    {
+        $method = "list_of_$attribute";
+        return $className::$method();
+    }
 
+    /**
+     * @param string $answer
+     */
     public static final function getEnumTable(
         $answer,
         $table = '',
@@ -2174,9 +2186,29 @@ class AfwLoadHelper extends AFWRoot
     }
 
 
-    public static final function getEnumTotalAnswerList(&$object, $attribute, $enum_answer_list = '')
+
+
+    /**
+     * @param string $className
+     * @param array $structure
+     * 
+     */
+    public static final function getStaticEnumTotalAnswerList($className, $structure)
     {
-        $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        $attribute = $structure["FUNCTION_COL_NAME"];
+        $liste_rep = self::getStaticEnumTable($className, $attribute);
+        return $liste_rep;
+    }
+
+    /**
+     * @param AFWObject $object
+     * @param string $attribute
+     * 
+     */
+    public static final function getEnumTotalAnswerList($object, $attribute, $enum_answer_list = '', $structure = null)
+    {
+        if (!$structure and !$object) throw new AfwRuntimeException("getEnumTotalAnswerList need at least object or structure");
+        if (!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         if (!$enum_answer_list) {
             $enum_answer_list = $structure['ANSWER'];
         }

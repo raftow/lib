@@ -14,11 +14,11 @@ class AfwStructureHelper extends AFWRoot
 
     /**
      * die and dump a message with back trace, it can also log the message in debugg if $to_debugg is true
-      * @param string $message
-      * @param boolean $to_die
-      * @param boolean $to_debugg
-      * @param boolean $trace
-      * @param boolean $light if true the back trace will be lightened to show only file and line without function calls
+     * @param string $message
+     * @param boolean $to_die
+     * @param boolean $to_debugg
+     * @param boolean $trace
+     * @param boolean $light if true the back trace will be lightened to show only file and line without function calls
      */
     public static function dd($message, $to_die = true, $to_debugg = false, $trace = true, $light = false)
     {
@@ -90,12 +90,12 @@ class AfwStructureHelper extends AFWRoot
      * @param string $table_name
      * @param string $return_type structure|shortnames|shortcuts|formulas
      * @param string $attribute attribute name or short name or 'all'
-      * @param string $step step number or 'all'
-      * @param string|null $start_step step number to start from if step is 'all'
-      * @param string|null $end_step step number to end to if step is 'all'
-      * @param bool $repare if true the returned structure(s) will be repared by technicalRepareStructure method
-      *
-      * @return array|mixed
+     * @param string $step step number or 'all'
+     * @param string|null $start_step step number to start from if step is 'all'
+     * @param string|null $end_step step number to end to if step is 'all'
+     * @param bool $repare if true the returned structure(s) will be repared by technicalRepareStructure method
+     *
+     * @return array|mixed
      */
     public static function getDbStructure(
         $module_code,
@@ -548,7 +548,7 @@ class AfwStructureHelper extends AFWRoot
     public static final function getAllRealFields(&$object, $returnStructure = false)
     {
         $cls = $object->getMyClass();
-        if (!$returnStructure) {            
+        if (!$returnStructure) {
             if (self::$allRealFields[$cls])
                 return self::$allRealFields[$cls];
         }
@@ -841,7 +841,7 @@ class AfwStructureHelper extends AFWRoot
         if (!$object)
             return false;
         if (!$object->attributeIsApplicable($attribute))
-            if(!$force_accept_not_applicable) return false;
+            if (!$force_accept_not_applicable) return false;
         global $display_in_edit_mode;
 
         /*
@@ -1182,28 +1182,40 @@ class AfwStructureHelper extends AFWRoot
             return false;
         }
         if ((!$structure) or
-                (AfwStringHelper::stringStartsWith($structure['CATEGORY'], '::')) or
-                (AfwStringHelper::stringStartsWith($structure['OBSOLETE'], '::'))) {
+            (AfwStringHelper::stringStartsWith($structure['CATEGORY'], '::')) or
+            (AfwStringHelper::stringStartsWith($structure['OBSOLETE'], '::'))
+        ) {
             $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         }
         // if($attribute=="nomcomplet") die("structure of $attribute =".var_export($structure,true));
         return ($structure and !$structure['CATEGORY'] and !$structure['OBSOLETE']);
     }
 
-    public static final function getEnumAnswerList(&$object, $attribute, $enum_answer_list = '')
+    /**
+     * @param AFWObject $object
+     * @param string $attribute
+     * 
+     */
+    public static final function getEnumAnswerList($object, $attribute, $enum_answer_list = '', $structure = null)
     {
-        $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+        if (!$structure and !$object) throw new AfwRuntimeException("getEnumTotalAnswerList need at least object or structure");
+        if (!$structure) $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         if ($structure['ANSWER'] == 'INSTANCE_FUNCTION') {
             $method = "at_of_$attribute";
 
             $liste_rep = $object->$method();
         } else {
-            $liste_rep = AfwLoadHelper::getEnumTotalAnswerList($object, $attribute, $enum_answer_list);
+            $liste_rep = AfwLoadHelper::getEnumTotalAnswerList($object, $attribute, $enum_answer_list, $structure);
         }
 
         return $liste_rep;
     }
 
+    /**
+     * @param AFWObject $object
+     * @param string $attribute
+     * 
+     */
     public static final function getDefaultValue(&$object, $attribute, $struct = null)
     {
         if (!$struct)
@@ -1211,6 +1223,11 @@ class AfwStructureHelper extends AFWRoot
         return $struct['DEFAULT'];
     }
 
+    /**
+     * @param AFWObject $object
+     * @param string $attribute_original
+     * 
+     */
     public static final function getHelpFor(&$object, $attribute_original, $lang = 'ar')
     {
         if (!$object->dynamicHelpCondition($attribute_original)) {
@@ -1453,8 +1470,8 @@ class AfwStructureHelper extends AFWRoot
 
     /**
      * export
-      * @param AFWObject $object
-      * @return string
+     * @param AFWObject $object
+     * @return string
      */
     public static function export($object)
     {
@@ -1464,10 +1481,10 @@ class AfwStructureHelper extends AFWRoot
 
     /**
      * getFieldGroupArr
-      * @param AFWObject $object
-      * @param string $lang
-      * @param bool $all
-      * @return array
+     * @param AFWObject $object
+     * @param string $lang
+     * @param bool $all
+     * @return array
 
      */
     public static function getFieldGroupArr($object, $lang = 'ar', $all = false)
@@ -1488,10 +1505,10 @@ class AfwStructureHelper extends AFWRoot
 
     /**
      * getAuditGroupArr
-      * @param AFWObject $object
-      * @param string $lang
-      * @param bool $all
-      * @return array
+     * @param AFWObject $object
+     * @param string $lang
+     * @param bool $all
+     * @return array
 
      */
 

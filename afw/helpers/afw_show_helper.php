@@ -2593,7 +2593,10 @@ class AfwShowHelper
             $row_cells = [];
             $row_cells["matrix-yCol"] = $y_disp[$lang];
             foreach ($x_list as $x_val => $x_disp) {
-                $row_cells[$x_val] = $value_arr['data'][$x_val][$y_val];
+                //********* */
+                $cell_brute_value = $value_arr['data'][$x_val][$y_val];
+                $cell_display = AfwFormatHelper::decodeOnlyWithStructure($cell_struct, $cell_brute_value, $object->getMyClass(), $lang);
+                $row_cells[$x_val] = $cell_display;
             }
             $tbl->addElement(new HtmlyRowBody("", "", "", $row_cells));
         }
@@ -2961,8 +2964,8 @@ class AfwShowHelper
                                 break;
                             case 'FK':
                                 if (AfwStructureHelper::isLookupAttribute($objListItem, $col, $desc)) {
-                                    $val_decoded = $objListItem->getVal($col);
-                                    $tuple[$col] = $objListItem->decode($col) . "<!-- val decoded is $val_decoded -->";
+                                    $val_tobe_decoded = $objListItem->getVal($col);
+                                    $tuple[$col] = $objListItem->decode($col) . "<!-- val to be decoded is $val_tobe_decoded -->";
                                 } else {
                                     $obj_col = $objListItem->het($col);
                                     if (empty($desc['CATEGORY'])) {
