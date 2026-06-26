@@ -1443,12 +1443,11 @@ class AfwSqlHelper extends AFWRoot
                 if ($onlyReturnSQL)
                     return $query . ' report ' . $report;
 
-                /*
-                 * if(static::$TABLE == "student_session")
-                 * {
-                 *     die(static::$TABLE." updating ... after get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($fields_updated)." / query = $query / report=$report/ fields_updated = " . var_export($fields_updated,true));
-                 * }
-                 */
+
+                if (get_class($object) == "NewRole") {
+                    die(get_class($object) . " updating ... after get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = " . count($fields_updated) . " / query = $query / report=$report/ fields_updated = " . var_export($fields_updated, true));
+                }
+
 
                 $return = 0;
                 if ($can_update) {
