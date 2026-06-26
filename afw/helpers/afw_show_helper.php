@@ -2589,7 +2589,7 @@ class AfwShowHelper
 
         foreach ($y_list as $y_val => $y_disp) {
             $row_cells = [];
-            $row_cells["matrix-yCol"] = $y_disp;
+            $row_cells["matrix-yCol"] = $y_disp[$lang];
             foreach ($x_list as $x_val => $x_disp) {
                 $row_cells[$x_val] = $value_arr['data'][$x_val][$y_val];
             }
