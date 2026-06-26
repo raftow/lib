@@ -291,9 +291,9 @@ class AfwSqlHelper extends AFWRoot
         // if($obj->getMyClass()=='Afield') throw new AfwRuntimeException("logicDelete after setting active false . hasChanged=".var_export($obj->hasChanged(),true)." fieldsHasChanged=".var_export($obj->fieldsHasChanged(),true));
         foreach ($obj->fieldsHasChanged() as $key => $old_value) {
             $value = $obj->getAfieldValue($key);
-            // if ($key == "atable_mfk") die("dbg 20260626 : $key new val = $value when old val = $old_value");
+            // if ($key == "atable_mfk") d ie("dbg 20260626 : $key new val = $value when old val = $old_value");
             if (is_array($value)) {
-                die("how to update value of afield $key when it is an array : "
+                throw new AfwBusinessException("how to update value of afield $key when it is an array : "
                     . var_export($value, true));
             }
             $isTechField = $obj->isTechField($key);
@@ -383,15 +383,15 @@ class AfwSqlHelper extends AFWRoot
             } else {
                 $report .= "\n -- ignored tech field $key \n";
             }
-            // if($key=='my_exp') die($query);
+            // if($key=='my_exp') d ie($query);
         }
 
-        // if($table_prefixed=="sdd.jobrole_application") die($query);
+        // if($table_prefixed=="sdd.jobrole_application") d ie($query);
 
         /*
          * if($table_prefixed=="c 0btb.travel_seat")
          * {
-         *     die("fu = ".$obj->showArr($fields_updated)."<br>FU = ".$obj->showArr($obj->fieldsHasChanged()));
+         *     d ie("fu = ".$obj->showArr($fields_updated)."<br>FU = ".$obj->showArr($obj->fieldsHasChanged()));
          * }
          */
         $query = trim($query);
@@ -551,7 +551,7 @@ class AfwSqlHelper extends AFWRoot
             $prefix_col = '';
         }
         $original_nom_col = $nom_col;
-        // if($val_col=="1007294216") die("getClauseWhere(object,$nom_col,$oper,$val_col,$val_col2,$lang)");
+        // if($val_col=="1007294216") d ie("getClauseWhere(object,$nom_col,$oper,$val_col,$val_col2,$lang)");
         $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
         $mode_clause_where_col = false;
         if ($desc['CLAUSE-WHERE-COL']) {
@@ -569,7 +569,7 @@ class AfwSqlHelper extends AFWRoot
             if ($can_switch) {
                 $mode_clause_where_col = true;
                 $nom_col = $desc['CLAUSE-WHERE-COL'];
-                // die("CLAUSE-WHERE-COL : $original_nom_col => $nom_col");
+                // d ie("CLAUSE-WHERE-COL : $original_nom_col => $nom_col");
                 $desc = AfwStructureHelper::getStructureOf($object, $nom_col);
                 $original_nom_col = $nom_col;
             }
@@ -604,7 +604,7 @@ class AfwSqlHelper extends AFWRoot
             $prefixed_nom_col = 'me.' . $nom_col;
         }
 
-        // if($val_col=="1007294216") die("nom_col=$nom_col prefixed_nom_col=$prefixed_nom_col");
+        // if($val_col=="1007294216") d ie("nom_col=$nom_col prefixed_nom_col=$prefixed_nom_col");
 
         // if($original_nom_col=="cvalid") throw new AfwRuntimeException("nom_col = ".$nom_col." because structure=".var_export($desc,true));
         $val_col2_default = 0;
@@ -893,7 +893,7 @@ class AfwSqlHelper extends AFWRoot
             $query .= $limit ? "\n LIMIT " . $limit : '';
         }
 
-        // die("getSQLMany : $query");
+        // d ie("getSQLMany : $query");
         // AfwSession::sqlLog($query, "SQL-MANY");
         return $query;
     }
@@ -1046,7 +1046,7 @@ class AfwSqlHelper extends AFWRoot
     {
         global $lang, $print_debugg, $print_sql;
 
-        // if($object::$TABLE == "afield") die("object->insert on : ".var_export($object,true));
+        // if($object::$TABLE == "afield") d ie("object->insert on : ".var_export($object,true));
         if ($object->IS_VIRTUAL) {
             throw new AfwRuntimeException(
                 'Impossible to do call to the method insert() with the virtual table '
@@ -1054,7 +1054,7 @@ class AfwSqlHelper extends AFWRoot
                     . '.'
             );
         } elseif ($object->isChanged()) {
-            // if($object::$TABLE == "practice_cher") die("will insert into ".$object::$TABLE);
+            // if($object::$TABLE == "practice_cher") d ie("will insert into ".$object::$TABLE);
             $user_id = AfwSession::getUserIdActing();
             if (!$user_id) {
                 $user_id = 0;
@@ -1082,7 +1082,7 @@ class AfwSqlHelper extends AFWRoot
 
             /*
              * if ($dbg_rafik and ($object::$TABLE == "period")) {
-             *     die("afw.insert($pk) before before insert die : object->FIELDS_INITED = " . var_export($object->getAllfieldDefaultValues(), true) . ",
+             *     d ie("afw.insert($pk) before before insert die : object->FIELDS_INITED = " . var_export($object->getAllfieldDefaultValues(), true) . ",
              *                   object -> FIELDS_UPDATED = " . var_export($object->fieldsHasChanged(), true) . "
              *                   after merge => " . var_export($fields_to_insert, true) . "
              *                   object -> AFIELD _VALUE =>" . var_export($object->getAllfieldValues(), true));
@@ -1116,19 +1116,19 @@ class AfwSqlHelper extends AFWRoot
 
 
             if ($object->isAuditable()) {
-                // die("call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                // d ie("call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
                 AfwAuditHelper::audit_on_update($object, $object->fieldsHasChanged(), "insert", "first insert");
             } else {
-                // if(....) die("no call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                // if(....) d ie("no call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
             }
-            // die("rafik 135001 : ".var_export($object,true));
+            // d ie("rafik 135001 : ".var_export($object,true));
             // may be has been changed in the previous before insert event
             $fields_to_insert = $object->getAllfieldsToInsert();
 
             /*
              * if($object::$TABLE == "academic_term")
              * {
-             *     die("afw.insert($pk) after before insert die : object->FIELDS_ INITED = ".var_export($object->getAllfieldDefaultValues(),true).",
+             *     d ie("afw.insert($pk) after before insert die : object->FIELDS_ INITED = ".var_export($object->getAllfieldDefaultValues(),true).",
              *                 object -> FIELDS_UPDATED = ".var_export($object->fieldsHasChanged(),true)."
              *                 after merge fields_to_insert => ".var_export($fields_to_insert,true)."
              *                 object->AFIELD _VALUE =>".var_export($object->getAllfieldValues(),true));
@@ -1167,7 +1167,7 @@ class AfwSqlHelper extends AFWRoot
                         . ") broken, This record with key ('"
                         . implode("','", $unique_key_vals)
                         . "') already exists (with ID=" . $already_exists_id . ')';
-                    // die("rafik 135004 query($query) : ".var_export($object,true));
+                    // d ie("rafik 135004 query($query) : ".var_export($object,true));
                     if ($object->ignore_insert_doublon) {
                         $debugg_tech_notes =
                             'doublon ignored declined insert into '
@@ -1177,7 +1177,7 @@ class AfwSqlHelper extends AFWRoot
                         $object->debugg_tech_notes = $debugg_tech_notes;
                         return false;
                     } elseif ($object->isFromUI and false) {
-                        // die("rafik 135006 query($query) : ".var_export($object,true));
+                        // d ie("rafik 135006 query($query) : ".var_export($object,true));
                         // return AfwRunHelper::niceUserError($dbl_message);
                     } else {
                         throw new AfwRuntimeException($dbl_message);
@@ -1186,7 +1186,7 @@ class AfwSqlHelper extends AFWRoot
                     // $object->set($object->getPKField(), $object_copy->getId());
                     // $object->update();
                 }
-                // die("rafik 135003 query($query) : ".var_export($object,true));
+                // d ie("rafik 135003 query($query) : ".var_export($object,true));
             }
 
             $query = 'INSERT INTO ' . $object::_prefix_table($object::$TABLE) . ' SET';
@@ -1194,7 +1194,7 @@ class AfwSqlHelper extends AFWRoot
             /*
              * if($object::$TABLE == "cher_file")
              * {
-             *     die("before query=$query, fields_to_insert[] = ".var_export($fields_to_insert,true));
+             *     d ie("before query=$query, fields_to_insert[] = ".var_export($fields_to_insert,true));
              * }
              */
             // rafik : since version 2.0.1 we put FIELDS_UPDATED the old value
@@ -1255,30 +1255,30 @@ class AfwSqlHelper extends AFWRoot
                     /*
                      * if($key=='field_width')
                      * {
-                     *    die("object->getAllfieldValues() = ".var_export($object->getAllfieldValues(),true)." fields_updated=".var_export($fields_updated,true));
+                     *    d ie("object->getAllfieldValues() = ".var_export($object->getAllfieldValues(),true)." fields_updated=".var_export($fields_updated,true));
                      * }
                      */
                 }
             }
             $query = trim($query, ',');
-            // die("rafik 135002 query($query) : ".var_export($object,true));
-            // die($query);
+            // d ie("rafik 135002 query($query) : ".var_export($object,true));
+            // d ie($query);
             // throw new AfwRuntimeException("should not query : $query");
 
             /*
              * if(($object::$TABLE == "applicant") and
              *    (contient($query, "INSERT INTO")))
              * {
-             *        die("INSERT INTO to be executed : $query, "."<br>fields_to_insert[] = ".var_export($fields_to_insert,true));
+             *        d ie("INSERT INTO to be executed : $query, "."<br>fields_to_insert[] = ".var_export($fields_to_insert,true));
              * }
              */
 
-            // if(!contient($query, "SELECT")) die("query to be executed : $query");
+            // if(!contient($query, "SELECT")) d ie("query to be executed : $query");
             $return = $object->execQuery($query);
 
             $my_pk = $object->getPKField();
             $curr_id = $object->getId();
-            // die("rafik 13/5 : $my_pk = $curr_id ");
+            // d ie("rafik 13/5 : $my_pk = $curr_id ");
 
             if ($return) {
                 if ($my_pk) {
@@ -1436,7 +1436,7 @@ class AfwSqlHelper extends AFWRoot
                 /*
                  * if(static::$TABLE == "student_session")
                  * {
-                 *     die(static::$TABLE." updating ... before get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($object-> FIELDS_UPDATED)." / can update = $can_update / FIELDS_UPDATED = " . var_export($object-> FIELDS_UPDATED,true));
+                 *     d ie(static::$TABLE." updating ... before get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = ".count($object-> FIELDS_UPDATED)." / can update = $can_update / FIELDS_UPDATED = " . var_export($object-> FIELDS_UPDATED,true));
                  * }
                  */
 
@@ -1444,10 +1444,10 @@ class AfwSqlHelper extends AFWRoot
                 if ($onlyReturnSQL)
                     return $query . ' report ' . $report;
 
-
+                /*
                 if (get_class($object) == "NewRole") {
-                    die(get_class($object) . " updating ... after get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = " . count($fields_updated) . " / query = $query / report=$report/ fields_updated = " . var_export($fields_updated, true));
-                }
+                    d ie(get_class($object) . " updating ... after get S Q L Update(user_id=$user_id,ver=$ver,id_updated=$id_updated) fields updated count = " . count($fields_updated) . " / query = $query / report=$report/ fields_updated = " . var_export($fields_updated, true));
+                }*/
 
 
                 $return = 0;
@@ -1481,7 +1481,7 @@ class AfwSqlHelper extends AFWRoot
                         $isAuditable = $object->isAuditable();
                         if (($return == 1) and $isAuditable) {
                             try {
-                                // die("call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
+                                // d ie("call to AfwAuditHelper::audit _on_update($object, ..) : ".var_export($object-> FIELDS_UPDATED,true));
                                 AfwAuditHelper::audit_on_update($object, $object->fieldsHasChanged(), "update", $update_context);
                             } catch (Exception $e) {
                                 $message = "Audit operation failed.";
@@ -1493,7 +1493,7 @@ class AfwSqlHelper extends AFWRoot
                                 } else throw new AfwBusinessException($message);
                             }
                         } else {
-                            if ($object->getMyClass() == "WorkflowRequest") die("no call to AfwAuditHelper::audit _on_update($object,..,update,$update_context) : return==[$return] and isAuditable==[$isAuditable]");
+                            // if ($object->getMyClass() == "WorkflowRequest") d ie("no call to AfwAuditHelper::audit _on_update($object,..,update,$update_context) : return==[$return] and isAuditable==[$isAuditable]");
                         }
                     }
                     if ($only_me and $return > 1) {
@@ -1532,7 +1532,7 @@ class AfwSqlHelper extends AFWRoot
                 /*
                  * if(static::$TABLE=="student_session")
                  * {
-                 *    die("can not update, reason : ".$object->debugg_reason_non_update." : ".static::$TABLE." FIELDS_UPDATED : <br> ".$object->showArr($object-> FIELDS_UPDATED));
+                 *    d ie("can not update, reason : ".$object->debugg_reason_non_update." : ".static::$TABLE." FIELDS_UPDATED : <br> ".$object->showArr($object-> FIELDS_UPDATED));
                  * }
                  */
                 // throw new AfwRuntimeException();
@@ -1648,7 +1648,7 @@ class AfwSqlHelper extends AFWRoot
 
                 $return = $object->execQuery($query);
                 $object->majTriggered();
-                // die("query : $query");
+                // d ie("query : $query");
                 $object->afterDelete(
                     $object->getAfieldValue($object->getPKField()),
                     $id_replace
@@ -1900,7 +1900,7 @@ class AfwSqlHelper extends AFWRoot
         );
 
         // if((!$return) or (static::$TABLE == "school_class"))
-        // die("query=$query return=$return");
+        // d ie("query=$query return=$return");
         return $return;
     }
 

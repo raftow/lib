@@ -5,7 +5,7 @@
  */
 $old_work_context = UfwWorkContext::getWorkContext();
 UfwWorkContext::setWorkContext("framework edit mode");
-// die("handle edit : _POST = ".var_export($_POST,true));
+// d ie("handle edit : _POST = ".var_export($_POST,true));
 require_once(dirname(__FILE__) . "/../../../config/global_config.php");
 $class = $_POST["class_obj"];
 $file  = $_POST["file_obj"];
@@ -25,7 +25,7 @@ if (!isset($can_show_info)) $can_show_info = 1;
 ////AFWObject::setDebugg(true);
 //AFWDebugg::initialiser("C:\\dbg\\debug\\","afw_debugg.txt");
 AfwAutoLoader::addModule($posted_currmod);
-// die("AfwAutoLoader::addModule(posted_currmod=$posted_currmod) _POST=".var_export($_POST,true));
+// d ie("AfwAutoLoader::addModule(posted_currmod=$posted_currmod) _POST=".var_export($_POST,true));
 /////////////////////////////
 /**
  * @var AFWObject $obj
@@ -50,10 +50,10 @@ if (!$is_loaded_from_db) {
 
         if ($obj->loadWithUniqueKey($ukey_array)) {
             $id = $obj->getId();
-            //if((!$id) and $objme and $objme->isSuperAdmin()) die("rafik loadWithUniqueKey failed object still without ID ".var_export($obj,true));
+            //if((!$id) and $objme and $objme->isSuperAdmin()) d ie("rafik loadWithUniqueKey failed object still without ID ".var_export($obj,true));
             $is_loaded_from_db = true;
         } else {
-            // die("loadWithUniqueKey failed to found record and has used ukey_array = ".var_export($ukey_array,true)." obj=".var_export($obj,true));
+            // d ie("loadWithUniqueKey failed to found record and has used ukey_array = ".var_export($ukey_array,true)." obj=".var_export($obj,true));
         }
     }
 }
@@ -72,7 +72,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
 
 /////////////////////////////
 foreach ($class_db_structure as $nom_col => $desc) {
-    // if($nom_col=="training_period_menum") die("training_period_menum -> ".var_export($_POST[$nom_col],true));
+    // if($nom_col=="training_period_menum") d ie("training_period_menum -> ".var_export($_POST[$nom_col],true));
     if (!$desc["STEP"]) $desc["STEP"] = 1;
     /** @disregard P1008 Undefined variable */
     // !$desc["READONLY"] car a ce moment la hidden mouch checkbox
@@ -84,7 +84,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
         $yn_checkbox or
         (($desc["TYPE"] == "MFK") and (!$desc["CATEGORY"]) and (!$desc["READONLY"]) and ((!$obj->editByStep) or ($currstep == $desc["STEP"])))
     ) {
-        // if ($nom_col == "atable_mfk") die("debugg handle edit _POST[$nom_col] = " . var_export($_POST[$nom_col], true));
+        // if ($nom_col == "atable_mfk") d ie("debugg handle edit _POST[$nom_col] = " . var_export($_POST[$nom_col], true));
         if (is_array($_POST[$nom_col]))
             $val = ',' . implode(',', $_POST[$nom_col]) . ',';
         else {
@@ -93,10 +93,10 @@ foreach ($class_db_structure as $nom_col => $desc) {
         }
 
 
-        //if($nom_col=="active") die("switcher val=$val");        
+        //if($nom_col=="active") d ie("switcher val=$val");        
         // This below fix the bug of switcher 
         if ($yn_checkbox) {
-            //if(($nom_col=="mode_search") and ($i==3)) die("for col [$nom_col] i=$i : posted_val[$qedit_nom_col]=[$val] from ".var_export($_POST,true));
+            //if(($nom_col=="mode_search") and ($i==3)) d ie("for col [$nom_col] i=$i : posted_val[$qedit_nom_col]=[$val] from ".var_export($_POST,true));
             // case ($val == "1") checkbox
             // case ($val == "Y") new switcher component
             if (($val == "1") or ($val == "Y")) $val = "Y";
@@ -146,7 +146,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
 
         /*if ($nom_col == "atable_mfk") {
             $old_val = $obj->getVal($nom_col);
-            die("before set $nom_col old val = $old_val when new val in _POST : " . var_export($_POST, true));
+            d ie("before set $nom_col old val = $old_val when new val in _POST : " . var_export($_POST, true));
         }*/
 
 
@@ -155,10 +155,10 @@ foreach ($class_db_structure as $nom_col => $desc) {
         /*
         if ($nom_col == "atable_mfk") {
             $new_val = $obj->getVal($nom_col);
-            die("after set $nom_col new val = $new_val when new val in _POST : " . var_export($_POST, true) . " fieldsHasChanged=" . var_export($obj->fieldsHasChanged(), true));
+            d ie("after set $nom_col new val = $new_val when new val in _POST : " . var_export($_POST, true) . " fieldsHasChanged=" . var_export($obj->fieldsHasChanged(), true));
         }*/
 
-        //if(($nom_col=="lastname_en") and ($val!="")) die("after set $nom_col val = $val -> obj : ".var_export($obj,true));
+        //if(($nom_col=="lastname_en") and ($val!="")) d ie("after set $nom_col val = $val -> obj : ".var_export($obj,true));
 
 
     }
@@ -198,7 +198,7 @@ $case_of_handle = "unknown";
 
 if (!$is_loaded_from_db) {
     $obj->isFromUI = true;
-    //die(var_export($obj,true));
+    //d ie(var_export($obj,true));
     $obj->insert();
     $id = $obj->getId();
     $can_show_info = ((!$obj->editByStep) or ($save_update));
@@ -222,7 +222,7 @@ if (!$is_loaded_from_db) {
 } else {
     $old_update_context = $update_context;
     $update_context = "من خلال شاشة التعديل";
-    //die("rafik 3000 before obj->update() obj = ".var_export($obj,true));
+    //d ie("rafik 3000 before obj->update() obj = ".var_export($obj,true));
     if ($obj->update()) {
         $case_of_handle = "update existing successfull";
         if ($can_show_info) AfwSession::pushSuccess($successful_save);
@@ -261,7 +261,7 @@ if ($_POST["pbmon"]) {
         }
 
         if ($pbMethodCode) {
-            // die("rafik-debugg : I will getPublicMethodForUser($pbMethodCode) ");
+            // d ie("rafik-debugg : I will getPublicMethodForUser($pbMethodCode) ");
             $pMethodItem = $obj->getPublicMethodForUser($objme, $pbMethodCode);
 
             if ($pMethodItem["CONFIRMATION_NEEDED"]) {
@@ -271,7 +271,7 @@ if ($_POST["pbmon"]) {
                     $confirmation_warning = $pMethodItem["CONFIRMATION_WARNING"][$lang];
                     $confirmation_question = $pMethodItem["CONFIRMATION_QUESTION"][$lang];
 
-                    // if($objme->id==1) die("debugg the pbm messages : confirmation_warning=$confirmation_warning , confirmation_question=$confirmation_question, pMethodItem=".var_export($pMethodItem,true));
+                    // if($objme->id==1) d ie("debugg the pbm messages : confirmation_warning=$confirmation_warning , confirmation_question=$confirmation_question, pMethodItem=".var_export($pMethodItem,true));
                     include("afw_mode_confirm.php");
                     $header_bloc_edit .= $confirm_html;
                 } elseif ($_POST["pbmconfirm-$pbMethodCode"]) {
@@ -282,22 +282,22 @@ if ($_POST["pbmon"]) {
                     $pbm_cancelled = true;
                 }
             } else {
-                //die("pMethodItem found for code : [$pbMethodCode] for user $objme is pMethodItem = ".var_export($pMethodItem,true));
+                //d ie("pMethodItem found for code : [$pbMethodCode] for user $objme is pMethodItem = ".var_export($pMethodItem,true));
                 $pbm_confirmed = true;
             }
 
 
 
-            // die("pbm_confirmed=$pbm_confirmed");
+            // d ie("pbm_confirmed=$pbm_confirmed");
             if ($pbm_confirmed) {
                 if ($_POST["pbmpbis_$pbMethodCode"]) {
                     $obj->pbmethod_main_param = $_POST["pbmpbis_$pbMethodCode"];
                 } elseif ($_POST["pbmp_$pbMethodCode"]) {
                     $obj->pbmethod_main_param = $_POST["pbmp_$pbMethodCode"];
                 } else {
-                    // die("pbmp_$pbMethodCode and pbmpbis_$pbMethodCode not found in pbmethod_main_param__POST = ".var_export($_POST,true));
+                    // d ie("pbmp_$pbMethodCode and pbmpbis_$pbMethodCode not found in pbmethod_main_param__POST = ".var_export($_POST,true));
                 }
-                //if($obj->pbmethod_main_param) die("obj->pbmethod_main_param = ".$obj->pbmethod_main_param.", _POST = ".var_export($_POST,true));
+                //if($obj->pbmethod_main_param) d ie("obj->pbmethod_main_param = ".$obj->pbmethod_main_param.", _POST = ".var_export($_POST,true));
                 if ($pMethodItem['TIMER']) {
                     $start_m_time = date('Y-m-d H:i:s');
                 } else {
@@ -318,10 +318,10 @@ if ($_POST["pbmon"]) {
                     $duree_pbm = AfwDateHelper::timeDiffInSeconds($end_m_time, $start_m_time);
                     $warn .= "<div class='timer'>$start_m_time &rarr; $end_m_time &rarr; $duree_pbm sec</div>";
                 }
-                //die("list($error, $info, $warn, $technical) = obj->executePublicMethodForUser($objme, $pbMethodCode, $lang) update_context=$update_context;");
+                //d ie("list($error, $info, $warn, $technical) = obj->executePublicMethodForUser($objme, $pbMethodCode, $lang) update_context=$update_context;");
 
                 if ($technical) {
-                    // die("here warn = $warn");
+                    // d ie("here warn = $warn");
                     if ($warn) $warn .= "<br>";
                     $warn .= $obj->tm("There are more technical details with administrator", $lang);
                     $warn .= "<div class='technical'>$technical</div>";
@@ -404,13 +404,13 @@ if ($save_update and ($obj->after_save_edit or $obj->after_save_edit_cases)) {
 } elseif ($id) {
     $cl = $class;
     $tech_notes = $obj->tech_notes;
-    // if($tech_notes) die(var_export($tech_notes,true));
+    // if($tech_notes) d ie(var_export($tech_notes,true));
 
     if ($save_update) {
         $currstep = $obj->getNextStepAfterFinish($currstep);
         //$test_rafik = true;   // looking for reason of this error : AH00052: child pid 31733 exit signal Segmentation fault (11)
         //echo $obj->showMe();
-        //if($obj->test_rafik) die("save_update before afw_mode_display.php cl=[$cl] tech_notes=[$tech_notes] obj=".var_export($obj,true));
+        //if($obj->test_rafik) d ie("save_update before afw_mode_display.php cl=[$cl] tech_notes=[$tech_notes] obj=".var_export($obj,true));
         include("afw_mode_display.php");
     } else {
         include("afw_mode_edit.php");
@@ -419,6 +419,6 @@ if ($save_update and ($obj->after_save_edit or $obj->after_save_edit_cases)) {
     // nothing to save just we are navigating
     $cl = $class;
     include("afw_mode_edit.php");
-    // if(($objme) and ($objme->isSuperAdmin())) die("handle error : case : $case_of_handle : object : ".var_export($obj,true))
+    // if(($objme) and ($objme->isSuperAdmin())) d ie("handle error : case : $case_of_handle : object : ".var_export($obj,true))
 }
 UfwWorkContext::setWorkContext($old_work_context);

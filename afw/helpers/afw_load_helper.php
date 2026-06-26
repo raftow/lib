@@ -210,7 +210,7 @@ class AfwLoadHelper extends AFWRoot
             else $action = "loadMany";
         }
 
-        // die("vhGetListe($obj, $where, $action) => action=$action");
+        // d ie("vhGetListe($obj, $where, $action) => action=$action");
 
         if ($action == "loadManyFollowingStructure") {
             if ($obj->IS_LOOKUP) $action = "liste";
@@ -239,7 +239,7 @@ class AfwLoadHelper extends AFWRoot
                 if ($action == "loadMany") {
                     $listeRep = $obj->loadMany('', $order_by, $optim);
                     $case = "$obj_cl=>loadMany('',$order_by, $optim)";
-                    // die("$obj --> loadMany('',$order_by, $optim) => ".var_export($listeRep,true));
+                    // d ie("$obj --> loadMany('',$order_by, $optim) => ".var_export($listeRep,true));
                 }
 
                 if ($action == "loadManyFollowingStructure") {
@@ -251,7 +251,7 @@ class AfwLoadHelper extends AFWRoot
                     list($sql, $listeRep) = self::loadManyFollowingStructureAndValue($obj, $desc, $val_to_keep, null, $dropdown, $optim);
                     $obj->debugg_sql_for_loadmany = $sql;
                     $case = "self::loadManyFollowingStructureAndValue from : cl=$obj_cl, where=$where, order_by=$order_by, val_to_keep=$val_to_keep ";
-                    // if($fk_attribute=="application_plan_branch_mfk") die("case=$case sql=$sql");
+                    // if($fk_attribute=="application_plan_branch_mfk") d ie("case=$case sql=$sql");
                 }
 
                 // rafik 16/01/2016 : I don't know if we need to ask previleges to put items in dropdown
@@ -345,7 +345,7 @@ class AfwLoadHelper extends AFWRoot
         if ((!$small_lookup) and (count($val_arr) > 0)) $where = "$pk in (" . implode(",", $val_arr) . ")";
         else $where = "1";
 
-        // if(AfwStringHelper::stringContain($where, "Array")) die("rafik dbg : where=$where. case_where=$case_where val=".var_export($val, true));
+        // if(AfwStringHelper::stringContain($where, "Array")) d ie("rafik dbg : where=$where. case_where=$case_where val=".var_export($val, true));
         self::getLookupData($nom_module_fk, $nom_table_fk, $where . $case_where, "", $oneId, $lang);
 
 
@@ -456,7 +456,7 @@ class AfwLoadHelper extends AFWRoot
         /*
          if(($attribute=="campaign") or ($attribute=="practice_campaign_id"))
          {
-             die("degugg 1 rafik3 attribute=$attribute ansTab=$ansTab ansMod=$ansMod ");
+             d ie("degugg 1 rafik3 attribute=$attribute ansTab=$ansTab ansMod=$ansMod ");
          }*/
 
         $className = AfwStringHelper::tableToClass($ansTab);
@@ -612,7 +612,7 @@ class AfwLoadHelper extends AFWRoot
                 " : optim=$optim";
             $answerTableObj->debugg_sql_for_loadmany = $sql;
             $liste_rep = $answerTableObj->loadMany('', $desc['ORDERBY'], $optim);
-            //die("liste_rep=".var_export($liste_rep,true));
+            //d ie("liste_rep=".var_export($liste_rep,true));
             unset($answerTableObj->debugg_sql_for_loadmany);
         }
 
@@ -660,11 +660,11 @@ class AfwLoadHelper extends AFWRoot
                 $tuple = [];
                 if ($objItem->rowCategoryAttribute("search")) {
                     list($categoryAttribute, $categoryAttributeCATEGORY) = explode(':', $objItem->rowCategoryAttribute("search"));
-                    // die("list(attr=$categoryAttribute, cat=$categoryAttributeCATEGORY)");
+                    // d ie("list(attr=$categoryAttribute, cat=$categoryAttributeCATEGORY)");
                     $tuple['ca-col'] = $categoryAttribute;
                     if ($categoryAttributeCATEGORY) {
                         $tuple['ca-' . $categoryAttribute] = $objItem->calc($categoryAttribute);
-                        // if(($categoryAttribute=="request_late") and ($objListItem->id==88210)) die("tuple[ca-$categoryAttribute] = ".$tuple["ca-".$categoryAttribute]." = $objListItem-->calc($categoryAttribute)");
+                        // if(($categoryAttribute=="request_late") and ($objListItem->id==88210)) d ie("tuple[ca-$categoryAttribute] = ".$tuple["ca-".$categoryAttribute]." = $objListItem-->calc($categoryAttribute)");
                     } else
                         $tuple['ca-' . $categoryAttribute] = "-" . $objItem->getVal($categoryAttribute) . "-$categoryAttribute-000";
                 }
@@ -709,11 +709,11 @@ class AfwLoadHelper extends AFWRoot
                                     } else $tuple[$col] = strip_tags($tuple[$col]);
                                 }
 
-                                // if($col=="qsearch") die("$col showing with method $qrm = <br>".$tuple[$col]."<br> log : $qrm_log");
+                                // if($col=="qsearch") d ie("$col showing with method $qrm = <br>".$tuple[$col]."<br> log : $qrm_log");
 
                                 // $htr_e = hrtime()[1];
                                 // $htr = $htr_e - $htr_s;
-                                // if($htr > 5000000) die("htr of $col = $htr <br>\nend=$htr_e <br>\nstart=$htr_s");
+                                // if($htr > 5000000) d ie("htr of $col = $htr <br>\nend=$htr_e <br>\nstart=$htr_s");
                             } else {
                                 if ($stripHtmlTags) {
                                     $tuple[$col] = "Locked";
@@ -809,7 +809,7 @@ class AfwLoadHelper extends AFWRoot
         $object->initDISPLAY_FIELD($lang);
         $sep = $object->DISPLAY_SEPARATOR;
         if (!$sep) $sep = "-";
-        // if($table=="crm_customer") die("object->DISPLAY_FIELD = ".var_export($object->DISPLAY_FIELD,true));
+        // if($table=="crm_customer") d ie("object->DISPLAY_FIELD = ".var_export($object->DISPLAY_FIELD,true));
 
         $display_field = "";
 
@@ -819,7 +819,7 @@ class AfwLoadHelper extends AFWRoot
                 $display_field = AfwSqlHelper::concat_ifnull_implode($object->DISPLAY_FIELD, $sep);
             } else $display_field = trim($object->DISPLAY_FIELD);
         }
-        //if($table=="application_field") die("display_field = $display_field");
+        //if($table=="application_field") d ie("display_field = $display_field");
 
         if (!$display_field) {
             if (isset($object->FORMULA_DISPLAY_FIELD)) $display_field = trim($object->FORMULA_DISPLAY_FIELD);
@@ -853,7 +853,7 @@ class AfwLoadHelper extends AFWRoot
 
         $return = AfwDatabase::db_recup_index($sql_recup, $pk, "__val");
 
-        if (($table == "application_field") and ($where == "--")) die("sql_recup = $sql_recup return = " . var_export($return, true));
+        // if (($table == "application_field") and ($where == "--")) d ie("sql_recup = $sql_recup return = " . var_export($return, true));
 
         return $return;
     }
@@ -897,7 +897,7 @@ class AfwLoadHelper extends AFWRoot
         // $time_start = microtime(true);
 
         $query = 'no-query';
-        // if($value == 6082) die("load case cache_management=$cache_management loading $className[$value] result_row=".var_export($result_row));
+        // if($value == 6082) d ie("load case cache_management=$cache_management loading $className[$value] result_row=".var_export($result_row));
         //$result_row_from = 'load call as result_row = ' . var_export($result_row, true);
 
 
@@ -943,9 +943,9 @@ class AfwLoadHelper extends AFWRoot
         // $time_end2 = microtime(true);        
         $cache_management = AfwLoadHelper::cacheManagement($object);
 
-        // if($loaded_by == 6082) die("load case cache_management=$cache_management loading $className[$loaded_by] result_row=".var_export($result_row));
+        // if($loaded_by == 6082) d ie("load case cache_management=$cache_management loading $className[$loaded_by] result_row=".var_export($result_row));
         if ($cache_management and $loaded_by) {
-            // if($loaded_by == 6082) die("trying to get object $className [$loaded_by] from cache");
+            // if($loaded_by == 6082) d ie("trying to get object $className [$loaded_by] from cache");
             $objectCache = &AfwCacheSystem::getSingleton()->getFromCache(
                 $classNameModule,
                 $classNameTable,
@@ -989,7 +989,7 @@ class AfwLoadHelper extends AFWRoot
                 }
 
                 $pk_val_arr = explode($sep, $value);
-                // die("explode($sep, $value) = ".var_export($pk_val_arr,true));
+                // d ie("explode($sep, $value) = ".var_export($pk_val_arr,true));
                 foreach ($object->PK_MULTIPLE_ARR as $pk_col_order => $pk_col) {
                     $object->select($pk_col, $pk_val_arr[$pk_col_order]);
                 }
@@ -1023,9 +1023,9 @@ class AfwLoadHelper extends AFWRoot
                         "\n ORDER BY " .
                         $order_by_sentence .
                         " -- oo \n LIMIT 1";
-                    if ($classNameTable == "auto_job_contact") {
-                        die("$className ($classNameTable) afw rafik load query=$query");
-                    }
+                    /* if ($classNameTable == "auto_job_contact") {
+                        d ie("$className ($classNameTable) afw rafik load query=$query");
+                    }*/
                     $module_server = $object->getModuleServer();
                     $result_row = AfwDatabase::db_recup_row(
                         $query,
@@ -1062,7 +1062,7 @@ class AfwLoadHelper extends AFWRoot
                     $debugg_res_row = '';
                     foreach ($result_row as $attribute => $attribute_value) {
                         if (!is_numeric($attribute)) {
-                            // if($attribute=="PK") die("rafik-20240204-01 result_row=".var_export($result_row,true));
+                            // if($attribute=="PK") d ie("rafik-20240204-01 result_row=".var_export($result_row,true));
                             if (($attribute != "PK") and
                                 ($attribute != "debugg_source") and
                                 (!self::isJoinEagerAttribute($attribute))
@@ -1084,10 +1084,10 @@ class AfwLoadHelper extends AFWRoot
                     /*
                     if(($object::$TABLE=="cher_file"))
                     {
-                         die("load from result_row ($result_row_from) => ".var_export($result_row,true));   
+                         d ie("load from result_row ($result_row_from) => ".var_export($result_row,true));   
                     }
                     */
-                    //if($object::$TABLE=="auser") die("test_rafik 1004 : debugg_res_row=$debugg_res_row<br>\n this->getAllfieldValues()".var_export($object->getAllfieldValues(),true)." <br>\n result_row=".var_export($result_row,true));
+                    //if($object::$TABLE=="auser") d ie("test_rafik 1004 : debugg_res_row=$debugg_res_row<br>\n this->getAllfieldValues()".var_export($object->getAllfieldValues(),true)." <br>\n result_row=".var_export($result_row,true));
                     // some time load return true and no id found
                     // very strange to debugg here
                     /*
@@ -1100,12 +1100,12 @@ class AfwLoadHelper extends AFWRoot
                     $return_true =  "result_row=" . var_export($result_row, true);
                     $return = $object->id > 0 ? $return_true : false;
                 } else {
-                    // die("test_rafik 1003 : count(result_row) = ".count($result_row)." result_row[$the_pk]=".$result_row[$the_pk]);
+                    // d ie("test_rafik 1003 : count(result_row) = ".count($result_row)." result_row[$the_pk]=".$result_row[$the_pk]);
                     $return = false;
                 }
             }
 
-            // die("test_rafik 1002 this->IS_VIRTUAL = [$object->IS_VIRTUAL] this->getAllfieldValues()=".var_export($object->getAllfieldValues(),true));
+            // d ie("test_rafik 1002 this->IS_VIRTUAL = [$object->IS_VIRTUAL] this->getAllfieldValues()=".var_export($object->getAllfieldValues(),true));
         } else {
             throw new AfwRuntimeException($classNameTable . ' : Unable to use the method load() without any research criteria (' . $object->getSQL() . "), use select() or where() before. Id = " . $object->id);
         }
@@ -1157,7 +1157,7 @@ class AfwLoadHelper extends AFWRoot
             );*/
         }
 
-        // die("rafik debugg 20210920 : this->getAllfieldValues() = ".var_export($object->getAllfieldValues(),true));
+        // d ie("rafik debugg 20210920 : this->getAllfieldValues() = ".var_export($object->getAllfieldValues(),true));
         /*
         
         // above put $time_start = microtime(true);
@@ -1339,13 +1339,13 @@ class AfwLoadHelper extends AFWRoot
             if ($modeDev and (!$memCacheOptim)) {
                 $object->debugg_sql_for_loadmany = $query;
             }
-            //die("rafik load many query will call db_recup_rows with ".$query);
+            //d ie("rafik load many query will call db_recup_rows with ".$query);
             $result_rows = AfwDatabase::db_recup_rows($query, $module_server);
 
             /*
             if(contient($query,".module_type"))
             {
-                AfwRunHelper::safeDie("result_rows ($query) optim=$optim ".var_export($result_rows,true));
+                AfwRunHelper::safed ie("result_rows ($query) optim=$optim ".var_export($result_rows,true));
             }*/
             //$object->debuggObj($result_rows);
         }
@@ -1407,7 +1407,7 @@ class AfwLoadHelper extends AFWRoot
                         /*
                         $loadMeFromRow_time_end = hrtime(true);
                         $time_loadMeFromRow = round(($loadMeFromRow_time_end - $loadMeFromRow_time_start)/1000000);
-                        if($time_loadMeFromRow>0) die("time_loadMeFromRow = $time_loadMeFromRow milli sec = $loadMeFromRow_time_end - $loadMeFromRow_time_start");
+                        if($time_loadMeFromRow>0) d ie("time_loadMeFromRow = $time_loadMeFromRow milli sec = $loadMeFromRow_time_end - $loadMeFromRow_time_start");
                         */
                         // $log_actions .= " loadMeFromRow success";
                         if ($eager_joins) {
@@ -1460,7 +1460,7 @@ class AfwLoadHelper extends AFWRoot
                     // $object->setMyDebugg($object->MY_DEBUG);
                 }
                 if ($pk_field != 'id') {
-                    // die($object->TABLE." debugg rafik 20220912 result_row = ".var_export($result_row,true));
+                    // d ie($object->TABLE." debugg rafik 20220912 result_row = ".var_export($result_row,true));
                 }
                 if ($result_row['PK']) {
                     $obj_index = $result_row['PK'];
@@ -1725,7 +1725,7 @@ class AfwLoadHelper extends AFWRoot
         foreach ($row as $col => $val) {
             if ((!is_numeric($col)) and AfwStringHelper::stringStartsWith($col, "join" . $attribute . "00_")) {
                 $attrib_real = AfwStringHelper::removePrefix($col, "join" . $attribute . "00_");
-                // die("AfwStringHelper::removePrefix($attribute, join${attribute}00_) = $attrib_real");
+                // d ie("AfwStringHelper::removePrefix($attribute, join${attribute}00_) = $attrib_real");
                 $from_join_row[$attrib_real] = $val;
             }
         }
@@ -1903,7 +1903,7 @@ class AfwLoadHelper extends AFWRoot
         if ($what == 'calc') {
             if ($format) $what = $format;
             else $what = 'value';
-            // if($attribute=="school_class_id") die("for $attribute what was calc now = $what");
+            // if($attribute=="school_class_id") d ie("for $attribute what was calc now = $what");
         }
 
         $return = '';
@@ -1916,7 +1916,7 @@ class AfwLoadHelper extends AFWRoot
 
         /*
         if ($attribute == 'schoollist') {
-            die(
+            d ie(
                 "degugg 1 rafik getting $what from attribute=$old_attribute new=$attribute structure : " .
                     var_export($structure, true)
             );
@@ -2033,18 +2033,18 @@ class AfwLoadHelper extends AFWRoot
                     /*
                     if($attribute=="show_field_mfk")
                     {
-                        die("afw_getter_log for MFK attribute $attribute = ".implode("<br>\n", $afw_getter_log));
+                        d ie("afw_getter_log for MFK attribute $attribute = ".implode("<br>\n", $afw_getter_log));
                     }*/
                     if (!is_array($return)) {
                         throw new AfwRuntimeException("MFK should never return-back non array result, rlch=$reload_objects_cache, className=$className, ids_mfk_arr=" . var_export($ids_mfk_arr, true));
                     }
                 } elseif ($attribute_type == 'FK') {
-                    // if($old_attribute=="campaign") die("degugg 3 rafik2 old=$old_attribute new=$attribute attribute_value=$attribute_value getTypeOf($attribute) == FK, structure : ".var_export($structure, true));
+                    // if($old_attribute=="campaign") d ie("degugg 3 rafik2 old=$old_attribute new=$attribute attribute_value=$attribute_value getTypeOf($attribute) == FK, structure : ".var_export($structure, true));
                     if ($b_abstract) {
                         $return = null; // not implemented yet for virtual/abstract objects
                     } else $return = AfwLoadHelper::loadObjectFKFor($object, $attribute, $integrity, $optim_lookup);
 
-                    // if(($old_attribute=="campaign") and ($return instanceof PracticeDomain)) die($object."<br>degugg 4 rafik2 attribute=$attribute,<br>b_abstract=$b_abstract,<br>integrity=$integrity,<br>return=$return<br>");
+                    // if(($old_attribute=="campaign") and ($return instanceof PracticeDomain)) d ie($object."<br>degugg 4 rafik2 attribute=$attribute,<br>b_abstract=$b_abstract,<br>integrity=$integrity,<br>return=$return<br>");
                     // if(!$return) throw new AfwRuntimeException($object."<br>here:attribute=$attribute,<br>b_abstract=$b_abstract,<br>integrity=$integrity,<br>return=$return<br>");
                 } else {
                     throw new AfwRuntimeException(
@@ -2076,7 +2076,7 @@ class AfwLoadHelper extends AFWRoot
     {
         $b_abstract = false;
         $return = $attribute_value = $object->getAfieldValue($attribute);
-        //if(($attribute=="value") and ($attribute_type == "TEXT")) die("what=[$what] attribute_value = $attribute_value = object->getAfieldValue($attribute)");
+        //if(($attribute=="value") and ($attribute_type == "TEXT")) d ie("what=[$what] attribute_value = $attribute_value = object->getAfieldValue($attribute)");
         $afw_getter_log[] = "no categ and attribute_value=[$attribute_value], what=$what, this->getAfieldValue($attribute) = " . $attribute_value;
         switch (strtolower($what)) {
             case 'object':
@@ -2104,9 +2104,9 @@ class AfwLoadHelper extends AFWRoot
                 break;
             case 'decodeme':
                 $decode_format = $format ? $format : $structure['FORMAT'];
-                //if($attribute=="school_class_id") die("for : $attribute decode with format = $format, decode_format = $decode_format, str = ".var_export($structure,true));
+                //if($attribute=="school_class_id") d ie("for : $attribute decode with format = $format, decode_format = $decode_format, str = ".var_export($structure,true));
                 $typattr = $attribute_type;
-                // if($attribute=="updated_by") die("for : $attribute decode with format = $format, decode_format = $decode_format, gettype = $typattr, value=$valattr, str = ".var_export($structure,true));
+                // if($attribute=="updated_by") d ie("for : $attribute decode with format = $format, decode_format = $decode_format, gettype = $typattr, value=$valattr, str = ".var_export($structure,true));
                 if ($typattr) {
                     $return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, $structure, $object, $translate_if_needed = true);
                     // if($attribute=="customer_id") throw new AfwRuntimeException("$return = AfwFormatHelper::decode($attribute, $typattr, $decode_format, $attribute_value, $integrity, $lang, ....)");
