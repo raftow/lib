@@ -796,7 +796,7 @@ class AfwFormatHelper
         $answerTable = [];
         $answerTable[$field_value] = $field_value;
         if ($object) $answerTable = AfwLoadHelper::getEnumTotalAnswerList($object, $attribute, '', $structure);
-        elseif ($class_name) $answerTable = AfwLoadHelper::getStaticEnumTotalAnswerList($class_name, $attribute, $structure);
+        elseif ($class_name) $answerTable = AfwLoadHelper::getStaticEnumTotalAnswerList($class_name, $structure);
         $return = $answerTable[$field_value];
 
         /*
@@ -1159,17 +1159,24 @@ class AfwFormatHelper
                 $return = self::decodeAnswerOfAttribute($obj, $attribute, $valfld);
                 break;
             case 'ENUM':
-                if (!$obj) {
-                    throw new AfwRuntimeException('structure and obj should not be both null if we decode an ENUM field');
+                if ((!$obj) and (!$structure)) {
+                    throw new AfwRuntimeException('to help you to decode format one of structure and object should not be null if we decode an FK field');
                 }
 
-                $valfld = $attribute_value;
+                if ((!$obj) and (!$class_name)) {
+                    throw new AfwRuntimeException('to help you to decode format one of class_name and object should not be null if we decode an FK field');
+                }
                 // if($attribute == 'unit_type_id') die("decode of enum field " . get_class($object)  . "->get EnumVal(attribute=$attribute, valfld = $valfld)");
-                $return = self::getEnumVal($obj, $attribute, $valfld, $structure, $class_name);
+                $return = self::getEnumVal($obj, $attribute, $attribute_value, $structure, $class_name);
+
                 break;
             case 'MENUM':
-                if (!$obj) {
-                    throw new AfwRuntimeException('structure and obj should not be both null if we decode an MENUM field');
+                if ((!$obj) and (!$structure)) {
+                    throw new AfwRuntimeException('to help you to decode format one of structure and object should not be null if we decode an FK field');
+                }
+
+                if ((!$obj) and (!$class_name)) {
+                    throw new AfwRuntimeException('to help you to decode format one of class_name and object should not be null if we decode an FK field');
                 }
 
                 if ($obj) $sep = $obj->getSeparatorFor($attribute);
