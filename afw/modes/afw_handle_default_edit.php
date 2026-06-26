@@ -1,4 +1,8 @@
 <?php
+
+/**
+ * @var string $lang
+ */
 $old_work_context = UfwWorkContext::getWorkContext();
 UfwWorkContext::setWorkContext("framework edit mode");
 // die("handle edit : _POST = ".var_export($_POST,true));
@@ -80,7 +84,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
         $yn_checkbox or
         (($desc["TYPE"] == "MFK") and (!$desc["CATEGORY"]) and (!$desc["READONLY"]) and ((!$obj->editByStep) or ($currstep == $desc["STEP"])))
     ) {
-        // if($nom_col=="arole_mfk") die("arole_mfk -> ".var_export($_POST[$nom_col],true));
+        if ($nom_col == "atable_mfk") die("debugg handle edit _POST[$nom_col] = " . var_export($_POST[$nom_col], true));
         if (is_array($_POST[$nom_col]))
             $val = ',' . implode(',', $_POST[$nom_col]) . ',';
         else {
@@ -298,10 +302,10 @@ if ($_POST["pbmon"]) {
                 UfwWorkContext::setWorkContext($update_context);
                 list($error, $info, $warn, $technical) = $obj->executePublicMethodForUser($objme, $pbMethodCode, $lang);
                 UfwWorkContext::setWorkContext($old2_work_context);
-                if($error and !is_string($error)) $error = var_export($error, true);
-                if($info and !is_string($info)) $info = var_export($info, true);
-                if($warn and !is_string($warn)) $warn = var_export($warn, true);
-                if($technical and !is_string($technical)) $technical = var_export($technical, true);
+                if ($error and !is_string($error)) $error = var_export($error, true);
+                if ($info and !is_string($info)) $info = var_export($info, true);
+                if ($warn and !is_string($warn)) $warn = var_export($warn, true);
+                if ($technical and !is_string($technical)) $technical = var_export($technical, true);
 
                 if ($pMethodItem['TIMER']) {
                     $end_m_time = date('Y-m-d H:i:s');
@@ -317,7 +321,7 @@ if ($_POST["pbmon"]) {
                     $warn .= "<div class='technical'>$technical</div>";
                 }
 
-                
+
 
                 if (!$info and !$error and !$warn) {
                     if ($objme and $objme->isAdmin())
