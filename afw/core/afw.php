@@ -1987,6 +1987,59 @@ class AFWObject extends AFWRoot
         return $this->getRelation($attribute)->count();
     }
 
+    /**
+     * @param string $attribute
+     * @param mixed $x_val
+     * @param mixed $y_val
+     */
+    public final function getCellValueInMatrix($attribute, $x_val, $y_val, $struct = null)
+    {
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+
+        if ($struct['TYPE'] != 'MATRIX') {
+            throw new AfwRuntimeException(
+                "Only MATRIX Fields can use this method, $attribute is not MATRIX but " . $struct['TYPE']
+            );
+        }
+
+        $value = $this->getVal($attribute);
+        $value_arr = json_decode($value);
+        return $value_arr['data'][$x_val][$y_val];
+    }
+
+    /**
+     * @param string $attribute
+     * @param mixed $x_val
+     * @param mixed $y_val
+     * @param mixed $cell_value
+     */
+    public final function setCellValueInMatrix($attribute, $x_val, $y_val, $cell_value, $struct = null)
+    {
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+
+        if ($struct['TYPE'] != 'MATRIX') {
+            throw new AfwRuntimeException(
+                "Only MATRIX Fields can use this method, $attribute is not MATRIX but " . $struct['TYPE']
+            );
+        }
+
+        $value = $this->getVal($attribute);
+        $value_arr = json_decode($value);
+        $old_cell_value = $value_arr['data'][$x_val][$y_val];
+
+        if ($old_cell_value != $cell_value) {
+            $value_arr['data'][$x_val][$y_val] = $cell_value;
+            $value = json_encode($value_arr);
+            $this->set($attribute, $value);
+        }
+    }
+
+    /**
+     * @param string $attribute
+     * @param int $id_to_find
+     */
     public final function findInMfk($attribute, $id_to_find, $mfk_empty_so_found = false, $struct = null)
     {
         if (!$struct)
@@ -4792,6 +4845,10 @@ class AFWObject extends AFWRoot
         } elseif ($structure['TYPE'] == 'MFK') {
             list($data_to_display, $link_to_display) = AfwShowHelper::showMFK($this, $attribute, $langue, $structure, $getlink);
             if ($debugg) $data_to_display .= " comes from showMFK(this, $attribute, $langue, structure, $getlink)";
+        } elseif ($structure['TYPE'] == 'MATRIX') {
+            $data_to_display = AfwShowHelper::showMatrix($this, $attribute, $langue, $structure);
+            $link_to_display = "";
+            if ($debugg) $data_to_display .= " comes from showMatrix(this, $attribute, $langue, structure)";
         } elseif ($structure['TYPE'] == 'YN') {
             $ynCode = strtoupper($this->decode($key, '', false, $langue));
             $data_to_display = $this->showYNValueForAttribute($ynCode, $key, $langue);

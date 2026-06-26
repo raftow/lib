@@ -1,6 +1,9 @@
 <?php
 class AfwUmsPagHelper extends AFWRoot
 {
+    //      18 matrix
+    public static $afield_type_matrix = 18;
+
     //      17 items
     public static $afield_type_items = 17;
 
@@ -647,6 +650,8 @@ class AfwUmsPagHelper extends AFWRoot
             return AfwUmsPagHelper::$afield_type_list;
         } elseif ($afwType == 'MFK') {
             return AfwUmsPagHelper::$afield_type_mlst;
+        } elseif ($afwType == 'MATRIX') {
+            return AfwUmsPagHelper::$afield_type_matrix;
         } elseif ($afwType == 'MENUM') {
             return AfwUmsPagHelper::$afield_type_menum;
         } elseif ($afwType == 'MTEXT') {
@@ -1419,6 +1424,8 @@ class AfwUmsPagHelper extends AFWRoot
             $return = 'FK';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_mlst) {
             $return = 'MFK';
+        } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_matrix) {
+            $return = 'MATRIX';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_enum) {
             $return = 'ENUM';
         } elseif ($afield_type_id == AfwUmsPagHelper::$afield_type_menum) {

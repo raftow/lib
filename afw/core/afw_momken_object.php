@@ -205,6 +205,8 @@ class AfwMomkenObject extends AFWObject
             return self::afield_type_by_code('list');
         } elseif ($afwType == 'MFK') {
             return self::afield_type_by_code('mlst');
+        } elseif ($afwType == 'MATRIX') {
+            return self::afield_type_by_code('matrix');
         } elseif ($afwType == 'MENUM') {
             return self::afield_type_by_code('menum');
         } elseif ($afwType == 'MTEXT') {
@@ -335,6 +337,21 @@ class AfwMomkenObject extends AFWObject
         $arr_list_of_afield_type['en'][11] = 'long text';
         $arr_list_of_afield_type['ar'][11] = 'نص طويل';
         $arr_list_of_afield_type['code'][11] = 'mtext';
+
+        // 	4	وقت
+        $arr_list_of_afield_type['en'][11] = 'time';
+        $arr_list_of_afield_type['ar'][11] = 'وقت';
+        $arr_list_of_afield_type['code'][11] = 'time';
+
+        // 	17	قائمة تفاصيل
+        $arr_list_of_afield_type['en'][17] = 'long text';
+        $arr_list_of_afield_type['ar'][17] = 'نص طويل';
+        $arr_list_of_afield_type['code'][17] = 'mtext';
+
+        // 	18	مصفوفة
+        $arr_list_of_afield_type['en'][18] = 'matrix';
+        $arr_list_of_afield_type['ar'][18] = 'مصفوفة';
+        $arr_list_of_afield_type['code'][18] = 'matrix';
 
         return $arr_list_of_afield_type;
     }

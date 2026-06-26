@@ -1552,7 +1552,7 @@ class AfwShowHelper
             case 'FK':
                 if ($desc['CATEGORY'] === 'ITEMS') {
 
-                    if(AfwSession::hasOption("SHOW_ITEMS_ATTRIBUTES")) {
+                    if (AfwSession::hasOption("SHOW_ITEMS_ATTRIBUTES")) {
                         $objs = $objItem->get(
                             $col,
                             'object',
@@ -1560,12 +1560,10 @@ class AfwShowHelper
                             false
                         );
                         $return = self::quickShowOneOrListOfObjects($objs, $lang, $newline);
-                    }
-                    else {
+                    } else {
                         $message = $objItem->tm('no quick show for [items] attribute except if you activate option [show items attributes] because it is very costly in performance', $lang);
                         $return = "<img src='../lib/images/hidden.png' data-toggle='tooltip' data-placement='top' title='$message'  width='48px' height='48px'>";
                     }
-                    
                 } elseif (($desc['CATEGORY'] == 'FORMULA') or ($desc['CATEGORY'] == 'SHORTCUT')) {
                     $objs = $objItem->calc($col, true, 'object');
                     // die("for categ = formula, obj = $objItem => calc($col,true, object) = ".var_export($objs));
@@ -2551,9 +2549,74 @@ class AfwShowHelper
         return $disp_attr;
     }
 
+
+
+
+    /**
+     * showMatrix
+     * @param AFWObject $object
+     * @param string $attribute
+     */
+    public static function showMatrix($object, $attribute, $lang = 'ar', $structure = null)
+    {
+        if (!$structure)
+            $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+
+        if ($structure['TYPE'] != 'MATRIX') {
+            throw new AfwRuntimeException(
+                "Only MATRIX Fields can use this method, $attribute is not MATRIX but " . $struct['TYPE']
+            );
+        }
+
+        $x_list = $structure['MATRIX_X_LIST'];
+        $y_list = $structure['MATRIX_Y_LIST'];
+
+        $cell_struct = $structure['MATRIX_CELL'];
+
+        $tbl = new HtmlyTableau();
+        $cssClass = "matrix $attribute";
+        $tbl->addClass($cssClass);
+        $value = $object->getVal($attribute);
+        $value_arr = json_decode($value);
+        $header_cells = [];
+
+        $header_cells["matrix-yCol"] = "&nbsp;";
+        foreach ($x_list as $x_val => $x_disp) {
+            $header_cells["matrix-$x_val"] = $x_disp[$lang];
+        }
+
+        $tbl->addElement(new HtmlyRowBody("", "", "", $header_cells));
+
+        foreach ($y_list as $y_val => $y_disp) {
+            $row_cells = [];
+            $row_cells["matrix-yCol"] = $y_disp;
+            foreach ($x_list as $x_val => $x_disp) {
+                $row_cells[$x_val] = $value_arr['data'][$x_val][$y_val];
+            }
+        }
+
+
+        foreach ($value_arr['data'] as $x_val => $x_row) {
+            foreach ($x_row as $y_val => $cell_val) {
+            }
+        }
+
+
+
+        foreach ($result as $key => $val) {
+            if (($recursive !== true) and is_integer($recursive)) $recursive--;
+            if (is_array($val)) $val_display = self::displayArray($val, $recursive, $cssClass);
+            else $val_display = $val;
+            $keyCode = (($key != "") and ($key != 0)) ? $key : $keyName . "[$key]";
+            $cells = ['key' => $keyCode, 'val' => $val_display,];
+        }
+
+        return $tbl->renderHtml();
+    }
     /**
      * showMFK
      * @param AFWObject $object
+     * @param string $attribute
      */
     public static function showMFK($object, $attribute, $lang = 'ar', $structure = null, $getlink = false)
     {
