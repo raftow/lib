@@ -84,7 +84,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
         $yn_checkbox or
         (($desc["TYPE"] == "MFK") and (!$desc["CATEGORY"]) and (!$desc["READONLY"]) and ((!$obj->editByStep) or ($currstep == $desc["STEP"])))
     ) {
-        if ($nom_col == "atable_mfk") die("debugg handle edit _POST[$nom_col] = " . var_export($_POST[$nom_col], true));
+        // if ($nom_col == "atable_mfk") die("debugg handle edit _POST[$nom_col] = " . var_export($_POST[$nom_col], true));
         if (is_array($_POST[$nom_col]))
             $val = ',' . implode(',', $_POST[$nom_col]) . ',';
         else {
@@ -143,11 +143,10 @@ foreach ($class_db_structure as $nom_col => $desc) {
 
             $val = $obj_at->getId();
         }
-        /*
-        if(($nom_col=="value") and (!$val or ($val=="0"))) 
-        {
-            die("before set $nom_col val = $val -> _POST : ".var_export($_POST,true));                
-        }*/
+
+        if (($nom_col == "atable_mfk") and (!$val or ($val == "0"))) {
+            die("before set $nom_col old val = $val when new val in _POST : " . var_export($_POST, true));
+        }
 
 
         if ($nom_col != $obj->getPK()) $obj->set($nom_col, $val);
