@@ -2564,7 +2564,7 @@ class AfwShowHelper
 
         if ($structure['TYPE'] != 'MATRIX') {
             throw new AfwRuntimeException(
-                "Only MATRIX Fields can use this method, $attribute is not MATRIX but " . $struct['TYPE']
+                "Only MATRIX Fields can use this method, $attribute is not MATRIX but " . $structure['TYPE']
             );
         }
 
@@ -2593,22 +2593,7 @@ class AfwShowHelper
             foreach ($x_list as $x_val => $x_disp) {
                 $row_cells[$x_val] = $value_arr['data'][$x_val][$y_val];
             }
-        }
-
-
-        foreach ($value_arr['data'] as $x_val => $x_row) {
-            foreach ($x_row as $y_val => $cell_val) {
-            }
-        }
-
-
-
-        foreach ($result as $key => $val) {
-            if (($recursive !== true) and is_integer($recursive)) $recursive--;
-            if (is_array($val)) $val_display = self::displayArray($val, $recursive, $cssClass);
-            else $val_display = $val;
-            $keyCode = (($key != "") and ($key != 0)) ? $key : $keyName . "[$key]";
-            $cells = ['key' => $keyCode, 'val' => $val_display,];
+            $tbl->addElement(new HtmlyRowBody("", "", "", $row_cells));
         }
 
         return $tbl->renderHtml();

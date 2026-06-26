@@ -1021,6 +1021,11 @@ class AfwFormatHelper
 
                 // if($attribute=="status_id") die("this->decode($attribute) : return=$return, object->id = ".$object->id);
                 break;
+            case 'MATRIX':
+                if (!$obj) {
+                    throw new AfwRuntimeException('Object should not be null if we decode a MATRIX field');
+                }
+                $return = AfwShowHelper::showMatrix($obj, $attribute, $lang, $structure);
             case 'MFK':
                 if ((!$obj) or (!$structure)) {
                     throw new AfwRuntimeException('both structure and obj should not be null if we decode an FK field');
