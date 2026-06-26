@@ -152,11 +152,11 @@ foreach ($class_db_structure as $nom_col => $desc) {
 
         if ($nom_col != $obj->getPK()) $obj->set($nom_col, $val);
 
-        /*
+
         if ($nom_col == "atable_mfk") {
             $new_val = $obj->getVal($nom_col);
-            die("after set $nom_col new val = $new_val when new val in _POST : " . var_export($_POST, true));
-        }*/
+            die("after set $nom_col new val = $new_val when new val in _POST : " . var_export($_POST, true) . " fieldsHasChanged=" . var_export($obj->fieldsHasChanged()));
+        }
 
         //if(($nom_col=="lastname_en") and ($val!="")) die("after set $nom_col val = $val -> obj : ".var_export($obj,true));
 

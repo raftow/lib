@@ -339,7 +339,7 @@ class AfwSqlHelper extends AFWRoot
 
                     if ($id_updated) {
                         $valueExists = (!$obj->isEmpty() and $obj->isAfieldValueSetted($key));
-                        $old_val_query_part .= " -- $key value = [$value_desc], old value = [$old_value_desc] isNum=$isNum isGDate=$isGDate isSame= $isSame isCompletelySame=$isCompletelySame valueExists=$valueExists\n";
+                        $old_val_query_part .= " -- $key new value = [$value_desc], old value = [$old_value_desc] isNum=$isNum isGDate=$isGDate isSame= $isSame isCompletelySame=$isCompletelySame valueExists=$valueExists\n";
                     }
 
                     if (!$isCompletelySame) {
