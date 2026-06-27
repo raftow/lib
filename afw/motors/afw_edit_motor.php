@@ -13,11 +13,24 @@ class AfwEditMotor
 
     /**
      * @param AFWObject $obj
+     * @param string $col_name, 
+     * @param array $desc, 
+     * @param mixed $val
      */
-    public static function type_input($col_name, $desc, $val, &$obj, $separator = ':', $data_loaded = false, $force_css = '', $qedit_orderindex = 0, $data_length_class_default_for_fk = 'inputmoyen')
-    {
-        if (!$obj)
-            throw new AfwRuntimeException("AfwEditMotor::type_input called with null obj for col $col_name");
+    public static function type_input(
+        $col_name,
+        $desc,
+        $val,
+        $obj = null,
+        $separator = ':',
+        $data_loaded = false,
+        $force_css = '',
+        $qedit_orderindex = 0,
+        $data_length_class_default_for_fk = 'inputmoyen',
+        $class_name = ''
+    ) {
+        if (!$obj and !$class_name)
+            throw new AfwRuntimeException("AfwEditMotor::type_input need one of object or class name both can not be null for col $col_name");
         $lang = AfwLanguageHelper::getGlobalLanguage();
 
         $editor = $desc['EDITOR'];
@@ -63,9 +76,10 @@ class AfwEditMotor
 
         $orig_col_name = $col_name;
 
-        // $col_title = $o bj->getKeyLabel($orig_col_name,$lang);
         if ($obj) {
             $col_title = $obj->translate($orig_col_name, $lang);
+        } else {
+            $col_title = AfwLanguageHelper::translateKeyword("the field", $lang);
         }
 
         $placeholder_standard_code = "placeholder-$orig_col_name";
@@ -249,6 +263,10 @@ class AfwEditMotor
                 include 'tpl/helper_edit_mfk.php';
 
                 break;
+            case 'MATRIX':
+                include 'tpl/helper_edit_matrix.php';
+
+                break;
             case 'MENUM':
                 $fcol_name = $desc['FUNCTION_COL_NAME'];
                 if (AfwStringHelper::stringEndsWith($fcol_name, '_0')) {
@@ -266,7 +284,7 @@ class AfwEditMotor
                 if ($obj) {
                     $liste_rep = AfwLoadHelper::getEnumTable($desc['ANSWER'], $obj->getTableName(), $fcol_name, $obj);
                 } else {
-                    $liste_rep = [1 => 'no-obj-no-multi-answer-enum'];
+                    $liste_rep = AfwLoadHelper::getStaticEnumTable($class_name, $fcol_name);
                 }
 
                 // echo "menum val $val with sep $separator : <br>";
@@ -1008,6 +1026,8 @@ class AfwEditMotor
 
     public static function attributeEditDiv($obj, $col, $desc, $fgroup, $lang, $openedInGroupDiv, $info = null, $colErrors = [], $step_show_error = false)
     {
+        $newTr = false;
+        $br = false;
         $idObj = $obj->getId();
         if (($col == 'id') and (!$idObj)) {
             $class_empty_object = 'empty-obj';
@@ -1394,6 +1414,58 @@ class AfwEditMotor
             dayNamesShort: [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
             dayNamesMin: [ "Su","Mo","Tu","We","Th","Fr","Sa" ],';
     }
-}
 
-?>
+    /**
+     * editMatrix
+     * @param AFWObject $object
+     * @param string $attribute
+     */
+    public static function editMatrix($object, $attribute, $lang = 'ar', $structure = null)
+    {
+        if (!$structure)
+            $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+
+        if ($structure['TYPE'] != 'MATRIX') {
+            throw new AfwRuntimeException(
+                "Only MATRIX Fields can use this method, $attribute is not MATRIX but " . $structure['TYPE']
+            );
+        }
+
+        $x_list = $structure['MATRIX_X_LIST'];
+        $y_list = $structure['MATRIX_Y_LIST'];
+
+        $cell_struct = $structure['MATRIX_CELL'];
+
+        $tbl = new HtmlyTableau();
+        $cssClass = "matrix $attribute";
+        $tbl->addClass($cssClass);
+        $myClass = $object->getMyClass();
+        $value = $object->getVal($attribute);
+        $value_arr = json_decode($value, true);
+        $header_cells = [];
+
+        $header_cells["matrix-yCol"] = "&nbsp;";
+        foreach ($x_list as $x_val => $x_disp) {
+            $header_cells["matrix-$x_val"] = $x_disp[$lang];
+        }
+
+        $hrbElement = new HtmlyRowBody("", "", "", $header_cells);
+        $hrbElement->addClass("header-matrix");
+        $tbl->addElement($hrbElement);
+
+        foreach ($y_list as $y_val => $y_disp) {
+            $row_cells = [];
+            $row_cells["matrix-yCol"] = $y_disp[$lang];
+            foreach ($x_list as $x_val => $x_disp) {
+                //********* */
+                $cell_brute_value = $value_arr['data'][$x_val][$y_val];
+                $cell_col_name = "cell_" . $x_val . "_" . $y_val;
+                $cell_input = self::type_input($cell_col_name, $cell_struct, $cell_brute_value, null, ':', false, '', 0, 'matrix', $myClass);
+                $row_cells[$x_val] = $cell_input;
+            }
+            $tbl->addElement(new HtmlyRowBody("", "", "", $row_cells));
+        }
+
+        return $tbl->renderHtml();
+    }
+}

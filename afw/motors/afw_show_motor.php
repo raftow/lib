@@ -6,6 +6,7 @@ class AfwShowMotor
      */
     public static function prepareShowInfoForColumn($obj, $nom_col, $desc, $lang, $obj_errors = [], $step_show_error = false, $i_can_see_attribute = true, $mode_field_read_only_log = "")
     {
+        $MODE_DEV = AfwSession::config("MODE_DEVELOPMENT", true);
         $tuple = [];
         // if($nom_col=="response_templates") die("case mode_field_read_only nom_col = $nom_col");
         $obj->showAsDataTable = $desc['DATA_TABLE'];
@@ -58,13 +59,13 @@ class AfwShowMotor
         $tuple["input"] = "<div id='$id_div_input' class='hzm_data hzm_data_$nom_col $col_val_class $ro_classes_form' style='$style_div_form_control'>";
         if (((!$desc['CATEGORY']) || ($desc['FORCE-INPUT'])) and (!$desc['NO-INPUT'])) {
             // if($nom_col=="response_templates") die("case no-CATEGORY or FORCE-INPUT");
-
-            ob_start();
-            AfwEditMotor::hidden_input($nom_col, $desc, $col_val, $obj);
-            $tuple["input"] .= ob_get_clean();
-            if (true) // ($objme->isSuperAdmin())
-            {
-                $tuple["input"] .= "<!-- log : $mode_field_read_only_log -->";
+            if (($desc['TYPE'] != "MATRIX") and (!$desc['NO-HIDDEN-IPNUT'])) {
+                ob_start();
+                AfwEditMotor::hidden_input($nom_col, $desc, $col_val, $obj);
+                $tuple["input"] .= ob_get_clean();
+                if ($MODE_DEV or AfwSession::getSessionVar("user_golden")) {
+                    $tuple["input"] .= "<!-- log : $mode_field_read_only_log -->";
+                }
             }
         } else {
             // if($nom_col=="response_templates") die("case CATEGORY and no FORCE-INPUT");

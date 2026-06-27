@@ -1,4 +1,28 @@
 <?php
+
+/**
+ * @var AFWObject $obj
+ * @var string $nom_class_fk
+ * @var string $nom_module_fk
+ * @var string $col_name
+ * @var array $desc
+ * @var string $input_disabled
+ * @var Auser $objme
+ * @var string $placeholder
+ * @var string $col_title
+ * @var string $lang_input
+ * @var string $input_style
+ * @var string $onchange
+ * @var string $is_required
+ * @var string $input_required 
+ * @var string $disabled
+ * @var string $lang
+ * @var int $qedit_orderindex
+ * @var string $sql
+ * @var string $data_loaded_class
+ * @var string $data_length_class
+ * @var mixed $val_to_keep
+ */
 $objRep  = new $nom_class_fk;
 
 $list_count = AfwSession::config("$nom_class_fk::estimated_row_count", 0);
@@ -7,59 +31,54 @@ $auto_c = $desc["AUTOCOMPLETE"];
 
 $LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
 $auto_complete_default = ((!isset($desc["AUTOCOMPLETE"])) and ($list_count > $LIMIT_INPUT_SELECT));
-if ((!$auto_c)  and (!$auto_complete_default)) 
-{
-    if(!$desc['ORDERBY']) $desc['ORDERBY'] = $objRep->ORDER_BY_FIELDS;
-    $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action="loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+if ((!$auto_c)  and (!$auto_complete_default)) {
+    if (!$desc['ORDERBY']) $desc['ORDERBY'] = $objRep->ORDER_BY_FIELDS;
+    $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action = "loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
     /*
     if($col_name=="doc_type_id")  
     {
         die("rafik-2 dbg 20251212 => desc=".var_export($desc, true)." => l_rep=".var_export($l_rep, true));
     }
         */
-    if ($desc["FORMAT-INPUT"] == "btn-bootstrap") 
-    {
-        $arr_classes = ["primary","secondary","success","danger","warning","info","light","dark",];
-        $js_classes = "['".implode("','", $arr_classes)."']";
+    if ($desc["FORMAT-INPUT"] == "btn-bootstrap") {
+        $arr_classes = ["primary", "secondary", "success", "danger", "warning", "info", "light", "dark",];
+        $js_classes = "['" . implode("','", $arr_classes) . "']";
         $nb_classes = $desc["NB-CSS"];
         $offset_classes = $desc["OFFSET-CSS"];
-        if(!$offset_classes) $offset_classes = 0;
-        if(!$nb_classes) $nb_classes = 1;//count($arr_classes)-$offset_classes;
-        if(($nb_classes+$offset_classes)>count($arr_classes))
-        {
-            echo "For btn-bootstrap `NB-CSS`+`OFFSET-CSS` should be less or equal than cout of btn-bootstrap classes = ".count($arr_classes);
+        if (!$offset_classes) $offset_classes = 0;
+        if (!$nb_classes) $nb_classes = 1; //count($arr_classes)-$offset_classes;
+        if (($nb_classes + $offset_classes) > count($arr_classes)) {
+            echo "For btn-bootstrap `NB-CSS`+`OFFSET-CSS` should be less or equal than cout of btn-bootstrap classes = " . count($arr_classes);
             // throw new AfwRuntimeE xception("For btn-bootstrap `NB-CSS`+`OFFSET-CSS` should be less or equal than cout of btn-bootstrap classes = ".count($arr_classes));
         }
 ?>
         <input type='hidden' name='<?php echo $col_name ?>' id='<?php echo $col_name ?>' value='<?php echo $val ?>'>
-<?php
-        $c=0;
-        foreach($l_rep as $val_i => $title_i)
-        {
-            $css_name = $arr_classes[$c+$offset_classes];
-            $btn_off = ($val==$val_i) ? "" : "btn-off";
-?>
-            <button type='button' id="btsp_btn_<?php echo $col_name."_".$val_i ?>" 
-                        class='btn btn-enum col-<?php echo $col_name?> btn-<?php echo $css_name." ".$btn_off?>' 
-                        <?php echo $input_disabled ?> 
-                        onClick="bootstrapHzmBtn('<?php echo $col_name ?>', '<?php echo $val_i ?>', <?php echo $js_classes ?>)"><?php echo $title_i?></button>
-<?php
+        <?php
+        $c = 0;
+        foreach ($l_rep as $val_i => $title_i) {
+            $css_name = $arr_classes[$c + $offset_classes];
+            $btn_off = ($val == $val_i) ? "" : "btn-off";
+        ?>
+            <button type='button' id="btsp_btn_<?php echo $col_name . "_" . $val_i ?>"
+                class='btn btn-enum col-<?php echo $col_name ?> btn-<?php echo $css_name . " " . $btn_off ?>'
+                <?php echo $input_disabled ?>
+                onClick="bootstrapHzmBtn('<?php echo $col_name ?>', '<?php echo $val_i ?>', <?php echo $js_classes ?>)"><?php echo $title_i ?></button>
+        <?php
             $c++;
             $c = $c % $nb_classes;
-        }    
-    }
-    else
-    {
+        }
+    } else {
         // list($sql, $liste_rep) = AfwLoadHelper::loadManyFollowing StructureAndValue($objRep, $desc, $val, $obj, true);
         // $l_rep = AfwHtmlHelper::constructDropDownItems($liste_rep, $lang, $col_name, "$mdl.$myTbl", var_export($desc,true));
-        
-        $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;        
+
+        $val_to_keep = $desc["NO_KEEP_VAL"] ? null : $val;
         //if(get_class($objRep)=="Module")    die("AfwLoadHelper::vhGetListe=>".var_export($l_rep,true));
         //list($mdl, $myTbl) = $obj->getThisModuleAndAtable();
         // if($col_name=="data_auser_mfk") die("<b> => desc = ".var_export($desc,true));
         // die("<b> => l_rep = ".var_export($l_rep,true)."</b><BR> liste_rep = ".var_export($liste_rep,true));
         // $liste_rep_count = count($liste_rep);
         $l_rep_count = count($l_rep);
+
         if ($objme and $objme->isAdmin()) echo "<!-- for $col_name : $sql dropdowncount=$l_rep_count -->";
 
         if ($placeholder != $col_title) {
@@ -67,6 +86,8 @@ if ((!$auto_c)  and (!$auto_complete_default))
         } else {
             $empty_item = "";
         }
+
+
 
         $prop_sel =
             array(
@@ -83,18 +104,14 @@ if ((!$auto_c)  and (!$auto_complete_default))
                 "required" => $is_required,
                 "disabled" => $disabled,
             );
-            
-        if(!$desc["DEPENDENT_OFME"]) unset($prop_sel["onchangefn"]);
 
-        if ($obj->fixm_disable) 
-        {
+        if (!$desc["DEPENDENT_OFME"]) unset($prop_sel["onchangefn"]);
+
+        if ($obj->fixm_disable) {
             $descHid = array();
             if (!$obj->hideQeditCommonFields) $descHid["TITLE_AFTER"] = $l_rep[$val];
             $type_input_ret = AfwEditMotor::hidden_input($col_name, $descHid, $val, $obj);
-        
-        } 
-        else 
-        {
+        } else {
             AfwEditMotor::select(
                 $l_rep,
                 array($val),
@@ -103,9 +120,7 @@ if ((!$auto_c)  and (!$auto_complete_default))
             $type_input_ret = "select";
         }
     }
-} 
-else 
-{
+} else {
     $type_input_ret = "autocomplete";
     $col_name_atc = $col_name . "_atc";
     if (($val)) // and ((!$obj->fixm_disable) or (!$obj->fixmtit))) 
@@ -116,6 +131,17 @@ else
         $val_display = "";
     }
     //$clwhere = $desc["WHERE"];
+
+    /*
+        
+        @var string $xxxxx
+        @var string $xxxxx
+        @var string $xxxxx
+        @var string $xxxxx
+        @var string $xxxxx
+        @var string $xxxxx
+        @var int $xxxxx
+        */
     $attp = $col_name;
     $clp = $obj->getMyClass();
     $idp = $obj->getId();
@@ -131,26 +157,23 @@ else
         $atc_input_modified_class = $data_loaded_class . $data_length_class . " record_not_found";
     }
 
-    if ($obj->fixm_disable) 
-    {
+    if ($obj->fixm_disable) {
         $descHid = array();
         if (!$obj->hideQeditCommonFields) $descHid["TITLE_AFTER"] = "[$val_display]";
         $type_input_ret = AfwEditMotor::hidden_input($col_name, $descHid, $val, $obj);
-    } 
-    else 
-    {
+    } else {
         $help_atc = $auto_c["HELP"];
         $depend = AfwJsEditHelper::getDependencyIdsArray($obj, $col_name, $desc);
-        if(!$depend) $depend = "0";
-    ?>
+        if (!$depend) $depend = "0";
+        ?>
         <div class='hzm_input_atc'>
             <table cellspacing='0' cellpadding='0' style="width:100%">
                 <tr style="background-color: rgba(255, 255, 255, 0);">
-                <?php
-                    if(!$placeholder) $placeholder = "اكتب بعض الكلمات للبحث";
-                ?>
+                    <?php
+                    if (!$placeholder) $placeholder = "اكتب بعض الكلمات للبحث";
+                    ?>
                     <td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?php echo $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>" readonly></td>
-                  
+
                     <td style="padding:0px;margin:0px;">
                         <input placeholder="<?php echo $placeholder ?>" type="text" id="<?php echo $col_name_atc ?>" name="<?php echo $col_name_atc ?>" class="form-control <?php echo $lang_input ?> form-autoc" value="<?php echo $val_display ?>" <?php echo $input_required ?>>
                     </td>
@@ -168,7 +191,7 @@ else
         <script>
             $(function() {
                 $("#<?php echo $col_name_atc ?>").autocomplete({
-                    source: "../lib/api/autocomplete.php?cl=<?php echo $nom_class_fk ?>&currmod=<?php echo $nom_module_fk ?>&clp=<?php echo $clp ?>&idp=<?php echo $idp ?>&modp=<?php echo $modp ?>&attp=<?php echo $attp ?>&depend="+<?php echo $depend ?>,
+                    source: "../lib/api/autocomplete.php?cl=<?php echo $nom_class_fk ?>&currmod=<?php echo $nom_module_fk ?>&clp=<?php echo $clp ?>&idp=<?php echo $idp ?>&modp=<?php echo $modp ?>&attp=<?php echo $attp ?>&depend=" + <?php echo $depend ?>,
                     minLength: 0,
 
                     change: function(event, ui) {
@@ -200,21 +223,17 @@ else
 
             });
 
-            $("#<?php echo $col_name_atc ?>").keypress(function(){
+            $("#<?php echo $col_name_atc ?>").keypress(function() {
                 $("#<?php echo $col_name ?>").val("");
             });
 
-            $("#<?php echo $col_name_atc ?>").blur(function(){
-                if($("#<?php echo $col_name ?>").val()=="")
-                {
+            $("#<?php echo $col_name_atc ?>").blur(function() {
+                if ($("#<?php echo $col_name ?>").val() == "") {
                     $("#<?php echo $col_name_atc ?>").val("");
                 }
             });
-
-            
         </script>
 
-<?php                    
+<?php
     }
-}    
-        
+}
