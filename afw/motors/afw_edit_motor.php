@@ -343,7 +343,7 @@ class AfwEditMotor
                         $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj);
                         $answer_case = "AfwLoadHelper::get EnumTable($fieldAnsTab, $objTableName, $fcol_name, obj:$objName)";
                     } else {
-                        $liste_rep = [1 => 'no-obj-no-answer-enum'];
+                        $liste_rep = AfwLoadHelper::getStaticEnumTable($class_name, $fcol_name);
                     }
                 }
                 // if(!$liste_rep)
@@ -1460,12 +1460,25 @@ class AfwEditMotor
                 //********* */
                 $cell_brute_value = $value_arr['data'][$x_val][$y_val];
                 $cell_col_name = "cell_" . $x_val . "_" . $y_val;
-                $cell_input = self::type_input($cell_col_name, $cell_struct, $cell_brute_value, null, ':', false, '', 0, 'matrix', $myClass);
+                $cell_input = self::generalInput($cell_col_name, $cell_struct, $cell_brute_value, $myClass);
                 $row_cells[$x_val] = $cell_input;
             }
             $tbl->addElement(new HtmlyRowBody("", "", "", $row_cells));
         }
 
         return $tbl->renderHtml();
+    }
+
+    /**
+     * @param string $col_name, 
+     * @param array $desc, 
+     * @param mixed $val, 
+     * @param string $myClass
+     */
+    public static function generalInput($col_name, $desc, $val, $myClass)
+    {
+        ob_start();
+        self::type_input($col_name, $desc, $val, null, ':', false, '', 0, 'matrix', $myClass);
+        return ob_clean();
     }
 }
