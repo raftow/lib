@@ -1482,7 +1482,7 @@ class AfwEditMotor
         self::type_input($col_name, $desc, $val, null, ':', false, '', 0, 'matrix', $myClass);
         $return = ob_clean();
 
-        die("generalInput($col_name, desc=" . var_export($desc, true) . ", $val, $myClass)");
+        die("$return = generalInput($col_name, desc=" . var_export($desc, true) . ", $val, $myClass)");
 
         return $return;
     }
