@@ -67,10 +67,10 @@ class AfwEditMotor
          *     $qeditNomCol = $o bj->qeditNomCol;
          *     if (!$qeditNomCol) $qeditNomCol = $col_name;
          *     $orig_col_name = $qeditNomCol;
-         *     if(AfwStringHelper::stringEndsWith($orig_col_name, "_0")) die("dbg orig_col_name=$fcol_name case 10");
+         *     if(AfwStringHelper::stringEndsWith($orig_col_name, "_0")) d ie("dbg orig_col_name=$fcol_name case 10");
          * } else {
          *     $orig_col_name = $col_name;
-         *     if(AfwStringHelper::stringEndsWith($orig_col_name, "_0")) die("dbg orig_col_name=$fcol_name case 11 [Main_Page=$Main_Page]");
+         *     if(AfwStringHelper::stringEndsWith($orig_col_name, "_0")) d ie("dbg orig_col_name=$fcol_name case 11 [Main_Page=$Main_Page]");
          * }
          */
 
@@ -175,7 +175,7 @@ class AfwEditMotor
             $desc['WHERE'] = $obj->decodeText($desc['WHERE']);
         }
 
-        // if($col_name=="id_sh_org_1") die("obj->getWhereOfAttribute($orig_col_name) = ".$desc["WHERE"]);
+        // if($col_name=="id_sh_org_1") d ie("obj->getWhereOfAttribute($orig_col_name) = ".$desc["WHERE"]);
         $readonly = '';
 
         if ($desc['READONLY']) {
@@ -269,17 +269,17 @@ class AfwEditMotor
                 break;
             case 'MENUM':
                 $fcol_name = $desc['FUNCTION_COL_NAME'];
-                if (AfwStringHelper::stringEndsWith($fcol_name, '_0')) {
-                    die("dbg fcol_name=$fcol_name case -1");
-                }
+                /* if (AfwStringHelper::stringEndsWith($fcol_name, '_0')) {
+                    d ie("dbg fcol_name=$fcol_name case -1");
+                }*/
 
                 if (!$fcol_name) {
                     $fcol_name = $col_name;
                 }
 
-                if (AfwStringHelper::stringEndsWith($fcol_name, '_0')) {
-                    die("dbg fcol_name=$fcol_name case 0");
-                }
+                /* if (AfwStringHelper::stringEndsWith($fcol_name, '_0')) {
+                    d ie("dbg fcol_name=$fcol_name case 0");
+                }*/
 
                 if ($obj) {
                     $liste_rep = AfwLoadHelper::getEnumTable($desc['ANSWER'], $obj->getTableName(), $fcol_name, $obj);
@@ -323,22 +323,23 @@ class AfwEditMotor
 
                     $answer_case = "INSTANCE_FUNCTION so obj->get Enum AnswerList($orig_col_name) ";
                 } else {
+                    $fcol_name = $desc['FUNCTION_COL_NAME'];
+                    /* if (AfwStringHelper::stringEndsWith($fcol_name, '_0')) {
+                        d ie("dbg fcol_name=$fcol_name case 1");
+                    }*/
+
+                    if (!$fcol_name) {
+                        $fcol_name = $orig_col_name;
+                    }
+
+                    /* if (AfwStringHelper::stringEndsWith($fcol_name, '_0')) {
+                        d ie("dbg fcol_name=$fcol_name case 2");
+                    }*/
                     if ($obj) {
                         $objTableName = $obj->getTableName();
                         $objName = $obj->__toString();
                         $fieldAnsTab = $desc['ANSWER'];
-                        $fcol_name = $desc['FUNCTION_COL_NAME'];
-                        if (AfwStringHelper::stringEndsWith($fcol_name, '_0')) {
-                            die("dbg fcol_name=$fcol_name case 1");
-                        }
 
-                        if (!$fcol_name) {
-                            $fcol_name = $orig_col_name;
-                        }
-
-                        if (AfwStringHelper::stringEndsWith($fcol_name, '_0')) {
-                            die("dbg fcol_name=$fcol_name case 2");
-                        }
 
                         $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj);
                         $answer_case = "AfwLoadHelper::get EnumTable($fieldAnsTab, $objTableName, $fcol_name, obj:$objName)";
@@ -349,7 +350,7 @@ class AfwEditMotor
                 // if(!$liste_rep)
                 // throw new AfwRuntimeE xception("for col $orig_col_name enum liste_rep comes from $answer_case is null or empty  liste_rep = ".var_export($liste_rep,true));
 
-                // die("for enum col : $col_name, $answer_case, liste_rep = ".var_export($liste_rep,true));
+                // d ie("for enum col : $col_name, $answer_case, liste_rep = ".var_export($liste_rep,true));
 
                 // if($desc["FORMAT-INPUT"]=="hzmtoggle") $obj->_error("enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
                 include 'tpl/helper_edit_enum.php';
@@ -504,7 +505,7 @@ class AfwEditMotor
                         $answer_list[$val] = $val;
                     }
 
-                    // die(var_export($answer_list,true));
+                    // d ie(var_export($answer_list,true));
                     self::select(
                         $answer_list,
                         [$val],
@@ -1039,9 +1040,9 @@ class AfwEditMotor
             $info = self::prepareEditInfoForColumn($obj, $col, $desc, $lang);
         }
 
-        if ($col == 'doc_type_idxxxx') {
-            die('rafik dbg 20251212 => desc=' . var_export($desc, true) . ' => info=' . var_export($info, true));
-        }
+        /* if ($col == 'doc_type_idxxxx') {
+            d ie('rafik dbg 20251212 => desc=' . var_export($desc, true) . ' => info=' . var_export($info, true));
+        }*/
 
         $htmlDiv = '';
         $colspan = '';
@@ -1057,7 +1058,7 @@ class AfwEditMotor
         }
 
         if ((!$no_fgroup) and ($new_fgroup) and ($fgroup != $new_fgroup)) {
-            // if($new_fgroup=="prices_report") die("$fgroup != $new_fgroup : obj::DB_STRUCTURE[$col][FGROUP_BEHAVIOR] = $fgroup_behavior,  data = ".var_export($data,true));
+            // if($new_fgroup=="prices_report") d ie("$fgroup != $new_fgroup : obj::DB_STRUCTURE[$col][FGROUP_BEHAVIOR] = $fgroup_behavior,  data = ".var_export($data,true));
             $fgroup = $new_fgroup;
             if ($fgroup_behavior) {
                 if ($fgroup_behavior == 'collapsed') {
@@ -1307,7 +1308,7 @@ class AfwEditMotor
         $id = $obj->id;
         $separator = $obj->getSeparatorFor($nom_col);
         $col_val = $obj->getVal($nom_col);
-        // if($nom_col=="response_templates") die("case not mode_field_read_only nom_col = $nom_col, value = $col_val ");
+        // if($nom_col=="response_templates") d ie("case not mode_field_read_only nom_col = $nom_col, value = $col_val ");
         $all_form_readonly = false;
         $data_col['desc'] = $desc;
         if (($desc['TYPE'] == 'PK') && empty($col_val)) {
@@ -1359,7 +1360,7 @@ class AfwEditMotor
 
         $data_col['title_after'] = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, 'TITLE_AFTER', $lang, $desc));
 
-        // if($nom_col=="picture_height") die("data[$nom_col][unit] = ".$data_col["unit"]);
+        // if($nom_col=="picture_height") d ie("data[$nom_col][unit] = ".$data_col["unit"]);
 
         if ($desc['TYPE'] == 'MFK') {
             if ($desc['FORMAT'] == 'dropdown') {
@@ -1370,13 +1371,13 @@ class AfwEditMotor
                 unset($data_col['tooltip']);
             }
         }
-        // if($nom_col=="booking_comment") die("step_show_error=$step_show_error , obj_errors[$nom_col]=".$colErrors);
+        // if($nom_col=="booking_comment") d ie("step_show_error=$step_show_error , obj_errors[$nom_col]=".$colErrors);
         if ($colErrors and $step_show_error) {
             $data_col['error'] = $colErrors;
-            // if($nom_col=="booking_comment") die("obj_errors = ".var_export($obj_errors,true));
+            // if($nom_col=="booking_comment") d ie("obj_errors = ".var_export($obj_errors,true));
         }
         /*elseif ($obj_errors) {
-    //die("obj_errors = ".var_export($obj_errors,true));
+    //d ie("obj_errors = ".var_export($obj_errors,true));
 }*/
 
         return $data_col;
