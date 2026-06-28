@@ -1279,6 +1279,17 @@ class AfwDateHelper
     /**
      * @param string $gdate Gregorian Date
      * @param string $format Oracle/MySQL Date Format
+     */
+
+    public static function formatGDate($gdate, $format)
+    {
+        $d = DateTime::createFromFormat("Y-m-d", $gdate);
+        return $d->format($format);
+    }
+
+    /**
+     * @param string $gdate Gregorian Date
+     * @param string $format Oracle/MySQL Date Format
      * @param bool $oracle Oracle/MySQL
      */
 

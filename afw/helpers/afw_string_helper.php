@@ -344,7 +344,9 @@ class AfwStringHelper
 
         public static function is_arabic($str, $seuil_pct = 0.6)
         {
-                global $print_full_debugg;
+                if(!is_string($str)) return false;
+                $print_full_debugg = false;
+                
                 if (mb_detect_encoding($str) !== 'UTF-8') {
                         $str = mb_convert_encoding($str, mb_detect_encoding($str), 'UTF-8');
                 }

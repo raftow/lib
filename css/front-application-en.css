@@ -7,3 +7,12 @@
     float: left;
     width: 100%;
 }
+
+table.dataTable.display>thead>tr>th, table.dataTable.display>tfoot>tr>th {
+    text-align: left !important;
+    padding-left: 24px !important;
+}
+
+table.dataTable tbody th, table.dataTable tbody td {
+    text-align: left !important;
+}
