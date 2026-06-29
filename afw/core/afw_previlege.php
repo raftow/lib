@@ -70,7 +70,7 @@ class AfwPrevilege extends AFWRoot
     {
         $fileName = "previleges_$module_code" . "_table_$table_name"  . ".php";
         $previlege_table_file =  dirname(__FILE__) . "/../../../cache/$module_code/previleges/table/$fileName";
-        if (file_exists($previlege_table_file)) {
+        if (false and file_exists($previlege_table_file)) {
             include($previlege_table_file);
             return [true, $tab_info, $tbf_info, $previlege_table_file];
         } else {
@@ -95,7 +95,7 @@ class AfwPrevilege extends AFWRoot
     {
         $fileName = "bf$bf_id"  . ".php";
         $cache_bf_file =  dirname(__FILE__) . "/../../../cache/$module_code/previleges/role/$fileName";
-        if (file_exists($cache_bf_file)) {
+        if (false and file_exists($cache_bf_file)) {
             $bf_info = include($cache_bf_file);
             return [true, $bf_info, $cache_bf_file];
         } else {
@@ -125,7 +125,7 @@ class AfwPrevilege extends AFWRoot
     {
         $fileName = "previleges_$module_code" . "_role$role_id"  . ".php";
         $previlege_role_file =  dirname(__FILE__) . "/../../../cache/$module_code/previleges/role/$fileName";
-        if (file_exists($previlege_role_file)) {
+        if (false and file_exists($previlege_role_file)) {
             include($previlege_role_file);
             return [true, $role_info, $previlege_role_file];
         } else {
