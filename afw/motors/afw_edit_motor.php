@@ -90,7 +90,8 @@ class AfwEditMotor
 
         if ($obj) {
             if ($placeholder_code == $placeholder_standard_code) {
-                $placeholder = $obj->getAttributeLabel($placeholder_code, $lang);
+                $placeholder = $obj->getAttributeLabel($placeholder_code, $lang, false, false);
+                // if($placeholder == "The placeholder-settings template") die("here case 1 from getAttributeLabel($placeholder_code, $lang, false, false)");
             } elseif ($placeholder_code) {
                 $placeholder = $obj->translateMessage($placeholder_code, $lang);
             }
@@ -109,8 +110,9 @@ class AfwEditMotor
 
                     $placeholder = $instruction . ' ' . $col_title;
                 } elseif (($desc['EMPTY_IS_ALL']) or ($desc['FORMAT'] == 'EMPTY_IS_ALL')) {
-                    $placeholder_code = "ALL-$orig_col_name";
+                    $placeholder_code = "ALL-$orig_col_name";                    
                     $placeholder = $obj->translate($placeholder_code, $lang);
+                    // if($placeholder == "The placeholder-settings template") die("here case 2 from obj->translate($placeholder_code, $lang)");
                     if ($placeholder == $placeholder_code) {
                         $placeholder = $obj->translateOperator('ALL', $lang);
                     }
@@ -219,6 +221,13 @@ class AfwEditMotor
             $input_required = '';
         }
 
+        if (isset($desc['SPELLCHECK'])) {
+            if($desc['SPELLCHECK']) $spell_check = "spellcheck='true'";
+            else $spell_check = "spellcheck='false'"; 
+        } else {
+            $spell_check = '';
+        }
+
         if ($desc['REQUIRED'] or $desc['MANDATORY']) {
             $is_required = true;
         } else {
@@ -226,6 +235,7 @@ class AfwEditMotor
         }
 
         $input_disabled = $disabled = $desc['DISABLED'];
+        
 
         switch ($desc['TYPE']) {
             case 'PK':
@@ -1482,7 +1492,7 @@ class AfwEditMotor
         self::type_input($col_name, $desc, $val, null, ':', false, '', 0, 'matrix', $myClass);
         $return = ob_clean();
 
-        die("$return = generalInput($col_name, desc=" . var_export($desc, true) . ", $val, $myClass)");
+        // die("$return = generalInput($col_name, desc=" . var_export($desc, true) . ", $val, $myClass)");
 
         return $return;
     }

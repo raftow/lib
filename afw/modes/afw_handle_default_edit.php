@@ -192,7 +192,7 @@ if ($obj->editByStep) {
     }
 }
 $new_label = $obj->insertNewLabel($lang);
-$successful_save = AfwLanguageHelper::translateKeyword("save_with_sucess", $lang) . " " . AfwLanguageHelper::translateKeyword("changes", $lang);
+$successful_save = AfwLanguageHelper::translateKeyword("save_with_sucess", $lang); // . " " . AfwLanguageHelper::translateKeyword("changes", $lang);
 
 $case_of_handle = "unknown";
 
@@ -231,12 +231,10 @@ if (!$is_loaded_from_db) {
         // throw new AfwRuntimeException(var_export($obj,true));
         if (!$obj->VIEW) {
             $case_of_handle = "nothing updated";
-            if ($can_show_info) AfwSession::pushInformation("لا شيء تم تعديله");
-            //if($obj->reason_non_update and $objme and $objme->isSuperAdmin()) $_S ESSION["information"] .= "reason : ".$obj->reason_non_update; 
         } else {
             $case_of_handle = "nothing updated but it is a view";
-            if ($can_show_info) AfwSession::pushSuccess($successful_save);           // because view is updated via updating composing tables not itself
         }
+        if ($can_show_info) AfwSession::pushSuccess($obj->tm($case_of_handle, $lang));
     }
 
     $update_context = $old_update_context;
@@ -306,12 +304,21 @@ if ($_POST["pbmon"]) {
                 $old2_work_context = UfwWorkContext::getWorkContext();
                 $update_context = "من خلال زر " . $pMethodItem["LABEL_AR"] . "-" . $pMethodItem["METHOD"];
                 UfwWorkContext::setWorkContext($update_context);
-                list($error, $info, $warn, $technical) = $obj->executePublicMethodForUser($objme, $pbMethodCode, $lang);
+                list($error, $info, $warn, $technical, $pbm_result_arr, $success) = $obj->executePublicMethodForUser($objme, $pbMethodCode, $lang);
                 UfwWorkContext::setWorkContext($old2_work_context);
                 if ($error and !is_string($error)) $error = var_export($error, true);
                 if ($info and !is_string($info)) $info = var_export($info, true);
                 if ($warn and !is_string($warn)) $warn = var_export($warn, true);
-                if ($technical and !is_string($technical)) $technical = var_export($technical, true);
+
+                
+                if ($technical and is_array($technical)) $technical_arr = $technical;
+                elseif ($technical and is_string($technical)) $technical_arr[] = $technical;
+                else $technical_arr = [];
+
+
+                foreach ($technical_arr as $tech) {
+                    AfwSession::console($tech, "method-$pbMethodCode");
+                }
 
                 if ($pMethodItem['TIMER']) {
                     $end_m_time = date('Y-m-d H:i:s');
@@ -320,12 +327,12 @@ if ($_POST["pbmon"]) {
                 }
                 //d ie("list($error, $info, $warn, $technical) = obj->executePublicMethodForUser($objme, $pbMethodCode, $lang) update_context=$update_context;");
 
-                if ($technical) {
+                /*if ($technical) {
                     // d ie("here warn = $warn");
                     if ($warn) $warn .= "<br>";
                     $warn .= $obj->tm("There are more technical details with administrator", $lang);
                     $warn .= "<div class='technical'>$technical</div>";
-                }
+                }*/
 
 
 
@@ -339,6 +346,7 @@ if ($_POST["pbmon"]) {
                 if ($info) AfwSession::pushInformation($info, "method-$pbMethodCode");
                 if ($error) AfwSession::pushError($error);
                 if ($warn) AfwSession::pushWarning($warn);
+                if ($success) AfwSession::pushSuccess($success);
 
                 // reload object if needed (default yes) 
                 if (!$obj->noRelaodAfterRunOfMethod($pbMethodCode)) {

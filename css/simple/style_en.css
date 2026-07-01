@@ -4794,11 +4794,11 @@ table.dataTable {
 
 
 .close {
-    float: right;
+    float: right !important;
 }        
 
 .alert.alert-danger>a.close {
-    float: right;
+    float: right !important;
     top: 0px !important;
     color: #fffbfb !important;
     opacity: 1;
@@ -4807,7 +4807,7 @@ table.dataTable {
 }
 
 .alert.messages--error>a.close {
-    float: right;
+    float: right !important;
     top: 5px !important;
     color: #fffbfb !important;
     opacity: 1;
@@ -4817,7 +4817,7 @@ table.dataTable {
 
 
 .alert.messages--status>a.close {
-    float: right;
+    float: right !important;
     top: 5px !important;
     color: #3b9910 !important;
     opacity: 1;
@@ -4826,7 +4826,7 @@ table.dataTable {
 }
 
 .alert.messages--warning>a.close {
-    float: right;
+    float: right !important;
     top: 5px !important;
     color: #cea211 !important;
     opacity: 1;
@@ -4836,7 +4836,7 @@ table.dataTable {
 
         
 .alert.messages--success>a.close {
-    float: right;
+    float: right !important;
     top: 5px !important;
     color: #68a5e8 !important;
     opacity: 1;

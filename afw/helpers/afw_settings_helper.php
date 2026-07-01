@@ -5,25 +5,20 @@ class AfwSettingsHelper
     public static function readParamsArray($object, $params_attribute)
     {
         $params = $object->getVal($params_attribute);
-        if(is_string($params))
-        {
+        if (is_string($params)) {
             $params_arr = explode("\n", $params);
             $return = [];
-            foreach($params_arr as $params_row)
-            {
+            foreach ($params_arr as $params_row) {
                 list($param, $value) = explode(":", $params_row);
                 $value = trim($value);
                 $param = trim($param);
-                if($param) $return[$param] = $value;
+                if ($param) $return[$param] = $value;
             }
-        }
-        elseif(is_array($params))
-        {
+        } elseif (is_array($params)) {
             $return = $params;
-        }
-        else throw new AfwRuntimeException("AfwSettingsHelper::readParamsArray failed with strange params value : ".var_export($params, true));
+        } else throw new AfwRuntimeException("AfwSettingsHelper::readParamsArray failed with strange params value : " . var_export($params, true));
 
-        
+
 
         return $return;
     }
@@ -31,29 +26,26 @@ class AfwSettingsHelper
     public static function paramsArrayToString($params_arr)
     {
         $return = [];
-        foreach($params_arr as $param => $value)
-        {            
+        foreach ($params_arr as $param => $value) {
             $value = trim($value);
             $param = trim($param);
-            $return[] = $param.":".$value;
+            $return[] = $param . ":" . $value;
         }
 
         return implode("\n", $return);
     }
 
-    
+
     public static function readParamValue($object, $param_attribute, $param_name, $default_value = null)
     {
         $params = $object->getVal($param_attribute);
 
         $params_rows = explode("\n", $params);
-        foreach($params_rows as $params_row)
-        {
+        foreach ($params_rows as $params_row) {
             list($param, $value) = explode(":", $params_row);
             $value = trim($value);
             $param = trim($param);
-            if($param == $param_name)
-            {
+            if ($param == $param_name) {
                 return $value;
             }
         }
@@ -63,27 +55,26 @@ class AfwSettingsHelper
 
     public static function proposeTypeValue($type)
     {
-        if($type=="integer") return 1;
-        if($type=="date") return date("Y-m-d");
-        if($type=="datetime") return date("Y-m-d H:i:s");
+        if ($type == "integer") return 1;
+        if ($type == "date") return date("Y-m-d");
+        if ($type == "datetime") return date("Y-m-d H:i:s");
 
         return "????";
     }
 
     public static function repareParamsArray($input_arr, $input_param, $input_param_props_arr)
     {
-        
+
         $mandatory = $input_param_props_arr["mandatory"];
         $type = $input_param_props_arr["type"];
         $repare = false;
-        
-        if($input_arr[$input_param] and !AfwFormatHelper::isGoodFormat($input_arr[$input_param], $type)) $repare = true;
-        elseif($mandatory and (!$input_arr[$input_param])) $repare = true;
-        elseif(!$input_arr[$input_param]) $input_arr[$input_param] = null;
+
+        if ($input_arr[$input_param] and !AfwFormatHelper::isGoodFormat($input_arr[$input_param], $type)) $repare = true;
+        elseif ($mandatory and (!$input_arr[$input_param])) $repare = true;
+        elseif (!$input_arr[$input_param]) $input_arr[$input_param] = null;
 
 
-        if($repare)
-        {
+        if ($repare) {
             $input_arr[$input_param] = self::proposeTypeValue($type);
         }
 
@@ -91,19 +82,29 @@ class AfwSettingsHelper
     }
 
     /**************************       Settings         ****************/
-    public static function readSettingValue($object, $setting_name, $default_value = null, $settings_attribute_name="settings", $throwError=false)
-    {
+    /**
+     * Read a setting value from an object's settings attribute.
+     * @param object $object The object containing the settings.
+     * @param string $setting_name The name of the setting to read.
+     * @param mixed $default_value The default value to return if the setting is not found.
+     * @param string $settings_attribute_name The attribute name containing the settings.
+     * @param bool $throwError Whether to throw an error if the settings cannot be decoded.
+     * @return mixed The value of the setting or the default value.
+     */
+    public static function readSettingValue(
+        $object,
+        $setting_name,
+        $default_value = null,
+        $settings_attribute_name = "settings",
+        $throwError = false
+    ) {
         $settings = $object->getVal($settings_attribute_name);
+        $settings_array = json_decode($settings);
         // format JSON
-        if(is_array($settings))
-        {
-            $settings_array = $settings;   
+        if (!is_array($settings)) {
+            $settings_array = json_decode($settings, true);
         }
-        else
-        {
-            $settings_array = json_decode($settings, true);        
-        }
-        if(!is_array($settings_array) and $throwError) throw new AfwBusinessException("$settings_attribute_name can't be decoded as json, please check syntax");
+        if (!is_array($settings_array) and $throwError) throw new AfwBusinessException("$settings_attribute_name can't be decoded as json, please check syntax");
         $settings_array = is_array($settings_array) ? $settings_array : [];
         if (array_key_exists($setting_name, $settings_array)) {
             return $settings_array[$setting_name];
@@ -115,11 +116,9 @@ class AfwSettingsHelper
 
     public static function calcErrorInSettings($settings)
     {
-        $settings_array = json_decode($settings, true);  
-        $json_last_error_msg = json_last_error_msg();      
+        $settings_array = json_decode($settings, true);
+        $json_last_error_msg = json_last_error_msg();
         $css = is_array($settings_array) ? "ok" : "error";
         return "<span class='json $css'>$json_last_error_msg</span>";
     }
-        
-
 }

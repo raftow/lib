@@ -235,6 +235,10 @@ class AfwApiConsumeHelper
         return self::consume_complex_api(false, $url, "",    $proxy, $data, $verify_host, $verify_pear, $return_transfer, $associative, $encoding, $method, $maxredirs, $timeout, $followlocation, $http_version, $http_header_array, $print_full_debugg, $print_error);
     }
 
+    /**
+     * @param string $url
+     * @param AFWObject $object
+     */
 
     public static function runAPI($url, &$object, $params_attribute = "input", $lang = "ar")
     {

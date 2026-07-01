@@ -230,6 +230,9 @@ class AfwDateHelper
         return str_replace($arr_from, $arr_to, $format);
     }
 
+    /**
+     * @param string $hdate  hijri date format standard momken framework (YYYYMMDD)
+     */
     public static function convertHijriToGreg($hdate, $indianNumbers = true, $format = "Y-m-d")
     {
         list($year, $month, $day) = self::splitHijriDate($hdate, true);
@@ -523,12 +526,13 @@ class AfwDateHelper
         return $next_week_day_date;
     }
 
-    public static function inputFormatHijriDate($hdate)
+    /**
+     * @param string $hdate  hijri date 
+     * format hijri dates with separator ex 1447-09-29
+     */
+    public static function inputFormatHijriDate($hdate, $separator='-')
     {
-        return implode(
-            '-',
-            self::splitHijriDate(self::repareHijriDate($hdate))
-        );
+        return implode($separator, self::splitHijriDate(self::repareHijriDate($hdate)));
     }
 
     public static function inputFormatDate($gdate)
@@ -559,6 +563,9 @@ class AfwDateHelper
         }
     }
 
+    /**
+     * @param string $hdate  hijri date format standard momken framework (YYYYMMDD)
+     */
     public static function splitHijriDate($hdate, $convertToInt = false)
     {
         if (strlen($hdate) != 8 or !is_numeric($hdate)) {
@@ -853,6 +860,9 @@ class AfwDateHelper
     }
 
 
+    /**
+     * @param string $hdate  hijri date 
+     */
     public static function addHijriPeriodToHijriDate($hdate, $nb_months, $nb_years = 0)
     {
         if (!$hdate) $hdate = self::currentHijriDate();
@@ -1053,7 +1063,13 @@ class AfwDateHelper
 
         return self::to_hijri($gdate);
     }*/
+    
 
+
+    /**
+     * @param string $from_date  hijri/greg date depending on $system param
+     * @param string $to_date  hijri/greg date depending on $system param 
+     */
     public static function genereHijriPeriod(
         $from_date,
         $to_date,
@@ -1171,6 +1187,10 @@ class AfwDateHelper
         return self::to_hijri($gdate, $mode, ' ', true, $ifSeemsHijriKeepAsIs, $throwError, $estimateIfOutOfRange);
     }
 
+    /**
+     * @param string $hdate
+     */
+
     public static function repareGorbojHijriDate($hdate, $without_dashes = true)
     {
         $hdate = trim($hdate);
@@ -1283,8 +1303,10 @@ class AfwDateHelper
 
     public static function formatGDate($gdate, $format)
     {
+        if(!$gdate) $gdate = date("Y-m-d");
         $d = DateTime::createFromFormat("Y-m-d", $gdate);
-        return $d->format($format);
+        if($d) return $d->format($format);
+        else throw new AfwRuntimeException("Bad format for Gregorian Date '$gdate '");
     }
 
     /**
@@ -1371,6 +1393,9 @@ class AfwDateHelper
         return $d && $d->format($dtformat) === $dtime;
     }
 
+    /**
+     * @param string $gdate
+     */
 
     public static function repareGorbojGregDate($gdate)
     {
@@ -1420,6 +1445,9 @@ class AfwDateHelper
         return implode('', explode('-', $hdate));
     }
 
+    /**
+     * @param string $hdate  hijri date 
+     */
     public static function hijriToGreg($hdate, $throwError = true)
     {
         /*
@@ -1724,7 +1752,9 @@ class AfwDateHelper
     }
 
 
-
+    /**
+     * @param string $hdate  hijri date 
+     */
     private static function hijri_to_greg_from_estimation($hdate)
     {
         if (strpos($hdate, '-') !== false) {
@@ -1752,6 +1782,9 @@ class AfwDateHelper
         return $gdate;
     }
 
+    /**
+     * @param string $hdate  hijri date 
+     */
     private static function hijri_to_greg($hdate, $throwError = true)
     {
         $original_hdate = $hdate;

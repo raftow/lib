@@ -16,3 +16,11 @@ table.dataTable.display>thead>tr>th, table.dataTable.display>tfoot>tr>th {
 table.dataTable tbody th, table.dataTable tbody td {
     text-align: left !important;
 }
+
+div.my_link.nice {
+    float: left !important;
+}
+
+.hzm_tooltip_error {
+    float: right;
+}

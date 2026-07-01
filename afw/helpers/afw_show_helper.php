@@ -3358,6 +3358,7 @@ class AfwShowHelper
      * @param AFWObject $objListItem
      * @param boolean $small_liste
      * @param string $lang
+     * @param string $viewIcon
      * @param array $desc
      */
 
@@ -3366,7 +3367,7 @@ class AfwShowHelper
         if ($objListItem->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'))) {
             if (!$objListItem->isActive()) {
                 $data_errors =
-                    'تم حذفها الكترونيا';
+                    $objListItem->tm('Logicaly deleted', $lang);
             } elseif (
                 !$objListItem->isOk(
                     $force_check = true
@@ -3389,19 +3390,18 @@ class AfwShowHelper
                     18
                 ) {
                     $data_errors =
-                        'أخطاء كثيرة';
+                        $objListItem->tm('Many errors', $lang);
                     $viewIcon =
                         'view_error';
                 }
             } else {
-                $data_errors =
-                    'لا يوجد أخطاء';
+                $data_errors = $objListItem->tm('No error', $lang);
             }
         } else {
             if (!$objListItem->isActive()) {
-                $data_errors = 'تم حذفها الكترونيا';
+                $data_errors = $objListItem->tm('Logicaly deleted', $lang);
             } else {
-                $data_errors = 'لم يتم تفعيل التثبت من الأخطاء لهذا الكيان';
+                $data_errors = $objListItem->tm('Error checking is not enabled for performance reasons. You can enable it from control panel > settings', $lang);
             }
         }
         $currstep = $desc['GO-TO-STEP'];

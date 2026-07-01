@@ -346,7 +346,7 @@ class AfwStringHelper
         {
                 if(!is_string($str)) return false;
                 $print_full_debugg = false;
-                
+
                 if (mb_detect_encoding($str) !== 'UTF-8') {
                         $str = mb_convert_encoding($str, mb_detect_encoding($str), 'UTF-8');
                 }
@@ -540,6 +540,12 @@ class AfwStringHelper
                 return addslashes($string);
         }
 
+        /**
+         * @param AFWObject $object
+         * @param string $attribute,
+         * @param string $val_to_parse,
+         * @param string $lang,
+         */
 
         public static final function parseAttribute(
                 $object,
@@ -553,6 +559,9 @@ class AfwStringHelper
                 if ($desc['TYPE'] == 'GDAT' or $desc['TYPE'] == 'DATE') {
                         $alt_separator = '/';
                         $separator = '-';
+                        $thousand = 0;
+                        $big_thousand = 0;
+                        $std_separator = '';
                         if ($desc['TYPE'] == 'GDAT') {
                                 $std_separator = '-';
                                 $thousand = 1000;
@@ -778,6 +787,11 @@ class AfwStringHelper
         }
 
 
+        /**
+         * classToTable
+         * Convert className to PHP tableName
+         * @param string $className
+         */
         public static final function classToTable($className)
         {
                 $critere = 'A-Z';
@@ -788,9 +802,14 @@ class AfwStringHelper
                 return $table;
         }
 
+        /**
+         * methodToTitle
+         * @param string $methodName
+         */
+
         public static final function methodToTitle($methodName)
         {
-                $str = strtolower(self::fileTotable(AfwStringHelper::classToFile($methodName)));
+                $str = strtolower(self::classToTable($methodName));
                 $str = str_replace('_', ' ', $str);
                 if (AfwStringHelper::stringEndsWith($str, " id")) {
                         $str = "The " . substr($str, 0, strlen($str) - 3);
@@ -1423,6 +1442,10 @@ class AfwStringHelper
                 return $arr_final;
         }
 
+        /**
+         * @param string $full_name 
+         */
+
         public static function arabic_full_name_explode($full_name, $gfather = false)
         {
                 $full_name_arr = explode(" ", $full_name);
@@ -1654,5 +1677,37 @@ class AfwStringHelper
                 //$string = arTrim($string,"،");
 
                 return $string;
+        }
+
+        /**
+         * @param string $string
+         */
+        public static function isTechnicalString($string)
+        {
+                $pos = strpos($string, '_');
+                if($pos !== false) return true;
+                $pos = strpos($string, '.');
+                if($pos !== false) return true;
+                $pos = strpos($string, '$');
+                if($pos !== false) return true;
+                $pos = strpos($string, '/');
+                if($pos !== false) return true;
+                $pos = strpos($string, '\\');
+                if($pos !== false) return true;
+                return false;
+        }
+
+
+        /**
+         * @param string $string
+         * @param string $translation
+         */
+        public static function isBadTranslatedString($string, $translation)
+        {
+                if(AfwStringHelper::stringStartsWith(trim($translation), '??') and
+                   AfwStringHelper::stringEndsWith(trim($translation), '??')) return true;
+                if(strtoupper(trim($translation))==strtoupper(trim($string))) return true;
+
+                return false;
         }
 }

@@ -132,7 +132,8 @@ class AfwOperatorEnTranslator
         $trad["OPERATOR"]["records_updated"]                         = "records updated : ";
         $trad["OPERATOR"]["record(s)"]                                = "record(s)";
         $trad["OPERATOR"]["qedit_some_records"]                       = "quick edit on ";
-        $trad["OPERATOR"]["save_with_sucess"]                             = "Changes have been saved with success";
+        $trad["OPERATOR"]["save_with_sucess"]                         
+                    = "Changes have been saved with success";
         $trad["OPERATOR"]["changes"]                                     = "";
         $trad["OPERATOR"]["--changes"]                                     = " ";
         $trad["OPERATOR"]["no_update_found"]                         = "No modification found";

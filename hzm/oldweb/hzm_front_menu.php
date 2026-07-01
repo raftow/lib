@@ -1,4 +1,5 @@
 <?php
+        // include("xxxyy.php");
         // throw new AfwRuntimeException("rafik-2 I think it is obsolete now : 10 nov 2021");
         $objme = AfwSession::getUserConnected();  
           

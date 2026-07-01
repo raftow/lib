@@ -24,14 +24,32 @@ class CmsFrontMenu extends AFWRoot
                         foreach ($menu as $the_module => $module_menu) {
                                 $module_menu_roles = $module_menu["all"];
                                 foreach ($module_menu_roles as $role_id => $module_menu_role) {
-                                        $role_cache_file = "$file_afw_dir_name/../../../$the_module/previleges/role/previleges_" . $the_module . "_role$role_id.php";
-                                        include($role_cache_file);
-                                        $menu[$the_module]["all"][$role_id] = $role_info[$role_id]['menu'];
+                                        if($role_id>0) {
+                                                $role_cache_file = "$file_afw_dir_name/../../../$the_module/previleges/role/previleges_" . $the_module . "_role$role_id.php";
+                                                $global_prev_file = "$file_afw_dir_name/../../../$the_module/previleges.php";
+                                                if (file_exists($role_cache_file)) {
+                                                        include($role_cache_file);
+                                                        $menu[$the_module]["all"][$role_id] = $role_info[$role_id]['menu'];
+                                                        if($menu[$the_module]["all"][$role_id]) $menu[$the_module]["all"][$role_id]['source'] = "role-std-prev";
+                                                }
+                                                elseif (file_exists($global_prev_file)) {
+                                                        include($global_prev_file);
+                                                        $menu[$the_module]["all"][$role_id] = $role_info[$role_id]['menu'];
+                                                        if($menu[$the_module]["all"][$role_id]) $menu[$the_module]["all"][$role_id]['source'] = "global-std-prev";
+                                                }
+                                                else {
+                                                        if($the_module=="pag") die("the role cache file $role_cache_file not found, the global previleges file $global_prev_file not found");   
+                                                }
+                                        }
+                                        
                                 }
                         }
 
                         return [true, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path];
-                } else return [false, null, null, null, null, null];
+                } else {
+                        // die("the user cache file $user_cache_file_path not found");
+                        return [false, null, null, null, null, null];
+                }
         }
 
         /**
@@ -97,6 +115,10 @@ class CmsFrontMenu extends AFWRoot
                         $html .= "\n" . AfwHtmlHelper::showUsingHzmTemplate($li_template_file, $tokens, $lang);
                 }
 
+                if($menu_id==-1) die("menu_id==$menu_id so menu html = $html");
+
                 return $html;
+
+                
         }
 }

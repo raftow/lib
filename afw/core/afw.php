@@ -1334,12 +1334,18 @@ class AFWObject extends AFWRoot
         $this->PK_FIELD = $pk_field_column;
     }
 
+    /**
+     * @param string $attribute
+     */
     public function inPK($attribute)
     {
         if ($this->PK_MULTIPLE) return $this->inMultiplePK($attribute);
         else return ($attribute == $this->getPK());
     }
 
+    /**
+     * @param string $attribute
+     */
     public function inMultiplePK($attribute)
     {
         foreach ($this->PK_MULTIPLE_ARR as $pk_field) {
@@ -1781,6 +1787,9 @@ class AFWObject extends AFWRoot
         return "$attribute.$what ???";
     }
 
+    /**
+     * @param string $attribute
+     */
     public function het($attribute, $format = '', $optim_lookup = true)
     {
         $what = 'object';
@@ -1792,17 +1801,26 @@ class AFWObject extends AFWRoot
         return $val_attribute;
     }
 
-    public function getAttributeLabel($attribute, $lang = 'ar', $short = false)
+    /**
+     * @param string $attribute
+     */
+    public function getAttributeLabel($attribute, $lang = 'ar', $short = false, $AIT = true)
     {
         // die("calling getAttributeLabel($attribute, $lang, short=$short)");
-        return AfwLanguageHelper::getAttributeTranslation($this, $attribute, $lang, $short);
+        return AfwLanguageHelper::getAttributeTranslation($this, $attribute, $lang, $short, $AIT);
     }
 
+    /**
+     * @param string $attribute
+     */
     public function shouldBeCalculatedField($attribute)
     {
         return false;
     }
 
+    /**
+     * @param string $attribute
+     */
     public final function seemsCalculatedField($attribute)
     {
         if ((!$this->isEmpty()) and ($attribute != 'id') and !isset($this->AFIELD_VALUE[$attribute]))
@@ -1861,12 +1879,12 @@ class AFWObject extends AFWRoot
         );
     }
 
-    public function decodeList($nom_col, $val_arr)
+    public function decodeList($column_name, $val_arr)
     {
         $decoded_list = [];
 
         foreach ($val_arr as $index => $value) {
-            $decoded_list[$index] = AfwFormatHelper::decodeAnswerOfAttribute($this, $nom_col, $value);
+            $decoded_list[$index] = AfwFormatHelper::decodeAnswerOfAttribute($this, $column_name, $value);
         }
 
         return $decoded_list;
@@ -2151,6 +2169,9 @@ class AFWObject extends AFWRoot
             $desc['REQUIRED'];
     }
 
+    /**
+     * @param string $attribute
+     */
     public function attributeIsApplicable($attribute)
     {
         return true;
@@ -2415,7 +2436,7 @@ class AFWObject extends AFWRoot
      * it also trigger events like beforeSet afterSet etc...
      * @param string $attribute
      * @param string $value
-     * @param boolean $check
+     * @param boolean $forceSet
      */
     public function set($attribute, $value, $forceSet = null, $is_numeric_field = false)
     {
@@ -2489,6 +2510,9 @@ class AFWObject extends AFWRoot
         return true;
     }
 
+    /**
+     * @param string $attribute
+     */
     final public function afterSetOfAttribute($attribute, $newvalue, $struct = null)
     {
         if (!$struct)
@@ -2524,6 +2548,9 @@ class AFWObject extends AFWRoot
         }*/
     }
 
+    /**
+     * @param string $attribute
+     */
     public function setSlient($attribute, $value)
     {
         return $this->nativeSet($attribute, $value, true, true);
@@ -2532,6 +2559,9 @@ class AFWObject extends AFWRoot
     // il faut utiliser setForce si on essaye de vider attribut dans un multi update (many records not only one) donc on va utiliser
     // un objet vide et on essaye de vider un attribut deja vide et donc par conclusion l'optimisateur va ignorer l'operation
     // si on n'utilise pas le mode force
+    /**
+     * @param string $attribute
+     */
     public function setForce($attribute, $value, $is_numeric_field = false)
     {
         return $this->nativeSet(
@@ -2639,21 +2669,33 @@ class AFWObject extends AFWRoot
         return $this->OPTIONS[$attribute];
     }
 
+    /**
+     * @param string $attribute
+     */
     final public function setOptionValue($attribute, $value)
     {
         $this->OPTIONS[$attribute] = $value;
     }
 
+    /**
+     * @param string $attribute
+     */
     final public function isDebugg($attribute)
     {
         return AfwStringHelper::stringStartsWith($attribute, 'debugg_');
     }
 
+    /**
+     * @param string $attribute
+     */
     final public function extractDebuggAttribute($attribute)
     {
         return substr($attribute, 7);
     }
 
+    /**
+     * @param string $attribute
+     */
     final public function isSetDebuggAttribute($attribute)
     {
         $debugg_attribute = $this->extractDebuggAttribute($attribute);
@@ -4025,43 +4067,41 @@ class AFWObject extends AFWRoot
 
     /**
      * translate
-     * @param  string  $nom_col
+     * @param  string  $column_name
      * @param  string  $langue
      * @return string
      */
-    public function translate0($nom_col, $langue = 'ar', $operator = null)
+    public function translate0($column_name, $langue = 'ar', $operator = null)
     {
-        return $nom_col;
+        return $column_name;
     }
 
-    public static function gtr($nom_col, $langue = 'ar', $tokens = [])
+    public static function gtr($column_name, $langue = 'ar', $tokens = [], $AI_Translation=true)
     {
         $operator = null;
         $nom_table = 'all';
         $module = 'lib/afw';
 
-        if (!$nom_col)
-            $nom_col = $nom_table;  // plural translation
+        if (!$column_name)
+            $column_name = $nom_table;  // plural translation
 
         $return = AfwLanguageHelper::tarjem(
-            $nom_col,
+            $column_name,
             $langue,
             $operator,
             $nom_table,
             $module
         );
 
-        if (
-            AfwStringHelper::stringStartsWith(trim($return), '??') and
-            AfwStringHelper::stringEndsWith(trim($return), '??')
-        ) {
-            $return = AfwStringHelper::methodToTitle($nom_col);
+        if ($AI_Translation and AfwStringHelper::isBadTranslatedString($column_name, $return)) 
+        {
+            $return = AfwStringHelper::methodToTitle($column_name); // ."<!-- methodToTitle $column_name -->";
         }
         $return_before = $return;
         $return = UfwReplacement::trans_replace($return, $module, $langue);
 
-        /*if ($nom_col == 'trainingunittype.single') {
-            throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem(col=$nom_col, lng=$langue, oper=$operator, tbl=$nom_table, module=$module) (intermediaire = $return_before)");
+        /*if ($column_name == 'trainingunittype.single') {
+            throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem(col=$column_name, lng=$langue, oper=$operator, tbl=$nom_table, module=$module) (intermediaire = $return_before)");
         }*/
 
         foreach ($tokens as $token => $val_token) {
@@ -4071,25 +4111,32 @@ class AFWObject extends AFWRoot
         return $return;
     }
 
-    public static function t($nom_col, $lang = 'ar', $operator = null)
+    /**
+     * @param string $column_name
+     */
+
+    public static function t($column_name, $lang = 'ar', $operator = null, $AI_Translation=true)
     {
         $nom_table = static::$TABLE;
         $module = static::$MODULE;
 
-        if (!$nom_col)
-            $nom_col = $nom_table;  // plural translation
+        if (!$column_name)
+            $column_name = $nom_table;  // plural translation
 
         $return = AfwLanguageHelper::tarjem(
-            $nom_col,
+            $column_name,
             $lang,
             $operator,
             $nom_table,
-            $module
+            $module, 
+            $AI_Translation
         );
+
+        // if($column_name=="name_ar_warning") die("$return = AfwLanguageHelper::tarjem($column_name,$lang)");
         /*
         if ($nom_table=="request") {
                         throw new AfwRuntimeException("Bad tarjema $return = AfwLanguageHelper::tarjem(
-            $nom_col,
+            $column_name,
             $langue,
             $operator,
             $nom_table,
@@ -4097,41 +4144,58 @@ class AFWObject extends AFWRoot
         );");
                     }*/
 
-        if (
-            AfwStringHelper::stringStartsWith(trim($return), '??') and
-            AfwStringHelper::stringEndsWith(trim($return), '??')
-        ) {
-            $return = AfwStringHelper::methodToTitle($nom_col);
+        if ($AI_Translation and AfwStringHelper::isBadTranslatedString($column_name, $return)) 
+        {
+            $return = AfwStringHelper::methodToTitle($column_name); // ."<!-- methodToTitle $column_name -->";
+            // if($column_name=="name_ar_warning") die("after isBadTranslatedString $return = AfwStringHelper::methodToTitle($column_name)");
         }
         $return_before = $return;
         $return = UfwReplacement::trans_replace($return, $module, $lang);
-
-        /*if ($nom_col == 'trainingunittype.single') {
-            throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem(col=$nom_col, lng=$langue, oper=$operator, tbl=$nom_table, module=$module) (intermediaire = $return_before)");
+        // if($return_before=="name_ar_warning") die("$return = UfwReplacement::trans_replace($return_before, $module, $lang)");
+        /*if ($column_name == 'trainingunittype.single') {
+            throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem(col=$column_name, lng=$langue, oper=$operator, tbl=$nom_table, module=$module) (intermediaire = $return_before)");
         }*/
 
-        if ($lang == 'en') {
-            $pos1 = strpos($return, '_');
-            $pos2 = strpos($return, '.');
-            if (($pos1 === false) and ($pos2 === false) and ((strtoupper($return) === $return) or (strtolower($return) === $return))) {
-                // $return_before = $return;
-                $return = AfwStringHelper::firstCharUpper(strtolower($return));  // ." [$return_before/$pos1/$pos2]";
+           
+        if ($AI_Translation and ($lang == 'en')) {            
+            $is_technical_string = AfwStringHelper::isTechnicalString($return);
+            $all_string_same_case = ((strtoupper($return) === $return) or (strtolower($return) === $return));
+            // if it is not a technical phrase and it is all lower or all upper case 
+            // make only first character upper
+            if (!$is_technical_string and $all_string_same_case) {
+                $return_before = $return;
+                $return = AfwStringHelper::firstCharUpper(strtolower($return));  
+                // if($return_before=="name_ar_warning") die("$return = AfwStringHelper::firstCharUpper(strtolower($return_before))");
             }
         }
+
+        // if($column_name=="name_ar_warning") die("end of :: t() return = $return");
 
         return $return;
     }
 
-    public function translate($nom_col, $langue = 'ar', $operator = null)
+    /**
+     * @param string $column_name
+     */
+
+    public function translate($column_name, $langue = 'ar', $operator = null, $AI_Translation=false)
     {
-        return self::t($nom_col, $langue, $operator);
+        return self::t($column_name, $langue, $operator, $AI_Translation);
     }
 
+
+    /**
+     * @param string $text
+     */
     public function translateText($text, $langue = 'ar')
     {
         return $this->translate($text, $langue, false);
     }
 
+
+    /**
+     * @param string $operator
+     */
     public function translateOperator($operator, $langue = 'ar')
     {
         $return = $this->translate($operator, $langue, true);
@@ -4141,6 +4205,9 @@ class AFWObject extends AFWRoot
         return $return;
     }
 
+    /**
+     * @param string $message
+     */
     public function tm($message, $langue = '', $company = '')
     {
         if (!$langue) {
@@ -4153,6 +4220,9 @@ class AFWObject extends AFWRoot
         return $this->translateMessage($message, $langue, $company);
     }
 
+    /**
+     * @param string $message
+     */
     public function tf($message, $langue = '')
     {
         if (!$langue) {
@@ -4165,6 +4235,10 @@ class AFWObject extends AFWRoot
         $message_tm = $this->translate($message, $langue);
         return $message_tm;
     }
+
+    /**
+     * @param string $message
+     */
 
     public function translateMessage($message, $lang = '', $company = '')
     {
@@ -4181,6 +4255,9 @@ class AFWObject extends AFWRoot
         return AfwLanguageHelper::translateCompanyMessage($message, $module, $lang, $company);
     }
 
+    /**
+     * @param string $message
+     */
     public static function transMess($message, $lang = '', $company = '')
     {
         if (!$lang) {
@@ -5443,6 +5520,12 @@ class AFWObject extends AFWRoot
         return [];
     }
 
+    /**
+     * @param Auser $auser
+     * @param string $pMethodCode
+     * @param string $lang
+     * @return array
+     */
     final public function executePublicMethodForUser(
         $auser,
         $pMethodCode,
@@ -5941,6 +6024,9 @@ class AFWObject extends AFWRoot
         return [true, ''];
     }
 
+    /**
+     * @param string $attribute
+     */
     public function attributeIsToPag($attribute, $structure = null)
     {
         list($paggable, $reason) = $this->paggableAttribute($attribute, $structure);
@@ -6382,6 +6468,9 @@ class AFWObject extends AFWRoot
         return null;
     }
 
+    /**
+     * @param AFWObject $obj
+     */
     public function getAttributesFriendOf($obj)
     {
         $arrAttributes = [];
@@ -6389,9 +6478,9 @@ class AFWObject extends AFWRoot
         if ($obj) {
             $tabName = $obj->getTableName();
             $class_db_structure = $this->getMyDbStructure();
-            foreach ($class_db_structure as $nom_col => $desc) {
+            foreach ($class_db_structure as $column_name => $desc) {
                 if ($desc['ANSWER'] == $tabName) {
-                    $arrAttributes[] = $nom_col;
+                    $arrAttributes[] = $column_name;
                 }
             }
         }
@@ -6429,6 +6518,9 @@ class AFWObject extends AFWRoot
         return true;
     }
 
+    /**
+     * @param int $current_step
+     */
     public function canSaveOnly($current_step)
     {
         return false;

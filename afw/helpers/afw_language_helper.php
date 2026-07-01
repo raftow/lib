@@ -61,11 +61,11 @@ class AfwLanguageHelper
 
     /**
      * @param AFWObject $object
-     * 
+     * @param string $attribute
      * 
      */
 
-    public static final function getAttributeTranslation($object, $attribute, $lang = 'ar', $short = false)
+    public static final function getAttributeTranslation($object, $attribute, $lang = 'ar', $short = false, $AIT = true)
     {
         $return = '';
         if ($short) {
@@ -76,8 +76,10 @@ class AfwLanguageHelper
         }
         // if($attribute=="cher_id") die("getAttributeTranslation($attribute, $lang, short=$short) = $return");
         if (!$return) {
-            $return = $object->translate($attribute, $lang);
+            $return = $object->translate($attribute, $lang, null, $AIT);
+            // if($return == "The placeholder-settings template") die("here case 2 from obj->translate($attribute, $lang, null, AIT=$AIT)");
         }
+        
         return $return;
     }
 
@@ -135,7 +137,8 @@ class AfwLanguageHelper
         $langue = 'ar',
         $operator = null,
         $nom_table = '',
-        $module = ''
+        $module = '', 
+        $AI_Translation=false
     ) {
         //if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("debugg $nom_table trad of $nom_col is here 1 ");
         $company = AfwSession::currentCompany();
@@ -352,9 +355,11 @@ class AfwLanguageHelper
 
         $attribute_property_trans = $object->translateMessage(
             $attribute_property_code,
-            $lang
+            $lang,
+            ''
         );
-        if ($attribute_property_trans == $attribute_property_code) {
+        
+    if ($attribute_property_trans == $attribute_property_code) {
             $attribute_property_trans = '';
         }
 
@@ -373,8 +378,12 @@ class AfwLanguageHelper
             $attribute_property_code = strtolower($attribute_property_code);
             $attribute_property_trans = $object->translate(
                 $attribute_property_code,
-                $lang
+                $lang,
+                null,
+                false
             );
+
+            //if($attribute_property_code=="name_ar_warning") die("$attribute_property_trans = translateNOAI($attribute_property_code,$lang)");
         }
 
         //if(($attribute=="picture_height") and ($attribute_property=="UNIT")) die(" $attribute_property_trans = this->translate($attribute_property_code,$lang) ");

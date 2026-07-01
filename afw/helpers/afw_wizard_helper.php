@@ -447,6 +447,11 @@ class AfwWizardHelper extends AFWRoot
             !$display_in_display_mode[$className];
     }
 
+    /**
+     * @param AFWObject $object
+     * @param string $lang
+     * @param int $nextStep
+     */
     public final static function getFinishButtonLabelDefault(
         $object,
         $lang,
@@ -454,7 +459,7 @@ class AfwWizardHelper extends AFWRoot
         $form_readonly = 'RO'
     ) {
         $className = $object->getMyClass();
-        if (self::classIsDisplayedInEditMode($className) and (!$object->after_save_edit)) {
+        if (self::classIsDisplayedInEditMode($className) and (!$object->after_save_edit or !$object->canFinishOnCurrentStep())) {
             if ($form_readonly != 'RO') {
                 return $object->translate('SAVE', $lang, true);
             } else {

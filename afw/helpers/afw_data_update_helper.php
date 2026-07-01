@@ -12,7 +12,7 @@ class AfwDataUpdateHelper
 
         UfwBatch::print_error($error);
         if ($email_to_admin) {
-            mail_error_to_administrator($error);
+            // @todo : mail_error_to_administrator($error);
         }
 
         die();
@@ -40,7 +40,15 @@ class AfwDataUpdateHelper
         return $dest_tstamp;
     }
 
-    public static function data_update($dbserver, $items, $table_config, $simul = false, $job_param_source_tstamp)
+    /**
+     * @param string $dbserver
+     * @param array $items
+     * @param array $table_config
+     * @param bool $simul
+     * @param string $job_param_source_tstamp
+     * 
+     */
+    public static function data_update($dbserver, $items, $table_config, $simul, $job_param_source_tstamp)
     {
         $table_name             = $table_config['table_name'];
         $source_api_timestamp_field = $table_config['source_api_timestamp_field'];

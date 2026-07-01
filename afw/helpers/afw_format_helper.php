@@ -1553,6 +1553,10 @@ class AfwFormatHelper
         // because not implemented
     }
 
+    /**
+     * @param string $mobile_num
+     * @return bool
+     */
     public static function isCorrectMobileNum($mobile_num, $country = 'SA')
     {
         if ($country == 'SA') {
@@ -1584,10 +1588,16 @@ class AfwFormatHelper
         return $idn_correct;
     }
 
-    public static function getIdnTypeId($id_number, $authorize_other_sa_idns = false, $authorize_nid = false)
-    {
+    /**
+     * @param string $identity_number
+     */
+    public static function getIdnTypeId(
+        $identity_number,
+        $authorize_other_sa_idns = false,
+        $authorize_nid = false
+    ) {
         try {
-            $id = trim($id_number);
+            $id = trim($identity_number);
             $type3 = substr($id, 0, 3);
             $type = substr($id, 0, 1);
             if ($authorize_nid and ($type3 == 'NID')) {
@@ -2114,7 +2124,30 @@ class AfwFormatHelper
         return $return;
     }
 
-    public static function pbm_result($err, $info, $warn = null, $sep = "<br>\n", $tech = '', $result_arr = [], $limitSize = null)
+
+    /**
+     * @param array|string $err
+     * @param array|string $info
+     * @param array|string $warn
+     * @param array|string $success
+     * @param array|string $tech
+     * @param array $result_arr
+     * @param int|null $limitSize
+     */
+    public static function pbm_return($err, $info, $warn = null, $success = null, $tech = null, $result_arr = [], $limitSize = null)
+    {
+            return self::pbm_result($err, $info, $warn, "<br>\n", '', $result_arr, $limitSize);
+    }
+    /**
+     * @param array|string $err
+     * @param array|string $info
+     * @param array|string $warn
+     * @param string $sep
+     * @param array|string $tech
+     * @param array $result_arr
+     * @param int|null $limitSize
+     */
+    public static function pbm_result($err, $info, $warn = null, $sep = "<br>\n", $tech = null, $result_arr = [], $limitSize = null)
     {
         // die(" 1 ==> pbm_result($err, $info, $warn) warn = ".var_export($warn,true));
         if ($limitSize and (count($err) > $limitSize)) {
@@ -2233,12 +2266,23 @@ class AfwFormatHelper
         return $return;
     }
 
+    /**
+     * Get an element from a multi-dimensional array using a dot-separated path.
+     * @param array $array The multi-dimensional array to search.
+     * @param string $path The dot-separated path to the desired element (e.g., "key1.key2.key3").
+     * @param string $separator The separator used in the path (default is '.').
+     */
     public static function getElementFromArrayByPath($array, $path, $separator = '.')
     {
         // Split the path string into an array of keys
         $path = trim($path);
         $path = trim($path, $separator);
         $keys = explode($separator, $path);
+
+        if(!$path) {
+            $log_arr[] = "getElementFromArrayByPath path is empty, returning null";
+            return [null, $log_arr];
+        } 
 
         // Start at the root of the array
         $temp = $array;
@@ -2257,8 +2301,8 @@ class AfwFormatHelper
                 $log_arr[] = "getElementFromArrayByPath found key = $key element is " . var_export($temp, true);
             } else {
                 // If any key in the path is missing, return null or a default value
-                return null;
                 $log_arr[] = "getElementFromArrayByPath not found key = $key element in " . var_export($temp, true);
+                return [null, $log_arr];
             }
         }
 
@@ -2268,22 +2312,28 @@ class AfwFormatHelper
         return [$temp, $log_arr];
     }
 
+    /**
+     * @param array $arrResult
+     * @param string $dataPath
+     * @param string $recordPattern
+     * @param string $separator
+     */
     public static function extractDataFromArray($arrResult, $dataPath, $recordPattern, $separator = '.')
     {
         $context = "Context dataPath=$dataPath ($separator) from " . var_export($arrResult, true);
         if (is_object($arrResult)) {
             $arrResult = (array) $arrResult;
         }
-        if ((!$arrResult) or !is_array($arrResult)) {
+        if (!is_array($arrResult)) {
             $log_arr[] = $context;
-            $log_arr[] = "<b class='error'>IS EMPTY OR NOT ARRAY</b>";
+            $log_arr[] = "<b class='error'>IS NOT ARRAY</b>";
             return [null, null, implode("\n<br>", $log_arr)];
         }
         // else die("Recahed with rafik : arrResult = ".var_export($arrResult, true));
 
         list($data_rows, $log_arr) = self::getElementFromArrayByPath($arrResult, $dataPath, $separator);
-        $log_arr[] = $context;
-        if (!$data_rows) {
+        if (!is_array($data_rows)) {
+            $log_arr[] = $context;
             $log_arr[] = 'getElementFromArrayByPath returned nothing';
             return [null, null, implode("\n<br>", $log_arr)];
         }

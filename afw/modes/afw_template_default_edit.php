@@ -225,7 +225,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                         $data[$nom_col]["warning"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "WARNING", $lang, $desc));
                         if (!$data[$nom_col]["warning"]) {
                                 $col_warning = $nom_col . "_warning";
-                                $val_warning = $obj->translate($col_warning, $lang);
+                                $val_warning = $obj->translate($col_warning, $lang,null,false);
                                 if ($val_warning != $col_warning) $data[$nom_col]["warning"]     = $val_warning;
                         }
 
@@ -280,7 +280,9 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                         //$col_num = 0;
                                         foreach ($other_links as $k => $other_link) {
                                                 $o_url = $other_link["URL"];
-                                                $o_tit = $other_link["TITLE"];
+                                                $LANG_UPPER = strtoupper($lang);
+                                                $o_tit = $other_link["TITLE_$LANG_UPPER"];
+                                                if(!$o_tit) $o_tit = $other_link["TITLE"];
                                                 $o_target = $other_link["TARGET"];
                                                 if ($o_target) $o_target_html = "target='$o_target'";
                                                 else $o_target_html = "";
@@ -481,9 +483,11 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 <input type="submit" name="save_previous" id="save_previous" class="fa previous <?php echo $class_btn_prev ?> wizardbtn fright <?php echo $disabled_prev ?> <?php echo $lang ?>" value="&nbsp;<?php echo $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?php echo $disabled_prev ?>></input>
                                                                 <?php
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
-                                                                if ($obj->canSaveOnly($obj->currentStep)) {
+                                                                $saveOnly = $obj->canSaveOnly($obj->currentStep);
+                                                                if($saveOnly===true) $saveOnly = 'UPDATE';
+                                                                if ($saveOnly) {
                                                                 ?>
-                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?php echo $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn <?php echo $saveOnly ?>" value="&nbsp;<?php echo $obj->translate($saveOnly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
                                                                 <?php
                                                                 }
                                                                 // $nextStep will be = -1 if all next steps are R/O not editable, so no next editable step
@@ -608,9 +612,12 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 <input type="submit" name="save_previous" id="save_previous" class="fa previous <?php echo $class_btn_prev ?> wizardbtn fright <?php echo $disabled_prev ?> <?php echo $lang ?>" value="&nbsp;<?php echo $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?php echo $disabled_prev ?>></input>
                                                                 <?php
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
-                                                                if ($obj->canSaveOnly($obj->currentStep)) {
+                                                                
+                                                                $saveOnly = $obj->canSaveOnly($obj->currentStep);
+                                                                if($saveOnly===true) $saveOnly = 'UPDATE';
+                                                                if ($saveOnly) {
                                                                 ?>
-                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn" value="&nbsp;<?php echo $obj->translate('UPDATE', $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
+                                                                        <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn <?php echo $saveOnly ?>" value="&nbsp;<?php echo $obj->translate($saveOnly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
                                                                 <?php
                                                                 }
                                                                 // $nextStep will be = -1 if all next steps are R/O not editable, so no next editable step
