@@ -7965,3 +7965,8 @@ table.debugg tr {
 div#div_data_migration_export {
     min-height: 600px;
 }
+
+code span {
+    direction: ltr;
+    float: left;
+}
