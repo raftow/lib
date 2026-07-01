@@ -7961,3 +7961,7 @@ table.debugg td.val {
 table.debugg tr {
     border-bottom: 1px dashed #0096ff !important;
 }
+
+div#div_data_migration_export {
+    min-height: 600px;
+}
