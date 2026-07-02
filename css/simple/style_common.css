@@ -7966,6 +7966,13 @@ div#div_data_migration_export {
     min-height: 600px;
 }
 
+textarea.language-php {
+    height: 600px;
+    width: 100%;
+    text-align: left;
+    direction: ltr;
+}
+
 code span {
     direction: ltr;
     float: left;
