@@ -176,7 +176,8 @@ class UfwLoginUtilities extends AFWRoot
                 //$time_e = date("Y-m-d H:i:s");
                 $user_connected = ($username and $user_infos["id"]);
                 $user_not_connected_reason = "";
-                if (!$user_connected) $user_not_connected_reason = "retrieve user info failed : $sql_db_retrieve_user_info";
+                // $sql_db_retrieve_user_info_smencode = AfwStringHelper::smencode($sql_db_retrieve_user_info);
+                if (!$user_connected) $user_not_connected_reason = "retrieve user info failed : <!-- $sql_db_retrieve_user_info -->";
 
                 return array($user_connected, $user_not_connected_reason, $user_infos, $ldap_dbg);
         }

@@ -6539,6 +6539,10 @@ div#analysis_log>div.sql {
     width: 100%;
 }
 
+.quote .quoteinn p {
+    font-weight: bold;
+}
+
 /**      END UMS +PAG COMMON **/
 
 tr.backtrace_tech_details {
@@ -7976,4 +7980,27 @@ textarea.language-php {
 code span {
     direction: ltr;
     float: left;
+}
+input#otp_verify_code {
+  background-color: transparent;
+  font-size: 54px !important;
+  font-family: DIGI;
+  color: #0c5893;
+  padding: 7px !important;
+  height: 50px !important;
+  text-align: left;
+  border: none !important;
+}
+
+.otp-digits-input {
+  background-color: transparent !important;
+  padding: 9px !important;
+  width: 176px;
+  margin-left: calc(50% - 78px);
+  margin-right: calc(50% - 78px);
+  background-image: url(../../images/otpbg-3.png);
+  background-position-y: bottom;
+  background-position-x: 13px;
+  background-repeat: no-repeat;
+  background-size: 66% 90%;
 }

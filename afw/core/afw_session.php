@@ -174,6 +174,9 @@ class AfwSession extends AFWRoot
                 return $this->studentConnected;
         }
 
+
+
+
         private function getLogTime()
         {
                 return $this->lastLogTime;
@@ -204,6 +207,51 @@ class AfwSession extends AFWRoot
         private function getAllData()
         {
                 return $this->data;
+        }
+
+
+        
+
+        /**
+         * @param array $user_infos
+         * @return array
+         */
+        public static function userHasBeenLoggedIn($user_infos)
+        {
+                if(!$user_infos["username"]) throw new AfwRuntimeException("userHasBeenLoggedIn called with empty username in user_infos : ".var_export($user_infos,true));
+                AfwSession::setSessionVar("user_name_logged_in", $user_infos["username"]);
+                AfwSession::setSessionVar("user_id_logged_in", $user_infos["id"]);
+                return array($user_infos["id"], $user_infos["username"]);
+        }
+
+        /**
+         * @param array $user_infos
+         */
+        public static function userHasBeenAuthenticated($user_infos)
+        {
+                $last_page = AfwSession::getSessionVar("lastpage");
+                $lastget = AfwSession::getSessionVar("lastget");
+                if (is_array($lastget) and count($lastget) > 0) {
+                        $last_page .= "?redir=1";
+                        foreach ($lastget as $param => $paramval) $last_page .= "&$param=$paramval";
+                }
+
+                //effacer les var d'une eventuelle session précédente
+                AfwSession::resetSession("main_company");
+
+                foreach ($user_infos as $col => $val) {
+                        AfwSession::setSessionVar("user_$col", $val);
+                }
+                //die("rafik 7 : last_page=[$last_page]");
+                // $objme = AfwSession::getUserConnected();
+                // die("rafik 8 : user_id=".AfwSession::getSessionVar("user_id")." objme=".var_export($objme,true));
+                if (($last_page) and ($last_page != "login.php")) {
+                        header("Location: " . $last_page);
+                } else {
+                        //$objme = AfwSession::getUserConnected();
+                        //die("rafik 9 : login success : user_id=".AfwSession::getSessionVar("user_id")." objme=".var_export($objme,true));
+                        header("Location: index.php");
+                }
         }
 
         /**
