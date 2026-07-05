@@ -4076,7 +4076,7 @@ class AFWObject extends AFWRoot
         return $column_name;
     }
 
-    public static function gtr($column_name, $langue = 'ar', $tokens = [], $AI_Translation=true)
+    public static function gtr($column_name, $langue = 'ar', $tokens = [], $AI_Translation = true)
     {
         $operator = null;
         $nom_table = 'all';
@@ -4093,8 +4093,7 @@ class AFWObject extends AFWRoot
             $module
         );
 
-        if ($AI_Translation and AfwStringHelper::isBadTranslatedString($column_name, $return)) 
-        {
+        if ($AI_Translation and AfwStringHelper::isBadTranslatedString($column_name, $return)) {
             $return = AfwStringHelper::methodToTitle($column_name); // ."<!-- methodToTitle $column_name -->";
         }
         $return_before = $return;
@@ -4115,7 +4114,7 @@ class AFWObject extends AFWRoot
      * @param string $column_name
      */
 
-    public static function t($column_name, $lang = 'ar', $operator = null, $AI_Translation=true)
+    public static function t($column_name, $lang = 'ar', $operator = null, $AI_Translation = true)
     {
         $nom_table = static::$TABLE;
         $module = static::$MODULE;
@@ -4128,7 +4127,7 @@ class AFWObject extends AFWRoot
             $lang,
             $operator,
             $nom_table,
-            $module, 
+            $module,
             $AI_Translation
         );
 
@@ -4144,8 +4143,7 @@ class AFWObject extends AFWRoot
         );");
                     }*/
 
-        if ($AI_Translation and AfwStringHelper::isBadTranslatedString($column_name, $return)) 
-        {
+        if ($AI_Translation and AfwStringHelper::isBadTranslatedString($column_name, $return)) {
             $return = AfwStringHelper::methodToTitle($column_name); // ."<!-- methodToTitle $column_name -->";
             // if($column_name=="name_ar_warning") die("after isBadTranslatedString $return = AfwStringHelper::methodToTitle($column_name)");
         }
@@ -4156,15 +4154,15 @@ class AFWObject extends AFWRoot
             throw new AfwRuntimeException("$return = AfwLanguageHelper::tarjem(col=$column_name, lng=$langue, oper=$operator, tbl=$nom_table, module=$module) (intermediaire = $return_before)");
         }*/
 
-           
-        if ($AI_Translation and ($lang == 'en')) {            
+
+        if ($AI_Translation and ($lang == 'en')) {
             $is_technical_string = AfwStringHelper::isTechnicalString($return);
             $all_string_same_case = ((strtoupper($return) === $return) or (strtolower($return) === $return));
             // if it is not a technical phrase and it is all lower or all upper case 
             // make only first character upper
             if (!$is_technical_string and $all_string_same_case) {
                 $return_before = $return;
-                $return = AfwStringHelper::firstCharUpper(strtolower($return));  
+                $return = AfwStringHelper::firstCharUpper(strtolower($return));
                 // if($return_before=="name_ar_warning") die("$return = AfwStringHelper::firstCharUpper(strtolower($return_before))");
             }
         }
@@ -4178,7 +4176,7 @@ class AFWObject extends AFWRoot
      * @param string $column_name
      */
 
-    public function translate($column_name, $langue = 'ar', $operator = null, $AI_Translation=false)
+    public function translate($column_name, $langue = 'ar', $operator = null, $AI_Translation = false)
     {
         return self::t($column_name, $langue, $operator, $AI_Translation);
     }
@@ -5713,14 +5711,20 @@ class AFWObject extends AFWRoot
         return false;
     }
 
+    public function hierarchy_level_needed_for_display()
+    {
+        $table_name = $this->getMyTable();
+        return AfwSession::config($table_name . "_hierarchy_level_needed", 999);
+    }
+
     /**
      * @param Auser $auser
      */
     public function canBeSpeciallyDisplayedBy($auser)
     {
         if (!$auser) return false;
-        $table_name = $this->getMyTable();
-        $table_hierarchy_level_needed = AfwSession::config($table_name . "_hierarchy_level_needed", 999);
+
+        $table_hierarchy_level_needed = $this->hierarchy_level_needed_for_display();
         $user_hierarchy_level_enum = $auser->getVal('hierarchy_level_enum');
         if (!$user_hierarchy_level_enum) $user_hierarchy_level_enum = 9999;
         return ($user_hierarchy_level_enum <= $table_hierarchy_level_needed);
