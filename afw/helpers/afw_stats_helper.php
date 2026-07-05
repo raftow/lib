@@ -149,10 +149,15 @@ class AfwStatsHelper
                     $stats_value = $stats_data_arr[$row_id][$cross_col] = $statsRow[$val_key];
                     // die("col_key=$col_key row_key=$row_key val_key=$val_key statsRow[$val_key] = $stats_value statsRow=" . var_export($statsRow, true) . "<br> stats_data_arr=" . var_export($stats_data_arr, true));
                     if ($footer_sum) {
+
+                        if (! $footer_total_arr["cross_total"]) {
+                            $footer_total_arr["cross_total"] = 0;
+                        }
                         if (! $footer_total_arr[$cross_col]) {
                             $footer_total_arr[$cross_col] = 0;
                         }
                         $footer_total_arr[$cross_col] += $stats_value;
+                        $footer_total_arr["cross_total"] += $stats_value;
                         // $footer_total_arr[ 'log'.$show_name ] .= '+'.$stats_data_arr[ $stats_curr_row ][ $show_name ];
                     }
 
@@ -377,7 +382,7 @@ class AfwStatsHelper
                 }
             }
 
-            
+
             foreach ($config_stats_display_cols as $config_stats_display_col_index => $config_stats_display_col_item) {
                 $stats_display_col = $config_stats_display_col_item['COLUMN'];
 
@@ -566,7 +571,7 @@ class AfwStatsHelper
             }
         }
 
-        
+
 
         return [$stat_trad, $stats_data_arr, $stats_big_header, $case, $footer_sum_title_arr, $footer_total_arr, $bloc_col_end, $url_to_show_arr];
     }
@@ -697,6 +702,18 @@ class AfwStatsHelper
         }
     }
 
+    /**
+     * @param AFWObject $myClassInstance
+     * @param array $stats_config
+     * @param array $stat_trad
+     * @param array $stats_big_header
+     * @param array $stats_data_arr
+     * @param array $stats_code
+     * @param array $footer_sum_title_arr
+     * @param array $footer_total_arr
+     * 
+     *  
+     */
 
     public static function outputModeStatsTable(
         $myClassInstance,
