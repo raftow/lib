@@ -210,7 +210,7 @@ class AfwSession extends AFWRoot
         }
 
 
-        
+
 
         /**
          * @param array $user_infos
@@ -218,7 +218,7 @@ class AfwSession extends AFWRoot
          */
         public static function userHasBeenLoggedIn($user_infos)
         {
-                if(!$user_infos["username"]) throw new AfwRuntimeException("userHasBeenLoggedIn called with empty username in user_infos : ".var_export($user_infos,true));
+                if (!$user_infos["username"]) throw new AfwRuntimeException("userHasBeenLoggedIn called with empty username in user_infos : " . var_export($user_infos, true));
                 AfwSession::setSessionVar("user_name_logged_in", $user_infos["username"]);
                 AfwSession::setSessionVar("user_id_logged_in", $user_infos["id"]);
                 return array($user_infos["id"], $user_infos["username"]);
@@ -393,18 +393,30 @@ class AfwSession extends AFWRoot
                 return self::getSingleton()->getData($var);
         }
 
+        /**
+         * @param string $var
+         * @param mixed $value
+         */
         public static function setVar($var, $value)
         {
                 // if(($var=="log") and (!$value)) throw new AfwRuntimeException("emptying log ...".self::getSingleton()->getData($var));                       
                 self::getSingleton()->setData($var, $value);
         }
 
-        public static function config($key, $default, $configContext = "system", $loadContextConfig = 'no', $force_main_company = "")
+        /**
+         * @param string $key
+         * @param mixed $default
+         * @param string $configContext
+         * @param string $loadSpecialConfig
+         * @param string $force_main_company
+         * @return mixed
+         */
+        public static function config($key, $default, $configContext = "system", $loadSpecialConfig = 'no', $force_main_company = "")
         {
-                $doLoadContextConfig = ($loadContextConfig != 'no');
+                $doLoadContextConfig = ($loadSpecialConfig != 'no');
                 if ($doLoadContextConfig) {
-                        $loadClientConfig = (($loadContextConfig == "client") or ($loadContextConfig == "force-client"));
-                        $reload = (($loadContextConfig == "force") or ($loadContextConfig == "force-client"));
+                        $loadClientConfig = (($loadSpecialConfig == "client") or ($loadSpecialConfig == "force-client"));
+                        $reload = (($loadSpecialConfig == "reload") or ($loadSpecialConfig == "force-client"));
                         self::loadContextConfig($configContext, $loadClientConfig, $reload, $force_main_company);
                 }
 
@@ -442,13 +454,22 @@ class AfwSession extends AFWRoot
                 return self::config("${classe}_$param", $default);
         }
 
+        /**
+         * @param string $key
+         * @param mixed $value
+         */
         public static function setConfig($key, $value, $configContext = "system")
         {
                 $var = $configContext . "|" . $key;
                 self::getSingleton()->setData("creg-" . $var, $value);
         }
 
-        public static function initConfig($config_arr, $configContext = "system", $fromFile = "")
+        /**
+         * @param array $config_arr
+         * @param string $configContext
+         * @param string $fromFile
+         */
+        public static function initConfig($config_arr, $configContext = "system", $fromFile = "", $storeSourceFile = false)
         {
                 if (!$fromFile) throw new AfwRuntimeException("AfwSession::initConfig (with context `$configContext`) without specifying the config file name");
                 /*
@@ -459,9 +480,10 @@ class AfwSession extends AFWRoot
 
                 foreach ($config_arr as $key => $value) {
                         if (AfwStringHelper::stringContain($key, "|")) {
-                                die("the config parameters names should never contain prohibted `|` charachter, parameter $key in context $configContext doesn't respect this rule");
+                                throw new AfwRuntimeException("the config parameters names should never contain prohibted `|` charachter, parameter $key in context $configContext doesn't respect this rule");
                         }
                         self::setConfig($key, $value, $configContext);
+                        if ($storeSourceFile) self::setConfig($key . "-source-file", $fromFile, $configContext);
                 }
         }
 
@@ -981,7 +1003,7 @@ class AfwSession extends AFWRoot
                 $contextAlreadyLoaded = self::config("$configContext-config-already-loaded", false, $configContext);
                 if ($reload or !$contextAlreadyLoaded) {
                         $this_dir_name = dirname(__FILE__) . "/..";
-                        $context_config_file = "$this_dir_name/../../config/" . $configContext . "_config.php";
+                        $context_config_file = "$this_dir_name/../../../config/" . $configContext . "_config.php";
                         if (file_exists($context_config_file)) {
                                 $the_config_arr = include($context_config_file);
                                 if (!$the_config_arr or (!is_array($the_config_arr)) or (count($the_config_arr) == 0)) die("$context_config_file file should return a correct config array");
@@ -994,7 +1016,7 @@ class AfwSession extends AFWRoot
                                 $main_company = $the_config_arr["main_company"];
                                 $contextClientAlreadyLoaded = self::config("$configContext-client-$main_company-config-already-loaded", false, $configContext);
                                 if ($reload or !$contextClientAlreadyLoaded) {
-                                        $client_config_file = "$this_dir_name/../../client-$main_company/" . $configContext . "_config.php";
+                                        $client_config_file = "$this_dir_name/../../../client-$main_company/" . $configContext . "_config.php";
                                         if (file_exists($client_config_file)) {
                                                 $client_config_arr = include($client_config_file);
                                                 if (!$client_config_arr or (!is_array($client_config_arr)) or (count($client_config_arr) == 0)) die($configContext . "_config.php file of client $main_company should return a correct config array");
