@@ -114,7 +114,7 @@ class AfwSession extends AFWRoot
         {
                 if (!$this->userConnected) {
                         $me = self::getSessionVar("user_id");
-                        // die(" $me = self::getSessionVar(user_id)");
+                        // d ie(" $me = self::getSessionVar(user_id)");
                         if ($me) {
                                 $this->userConnected = Auser::loadById($me);
                         }
@@ -128,7 +128,7 @@ class AfwSession extends AFWRoot
         {
                 if (!$this->customerConnected) {
                         $me = self::getSessionVar("customer_id");
-                        // die(" $me = self::getSessionVar(customer_id)");
+                        // d ie(" $me = self::getSessionVar(customer_id)");
                         if ($me) {
                                 $this->customerConnected = $customerClass::loadById($me);
                                 if (!$this->customerConnected) {
@@ -191,7 +191,7 @@ class AfwSession extends AFWRoot
         private function setData($var, $value)
         {
                 $this->data[$var] = $value;
-                // if(AfwStringHelper::stringStartsWith($var,'bf-')) die("data bf- setted by setData => ".self::log_all_data());
+                // if(AfwStringHelper::stringStartsWith($var,'bf-')) d ie("data bf- setted by setData => ".self::log_all_data());
         }
 
         private function getData($var)
@@ -242,14 +242,14 @@ class AfwSession extends AFWRoot
                 foreach ($user_infos as $col => $val) {
                         AfwSession::setSessionVar("user_$col", $val);
                 }
-                //die("rafik 7 : last_page=[$last_page]");
+                //d ie("rafik 7 : last_page=[$last_page]");
                 // $objme = AfwSession::getUserConnected();
-                // die("rafik 8 : user_id=".AfwSession::getSessionVar("user_id")." objme=".var_export($objme,true));
+                // d ie("rafik 8 : user_id=".AfwSession::getSessionVar("user_id")." objme=".var_export($objme,true));
                 if (($last_page) and ($last_page != "login.php")) {
                         header("Location: " . $last_page);
                 } else {
                         //$objme = AfwSession::getUserConnected();
-                        //die("rafik 9 : login success : user_id=".AfwSession::getSessionVar("user_id")." objme=".var_export($objme,true));
+                        //d ie("rafik 9 : login success : user_id=".AfwSession::getSessionVar("user_id")." objme=".var_export($objme,true));
                         header("Location: index.php");
                 }
         }
@@ -388,7 +388,7 @@ class AfwSession extends AFWRoot
                 if (!$getDataCounter) $getDataCounter = 0;
                 else $getDataCounter++;
 
-                if (($getDataCounter > 3) and AfwStringHelper::stringStartsWith($var, 'bf-')) die("data bf- getting $var by getVar => " . self::log_all_data());
+                // if (($getDataCounter > 3) and AfwStringHelper::stringStartsWith($var, 'bf-')) die("data bf- getting $var by getVar => " . self::log_all_data());
 
                 return self::getSingleton()->getData($var);
         }
@@ -449,6 +449,12 @@ class AfwSession extends AFWRoot
                 return $return;
         }
 
+        /**
+         * @param string $classe
+         * @param string $param
+         * @param mixed $default
+         * @return mixed
+         */
         public static function class_config_exists($classe, $param, $default = false)
         {
                 return self::config("${classe}_$param", $default);
@@ -556,7 +562,7 @@ class AfwSession extends AFWRoot
                 if ($show_time) $string .= $separator . " [" . date("Y-m-d H:i:s") . "." . self::currMilliSeconds() . "] <b>(d=$durationSinceLastLog)</b>";
                 // if($css_class == "hzm") 
                 $html .= "<pre class='$css_class $context $critical'>$string</pre>"; //  N$now_time O$oldLastLogTime D$durationSinceLastLog
-                //if($css_class != "hzm") die("[[[[[$string]]]]]");
+                //if($css_class != "hzm") d ie("[[[[[$string]]]]]");
                 self::setVar($context, $html);
         }
 
@@ -632,7 +638,7 @@ class AfwSession extends AFWRoot
 
         public static function hzmLog($string, $module_info, $separator = "<br>\n")
         {
-                // die("here hzmLog");
+                // d ie("here hzmLog");
                 self::log($string, $css_class = "hzmlog $module_info", $separator);
         }
 
@@ -902,7 +908,7 @@ class AfwSession extends AFWRoot
         public static function pushPbmResult($lang, $error, $info, $warn, $technical, $pbMethodCode = "mainpage")
         {
                 if ($technical) {
-                        // die("here warn = $warn");
+                        // d ie("here warn = $warn");
                         if ($warn) $warn .= "<br>";
                         $warn .= AfwLanguageHelper::tarjemMessage("There are more technical details with administrator", $lang);
                         $warn .= "<div class='technical'>$technical</div>";
@@ -962,9 +968,15 @@ class AfwSession extends AFWRoot
                 return ($_SESSION["started"]);
         }
 
-        public static function die_and_export_session()
+        public static function export_session()
         {
-                die(var_export($_SESSION, true));
+                return AfwExport::export($_SESSION, true);
+        }
+
+
+        public static function export_session_and_die()
+        {
+                die(self::export_session());
         }
 
         public static function setWasCustomer()
@@ -997,35 +1009,41 @@ class AfwSession extends AFWRoot
                 elseif (self::getSingleton()->unsetUser()) self::setWasUser();
         }
 
+        /**
+         * @param string $configContext
+         * @param bool $loadClientConfig
+         */
 
         public static function loadContextConfig($configContext, $loadClientConfig = false, $reload = false, $force_main_company = "")
         {
                 $contextAlreadyLoaded = self::config("$configContext-config-already-loaded", false, $configContext);
                 if ($reload or !$contextAlreadyLoaded) {
                         $this_dir_name = dirname(__FILE__) . "/..";
-                        $context_config_file = "$this_dir_name/../../../config/" . $configContext . "_config.php";
+                        $context_config_file = "$this_dir_name/../../config/" . $configContext . "_config.php";
+                        $cache_config_loaded = "";
                         if (file_exists($context_config_file)) {
                                 $the_config_arr = include($context_config_file);
-                                if (!$the_config_arr or (!is_array($the_config_arr)) or (count($the_config_arr) == 0)) die("$context_config_file file should return a correct config array");
+                                if (!$the_config_arr or (!is_array($the_config_arr)) or (count($the_config_arr) == 0)) throw new AfwRuntimeException("$context_config_file file should return a correct config array");
                                 $the_config_arr["$configContext-config-already-loaded"] = true;
                                 AfwSession::initConfig($the_config_arr, $configContext, $context_config_file);
-                        }
+                                $cache_config_loaded = "global $configContext config file has been loaded";
+                        } else $cache_config_loaded = "global $configContext config file not found";
                         if ($force_main_company) $the_config_arr["main_company"] = $force_main_company;
                         if ($loadClientConfig) {
-                                if (!$the_config_arr["main_company"]) die($configContext . "_config.php file should define the main_company param to be able to load $configContext config for client");
+                                if (!$the_config_arr["main_company"]) throw new AfwRuntimeException($configContext . "_config.php file should define the main_company param to be able to load $configContext config for client [$cache_config_loaded]");
                                 $main_company = $the_config_arr["main_company"];
                                 $contextClientAlreadyLoaded = self::config("$configContext-client-$main_company-config-already-loaded", false, $configContext);
                                 if ($reload or !$contextClientAlreadyLoaded) {
-                                        $client_config_file = "$this_dir_name/../../../client-$main_company/" . $configContext . "_config.php";
+                                        $client_config_file = "$this_dir_name/../../client-$main_company/" . $configContext . "_config.php";
                                         if (file_exists($client_config_file)) {
                                                 $client_config_arr = include($client_config_file);
-                                                if (!$client_config_arr or (!is_array($client_config_arr)) or (count($client_config_arr) == 0)) die($configContext . "_config.php file of client $main_company should return a correct config array");
-                                                if ($client_config_arr["main_company"] and ($main_company != $client_config_arr["main_company"])) die($configContext . "_config.php file should define the same main_company param, avoid bad copy-past in config files");
+                                                if (!$client_config_arr or (!is_array($client_config_arr)) or (count($client_config_arr) == 0)) throw new AfwRuntimeException($configContext . "_config.php file of client $main_company should return a correct config array");
+                                                if ($client_config_arr["main_company"] and ($main_company != $client_config_arr["main_company"])) throw new AfwRuntimeException($configContext . "_config.php file should define the same main_company param, avoid bad copy-past in config files");
                                                 $client_config_arr["$configContext-client-$main_company-config-already-loaded"] = true;
                                                 AfwSession::initConfig($client_config_arr, $configContext, $client_config_file);
-                                                // if($configContext=="display") die(" $client_config_file found, client_config_arr = ".var_export($client_config_arr,true));
+                                                // if($configContext=="display") d ie(" $client_config_file found, client_config_arr = ".var_export($client_config_arr,true));
                                         } else {
-                                                // die("$client_config_file not found");
+                                                // d ie("$client_config_file not found");
                                         }
                                 }
                         }
@@ -1036,4 +1054,4 @@ class AfwSession extends AFWRoot
 AfwSession::loadContextConfig("system", true);
 global $global_need_utf8;
 $global_need_utf8 = AfwSession::config('global_need_utf8', true);
-// die("first initConfig ".AfwSession::log_config());
+// d ie("first initConfig ".AfwSession::log_config());
