@@ -8020,15 +8020,21 @@ input#otp_verify_code {
 
 .htmly-matrix>div.htmly-matrix-success {
     background-color: #005192;
-    color: white;
+    color: white !important;
+    border: 4px solid black !important;
+    float: right;
 }
 
 .htmly-matrix>div.htmly-matrix-error {
     background-color: red;
-    color: white;
+    color: white !important;
+    border: 4px solid black !important;
+    float: right;
 }
 
 .htmly-matrix>div.htmly-matrix-warning {
     background-color: orange;
-    color: white;
+    color: white !important;
+    border: 4px solid black !important;
+    float: right;
 }
