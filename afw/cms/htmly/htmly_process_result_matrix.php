@@ -45,7 +45,7 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
      * @param string $showTitleMethod The title method to describe the object.
      * 
      */
-    public function addResult($object, $error, $warning, $success, $showTitleMethod = "getShortDislay")
+    public function addResult($object, $error, $warning, $success, $showTitleMethod = "getShortDisplay")
     {
         $title = $object->$showTitleMethod(AfwLanguageHelper::getGlobalLanguage());
         if ($error) {
