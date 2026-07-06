@@ -70,10 +70,11 @@ class HtmlyMatrix extends HtmlyElement
         $this->cells[$id] = ['id' => $id, 'title' => $title, 'hint' => $hint, 'link' => $link, 'special_class' => $special_class];
         $this_id = $this->id;
         $cell_id = "matrix-" . $this_id . "-" . $id;
+        $content_min = "<span title='$hint : $title'>&nbsp;</span>";
         if ($link) {
-            $content = "<a href='$link' title='$hint'>$title</a>";
+            $content = "<a href='$link'>$content_min</a>";
         } else {
-            $content = "<span title='$hint'>$title</span>";
+            $content = $content_min;
         }
 
         $cell = new HtmlyDiv($content, $cell_id, $cell_id, $special_class);
