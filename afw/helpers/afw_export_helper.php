@@ -7,7 +7,7 @@ class AfwExportHelper
      * afwExport : nice display of variables in a momken project
      * @param mixed $var
      */
-    public static function afwExport($var, $recursive = true)
+    public static function afwExport($var, $recursive = true, $insideObject = false)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         $result = [];
@@ -19,9 +19,13 @@ class AfwExportHelper
                 $new_recursive =  $recursive;
                 if (is_integer($new_recursive)) $new_recursive--;
 
-                if ($recursive) $result[$ky] = self::afwExport($varItem, $new_recursive);
-                elseif (is_object($varItem) and ($varItem instanceof AFWObject)) $result[$ky] = $varItem->getDisplay($lang);
-                elseif (is_object($varItem)) $result[$ky] = $varItem->__toString();
+                if ($recursive) {
+                    if (is_object($varItem) and ($varItem instanceof AFWObject) and (!$insideObject)) {
+                        $result[$ky] = $varItem->getDisplay($lang);
+                    } else $result[$ky] = self::afwExport($varItem, $new_recursive);
+                } elseif (is_object($varItem) and ($varItem instanceof AFWObject)) {
+                    $result[$ky] = $varItem->getDisplay($lang);
+                } elseif (is_object($varItem)) $result[$ky] = $varItem->__toString();
                 else $result[$ky] = $varItem;
             }
         } else {

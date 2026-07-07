@@ -16,7 +16,7 @@ class AfwRichException extends AfwRuntimeException
 
         foreach ($var_toexpert_arr as $var_name => $var_toexpert) {
             $message_html .= "<div class='rich varname'>$var_name</div>";
-            $message_html .= AfwExportHelper::afwExport($var_toexpert);
+            $message_html .= AfwExportHelper::afwExport($var_toexpert, 3);
         }
         parent::__construct($message_html);
     }
