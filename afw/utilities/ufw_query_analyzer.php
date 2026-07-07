@@ -179,7 +179,7 @@ class UfwQueryAnalyzer
         );
         $_sql_analysis_seuil_calls = AfwSession::config(
             '_sql_analysis_seuil_calls',
-            1200
+            12
         );
 
 
@@ -203,13 +203,15 @@ class UfwQueryAnalyzer
 
 
         $we_can_not_throw_analysis_exception = self::isProcessLourdMode();
-        $we_should_throw_analysis_exception = (AfwSession::config('MODE_DEVELOPMENT', false) and (self::$nb_queries_executed > $_sql_analysis_seuil_calls));
+        $we_should_throw_analysis_exception = (AfwSession::config('MODE_DEVELOPMENT', false)
+            and (self::$nb_queries_executed > $_sql_analysis_seuil_calls));
         if ($we_should_throw_analysis_exception and !$we_can_not_throw_analysis_exception) {
             $backtrace = debug_backtrace(1, 20);
-            throw new AfwRuntimeException("Too much queries executed when mode is not lourd process mode !<br>
-                                           Nb Queries Executed = " . self::$nb_queries_executed . " > $_sql_analysis_seuil_calls = Max <br> 
-                                           Sql Picture = " . var_export(self::$sql_picture_arr, true) .
-                "<!-- Backtrace = " . var_export($backtrace, true) . " -->");
+            throw new AfwRichException(
+                "Too much queries executed when mode is not lourd process mode !",
+                "Nb Queries Executed = " . self::$nb_queries_executed . " > Max = $_sql_analysis_seuil_calls",
+                ["Sql picture" => self::$sql_picture_arr, "Last query before crash" => $sql_query, "Backtrace" => $backtrace]
+            );
         }
 
         $sql_info_class = 'sqlinfo';
@@ -308,7 +310,7 @@ class UfwQueryAnalyzer
             50.0
         );
 
-        
+
 
         if (!self::isProcessLourdMode() or $sql_capture_and_backtrace) {
             if (!$sql_time_max_in_milli_sec) {
