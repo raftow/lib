@@ -6650,6 +6650,21 @@ td.rtd.tb {
     }
 }
 
+div.rich.exception {
+    background-color: red;
+    color: white;
+}
+
+div.rich.explain {
+    background-color: peru;
+    color: black;
+}
+
+div.rich.varname {
+    background-color: yellow;
+    color: black;
+}
+
 .afwerr {
     background-color: white;
     color: black !important;
@@ -6669,7 +6684,7 @@ div.afwerr h3 {
     font-family: arial, tahoma, sans-serif !important;
     font-size: 15px;
     direction: ltr;
-    background-color: #db2e1d;
+    background-color: #aa1cf1;
     color: white;
 }
 
