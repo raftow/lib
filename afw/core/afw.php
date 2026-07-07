@@ -5154,6 +5154,11 @@ class AFWObject extends AFWRoot
         return $return;
     }
 
+    /**
+     * @param string $mode
+     * @param Auser $auser
+     */
+
     final public function getOtherLinksForUser(
         $mode,
         $auser,
@@ -5237,7 +5242,7 @@ class AFWObject extends AFWRoot
                         if (!$public) {
                             $ican_do_bf =
                                 ($other_link['BF-ID'] and
-                                    $auser->iCanDoBF($other_link['BF-ID']));
+                                    $auser->iCanDoBF($other_link['BF-ID'], $other_link['MODULE']));
                             // not like for data records where if ugroups are not defined we authorize
                             // here for links user group(s) or at least 1 should be defined and user should belongs to one of this user groups
                             $belongs_to_ugroup =

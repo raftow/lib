@@ -94,12 +94,12 @@ class AfwPrevilege extends AFWRoot
     public static function loadModuleBfCache($module_code, $bf_id)
     {
         $fileName = "bf$bf_id"  . ".php";
-        $cache_bf_file =  dirname(__FILE__) . "/../../../cache/$module_code/previleges/role/$fileName";
-        if (false and file_exists($cache_bf_file)) {
+        $cache_bf_file =  dirname(__FILE__) . "/../../../cache/$module_code/previleges/bf/$fileName";
+        if (file_exists($cache_bf_file)) {
             $bf_info = include($cache_bf_file);
             return [true, $bf_info, $cache_bf_file];
         } else {
-            $cache_bf_file =  dirname(__FILE__) . "/../../../$module_code/previleges/role/$fileName";
+            $cache_bf_file =  dirname(__FILE__) . "/../../../$module_code/previleges/bf/$fileName";
             if (file_exists($cache_bf_file)) {
                 $bf_info = include($cache_bf_file);
                 return [true, $bf_info, $cache_bf_file];
@@ -127,12 +127,12 @@ class AfwPrevilege extends AFWRoot
         $previlege_role_file =  dirname(__FILE__) . "/../../../cache/$module_code/previleges/role/$fileName";
         if (false and file_exists($previlege_role_file)) {
             include($previlege_role_file);
-            return [true, $role_info, $previlege_role_file];
+            return [true, $role_info, $previlege_role_file, "cache"];
         } else {
             $previlege_role_file =  dirname(__FILE__) . "/../../../$module_code/previleges/role/$fileName";
             if (file_exists($previlege_role_file)) {
                 include($previlege_role_file);
-                return [true, $role_info, $previlege_role_file];
+                return [true, $role_info, $previlege_role_file, "permanent"];
             }
         }
 

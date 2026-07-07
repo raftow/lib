@@ -61,7 +61,7 @@ class AfwRetrieveHelper
 
         $cant_do_action_log_arr = array();
         $can_action_arr = array();
-        
+
         $datatable_header = "";
         AfwSession::log("Before prepare of header and can_action array matrix in afw_handle_default_search");
         if (count($header) != 0) {
@@ -107,13 +107,15 @@ class AfwRetrieveHelper
                 if (!$importance) $importance = "high";
 
                 $bf_code = $action_item_props["bf_code"];
+                $bf_modue = $action_item_props["bf_modue"];
+                if (!$bf_modue) $bf_modue = $currmod;
                 $bf_system = $action_item_props["bf_system"];
                 $datatable_header .= "<th width='1%' class='col-importance-$importance bfc$bf_code fwa$frameworkAction' id='fwa-$frameworkAction'>" . $obj->translate($action_item, $lang) . "</th>";
                 if (!$frameworkAction) $frameworkAction = $action_item;
 
                 if ($bf_code) {
-                    $can_action_arr[$action_item] = ($objme and $objme->iCanDoBFCode($bf_system, $bf_code));
-                    $can_case = "iCanDoBFCode($bf_system, $bf_code)";
+                    $can_action_arr[$action_item] = ($objme and $objme->iCanDoBFCode($bf_system, $bf_code, $bf_modue));
+                    $can_case = "iCanDoBFCode($bf_system, $bf_code, $bf_modue)";
                 } else {
                     $can_action_arr[$action_item] = ($objme and $objme->iCanDoOperationOnObjClass($obj, $frameworkAction));
                     $can_case = "iCanDoOperationOnObjClass(obj, $frameworkAction)";

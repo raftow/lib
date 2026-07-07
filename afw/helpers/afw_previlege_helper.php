@@ -60,6 +60,8 @@ class AfwPrevilegeHelper
         }
         $structure = AfwStructureHelper::getStructureOf($object, $key);
 
+        $moduleCode = $object->getMyModule();
+
         if ($structure['MINIBOX']) {
             $structure['SHOW'] = true;
         }
@@ -78,7 +80,7 @@ class AfwPrevilegeHelper
         $user_can_see_attribute =
             ((!$structure["$mode-BFS"] or
                 $auser and
-                $auser->i_have_one_of_bfs($structure["$mode-BFS"])) and
+                $auser->i_have_one_of_bfs($structure["$mode-BFS"], $moduleCode)) and
                 (!$structure["$mode-ROLES"] or
                     $auser and
                     $auser->i_have_one_of_roles($structure["$mode-ROLES"])));
@@ -196,21 +198,22 @@ class AfwPrevilegeHelper
      * @return array
      */
 
-    public static final function getAuditCols($object, $agroup, 
+    public static final function getAuditCols(
+        $object,
+        $agroup,
         $fields,
         $lang = 'ar',
-        $type = 'all')
-    {
+        $type = 'all'
+    ) {
         $tableau = [];
         $tableau_final = [];
         $db_struct_all = $object->getAllMyDbStructure();
 
         foreach ($db_struct_all as $attribute => $descAttr) {
-            if(!$descAttr['AGROUP']) $descAttr['AGROUP'] = $descAttr['FGROUP'];
-            if(!$descAttr['AGROUP']) $descAttr['AGROUP'] = 'all';
-            if (($fields=='all') or AfwPrevilegeHelper::isAuditCol($object, $attribute, $lang, $descAttr)) {
-                if (true) 
-                {
+            if (!$descAttr['AGROUP']) $descAttr['AGROUP'] = $descAttr['FGROUP'];
+            if (!$descAttr['AGROUP']) $descAttr['AGROUP'] = 'all';
+            if (($fields == 'all') or AfwPrevilegeHelper::isAuditCol($object, $attribute, $lang, $descAttr)) {
+                if (true) {
                     $take = false;
                     if ($type == 'all') {
                         $take = true;
@@ -221,15 +224,15 @@ class AfwPrevilegeHelper
                         }
                     }
 
-                    $takeFilter = (($agroup=='all') or ($descAttr['AGROUP'] == $agroup));
-                    
+                    $takeFilter = (($agroup == 'all') or ($descAttr['AGROUP'] == $agroup));
+
                     if ($take and $takeFilter) {
                         if ($descAttr["AUDIT_LAST"]) $tableau_final[] = $attribute;
                         else $tableau[] = $attribute;
                     }
                 }
-                
-            }        }
+            }
+        }
 
         $tableau = array_merge($tableau, $tableau_final);
         /*
@@ -583,13 +586,14 @@ class AfwPrevilegeHelper
      * @param string $attribute,
      */
 
-    public static final function isAuditCol($object, 
-        $attribute, 
-        $lang='ar', 
-        $desc = null)
-    {
+    public static final function isAuditCol(
+        $object,
+        $attribute,
+        $lang = 'ar',
+        $desc = null
+    ) {
         // no need to audit PK it will never change
-        if($object->inPK($attribute)) return false;
+        if ($object->inPK($attribute)) return false;
 
         $attributeIsToDisplayForMe = $attributeIsToDisplayForAll = AfwPrevilegeHelper::keyIsToDisplayForUser(
             $object,
@@ -618,8 +622,7 @@ class AfwPrevilegeHelper
         }
 
         return (isset($desc['AUDIT']) and $desc['AUDIT'] or
-                isset($desc[$AUDIT_LANG]) and $desc[$AUDIT_LANG]);
-    
+            isset($desc[$AUDIT_LANG]) and $desc[$AUDIT_LANG]);
     }
 
     /**
@@ -943,38 +946,38 @@ class AfwPrevilegeHelper
     public static final function isNotQSearchColReason($object, $attribute, $desc = '')
     {
         // $objme = AfwSession::getUserConnected();
-        
+
         // @todo : this rule below is commented until review
         // this below rule should be reviewed because $object for Qsearch form is empty object and some attributes can be 
         // non applicable for empty object but any way we can search in database of filled objects
         // if (!$object->attributeIsApplicable($attribute)) return 'is not applicable';
-        
+
         if (!$desc) {
             $desc = AfwStructureHelper::getStructureOf($object, $attribute);
         } else {
             $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
         }
         $is_searchable = AfwPrevilegeHelper::isSearchCol($object, $attribute, $desc);
-        if(!$is_searchable) return 'is not searchable column';
+        if (!$is_searchable) return 'is not searchable column';
         $can_qsearch =
             ($desc['QSEARCH'] or
                 !isset($desc['QSEARCH']) and $desc['SEARCH-BY-ONE']);
 
-        if(!$can_qsearch) return 'is not defined as quick searchable column';        
+        if (!$can_qsearch) return 'is not defined as quick searchable column';
         $is_qsearchable =
             (($desc['TYPE'] == 'PK' or
-                    $desc['TYPE'] == 'FK' or
-                    $desc['TYPE'] == 'ENUM' or
-                    $desc['TYPE'] == 'YN' or
-                    $desc['TYPE'] == 'INT' or
-                    $desc['TYPE'] == 'AMNT' or
-                    $desc['TYPE'] == 'PCTG' or
-                    $desc['TYPE'] == 'DATE' // or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
-                )
-                    or
-                    $desc['TEXT-SEARCHABLE-SEPARATED']);
-        if(!$is_qsearchable) return 'column type is not simple quick searchable & is not text-searchable separately';        
-        
+                $desc['TYPE'] == 'FK' or
+                $desc['TYPE'] == 'ENUM' or
+                $desc['TYPE'] == 'YN' or
+                $desc['TYPE'] == 'INT' or
+                $desc['TYPE'] == 'AMNT' or
+                $desc['TYPE'] == 'PCTG' or
+                $desc['TYPE'] == 'DATE' // or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
+            )
+                or
+                $desc['TEXT-SEARCHABLE-SEPARATED']);
+        if (!$is_qsearchable) return 'column type is not simple quick searchable & is not text-searchable separately';
+
 
         return 'should be qseach column (may be isNotQSearchColReason method has not been synched with isSearchCol method)';
     }
