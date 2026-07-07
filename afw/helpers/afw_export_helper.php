@@ -7,22 +7,25 @@ class AfwExportHelper
      * afwExport : nice display of variables in a momken project
      * @param mixed $var
      */
-    public static function afwExport($var, $recursive = true, $insideObject = false)
+    public static function afwExport($var, $recursive = true, $insideObjects = false)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         $result = [];
         if (is_object($var)) {
-            if ($var instanceof AFWObject) $result = $var->getAllfieldValues();
-            else $result = $var->__toString();
+            if ($var instanceof AFWObject) {
+                if (!$insideObjects) {
+                    $result = $var->getDisplay($lang);
+                } else {
+                    $result = $var->getAllfieldValues();
+                }
+            } else $result = $var->__toString();
         } elseif (is_array($var)) {
             foreach ($var as $ky => $varItem) {
                 $new_recursive =  $recursive;
                 if (is_integer($new_recursive)) $new_recursive--;
 
                 if ($recursive) {
-                    if (is_object($varItem) and ($varItem instanceof AFWObject) and (!$insideObject)) {
-                        $result[$ky] = $varItem->getDisplay($lang);
-                    } else $result[$ky] = self::afwExport($varItem, $new_recursive);
+                    $result[$ky] = self::afwExport($varItem, $new_recursive, $insideObjects);
                 } elseif (is_object($varItem) and ($varItem instanceof AFWObject)) {
                     $result[$ky] = $varItem->getDisplay($lang);
                 } elseif (is_object($varItem)) $result[$ky] = $varItem->__toString();
