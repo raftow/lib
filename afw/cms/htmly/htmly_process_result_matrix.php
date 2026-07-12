@@ -42,12 +42,12 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
      * @param string $error The error message (if any).
      * @param string $warning The warning message (if any).
      * @param string $success The success message (if any).
-     * @param string $showTitleMethod The title method to describe the object.
+     * @param string $showTitleMethod The title method to describe the object if the object is null it should contain the title itself.
      * 
      */
     public function addResult($object, $error, $warning, $success, $showTitleMethod = "getShortDisplay")
     {
-        $title = $object->$showTitleMethod(AfwLanguageHelper::getGlobalLanguage());
+        $title = $object ? $object->$showTitleMethod(AfwLanguageHelper::getGlobalLanguage()) : $showTitleMethod;
         if ($error) {
             $this->addError($title, $error);
         } elseif ($warning) {

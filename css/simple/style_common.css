@@ -8025,7 +8025,8 @@ input#otp_verify_code {
 .htmly-matrix {
     /*margin-right: 200px;
     margin-top: 100px;*/
-    width: 800px;
+    min-width: 800px;
+    width:100% !important;
     float: right;
 }
 

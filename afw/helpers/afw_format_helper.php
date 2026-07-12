@@ -2136,7 +2136,7 @@ class AfwFormatHelper
      */
     public static function pbm_return($err, $info, $warn = null, $success = null, $tech = null, $result_arr = [], $limitSize = null)
     {
-            return self::pbm_result($err, $info, $warn, "<br>\n", '', $result_arr, $limitSize);
+            return self::pbm_result($err, $info, $warn, "<br>\n", $tech, $result_arr, $limitSize, $success);
     }
     /**
      * @param array|string $err
@@ -2147,7 +2147,7 @@ class AfwFormatHelper
      * @param array $result_arr
      * @param int|null $limitSize
      */
-    public static function pbm_result($err, $info, $warn = null, $sep = "<br>\n", $tech = null, $result_arr = [], $limitSize = null)
+    public static function pbm_result($err, $info, $warn = null, $sep = "<br>\n", $tech = null, $result_arr = [], $limitSize = null, $success = null)
     {
         // die(" 1 ==> pbm_result($err, $info, $warn) warn = ".var_export($warn,true));
         if ($limitSize and (count($err) > $limitSize)) {
@@ -2183,9 +2183,13 @@ class AfwFormatHelper
             $tech = implode($sep, $tech);
         }
 
+        if (is_array($success)) {
+            $success = implode($sep, $success);
+        }
+
         // die(" 2 ==> pbm_result($err, $info, $warn)");
 
-        return [$err, $info, $warn, $tech, $result_arr];
+        return [$err, $info, $warn, $tech, $result_arr, $success];
     }
 
     /**
