@@ -4808,39 +4808,23 @@ table.dataTable {
 
 .alert.messages--error>a.close {
     float: right !important;
-    top: 5px !important;
-    color: #fffbfb !important;
-    opacity: 1;
-    border: 1px #ffffff9c solid;
-    margin-left: 10px;
+   	margin-left: 10px;
 }
 
 
 .alert.messages--status>a.close {
     float: right !important;
-    top: 5px !important;
-    color: #3b9910 !important;
-    opacity: 1;
-    border: 1px #3b9910 solid;
     margin-left: 10px;
 }
 
 .alert.messages--warning>a.close {
     float: right !important;
-    top: 5px !important;
-    color: #cea211 !important;
-    opacity: 1;
-    border: 1px #cea211 solid;
     margin-left: 10px;
 }
 
         
 .alert.messages--success>a.close {
     float: right !important;
-    top: 5px !important;
-    color: #68a5e8 !important;
-    opacity: 1;
-    border: 1px #68a5e8 solid;
     margin-left: 10px;
 } 
 

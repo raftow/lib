@@ -8021,6 +8021,14 @@ input#otp_verify_code {
     background-size: 66% 90%;
 }
 
+.processed-page {
+    width: 100%;
+    background-color: blueviolet;
+    color: white;
+    text-align: center;
+    padding: 9px;
+    float: right;
+}
 
 .htmly-matrix {
     /*margin-right: 200px;
@@ -8037,20 +8045,119 @@ input#otp_verify_code {
 .htmly-matrix>div.htmly-matrix-success {
     background-color: #19c558;
     color: white !important;
-    border: 4px solid black !important;
+    border: 4px solid white !important;
     float: right;
 }
 
 .htmly-matrix>div.htmly-matrix-error {
     background-color: red;
     color: white !important;
-    border: 4px solid black !important;
+    border: 4px solid white !important;
     float: right;
 }
 
 .htmly-matrix>div.htmly-matrix-warning {
     background-color: orange;
     color: white !important;
-    border: 4px solid black !important;
+    border: 4px solid white !important;
     float: right;
+}
+
+.messages--status {
+	color: #325e1c !important;
+	/*font-size: 140%; should be same for success and info and warn and error to be homogene*/
+	background-color: #f3faef !important;
+	border-color: #77b259 transparent #77b259 #77b259;
+	/*background-image: url(../../../lib/images/green-check.png);*/
+	box-shadow: 8px 0 0 #77b259;
+	padding-left: 10px !important;
+	background-position-x: 15px;
+	background-position-y: 30%;
+	width: 95% !important;
+	margin-right: 3.5% !important;
+}
+
+.messages--error {
+	background-color: red !important;
+	/* background-image: url(../../../lib/images/yellow-warning.png);*/
+	border-color: red transparent red red;
+	font-size: 100%;
+	font-weight: normal;
+	color: white !important;
+	box-shadow: 8px 0 0 #942106;
+	padding-left: 10px !important;
+	background-position-x: 15px;
+	background-position-y: 30%;
+	width: 95% !important;
+	margin-right: 3.5% !important;
+}
+
+.messages--warning {
+	background-color: #fdf8ed !important;
+	/*background-image: url(../../../lib/images/yellow-warning.png);*/
+	border-color: #e09600 transparent #e09600 #e09600;
+	font-size: 100%;
+	font-weight: normal;
+	color: #b06c07 !important;
+	box-shadow: 8px 0 0 #e09600;
+	padding-left: 10px !important;
+	background-position-x: 15px;
+	background-position-y: 30%;
+	width: 95% !important;
+	margin-right: 3.5% !important;
+}
+
+.messages--success {
+	color: #321c5e;
+	background-color: #e3f4fd !important;
+	border-color: #68a5e8 transparent #68a5e8 #68a5e8;
+	/* background-image: url(../../../lib/images/blue-check.png);*/
+	box-shadow: 8px 0 0 #68a5e8;
+	padding-left: 10px !important;
+	background-position-x: 15px;
+	background-position-y: 30%;
+	width: 95% !important;
+	margin-right: 3.5% !important;
+}
+
+.alert.alert-danger>a.close {
+	top: 0px !important;
+	color: #fffbfb !important;
+	opacity: 1;
+	border: none;
+	
+}
+
+.alert.messages--error>a.close {
+	top: 5px !important;
+	color: #fffbfb !important;
+	opacity: 1;
+	border: 1px #ffffff9c solid;
+	
+}
+
+
+.alert.messages--status>a.close {
+	top: 5px !important;
+	color: #3b9910 !important;
+	opacity: 1;
+	border: 1px #3b9910 solid;
+	
+}
+
+.alert.messages--warning>a.close {
+	top: 5px !important;
+	color: #cea211 !important;
+	opacity: 1;
+	border: 1px #cea211 solid;
+	
+}
+
+
+.alert.messages--success>a.close {
+	top: 5px !important;
+	color: #68a5e8 !important;
+	opacity: 1;
+	border: 1px #68a5e8 solid;
+	
 }

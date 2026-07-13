@@ -5000,107 +5000,35 @@ table.dataTable {
 
 .alert.alert-danger>a.close {
 	float: right;
-	top: 0px !important;
-	color: #fffbfb !important;
-	opacity: 1;
-	border: none;
-	margin-left: 10px;
+	margin-right: 10px;
 }
 
 .alert.messages--error>a.close {
 	float: right;
-	top: 5px !important;
-	color: #fffbfb !important;
-	opacity: 1;
-	border: 1px #ffffff9c solid;
-	margin-left: 10px;
+	margin-right: 10px;
+
 }
 
 
 .alert.messages--status>a.close {
 	float: right;
-	top: 5px !important;
-	color: #3b9910 !important;
-	opacity: 1;
-	border: 1px #3b9910 solid;
-	margin-left: 10px;
+	margin-right: 10px;
+
 }
 
 .alert.messages--warning>a.close {
 	float: right;
-	top: 5px !important;
-	color: #cea211 !important;
-	opacity: 1;
-	border: 1px #cea211 solid;
-	margin-left: 10px;
+	margin-right: 10px;
+
 }
 
 
 .alert.messages--success>a.close {
 	float: right;
-	top: 5px !important;
-	color: #68a5e8 !important;
-	opacity: 1;
-	border: 1px #68a5e8 solid;
-	margin-left: 10px;
+	margin-right: 10px;
+
 }
 
-.messages--status {
-	color: #325e1c !important;
-	/*font-size: 140%; should be same for success and info and warn and error to be homogene*/
-	background-color: #f3faef !important;
-	border-color: #77b259 transparent #77b259 #77b259;
-	/*background-image: url(../../../lib/images/green-check.png);*/
-	box-shadow: 8px 0 0 #77b259;
-	padding-left: 10px !important;
-	background-position-x: 15px;
-	background-position-y: 30%;
-	width: 95% !important;
-	margin-right: 3.5% !important;
-}
-
-.messages--error {
-	background-color: red !important;
-	/* background-image: url(../../../lib/images/yellow-warning.png);*/
-	border-color: red transparent red red;
-	font-size: 100%;
-	font-weight: normal;
-	color: white !important;
-	box-shadow: 8px 0 0 #942106;
-	padding-left: 10px !important;
-	background-position-x: 15px;
-	background-position-y: 30%;
-	width: 95% !important;
-	margin-right: 3.5% !important;
-}
-
-.messages--warning {
-	background-color: #fdf8ed !important;
-	/*background-image: url(../../../lib/images/yellow-warning.png);*/
-	border-color: #e09600 transparent #e09600 #e09600;
-	font-size: 100%;
-	font-weight: normal;
-	color: #b06c07 !important;
-	box-shadow: 8px 0 0 #e09600;
-	padding-left: 10px !important;
-	background-position-x: 15px;
-	background-position-y: 30%;
-	width: 95% !important;
-	margin-right: 3.5% !important;
-}
-
-.messages--success {
-	color: #321c5e;
-	background-color: #e3f4fd !important;
-	border-color: #68a5e8 transparent #68a5e8 #68a5e8;
-	/* background-image: url(../../../lib/images/blue-check.png);*/
-	box-shadow: 8px 0 0 #68a5e8;
-	padding-left: 10px !important;
-	background-position-x: 15px;
-	background-position-y: 30%;
-	width: 95% !important;
-	margin-right: 3.5% !important;
-}
 
 .search_result_table {
 	margin-right: 20px;
