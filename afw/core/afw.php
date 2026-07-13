@@ -2078,6 +2078,27 @@ class AFWObject extends AFWRoot
      * addRemoveInMfk add and/or remove ids in mfk attribute
      * @param string $attribute is the mfk attribute
      * @param array $ids_to_add_arr is the array of ids to add
+     */
+    public function addInMfk($attribute, $ids_to_add_arr)
+    {
+        return $this->addRemoveInMfk($attribute, $ids_to_add_arr, []);
+    }
+
+
+    /**
+     * addRemoveInMfk add and/or remove ids in mfk attribute
+     * @param string $attribute is the mfk attribute
+     * @param array $ids_to_remove_arr is the array of ids to remove
+     */
+    public function removeFromMfk($attribute, $ids_to_remove_arr)
+    {
+        return $this->addRemoveInMfk($attribute, [], $ids_to_remove_arr);
+    }
+
+    /**
+     * addRemoveInMfk add and/or remove ids in mfk attribute
+     * @param string $attribute is the mfk attribute
+     * @param array $ids_to_add_arr is the array of ids to add
      * @param array $ids_to_remove_arr is the array of ids to remove
      * @param array $struct is optional and if specified contain the attribute strcuture array
      */
