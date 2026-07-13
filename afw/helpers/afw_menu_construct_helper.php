@@ -218,24 +218,33 @@ class AfwMenuConstructHelper
                  * @var array|null $menu
                  */
 
+                $menu_folders_source = "";
+
                 if (!$no_cache_use_for_ums and $cache_found) // ncu = get option to say "no cache use" to retrieve roles and menus (ums)
                 {
                     $application_code = $mau_info["m$application_id"]["code"];
                     $menu_folders_arr = $menu[$application_code]["all"];
+                    $menu_folders_source = "cache-all";
                     
                     if ($objme->id == 1) {
                         // die("cache_use_for_ums enabled and menu of ($application_code / $application_id) for rafik is : " . AfwExportHelper::afwExport($menu_folders_arr, true));
                     }
                     // temporary until regenrate all user cache files
-                    if (!$menu_folders_arr) $menu_folders_arr = $menu[$application_code]["ar"];
+                    if (!$menu_folders_arr) {
+                        $menu_folders_arr = $menu[$application_code]["ar"];
+                        $menu_folders_source = "cache-ar";
+                    }
 
                     if (!$menu_folders_arr) AfwSession::pushWarning("System cache X <!-- $user_cache_file_path --> gived application_code=[$application_code] for application id [$application_id] and and no menu for this user for this application code");
                 } elseif (!$no_cache_use_for_ums) AfwSession::pushWarning("System need cache optimisation file for user $me_id <!-- file not found $user_cache_file_path -->");
                 else AfwSession::pushWarning("System cache optimisation disabled");
 
-                if (!$menu_folders_arr) $menu_folders_arr = $objme->getMenuFor($application_id, $lang);
+                if (!$menu_folders_arr) {
+                    $menu_folders_arr = $objme->getMenuFor($application_id, $lang);
+                    $menu_folders_source = "getMenuFor($application_id, $lang)";
+                } 
 
-                //die(var_export($menu_folders_arr,true)); 
+                if($me_id==1392) die("Debugging rafik for memu folders from source = $menu_folders_source : ".var_export($menu_folders_arr,true)); 
                 //die("objme->getMenuFor($application_id , $lang) = ".var_export($menu_folders_arr,true));
                 $i = 0;
                 //throw new AfwRuntimeException("objme->getMenuFor($application_id,$lang) = ".var_export($menu_arr,true));

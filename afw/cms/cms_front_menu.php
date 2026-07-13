@@ -115,7 +115,7 @@ class CmsFrontMenu extends AFWRoot
                         $html .= "\n" . AfwHtmlHelper::showUsingHzmTemplate($li_template_file, $tokens, $lang);
                 }
 
-                if($menu_id==-1) die("menu_id==$menu_id so menu html = $html");
+                // if($menu_id==-1) die("menu_id==$menu_id so menu html = $html");
 
                 return $html;
 
