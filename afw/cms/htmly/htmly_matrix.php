@@ -60,6 +60,8 @@ class HtmlyMatrix extends HtmlyElement
      */
     public function addCell($id, $title, $hint, $link = "", $special_class = "")
     {
+        $title = addslashes($title);
+        $hint = addslashes($hint);
         if (($this->total_count > 0) and (count($this->cells) >= $this->total_count)) {
             throw new AfwRuntimeException("HtmlyMatrix : cannot add more than total_count elements : " . $this->total_count);
         }
@@ -70,7 +72,7 @@ class HtmlyMatrix extends HtmlyElement
         $this->cells[$id] = ['id' => $id, 'title' => $title, 'hint' => $hint, 'link' => $link, 'special_class' => $special_class];
         $this_id = $this->id;
         $cell_id = "matrix-" . $this_id . "-" . $id;
-        $content_min = "<span data-toggle=\"tooltip\" data-placement=\"top\" title='$hint : $title'>&nbsp;</span>";
+        $content_min = "<span title='$hint : $title'>&nbsp;</span>";
         if ($link) {
             $content = "<a href='$link'>$content_min</a>";
         } else {
