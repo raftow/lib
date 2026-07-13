@@ -647,9 +647,12 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 <?php
                                                                 }
 
+                                                                $canFinishOnCurrentStep = $obj->canFinishOnCurrentStep();
+                                                                $canFinishAsSaveAndRemainInCurrentStep = $obj->canFinishAsSaveAndRemainInCurrentStep();
+
                                                                 if (
-                                                                        $finish_label and ($obj->canFinishOnCurrentStep()  or
-                                                                                $obj->canFinishAsSaveAndRemainInCurrentStep()  or
+                                                                        $finish_label and ($canFinishOnCurrentStep  or
+                                                                                $canFinishAsSaveAndRemainInCurrentStep  or
                                                                                 $no_next_editable_step or
                                                                                 ($all_steps_are_edited_and_ok and $authorize_finish_button_on_any_step)
                                                                         )
@@ -659,7 +662,14 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 <?php
                                                                 } else {
                                                                 ?>
-                                                                        <!-- <?php echo "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
+                                                                        <!-- <?php echo "No Finish BTN because : \n
+                                                                                         getFinishButtonLabel=$finish_label and \n
+                                                                                         (canFinishOnCurrentStep=$canFinishOnCurrentStep or \n
+                                                                                          canFinishAsSaveAndRemainInCurrentStep=$canFinishAsSaveAndRemainInCurrentStep or \n
+                                                                                          no_next_editable_step=$no_next_editable_step (NextStep=$nextStep) or \n
+                                                                                          (all_steps_are_edited_and_ok=$all_steps_are_edited_and_ok and \n
+                                                                                           authorize_finish_button_on_any_step=$authorize_finish_button_on_any_step) \n
+                                                                                         " ?> -->
                                                                 <?php
                                                                 }
                                                         } else  // not edit by step
