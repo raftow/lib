@@ -244,7 +244,7 @@ class AfwMenuConstructHelper
                     $menu_folders_source = "getMenuFor($application_id, $lang)";
                 } 
 
-                if($me_id==1392) die("Debugging rafik for memu folders from source = $menu_folders_source : ".var_export($menu_folders_arr,true)); 
+                // if($me_id==1392) die("Debugging rafik for memu folders from source = $menu_folders_source : ".var_export($menu_folders_arr,true)); 
                 //die("objme->getMenuFor($application_id , $lang) = ".var_export($menu_folders_arr,true));
                 $i = 0;
                 //throw new AfwRuntimeException("objme->getMenuFor($application_id,$lang) = ".var_export($menu_arr,true));
