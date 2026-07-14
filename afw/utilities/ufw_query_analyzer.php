@@ -299,13 +299,13 @@ class UfwQueryAnalyzer
             $we_should_store_picture_example = (AfwSession::config('MODE_DEVELOPMENT', false)
                 and (self::$sql_picture_arr[$this_module][$this_table] > 30));
 
-            $we_can_store_picture_example = (self::$sql_picture_examples_arr[$this_module][$this_table] and (count(self::$sql_picture_examples_arr[$this_module][$this_table]) < 10));
+            $we_can_store_picture_example = (!self::$sql_picture_examples_arr[$this_module][$this_table] or (count(self::$sql_picture_examples_arr[$this_module][$this_table]) < 10));
 
             if ($we_should_store_picture_example and $we_can_store_picture_example) {
                 $backtrace = debug_backtrace(1, 20);
                 $theMainBackTrace = AfwHtmlHelper::theMainBackTrace($backtrace);
                 $sql_picture_example = $sql_query . " >> " . $theMainBackTrace;
-                die($sql_picture_example);
+                // die($sql_picture_example);
                 self::$sql_picture_examples_arr[$this_module][$this_table][] = $sql_picture_example;
             }
 
