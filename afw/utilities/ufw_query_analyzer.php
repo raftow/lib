@@ -50,7 +50,7 @@ class UfwQueryAnalyzer
      */
     public static $sql_picture_arr;
 
-    public static $sql_picture_examples_arr;
+    public static $sql_picture_examples_arr = [];
 
     private static $excluded_tables = array(
         "words" => 1,
