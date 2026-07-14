@@ -181,7 +181,7 @@ class UfwQueryAnalyzer
         );
         $_sql_analysis_seuil_calls = AfwSession::config(
             '_sql_analysis_seuil_calls',
-            12 //000
+            400
         );
 
 
