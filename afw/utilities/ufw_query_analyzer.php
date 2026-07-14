@@ -304,7 +304,9 @@ class UfwQueryAnalyzer
             if ($we_should_store_picture_example and $we_can_store_picture_example) {
                 $backtrace = debug_backtrace(1, 20);
                 $theMainBackTrace = AfwHtmlHelper::theMainBackTrace($backtrace);
-                self::$sql_picture_examples_arr[$this_module][$this_table][] = $sql_query . " >> " . $theMainBackTrace;
+                $sql_picture_example = $sql_query . " >> " . $theMainBackTrace;
+                die($sql_picture_example);
+                self::$sql_picture_examples_arr[$this_module][$this_table][] = $sql_picture_example;
             }
 
             $this_table_lower = strtolower($this_table);
