@@ -2,12 +2,14 @@
 
 class AfwStringHelper
 {
-        
-        public static function deep_trim($text) {
+
+        public static function deep_trim($text)
+        {
                 return trim(self::remove_utf8_bom(trim($text)));
         }
 
-        public static function remove_utf8_bom($text) {
+        public static function remove_utf8_bom($text)
+        {
                 $bom = pack('H*', 'EFBBBF');
                 $text = preg_replace("/^$bom/", '', $text);
                 return $text;
@@ -344,7 +346,7 @@ class AfwStringHelper
 
         public static function is_arabic($str, $seuil_pct = 0.6)
         {
-                if(!is_string($str)) return false;
+                if (!is_string($str)) return false;
                 $print_full_debugg = false;
 
                 if (mb_detect_encoding($str) !== 'UTF-8') {
@@ -1305,7 +1307,7 @@ class AfwStringHelper
                         if (!$string_is_secure) $string2 = str_replace('onload', '', $string2);
                         if (!$string_is_secure) $string2 = str_replace('onblur', '', $string2);
                         if (!$string_is_secure) $string2 = str_replace('onfocus', '', $string2);
-                        
+
                         if (!$soft) $string2 = preg_replace("/[`~^²¨%\"]/", '', $string2);
 
                         if (!$soft) $string2 = str_replace('(', '', $string2);
@@ -1685,15 +1687,15 @@ class AfwStringHelper
         public static function isTechnicalString($string)
         {
                 $pos = strpos($string, '_');
-                if($pos !== false) return true;
+                if ($pos !== false) return true;
                 $pos = strpos($string, '.');
-                if($pos !== false) return true;
+                if ($pos !== false) return true;
                 $pos = strpos($string, '$');
-                if($pos !== false) return true;
+                if ($pos !== false) return true;
                 $pos = strpos($string, '/');
-                if($pos !== false) return true;
+                if ($pos !== false) return true;
                 $pos = strpos($string, '\\');
-                if($pos !== false) return true;
+                if ($pos !== false) return true;
                 return false;
         }
 
@@ -1704,10 +1706,32 @@ class AfwStringHelper
          */
         public static function isBadTranslatedString($string, $translation)
         {
-                if(AfwStringHelper::stringStartsWith(trim($translation), '??') and
-                   AfwStringHelper::stringEndsWith(trim($translation), '??')) return true;
-                if(strtoupper(trim($translation))==strtoupper(trim($string))) return true;
+                if (
+                        AfwStringHelper::stringStartsWith(trim($translation), '??') and
+                        AfwStringHelper::stringEndsWith(trim($translation), '??')
+                ) return true;
+                if (strtoupper(trim($translation)) == strtoupper(trim($string))) return true;
 
                 return false;
+        }
+
+
+
+        /**
+         * @param string $full_file_name
+         */
+        public static function isLibFile($full_file_name)
+        {
+                return self::stringContain($full_file_name, "/lib/");
+        }
+
+        /**
+         * @param string $full_file_name
+         */
+        public static function extractOnlyFileName($full_file_name)
+        {
+                $file_parts = explode("/", $full_file_name);
+
+                return $file_parts[count($file_parts) - 1];
         }
 }
