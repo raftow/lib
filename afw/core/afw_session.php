@@ -663,7 +663,7 @@ class AfwSession extends AFWRoot
         public static function getLog($context = "log")
         {
                 $return = self::getVar($context);
-                self::setVar($context, "");
+                self::setVar($context, "", true);
                 return $return;
         }
 
