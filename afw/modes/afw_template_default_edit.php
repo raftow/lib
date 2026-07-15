@@ -225,7 +225,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                         $data[$nom_col]["warning"]  = trim(AfwLanguageHelper::getTranslatedAttributeProperty($obj, $nom_col, "WARNING", $lang, $desc));
                         if (!$data[$nom_col]["warning"]) {
                                 $col_warning = $nom_col . "_warning";
-                                $val_warning = $obj->translate($col_warning, $lang,null,false);
+                                $val_warning = $obj->translate($col_warning, $lang, null, false);
                                 if ($val_warning != $col_warning) $data[$nom_col]["warning"]     = $val_warning;
                         }
 
@@ -282,7 +282,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
                                                 $o_url = $other_link["URL"];
                                                 $LANG_UPPER = strtoupper($lang);
                                                 $o_tit = $other_link["TITLE_$LANG_UPPER"];
-                                                if(!$o_tit) $o_tit = $other_link["TITLE"];
+                                                if (!$o_tit) $o_tit = $other_link["TITLE"];
                                                 $o_target = $other_link["TARGET"];
                                                 if ($o_target) $o_target_html = "target='$o_target'";
                                                 else $o_target_html = "";
@@ -484,7 +484,7 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 <?php
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
                                                                 $saveOnly = $obj->canSaveOnly($obj->currentStep);
-                                                                if($saveOnly===true) $saveOnly = 'UPDATE';
+                                                                if ($saveOnly === true) $saveOnly = 'UPDATE';
                                                                 if ($saveOnly) {
                                                                 ?>
                                                                         <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn <?php echo $saveOnly ?>" value="&nbsp;<?php echo $obj->translate($saveOnly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
@@ -508,10 +508,11 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                         <input type="submit" name="save_next" id="save_next" class="fa next greenbtn wizardbtn fleft" value="&nbsp;<?php echo $obj->translate('NEXT' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
                                                                 <?php
                                                                 }
-
+                                                                $canFinishOnCurrentStep = $obj->canFinishOnCurrentStep();
+                                                                $canFinishAsSaveAndRemainInCurrentStep = $obj->canFinishAsSaveAndRemainInCurrentStep();
                                                                 if (
-                                                                        $finish_label and ($obj->canFinishOnCurrentStep()  or
-                                                                                $obj->canFinishAsSaveAndRemainInCurrentStep()  or
+                                                                        $finish_label and ($canFinishOnCurrentStep  or
+                                                                                $canFinishAsSaveAndRemainInCurrentStep or
                                                                                 $no_next_editable_step or
                                                                                 ($all_steps_are_edited_and_ok and $authorize_finish_button_on_any_step)
                                                                         )
@@ -521,7 +522,14 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 <?php
                                                                 } else {
                                                                 ?>
-                                                                        <!-- <?php echo "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
+                                                                        <!-- <?php echo "No Finish BTN because : \n
+                                                                                         getFinishButtonLabel=$finish_label and \n
+                                                                                         (canFinishOnCurrentStep=$canFinishOnCurrentStep or \n
+                                                                                          canFinishAsSaveAndRemainInCurrentStep=$canFinishAsSaveAndRemainInCurrentStep or \n
+                                                                                          no_next_editable_step=$no_next_editable_step (NextStep=$nextStep) or \n
+                                                                                          (all_steps_are_edited_and_ok=$all_steps_are_edited_and_ok and \n
+                                                                                           authorize_finish_button_on_any_step=$authorize_finish_button_on_any_step) \n
+                                                                                         " ?> -->
                                                                 <?php
                                                                 }
                                                         } else  // not edit by step
@@ -612,9 +620,9 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 <input type="submit" name="save_previous" id="save_previous" class="fa previous <?php echo $class_btn_prev ?> wizardbtn fright <?php echo $disabled_prev ?> <?php echo $lang ?>" value="&nbsp;<?php echo $obj->translate('PREVIOUS' . $form_readonly, $lang, true) ?>&nbsp;" style="margin-right: 5px;" <?php echo $disabled_prev ?>></input>
                                                                 <?php
                                                                 // to much save buttons (next previous finish ... will see about this save button if need in edit by step mode)
-                                                                
+
                                                                 $saveOnly = $obj->canSaveOnly($obj->currentStep);
-                                                                if($saveOnly===true) $saveOnly = 'UPDATE';
+                                                                if ($saveOnly === true) $saveOnly = 'UPDATE';
                                                                 if ($saveOnly) {
                                                                 ?>
                                                                         <input type="submit" name="save_only" id="save_only" class="fa save bluebtn wizardbtn <?php echo $saveOnly ?>" value="&nbsp;<?php echo $obj->translate($saveOnly, $lang, true) ?>&nbsp;" style="margin-right: 5px;"></input>
@@ -639,9 +647,12 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 <?php
                                                                 }
 
+                                                                $canFinishOnCurrentStep = $obj->canFinishOnCurrentStep();
+                                                                $canFinishAsSaveAndRemainInCurrentStep = $obj->canFinishAsSaveAndRemainInCurrentStep();
+
                                                                 if (
-                                                                        $finish_label and ($obj->canFinishOnCurrentStep()  or
-                                                                                $obj->canFinishAsSaveAndRemainInCurrentStep()  or
+                                                                        $finish_label and ($canFinishOnCurrentStep  or
+                                                                                $canFinishAsSaveAndRemainInCurrentStep  or
                                                                                 $no_next_editable_step or
                                                                                 ($all_steps_are_edited_and_ok and $authorize_finish_button_on_any_step)
                                                                         )
@@ -651,7 +662,14 @@ if (file_exists("$file_dir_name/../$module_code/css/table_$table_name.css")) {
                                                                 <?php
                                                                 } else {
                                                                 ?>
-                                                                        <!-- <?php echo "No Finish BTN, ss/getFinishButtonLabel::canFinishOnCurrentStep::canFinishAsSaveAndRemainInCurrentStep or NextStep:" . $nextStep . " < 0 or some data is not ok or missing" ?> -->
+                                                                        <!-- <?php echo "No Finish BTN because : \n
+                                                                                         getFinishButtonLabel=$finish_label and \n
+                                                                                         (canFinishOnCurrentStep=$canFinishOnCurrentStep or \n
+                                                                                          canFinishAsSaveAndRemainInCurrentStep=$canFinishAsSaveAndRemainInCurrentStep or \n
+                                                                                          no_next_editable_step=$no_next_editable_step (NextStep=$nextStep) or \n
+                                                                                          (all_steps_are_edited_and_ok=$all_steps_are_edited_and_ok and \n
+                                                                                           authorize_finish_button_on_any_step=$authorize_finish_button_on_any_step) \n
+                                                                                         " ?> -->
                                                                 <?php
                                                                 }
                                                         } else  // not edit by step

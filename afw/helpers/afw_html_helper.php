@@ -67,6 +67,23 @@ class AfwHtmlHelper extends AFWRoot
                 return $html;
         }
 
+
+        /**
+         * @param array $backtrace         
+         */
+
+        public static function theMainBackTrace($backtrace)
+        {
+                foreach ($backtrace as $entry) {
+                        if (!AfwStringHelper::isLibFile($entry['file'])) {
+                                return AfwStringHelper::extractOnlyFileName($entry['file']) . ":" . $entry['line'];
+                        }
+                }
+
+
+                return null;
+        }
+
         /**
          * @param array $backtrace         
          * @param bool $advanced

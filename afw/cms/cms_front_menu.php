@@ -24,14 +24,15 @@ class CmsFrontMenu extends AFWRoot
                         foreach ($menu as $the_module => $module_menu) {
                                 $module_menu_roles = $module_menu["all"];
                                 foreach ($module_menu_roles as $role_id => $module_menu_role) {
-                                        if($role_id>0) {
-                                                $role_found = false;
+                                        if ($role_id > 0) {
+                                                $role_found = ($menu[$the_module]["all"][$role_id] and is_array($menu[$the_module]["all"][$role_id]));
                                                 $role_cache_file = "$file_afw_dir_name/../../../$the_module/previleges/role/previleges_" . $the_module . "_role$role_id.php";
                                                 $global_prev_file = "$file_afw_dir_name/../../../$the_module/previleges.php";
+
                                                 if ((!$role_found) and file_exists($role_cache_file)) {
                                                         include($role_cache_file);
                                                         $menu[$the_module]["all"][$role_id] = $role_info[$role_id]['menu'];
-                                                        if($menu[$the_module]["all"][$role_id]) {
+                                                        if ($menu[$the_module]["all"][$role_id]) {
                                                                 $menu[$the_module]["all"][$role_id]['source'] = $role_cache_file;
                                                                 $role_found = true;
                                                         }
@@ -40,7 +41,7 @@ class CmsFrontMenu extends AFWRoot
                                                 if ((!$role_found) and file_exists($global_prev_file)) {
                                                         include($global_prev_file);
                                                         $menu[$the_module]["all"][$role_id] = $role_info[$role_id]['menu'];
-                                                        if($menu[$the_module]["all"][$role_id]) {
+                                                        if ($menu[$the_module]["all"][$role_id]) {
                                                                 $menu[$the_module]["all"][$role_id]['source'] = $global_prev_file;
                                                                 $role_found = true;
                                                         };
@@ -50,7 +51,6 @@ class CmsFrontMenu extends AFWRoot
                                                         if($the_module=="pag") die("the role cache file $role_cache_file not found, the global previleges file $global_prev_file not found");   
                                                 }*/
                                         }
-                                        
                                 }
                         }
 
@@ -127,7 +127,5 @@ class CmsFrontMenu extends AFWRoot
                 // if($menu_id==-1) die("menu_id==$menu_id so menu html = $html");
 
                 return $html;
-
-                
         }
 }

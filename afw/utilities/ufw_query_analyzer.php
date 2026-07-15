@@ -50,6 +50,8 @@ class UfwQueryAnalyzer
      */
     public static $sql_picture_arr;
 
+    public static $sql_picture_examples_arr = [];
+
     private static $excluded_tables = array(
         "words" => 1,
     );
@@ -179,7 +181,7 @@ class UfwQueryAnalyzer
         );
         $_sql_analysis_seuil_calls = AfwSession::config(
             '_sql_analysis_seuil_calls',
-            1200
+            150
         );
 
 
@@ -205,12 +207,22 @@ class UfwQueryAnalyzer
         $we_can_not_throw_analysis_exception = self::isProcessLourdMode();
         $we_should_throw_analysis_exception = (AfwSession::config('MODE_DEVELOPMENT', false)
             and (self::$nb_queries_executed > $_sql_analysis_seuil_calls));
+
+
+
+
+
         if ($we_should_throw_analysis_exception and !$we_can_not_throw_analysis_exception) {
             $backtrace = debug_backtrace(1, 20);
             throw new AfwRichException(
                 "Too much queries executed when mode is not lourd process mode !",
                 "Nb Queries Executed = " . self::$nb_queries_executed . " > Max = $_sql_analysis_seuil_calls",
-                ["Sql picture" => self::$sql_picture_arr, "Last query before crash" => $sql_query, "Backtrace" => $backtrace]
+                [
+                    "Sql picture" => self::$sql_picture_arr,
+                    "Picture examples" => self::$sql_picture_examples_arr,
+                    "Last query before crash" => $sql_query,
+                    "Backtrace" => $backtrace
+                ]
             );
         }
 
@@ -277,10 +289,26 @@ class UfwQueryAnalyzer
                 }*/
 
             if (!self::$sql_picture_arr[$this_module][$this_table]) {
-                self::$sql_picture_arr[$this_module][$this_table] = 1;
-            } else {
-                self::$sql_picture_arr[$this_module][$this_table]++;
+                self::$sql_picture_arr[$this_module][$this_table] = 0;
             }
+
+            self::$sql_picture_arr[$this_module][$this_table]++;
+
+
+
+            $we_should_store_picture_example = (AfwSession::config('MODE_DEVELOPMENT', false)
+                and (self::$sql_picture_arr[$this_module][$this_table] > 30));
+
+            $we_can_store_picture_example = (!self::$sql_picture_examples_arr[$this_module][$this_table] or (count(self::$sql_picture_examples_arr[$this_module][$this_table]) < 10));
+
+            if ($we_should_store_picture_example and $we_can_store_picture_example) {
+                $backtrace = debug_backtrace(1, 20);
+                $theMainBackTrace = AfwHtmlHelper::theMainBackTrace($backtrace);
+                $sql_picture_example = $sql_query . " >> " . $theMainBackTrace;
+                // die($sql_picture_example);
+                self::$sql_picture_examples_arr[$this_module][$this_table][] = $sql_picture_example;
+            }
+
             $this_table_lower = strtolower($this_table);
             $_sql_analysis_seuil_calls_by_table = AfwSession::config(
                 "$this_table_lower-sql-analysis-max-calls",

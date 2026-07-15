@@ -1725,4 +1725,24 @@ class AfwStringHelper
 
                 return false;
         }
+
+
+
+        /**
+         * @param string $full_file_name
+         */
+        public static function isLibFile($full_file_name)
+        {
+                return self::stringContain($full_file_name, "/lib/");
+        }
+
+        /**
+         * @param string $full_file_name
+         */
+        public static function extractOnlyFileName($full_file_name)
+        {
+                $file_parts = explode("/", $full_file_name);
+
+                return $file_parts[count($file_parts) - 1];
+        }
 }
