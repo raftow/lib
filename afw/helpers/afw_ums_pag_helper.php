@@ -754,7 +754,7 @@ class AfwUmsPagHelper extends AFWRoot
         ) {
             if ($log) {
                 AfwSession::contextLog(
-                    "failed user_have_access_to_do_operation_on_me, user($auser)->iCanDoOperation($module_code,$table,$operation_sql) ==> false ",
+                    "failed user($auser)->iCanDoOperation($module_code,$table,$operation_sql) ==> false ",
                     'iCanDo'
                 );
             }
@@ -762,7 +762,7 @@ class AfwUmsPagHelper extends AFWRoot
         } else {
             if ($log) {
                 AfwSession::contextLog(
-                    "succeeded user_have_access_to_do_operation_on_me, user($auser)->iCanDoOperation($module_code,$table,$operation_sql) ==> true ",
+                    "succeeded user($auser)->iCanDoOperation($module_code,$table,$operation_sql) ==> true ",
                     'iCanDo'
                 );
             }
@@ -776,14 +776,14 @@ class AfwUmsPagHelper extends AFWRoot
         if (!$return) {
             if ($log) {
                 AfwSession::contextLog(
-                    "failed user_have_access_to_do_operation_on_me, userCanDoOperationOnMe($auser, $operation, $operation_sql) ==> $return",
+                    "failed userCanDoOperationOnMe($auser, $operation, $operation_sql) ==> $return",
                     'iCanDo'
                 );
             }
         } else {
             if ($log) {
                 AfwSession::contextLog(
-                    "succeeded user_have_access_to_do_operation_on_me, userCanDoOperationOnMe($auser, $operation, $operation_sql) ==> $return",
+                    "succeeded userCanDoOperationOnMe($auser, $operation, $operation_sql) ==> $return",
                     'iCanDo'
                 );
             }
@@ -804,40 +804,30 @@ class AfwUmsPagHelper extends AFWRoot
         $log = true
     ) {
         $return_arr = [];
-        if (!($auser and $auser->isSuperAdmin())) {
+        if ($auser and $auser->isSuperAdmin()) {
+            $return_arr[] = "$auser is SuperAdmin";
+        } else {
             $return_arr[] = "$auser is not SuperAdmin";
-        } else {
-            $return_arr[] = 'return = true';
         }
 
-        if (!($operation == 'display' and $object->public_display)) {
-            $return_arr[] = 'object and case is not public_display object=' . var_export($object, true);
-        } else {
-            $return_arr[] = 'return = true';
+        if ($operation == 'display' and !$object->public_display) {
+            $return_arr[] = 'object is not public_display';
         }
 
-        if (!($operation == 'search' and $object->public_display)) {
-            $return_arr[] = 'object and case is not public_display for search';
-        } else {
-            $return_arr[] = 'return = true';
+        if ($operation == 'search' and !$object->public_display) {
+            $return_arr[] = 'object is not public_display for search';
         }
 
-        if (!($operation == 'qsearch' and $object->public_display)) {
-            $return_arr[] = 'object and case is not public_display for qsearch';
-        } else {
-            $return_arr[] = 'return = true';
+        if ($operation == 'qsearch' and !$object->public_display) {
+            $return_arr[] = 'object is not public_display for qsearch';
         }
 
-        if (!($operation == 'display' and $object->canBePublicDisplayed())) {
+        if ($operation == 'display' and !$object->canBePublicDisplayed()) {
             $return_arr[] = 'object->canBePublicDisplayed return false';
-        } else {
-            $return_arr[] = 'return = true';
         }
 
-        if (!($operation == 'display' and $object->canBeSpeciallyDisplayedBy($auser))) {
+        if ($operation == 'display' and !$object->canBeSpeciallyDisplayedBy($auser)) {
             $return_arr[] = "object->canBeSpeciallyDisplayedBy $auser return false";
-        } else {
-            $return_arr[] = 'return = true';
         }
 
         if ($operation == 'edit') {
@@ -852,44 +842,13 @@ class AfwUmsPagHelper extends AFWRoot
             $auser and !$auser->iCanDoOperation($module_code, $table, $operation_sql)
         ) {
             $return_arr[] = "$auser => iCanDoOperation($module_code, $table, $operation_sql) return false";
-            if ($log) {
-                AfwSession::contextLog(
-                    "failed user_have_access_to_do_operation_on_me, user($auser)->iCanDoOperation($module_code,$table,$operation_sql) ==> false ",
-                    'iCanDo'
-                );
-            }
         } else {
-            if ($log) {
-                AfwSession::contextLog(
-                    "succeeded user_have_access_to_do_operation_on_me, user($auser)->iCanDoOperation($module_code,$table,$operation_sql) ==> true ",
-                    'iCanDo'
-                );
-            }
+            $return = $object->userCanDoOperationOnMe($auser, $operation, $operation_sql);
+            if (!$return) {
+                $return_arr[] = "$object => userCanDoOperationOnMe($auser, $operation, $operation_sql) return false";
+            } else $return_arr[] = "userCanNotDoOperationOnObjectReason : bala he can";
         }
 
-        $return = $object->userCanDoOperationOnMe(
-            $auser,
-            $operation,
-            $operation_sql
-        );
-        if (!$return) {
-            $return_arr[] = "$auser => iCanDoOperation($module_code, $table, $operation_sql) return false";
-            if ($log) {
-                AfwSession::contextLog(
-                    "failed user_have_access_to_do_operation_on_me, userCanDoOperationOnMe($auser, $operation, $operation_sql) ==> $return",
-                    'iCanDo'
-                );
-            }
-        } else {
-            if ($log) {
-                AfwSession::contextLog(
-                    "succeeded user_have_access_to_do_operation_on_me, userCanDoOperationOnMe($auser, $operation, $operation_sql) ==> $return",
-                    'iCanDo'
-                );
-            }
-        }
-
-        $return_arr[] = "return = $return";
 
         return implode("<br>\n", $return_arr);
     }
