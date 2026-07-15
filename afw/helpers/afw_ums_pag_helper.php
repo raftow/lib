@@ -729,15 +729,25 @@ class AfwUmsPagHelper extends AFWRoot
 
         if ($operation == 'delete') {
             list($canBeDeletedWithoutRole, $reasonBeDeletedWithoutRole) = $object->canBeDeletedWithoutRoleBy($auser);
+            if ($log) {
+                AfwSession::contextLog(
+                    "object($object)->canBeDeletedWithoutRoleBy($auser) ==> (can=$canBeDeletedWithoutRole, reason=$reasonBeDeletedWithoutRole) ",
+                    'iCanDo'
+                );
+            }
             if ($canBeDeletedWithoutRole)
                 return true;
         }
 
-        if (
-            $operation == 'display' and
-            $object->canBeSpeciallyDisplayedBy($auser)
-        ) {
-            return true;
+        if ($operation == 'display') {
+            $canBeSpeciallyDisplayedBy = $object->canBeSpeciallyDisplayedBy($auser);
+            if ($log) {
+                AfwSession::contextLog(
+                    "object($object)->canBeSpeciallyDisplayedBy($auser) ==> (can=$canBeSpeciallyDisplayedBy) ",
+                    'iCanDo'
+                );
+            }
+            if ($canBeSpeciallyDisplayedBy) return true;
         }
 
         if ($operation == 'edit') {

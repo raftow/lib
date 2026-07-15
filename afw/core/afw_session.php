@@ -397,9 +397,9 @@ class AfwSession extends AFWRoot
          * @param string $var
          * @param mixed $value
          */
-        public static function setVar($var, $value)
+        public static function setVar($var, $value, $safeAdminOperation = false)
         {
-                // if(($var=="log") and (!$value)) throw new AfwRuntimeException("emptying log ...".self::getSingleton()->getData($var));                       
+                if ((!$safeAdminOperation) and ($var == "iCanDo") and (!$value)) throw new AfwRuntimeException("emptying $var buffer ..." . self::getSingleton()->getData($var));
                 self::getSingleton()->setData($var, $value);
         }
 
