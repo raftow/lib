@@ -95,7 +95,7 @@ class AfwPrevilege extends AFWRoot
     {
         $fileName = "bf$bf_id"  . ".php";
         $cache_bf_file =  dirname(__FILE__) . "/../../../cache/$module_code/previleges/bf/$fileName";
-        if (file_exists($cache_bf_file)) {
+        if (false and file_exists($cache_bf_file)) {
             $bf_info = include($cache_bf_file);
             return [true, $bf_info, $cache_bf_file];
         } else {
