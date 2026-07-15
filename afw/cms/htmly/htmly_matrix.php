@@ -60,8 +60,8 @@ class HtmlyMatrix extends HtmlyElement
      */
     public function addCell($id, $title, $hint, $link = "", $special_class = "")
     {
-        $title = addslashes($title);
-        $hint = addslashes($hint);
+        $title = AfwStringHelper::removeCotesAndBalises($title);
+        $hint = AfwStringHelper::removeCotesAndBalises($hint);
         if (($this->total_count > 0) and (count($this->cells) >= $this->total_count)) {
             throw new AfwRuntimeException("HtmlyMatrix : cannot add more than total_count elements : " . $this->total_count);
         }
