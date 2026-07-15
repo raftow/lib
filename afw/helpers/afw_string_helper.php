@@ -76,12 +76,12 @@ class AfwStringHelper
                 return $string;
         }
 
-        public static function removeCotesAndBalises($string, $removeBalises=false)
+        public static function removeCotesAndBalises($string, $removeBalises = false)
         {
 
                 $string = str_replace('"', '', $string);
                 $string = str_replace("'", '', $string);
-                if($removeBalises) $string = str_replace(">", '', $string);
+                if ($removeBalises) $string = str_replace(">", '', $string);
                 return $string;
         }
 
@@ -1724,25 +1724,5 @@ class AfwStringHelper
                 if (strtoupper(trim($translation)) == strtoupper(trim($string))) return true;
 
                 return false;
-        }
-
-
-
-        /**
-         * @param string $full_file_name
-         */
-        public static function isLibFile($full_file_name)
-        {
-                return self::stringContain($full_file_name, "/lib/");
-        }
-
-        /**
-         * @param string $full_file_name
-         */
-        public static function extractOnlyFileName($full_file_name)
-        {
-                $file_parts = explode("/", $full_file_name);
-
-                return $file_parts[count($file_parts) - 1];
         }
 }

@@ -75,8 +75,8 @@ class AfwHtmlHelper extends AFWRoot
         public static function theMainBackTrace($backtrace)
         {
                 foreach ($backtrace as $entry) {
-                        if (!AfwStringHelper::isLibFile($entry['file'])) {
-                                return AfwStringHelper::extractOnlyFileName($entry['file']) . ":" . $entry['line'];
+                        if (!UfwUrlManager::isTechnicalPath($entry['file'])) {
+                                return UfwUrlManager::extractOnlyFileName($entry['file']) . ":" . $entry['line'];
                         }
                 }
 

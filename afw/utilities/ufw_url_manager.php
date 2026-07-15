@@ -410,4 +410,48 @@ class UfwUrlManager extends AFWRoot
 
         return [$pageCode, $log_explain . " >> " . $log_explain_advanced];
     }
+
+
+    /**
+     * @param string $full_file_name
+     */
+    public static function isLibPath($full_file_name)
+    {
+        return AfwStringHelper::stringContain($full_file_name, "/lib/");
+    }
+
+    /**
+     * @param string $full_file_name
+     */
+    public static function isCorePath($full_file_name)
+    {
+        return AfwStringHelper::stringContain($full_file_name, "/lib/afw/core/");
+    }
+
+
+    /**
+     * @param string $full_file_name
+     */
+    public static function isModesPath($full_file_name)
+    {
+        return AfwStringHelper::stringContain($full_file_name, "/lib/afw/modes/");
+    }
+
+    /**
+     * @param string $full_file_name
+     */
+    public static function isTechnicalPath($full_file_name)
+    {
+        return (self::isLibPath($full_file_name) and !self::isCorePath($full_file_name) and !self::isModesPath($full_file_name));
+    }
+
+    /**
+     * @param string $full_file_name
+     */
+    public static function extractOnlyFileName($full_file_name)
+    {
+        $file_parts = explode("/", $full_file_name);
+
+        return $file_parts[count($file_parts) - 1];
+    }
 }
