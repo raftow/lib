@@ -759,10 +759,15 @@ class AfwUmsPagHelper extends AFWRoot
 
         $table = $object->getMyTable();
         $module_code = $object->getMyModule();
-        if (
-            $auser and
-            !$auser->iCanDoOperation($module_code, $table, $operation_sql, $ignore_cache)
-        ) {
+        if (!$auser) {
+            if ($log) {
+                AfwSession::contextLog(
+                    "failed no user toi check if i Can Do Operation",
+                    'iCanDo'
+                );
+            }
+            return false;
+        } elseif (!$auser->iCanDoOperation($module_code, $table, $operation_sql, $ignore_cache)) {
             if ($log) {
                 AfwSession::contextLog(
                     "failed user($auser)->iCanDoOperation($module_code,$table,$operation_sql, $ignore_cache) ==> false ",
