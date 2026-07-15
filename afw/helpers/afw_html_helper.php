@@ -67,6 +67,21 @@ class AfwHtmlHelper extends AFWRoot
                 return $html;
         }
 
+        /**
+         * @param array $backtrace         
+         */
+
+        public static function theSummerizedBackTrace($backtrace)
+        {
+                $return = "";
+                foreach ($backtrace as $entry) {
+                        if (!UfwUrlManager::isTechnicalPath($entry['file'])) {
+                                $return .= " &rarr; " . UfwUrlManager::extractOnlyFileName($entry['file']) . ":" . $entry['line'];
+                        }
+                }
+                return $return;
+        }
+
 
         /**
          * @param array $backtrace         

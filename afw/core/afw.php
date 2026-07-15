@@ -4608,7 +4608,7 @@ class AFWObject extends AFWRoot
      * @param Auser $auser
      */
 
-    final public function userCanDeleteMe($auser, $log = true)
+    final public function userCanDeleteMe($auser, $log = false)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         $return = 1;
