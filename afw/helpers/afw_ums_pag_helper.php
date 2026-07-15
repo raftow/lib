@@ -702,7 +702,8 @@ class AfwUmsPagHelper extends AFWRoot
         $object,
         $auser,
         $operation,
-        $log = true
+        $log = true,
+        $ignore_cache = false
     ) {
         if ($auser and $auser->isAdmin()) {
             return true;
@@ -760,11 +761,11 @@ class AfwUmsPagHelper extends AFWRoot
         $module_code = $object->getMyModule();
         if (
             $auser and
-            !$auser->iCanDoOperation($module_code, $table, $operation_sql)
+            !$auser->iCanDoOperation($module_code, $table, $operation_sql, $ignore_cache)
         ) {
             if ($log) {
                 AfwSession::contextLog(
-                    "failed user($auser)->iCanDoOperation($module_code,$table,$operation_sql) ==> false ",
+                    "failed user($auser)->iCanDoOperation($module_code,$table,$operation_sql, $ignore_cache) ==> false ",
                     'iCanDo'
                 );
             }
@@ -772,7 +773,7 @@ class AfwUmsPagHelper extends AFWRoot
         } else {
             if ($log) {
                 AfwSession::contextLog(
-                    "succeeded user($auser)->iCanDoOperation($module_code,$table,$operation_sql) ==> true ",
+                    "succeeded user($auser)->iCanDoOperation($module_code,$table,$operation_sql, $ignore_cache) ==> true ",
                     'iCanDo'
                 );
             }
