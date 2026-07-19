@@ -314,20 +314,22 @@ class UfwQueryAnalyzer
                 "$this_table_lower-sql-analysis-max-calls",
                 AfwSession::config(
                     '_sql_analysis_seuil_calls_by_table',
-                    600
+                    10
                 )
             );
 
             if (self::$sql_picture_arr[$this_module][$this_table] > $_sql_analysis_seuil_calls_by_table) {
                 if (!self::$excluded_tables[$this_table_lower]) {
-                    throw new AfwRuntimeException(
-                        "<p>static analysis crash : The table $this_module-$this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times ($this_table_lower-sql-analysis-max-calls)</p>
-                             <h5>$sql_query</h5><br> 
-                             If this is absolutely needed please start the process lourd mode
-                             <div class='technical'>
-                             So it is to be optimized sql_picture => " . var_export(self::$sql_picture_arr, true) .
-                            " all_vars => " . AfwSession::log_all_data() .
-                            "</div>"
+                    $backtrace = debug_backtrace(1, 20);
+                    throw new AfwRichException(
+                        "Static analysis crash : The table $this_module-$this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times",
+                        "Can be customized in config file, variable : $this_table_lower-sql-analysis-max-calls, default value is 600",
+                        [
+                            "Sql picture" => self::$sql_picture_arr,
+                            "Picture examples" => self::$sql_picture_examples_arr,
+                            "Last query before crash" => $sql_query,
+                            "Backtrace" => $backtrace
+                        ]
                     );
                 }
             }
