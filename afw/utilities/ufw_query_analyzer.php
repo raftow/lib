@@ -179,9 +179,10 @@ class UfwQueryAnalyzer
             '_sql_analysis_total_seuil_calls',
             3000
         );
+        $_sql_analysis_seuil_calls_default = 2500;
         $_sql_analysis_seuil_calls = AfwSession::config(
             '_sql_analysis_seuil_calls',
-            2500
+            $_sql_analysis_seuil_calls_default
         );
 
 
@@ -216,7 +217,7 @@ class UfwQueryAnalyzer
             $backtrace = debug_backtrace(1, 20);
             throw new AfwRichException(
                 "Too much queries executed when mode is not lourd process mode !",
-                "Nb Queries Executed = " . self::$nb_queries_executed . " > Max = $_sql_analysis_seuil_calls",
+                "Nb Queries Executed = " . self::$nb_queries_executed . " > Max = $_sql_analysis_seuil_calls (variable in config file is _sql_analysis_seuil_calls default is $_sql_analysis_seuil_calls_default)",
                 [
                     "Sql picture" => self::$sql_picture_arr,
                     "Picture examples" => self::$sql_picture_examples_arr,
@@ -264,21 +265,36 @@ class UfwQueryAnalyzer
 
         $title_duration = '';
         $this_table_lower = strtolower($this_table);
+        $_sql_analysis_seuil_calls_same_query_default = 50;
+        $_sql_analysis_seuil_calls_same_query = AfwSession::config('sql-analysis-seuil-calls-same-query', $_sql_analysis_seuil_calls_same_query_default);
+        $_sql_analysis_half_seuil_calls_same_query = round($_sql_analysis_seuil_calls_same_query / 2);
 
         if ((!self::$excluded_tables[$this_table_lower]) and AfwSession::config('MODE_DEVELOPMENT', false) and (!self::isProcessLourdMode()) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
             if (!self::$_sql_analysis[$this_module][$this_table][$sql_query]) {
                 self::$_sql_analysis[$this_module][$this_table][$sql_query] = 1;
             } else {
                 self::$_sql_analysis[$this_module][$this_table][$sql_query]++;
-                if (self::$_sql_analysis[$this_module][$this_table][$sql_query] > 50) {
-                    if (AfwSession::config('MODE_DEVELOPMENT', false)) {
-                        throw new AfwRuntimeException(
-                            "Query Analysis Crash for : $this_module / $this_table / $sql_query : has been called more than 50 times, <br>
-                            May be because the result is empty so no cache working, <br>\nYou can below un-hide <b>the TECHNICAL SQL analysis :</b> <br><hr><pre class='technical sql'>"
-                                . var_export(self::$_sql_analysis, true) .
-                                "</pre><br> Or if should be managed by AfwLoadHelper::getLookupMatrix(), <br>\nYou can below un-hide <b>the TECHNICAL CACHE OF Lookup-Matrix :</b> : <br><hr><pre class='technical php'>"
-                                . var_export(AfwLoadHelper::getLookupMatrix(), true) . "</pre>"
+                if (AfwSession::config('MODE_DEVELOPMENT', false)) {
+                    if (self::$_sql_analysis[$this_module][$this_table][$sql_query] > $_sql_analysis_seuil_calls_same_query) {
+
+                        $backtrace = debug_backtrace(1, 20);
+                        throw new AfwRichException(
+                            "Query analysis crash : The same query has been called more than $_sql_analysis_seuil_calls_same_query times",
+                            "May be because the result is empty so no cache working, The seuil $_sql_analysis_seuil_calls_same_query can be customized in config file, variable : sql-analysis-seuil-calls-same-query, default value is 50.
+                             Other possible solution (if possible to do if the table is not big table and data is not very often updated), is to define the table as lookup, then it will be loaded once and this error is aoided",
+                            [
+                                "Query" => "$this_module / $this_table / $sql_query",
+                                "Picture examples" => self::$sql_picture_examples_arr[$sql_query],
+                                "LookupMatrix" => AfwLoadHelper::getLookupMatrix(),
+                                "Backtrace" => $backtrace,
+                            ]
                         );
+                    } elseif (self::$_sql_analysis[$this_module][$this_table][$sql_query] > $_sql_analysis_half_seuil_calls_same_query) {
+                        $backtrace = debug_backtrace(1, 20);
+                        $theSummerizedBackTrace = AfwHtmlHelper::theSummerizedBackTrace($backtrace);
+                        $sql_picture_example = $sql_query . " >> " . $theSummerizedBackTrace;
+                        // die($sql_picture_example);
+                        self::$sql_picture_examples_arr[$sql_query][] = $sql_picture_example;
                     }
                 }
             }
@@ -310,11 +326,12 @@ class UfwQueryAnalyzer
             }
 
             $this_table_lower = strtolower($this_table);
+            $_sql_analysis_seuil_calls_by_table_default = 100;
             $_sql_analysis_seuil_calls_by_table = AfwSession::config(
                 "$this_table_lower-sql-analysis-max-calls",
                 AfwSession::config(
                     '_sql_analysis_seuil_calls_by_table',
-                    10
+                    $_sql_analysis_seuil_calls_by_table_default
                 )
             );
 
@@ -323,7 +340,7 @@ class UfwQueryAnalyzer
                     $backtrace = debug_backtrace(1, 20);
                     throw new AfwRichException(
                         "Static analysis crash : The table $this_module-$this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times",
-                        "Can be customized in config file, variable : $this_table_lower-sql-analysis-max-calls, default value is 600",
+                        "Can be customized in config file, variable : $this_table_lower-sql-analysis-max-calls, default value is $_sql_analysis_seuil_calls_by_table_default",
                         [
                             "Sql picture" => self::$sql_picture_arr,
                             "Picture examples" => self::$sql_picture_examples_arr,
