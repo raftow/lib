@@ -4745,7 +4745,7 @@ class AFWObject extends AFWRoot
         if ($editWithRole and $editSpecial) {
             return [true, ''];
         }
-        $auser_disp = $auser->getDisplay($lang);
+        $auser_disp = $auser ? $auser->getDisplay($lang) : "NO USER AUTHENTICATED";
         $this_disp = $this->getMyClass();
         // $mau = $auser->getMyModulesAndRoles($this->getMyModule());
         return [
