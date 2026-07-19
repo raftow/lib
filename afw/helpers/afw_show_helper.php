@@ -2893,6 +2893,8 @@ class AfwShowHelper
             $$theme = $themeValue;
         }
 
+        $objme = AfwSession::getUserConnected();
+
         if (count($header) != 0) {
             // if($objListItem instanceof Atable) die("header = ".var_export($header, true));
             foreach ($header as $col => $hitem) {
