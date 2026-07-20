@@ -217,7 +217,7 @@ class UfwQueryAnalyzer
 
         if ($we_should_throw_analysis_exception and !$we_can_not_throw_analysis_exception) {
             $backtrace = debug_backtrace(1, 20);
-            die("preAnalyseQuery($sql_query, $is_update) => sql_picture_arr = " . AfwExportHelper::afwExport(self::$sql_picture_arr) . " => sql_picture_examples_arr = " . AfwExportHelper::afwExport(self::$sql_picture_examples_arr) . " => backtrace = " . AfwExportHelper::afwExport($backtrace));
+            // die("preAnalyseQuery($sql_query, $is_update) => sql_picture_arr = " . AfwExportHelper::afwExport(self::$sql_picture_arr) . " => sql_picture_examples_arr = " . AfwExportHelper::afwExport(self::$sql_picture_examples_arr) . " => backtrace = " . AfwExportHelper::afwExport($backtrace));
             /*$backtrace = debug_backtrace(1, 20);
             throw new AfwRichException(
                 "Too much queries executed when mode is not lourd process mode !",
@@ -247,7 +247,7 @@ class UfwQueryAnalyzer
     public static function postAnalyseQuery($sql_query, $preArr)
     {
         $file_dir_name = dirname(__FILE__);
-        require("$file_dir_name/ufw_error_handler.php");
+        // require("$file_dir_name/ufw_error_handler.php");
         $sql_capture_and_backtrace = AfwSession::config("sql_to_capture", "");
         $sql_capture_and_backtrace = "concat(IF(ISNULL(first_name_ar), '', first_name_ar),'-',IF(ISNULL(father_name_ar), '', father_name_ar),'-',IF(ISNULL(last_name_ar), '', last_name_ar))";
         if ($sql_capture_and_backtrace) {
