@@ -179,13 +179,15 @@ class UfwQueryAnalyzer
             '_sql_analysis_total_seuil_calls',
             3000
         );
-        $_sql_analysis_seuil_calls_default = 1200;
+        $_sql_analysis_seuil_calls_default = 600;
+
         $_sql_analysis_seuil_calls = AfwSession::config(
             '_sql_analysis_seuil_calls',
             $_sql_analysis_seuil_calls_default
         );
 
-
+        // only for debugg
+        $_sql_analysis_seuil_calls = $_sql_analysis_seuil_calls_default;
 
         /*try {*/
 
@@ -267,6 +269,8 @@ class UfwQueryAnalyzer
         $this_table_lower = strtolower($this_table);
         $_sql_analysis_seuil_calls_same_query_default = 50;
         $_sql_analysis_seuil_calls_same_query = AfwSession::config('sql-analysis-seuil-calls-same-query', $_sql_analysis_seuil_calls_same_query_default);
+        // only for debugg
+        $_sql_analysis_seuil_calls_same_query = $_sql_analysis_seuil_calls_same_query_default;
         $_sql_analysis_half_seuil_calls_same_query = $_sql_analysis_seuil_calls_same_query - 10;
 
         if ((!self::$excluded_tables[$this_table_lower]) and AfwSession::config('MODE_DEVELOPMENT', false) and (!self::isProcessLourdMode()) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
@@ -336,6 +340,10 @@ class UfwQueryAnalyzer
                     $_sql_analysis_seuil_calls_by_table_default
                 )
             );
+
+            // only for debugg
+            $_sql_analysis_seuil_calls_by_table = $_sql_analysis_seuil_calls_by_table_default;
+
 
             if (self::$sql_picture_arr[$this_module][$this_table] > $_sql_analysis_seuil_calls_by_table) {
                 if (!self::$excluded_tables[$this_table_lower]) {
