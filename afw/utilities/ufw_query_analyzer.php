@@ -249,7 +249,7 @@ class UfwQueryAnalyzer
         $file_dir_name = dirname(__FILE__);
         // require("$file_dir_name/ufw_error_handler.php");
         $sql_capture_and_backtrace = AfwSession::config("sql_to_capture", "");
-        $sql_capture_and_backtrace = "concat(IF(ISNULL(first_name_ar), '', first_name_ar),'-',IF(ISNULL(father_name_ar), '', father_name_ar),'-',IF(ISNULL(last_name_ar), '', last_name_ar))";
+        // $sql_capture_and_backtrace = "concat(IF(ISNULL(first_name_ar), '', first_name_ar),'-',IF(ISNULL(father_name_ar), '', father_name_ar),'-',IF(ISNULL(last_name_ar), '', last_name_ar))";
         if ($sql_capture_and_backtrace) {
             if (AfwStringHelper::stringContain($sql_query, $sql_capture_and_backtrace)) {
                 throw new AfwRuntimeException('sql ' . $sql_capture_and_backtrace . ' captured');
