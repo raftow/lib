@@ -216,6 +216,7 @@ class UfwQueryAnalyzer
 
 
         if ($we_should_throw_analysis_exception and !$we_can_not_throw_analysis_exception) {
+            die("sql_picture_examples_arr = " . AfwExportHelper::afwExport(self::$sql_picture_examples_arr));
             /*$backtrace = debug_backtrace(1, 20);
             throw new AfwRichException(
                 "Too much queries executed when mode is not lourd process mode !",
