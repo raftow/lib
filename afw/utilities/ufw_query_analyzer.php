@@ -179,7 +179,7 @@ class UfwQueryAnalyzer
             '_sql_analysis_total_seuil_calls',
             3000
         );
-        $_sql_analysis_seuil_calls_default = 2500;
+        $_sql_analysis_seuil_calls_default = 1200;
         $_sql_analysis_seuil_calls = AfwSession::config(
             '_sql_analysis_seuil_calls',
             $_sql_analysis_seuil_calls_default
