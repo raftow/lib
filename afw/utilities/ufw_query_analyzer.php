@@ -295,9 +295,9 @@ class UfwQueryAnalyzer
                             ]
                         );*/
                     } elseif (self::$_sql_analysis[$this_module][$this_table][$sql_query] > $_sql_analysis_half_seuil_calls_same_query) {
-                        // $backtrace = debug_backtrace(1, 20);
+                        $backtrace = debug_backtrace(1, 20);
                         $theSummerizedBackTrace = "";
-                        // $theSummerizedBackTrace = AfwHtmlHelper::theSummerizedBackTrace($backtrace);
+                        $theSummerizedBackTrace = AfwHtmlHelper::theSummerizedBackTrace($backtrace);
                         $sql_picture_example = $sql_query . " >> " . $theSummerizedBackTrace;
                         // die($sql_picture_example);
                         self::$sql_picture_examples_arr[$sql_query][] = $sql_picture_example;
@@ -324,8 +324,8 @@ class UfwQueryAnalyzer
             $we_can_store_picture_example = (!self::$sql_picture_examples_arr[$this_module][$this_table] or (count(self::$sql_picture_examples_arr[$this_module][$this_table]) < 10));
 
             if ($we_should_store_picture_example and $we_can_store_picture_example) {
-                // $backtrace = debug_backtrace(1, 20);
-                // $theMainBackTrace = AfwHtmlHelper::theMainBackTrace($backtrace);
+                $backtrace = debug_backtrace(1, 20);
+                $theMainBackTrace = AfwHtmlHelper::theMainBackTrace($backtrace);
                 $theMainBackTrace = "";
                 $sql_picture_example = $sql_query . " >> " . $theMainBackTrace;
                 // die($sql_picture_example);
