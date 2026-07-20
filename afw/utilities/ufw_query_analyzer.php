@@ -216,7 +216,7 @@ class UfwQueryAnalyzer
 
 
         if ($we_should_throw_analysis_exception and !$we_can_not_throw_analysis_exception) {
-            $backtrace = debug_backtrace(1, 20);
+            /*$backtrace = debug_backtrace(1, 20);
             throw new AfwRichException(
                 "Too much queries executed when mode is not lourd process mode !",
                 "Nb Queries Executed = " . self::$nb_queries_executed . " > Max = $_sql_analysis_seuil_calls (variable in config file is _sql_analysis_seuil_calls default is $_sql_analysis_seuil_calls_default)",
@@ -226,7 +226,7 @@ class UfwQueryAnalyzer
                     "Last query before crash" => $sql_query,
                     "Backtrace" => $backtrace
                 ]
-            );
+            );*/
         }
 
         $sql_info_class = 'sqlinfo';
@@ -280,7 +280,7 @@ class UfwQueryAnalyzer
                 self::$_sql_analysis[$this_module][$this_table][$sql_query]++;
                 if (AfwSession::config('MODE_DEVELOPMENT', false)) {
                     if (self::$_sql_analysis[$this_module][$this_table][$sql_query] > $_sql_analysis_seuil_calls_same_query) {
-
+                        /*
                         $backtrace = debug_backtrace(1, 20);
                         throw new AfwRichException(
                             "Query analysis crash : The same query has been called more than $_sql_analysis_seuil_calls_same_query times",
@@ -292,7 +292,7 @@ class UfwQueryAnalyzer
                                 // "LookupMatrix" => AfwLoadHelper::getLookupMatrix(),
                                 "Backtrace" => $backtrace,
                             ]
-                        );
+                        );*/
                     } elseif (self::$_sql_analysis[$this_module][$this_table][$sql_query] > $_sql_analysis_half_seuil_calls_same_query) {
                         // $backtrace = debug_backtrace(1, 20);
                         $theSummerizedBackTrace = "";
@@ -347,7 +347,7 @@ class UfwQueryAnalyzer
 
             if (self::$sql_picture_arr[$this_module][$this_table] > $_sql_analysis_seuil_calls_by_table) {
                 if (!self::$excluded_tables[$this_table_lower]) {
-                    $backtrace = debug_backtrace(1, 20);
+                    /*$backtrace = debug_backtrace(1, 20);
                     throw new AfwRichException(
                         "Static analysis crash : The table $this_module-$this_table has been invoked more than $_sql_analysis_seuil_calls_by_table times",
                         "Can be customized in config file, variable : $this_table_lower-sql-analysis-max-calls, default value is $_sql_analysis_seuil_calls_by_table_default",
@@ -357,7 +357,7 @@ class UfwQueryAnalyzer
                             "Last query before crash" => $sql_query,
                             "Backtrace" => $backtrace
                         ]
-                    );
+                    );*/
                 }
             }
         }
