@@ -267,7 +267,7 @@ class UfwQueryAnalyzer
         $this_table_lower = strtolower($this_table);
         $_sql_analysis_seuil_calls_same_query_default = 50;
         $_sql_analysis_seuil_calls_same_query = AfwSession::config('sql-analysis-seuil-calls-same-query', $_sql_analysis_seuil_calls_same_query_default);
-        $_sql_analysis_half_seuil_calls_same_query = round($_sql_analysis_seuil_calls_same_query / 2);
+        $_sql_analysis_half_seuil_calls_same_query = round($_sql_analysis_seuil_calls_same_query * 3 / 4);
 
         if ((!self::$excluded_tables[$this_table_lower]) and AfwSession::config('MODE_DEVELOPMENT', false) and (!self::isProcessLourdMode()) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
             if (!self::$_sql_analysis[$this_module][$this_table][$sql_query]) {
@@ -290,8 +290,9 @@ class UfwQueryAnalyzer
                             ]
                         );
                     } elseif (self::$_sql_analysis[$this_module][$this_table][$sql_query] > $_sql_analysis_half_seuil_calls_same_query) {
-                        $backtrace = debug_backtrace(1, 20);
-                        $theSummerizedBackTrace = AfwHtmlHelper::theSummerizedBackTrace($backtrace);
+                        // $backtrace = debug_backtrace(1, 20);
+                        $theSummerizedBackTrace = "";
+                        // $theSummerizedBackTrace = AfwHtmlHelper::theSummerizedBackTrace($backtrace);
                         $sql_picture_example = $sql_query . " >> " . $theSummerizedBackTrace;
                         // die($sql_picture_example);
                         self::$sql_picture_examples_arr[$sql_query][] = $sql_picture_example;
