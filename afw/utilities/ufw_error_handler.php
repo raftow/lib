@@ -6,15 +6,15 @@ const _UPGRADING = false;
 
 if (!isset($relative_path)) $relative_path = "./";
 
-if ((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwExceptionHandler"))) {
-    function myAfwErrorHandler($errno, $errstr, $errfile, $errline)
+if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHandler"))) {
+    function ufwErrorHandler($errno, $errstr, $errfile, $errline)
     {
 
         echo "<b>Custom error:</b> [$errno] $errstr<br>";
         echo " Error on line $errline in $errfile<br>";
     }
 
-    function myAfwExceptionHandler($ex)
+    function ufwExceptionHandler($ex)
     {
         /*
                 if($ex instanceof TypeError)
@@ -358,4 +358,4 @@ if ((!function_exists("myAfwErrorHandler")) and (!function_exists("myAfwExceptio
 }
 
 
-set_exception_handler("myAfwExceptionHandler");
+set_exception_handler("ufwExceptionHandler");
