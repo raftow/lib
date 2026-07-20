@@ -285,7 +285,7 @@ class UfwQueryAnalyzer
                             [
                                 "Query" => "$this_module / $this_table / $sql_query",
                                 "Picture examples" => self::$sql_picture_examples_arr[$sql_query],
-                                "LookupMatrix" => AfwLoadHelper::getLookupMatrix(),
+                                // "LookupMatrix" => AfwLoadHelper::getLookupMatrix(),
                                 "Backtrace" => $backtrace,
                             ]
                         );
