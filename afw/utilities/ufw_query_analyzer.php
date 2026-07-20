@@ -274,9 +274,9 @@ class UfwQueryAnalyzer
                 self::$_sql_analysis[$this_module][$this_table][$sql_query] = 1;
             } else {
                 self::$_sql_analysis[$this_module][$this_table][$sql_query]++;
-                if (AfwSession::config('MODE_DEVELOPMENT', false)) {
+                /* if (AfwSession::config('MODE_DEVELOPMENT', false)) {
                     if (self::$_sql_analysis[$this_module][$this_table][$sql_query] > $_sql_analysis_seuil_calls_same_query) {
-
+                        
                         $backtrace = debug_backtrace(1, 20);
                         throw new AfwRichException(
                             "Query analysis crash : The same query has been called more than $_sql_analysis_seuil_calls_same_query times",
@@ -297,7 +297,7 @@ class UfwQueryAnalyzer
                         // die($sql_picture_example);
                         self::$sql_picture_examples_arr[$sql_query][] = $sql_picture_example;
                     }
-                }
+                }*/
             }
             /*
                 if($this_table != strtoupper($this_table))
