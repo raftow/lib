@@ -9,40 +9,44 @@ class AfwExportHelper
      */
     public static function afwExport($var, $recursive = true, $insideObjects = false, $bigArraysMaxShow = 30)
     {
-        $lang = AfwLanguageHelper::getGlobalLanguage();
-        $result = [];
-        if (is_object($var)) {
-            if ($var instanceof AFWObject) {
-                if (!$insideObjects) {
-                    $result = $var->getDisplay($lang);
-                } else {
-                    $result = $var->getAllfieldValues();
-                }
-            } else $result = $var->__toString();
-        } elseif (is_array($var)) {
-            $counter = 0;
-            foreach ($var as $ky => $varItem) {
-                if ($counter < $bigArraysMaxShow) {
-                    $counter++;
-                    $new_recursive =  $recursive;
-                    if (is_integer($new_recursive)) $new_recursive--;
+        try {
+            $lang = AfwLanguageHelper::getGlobalLanguage();
+            $result = [];
+            if (is_object($var)) {
+                if ($var instanceof AFWObject) {
+                    if (!$insideObjects) {
+                        $result = $var->getDisplay($lang);
+                    } else {
+                        $result = $var->getAllfieldValues();
+                    }
+                } else $result = $var->__toString();
+            } elseif (is_array($var)) {
+                $counter = 0;
+                foreach ($var as $ky => $varItem) {
+                    if ($counter < $bigArraysMaxShow) {
+                        $counter++;
+                        $new_recursive =  $recursive;
+                        if (is_integer($new_recursive)) $new_recursive--;
 
-                    if ($recursive) {
-                        $result[$ky] = self::afwExport($varItem, $new_recursive, $insideObjects);
-                    } elseif (is_object($varItem) and ($varItem instanceof AFWObject)) {
-                        $result[$ky] = $varItem->getDisplay($lang);
-                    } elseif (is_object($varItem)) $result[$ky] = $varItem->__toString();
-                    else $result[$ky] = $varItem;
-                } else {
-                    $result["limit-reached"] = $bigArraysMaxShow . " item(s) reached skip the rest of items ...";
+                        if ($recursive) {
+                            $result[$ky] = self::afwExport($varItem, $new_recursive, $insideObjects);
+                        } elseif (is_object($varItem) and ($varItem instanceof AFWObject)) {
+                            $result[$ky] = $varItem->getDisplay($lang);
+                        } elseif (is_object($varItem)) $result[$ky] = $varItem->__toString();
+                        else $result[$ky] = $varItem;
+                    } else {
+                        $result["limit-reached"] = $bigArraysMaxShow . " item(s) reached skip the rest of items ...";
+                    }
                 }
+            } else {
+                $result = $var;
             }
-        } else {
-            $result = $var;
-        }
 
-        if (is_array($result)) return self::displayArray($result, $recursive);
-        else return $result;
+            if (is_array($result)) return self::displayArray($result, $recursive);
+            else return $result;
+        } catch (Exception $e) {
+            return "Error doing afwExport";
+        }
     }
 
     /**

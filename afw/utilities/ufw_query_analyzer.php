@@ -267,16 +267,16 @@ class UfwQueryAnalyzer
         $this_table_lower = strtolower($this_table);
         $_sql_analysis_seuil_calls_same_query_default = 50;
         $_sql_analysis_seuil_calls_same_query = AfwSession::config('sql-analysis-seuil-calls-same-query', $_sql_analysis_seuil_calls_same_query_default);
-        $_sql_analysis_half_seuil_calls_same_query = round($_sql_analysis_seuil_calls_same_query * 3 / 4);
+        $_sql_analysis_half_seuil_calls_same_query = $_sql_analysis_seuil_calls_same_query - 10;
 
         if ((!self::$excluded_tables[$this_table_lower]) and AfwSession::config('MODE_DEVELOPMENT', false) and (!self::isProcessLourdMode()) and (!AfwSession::config('MODE_MEMORY_OPTIMIZE', true))) {
             if (!self::$_sql_analysis[$this_module][$this_table][$sql_query]) {
                 self::$_sql_analysis[$this_module][$this_table][$sql_query] = 1;
             } else {
                 self::$_sql_analysis[$this_module][$this_table][$sql_query]++;
-                /* if (AfwSession::config('MODE_DEVELOPMENT', false)) {
+                if (AfwSession::config('MODE_DEVELOPMENT', false)) {
                     if (self::$_sql_analysis[$this_module][$this_table][$sql_query] > $_sql_analysis_seuil_calls_same_query) {
-                        
+
                         $backtrace = debug_backtrace(1, 20);
                         throw new AfwRichException(
                             "Query analysis crash : The same query has been called more than $_sql_analysis_seuil_calls_same_query times",
@@ -297,7 +297,7 @@ class UfwQueryAnalyzer
                         // die($sql_picture_example);
                         self::$sql_picture_examples_arr[$sql_query][] = $sql_picture_example;
                     }
-                }*/
+                }
             }
             /*
                 if($this_table != strtoupper($this_table))
@@ -319,8 +319,9 @@ class UfwQueryAnalyzer
             $we_can_store_picture_example = (!self::$sql_picture_examples_arr[$this_module][$this_table] or (count(self::$sql_picture_examples_arr[$this_module][$this_table]) < 10));
 
             if ($we_should_store_picture_example and $we_can_store_picture_example) {
-                $backtrace = debug_backtrace(1, 20);
-                $theMainBackTrace = AfwHtmlHelper::theMainBackTrace($backtrace);
+                // $backtrace = debug_backtrace(1, 20);
+                // $theMainBackTrace = AfwHtmlHelper::theMainBackTrace($backtrace);
+                $theMainBackTrace = "";
                 $sql_picture_example = $sql_query . " >> " . $theMainBackTrace;
                 // die($sql_picture_example);
                 self::$sql_picture_examples_arr[$this_module][$this_table][] = $sql_picture_example;
