@@ -4864,10 +4864,10 @@ class AFWObject extends AFWRoot
 
         if (!$structure) {
             $structure = AfwStructureHelper::getStructureOf($this, $attribute);
-            $casestr = "AfwStructureHelper::getStructureOf($this, $attribute)";
+            // $casestr = "AfwStructureHelper::getStructureOf($this, $attribute)";
         } else {
             $structure = AfwStructureHelper::repareMyStructure($this, $structure, $attribute);
-            $casestr = "AfwStructureHelper::repareMyStructure($this, $structure, $attribute)";
+            // $casestr = "AfwStructureHelper::repareMyStructure($this, $structure, $attribute)";
         }
         /*
         if($attribute=="applicantFileList") {
