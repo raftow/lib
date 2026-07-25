@@ -2570,8 +2570,8 @@ class AfwShowHelper
         $arr = $object->getSOBJDetails($attribute);
 
         if (isset($arr[$lang])) $return =  $arr[$lang];
-        else $return = null;
-        if ($return === null) $return = "lang=$lang strange arr=" . var_export($arr, true);
+        else $return = "NOT-SETTED";
+        if ($return === "NOT-SETTED") $return = "lang=$lang strange arr=" . var_export($arr, true);
 
         return $return;
     }
