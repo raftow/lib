@@ -1819,10 +1819,14 @@ class AfwSqlHelper extends AFWRoot
             $return = [];
             $query_res = AfwDatabase::db_recup_rows($query, $throw_error, $throw_analysis_crash, $module_server);
             foreach ($query_res as $row) {
+                $groupby_index = "";
                 foreach ($group_by_tab as $index) {
                     $index = trim($index);
-                    $return[$row[$index]] = $row['res'];
+                    $groupby_index .= $row[$index] . "-";
                 }
+                $groupby_index = trim($groupby_index, "-");
+
+                $return[$groupby_index] = $row['res'];
             }
         } else {
             $return = AfwDatabase::db_recup_value(

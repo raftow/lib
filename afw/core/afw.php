@@ -773,6 +773,10 @@ class AFWObject extends AFWRoot
         return $return;
     }
 
+    /**
+     * @param string $function,
+     */
+
     public static function aggreg(
         $function,
         $where = '1',
@@ -4945,6 +4949,10 @@ class AFWObject extends AFWRoot
             $data_to_display = AfwShowHelper::showMatrix($this, $attribute, $langue, $structure);
             $link_to_display = "";
             if ($debugg) $data_to_display .= " comes from showMatrix(this, $attribute, $langue, structure)";
+        } elseif ($structure['TYPE'] == 'SOBJ') {
+            $data_to_display = AfwShowHelper::showSmallObject($this, $attribute, $langue, $structure);
+            $link_to_display = "";
+            if ($debugg) $data_to_display .= " comes from showSmallObject(this, $attribute, $langue, structure)";
         } elseif ($structure['TYPE'] == 'YN') {
             $ynCode = strtoupper($this->decode($key, '', false, $langue));
             $data_to_display = $this->showYNValueForAttribute($ynCode, $key, $langue);
@@ -7040,5 +7048,63 @@ class AFWObject extends AFWRoot
     public function isByColumnAuditable()
     {
         return (($this->AUDIT_DATA === 'both') or ($this->AUDIT_DATA === "bycol_audit"));
+    }
+
+    /**
+     * @param string $attribute
+     */
+    public function attributeAsSOBJ($attribute, $reel = true)
+    {
+        if (!$reel) $val = $this->calc($attribute, false, "value");
+        else $val = $this->getVal($attribute);
+        $ar = $this->decode($attribute, '', false, "ar");
+        $en = $this->decode($attribute, '', false, "en");
+
+        $arr = ["val" => $val, "ar" => $ar, "en" => $en,];
+
+        return json_encode($arr);
+    }
+
+
+    /**
+     * @param string $attribute
+     */
+    public final function getSOBJDetails($attribute, $struct = null)
+    {
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+
+        if ($struct['TYPE'] != 'SOBJ') {
+            throw new AfwRuntimeException(
+                "Only SOBJ Fields can use this getSOBJDetails method, $attribute is not SOBJ but " . $struct['TYPE']
+            );
+        }
+
+        $value = $this->getVal($attribute);
+        $value_arr = json_decode($value, true);
+        return $value_arr;
+    }
+
+
+    /**
+     * @param string $attribute
+     */
+    public final function setSOBJ($attribute, $object, $struct = null)
+    {
+        if (!$struct)
+            $struct = AfwStructureHelper::getStructureOf($this, $attribute);
+
+        if ($struct['TYPE'] != 'SOBJ') {
+            throw new AfwRuntimeException(
+                "Only SOBJ Fields can use this setSOBJ method, $attribute is not SOBJ but " . $struct['TYPE']
+            );
+        }
+
+        $val = $object->id;
+        $ar = $object->getShortDisplay("ar");
+        $en = $object->getShortDisplay("en");
+        $arr = ["val" => $val, "ar" => $ar, "en" => $en,];
+
+        $this->set($attribute, json_encode($arr));
     }
 }

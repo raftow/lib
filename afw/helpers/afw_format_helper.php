@@ -581,6 +581,7 @@ class AfwFormatHelper
         } elseif (!in_array(
             $structure['TYPE'],
             [
+                'SOBJ',
                 'MATRIX',
                 'MFK',
                 'FK',
@@ -1095,6 +1096,11 @@ class AfwFormatHelper
                     throw new AfwRuntimeException('Object should not be null if we decode a MATRIX field');
                 }
                 $return = AfwShowHelper::showMatrix($obj, $attribute, $lang, $structure);
+            case 'SOBJ':
+                if (!$obj) {
+                    throw new AfwRuntimeException('Object should not be null if we decode a SOBJ field');
+                }
+                $return = AfwShowHelper::showSmallObject($obj, $attribute, $lang, $structure);
             case 'MFK':
                 if ((!$obj) or (!$structure)) {
                     throw new AfwRuntimeException('both structure and obj should not be null if we decode an FK field');
@@ -2136,7 +2142,7 @@ class AfwFormatHelper
      */
     public static function pbm_return($err, $info, $warn = null, $success = null, $tech = null, $result_arr = [], $limitSize = null)
     {
-            return self::pbm_result($err, $info, $warn, "<br>\n", $tech, $result_arr, $limitSize, $success);
+        return self::pbm_result($err, $info, $warn, "<br>\n", $tech, $result_arr, $limitSize, $success);
     }
     /**
      * @param array|string $err
@@ -2283,10 +2289,10 @@ class AfwFormatHelper
         $path = trim($path, $separator);
         $keys = explode($separator, $path);
 
-        if(!$path) {
+        if (!$path) {
             $log_arr[] = "getElementFromArrayByPath path is empty, returning null";
             return [null, $log_arr];
-        } 
+        }
 
         // Start at the root of the array
         $temp = $array;

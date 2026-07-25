@@ -207,6 +207,8 @@ class AfwMomkenObject extends AFWObject
             return self::afield_type_by_code('mlst');
         } elseif ($afwType == 'MATRIX') {
             return self::afield_type_by_code('matrix');
+        } elseif ($afwType == 'SOBJ') {
+            return self::afield_type_by_code('sobj');
         } elseif ($afwType == 'MENUM') {
             return self::afield_type_by_code('menum');
         } elseif ($afwType == 'MTEXT') {
@@ -352,6 +354,12 @@ class AfwMomkenObject extends AFWObject
         $arr_list_of_afield_type['en'][18] = 'matrix';
         $arr_list_of_afield_type['ar'][18] = 'مصفوفة';
         $arr_list_of_afield_type['code'][18] = 'matrix';
+
+
+        // 	19	كيان صغير - small object
+        $arr_list_of_afield_type['en'][19] = 'small object';
+        $arr_list_of_afield_type['ar'][19] = 'كيان صغير';
+        $arr_list_of_afield_type['code'][19] = 'sobj';
 
         return $arr_list_of_afield_type;
     }

@@ -2551,6 +2551,30 @@ class AfwShowHelper
 
 
 
+    /**
+     * showSmallObject
+     * @param AFWObject $object
+     * @param string $attribute
+     */
+    public static function showSmallObject($object, $attribute, $lang = 'ar', $structure = null)
+    {
+        if (!$structure)
+            $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+
+        if ($structure['TYPE'] != 'SOBJ') {
+            throw new AfwRuntimeException(
+                "Only SOBJ Fields can use this method, $attribute is not SOBJ but " . $structure['TYPE']
+            );
+        }
+
+        $arr = $object->getSOBJDetails($attribute);
+
+        $return =  $arr[$lang];
+        if (!$return) $return = var_export($arr, true);
+
+        return $return;
+    }
+
 
     /**
      * showMatrix

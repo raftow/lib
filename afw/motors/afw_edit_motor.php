@@ -110,7 +110,7 @@ class AfwEditMotor
 
                     $placeholder = $instruction . ' ' . $col_title;
                 } elseif (($desc['EMPTY_IS_ALL']) or ($desc['FORMAT'] == 'EMPTY_IS_ALL')) {
-                    $placeholder_code = "ALL-$orig_col_name";                    
+                    $placeholder_code = "ALL-$orig_col_name";
                     $placeholder = $obj->translate($placeholder_code, $lang);
                     // if($placeholder == "The placeholder-settings template") die("here case 2 from obj->translate($placeholder_code, $lang)");
                     if ($placeholder == $placeholder_code) {
@@ -222,8 +222,8 @@ class AfwEditMotor
         }
 
         if (isset($desc['SPELLCHECK'])) {
-            if($desc['SPELLCHECK']) $spell_check = "spellcheck='true'";
-            else $spell_check = "spellcheck='false'"; 
+            if ($desc['SPELLCHECK']) $spell_check = "spellcheck='true'";
+            else $spell_check = "spellcheck='false'";
         } else {
             $spell_check = '';
         }
@@ -235,7 +235,7 @@ class AfwEditMotor
         }
 
         $input_disabled = $disabled = $desc['DISABLED'];
-        
+
 
         switch ($desc['TYPE']) {
             case 'PK':
@@ -277,6 +277,12 @@ class AfwEditMotor
                 include 'tpl/helper_edit_matrix.php';
 
                 break;
+
+            case 'SOBJ':
+                echo "SOBJ attributes are not editable";
+
+                break;
+
             case 'MENUM':
                 $fcol_name = $desc['FUNCTION_COL_NAME'];
                 /* if (AfwStringHelper::stringEndsWith($fcol_name, '_0')) {
