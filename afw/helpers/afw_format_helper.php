@@ -1096,11 +1096,13 @@ class AfwFormatHelper
                     throw new AfwRuntimeException('Object should not be null if we decode a MATRIX field');
                 }
                 $return = AfwShowHelper::showMatrix($obj, $attribute, $lang, $structure);
+                break;
             case 'SOBJ':
                 if (!$obj) {
                     throw new AfwRuntimeException('Object should not be null if we decode a SOBJ field');
                 }
                 $return = AfwShowHelper::showSmallObject($obj, $attribute, $lang, $structure);
+                break;
             case 'MFK':
                 if ((!$obj) or (!$structure)) {
                     throw new AfwRuntimeException('both structure and obj should not be null if we decode an FK field');
