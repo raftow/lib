@@ -389,7 +389,7 @@ class UfwQueryAnalyzer
             $backtrace = debug_backtrace(1, 20);
 
 
-            $backtrace_html = AfwHtmlHelper::htmlBackTrace($backtrace, AfwSession::config("advanced-back-trace", false));
+            $backtrace_html = AfwHtmlHelper::htmlBackTrace($backtrace, AfwSession::config("advanced-back-trace", false) or AfwSession::hasOption("ADVANCED_BACK_TRACE"));
             $nb_queries_exec = self::$nb_queries_executed;
             $duree_total = self::$duree_sql_total;
 
