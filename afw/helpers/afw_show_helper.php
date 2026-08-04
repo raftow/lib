@@ -1737,21 +1737,22 @@ class AfwShowHelper
 
             case 'ITEMS':
                 if (($structure['SHOW_DATA'] != 'EXAMPLE') and (!$structure['SHOW_MAX_DATA'])) {
-                    $items_objs = $object->get($attribute, 'object', '', false, $structure['LIMIT']);
+                    $max_items_to_show = $structure['LIMIT'];
                     // if($attribute=="attendanceList") throw new AfwRuntimeException("$object - > get($attribute) = ".var_export($items_objs,true));
                 } else {
                     $max_items_to_show = $structure['SHOW_MAX_DATA'];
                     if (!$max_items_to_show) {
                         $max_items_to_show = 600;
                     }
-                    $items_objs = $object->get(
-                        $attribute,
-                        'object',
-                        '',
-                        false,
-                        $max_items_to_show
-                    );
                 }
+
+                $items_objs = $object->get(
+                    $attribute,
+                    'object',
+                    '',
+                    false,
+                    $max_items_to_show
+                );
                 if (strtoupper($structure['FORMAT']) == 'TREE') {
                     reset($items_objs);
                     $first_item = current($items_objs);
