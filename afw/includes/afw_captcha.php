@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-require_once dirname(__FILE__)."/../captcha/src/Gregwar/Captcha/CaptchaBuilder.php";
-require_once dirname(__FILE__)."/../captcha/src/Gregwar/Captcha/PhraseBuilder.php";
+require_once dirname(__FILE__)."/../../captcha/src/Gregwar/Captcha/CaptchaBuilder.php";
+require_once dirname(__FILE__)."/../../captcha/src/Gregwar/Captcha/PhraseBuilder.php";
 // die("rafik start captcha");
 header('Content-type: image/jpeg');
 try
