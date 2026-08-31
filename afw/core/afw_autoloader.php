@@ -105,7 +105,7 @@ if (!class_exists('AfwAutoLoader')) {
                                         if (class_exists($class, FALSE))
                                                 return array(true, $file_path_to_load, []);
                                         elseif ($file_path2_to_load) {
-                                                require_once($file_path2_to_load);
+                                                include_once($file_path2_to_load);
                                                 if (class_exists($class, FALSE))
                                                         return array(true, $file_path2_to_load, []);
                                         }
