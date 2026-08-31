@@ -4732,8 +4732,10 @@ class AFWObject extends AFWRoot
         if ($auser) {
             if ($auser->isAdmin())
                 return $this->adminCanEditMe();
-            if ($auser->isSupervisor())
-                return $this->supervisorCanEditMe();
+            if ($auser->isSupervisor()) {
+                list($canEdit, $reason) = $this->supervisorCanEditMe();
+                if($canEdit) return [true, ''];
+            }
         }
 
         list(

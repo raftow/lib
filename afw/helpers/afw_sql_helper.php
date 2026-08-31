@@ -74,6 +74,8 @@ class AfwSqlHelper extends AFWRoot
                     $errors[] = "$row_col is Date field || value=[$row_val] does not match date format $intermediateDateFormat canbenull=" . $isToSetNullWhenEmptyString[$row_col] . " null? = [" . strtoupper($row_val) . "] " . AfwDateHelper::checkDateFormatReason($row_val, $intermediateDateFormat, true, true);
                 }
                 $row_val_string = "TO_DATE('$row_val', '$intermediateDateFormat')";
+            } elseif ($row_val == 'CURRENT_TIMESTAMP') {
+                $row_val_string = $row_val;
             } else {
                 if (strtoupper($row_val) == 'NULL') $row_val_cleaned = "";
                 else $row_val_cleaned = str_replace("'", "''", $row_val);

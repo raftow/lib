@@ -162,7 +162,7 @@ if ($id) {
         if (!$edit_allowed) {
             $die_message = "لا يمكنك تحرير السجل : " . $myObj->getDisplay($lang);
             if ($objme and $objme->isSuperAdmin()) $die_message .= "<br>" . $edit_not_allowed_reason;
-            elseif (true or $development_mode) $die_message .= "<!-- " . $edit_not_allowed_reason . " -->";
+            elseif ($development_mode) $die_message .= "<!-- " . $edit_not_allowed_reason . " -->";
         }
     } else {
         $return_message = $myObj->tm("Return back", $lang);
