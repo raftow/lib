@@ -30,12 +30,16 @@ class AfwInputHelper extends AFWRoot
                         $placeholder_code = $desc['PLACE-HOLDER'];
                         if (!$placeholder_code)
                                 $placeholder_code = $placeholder_standard_code;
-                        if ($placeholder_code == $placeholder_standard_code)
-                                $placeholder = $obj->getAttributeLabel($placeholder_code, $lang);
-                        elseif ($placeholder_code)
-                                $placeholder = $obj->translateMessage($placeholder_code, $lang);
-                        else
-                                $placeholder = '';
+
+                        $placeholder = $obj->getAttributeLabel($placeholder_code, $lang, false, false);
+                        if($placeholder == $placeholder_code) {
+                                $placeholder = "";
+                        }
+                        if(!$placeholder) $placeholder = $obj->translateMessage($placeholder_code, $lang);
+                        if($placeholder == $placeholder_code) {
+                                $placeholder = "";
+                        }
+                        
 
                         if ((!$placeholder) or ($placeholder == $placeholder_standard_code)) {
                                 if (($desc['MANDATORY']) and ($desc['TYPE'] != 'TEXT')) {
