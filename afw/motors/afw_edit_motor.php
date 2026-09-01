@@ -89,11 +89,13 @@ class AfwEditMotor
         }
 
         if ($obj) {
-            if ($placeholder_code == $placeholder_standard_code) {
-                $placeholder = $obj->getAttributeLabel($placeholder_code, $lang, false, false);
-                // if($placeholder == "The placeholder-settings template") die("here case 1 from getAttributeLabel($placeholder_code, $lang, false, false)");
-            } elseif ($placeholder_code) {
-                $placeholder = $obj->translateMessage($placeholder_code, $lang);
+            $placeholder = $obj->getAttributeLabel($placeholder_code, $lang, false, false);
+            if($placeholder == $placeholder_code) {
+                $placeholder = "";
+            }
+            if(!$placeholder) $placeholder = $obj->translateMessage($placeholder_code, $lang);
+            if($placeholder == $placeholder_code) {
+                $placeholder = "";
             }
         } else {
             $placeholder = '';
