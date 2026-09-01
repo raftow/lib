@@ -39,6 +39,10 @@ class AfwInputHelper extends AFWRoot
                         if($placeholder == $placeholder_code) {
                                 $placeholder = "";
                         }
+
+                        if(AfwStringHelper::stringStartsWith($placeholder, "placeholder-")) {
+                                $placeholder = "";
+                        }
                         
 
                         if ((!$placeholder) or ($placeholder == $placeholder_standard_code)) {

@@ -93,8 +93,13 @@ class AfwEditMotor
             if($placeholder == $placeholder_code) {
                 $placeholder = "";
             }
+            
             if(!$placeholder) $placeholder = $obj->translateMessage($placeholder_code, $lang);
             if($placeholder == $placeholder_code) {
+                $placeholder = "";
+            }
+
+            if(AfwStringHelper::stringStartsWith($placeholder, "placeholder-")) {
                 $placeholder = "";
             }
         } else {
