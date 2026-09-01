@@ -9,12 +9,14 @@
  * @var string $spell_check
  * @var string $input_required
  * @var string $input_disabled
+ * @var string $dir
 
  */
 
  // if(!$lang_input)  $lang_input = "en";
 ?>
-<textarea placeholder="<?php echo $placeholder ?>"
+<textarea placeholder="<?php echo $placeholder ?>" 
+    tpl='helper_edit_textarea'
     class="form-control <?php echo $lang_input ?> form-area <?php echo $css_class ?>"
     cols="<?php echo $cols ?>"
     rows="<?php echo $rows ?>"
