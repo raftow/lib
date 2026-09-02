@@ -1349,7 +1349,7 @@ class AfwSqlHelper extends AFWRoot
      */
     public static function updateObject(&$object, $only_me = true, $nocote_fields = null, $onlyReturnSQL = false, $disableAfterCommitDBEvent = false, $update_context = "")
     {
-        $devMode = AfwSession::config("MODE_DEVELOPMENT", false);
+        
         if ($object->IS_COMMITING)
             throw new AfwRuntimeException('To avoid infinite loop avoid to commit inside beforeMaj beforeUpdate beforeInsert context methods');
         $object->IS_COMMITING = true;
@@ -1360,6 +1360,8 @@ class AfwSqlHelper extends AFWRoot
         $AUDIT_DISABLED = AfwSession::config('AUDIT_DISABLED', false);
 
         $user_id = AfwSession::getUserIdActing();
+
+        $devMode = (AfwSession::config("MODE_DEVELOPMENT", false) or ($user_id==1));
 
         if ($object->IS_VIRTUAL) {
             throw new AfwRuntimeException(
