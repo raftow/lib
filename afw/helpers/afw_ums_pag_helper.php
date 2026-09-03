@@ -188,7 +188,7 @@ class AfwUmsPagHelper extends AFWRoot
     /**
      * @param AFWObject $obj
      */
-    public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false, $restrictToField = '')
+    public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false, $restrictToField = '', $create_answer_tables_if_not_exists=false)
     {
         global $lang, $the_last_sql;
         $file_dir_name = dirname(__FILE__);
@@ -463,7 +463,7 @@ class AfwUmsPagHelper extends AFWRoot
                         $row['atable'] = $tbl;
                         $row['obj'] = $obj;
 
-                        $fld_att = Afield::to_afield_att($id_main_sh, $row, $attribute);
+                        $fld_att = Afield::to_afield_att($id_main_sh, $row, $attribute, $create_answer_tables_if_not_exists);
 
                         /*
                          * if($attribute=="qualification_id")

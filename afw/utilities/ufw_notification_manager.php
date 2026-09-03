@@ -69,6 +69,17 @@ class UfwNotificationManager extends AFWRoot {
                 return [$body_tpl, $subject_tpl];
         }
 
+        /**
+         * @param array $notification_type_settings
+         * @param array $receiver
+         * @param string $notification_code
+         * @param AFWObject $object_related
+         * @param string $lang
+         * @param string|null $from_template_file
+         * @param array $token_arr
+         * @param string|null $cc_to
+         * @return array
+         */
 
         public static function sendNotification($notification_type_settings, $receiver, $notification_code, $object_related, $lang, $from_template_file=null, $token_arr=[], $cc_to=null)
         {
@@ -92,12 +103,17 @@ class UfwNotificationManager extends AFWRoot {
                                 if(!$body_sms) $return["sms"] = array(false, "no sms notification body template given for $notification_code");
                                 else
                                 {
-                                     // send SMS to receiver       
-                                     list($sms_ok, $sms_info) = UfwSmsSender::sendSMS($receiver["mobile"], $body_sms);
-                                     $sms_info_export = var_export($sms_info,true);   
-                                     $return["sms"] = array($sms_ok, $sms_info_export, $body_sms);                                     
+                                        // send SMS to receiver       
+                                        list($sms_ok, $sms_info) = UfwSmsSender::sendSMS($receiver["mobile"], $body_sms);
+                                        $sms_info_export = var_export($sms_info,true);   
+                                        $return["sms"] = array($sms_ok, $sms_info_export, $body_sms);                                     
+                                        if(is_array($notification_type_settings["sms"]) and ($notification_type_settings["sms"]["store"] == "workflow"))
+                                        {
+                                                Notification::loadByMainIndex($object_related->fld_WORKFLOW_MODULE_ID(), $object_related->(), $notification_type_settings["sms"]["event_id"], $object_related->fld_EVENT_DATE(), $receiver["id"], 0, true);
+                                        }
                                 }
                         }
+                        
                 }
 
 

@@ -6101,13 +6101,13 @@ class AFWObject extends AFWRoot
         return [true, ''];
     }
 
-    public function pagMe($id_main_sh, $updateIfExists = false, $restrictToField = '')
+    public function pagMe($id_main_sh, $updateIfExists = false, $restrictToField = '', $create_answer_tables_if_not_exists = false)
     {
         $this_db_structure = static::afwDbStructure(
             $return_type = 'structure',
             'all'
         );
-        return AfwUmsPagHelper::pagObject($this, $this_db_structure, static::$MODULE, static::$TABLE, $id_main_sh, $updateIfExists, $restrictToField);
+        return AfwUmsPagHelper::pagObject($this, $this_db_structure, static::$MODULE, static::$TABLE, $id_main_sh, $updateIfExists, $restrictToField, $create_answer_tables_if_not_exists);
     }
 
     public function setContextAndPartitionCols($part_cols, $context_cols)

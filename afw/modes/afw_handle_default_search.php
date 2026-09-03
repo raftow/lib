@@ -15,6 +15,11 @@ $me =  $objme->id;
 $MAX_ROW_DEFAULT = AfwSession::config("MAX_ROW", 500);
 $MAX_ROW = AfwSession::config("MAX_ROW-$cl", $MAX_ROW_DEFAULT);
 if (!$objme->isAdmin()) $MAX_ROW = AfwSession::config("MAX_ROW-$cl-not-admin", $MAX_ROW);
+if($criteria_is_static) {
+        // because the criteria is static, the end user can not control the result size
+        // we can increase the limit of records to be retrieved
+        $MAX_ROW = 2 * $MAX_ROW;
+}
 
 if ($_REQUEST["xls_on"]) $genere_xls = true;
 if ($_REQUEST["migration_on"]) $genere_migration = true;
@@ -110,7 +115,7 @@ if (!$liste_obj) {
         if (($action != "retrieve")) {
                 // die(" strange action=$action");
                 //$actions_tpl_arr = array();
-        } elseif ($count_liste_obj > $MAX_ROW) {
+        } elseif (($count_liste_obj > $MAX_ROW) and (!$criteria_is_static)) {
                 AfwSession::pushWarning("$count_liste_obj " . $obj->tm("records in the result exceeds the limit allowed by data security to allow executing edit delete actions on"));
                 // AfwSession::pushInformation($obj->tm("edit,delete buttons have been disabled"));                
                 AfwSession::pushInformation($obj->tm("Please choose more refined criteria"));
