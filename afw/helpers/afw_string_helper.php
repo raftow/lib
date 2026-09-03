@@ -76,12 +76,23 @@ class AfwStringHelper
                 return $string;
         }
 
-        public static function removeCotesAndBalises($string, $removeBalises = false)
+        /**
+         * Remove cotes and balises from a string
+         * @param string $string the string to clean
+         * @param bool $removeBalises if true, remove < and > and -- from the string
+         * @param bool $removeReturns if true, remove \n and \r from the string
+         */
+        
+        public static function removeCotesAndBalises($string, $removeBalises = false, $removeReturns=false)
         {
 
                 $string = str_replace('"', '', $string);
                 $string = str_replace("'", '', $string);
+                if ($removeReturns) $string = str_replace("\n", '', $string);
+                if ($removeReturns) $string = str_replace("\r", '', $string);
                 if ($removeBalises) $string = str_replace(">", '', $string);
+                if ($removeBalises) $string = str_replace("<", '', $string);
+                if ($removeBalises) $string = str_replace("--", '', $string);
                 return $string;
         }
 
