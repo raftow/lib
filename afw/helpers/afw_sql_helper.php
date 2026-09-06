@@ -52,28 +52,39 @@ class AfwSqlHelper extends AFWRoot
             elseif ($isDatetime[$row_col]) {
                 list($dateformat_tmp, $timeformat_tmp) = explode(' ', $datetimeformat);
                 list($row_val_date, $row_val_time) = explode(' ', $row_val);
-                $row_val_time_parts = explode(":", $row_val_time);
-                $row_val_time_parts_repared = [];
-                foreach ($row_val_time_parts as $tpi => $row_val_time_part) {
-                    $row_val_time_part = intval($row_val_time_part);
-                    if ($row_val_time_part < 10) $row_val_time_part = "0" . $row_val_time_part;
-                    else $row_val_time_part = "" . $row_val_time_part;
-                    $row_val_time_parts_repared[$tpi] = $row_val_time_part;
+                if(strtoupper($row_val_date) == 'NULL') {
+                    $row_val_string = "null";
                 }
+                else {
+                    $row_val_time_parts = explode(":", $row_val_time);
+                    $row_val_time_parts_repared = [];
+                    foreach ($row_val_time_parts as $tpi => $row_val_time_part) {
+                        $row_val_time_part = intval($row_val_time_part);
+                        if ($row_val_time_part < 10) $row_val_time_part = "0" . $row_val_time_part;
+                        else $row_val_time_part = "" . $row_val_time_part;
+                        $row_val_time_parts_repared[$tpi] = $row_val_time_part;
+                    }
 
-                $row_val_time = implode(':', $row_val_time_parts_repared);
+                    $row_val_time = implode(':', $row_val_time_parts_repared);
 
-                if (!AfwDateHelper::checkDateFormat($row_val_date, $dateformat_tmp, true)) {
-                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], date-part-value is incorrect || [$row_val_date] does not match date format $dateformat_tmp canbenull=" . $isToSetNullWhenEmptyString[$row_col] . " null? = [" . strtoupper($row_val) . "] " . AfwDateHelper::checkDateFormatReason($row_val_date, $dateformat_tmp, true, true);
-                } elseif (!AfwDateHelper::checkTimeFormat($row_val_time, $timeformat_tmp, true)) {
-                    $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], time-part-value is incorrect || [$row_val_time] does not match time format $timeformat_tmp canbenull=" . $isToSetNullWhenEmptyString[$row_col] . " null? = [" . strtoupper($row_val) . "]";
+                    if (!AfwDateHelper::checkDateFormat($row_val_date, $dateformat_tmp, true)) {
+                        $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], date-part-value is incorrect || [$row_val_date] does not match date format $dateformat_tmp canbenull=" . $isToSetNullWhenEmptyString[$row_col] . " null? = [" . strtoupper($row_val) . "] " . AfwDateHelper::checkDateFormatReason($row_val_date, $dateformat_tmp, true, true);
+                    } elseif (!AfwDateHelper::checkTimeFormat($row_val_time, $timeformat_tmp, true)) {
+                        $errors[] = "$row_col is Datetime field expected format is [$datetimeformat], time-part-value is incorrect || [$row_val_time] does not match time format $timeformat_tmp canbenull=" . $isToSetNullWhenEmptyString[$row_col] . " null? = [" . strtoupper($row_val) . "]";
+                    }
+                    $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
                 }
-                $row_val_string = "TO_DATE('$row_val', '$datetimeformat')";
+                
             } elseif ($isDate[$row_col]) {
-                if (!AfwDateHelper::checkDateFormat($row_val, $intermediateDateFormat, true)) {
-                    $errors[] = "$row_col is Date field || value=[$row_val] does not match date format $intermediateDateFormat canbenull=" . $isToSetNullWhenEmptyString[$row_col] . " null? = [" . strtoupper($row_val) . "] " . AfwDateHelper::checkDateFormatReason($row_val, $intermediateDateFormat, true, true);
+                if(strtoupper($row_val) == 'NULL') {
+                    $row_val_string = "null";
                 }
-                $row_val_string = "TO_DATE('$row_val', '$intermediateDateFormat')";
+                else {
+                    if (!AfwDateHelper::checkDateFormat($row_val, $intermediateDateFormat, true)) {
+                        $errors[] = "$row_col is Date field || value=[$row_val] does not match date format $intermediateDateFormat canbenull=" . $isToSetNullWhenEmptyString[$row_col] . " null? = [" . strtoupper($row_val) . "] " . AfwDateHelper::checkDateFormatReason($row_val, $intermediateDateFormat, true, true);
+                    }
+                    $row_val_string = "TO_DATE('$row_val', '$intermediateDateFormat')";
+                }
             } elseif ($row_val == 'CURRENT_TIMESTAMP') {
                 $row_val_string = $row_val;
             } else {

@@ -109,7 +109,15 @@ class UfwNotificationManager extends AFWRoot {
                                         $return["sms"] = array($sms_ok, $sms_info_export, $body_sms);                                     
                                         if(is_array($notification_type_settings["sms"]) and ($notification_type_settings["sms"]["store"] == "workflow"))
                                         {
-                                                Notification::loadByMainIndex($object_related->fld_WORKFLOW_MODULE_ID(), $object_related->(), $notification_type_settings["sms"]["event_id"], $object_related->fld_EVENT_DATE(), $receiver["id"], 0, true);
+                                                list($workflow_module_id, $workflow_entity_id) = WorkflowEntity::get_workflow_entity_id($object_related);
+                                                $notifObj = Notification::loadByMainIndex($workflow_module_id, $workflow_entity_id, $notification_type_settings["sms"]["event_id"], '', $receiver["id"], 0, true);
+                                                // no email  here
+                                                $notifObj->set("mobile", $receiver["mobile"]);
+                                                $notifObj->set("notification_title", $notification_code);
+                                                $notifObj->set("notification_body", $body_sms);
+                                                $notifObj->set("sent", $sms_ok ? 'Y' : 'N');
+                                                $notifObj->set("sent_date", date('Y-m-d H:i:s'));
+                                                $notifObj->commit();
                                         }
                                 }
                         }
@@ -139,7 +147,20 @@ class UfwNotificationManager extends AFWRoot {
                                         $email_ok = $res["result"];
                                         $email_info_export = $res["error"];
                                      
-                                        $return["email"] = array($email_ok, $email_info_export, $body_email);                                     
+                                        $return["email"] = array($email_ok, $email_info_export, $body_email); 
+                                        
+                                        if(is_array($notification_type_settings["email"]) and ($notification_type_settings["email"]["store"] == "workflow"))
+                                        {
+                                                list($workflow_module_id, $workflow_entity_id) = WorkflowEntity::get_workflow_entity_id($object_related);
+                                                $notifObj = Notification::loadByMainIndex($workflow_module_id, $workflow_entity_id, $notification_type_settings["email"]["event_id"], '', $receiver["id"], 0, true);
+                                                // no mobile  here
+                                                $notifObj->set("email", $receiver["email"]);
+                                                $notifObj->set("notification_title", $email_subject);
+                                                $notifObj->set("notification_body", $body_email);
+                                                $notifObj->set("sent", $email_ok ? 'Y' : 'N');
+                                                $notifObj->set("sent_date", date('Y-m-d H:i:s'));
+                                                $notifObj->commit();
+                                        }
                                 }
                         }
                 }
