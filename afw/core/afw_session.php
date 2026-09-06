@@ -970,7 +970,7 @@ class AfwSession extends AFWRoot
 
         public static function export_session()
         {
-                return AfwExport::export($_SESSION, true);
+                return AfwExportHelper::afwExport($_SESSION, true);
         }
 
 
