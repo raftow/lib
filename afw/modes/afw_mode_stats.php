@@ -107,8 +107,8 @@ AfwStatsHelper::outputModeStatsTable(
         $stats_code,
         $footer_sum_title_arr,
         $footer_total_arr,
-        $bloc_col_end = [],
-        $url_to_show_arr = [],
+        $bloc_col_end,
+        $url_to_show_arr,
         $lang
     );
 

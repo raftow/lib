@@ -109,6 +109,10 @@ class UfwNotificationManager extends AFWRoot {
                                         $return["sms"] = array($sms_ok, $sms_info_export, $body_sms);                                     
                                         if(is_array($notification_type_settings["sms"]) and ($notification_type_settings["sms"]["store"] == "workflow"))
                                         {
+                                                AfwAutoLoader::addModule("workflow");
+                                                if(!$receiver["id"]) {
+                                                        throw new AfwRuntimeException("can't store notification in workflow without receiver id : receiver array : " . var_export($receiver,true)); //  . " notification_type_settings = ".var_export($notification_type_settings,true)
+                                                }
                                                 list($workflow_module_id, $workflow_entity_id) = WorkflowEntity::get_workflow_entity_id($object_related);
                                                 $notifObj = Notification::loadByMainIndex($workflow_module_id, $workflow_entity_id, $notification_type_settings["sms"]["event_id"], '', $receiver["id"], 0, true);
                                                 // no email  here
@@ -152,6 +156,9 @@ class UfwNotificationManager extends AFWRoot {
                                         if(is_array($notification_type_settings["email"]) and ($notification_type_settings["email"]["store"] == "workflow"))
                                         {
                                                 AfwAutoLoader::addModule("workflow");
+                                                if(!$receiver["id"]) {
+                                                        throw new AfwRuntimeException("can't store notification in workflow without receiver id : receiver array : " . var_export($receiver,true)); //  . " notification_type_settings = ".var_export($notification_type_settings,true)
+                                                }
                                                 list($workflow_module_id, $workflow_entity_id) = WorkflowEntity::get_workflow_entity_id($object_related);
                                                 $notifObj = Notification::loadByMainIndex($workflow_module_id, $workflow_entity_id, $notification_type_settings["email"]["event_id"], '', $receiver["id"], 0, true);
                                                 // no mobile  here
