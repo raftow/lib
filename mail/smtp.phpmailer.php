@@ -675,6 +675,8 @@ class PHPMailer {
     }
     $to = implode(', ', $toArr);
 
+    $rt = 0;
+
     $params = sprintf("-oi -f %s", $this->Sender);
     if ($this->Sender != '' && strlen(ini_get('safe_mode'))< 1) {
       $old_from = ini_get('sendmail_from');
@@ -855,7 +857,7 @@ class PHPMailer {
             if (!$this->smtp->Authenticate($this->Username, $this->Password)) 
             {
               $admin_log = var_export($this->smtp->error,true)." hst=".$hst." un=".$this->Username." pwd=yyU".$this->Password."Yxx";
-              if($MODE_BATCH) die('SMTP Error: Could not authenticate. '.$admin_log);
+              // if($MODE_BATCH) die('SMTP Error: Could not authenticate. '.$admin_log);
               $exception_message = 'SMTP Error: Could not authenticate.';
               if(AfwSession::config("MODE_DEVELOPMENT",false)) $exception_message .= $admin_log;
               throw new phpmailerException($exception_message);
@@ -1711,7 +1713,7 @@ class PHPMailer {
         elseif ( ($dec == 61) || ($dec < 32 ) || ($dec > 126) ) { // always encode "\t", which is *not* required
           $h2 = floor($dec/16);
           $h1 = floor($dec%16);
-          $c = $escape . $hex[$h2] . $hex[$h1];
+          $c = $escape . $hex[intval($h2)] . $hex[intval($h1)];
         }
         if ( (strlen($newline) + strlen($c)) >= $line_max ) { // CRLF is not counted
           $output .= $newline . $escape . $eol; //  soft line break; " =\r\n" is okay
@@ -2340,6 +2342,8 @@ class PHPMailer {
     $DKIMtime             = date("YmdHis"); // Signature Timestamp = seconds since 00:00:00 - Jan 1, 1970 (UTC time zone)
     $subject_header       = "Subject: $subject";
     $headers              = explode("\r\n", $headers_line);
+    $from_header = "";
+    $to_header   = "";
     foreach ($headers as $header) {
       if (strpos($header, 'From:') === 0) {
         $from_header=$header;
