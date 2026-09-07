@@ -151,6 +151,7 @@ class UfwNotificationManager extends AFWRoot {
                                         
                                         if(is_array($notification_type_settings["email"]) and ($notification_type_settings["email"]["store"] == "workflow"))
                                         {
+                                                AfwAutoLoader::addModule("workflow");
                                                 list($workflow_module_id, $workflow_entity_id) = WorkflowEntity::get_workflow_entity_id($object_related);
                                                 $notifObj = Notification::loadByMainIndex($workflow_module_id, $workflow_entity_id, $notification_type_settings["email"]["event_id"], '', $receiver["id"], 0, true);
                                                 // no mobile  here
