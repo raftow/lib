@@ -1844,18 +1844,25 @@ class AFWObject extends AFWRoot
     /**
      * @param string $listAttribute
      */
-
     public function loadMyList($listAttribute) {
+        return $this->loadMyAttribute($listAttribute, true);
+    }
+
+    /**
+     * @param string $attribute
+     */
+
+    public function loadMyAttribute($attribute, $isListAttribute = true) {
         $className = get_class($this);
 
-        if(!self::$myListCache[$className][$this->id][$listAttribute]) {
-            self::$myListCache[$className][$this->id][$listAttribute] = $this->het($listAttribute);
-            if(!self::$myListCache[$className][$this->id][$listAttribute]) self::$myListCache[$className][$this->id][$listAttribute] = 'not-found';
+        if(!self::$myListCache[$className][$this->id][$attribute]) {
+            self::$myListCache[$className][$this->id][$attribute] = $this->het($attribute);
+            if(!self::$myListCache[$className][$this->id][$attribute]) self::$myListCache[$className][$this->id][$attribute] = 'not-found';
         }
 
-        if(self::$myListCache[$className][$this->id][$listAttribute] === 'not-found') return null;
+        if(self::$myListCache[$className][$this->id][$attribute] === 'not-found') return $isListAttribute ? [] : null;
 
-        return self::$myListCache[$className][$this->id][$listAttribute];
+        return self::$myListCache[$className][$this->id][$attribute];
 
     }
 
