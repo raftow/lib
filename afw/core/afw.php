@@ -50,6 +50,8 @@ class AFWObject extends AFWRoot
     private static $mfk_separator = ',';
     private static $my_debugg_db_structure = null;
 
+    private static $myListCache = [];
+
     // params
 
     /**
@@ -1838,6 +1840,25 @@ class AFWObject extends AFWRoot
 
         return false;
     }
+
+    /**
+     * @param string $listAttribute
+     */
+
+    public function loadMyList($listAttribute) {
+        $className = get_class($this);
+
+        if(!self::$myListCache[$className][$this->id][$listAttribute]) {
+            self::$myListCache[$className][$this->id][$listAttribute] = $this->het($listAttribute);
+            if(!self::$myListCache[$className][$this->id][$listAttribute]) self::$myListCache[$className][$this->id][$listAttribute] = 'not-found';
+        }
+
+        if(self::$myListCache[$className][$this->id][$listAttribute] === 'not-found') return null;
+
+        return self::$myListCache[$className][$this->id][$listAttribute];
+
+    }
+
 
     /**
      * get
