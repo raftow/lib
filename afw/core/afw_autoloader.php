@@ -15,12 +15,20 @@ if (!class_exists('AfwAutoLoader')) {
                         '/../cmn/',
                 ];  // "/../crm/","/../p-ag/", "/../b-au/",
 
+                /**
+                 * @param string $module
+                 * @return bool
+                 */
                 public static function haveModule($module)
                 {
                         $to_find = "/../$module/";
                         return (in_array($to_find, self::$modules_autoload_by_prio));
                 }
 
+                /**
+                 * @param string $module
+                 * @return void
+                 */
                 public static function addModule($module)
                 {
                         $to_add = "/../$module/";
@@ -32,6 +40,20 @@ if (!class_exists('AfwAutoLoader')) {
                         }
                 }
 
+
+                /**
+                 * @param string $module
+                 * @return bool
+                 */
+                public static function moduleExists($module) {
+                        $cl =  AfwStringHelper::tableToClass($module."_object");
+                        return class_exists($cl, true);
+                }
+
+                 /**
+                 * @param string $cl
+                 * @return bool
+                 */
                 public static function afwClassExists($cl)
                 {
                         try {
@@ -44,6 +66,10 @@ if (!class_exists('AfwAutoLoader')) {
                         }
                 }
 
+                 /**
+                 * @param string $module
+                 * @return void
+                 */
                 public static function addMainModule($module)
                 {
                         $to_add = "/../$module/";
@@ -58,6 +84,10 @@ if (!class_exists('AfwAutoLoader')) {
                         }
                 }
 
+                 /**
+                 * @param string $class
+                 * @return array
+                 */
                 public static function getClassPath($class)
                 {
                         $autol_file_dir_name = dirname(__FILE__) . "/..";
@@ -231,6 +261,10 @@ if (!class_exists('AfwAutoLoader')) {
                                 return array(true, 'already exists', []);
                 }
 
+                /**
+                 * @param string $class
+                 * @return bool
+                 */
                 public static function classAutoLoader($class)
                 {
                         if (!class_exists($class, FALSE)) {
@@ -243,6 +277,8 @@ if (!class_exists('AfwAutoLoader')) {
                                         return FALSE;
                                 }
                         }
+
+                        return $found;
 
                         /*
                          * elseif (!is_subclass_of($class, 'AFWRoot'))
