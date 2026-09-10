@@ -43,8 +43,8 @@ class AfwRuntimeException extends RuntimeException
         if ($throwed_arr['SQL'] and $object) {
             $msg .= "<br>\nthrowed : ";
 
-            if ($object->debugg_sql_query) {
-                $msg .= 'Query     : ' . $object->debugg_sql_query . "<br>\n";
+            if ($object->debugg_last_sql) {
+                $msg .= 'Query     : ' . $object->debugg_last_sql . "<br>\n";
             }
             if ($object->debugg_row_count) {
                 $msg .= 'Nb rows       :' . $object->debugg_row_count . "<br>\n";

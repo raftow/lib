@@ -501,12 +501,17 @@ class AFWObject extends AFWRoot
         // or @toReImplement in subclasses
     }
 
+    public final function getLastSqlQuery()
+    {
+        return $this->debugg_last_sql;
+    }
+
     public final function execQuery($sql_query, $throw_error = true, $throw_analysis_crash = true)
     {
         $module_server = $this->getModuleServer();
         list($result, $row_count, $affected_row_count) = AfwSqlHelper::executeQuery($module_server, static::$MODULE, static::$TABLE, $sql_query, $throw_error, $throw_analysis_crash);
 
-        $this->debugg_sql_query = $sql_query;
+        $this->debugg_last_sql = $sql_query;
         $this->debugg_affected_row_count = $affected_row_count;
         $this->debugg_row_count = $row_count;
         $this->tableQueried($sql_query, $row_count, $affected_row_count);
