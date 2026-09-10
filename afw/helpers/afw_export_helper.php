@@ -6,6 +6,7 @@ class AfwExportHelper
     /**
      * afwExport : nice display of variables in a momken project
      * @param mixed $var
+     * @return string to be exported or displayed
      */
     public static function afwExport($var, $recursive = true, $insideObjects = false, $bigArraysMaxShow = 30)
     {
