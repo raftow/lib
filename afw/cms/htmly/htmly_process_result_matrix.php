@@ -7,9 +7,9 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
      * @param string $title
      * @param string $the_message
      */
-    public function addError($title, $the_message)
+    public function addError($title, $the_message, $css_other_classes="")
     {
-        $this->addCell(null, $title, $the_message, "", "htmly-matrix-error");
+        $this->addCell(null, $title, $the_message, "", "htmly-matrix-error $css_other_classes");
     }
 
 
@@ -19,9 +19,9 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
      * @param string $title
      * @param string $the_message
      */
-    public function addWarning($title, $the_message)
+    public function addWarning($title, $the_message, $css_other_classes="")
     {
-        $this->addCell(null, $title, $the_message, "", "htmly-matrix-warning");
+        $this->addCell(null, $title, $the_message, "", "htmly-matrix-warning $css_other_classes");
     }
 
     /**
@@ -30,9 +30,9 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
      * @param string $title
      * @param string $the_message
      */
-    public function addSuccess($title, $the_message)
+    public function addSuccess($title, $the_message, $css_other_classes="")
     {
-        $this->addCell(null, $title, $the_message, "", "htmly-matrix-success");
+        $this->addCell(null, $title, $the_message, "", "htmly-matrix-success $css_other_classes");
     }
 
 
@@ -45,15 +45,16 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
      * @param string $showTitleMethod The title method to describe the object if the object is null it should contain the title itself.
      * 
      */
-    public function addResult($object, $error, $warning, $success, $showTitleMethod = "getShortDisplay")
+    public function addResult($object, $error, $warning, $success, $showTitleMethod = "getShortDisplay", $result_alert="")
     {
         $title = $object ? $object->$showTitleMethod(AfwLanguageHelper::getGlobalLanguage()) : $showTitleMethod;
+        $alert = $object ? $object->alert : $result_alert;
         if ($error) {
-            $this->addError($title, $error);
+            $this->addError($title, $error, $alert);
         } elseif ($warning) {
-            $this->addWarning($title, $warning);
+            $this->addWarning($title, $warning, $alert);
         } elseif ($success) {
-            $this->addSuccess($title, $success);
+            $this->addSuccess($title, $success, $alert);
         }
     }
 }
