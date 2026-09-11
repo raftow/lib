@@ -2157,15 +2157,23 @@ class AfwLoadHelper extends AFWRoot
             }
             $return = NULL;
             $case = "no case";
-            if ($obj) {
+            $old_case = "";
+            if ($obj and method_exists($obj, $object_method)) {
                 $return = $obj->$object_method();
-                $case = "obj->$object_method()";
+                $case = "obj->$object_method() = " . var_export($return, true);
             }
 
             if (!$return) {
                 $className = AfwStringHelper::tableToClass($table);
-                $return = $className::$method();
-                $case = "$className :: $method() = " . var_export($return, true);
+                if(method_exists($className, $object_method)) {
+                    $return = $className::$method();
+                    if($case != "no case") {
+                        $old_case = $case; 
+                    }
+                    $case = "$className :: $method() = " . var_export($return, true). "old case : $old_case";
+
+                }
+                
             }
             // echo "call to $className::$method() return [";
             // print_r($return);
