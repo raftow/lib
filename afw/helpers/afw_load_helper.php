@@ -2162,6 +2162,9 @@ class AfwLoadHelper extends AFWRoot
                 $return = $obj->$object_method();
                 $case = "obj->$object_method() = " . var_export($return, true);
             }
+            else {
+                $case .= " obj->$object_method() method not found";
+            }
 
             if (!$return) {
                 $className = AfwStringHelper::tableToClass($table);
@@ -2172,6 +2175,8 @@ class AfwLoadHelper extends AFWRoot
                     }
                     $case = "$className :: $method() = " . var_export($return, true). "old case : $old_case";
 
+                }else {
+                    $case .= " $className :: $method() method not found";
                 }
                 
             }
