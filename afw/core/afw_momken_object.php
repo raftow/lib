@@ -346,9 +346,9 @@ class AfwMomkenObject extends AFWObject
         $arr_list_of_afield_type['code'][11] = 'time';
 
         // 	17	قائمة تفاصيل
-        $arr_list_of_afield_type['en'][17] = 'long text';
-        $arr_list_of_afield_type['ar'][17] = 'نص طويل';
-        $arr_list_of_afield_type['code'][17] = 'mtext';
+        $arr_list_of_afield_type['en'][17] = 'details list';
+        $arr_list_of_afield_type['ar'][17] = 'قائمة تفاصيل';
+        $arr_list_of_afield_type['code'][17] = 'items';
 
         // 	18	مصفوفة
         $arr_list_of_afield_type['en'][18] = 'matrix';
