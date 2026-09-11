@@ -2168,7 +2168,7 @@ class AfwLoadHelper extends AFWRoot
 
             if (!$return) {
                 $className = AfwStringHelper::tableToClass($table);
-                if(method_exists($className, $object_method)) {
+                if(method_exists($className, $method)) {
                     $return = $className::$method();
                     if($case != "no case") {
                         $old_case = $case; 
