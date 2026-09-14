@@ -933,7 +933,8 @@ class AfwLoadHelper extends AFWRoot
             if ($value) {
                 $loaded_by = $value;
             } else {
-                $loaded_by = $object->getTheLoadByIndex();
+                // I will add [] because the index may be one column so conflict with load by id
+                $loaded_by = "[".$object->getTheLoadByIndex()."]";
             }
         }
 
