@@ -964,7 +964,7 @@ class AfwLoadHelper extends AFWRoot
                 foreach ($all_fv as $attribute => $attribute_value) {
                     $result_row[$attribute] = $attribute_value;
                 }
-                $result_row['debugg_source'] = 'system cache';
+                $result_row['debugg_source'] = "system cache(mod=$classNameModule,tab=$classNameTable,loadby=$loaded_by)";
                 $query = 'from cache';
                 /*$result_row_from =
                     'getFromCache(' .
@@ -1052,7 +1052,7 @@ class AfwLoadHelper extends AFWRoot
                     $object->debugg_last_sql = $query;
                 } else {
                     //
-                    $object->debugg_last_sql = 'from row : ' . var_export($result_row, true);
+                    $object->debugg_last_sql = 'from cached row : ' . var_export($result_row, true);
                 }
                 // $time_end4_4 = microtime(true);
                 $the_pk = $object->getPK();
