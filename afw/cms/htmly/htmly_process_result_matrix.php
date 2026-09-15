@@ -7,9 +7,9 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
      * @param string $title
      * @param string $the_message
      */
-    public function addError($title, $the_message, $css_other_classes="")
+    public function addError($title, $the_message, $css_other_classes="", $special_char = "&nbsp;")
     {
-        $this->addCell(null, $title, $the_message, "", "htmly-matrix-error $css_other_classes");
+        $this->addCell(null, $title, $the_message, "", "htmly-matrix-error $css_other_classes", $special_char);
     }
 
 
@@ -19,9 +19,9 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
      * @param string $title
      * @param string $the_message
      */
-    public function addWarning($title, $the_message, $css_other_classes="")
+    public function addWarning($title, $the_message, $css_other_classes="", $special_char = "&nbsp;")
     {
-        $this->addCell(null, $title, $the_message, "", "htmly-matrix-warning $css_other_classes");
+        $this->addCell(null, $title, $the_message, "", "htmly-matrix-warning $css_other_classes", $special_char);
     }
 
     /**
@@ -30,9 +30,9 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
      * @param string $title
      * @param string $the_message
      */
-    public function addSuccess($title, $the_message, $css_other_classes="")
+    public function addSuccess($title, $the_message, $css_other_classes="", $special_char = "&nbsp;")
     {
-        $this->addCell(null, $title, $the_message, "", "htmly-matrix-success $css_other_classes");
+        $this->addCell(null, $title, $the_message, "", "htmly-matrix-success $css_other_classes", $special_char);
     }
 
 
@@ -45,16 +45,16 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
      * @param string $showTitleMethod The title method to describe the object if the object is null it should contain the title itself.
      * 
      */
-    public function addResult($object, $error, $warning, $success, $showTitleMethod = "getShortDisplay", $result_alert="")
+    public function addResult($object, $error, $warning, $success, $showTitleMethod = "getShortDisplay", $result_alert="", $special_char = "&nbsp;")
     {
         $title = $object ? $object->$showTitleMethod(AfwLanguageHelper::getGlobalLanguage()) : $showTitleMethod;
         $alert = $object ? $object->alert : $result_alert;
         if ($error) {
-            $this->addError($title, $error, $alert);
+            $this->addError($title, $error, $alert, $special_char);
         } elseif ($warning) {
-            $this->addWarning($title, $warning, $alert);
+            $this->addWarning($title, $warning, $alert, $special_char);
         } elseif ($success) {
-            $this->addSuccess($title, $success, $alert);
+            $this->addSuccess($title, $success, $alert, $special_char);
         }
     }
 }

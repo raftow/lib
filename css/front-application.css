@@ -2048,16 +2048,21 @@ div.class_input_width_90>div.form-control {
     width: 85% !important;
 }
 
+/*  !!!!   Important  !!!!!! */
+/* Do not change this below except if no other solution and test well how appears 
+   errors in mode-edit or mode-display for Momken auto-genertaed forms */
 .hzm_tooltip_error {
     margin-top: -32px;
+    z-index: 9999 !important;
     position: sticky !important;
-    /* z-index: 9999 !important; */
-    /* position: sticky !important; */
     color: red;
-    margin-right: 120px;
+    margin-right: 220px;
+    min-width: 250px;
     font-size: 13px;
     height: 32px;
+    background-color: white;
 }
+/*  !!!!   Important  !!!!!! */
 
 .form-control-div.errors {
     border-style: none;

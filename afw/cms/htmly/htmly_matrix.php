@@ -58,7 +58,7 @@ class HtmlyMatrix extends HtmlyElement
      * @param string $link
      * @param string $special_class
      */
-    public function addCell($id, $title, $hint, $link = "", $special_class = "")
+    public function addCell($id, $title, $hint, $link = "", $special_class = "", $special_char = "&nbsp;")
     {
         $title = AfwStringHelper::removeCotesAndBalises($title);
         $hint = AfwStringHelper::removeCotesAndBalises($hint);
@@ -72,7 +72,7 @@ class HtmlyMatrix extends HtmlyElement
         $this->cells[$id] = ['id' => $id, 'title' => $title, 'hint' => $hint, 'link' => $link, 'special_class' => $special_class];
         $this_id = $this->id;
         $cell_id = "matrix-" . $this_id . "-" . $id;
-        $content_min = "<span title='$hint : $title'>&nbsp;</span>";
+        $content_min = "<span title='$hint : $title'>$special_char</span>";
         if ($link) {
             $content = "<a href='$link'>$content_min</a>";
         } else {
