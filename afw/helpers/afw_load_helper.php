@@ -4,6 +4,7 @@ class AfwLoadHelper extends AFWRoot
     private static $lookupMatrix;
     private static $lookupProps;
     private static $noCacheManagementArr = [];
+    private static $loadCountArr = [];
 
 
 
@@ -892,8 +893,6 @@ class AfwLoadHelper extends AFWRoot
      */
     public static function loadAfwObject(&$object, $value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '')
     {
-        global $load_count;
-
         // $time_start = microtime(true);
 
         $query = 'no-query';
@@ -910,17 +909,17 @@ class AfwLoadHelper extends AFWRoot
         if ($optim_lookup and $object->IS_SMALL_LOOKUP) {
             if (!$result_row)  // may be to add : and $object->IS_SMALL
             {
-                if (!$load_count[$className]["any"]) $load_count[$className]["any"] = 0;
-                $load_count[$className]["any"]++;
-                if ($MODE_OPTIMIZE_MAX and (!UfwQueryAnalyzer::isProcessLourdMode()) and ($load_count[$className]["any"] > 3)) {
+                if (!self::$loadCountArr[$className]["any"]) self::$loadCountArr[$className]["any"] = 0;
+                self::$loadCountArr[$className]["any"]++;
+                if ($MODE_OPTIMIZE_MAX and (!UfwQueryAnalyzer::isProcessLourdMode()) and (self::$loadCountArr[$className]["any"] > 3)) {
                     throw new AfwRuntimeException("All the lookup table $className should be loaded once, not record by record");
                 }
             }
 
             if ($value) {
-                if (!$load_count[$className][$value]) $load_count[$className][$value] = 0;
-                $load_count[$className][$value]++;
-                if ($load_count[$className][$value] > 3) {
+                if (!self::$loadCountArr[$className][$value]) self::$loadCountArr[$className][$value] = 0;
+                self::$loadCountArr[$className][$value]++;
+                if (self::$loadCountArr[$className][$value] > 3) {
                     throw new AfwRuntimeException("same table $className same id $value too much loaded");
                 }
             }
@@ -934,7 +933,8 @@ class AfwLoadHelper extends AFWRoot
                 $loaded_by = $value;
             } else {
                 // I will add [] because the index may be one column so conflict with load by id
-                $loaded_by = "[".$object->getTheLoadByIndex()."]";
+                $loaded_by_index = $object->getTheLoadByIndex();
+                if($loaded_by_index) $loaded_by = "[".$loaded_by_index."]";
             }
         }
 
