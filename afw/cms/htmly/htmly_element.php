@@ -14,6 +14,7 @@ class HtmlyElement
 
     protected $id = "";
     protected $name = "";
+    protected $title = "";
 
 
     /**
@@ -25,13 +26,15 @@ class HtmlyElement
         $container = true,
         $id = "",
         $name = "",
-        $text_direction = ''
+        $text_direction = '',
+        $title = '',
     ) {
         $this->balise = $balise;
         $this->container = $container;
         $this->name = $name;
         $this->id = $id;
         $this->text_direction = $text_direction;
+        $this->title = $title;
     }
 
     /**
@@ -86,6 +89,7 @@ class HtmlyElement
         if ($this->name) $html .= " name='" . $this->name . "'";
         if ($this->id) $html .= " id='" . $this->id . "'";
         if ($this->text_direction) $html .= " dir='" . $this->text_direction . "'";
+        if ($this->title) $html .= " title='" . addslashes($this->title) . "'";
 
         $css_class = implode(" ", $this->classes);
         if ($css_class) $html .= " class='" . $css_class . "'";

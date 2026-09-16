@@ -11,8 +11,9 @@ class HtmlyDiv extends HtmlyElement
         $name = "",
         $class = '',
         $text_direction = '',
+        $title = '',
     ) {
-        parent::__construct("div", true, $id, $name, $text_direction);
+        parent::__construct("div", true, $id, $name, $text_direction, $title);
         $this->addClass($class);
         $this->addElement($content);
     }

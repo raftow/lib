@@ -58,7 +58,7 @@ class HtmlyMatrix extends HtmlyElement
      * @param string $link
      * @param string $special_class
      */
-    public function addCell($id, $title, $hint, $link = "", $special_class = "", $special_char = "&nbsp;")
+    public function addCell($id, $title, $hint, $link = "", $special_class = "", $special_char = "&nbsp;", $text_direction = '',)
     {
         $title = AfwStringHelper::removeCotesAndBalises($title);
         $hint = AfwStringHelper::removeCotesAndBalises($hint);
@@ -72,14 +72,14 @@ class HtmlyMatrix extends HtmlyElement
         $this->cells[$id] = ['id' => $id, 'title' => $title, 'hint' => $hint, 'link' => $link, 'special_class' => $special_class];
         $this_id = $this->id;
         $cell_id = "matrix-" . $this_id . "-" . $id;
-        $content_min = "<span title='$hint : $title'>$special_char</span>";
+        $content_min = "<span >$special_char</span>"; // title='$hint : $title'
         if ($link) {
             $content = "<a href='$link'>$content_min</a>";
         } else {
             $content = $content_min;
         }
 
-        $cell = new HtmlyDiv($content, $cell_id, $cell_id, $special_class);
+        $cell = new HtmlyDiv($content, $cell_id, $cell_id, "htmly-cell ".$special_class, $text_direction, "$hint : $title");
 
         return parent::addElement($cell);
     }
@@ -98,8 +98,19 @@ class HtmlyMatrix extends HtmlyElement
 
     public function addDetailViewer() {
         $this_id = $this->id;
-        $cell_id = "matrix-" . $this_id . "-detail-viewer";
-        $cell = new HtmlyDiv("", $cell_id, $cell_id, "htmly-matrix-detail-viewer");
+        $viewer_id = "matrix-" . $this_id . "-detail-viewer";
+        $cell = new HtmlyDiv("", $viewer_id, $viewer_id, "htmly-matrix-detail-viewer");
+
+        $js_of_detail_viewer = "<script>";
+        $js_of_detail_viewer .= "
+\$(document).ready(function() {       
+    \$(\".htmly-cell\").click(function() {
+        title = \$(this).attr('title');
+        \$(\"#\"+\"$viewer_id\").html(title);
+    });
+});\n
+";
+        $js_of_detail_viewer .= "</script>";
         return parent::addElement($cell);
     }
 

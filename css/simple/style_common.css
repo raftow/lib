@@ -8063,6 +8063,31 @@ input#otp_verify_code {
     float: right;
 }
 
+.htmly-matrix>div.htmly-matrix-recap {
+    float: right;
+    width: 100%;
+}
+
+.htmly-matrix>div.htmly-matrix-recap>div.html-recap {
+    float: left;
+    width: 100%;
+}
+
+.htmly-matrix>div.htmly-matrix-recap>div.html-recap>span {
+    float: left;
+    width: 20%;
+    text-align: left;
+    direction: ltr;
+    font-size: 12px !important;
+}
+
+.htmly-matrix>div.htmly-matrix-detail-viewer {
+    width: 100%;
+    min-height: 80px;
+    float: right;
+    background-color: white !important;
+}
+
 .messages--status {
 	color: #325e1c !important;
 	/*font-size: 140%; should be same for success and info and warn and error to be homogene*/
