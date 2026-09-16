@@ -83,4 +83,25 @@ class HtmlyMatrix extends HtmlyElement
 
         return parent::addElement($cell);
     }
+
+
+    /**
+     * @param string $content
+     */
+
+    public function addRecap($content) {
+        $this_id = $this->id;
+        $cell_id = "matrix-" . $this_id . "-recap";
+        $cell = new HtmlyDiv($content, $cell_id, $cell_id, "htmly-matrix-recap");
+        return parent::addElement($cell);
+    }
+
+    public function addDetailViewer() {
+        $this_id = $this->id;
+        $cell_id = "matrix-" . $this_id . "-detail-viewer";
+        $cell = new HtmlyDiv("", $cell_id, $cell_id, "htmly-matrix-detail-viewer");
+        return parent::addElement($cell);
+    }
+
+    
 }

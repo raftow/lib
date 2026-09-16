@@ -57,4 +57,7 @@ class HtmlyProcessResultMatrix extends HtmlyMatrix
             $this->addSuccess($title, $success, $alert, $special_char);
         }
     }
+
+
+    
 }
