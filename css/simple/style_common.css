@@ -8038,8 +8038,10 @@ input#otp_verify_code {
     float: right;
 }
 
-.htmly-matrix>div {
-    width: 18px;
+.htmly-matrix>div.htmly-cell {
+    width: 18px !important;
+    height: 25px !important;
+    border-color: white !important;
 }
 
 .htmly-matrix>div.htmly-matrix-success {
@@ -8086,6 +8088,20 @@ input#otp_verify_code {
     min-height: 80px;
     float: right;
     background-color: white !important;
+}
+
+.htmly-cell>span {
+    padding-left: 2px !important;
+    float: left;
+}
+
+.htmly-matrix>div.htmly-cell-title {
+    width: calc(100% - 18px);
+    float: right;
+    color: black;
+    font-weight: bold;
+    text-align: left;
+    padding-left: 8px;
 }
 
 .messages--status {
