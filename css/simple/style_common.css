@@ -8097,12 +8097,16 @@ input#otp_verify_code {
 }
 
 .htmly-matrix>div.htmly-cell-title {
-    width: calc(100% - 18px);
+    width: calc(80% - 18px);
     float: right;
     color: black;
     font-weight: bold;
     text-align: right;
     padding-right: 8px;
+}
+
+.htmly-matrix>div.htmly-cell-legend{
+    width: 100%;
 }
 
 .messages--status {
