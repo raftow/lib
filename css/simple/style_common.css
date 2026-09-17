@@ -8041,28 +8041,29 @@ input#otp_verify_code {
 .htmly-matrix>div.htmly-cell {
     width: 18px !important;
     height: 25px !important;
-    border-color: white !important;
+    border: 2px solid white !important;
+    float: right;
 }
 
 .htmly-matrix>div.htmly-matrix-success {
     background-color: #19c558;
     color: white !important;
-    border: 2px solid white !important;
-    float: right;
+    
+    
 }
 
 .htmly-matrix>div.htmly-matrix-error {
     background-color: red;
     color: white !important;
-    border: 2px solid white !important;
-    float: right;
+    
+    
 }
 
 .htmly-matrix>div.htmly-matrix-warning {
     background-color: orange;
     color: white !important;
-    border: 2px solid white !important;
-    float: right;
+    
+    
 }
 
 .htmly-matrix>div.htmly-matrix-recap {
@@ -8100,8 +8101,8 @@ input#otp_verify_code {
     float: right;
     color: black;
     font-weight: bold;
-    text-align: left;
-    padding-left: 8px;
+    text-align: right;
+    padding-right: 8px;
 }
 
 .messages--status {

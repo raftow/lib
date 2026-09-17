@@ -111,6 +111,7 @@ class HtmlyMatrix extends HtmlyElement
 });\n
 ";
         $js_of_detail_viewer .= "</script>";
+        parent::addElement($js_of_detail_viewer);
         return parent::addElement($cell);
     }
 
