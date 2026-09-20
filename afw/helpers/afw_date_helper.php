@@ -1974,7 +1974,7 @@ class AfwDateHelper
         return [$hdate, $gtime];
     }
 
-    public static function timeDiffInHours($gdate2, $gdate1, $round = true)
+    public static function timeDiffInHours($gdate2, $gdate1, $round = true, $limit_to_halt = 200000)
     {
         $result_diff_s = self::timeDiffInSeconds($gdate2, $gdate1);
         $result_diff_h = $result_diff_s / 3600;
@@ -1982,9 +1982,9 @@ class AfwDateHelper
             $result_diff_h = round($result_diff_h);
         }
 
-        if ($result_diff_h > 20000) {
+        if ($result_diff_h > $limit_to_halt) {
             $result_diff_s_report = self::timeDiffInSecondsReport($gdate2, $gdate1);
-            die("timeDiffInSecondsReport($gdate2, $gdate1) => $result_diff_s <br>\n
+            throw new AfwRuntimeException("timeDiffInSecondsReport($gdate2, $gdate1) => $result_diff_s <br>\n
                result_diff_s_report => $result_diff_s_report <br>\n
                => result_diff_h = $result_diff_h");
         }
