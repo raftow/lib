@@ -667,7 +667,7 @@ class AfwLoadHelper extends AFWRoot
                         $tuple['ca-' . $categoryAttribute] = $objItem->calc($categoryAttribute);
                         // if(($categoryAttribute=="request_late") and ($objListItem->id==88210)) d ie("tuple[ca-$categoryAttribute] = ".$tuple["ca-".$categoryAttribute]." = $objListItem-->calc($categoryAttribute)");
                     } else
-                        $tuple['ca-' . $categoryAttribute] = "-" . $objItem->getVal($categoryAttribute) . "-$categoryAttribute-000";
+                        $tuple['ca-' . $categoryAttribute] = $objItem->getVal($categoryAttribute); //  "-" . $objItem->getVal($categoryAttribute) . "-$categoryAttribute-000";
                 }
 
                 $objIsActive = $objItem->isActive();

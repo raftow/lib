@@ -401,7 +401,8 @@ class UfwQueryAnalyzer
             <b>back trace</b>\n<br> : $backtrace_html\n                                             
                                                     ";
         } else {
-            $analyses_log = "";
+            $nb_queries_exec = self::$nb_queries_executed;
+            $analyses_log = "<b>Query number</b> : $nb_queries_exec\n  ";
         }
 
         $information = "<div class='$sql_info_class'>
