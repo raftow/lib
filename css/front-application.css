@@ -150,6 +150,12 @@ td {
 }
 
 
+.form-group Label>span.mobile-num {
+    float: right;
+    color: black;
+    width: 100%;
+}
+
 .large-text-right {
     text-align: right;
 }
