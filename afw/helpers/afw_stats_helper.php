@@ -501,7 +501,7 @@ class AfwStatsHelper
         $footer_sum_title_arr = [];
         $url_to_show_arr = [];
         $stats_big_header = "";
-        $bloc_col_end = "";
+        $bloc_col_end = [];
 
         $filter_arr = [];
         $sfilter_list = $stats_config["SFILTER"];

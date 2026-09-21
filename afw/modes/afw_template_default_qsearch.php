@@ -93,7 +93,13 @@ foreach ($formColumns as $nom_col) {
                         $data[$nom_col]["mandatory"] = ($desc['QSEARCH-MANDATORY']);
 
                         $data[$nom_col]["qsize"] = $desc["QSIZE"];
-                        if (!$data[$nom_col]["qsize"]) $data[$nom_col]["qsize"] = 3;
+                        if (!$data[$nom_col]["qsize"]) {
+                                if(($desc["TYPE"]=="DATE") or ($desc["TYPE"]=="GDAT") or ($desc["TYPE"]=="GDATE"))
+                                {
+                                     $data[$nom_col]["qsize"] = 6;   
+                                }
+                                else $data[$nom_col]["qsize"] = 3;
+                        }
                         $total_qsize += $data[$nom_col]["qsize"];
 
                         $desc["SEARCH-BY-ONE"] = (!$desc["SEARCH-MULTIPLE"]);
