@@ -181,7 +181,9 @@ class AfwRetrieveHelper
                 //if($importance == "IN") $importance = "high";
                 if (!$importance) $importance = "high";
 
-                $html .= "<td class='col-importance-$importance text_$text_direction srch-result-col-$nom_col'>" . $tuple[$nom_col] . "</td>";
+                $orig_value = $tuple[$nom_col."_original"];
+
+                $html .= "<td class='col-importance-$importance text_$text_direction srch-result-col-$nom_col value-$orig_value'><span>" . $tuple[$nom_col] . "</span></td>";
             }
 
             // die("rafik is debugging ... actions_tpl_arr= ".var_export($actions_tpl_arr,true));

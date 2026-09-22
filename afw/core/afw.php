@@ -6224,7 +6224,7 @@ class AFWObject extends AFWRoot
             return null;
     }
 
-    public function quickRetrieveMethod()
+    public function quickRetrieveMethod($attribute="all")
     {
         return 'qshow';
     }

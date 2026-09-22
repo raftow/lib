@@ -693,8 +693,9 @@ class AfwLoadHelper extends AFWRoot
                                 $objItem->umsCheckDisabledInRetrieveMode() or
                                 AfwPrevilegeHelper::dataAttributeCanBeDisplayedForUser($objItem, $col, AfwSession::getUserConnected(), 'DISPLAY', $desc)
                             ) {
+                                $tuple[$col."_original"] = $objItem->getVal($col);
                                 // $htr_s = hrtime()[1];
-                                $qrm = $objItem->quickRetrieveMethod();
+                                $qrm = $objItem->quickRetrieveMethod($col);
                                 // $qrm = "val";
                                 $qrm_log = "";
                                 if ($qrm == "qshow") {
