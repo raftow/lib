@@ -2870,6 +2870,7 @@ class AfwShowHelper
         return $data_to_display;
     }
 
+    
     public static function showPdfButton($idTable, $classe_pdf, $title)
     {
         return "<script>

@@ -421,4 +421,4 @@ if ($genere_xls) {
 
 $search_result_html = ob_get_clean();
 
-return ['excel_link' => $link, 'search_result_html' => $search_result_html];
+return ['excel_link' => $link, 'search_result_html' => $search_result_html, 'html_table_id'=>"dtbl_$cl"];

@@ -136,6 +136,7 @@ if ($datatable_on) {
         }
         $excel_link = $handle_return['excel_link'];
         $search_result_html = $handle_return['search_result_html'];
+        $html_table_id = $handle_return['html_table_id'];
         AfwSession::log("End of afw_handle_default_search");
         // die("DBG-after afw_handle_default_search");
 
@@ -345,9 +346,10 @@ if ($datatable_on) {
         if ($btns_display["pdf"]) {
                 $out_scr_btns .= '<div class="btn-qsearch btn-centered-' . $btns_total . '-btn-' . $btn_num . '" style="">';
                 $pdf_export = $myClassInstance->translate('PDF-EXPORT', $lang, true);
+
                 $out_scr_btns .= '<input type="button" class="longbtn orangebtn submit-btn pdf fright" name="submit_pdf"  id="submit_pdf" value="' . $pdf_export . '" onclick="exportToPDF()" />';
                 $classe_pdf = strtolower(get_class($myClassInstance));
-                $out_scr_btns .= AfwShowHelper::showPdfButton('example', $classe_pdf, $page_title);
+                $out_scr_btns .= AfwShowHelper::showPdfButton($html_table_id, $classe_pdf, $page_title);
                 $out_scr_btns .= '</div>';
                 $btn_num++;
         }

@@ -1310,7 +1310,7 @@ class AfwStringHelper
                 }
 
                 if ($string1 != $string3) {
-                        $string2 = 'not-allowed-string';
+                        $string2 = '♣';
                 } else {
                         if (!$string_is_secure) $string2 = str_replace('<script>', '', $string2);
                         if (!$string_is_secure) $string2 = str_replace('<script ', '', $string2);
