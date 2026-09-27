@@ -933,7 +933,9 @@ class AfwPrevilegeHelper
                     $desc['TYPE'] == 'INT' or
                     $desc['TYPE'] == 'AMNT' or
                     $desc['TYPE'] == 'PCTG' or
-                    $desc['TYPE'] == 'DATE' // or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
+                    $desc['TYPE'] == 'DATE' or
+                    $desc['TYPE'] == 'GDATE' or
+                    $desc['TYPE'] == 'GDAT'// or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
                 )
                     or
                     $desc['TEXT-SEARCHABLE-SEPARATED']));
@@ -957,8 +959,8 @@ class AfwPrevilegeHelper
         } else {
             $desc = AfwStructureHelper::repareMyStructure($object, $desc, $attribute);
         }
-        $is_searchable = AfwPrevilegeHelper::isSearchCol($object, $attribute, $desc);
-        if (!$is_searchable) return 'is not searchable column';
+        list($is_searchable, $reason_ns) = AfwPrevilegeHelper::isSearchCol($object, $attribute, $desc, true);
+        if (!$is_searchable) return 'is not searchable column : '.$reason_ns;
         $can_qsearch =
             ($desc['QSEARCH'] or
                 !isset($desc['QSEARCH']) and $desc['SEARCH-BY-ONE']);
@@ -972,18 +974,20 @@ class AfwPrevilegeHelper
                 $desc['TYPE'] == 'INT' or
                 $desc['TYPE'] == 'AMNT' or
                 $desc['TYPE'] == 'PCTG' or
-                $desc['TYPE'] == 'DATE' // or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
+                $desc['TYPE'] == 'DATE' or
+                $desc['TYPE'] == 'GDATE' or
+                $desc['TYPE'] == 'GDAT' // or $desc['TYPE'] == 'TEXT' => strange it make all TEXT fields SEARCHABLE-SEPARATED
             )
                 or
                 $desc['TEXT-SEARCHABLE-SEPARATED']);
         if (!$is_qsearchable) return 'column type is not simple quick searchable & is not text-searchable separately';
 
 
-        return 'should be qseach column (may be isNotQSearchColReason method has not been synched with isSearchCol method)';
+        return 'no clear reason. Normally it should be qseach column (may be isNotQSearchColReason method has not been synched with isSearchCol method)';
     }
 
 
-    public static final function isSearchCol($object, $attribute, $desc = '')
+    public static final function isSearchCol($object, $attribute, $desc = '', $returnReason=false)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
 
@@ -1008,7 +1012,8 @@ class AfwPrevilegeHelper
         //    "SHORTCUT-PART-JOIN" est un attribue temporaire n'as aucun sens sauf activer le QSearch pour un shortcut
         //    pour mes print screen pour ecriture des specifications
         $can_be_searched_technically =
-            ($desc['CATEGORY'] == '' or
+            ($desc['CATEGORY'] == 'SEARCHABLE' or 
+             $desc['CATEGORY'] == '' or
                 $desc['FIELD-FORMULA'] or
                 $desc['SHORTCUT'] and $desc['SHORTCUT-PART-JOIN']);
 
@@ -1026,14 +1031,23 @@ class AfwPrevilegeHelper
             );
         }
 
+        
 
 
         $return =
             ($attributeIsToDisplayForMe and
                 $can_be_searched_technically and
                 $is_searchable);
+                
+        $reason = "";
+
+        if(!$return and $returnReason) {
+            $reason = $attributeIsToDisplayForMe ? "" : "column is not searchable because not showable";
+            if(!$reason) $reason = $can_be_searched_technically ? "" : "column is not searchable because not CATEGORY SEARCHABLE neither CATEGORY empty neither has FIELD-FORMULA nor SHORTCUT-PART-JOIN nor SHORTCUT attributes";
+            if(!$reason) $reason = $is_searchable ? "" : "column is not searchable because not PK has not SEARCH-BY-ONE nor SEARCH attributes and it is not admin searchable for admin autheticated user";
+        }
         //die("$attribute : return=$return = $attributeIsToDisplayForMe and $can_be_searched_technically and $is_searchable ".var_export($desc,true));
-        return $return;
+        return $returnReason ? [$return, $reason] : $return;
     }
 
 

@@ -30,6 +30,7 @@
         {
             if(isset($_REQUEST[$param_name])) $params_arr[$param_name] = $_REQUEST[$param_name];
         }
+        $params_arr["charts"] = 1;
 
         $dataFromClass = $stats_data_from['class'];
         $dataFromMethod = $stats_data_from['method'];
@@ -123,7 +124,7 @@
                 fontName:'title',
                 fontSize:18,
                 is3D:true,
-                slices: {0: {color: '#008800'}, 1: {color: '#53a5e1'}, 2: {color: 'rgb(155, 153, 19)'}, 3: {color: '#eb740e'}, 4: {color: 'rgb(230, 72, 9)'}, 5: {color: '#000000'}}
+                slices: {0: {color: '#008800'}, 1: {color: '#53a5e1'}, 2: {color: 'rgb(155, 153, 19)'}, 3: {color: '#eb740e'}, 4: {color: 'rgb(230, 72, 9)'}, 5: {color: '#95105b'}}
             };
 
             var chart = null;

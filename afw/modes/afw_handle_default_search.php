@@ -108,7 +108,12 @@ if (!$liste_obj) {
         }
 
         $obj->select_visibilite_horizontale();
-        if ($special_filter) $obj->$special_filter();
+        $special_filter = trim($special_filter,";");
+        if ($special_filter) {
+                $special_filter_arr = explode(";", $special_filter);
+
+                foreach($special_filter_arr as $special_filter_item) $obj->$special_filter_item();
+        }
 
         // die("DBG-where select_visibilite_horizontale");
 

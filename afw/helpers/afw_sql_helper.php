@@ -750,6 +750,10 @@ class AfwSqlHelper extends AFWRoot
                 $between_quote = "'";
                 $val_col = str_replace('-', '', $val_col);
                 $val_col2 = str_replace('-', '', $val_col2);
+            case 'GDATE':
+            case 'GDAT':
+                $val_col2_default = '29991230';
+                $between_quote = "'";
             case 'PCTG':
             case 'INT':
             case 'AMNT':
@@ -1501,9 +1505,9 @@ class AfwSqlHelper extends AFWRoot
                             } catch (Exception $e) {
                                 $message = "Audit operation failed.";
                                 if ($devMode) {
-                                    $message .= "\n >> " . $e->getMessage();
-                                    $message .= "\n >> " . $e->getTraceAsString();
-                                    $message .= "\n >> the query on parent table was " . $query;
+                                    $message .= "::: \n Original Message ::: \n" . $e->getMessage();
+                                    $message .= "::: \n Original Trace   ::: \n" . $e->getTraceAsString();
+                                    $message .= "::: \n The query on parent table was  ::: \n" . $query;
                                     throw new AfwRuntimeException($message);
                                 } else throw new AfwBusinessException($message);
                             }

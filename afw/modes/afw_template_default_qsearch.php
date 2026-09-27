@@ -117,6 +117,7 @@ foreach ($formColumns as $nom_col) {
                                 if (
                                         ($desc["TYPE"] == "DATE") or
                                         ($desc["TYPE"] == "GDAT") or
+                                        ($desc["TYPE"] == "GDATE") or
                                         ($desc["TYPE"] == "PCTG") or
                                         ($desc["TYPE"] == "INT") or
                                         ($desc["TYPE"] == "AMNT")

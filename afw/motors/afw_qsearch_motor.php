@@ -212,9 +212,9 @@ class AfwQsearchMotor
 				$answer_list = array();
 				$remove_options_arr = $desc["REMOVE_OPTIONS"];
 
-				if (!$remove_options_arr["Y"]) $this_yes_label = $obj->showYNValueForAttribute("YES", $col_name, $lang);
-				if (!$remove_options_arr["N"]) $this_no_label  = $obj->showYNValueForAttribute("NO", $col_name, $lang);
-				if (!$remove_options_arr["W"]) $this_dkn_label = $obj->showYNValueForAttribute("EUH", $col_name, $lang);
+				$this_yes_label = $obj->showYNValueForAttribute("YES", $col_name, $lang);
+				$this_no_label  = $obj->showYNValueForAttribute("NO", $col_name, $lang);
+				$this_dkn_label = $obj->showYNValueForAttribute("EUH", $col_name, $lang);
 
 				if (!$remove_options_arr["Y"]) $answer_list["Y"] = $this_yes_label;
 				if (!$remove_options_arr["W"]) $answer_list["W"] = $this_dkn_label;
@@ -276,11 +276,20 @@ class AfwQsearchMotor
 			?><!-- between table -->
 				<table style="border: 1px silver solid;width:100%">
 					<tr>
+						<?php
+							$val_DAT = ((isset($_POST[$col_name])) ? $_POST[$col_name] : '');
+							$val_DAT_2 = ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : '');
+						?>
 						<td style='padding:5px;'>
 							من
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" autocomplete="off"> </input>
+							<input  type="text" 
+									class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" 
+									id="<?= $col_name ?>" name="<?= $col_name ?>" 
+									value="<?php echo $val_DAT; ?>" 
+									autocomplete="off"> 
+							</input>
 							<script type="text/javascript">
 								$('#<?= $col_name ?>').calendarsPicker({
 									calendar: $.calendars.instance('UmmAlQura')
@@ -291,12 +300,93 @@ class AfwQsearchMotor
 							إلى
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<?php echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>" autocomplete="off"> </input>
+							<input type="text" 
+							       class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" 
+								   id="<?= $col_name . "_2" ?>" 
+								   name="<?= $col_name . "_2" ?>" 
+								   value="<?php echo $val_DAT_2; ?>" 
+								   autocomplete="off"> 
+							</input>
 							<script type="text/javascript">
 								$('#<?= $col_name . "_2" ?>').calendarsPicker({
 									calendar: $.calendars.instance('UmmAlQura')
 								});
 							</script>
+						</td>
+					</tr>
+				</table><!-- end between table -->
+			<?php
+				break;
+			case 'GDATE':
+			case 'GDAT':
+			?><!-- between table -->
+				<table style="border: 1px silver solid;width:100%">
+					<tr>
+						<?php
+							$val_GDAT = ((isset($_POST[$col_name])) ? $_POST[$col_name] : '');
+							$val_GDAT_2 = ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : '');
+							$min_date = $desc['MIN_DATE'] ? $desc['MIN_DATE'] : -99999;
+                			$max_date = $desc['MAX_DATE'] ? $desc['MAX_DATE'] : 99999;
+						?>
+						<td style='padding:5px;'>
+							من
+						</td>
+						<td>
+							<input 
+									type="text" 
+									id="<?php echo $col_name ?>" 
+									name="<?php echo $col_name ?>" 
+									class="form-control <?php echo $lang ?> hasCalendarsPicker" 
+									value="<?php echo $val_GDAT ?>" 
+									autocomplete="off">
+					<?php
+					if (!$col_name) $col_name = "XXX";
+					$js_cal_script = "
+							<script>
+							\$(document).ready(function() {
+									\$(\"#$col_name\").datepicker({ 
+											showAnim: \"fold\",
+											dateFormat: \"yy-mm-dd\",
+											changeMonth: true,
+											changeYear: true,
+											minDate: $min_date,
+									" . AfwEditMotor::calendar_translations($lang) . "
+											});
+									});
+							</script>
+									";
+					echo $js_cal_script;
+					?>
+						</td>
+						<td style='padding:5px;'>
+							إلى
+						</td>
+						<td>
+							<input 
+									type="text" 
+									id="<?php echo $col_name . "_2" ?>" 
+									name="<?php echo $col_name . "_2" ?>" 
+									class="form-control <?php echo $lang ?> hasCalendarsPicker" 
+									value="<?php echo $val_GDAT_2 ?>" 
+									autocomplete="off">
+					<?php
+					
+					$js_cal_script = "
+							<script>
+							\$(document).ready(function() {
+									\$(\"#$col_name"."_2\").datepicker({ 
+											showAnim: \"fold\",
+											dateFormat: \"yy-mm-dd\",
+											changeMonth: true,
+											changeYear: true,
+											minDate: $min_date,
+									" . AfwEditMotor::calendar_translations($lang) . "
+											});
+									});
+							</script>
+									";
+					echo $js_cal_script;
+					?>
 						</td>
 					</tr>
 				</table><!-- end between table -->

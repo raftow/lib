@@ -213,6 +213,8 @@ class AfwOperatorArTranslator
         $trad['OPERATOR']['using'] = 'باستخدام';
         $trad['OPERATOR']['Syntax'] = 'سنتاكس';   // بناء
         $trad['OPERATOR']['global-context'] = 'وسيلة غير معرفة في نظام التدقيق';
+        $trad['OPERATOR']['to'] = 'إلى';
+        $trad['OPERATOR']['from'] = 'من';
 
         $trad['OPERATOR']['action.insert'] = 'إضافة';
         $trad['OPERATOR']['action.update'] = 'تعديل';

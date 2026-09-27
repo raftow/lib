@@ -20,6 +20,7 @@ class AfwSearchHelper
                         $fixms = array();
                         // AFWDebugg::print_str('foreach  '.__LINE__);
                         foreach ($class_db_structure as $nom_col => $desc) {
+                                $can_technically_sql_search = (!$desc["CATEGORY"]);
                                 //if((isset($desc["SEARCH"]) && $desc["SEARCH"] == "YES") || ((isset($desc["SHOW"]) &&
                                 //$desc["SHOW"]) && (!isset($desc["SEARCH"]) || (isset($desc["SEARCH"]) && $desc["SEARSH"] == ""))))
                                 $my_oper = $_POST["oper_" . $nom_col];;
@@ -30,7 +31,7 @@ class AfwSearchHelper
                                 $my_val2 = $_POST[$nom_col . '_2'];
 
                                 $there_is_search = ((isset($my_val) && $my_val != "") or ($my_oper == "=''") or ($my_oper == "!=''"));
-                                if ($there_is_search) {
+                                if ($can_technically_sql_search and $there_is_search) {
                                         $where = "";
                                         $fixm = "";
                                         if (is_string($my_val) and trim($my_val) == "Array") {

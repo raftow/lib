@@ -1181,9 +1181,11 @@ class AfwStructureHelper extends AFWRoot
         if (is_numeric($attribute)) {
             return false;
         }
+        $struct_categ_string = is_string($structure['CATEGORY']) ? $structure['CATEGORY'] : "";
+        $struct_obsol_string = is_string($structure['OBSOLETE']) ? $structure['OBSOLETE'] : "";
         if ((!$structure) or
-            (AfwStringHelper::stringStartsWith($structure['CATEGORY'], '::')) or
-            (AfwStringHelper::stringStartsWith($structure['OBSOLETE'], '::'))
+            (AfwStringHelper::stringStartsWith($struct_categ_string, '::')) or
+            (AfwStringHelper::stringStartsWith($struct_obsol_string, '::'))
         ) {
             $structure = AfwStructureHelper::getStructureOf($object, $attribute);
         }
