@@ -4562,9 +4562,9 @@ class AFWObject extends AFWRoot
         }
 
         
-        if(static::$TABLE == "crm_employee")
+        if(static::$TABLE == "crm_employeeXXX")
         {
-             die($this->SEARCH);
+             die("rafik debugg 20260929 : ".$this->SEARCH);
         }
         
     }
