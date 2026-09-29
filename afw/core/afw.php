@@ -4561,12 +4561,12 @@ class AFWObject extends AFWRoot
             }
         }
 
-        /*
-         * if(static::$TABLE == "practice")
-         * {
-         *     die($this->SEARCH);
-         * }
-         */
+        
+        if(static::$TABLE == "crm_employee")
+        {
+             die($this->SEARCH);
+        }
+        
     }
 
     public function get_visibilite_horizontale($dropdown = false)
