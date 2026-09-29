@@ -6191,6 +6191,9 @@ class AFWObject extends AFWRoot
         return true;
     }
 
+    /**
+     * @param Auser $auser
+     */
     protected function hideNonActiveRowsFor($auser)
     {
         return !$auser or !$auser->isAdmin();
