@@ -1,11 +1,4 @@
 /*   CSS For forms and inputs AR language */
-@font-face {
-	font-family: digi;
-	src: url('../../../lib/fonts/DS-DIGI.ttf') format("truetype");
-	font-weight: normal;
-	font-style: normal;
-}
-
 a {
 	color: #266CC6;
 	outline: 0 !important;

@@ -1,4 +1,25 @@
 /*   CSS For forms and inputs any language */
+@font-face {
+	font-family: led;
+	font-weight: normal;
+	font-style: normal;
+	src: url('../../../lib/fonts/led.ttf') format("truetype");    
+}
+
+@font-face {
+	font-family: led;
+	font-weight: normal;
+	font-style: italic;
+    src: url('../../../lib/fonts/led_italic.ttf') format("truetype");	
+}
+
+
+@font-face {
+	font-family: digi;
+	src: url('../../../lib/fonts/DS-DIGI.ttf') format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
 
 @font-face {
     font-family: 'Material Icons';
