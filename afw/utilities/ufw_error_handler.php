@@ -66,6 +66,9 @@ if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHan
         }
     }
 
+    /**
+     * @param Exception $ex
+     */
     function dump_exception($ex)
     {
         if ($ex instanceof AfwBusinessException) return dump_business_exception($ex);
@@ -182,7 +185,7 @@ if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHan
                                         <td>
                                             <?php if (_SHOW_ARGS) : ?>
                                                 <?php if (isset($trace['args']) and $trace['args']) : ?>
-                                                    <?php foreach ($trace['args'] as $i => $arg) : ?>
+                                                    <?php foreach ($trace['args'] as $a => $arg) : ?>
                                                         <?php if (!is_object($arg) and !is_array($arg)) : ?>
                                                             <span><?= gettype($arg); ?> : <?= var_export($arg, true); ?></span>
                                                         <?php else : ?>
@@ -192,7 +195,7 @@ if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHan
                                                                 <span>Array [<?= count($arg) ?> items]</span>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
-                                                        <?= $i < count($trace['args']) - 1 ? ',' : ''; ?>
+                                                        <?php echo ($a < count($trace['args']) - 1) ? ',' : ''; ?>
                                                     <?php endforeach; ?>
                                                 <?php else : ?>
                                                     NULL
