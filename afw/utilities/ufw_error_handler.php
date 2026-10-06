@@ -198,7 +198,7 @@ if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHan
                                                         <?php echo ($a < count($trace['args']) - 1) ? ',' : ''; ?>
                                                     <?php endforeach; ?>
                                                 <?php else : ?>
-                                                    NULL
+                                                    NULL <span><?= gettype($arg); ?> : <?= var_export($arg, true); ?></span>
                                                 <?php endif; ?>
                                             <?php else : ?>
                                                 DISABLED-0

@@ -676,6 +676,45 @@ class AfwStringHelper
                 return strlen(mb_convert_encoding($str, 'ISO-8859-1', 'UTF-8'));
         }
 
+        /**
+         * @param string $jomla
+         * @param int $maxlen
+         */
+        public static function truncateEnglishJomla($jomla, $maxlen, $etc = "...")
+        {
+                $jomla = trim($jomla);
+
+                $jomlaWords = explode(" ", $jomla);
+
+                $result = "";
+                $jomla_broken = false;
+
+                foreach ($jomlaWords as $word) {
+                        if ($result) {
+                                $pref = " ";
+                                $pref_len = 1;
+                        } else {
+                                $pref = "";
+                                $pref_len = 0;
+                        }
+
+                        if ($maxlen >= (strlen($result) + strlen($word) + $pref_len)) {
+                                $result .= $pref . $word;
+                        } else {
+                                $jomla_broken = true;
+                                break;
+                        }
+                }
+
+                if ($jomla_broken) $result .= $etc;
+
+                return $result;
+        }
+
+        /**
+         * @param string $jomla
+         * @param int $maxlen
+         */
         public static function truncateArabicJomla($jomla, $maxlen, $etc = "...")
         {
                 $jomla = trim($jomla);
