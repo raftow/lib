@@ -2480,7 +2480,7 @@ class AfwShowHelper
             // $objName = $object->__toString();
             $fieldAnsTab = $structure['ANSWER'];
             $fcol_name = $structure['FUNCTION_COL_NAME'];
-            $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $object);
+            $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $object, "showEnum");
             $data_to_display = "<div class='stars-list answers-list' aria-hidden='true'>";
             // $c=0;
             $rating_label_text = '---';
@@ -2870,7 +2870,7 @@ class AfwShowHelper
         return $data_to_display;
     }
 
-    
+
     public static function showPdfButton($idTable, $classe_pdf, $title)
     {
         return "<script>

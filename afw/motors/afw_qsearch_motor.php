@@ -58,7 +58,7 @@ class AfwQsearchMotor
 						$fcol_name = $obj->$dynMethodName($col_name, "FUNCTION_COL_NAME");
 					}
 					if (!$fcol_name) $fcol_name = $col_name;
-					$enumAnswerList = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj);
+					$enumAnswerList = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj, "qsearch ENUM");
 				}
 
 				if ($desc["SEARCH-BY-ONE"] and ($desc["TYPE"] == "ENUM")) {

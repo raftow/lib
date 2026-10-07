@@ -209,7 +209,7 @@ else
                             ob_start();
                             if(($nom_col=="id_sh_org") and (!$desc["WHERE"])) die("$nom_col => desc = ".var_export($desc, true));
                             $ddb_obj->qeditNomCol = $nom_col;
-                 	        AfwEditMotor::type_input($nom_col."_$i", $desc, $col_val, $ddb_obj, $separator, $data_loaded,"inputlong",0,"inputlong");
+                 	        AfwQeditMotor::type_input($nom_col."_$i", $desc, $col_val, $ddb_obj, $separator, $data_loaded,"inputlong",0,"inputlong");
                             $input_html = ob_get_clean();
                     }
                     else

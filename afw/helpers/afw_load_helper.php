@@ -2146,7 +2146,8 @@ class AfwLoadHelper extends AFWRoot
         $answer,
         $table = '',
         $fattribut = '',
-        $obj = null
+        $obj = null,
+        $caller = ""
     ) {
         //echo "call to get EnumTable($answer,$table,$attribut)<br>";
         if ($answer == 'FUNCTION') {
@@ -2193,7 +2194,7 @@ class AfwLoadHelper extends AFWRoot
         }
 
 
-        if (!is_array($return)) throw new AfwRuntimeException("get EnumTable($answer,$table,$fattribut,obj, ..) returned : [$return], <br>
+        if (!is_array($return)) throw new AfwRuntimeException("get EnumTable($answer,$table,$fattribut,obj,$caller) returned : [$return], <br>
             used case $case, <br> 
             used obj = " . var_export($obj, true) . ") 
             ");
@@ -2233,7 +2234,7 @@ class AfwLoadHelper extends AFWRoot
         }
         $fcol_name = $structure["FUNCTION_COL_NAME"];
         if (!$fcol_name) $fcol_name = $attribute;
-        $liste_rep = AfwLoadHelper::getEnumTable($enum_answer_list, $object->getTableName(), $fcol_name, $object);
+        $liste_rep = AfwLoadHelper::getEnumTable($enum_answer_list, $object->getTableName(), $fcol_name, $object, "getEnumTotalAnswerList");
         return $liste_rep;
     }
 

@@ -305,7 +305,7 @@ class AfwEditMotor
                 }*/
 
                 if ($obj) {
-                    $liste_rep = AfwLoadHelper::getEnumTable($desc['ANSWER'], $obj->getTableName(), $fcol_name, $obj);
+                    $liste_rep = AfwLoadHelper::getEnumTable($desc['ANSWER'], $obj->getTableName(), $fcol_name, $obj, "type_input for MENUM col $col_name");
                 } else {
                     $liste_rep = AfwLoadHelper::getStaticEnumTable($class_name, $fcol_name);
                 }
@@ -364,7 +364,7 @@ class AfwEditMotor
                         $fieldAnsTab = $desc['ANSWER'];
 
 
-                        $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj);
+                        $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj, "type_input for ENUM col $col_name");
                         $answer_case = "AfwLoadHelper::get EnumTable($fieldAnsTab, $objTableName, $fcol_name, obj:$objName)";
                     } else {
                         $liste_rep = AfwLoadHelper::getStaticEnumTable($class_name, $fcol_name);

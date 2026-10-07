@@ -35,7 +35,7 @@ class AfwQeditMotor
         } else {
             $orig_col_name = $col_name;
         }
-        if ($orig_col_name == "coming_status_id_0") die("Main_Page=$Main_Page mode_qedit=$mode_qedit qeditCount=$qeditCount qeditNomCol=$qeditNomCol col_name=$col_name orig_col_name=$orig_col_name");
+        if ($orig_col_name == "gender_id_0") throw new AfwRuntimeException("Bad original column name Main_Page=$Main_Page mode_qedit=$mode_qedit qeditCount=$qeditCount qeditNomCol=$qeditNomCol col_name=$col_name orig_col_name=$orig_col_name");
         $col_title = $obj->translate($qeditNomCol, $lang);
         $placeholder = $desc["PLACE-HOLDER"];
         if (!$placeholder) $placeholder = $col_title;
@@ -336,7 +336,7 @@ class AfwQeditMotor
                 } else {
                     $fcol_name = $desc["FUNCTION_COL_NAME"];
                     if (!$fcol_name) $fcol_name = $orig_col_name;
-                    $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj);
+                    $liste_rep = AfwLoadHelper::getEnumTable($desc["ANSWER"], $obj->getTableName(), $fcol_name, $obj, "qedit MENUM");
                     $answer_case = "AfwLoadHelper::get EnumTable(" . $desc["ANSWER"] . ")";
                 }
 
@@ -397,7 +397,7 @@ class AfwQeditMotor
                     $fieldAnsTab = $desc["ANSWER"];
                     $fcol_name = $desc["FUNCTION_COL_NAME"];
                     if (!$fcol_name) $fcol_name = $orig_col_name;
-                    $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj);
+                    $liste_rep = AfwLoadHelper::getEnumTable($fieldAnsTab, $objTableName, $fcol_name, $obj, "qedit ENUM");
                     $answer_case = "AfwLoadHelper::get EnumTable($fieldAnsTab, $objTableName, $fcol_name, obj:$objName)";
                 }
                 if (!$liste_rep) throw new AfwModeException("for col $orig_col_name enum liste_rep comes from $answer_case is null or empty  liste_rep = " . var_export($liste_rep, true));

@@ -2,6 +2,7 @@
 
 /**
  * @var AFWObject $obj
+ * @var AFWObject $objRep
  * @var string $nom_class_fk
  * @var string $nom_module_fk
  * @var string $col_name
@@ -26,14 +27,28 @@
 $objRep  = new $nom_class_fk;
 
 $list_count = AfwSession::config("$nom_class_fk::estimated_row_count", 0);
+if(!$list_count) $list_count = $objRep->estimatedTotalRows();
+
 
 $auto_c = $desc["AUTOCOMPLETE"];
+$auto_c_is_setted = isset($desc["AUTOCOMPLETE"]);
 
-$LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 20);
-$auto_complete_default = ((!isset($desc["AUTOCOMPLETE"])) and ($list_count > $LIMIT_INPUT_SELECT));
+$LIMIT_INPUT_SELECT = AfwSession::config("LIMIT_INPUT_SELECT", 101);
+$MAX_DROPDOWN_ITEMS = AfwSession::config('max_dropdown_items', 300);
+$auto_complete_comment = "";
+$auto_complete_default = (($list_count > $MAX_DROPDOWN_ITEMS) or ((!$auto_c_is_setted) and ($list_count > $LIMIT_INPUT_SELECT)));
 if ((!$auto_c)  and (!$auto_complete_default)) {
     if (!$desc['ORDERBY']) $desc['ORDERBY'] = $objRep->ORDER_BY_FIELDS;
     $l_rep = AfwLoadHelper::vhGetListe($objRep, $col_name, $obj->getTableName(), $desc["WHERE"], $action = "loadManyFollowingStructure", $lang, $val_to_keep, $desc['ORDERBY'], $dropdown = true, $optim = true);
+    $list_count = count($l_rep);
+    $auto_complete_default = (($list_count > $MAX_DROPDOWN_ITEMS) or ((!$auto_c_is_setted) and ($list_count > $LIMIT_INPUT_SELECT)));
+    if($auto_complete_default) {
+        $auto_complete_comment = " (autocomplete because list_count=$list_count > MAX_DROPDOWN_ITEMS=$MAX_DROPDOWN_ITEMS or auto_c is not setted and list_count=$list_count > LIMIT_INPUT_SELECT=$LIMIT_INPUT_SELECT)";
+    }
+}
+
+if ((!$auto_c)  and (!$auto_complete_default)) {
+    
     /*
     if($col_name=="doc_type_id")  
     {
@@ -165,6 +180,7 @@ if ((!$auto_c)  and (!$auto_complete_default)) {
         $help_atc = $auto_c["HELP"];
         $depend = AfwJsEditHelper::getDependencyIdsArray($obj, $col_name, $desc);
         if (!$depend) $depend = "0";
+        echo "<!-- for $col_name : list_count=$list_count, auto_c=" . var_export($auto_c, true) . ", auto_c_is_setted=" . var_export($auto_c_is_setted, true) . ", auto_complete_default=$auto_complete_default, explanation : $auto_complete_comment -->";
         ?>
         <div class='hzm_input_atc'>
             <table cellspacing='0' cellpadding='0' style="width:100%">
