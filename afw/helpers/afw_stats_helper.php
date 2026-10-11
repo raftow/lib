@@ -146,7 +146,7 @@ class AfwStatsHelper
             foreach ($objColList as $objColItemId => $objColItem) {
                 if (($col_id == $objColItemId) and $objColItem->id and $objColItem->getShortDisplay($lang)) {
                     $cross_col = "cross_col_" . $objColItemId;
-                    $stats_value = $stats_data_arr[$row_id][$cross_col] = $statsRow[$val_key];
+                    $stats_value = $stats_data_arr[$row_id][$cross_col] = $statsRow[$val_key] ? $statsRow[$val_key] : 0;
                     // die("col_key=$col_key row_key=$row_key val_key=$val_key statsRow[$val_key] = $stats_value statsRow=" . var_export($statsRow, true) . "<br> stats_data_arr=" . var_export($stats_data_arr, true));
                     if ($footer_sum) {
 
@@ -268,7 +268,7 @@ class AfwStatsHelper
                     $bloc_col_end[$show_name]         = $config_stats_display_col_item['BLOC-COL-END'];
                     $footer_sum_title_arr[$show_name] = $config_stats_display_col_item['FOOTER_SUM_TITLE'];
 
-                    $stats_display_col_val = $statsRow[$stats_display_col];
+                    $stats_display_col_val = $statsRow[$stats_display_col] ? $statsRow[$stats_display_col] : 0;
 
                     if (! $stat_trad[$show_name]) {
                         $nom_col_short  = "$show_name.stat";
@@ -438,7 +438,7 @@ class AfwStatsHelper
                             $sum_by_col_arr[$group_value][$stats_display_col] = 0;
                         }
 
-                        $new_val = $stats_display_col_val;
+                        $new_val = $stats_display_col_val ? $stats_display_col_val : 0;
 
                         $sum_by_col_arr[$group_value][$stats_display_col] += $new_val;
 
