@@ -10,7 +10,7 @@ class AfwShowMotor
         $tuple = [];
         // if($nom_col=="response_templates") die("case mode_field_read_only nom_col = $nom_col");
         $obj->showAsDataTable = $desc['DATA_TABLE'];
-        $col_val = $obj->getVal($nom_col);
+        
         $style_div_form_control = "";
 
         if ($desc['FORM_HEIGHT']) {
@@ -61,6 +61,7 @@ class AfwShowMotor
             // if($nom_col=="response_templates") die("case no-CATEGORY or FORCE-INPUT");
             if (($desc['TYPE'] != "MATRIX") and ($desc['TYPE'] != "SOBJ") and (!$desc['NO-HIDDEN-IPNUT'])) {
                 ob_start();
+                $col_val = $obj->getVal($nom_col);
                 AfwEditMotor::hidden_input($nom_col, $desc, $col_val, $obj);
                 $tuple["input"] .= ob_get_clean();
                 if ($MODE_DEV or AfwSession::getSessionVar("user_golden")) {
