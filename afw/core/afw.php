@@ -4892,7 +4892,7 @@ class AFWObject extends AFWRoot
         $getFormatLink = true,
         $debugg = false
     ) {
-        if ($attribute == "college_id") $debugg = true;
+        // if ($attribute == "college_id") $debugg = true;
         $val_class = $this->getMyClass();
         if (!$langue) {
             $langue = AfwLanguageHelper::getGlobalLanguage();
