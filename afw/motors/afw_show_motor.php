@@ -76,7 +76,7 @@ class AfwShowMotor
                 if ($desc["EDIT-HIDE-VALUE"]) $tuple["input"] .=  $desc["EDIT-HIDE-VALUE"];
                 else {
                     // $tuple["input"] .= $obj->tm("hidden", $lang);
-                    $tuple["input"] .= "<!-- hidden because desc[DISPLAY] == false -->";
+                    $tuple["input"] .= "<img src='../lib/images/hidden-16.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='hidden value for this privilege' width='20' heigth='20'><!-- hidden because desc[DISPLAY] == false -->";
                 }
                 // $tuple["input"] .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
             } else {
