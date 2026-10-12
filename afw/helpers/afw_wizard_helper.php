@@ -229,20 +229,30 @@ class AfwWizardHelper extends AFWRoot
                             }
                         } else {
                             $log = "$attribute attribute has no parent step ";
-                            if ($genereLog) {
-                                $object_otherLinkLog[] = $log;
+                            if($object->getVal($attribute)>0) {
+                                if ($genereLog) {
+                                    $object_otherLinkLog[] = $log;
+                                }
+                                list($displ2, $link_url2) = $object->displayAttribute(
+                                    $attribute,
+                                    false,
+                                    $lang
+                                );
+                                $displ2 = trim($displ2);
+                                if (!$displ2) {
+                                    $displ2 = "?? <!-- case 2 : val = ".$object->getVal($attribute) . " => " . get_class($object) . "->displayAttribute($attribute,false, $lang) is empty -->";
+                                } else {
+                                    $displ2 .= "<!-- case 2 : " . get_class($object) . "->displayAttribute($attribute,false, $lang) -->";
+                                }
                             }
-                            list($displ2, $link_url2) = $object->displayAttribute(
-                                $attribute,
-                                false,
-                                $lang
-                            );
-                            $displ2 = trim($displ2);
-                            if (!$displ2 and ($object->getVal($attribute)>0)) {
-                                $displ2 = "?? <!-- case 2 : val = ".$object->getVal($attribute) . " => " . get_class($object) . "->displayAttribute($attribute,false, $lang) is empty -->";
-                            } else {
-                                $displ2 .= "<!-- case 2 : " . get_class($object) . "->displayAttribute($attribute,false, $lang) -->";
+                            else {
+                                $displ2 = null;
+                                $log = "$attribute attribute has no parent step and no value, so no display and no link";
+                                if ($genereLog) {
+                                    $object_otherLinkLog[] = $log;
+                                }
                             }
+                            
                         }
 
                         if (!isset($struct['OTM-TITLE'])) {
