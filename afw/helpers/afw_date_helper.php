@@ -1902,6 +1902,8 @@ class AfwDateHelper
      * @param string $time2 if omitted we take current time
      * @param string $hdate1 if omitted we take current hijri date
      * @param string $time1 if omitted we take current time
+     * @param boolean $round if true return integer number of days, if false return float with more precision
+     * @param string $unit 'days' or 'hours' or 'seconds'
      * @return integer number of days between the 2 hijri dates (hdate2 - hdate1) if round is true, otherwise return float with more precision
      */
     public static function hijriDateTimeDiff(
@@ -1909,7 +1911,8 @@ class AfwDateHelper
         $time2 = '',
         $hdate1 = '',
         $time1 = '',
-        $round = true
+        $round = true,
+        $unit = 'days'
     ) {
         if (!$hdate2) {
             $gdate2 = date('Y-m-d');
@@ -1930,11 +1933,28 @@ class AfwDateHelper
             $time1 = date('H:i:s');
         }
 
-        $return = self::gregDateDiff(
-            $gdate2 . ' ' . $time2,
-            $gdate1 . ' ' . $time1,
-            $round
-        );
+        if($unit=='hours') {
+            $return = self::timeDiffInHours(
+                $gdate2 . ' ' . $time2,
+                $gdate1 . ' ' . $time1,
+                $round
+            );
+            
+        }
+        elseif($unit=='seconds') {
+            $return = self::timeDiffInSeconds(
+                $gdate2 . ' ' . $time2,
+                $gdate1 . ' ' . $time1
+            );
+        }
+        else {
+            $return = self::gregDateDiff(
+                        $gdate2 . ' ' . $time2,
+                        $gdate1 . ' ' . $time1,
+                        $round
+                    );
+        }
+        
 
         // $return = "[$hdate2 => $gdate2] - [$hdate1 => $gdate1] => $gdate2 $time2 - $gdate1 $time1 = $return";
 
