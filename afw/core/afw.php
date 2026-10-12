@@ -7012,32 +7012,7 @@ class AFWObject extends AFWRoot
             return self::boolean()['code'];
     }
 
-    public static function name_of_boolean($boolean, $lang = 'ar')
-    {
-        return self::boolean()[$lang][$boolean];
-    }
-
-    public static function list_of_boolean($lang = null)
-    {
-        if (!$lang)
-            $lang = AfwLanguageHelper::getGlobalLanguage();
-        return self::boolean()[$lang];
-    }
-
-    public static function boolean()
-    {
-        $arr_list_of_boolean = array();
-
-        $arr_list_of_boolean['code'][0] = 'N';
-        $arr_list_of_boolean['ar'][0] = 'لا';
-        $arr_list_of_boolean['en'][0] = 'no';
-
-        $arr_list_of_boolean['code'][1] = 'Y';
-        $arr_list_of_boolean['ar'][1] = 'نعم';
-        $arr_list_of_boolean['en'][1] = 'yes';
-
-        return $arr_list_of_boolean;
-    }
+    
 
     public function debuggExport()
     {
