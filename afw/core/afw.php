@@ -4933,11 +4933,16 @@ class AFWObject extends AFWRoot
             $intelligent_category = $structure['CATEGORY'];
         }
 
+        $link_to_display = "";
+        $data_to_display = "";
+
         if (($intelligent_category == 'ITEMS') or ($intelligent_category == 'FORMULA')) {
             $value = '';
-            if ($intelligent_category == 'FORMULA')
-                $value = $this->calc($key);
             $formatted = false;
+            if ($intelligent_category == 'FORMULA') {
+                $data_to_display = $this->calc($key, false, 'decodeme');
+                $formatted = true;
+            }            
         } else {
             // in case of we use shortname
             // ?? be more clear in your comments please, what means above (RB 21/02/2025)
