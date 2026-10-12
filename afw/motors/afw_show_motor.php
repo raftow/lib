@@ -34,10 +34,33 @@ class AfwShowMotor
 
             $ro_classes_form = "form-control inputreadonly $inputarea";
         }
+        $input_html = "";
+        if ($i_can_see_attribute) {
+            $tuple["trad"]  = $obj->getAttributeLabel($nom_col, $lang);  // . " :"
+            if ($desc["EDIT-HIDE-VALUE"] or (isset($desc["DISPLAY"]) and (!$desc["DISPLAY"]))) {
+                if ($desc["EDIT-HIDE-VALUE"]) $input_html .=  $desc["EDIT-HIDE-VALUE"];
+                else {
+                    // $input_html .= $obj->tm("hidden", $lang);
+                    $input_html .= "<img src='../lib/images/hidden-16.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='hidden value for this privilege' width='20' heigth='20'><!-- hidden because desc[DISPLAY] == false -->";
+                }
+                // $input_html .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
+            } else {
+                // if($nom_col=="response_templates") $input_html .= "obj->showAttribute($nom_col) = ";
+                $input_html .= $obj->showAttribute($nom_col, $desc, true, $lang);
+                // $input_html .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
+            }
+
+            if ($obj_errors[$nom_col]) $tuple["error"] = $obj_errors[$nom_col];
+            // if($nom_col=="response_templates") die("case i can see attribute : " . $input_html);
+        } else {
+            $input_html .= "<!-- case i can not see attribute $nom_col in mode QSEARCH-->";
+        }
+
         $col_val_class = "";
         if (($desc['TYPE'] == 'YN') or ($desc['TYPE'] == 'INT') or ($desc['TYPE'] == 'ENUM') or ($desc['TYPE'] == 'FK')) {
             if ($desc['CATEGORY']) $col_val_0 = $obj->calc($nom_col);
             else $col_val_0 = $obj->getVal($nom_col);
+            
             if (strlen($col_val_0) > 30) $col_val_0 = "";
             else {
                 $col_val_0 = str_replace(",", "_", $col_val_0);
@@ -71,26 +94,9 @@ class AfwShowMotor
         } else {
             // if($nom_col=="response_templates") die("case CATEGORY and no FORCE-INPUT");
         }
-        if ($i_can_see_attribute) {
-            $tuple["trad"]  = $obj->getAttributeLabel($nom_col, $lang);  // . " :"
-            if ($desc["EDIT-HIDE-VALUE"] or (isset($desc["DISPLAY"]) and (!$desc["DISPLAY"]))) {
-                if ($desc["EDIT-HIDE-VALUE"]) $tuple["input"] .=  $desc["EDIT-HIDE-VALUE"];
-                else {
-                    // $tuple["input"] .= $obj->tm("hidden", $lang);
-                    $tuple["input"] .= "<img src='../lib/images/hidden-16.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='hidden value for this privilege' width='20' heigth='20'><!-- hidden because desc[DISPLAY] == false -->";
-                }
-                // $tuple["input"] .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
-            } else {
-                // if($nom_col=="response_templates") $tuple["input"] .= "obj->showAttribute($nom_col) = ";
-                $tuple["input"] .= $obj->showAttribute($nom_col, $desc, true, $lang);
-                // $tuple["input"] .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
-            }
 
-            if ($obj_errors[$nom_col]) $tuple["error"] = $obj_errors[$nom_col];
-            // if($nom_col=="response_templates") die("case i can see attribute : " . $tuple["input"]);
-        } else {
-            $tuple["input"] .= "<!-- case i can not see attribute $nom_col in mode QSEARCH-->";
-        }
+        
+        $tuple["input"] .= $input_html;
         $tuple["input"] .= "</div>";
         // if this column is to show with accordion run the js of accordion
         if ($desc['TEMPLATE'] == 'accordion') {
