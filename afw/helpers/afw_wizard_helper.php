@@ -218,8 +218,8 @@ class AfwWizardHelper extends AFWRoot
                                 "&currstep=$parent_step"
                             );
                             $displ2 = trim($displ2);
-                            if (!$displ2) {
-                                $displ2 = "case 1 : " . get_class($object) . "->displayAttribute($attribute,false, $lang, &currstep=$parent_step)";
+                            if (!$displ2 and ($object->getVal($attribute)>0)) {
+                                $displ2 = "?? <!-- case 1 : val = ".$object->getVal($attribute) . " => " . get_class($object) . "->displayAttribute($attribute,false, $lang, &currstep=$parent_step) is empty -->";
                             } else {
                                 $displ2 .= "<!-- case 1: " . get_class($object) . "->displayAttribute($attribute,false, $lang, &currstep=$parent_step) -->";
                             }
@@ -238,8 +238,8 @@ class AfwWizardHelper extends AFWRoot
                                 $lang
                             );
                             $displ2 = trim($displ2);
-                            if (!$displ2) {
-                                $displ2 = "case 2 : " . get_class($object) . "->displayAttribute($attribute,false, $lang)";
+                            if (!$displ2 and ($object->getVal($attribute)>0)) {
+                                $displ2 = "?? <!-- case 2 : val = ".$object->getVal($attribute) . " => " . get_class($object) . "->displayAttribute($attribute,false, $lang) is empty -->";
                             } else {
                                 $displ2 .= "<!-- case 2 : " . get_class($object) . "->displayAttribute($attribute,false, $lang) -->";
                             }
