@@ -3226,33 +3226,9 @@ screen and (max-width: 660px) {
     text-decoration: none;
     font-weight: normal;
     font-size: 18px;
-    background-image: url(../../lib/images/collapse16.png) !important;
-    background-attachment: scroll !important;
-    background-repeat: no-repeat !important;
-    background-position: 25px 25px !important;
 }
 
-.ui-accordion-header.ui-accordion-header-collapsed {
-    color: #09378e !important;
-    text-decoration: none;
-    font-weight: normal;
-    font-size: 18px;
-    background-image: url(../../lib/images/collapse16.png) !important;
-    background-attachment: scroll !important;
-    background-repeat: no-repeat !important;
-    background-position: 25px 25px !important;
-}
 
-.ui-accordion-header.ui-accordion-header-active {
-    color: #8e0928 !important;
-    text-decoration: none;
-    font-weight: normal;
-    font-size: 22px;
-    background-image: url(../../lib/images/expand16.png) !important;
-    background-attachment: scroll !important;
-    background-repeat: no-repeat !important;
-    background-position: 25px 25px !important;
-}
 
 
 .ul-options {
