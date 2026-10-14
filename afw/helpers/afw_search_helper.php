@@ -66,10 +66,13 @@ class AfwSearchHelper
                         if ($qsearch_by_text) {
                                 $qsearch_by_text_where_arr = array();
                                 $pk = $object->getPKField($add_me = 'me.');
-                                $qsearch_by_text_without_spaces_and_comma = $qsearch_by_text;
-                                $qsearch_by_text_without_spaces_and_comma = str_replace(' ', '', $qsearch_by_text_without_spaces_and_comma);
-                                $qsearch_by_text_without_spaces_and_comma = str_replace(',', '', $qsearch_by_text_without_spaces_and_comma);
-                                if ((!$object->PK_MULTIPLE) and is_numeric($qsearch_by_text_without_spaces_and_comma)) $qsearch_by_text_where_arr[] = $pk . " in ($qsearch_by_text)";
+                                // $qsearch_by_text_without_spaces_and_comma = $qsearch_by_text;
+                                // $qsearch_by_text_without_spaces_and_comma = str_replace(' ', '', $qsearch_by_text_without_spaces_and_comma);
+                                // $qsearch_by_text_without_spaces_and_comma = str_replace(',', '', $qsearch_by_text_without_spaces_and_comma);
+                                if ((!$object->PK_MULTIPLE) and AfwStringHelper::isMfk($qsearch_by_text))
+                                {
+                                    $qsearch_by_text_where_arr[] = $pk . " in ($qsearch_by_text)";      
+                                } 
                                 $qsearch_by_text_cols = AfwPrevilegeHelper::getAllTextSearchableCols($object);
                                 foreach ($qsearch_by_text_cols as $nom_col) {
                                         if (AfwPrevilegeHelper::isInternalSearchableCol($object, $nom_col)) {
