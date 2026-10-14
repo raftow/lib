@@ -16,7 +16,7 @@ class AfwSearchHelper
 
                 if (true) {
                         $cond_phrase_arr[] = "تم البحث بالمعايير التالية : ";
-
+                        $object_class = get_class($object);
                         $fixms = array();
                         // AFWDebugg::print_str('foreach  '.__LINE__);
                         foreach ($class_db_structure as $nom_col => $desc) {
@@ -39,7 +39,7 @@ class AfwSearchHelper
                                         }
                                         // die("DBG-getClauseWhere for $nom_col [$my_oper] ($my_val)");
                                         list($where, $fixm, $cond_phrase) = AfwSqlHelper::getClauseWhere($object, "me." . $nom_col, $my_oper,  $my_val, $my_val2, $lang);
-                                        $object_class = get_class($object);
+                                        
                                         if (($nom_col == "id") and ($object_class == "Request")) die("getClauseWhere($object_class, me.$nom_col,$my_oper,$my_val,$my_val2,$lang) = list($where,$fixm,$cond_phrase)");
                                         // if(($nom_col == "idn") and ((!$my_val) or ($my_val == "1092666765"))) die("getClauseWhere(me.$nom_col,$my_oper,$my_val,$my_val2,$lang) = list($where,$fixm,$cond_phrase)");
                                         $arr_sql_conds[] = $where;
@@ -95,6 +95,7 @@ class AfwSearchHelper
                                         } else {
                                                 // die("DBG-qsearch_by_text::getClauseWhere for $nom_col [$my_oper] (qsearch_by_text=$qsearch_by_text)");
                                                 list($where_col, $fixm_col, $cond_phrase) = AfwSqlHelper::getClauseWhere($object, "me." . $nom_col, $my_oper,  $qsearch_by_text, "", $lang);
+                                                if (($object_class == "Request") and ($nom_col == "id")) die("where_col = $where_col = AfwSqlHelper::getClauseWhere($object_class, me.$nom_col, $my_oper,  $qsearch_by_text, '', $lang)");
                                         }
                                         $qsearch_by_text_where_arr[] = $where_col;
                                 }
@@ -118,6 +119,8 @@ class AfwSearchHelper
                                 }
                         }
                 }
+
+                // if ($object_class == "Request") die("arr_sql_conds = ".var_export($arr_sql_conds, true));
 
                 return [$arr_sql_conds, $cond_phrase_arr];
         }
