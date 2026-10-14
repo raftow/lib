@@ -92,6 +92,7 @@ class AfwSearchHelper
                                                         $where_col = "FALSE";
                                                         $objTempForInternal_ids_txt = "0";
                                                 } else $where_col = "me." . $nom_col . " in (" . $objTempForInternal_ids_txt . ")";
+                                                if (($object_class == "Request") and ($nom_col == "id")) die("where_col = $where_col ... ???");
                                         } else {
                                                 // die("DBG-qsearch_by_text::getClauseWhere for $nom_col [$my_oper] (qsearch_by_text=$qsearch_by_text)");
                                                 list($where_col, $fixm_col, $cond_phrase) = AfwSqlHelper::getClauseWhere($object, "me." . $nom_col, $my_oper,  $qsearch_by_text, "", $lang);
