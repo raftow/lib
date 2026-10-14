@@ -798,7 +798,7 @@ class AfwSqlHelper extends AFWRoot
                         . $all_oper_arr[$oper]
                         . "</span> : <span class='crit_field_value'> [$val_col] </span>";
                     // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
-                    if(AfwStringHelper::isMfk($val_col,false))
+                    if(false and AfwStringHelper::isMfk($val_col,false))
                         $the_cond = $prefixed_nom_col . ' in (' . $val_col . ')';
                     else 
                         $the_cond = $prefixed_nom_col . "='" . $val_col . "'";
