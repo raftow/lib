@@ -798,11 +798,12 @@ class AfwSqlHelper extends AFWRoot
                         . $all_oper_arr[$oper]
                         . "</span> : <span class='crit_field_value'> [$val_col] </span>";
                     // $phraseLangWhere = $object->translate($original_nom_col, $lang) . " " . $all_oper_arr[$oper] . " [$val_col] ";
-                    return [
-                        $prefixed_nom_col . ' in(' . $val_col . ')',
-                        '',
-                        $phraseLangWhere,
-                    ];
+                    if(AfwStringHelper::isMfk($val_col,false))
+                        $the_cond = $prefixed_nom_col . ' in (' . $val_col . ')';
+                    else 
+                        $the_cond = $prefixed_nom_col . "='" . $val_col . "'";
+
+                    return [$the_cond , '', $phraseLangWhere, ];
                 } else {
                     $phraseLangWhere =
                         "<span class='crit_field_name'>"

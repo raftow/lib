@@ -24,10 +24,20 @@ class AfwBusinessException extends RuntimeException
     ) {
         if (AfwStringHelper::stringContain($message, "not found")) $picture = "404.gif";
         $message = AfwLanguageHelper::tarjemMessage($message, $module, $lang);
-        $message = sprintf($message, $param1, $param2, $param3);
         if ($picture) $this->picture = $picture;
         if ($return_message) $this->return_message = AfwLanguageHelper::tarjemMessage($return_message, $module, $lang);
-        $this->return_message = sprintf($this->return_message, $param1, $param2, $param3);
+
+        try {
+            $message = sprintf($message, $param1, $param2, $param3);        
+            $this->return_message = sprintf($this->return_message, $param1, $param2, $param3);
+        }
+        catch(Error $e) {
+            $message .= " ... Momken can not also fill params with sprintf Error happened";
+        }
+        catch(Exception $e) {
+            $message .= " ... Momken can not also fill params with sprintf Exception happened";
+        }
+        
         if ($return_page) $this->return_page = $return_page;
         if (!$this->return_message) {
             $this->return_message = "Return to main page";

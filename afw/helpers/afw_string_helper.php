@@ -1161,6 +1161,22 @@ class AfwStringHelper
                 return $string_enc;
         }
 
+        /**
+         * @param string $string
+         */
+        public static final function isMfk($string, $emptyAccepted=true) 
+        {
+                $string = trim($string);
+                if(!$string) return $emptyAccepted;
+                $arr = explode(",", $string); 
+                foreach($arr as $tmp) {
+                        $tmp = trim($tmp);
+                        if(!is_integer($tmp)) return false;   
+                }
+
+                return true;        
+        }
+
         public static final function hzmEncrypt($string)
         {
                 $matrixEncrypt = array();
