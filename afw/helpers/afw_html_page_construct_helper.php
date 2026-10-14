@@ -78,10 +78,11 @@
                 $pagecode_splitted = implode(" ",explode("_",$pagecode));
                 // to avoid infinite mirroring
                 self::$header_entry_counter++; 
-                if(self::$header_entry_counter>1)
+                
+                /*if(self::$header_entry_counter>1)
                 {
                         throw new AfwRuntimeException("HzmHeader called twice, in general this happen when you include main.php or afw main_page.php when you are inside body of MainPage");
-                }
+                }*/
 
                 if($needUserObject) $objme = AfwSession::getUserConnected();
                 else $objme = null;
@@ -96,8 +97,10 @@
                         else $dir = "ltr";
                 }
                 
-
-                self::addHtml(AfwHtmlIncluderHelper::outputHeader($lang, $page_charset, $my_afw_theme, $options, $custom_scripts, $my_font));
+                if(self::$header_entry_counter==1)
+                {
+                        self::addHtml(AfwHtmlIncluderHelper::outputHeader($lang, $page_charset, $my_afw_theme, $options, $custom_scripts, $my_font));
+                }
 
                 self::addHtml("<body class=\"hzm_body $f7c $pagecode_splitted\" dir=\"$dir\" >");
 
