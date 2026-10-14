@@ -25,6 +25,17 @@ div.my_link.nice {
     float: right;
 }
 
+.ui-accordion-header {
+    color: #09378e !important;
+    text-decoration: none;
+    font-weight: normal;
+    font-size: 18px;
+    background-image: url(../../lib/images/collapsed-en.png) !important;
+    background-attachment: scroll !important;
+    background-repeat: no-repeat !important;
+    background-position: 25px 25px !important;
+}
+
 
 .ui-accordion-header.ui-accordion-header-collapsed {
     color: #09378e !important;
