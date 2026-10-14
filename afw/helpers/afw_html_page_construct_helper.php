@@ -79,10 +79,10 @@
                 // to avoid infinite mirroring
                 self::$header_entry_counter++; 
                 
-                /*if(self::$header_entry_counter>1)
+                if(self::$header_entry_counter>1)
                 {
                         throw new AfwRuntimeException("HzmHeader called twice, in general this happen when you include main.php or afw main_page.php when you are inside body of MainPage");
-                }*/
+                }
 
                 if($needUserObject) $objme = AfwSession::getUserConnected();
                 else $objme = null;
