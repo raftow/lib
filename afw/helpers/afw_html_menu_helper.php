@@ -114,6 +114,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $data_tokens["search_here"] = AfwLanguageHelper::translateKeyword("Search here", $lang);;
         $data_tokens["logo-width"] = AfwSession::config("logo-width", 42, "display", "force-client", $company);
         $data_tokens["logo-height"] = AfwSession::config("logo-height", 42, "display", "force-client", $company);
+        $data_tokens["title-width"] = AfwSession::config("title-width", 100, "display", "force-client", $company);
 
         $data_tokens["run_mode"] = $run_mode;
         $data_tokens["welcome_div"] = $welcome_div;

@@ -375,7 +375,7 @@ class AfwEditMotor
 
                 // d ie("for enum col : $col_name, $answer_case, liste_rep = ".var_export($liste_rep,true));
 
-                // if($desc["FORMAT-INPUT"]=="hzmtoggle") $obj->_error("enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
+                // if($desc["FORMAT-INPUT"]=="hzmtoggle") throw new AfwRuntimeException("enum liste_rep comes from $answer_case : ".var_export($liste_rep,true));
                 include 'tpl/helper_edit_enum.php';
                 break;
 
@@ -1013,7 +1013,7 @@ class AfwEditMotor
             }
             ?>
         </select>
-        <?
+        <?php
         if ($multi) {
         ?>
             <!-- Initialize the plugin: -->
@@ -1042,7 +1042,7 @@ class AfwEditMotor
                     });
                 });
             </script>
-        <?
+        <?php
         }
         ?>
 <?php

@@ -2154,7 +2154,7 @@ class AfwLoadHelper extends AFWRoot
             if (!$fattribut) {
                 throw new AfwRuntimeException("get EnumTable need attribut name for FUNCTION dynamic answers (table = $table) obj = " . var_export($obj, true));
             }
-            $method = "list_of_$fattribut";
+            $static_method = "list_of_$fattribut";
             $object_method = "my_list_of_$fattribut";
             if (!$table) {
                 throw new AfwRuntimeException('table param is mandatory in get EnumTable method');
@@ -2172,15 +2172,15 @@ class AfwLoadHelper extends AFWRoot
 
             if (!$return) {
                 $className = AfwStringHelper::tableToClass($table);
-                if(method_exists($className, $method)) {
-                    $return = $className::$method();
+                if(method_exists($className, $static_method)) {
+                    $return = $className::$static_method();
                     if($case != "no case") {
                         $old_case = $case; 
                     }
-                    $case = "$className :: $method() = " . var_export($return, true). "old case : $old_case";
+                    $case = "$className :: $static_method() = " . var_export($return, true). "old case : $old_case";
 
                 }else {
-                    $case .= " $className :: $method() method not found";
+                    $case .= " $className :: $static_method() method not found";
                 }
                 
             }

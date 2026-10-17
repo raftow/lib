@@ -58,7 +58,7 @@ if($employee_info)
             $where_arr[] = $where_col;
     }
                 
-    // $obj->_error("employee_info_cols = ".var_export($employee_info_cols,true)." where_arr = ".var_export($where_arr,true));
+    // throw new AfwRuntimeException("employee_info_cols = ".var_export($employee_info_cols,true)." where_arr = ".var_export($where_arr,true));
     if(count($where_arr)>0)
     {
             $where = "((".implode(") or (",$where_arr)."))";                                                

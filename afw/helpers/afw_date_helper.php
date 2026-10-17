@@ -1866,6 +1866,8 @@ class AfwDateHelper
         return self::gregToHijri($gdate);
     }
 
+    
+
     /**
      *  @param string $gdate if omitted we take current greg date
      *  @param integer $offset number of days offset to shift

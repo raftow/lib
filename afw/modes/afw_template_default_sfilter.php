@@ -85,10 +85,10 @@ foreach($class_db_structure as $nom_col => $desc)
         		$data[$nom_col]["oper"] = ob_get_clean();
                 }
                 
-                //if($nom_col=="id_domain")  $obj->_error("data[$nom_col] = ".var_export($data[$nom_col],true));
+                //if($nom_col=="id_domain")  throw new AfwRuntimeException("data[$nom_col] = ".var_export($data[$nom_col],true));
 
 	}
-        //elseif($nom_col=="id_domain")  $obj->_error("desc [$nom_col] = ".var_export($desc,true));
+        //elseif($nom_col=="id_domain")  throw new AfwRuntimeException("desc [$nom_col] = ".var_export($desc,true));
 }
 
 ?>

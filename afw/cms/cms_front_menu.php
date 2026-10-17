@@ -57,7 +57,7 @@ class CmsFrontMenu extends AFWRoot
                         return [true, $quick_links_arr, $mau_info, $menu, $user_info, $user_cache_file_path];
                 } else {
                         // die("the user cache file $user_cache_file_path not found");
-                        return [false, null, null, null, null, null];
+                        return [false, null, null, null, null, $user_cache_file_path];
                 }
         }
 

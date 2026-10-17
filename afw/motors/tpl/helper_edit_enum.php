@@ -43,7 +43,7 @@ if ($obj->fixm_disable) {
             else $listeOrdres[$rep_i] = $liste_codeOrdres[$rep_i];
         }
 
-        //if($col_name=="coming_status_id_0") $obj->_error($log_echo);
+        //if($col_name=="coming_status_id_0") throw new AfwRuntimeException($log_echo);
         if (!$css_val) $css_val = $desc["DEFAULT-CSS"];
         if (!$css_val) $css_val = $liste_css[0];
 

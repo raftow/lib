@@ -41,7 +41,7 @@ for ($i = 0; $i < $nb_objs; $i++) {
         if (($id) && (($obj->PK_MULTIPLE) || (is_numeric($id) && ($id > 0)))) {
                 //AFWDebugg::log("try to load $class row $id");
                 if ($obj->load($id)) $is_load = true;
-                else $obj->_error("can't load obj with id = $id");
+                else throw new AfwRuntimeException("can't load obj with id = $id");
         } else {
                 $_POST["id_$i"] = "";
         }

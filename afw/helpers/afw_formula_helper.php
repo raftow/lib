@@ -9,13 +9,16 @@ class AfwFormulaHelper extends AFWRoot
         return false;
     }
 
-    public static final function calcTechnicalAttribute($attribute, $obj,$lang="ar")
+    public static final function calcTechnicalAttribute($attribute, $obj, $lang="ar")
     {
         $return = "";
         switch ($attribute) {
             case 'tech_notes':
                 if ($obj->debugg_tech_notes) {
-                    $return = implode("<br>\n", $obj->debugg_tech_notes);
+                    if(is_array($obj->debugg_tech_notes))
+                        $return = implode("<br>\n", $obj->debugg_tech_notes);
+                    else 
+                        $return = $obj->debugg_tech_notes;
                 }
                 if (!$return) {
                     $return = 'nothing';

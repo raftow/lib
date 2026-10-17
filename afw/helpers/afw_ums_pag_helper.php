@@ -117,8 +117,15 @@ class AfwUmsPagHelper extends AFWRoot
             $mdl_new = false;
         }
 
+        if(!$mdl) return [null, null,null, null,null, null];
         return self::getMyAtable($mdl, $mdl_new, $table_name, $cremod, $cretbl);
     }
+
+    /**
+     * @param Module $mdl,
+     * @param bool $mdl_new,
+     * @param string $table_name,
+     */
 
     public static final function getMyAtable(
         $mdl,
@@ -128,7 +135,7 @@ class AfwUmsPagHelper extends AFWRoot
         $cretbl = false
     ) {
         $file_dir_name = dirname(__FILE__);
-        $mdl_id = $mdl->getId();
+        $mdl_id = $mdl->id;
 
         if ($mdl_id) {
             $tbl = Atable::getAtableByName($mdl_id, $table_name);

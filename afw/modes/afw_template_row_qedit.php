@@ -287,7 +287,7 @@ foreach($class_db_structure as $nom_col => $desc)
                                         list($icon,$textReason, $wd, $hg) = $obj->whyAttributeIsNotApplicable($nom_col);
                                         if(!$wd) $wd = 20;
                                         if(!$hg) $hg = 20;
-                                        //$obj->_error("$obj has Attribute $nom_col NotApplicable : ($icon,$textReason)");
+                                        //throw new AfwRuntimeException("$obj has Attribute $nom_col NotApplicable : ($icon,$textReason)");
                                         $qedit_input_arr[$qerow][$qedit_nom_col] = ["input"=>"<img src='../lib/images/$icon' data-toggle='tooltip' data-placement='top' title='$textReason'  width='$wd' heigth='$hg'>", "cols"=>$qecols];
                                         // die("case N/A qedit_input_arr = ".var_export($qedit_input_arr, true));
                                 }

@@ -36,14 +36,20 @@ class AfwPrevilege extends AFWRoot
      * @param string $module_id
      * @return string
      */
-    public static function moduleCodeOfModuleId($module_id)
+    public static function moduleCodeOfModuleId($module_id, $haltIfNotFound=true)
     {
         /**
          * @var array $mod_info
          */
         list($found, $mod_info, $file_modules_all) = self::loadAllServerModules();
-        if ($found) return $mod_info['m' . $module_id]["code"];
-        else return "";
+        if ($found) $return = $mod_info['m' . $module_id]["code"];
+        else $return = "";
+
+        if(!$return and $haltIfNotFound) {
+            throw new AfwRuntimeException("moduleCodeOfModuleId($module_id) not found in $file_modules_all");
+        }
+
+        return $return;
     }
 
     /**

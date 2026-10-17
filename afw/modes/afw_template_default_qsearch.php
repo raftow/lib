@@ -133,14 +133,14 @@ foreach ($formColumns as $nom_col) {
                 } else {
                         $my_log .= "<!--  $nom_col is not in qsearch mode because max capacity of form ($max_total_qsize) is reached, so no space to put this input -->\n";
                 }
-                //if($nom_col=="id_domain")  $obj->_error("data[$nom_col] = ".var_export($data[$nom_col],true));
+                //if($nom_col=="id_domain")  throw new AfwRuntimeException("data[$nom_col] = ".var_export($data[$nom_col],true));
 
         } else {
 
                 $reason_not_qsearch = AfwPrevilegeHelper::isNotQSearchColReason($obj, $nom_col, $desc);
                 $my_log .= "<!--  $nom_col is not in qsearch mode because $reason_not_qsearch -->\n";
         }
-        //elseif($nom_col=="id_domain")  $obj->_error("desc [$nom_col] = ".var_export($desc,true));
+        //elseif($nom_col=="id_domain")  throw new AfwRuntimeException("desc [$nom_col] = ".var_export($desc,true));
 }
 
 ?>

@@ -5,7 +5,7 @@ class AfwQsearchMotor
 	{
 		$type_input_ret = "hidden";
 ?>
-		<input type="hidden" id="<?= $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
+		<input type="hidden" id="<?php echo  $col_name ?>" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
 		<?php
 		return $type_input_ret;
 	}
@@ -50,7 +50,7 @@ class AfwQsearchMotor
 			case 'MENUM':
 				if ($desc["ANSWER"] == "INSTANCE_FUNCTION") {
 					$enumAnswerList = AfwStructureHelper::getEnumAnswerList($obj, $col_name);
-					// $obj->_error("$col_name is INSTANCE_FUNCTION answer and it has this getEnumAnswerList ".var_export($fkObj,true));
+					// throw new AfwRuntimeException("$col_name is INSTANCE_FUNCTION answer and it has this getEnumAnswerList ".var_export($fkObj,true));
 				} else {
 					$fcol_name = $desc["FUNCTION_COL_NAME"];
 					if (AfwStringHelper::stringStartsWith($fcol_name, "::")) {
@@ -192,7 +192,7 @@ class AfwQsearchMotor
 						$fkObj,
 						( (isset($_POST[$col_name])) ? $_POST[$col_name]: array()  ),
 						array(
-							"class" => "form-control <?= $lang?> $class_inputSearch $class_inputSelect_multi_big $inp_selected",
+							"class" => "form-control <?php echo  $lang?> $class_inputSearch $class_inputSelect_multi_big $inp_selected",
 							"name"  => $col_name."[]",
 							"size"  => 5,
 							"multi" => true
@@ -204,7 +204,7 @@ class AfwQsearchMotor
 			case 'PK':
 			case 'TEXT':
 
-		?> <input type="text" class="form-control <?= $lang ?> <?= trim(" inputfull $class_inputSearch ") ?>" placeholder="<?php echo $col_placeholder ?>" name="<?php echo $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
+		?> <input type="text" class="form-control <?php echo  $lang ?> <?php echo  trim(" inputfull $class_inputSearch ") ?>" placeholder="<?php echo $col_placeholder ?>" name="<?php echo $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?php echo  $maxlength_input ?>">
 			<?php echo $desc["UNIT"];
 				//echo $desc["TITLE_AFTER"];
 				break;
@@ -260,13 +260,13 @@ class AfwQsearchMotor
 							بين
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>
+							<input type="text" class="form-control <?php echo  $lang ?> <?php echo  $class_inputSmallSearch ?>" id="<?php echo  $col_name ?>" name="<?php echo  $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>
 						</td>
 						<td style='padding:5px;'>
 							و
 						</td>
 						<td>
-							<input type="text" class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<?php echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
+							<input type="text" class="form-control <?php echo  $lang ?> <?php echo  $class_inputSmallSearch ?>" id="<?php echo  $col_name . "_2" ?>" name="<?php echo  $col_name . "_2" ?>" value="<?php echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
 						</td>
 					</tr>
 				</table><!-- end between table -->
@@ -285,13 +285,13 @@ class AfwQsearchMotor
 						</td>
 						<td>
 							<input  type="text" 
-									class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" 
-									id="<?= $col_name ?>" name="<?= $col_name ?>" 
+									class="form-control <?php echo  $lang ?> <?php echo  $class_inputSmallSearch ?>" 
+									id="<?php echo  $col_name ?>" name="<?php echo  $col_name ?>" 
 									value="<?php echo $val_DAT; ?>" 
 									autocomplete="off"> 
 							</input>
 							<script type="text/javascript">
-								$('#<?= $col_name ?>').calendarsPicker({
+								$('#<?php echo  $col_name ?>').calendarsPicker({
 									calendar: $.calendars.instance('UmmAlQura')
 								});
 							</script>
@@ -301,14 +301,14 @@ class AfwQsearchMotor
 						</td>
 						<td>
 							<input type="text" 
-							       class="form-control <?= $lang ?> <?= $class_inputSmallSearch ?>" 
-								   id="<?= $col_name . "_2" ?>" 
-								   name="<?= $col_name . "_2" ?>" 
+							       class="form-control <?php echo  $lang ?> <?php echo  $class_inputSmallSearch ?>" 
+								   id="<?php echo  $col_name . "_2" ?>" 
+								   name="<?php echo  $col_name . "_2" ?>" 
 								   value="<?php echo $val_DAT_2; ?>" 
 								   autocomplete="off"> 
 							</input>
 							<script type="text/javascript">
-								$('#<?= $col_name . "_2" ?>').calendarsPicker({
+								$('#<?php echo  $col_name . "_2" ?>').calendarsPicker({
 									calendar: $.calendars.instance('UmmAlQura')
 								});
 							</script>
@@ -701,7 +701,7 @@ class AfwQsearchMotor
 			?> <option value="<?php echo $id ?>" <?php echo (in_array($id, $selected)) ? " selected=\"selected\"" : ""; ?>><?php echo $val ?></option>
 			<?php   } ?>
 		</select>
-		<?
+		<?php
 		if ($multi) {
 		?>
 			<!-- Initialize the plugin: -->
@@ -712,7 +712,7 @@ class AfwQsearchMotor
 					});
 				});
 			</script>
-		<?
+		<?php
 		}
 		?>
 		<?php
@@ -763,29 +763,29 @@ class AfwQsearchMotor
 		?>
 			<table style='width: 100%;' cellspacing='0' cellpadding='0'>
 				<tr style="background-color: rgba(255, 255, 255, 0);">
-					<td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?= $col_name ?>" name="<?= $col_name ?>" class="form-control <?= $lang ?> inputtrescourt cl_id" value="<?= $val ?>" readonly></td>
-					<td style="padding:0px;margin:0px;"><input type="text" id="<?= $col_name_atc ?>" name="<?= $col_name_atc ?>" class="form-control <?= $lang ?> <?= $atc_input_normal . " " . $class_inputSearch ?>" value="<?= $val_display ?>"></td>
+					<td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?php echo  $col_name ?>" name="<?php echo  $col_name ?>" class="form-control <?php echo  $lang ?> inputtrescourt cl_id" value="<?php echo  $val ?>" readonly></td>
+					<td style="padding:0px;margin:0px;"><input type="text" id="<?php echo  $col_name_atc ?>" name="<?php echo  $col_name_atc ?>" class="form-control <?php echo  $lang ?> <?php echo  $atc_input_normal . " " . $class_inputSearch ?>" value="<?php echo  $val_display ?>"></td>
 				</tr>
 			</table>
 			<script>
 				$(function() {
 
-					$("#<?= $col_name_atc ?>").autocomplete({
-						source: "../lib/api/autocomplete.php?cl=<?= $nom_class_fk ?>&currmod=<?= $nom_module_fk ?>&clp=<?= $clp ?>&idp=<?= $idp ?>&modp=<?= $modp ?>&attp=<?= $attp ?>",
+					$("#<?php echo  $col_name_atc ?>").autocomplete({
+						source: "../lib/api/autocomplete.php?cl=<?php echo  $nom_class_fk ?>&currmod=<?php echo  $nom_module_fk ?>&clp=<?php echo  $clp ?>&idp=<?php echo  $idp ?>&modp=<?php echo  $modp ?>&attp=<?php echo  $attp ?>",
 						minLength: 0,
 
 						change: function(event, ui) {
-							if ($("#<?= $col_name_atc ?>").val() == "") {
-								$("#<?= $col_name ?>").val("");
+							if ($("#<?php echo  $col_name_atc ?>").val() == "") {
+								$("#<?php echo  $col_name ?>").val("");
 							}
 						},
 
 
 						select: function(event, ui) {
 							//alert(ui.item.id);
-							$("#<?= $col_name ?>").val(ui.item.id);
-							$("#<?= $col_name ?>").attr('class', 'form-control inputtrescourt cl_id');
-							$("#<?= $col_name_atc ?>").attr('class', 'form-control <?= $atc_input_normal ?>');
+							$("#<?php echo  $col_name ?>").val(ui.item.id);
+							$("#<?php echo  $col_name ?>").attr('class', 'form-control inputtrescourt cl_id');
+							$("#<?php echo  $col_name_atc ?>").attr('class', 'form-control <?php echo  $atc_input_normal ?>');
 						},
 
 						html: true, // optional (jquery.ui.autocomplete.html.js required)
@@ -801,7 +801,7 @@ class AfwQsearchMotor
 		<?php
 		} else {
 		?>
-			<input type="text" class="form-control <?= $lang ?> <?= trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
+			<input type="text" class="form-control <?php echo  $lang ?> <?php echo  trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
 <?php
 		}
 	}

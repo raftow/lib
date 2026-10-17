@@ -424,7 +424,7 @@ class AfwSession extends AFWRoot
                 return self::getSingleton()->isSetData("creg-" . $var) ? self::getSingleton()->getData("creg-" . $var) : $default;
         }
 
-        public static function log_config($lineSep = "<br>")
+        public static function log_config($lineSep = "<br>\n")
         {
                 $return = "";
                 $all_data = self::getSingleton()->getAllData();
