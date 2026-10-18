@@ -6,7 +6,7 @@ $clStep = $wizObj->getMyCLStep();
 if(!$obj->editByStep)
 {
 ?>
-<div class="col-xs-12 hzm_vtab_body" style="height:<?=$hzm_vtab_body_height?>;margin-bottom: 15px;">
+<div class="col-xs-12 hzm_vtab_body" style="height:<?php echo $hzm_vtab_body_height?>;margin-bottom: 15px;">
 <?
 }
 else
@@ -91,7 +91,7 @@ else
           
            
     ?>      
-    <li class="<?="tabsbloc wizstep".$kstep." ".$clStep." ".$class_step?>"><a href="<?=$link_step?>"><div class='step_num'><?=$kstep?>&nbsp;</div><div class='step_name'><?=$step_name[$kstep]?></div></a>
+    <li class="<?php echo "tabsbloc wizstep".$kstep." ".$clStep." ".$class_step?>"><a href="<?php echo $link_step?>"><div class='step_num'><?php echo $kstep?>&nbsp;</div><div class='step_name'><?php echo $step_name[$kstep]?></div></a>
     <!-- <?php echo $step_errors_list?>-->
     </li>
     <?
@@ -116,7 +116,7 @@ else
            
            $hzm_vtab_body_height = $obj->hzm_vtab_body_height;
 ?>
-<div class="col-xs-2 hzm_vtab<?=$mode_slim?>">
+<div class="col-xs-2 hzm_vtab<?php echo $mode_slim?>">
 	<ul class="nav nav-pills nav-stacked" role="tablist">
         
 <?
@@ -173,14 +173,14 @@ else
                    
             ?>
             <li role="tab">
-              <a href="<?=$link_step?>" class="defaultTab<?=$mode_slim?> dropdown-item <?=$class_step?>">
-                <?=$arraow_active_tab?>
-                <span class="<?=$classLabel?>"><?=$step_name[$kstep]?></span>
+              <a href="<?php echo $link_step?>" class="defaultTab<?php echo $mode_slim?> dropdown-item <?php echo $class_step?>">
+                <?php echo $arraow_active_tab?>
+                <span class="<?php echo $classLabel?>"><?php echo $step_name[$kstep]?></span>
 <?
                 if(!$obj->no_step_help)
                 {
 ?>        
-        	<div class="<?=$classInfo?>"><span><?=$step_help[$kstep]?></span></div>
+        	<div class="<?php echo $classInfo?>"><span><?php echo $step_help[$kstep]?></span></div>
 <?
                 }
 ?>        
@@ -194,7 +194,7 @@ else
 		
 	</ul>
 </div>
-<div class="col-xs-10 hzm_vtab_body" style="height:<?=$hzm_vtab_body_height?>;margin-bottom: 15px;">
+<div class="col-xs-10 hzm_vtab_body" style="height:<?php echo $hzm_vtab_body_height?>;margin-bottom: 15px;">
 <?
     }
 }

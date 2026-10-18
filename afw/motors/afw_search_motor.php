@@ -5,7 +5,7 @@ public static function hidden_input($col_name, $desc, $val, $obj = null)
     $type_input_ret = "hidden";
 ?>
     <input type="hidden" name="<?php echo $col_name ?>" value="<?php echo $val ?>">
-    <?
+    <?php
     return $type_input_ret;
 }
 
@@ -174,32 +174,32 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
     ?>
                     <table cellspacing='0' cellpadding='0'>
                         <tr style="background-color: rgba(255, 255, 255, 0);">
-                            <td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?= $col_name ?>" name="<?= $col_name ?>" class="form-control inputtrescourt cl_id" value="<?= $val ?>" readonly></td>
-                            <td style="padding:0px;margin:0px;"><input type="text" id="<?= $col_name_atc ?>" name="<?= $col_name_atc ?>" class="form-control <?= $atc_input_normal . " " . $class_inputSearch ?>" value="<?= $val_display ?>"></td>
+                            <td style="padding:0px;margin:0px;background-color: rgba(255, 255, 255, 0);"><input type="hidden" id="<?php echo  $col_name ?>" name="<?php echo  $col_name ?>" class="form-control inputtrescourt cl_id" value="<?php echo  $val ?>" readonly></td>
+                            <td style="padding:0px;margin:0px;"><input type="text" id="<?php echo  $col_name_atc ?>" name="<?php echo  $col_name_atc ?>" class="form-control <?php echo  $atc_input_normal . " " . $class_inputSearch ?>" value="<?php echo  $val_display ?>"></td>
                         </tr>
                     </table>
                     <script>
                         $(function() {
 
-                            $("#<?= $col_name_atc ?>").autocomplete({
-                                source: "../lib/api/autocomplete.php?cl=<?= $nom_class_fk ?>&currmod=<?= $nom_module_fk ?>&clp=<?= $clp ?>&idp=<?= $idp ?>&modp=<?= $modp ?>&attp=<?= $attp ?>",
+                            $("#<?php echo  $col_name_atc ?>").autocomplete({
+                                source: "../lib/api/autocomplete.php?cl=<?php echo  $nom_class_fk ?>&currmod=<?php echo  $nom_module_fk ?>&clp=<?php echo  $clp ?>&idp=<?php echo  $idp ?>&modp=<?php echo  $modp ?>&attp=<?php echo  $attp ?>",
                                 minLength: 0,
 
                                 change: function(event, ui) {
-                                    if ($("#<?= $col_name_atc ?>").val() == "") {
-                                        $("#<?= $col_name ?>").val("");
+                                    if ($("#<?php echo  $col_name_atc ?>").val() == "") {
+                                        $("#<?php echo  $col_name ?>").val("");
                                     }
-                                    // $("#<?= $col_name ?>").val("");
-                                    // $("#<?= $col_name ?>").attr('class', 'inputtrescourt cl_<?= $class_icon ?>_id');
-                                    // $("#<?= $col_name_atc ?>").attr('class', '<?= $atc_input_modified_class ?>');
+                                    // $("#<?php echo  $col_name ?>").val("");
+                                    // $("#<?php echo  $col_name ?>").attr('class', 'inputtrescourt cl_<?php echo  $class_icon ?>_id');
+                                    // $("#<?php echo  $col_name_atc ?>").attr('class', '<?php echo  $atc_input_modified_class ?>');
                                 },
 
 
                                 select: function(event, ui) {
                                     //alert(ui.item.id);
-                                    $("#<?= $col_name ?>").val(ui.item.id);
-                                    $("#<?= $col_name ?>").attr('class', 'form-control inputtrescourt cl_id');
-                                    $("#<?= $col_name_atc ?>").attr('class', 'form-control <?= $atc_input_normal ?>');
+                                    $("#<?php echo  $col_name ?>").val(ui.item.id);
+                                    $("#<?php echo  $col_name ?>").attr('class', 'form-control inputtrescourt cl_id');
+                                    $("#<?php echo  $col_name_atc ?>").attr('class', 'form-control <?php echo  $atc_input_normal ?>');
                                 },
 
                                 html: true, // optional (jquery.ui.autocomplete.html.js required)
@@ -212,11 +212,11 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
 
                         });
                     </script>
-                <?
+                <?php
                 } else {
                 ?>
-                    <input type="text" class="form-control <?= trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
-            <?
+                    <input type="text" class="form-control <?php echo  trim($class_inputInt . " $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name; ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength=255>
+            <?php
                 }
             }
             break;
@@ -228,7 +228,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
         case 'INT':
         case 'AMNT':
 
-            ?> <input type="text" class="form-control <?= trim(" $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?= $maxlength_input ?>">
+            ?> <input type="text" class="form-control <?php echo  trim(" $class_inputSearch " . $inp_selected) ?>" name="<?php echo $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>" size=32 maxlength="<?php echo  $maxlength_input ?>">
         <?php echo $desc["UNIT"];
             //echo $desc["TITLE_AFTER"];
             break;
@@ -270,9 +270,9 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                         من
                     </td>
                     <td>
-                        <input type="text" class="form-control <?= $class_inputSmallSearch ?>" id="<?= $col_name ?>" name="<?= $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>
+                        <input type="text" class="form-control <?php echo  $class_inputSmallSearch ?>" id="<?php echo  $col_name ?>" name="<?php echo  $col_name ?>" value="<?php echo ((isset($_POST[$col_name])) ? $_POST[$col_name] : ''); ?>"> </input>
                         <script type="text/javascript">
-                            $('#<?= $col_name ?>').calendarsPicker({
+                            $('#<?php echo  $col_name ?>').calendarsPicker({
                                 calendar: $.calendars.instance('UmmAlQura')
                             });
                         </script>
@@ -281,9 +281,9 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
                         إلى
                     </td>
                     <td>
-                        <input type="text" class="form-control <?= $class_inputSmallSearch ?>" id="<?= $col_name . "_2" ?>" name="<?= $col_name . "_2" ?>" value="<?php echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
+                        <input type="text" class="form-control <?php echo  $class_inputSmallSearch ?>" id="<?php echo  $col_name . "_2" ?>" name="<?php echo  $col_name . "_2" ?>" value="<?php echo ((isset($_POST[$col_name . "_2"])) ? $_POST[$col_name . "_2"] : ''); ?>"> </input>
                         <script type="text/javascript">
-                            $('#<?= $col_name . "_2" ?>').calendarsPicker({
+                            $('#<?php echo  $col_name . "_2" ?>').calendarsPicker({
                                 calendar: $.calendars.instance('UmmAlQura')
                             });
                         </script>
@@ -514,7 +514,7 @@ public static function self::select($list_id_val, $selected = array(), $info = a
         ?> <option value="<?php echo $id ?>" <?php echo (in_array($id, $selected)) ? " selected=\"selected\"" : ""; ?>><?php echo $val ?></option>
         <?php   } ?>
     </select>
-    <?
+    <?php
     if ($multi) {
     ?>
         <!-- Initialize the plugin: -->
@@ -525,7 +525,7 @@ public static function self::select($list_id_val, $selected = array(), $info = a
                 });
             });
         </script>
-    <?
+    <?php
     }
     ?>
 <?php

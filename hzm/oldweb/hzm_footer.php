@@ -133,8 +133,8 @@ include_once("hzm_footer_features_js.php");
     if(!$front_header)
     {
 ?>
-<div style="position: absolute;left: <?=$date_pos_left?>;top: <?=$date_pos_top?>;font-family: <?=$date_font_family?>;font-size: <?=$date_font_size?>;font-weight: <?=$date_font_weight?>;color: <?=$date_color?>;background-color:<?=$date_bgcolor?>;<?=$date_other_styles?>"><?=$system_date?></div>
-<div style="position: absolute;left: <?=$welcome_pos_left?>;top: <?=$welcome_pos_top?>;font-family: <?=$date_font_family?>;font-size: <?=$date_font_size?>;font-weight: <?=$welcome_font_weight?>;color: <?=$welcome_color?>;background-color:<?=$welcome_bgcolor?>;<?=$welcome_other_styles?>"><?=$welcome_user?></div>
+<div style="position: absolute;left: <?php echo $date_pos_left?>;top: <?php echo $date_pos_top?>;font-family: <?php echo $date_font_family?>;font-size: <?php echo $date_font_size?>;font-weight: <?php echo $date_font_weight?>;color: <?php echo $date_color?>;background-color:<?php echo $date_bgcolor?>;<?php echo $date_other_styles?>"><?php echo $system_date?></div>
+<div style="position: absolute;left: <?php echo $welcome_pos_left?>;top: <?php echo $welcome_pos_top?>;font-family: <?php echo $date_font_family?>;font-size: <?php echo $date_font_size?>;font-weight: <?php echo $welcome_font_weight?>;color: <?php echo $welcome_color?>;background-color:<?php echo $welcome_bgcolor?>;<?php echo $welcome_other_styles?>"><?php echo $welcome_user?></div>
 <!--<div id="pageloader" class="modal"> Place at bottom of page</div> -->
 <?php
     }
@@ -142,7 +142,7 @@ include_once("hzm_footer_features_js.php");
     {
 ?>    
 <div class="section fp-auto-height-responsive footer_bg" id="footer_div">
-	        <div class="rowfooter expanded rowfooter<?=$MODULE?>">
+	        <div class="rowfooter expanded rowfooter<?php echo $MODULE?>">
 			<div class="large-12 columns">
 		  		<img src="../lib/images/sm-01.png" alt="" class="footer_img effectscale sm-icon">
 		  		<img src="../lib/images/sm-02.png" alt="" class="footer_img effectscale sm-icon">
@@ -153,7 +153,7 @@ include_once("hzm_footer_features_js.php");
 		  		 
 		  	</div>
 		</div>
-		<div class="rowfooter footer footer<?=$MODULE?> padding-top-3">
+		<div class="rowfooter footer footer<?php echo $MODULE?> padding-top-3">
 			<div class="footer_container columns">
 				<div class="rowfooter small-up-1 medium-up-1 large-up-2 text-right">
 <?php
@@ -187,7 +187,7 @@ include_once("hzm_footer_features_js.php");
     {
       $quick_links_title = AfwSession::config("quick_links_title", "روابط سريعة");
 ?>
-					<div class="quick-links column column-block padding-left-1 module-<?=$MODULE?>">
+					<div class="quick-links column column-block padding-left-1 module-<?php echo $MODULE?>">
 						<h3><?php echo $quick_links_title ?></h3>
 						<ul class="row small-up-1 medium-up-1 large-up-2 whiteFont footerlinks padding-right-2">
 <?php

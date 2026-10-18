@@ -157,7 +157,7 @@ foreach ($class_db_structure as $key => $structure) {
 ?>
 <script src='../lib/js/jquery.elevatezoom.js'></script>
 
-<?
+<?php
 $idobj = $obj->getId();
 
 $titre_display = $obj->translate("FILE", $lang, true) . " > " . $obj->singleTranslation($lang) . " > " . $obj->getShortDisplay($lang);
@@ -169,11 +169,11 @@ if (!$file_box_css_class) $file_box_css_class = "filebox";
 
 <form method="post" action="main.php">
     <input type="hidden" name="Main_Page" id="Main_Page" value="afw_mode_display.php" />
-    <input type="hidden" name="currmod" value="<?= $currmod ?>" />
-    <input type="hidden" name="id" value="<?= $idobj ?>" />
-    <input type="hidden" name="cl" value="<?= $cl ?>" />
+    <input type="hidden" name="currmod" value="<?php echo  $currmod ?>" />
+    <input type="hidden" name="id" value="<?php echo  $idobj ?>" />
+    <input type="hidden" name="cl" value="<?php echo  $cl ?>" />
     <input type="hidden" name="pbmon" value="1" />
-    <?
+    <?php
     $rest_params = (isset($currmod)) ? "&currmod=$currmod" : "";
     $all_params = "&popup=$popup&cl=$cl&id=$idobj" . $rest_params;
 
@@ -199,26 +199,26 @@ if (!$file_box_css_class) $file_box_css_class = "filebox";
         $btn_edit_html = "<span hint='$can_t_me_reason' class=\"submit-btn lockbtn $cl_edit_lock\">&nbsp</span>";
     }
     ?>
-    <div class="<?= $file_box_css_class ?> card">
+    <div class="<?php echo  $file_box_css_class ?> card">
 
         <div class="panel-heading">
             <h3 class="panel-title col-xs-9"><span><?php echo "$titre_display" ?></span></h3>
-            <h3 class="panel-edit-btn col-xs-3 text-left btn_in_header"><?= $btn_edit_html ?></h3>
+            <h3 class="panel-edit-btn col-xs-3 text-left btn_in_header"><?php echo  $btn_edit_html ?></h3>
         </div>
 
         <div class="panel-body">
 
-            <?
+            <?php
             $modeOfPage = "display";
             include("hzm_tabs_bloc_header.php");
 
             $styleStepWidth = $obj->styleStep[$obj->currentStep]["width"];
             if ($styleStepWidth) $style = " style='width: ${styleStepWidth} !important;'";
             ?>
-            <div class="hzm_form_panel hzm_step_body_<?= $clStep . "_" . $obj->currentStep ?>">
+            <div class="hzm_form_panel hzm_step_body_<?php echo  $clStep . "_" . $obj->currentStep ?>">
                 <div class="paragraph_hzm_ar minibox_hzm_very_large">
                     <div class="hzm_grid">
-                        <?
+                        <?php
                         $firstTr = true;
                         $newTr = true;
                         $fgroup = "";
@@ -425,9 +425,9 @@ if (!$file_box_css_class) $file_box_css_class = "filebox";
 
 
                         ?>
-                            <div class="hzm_attribute hzm_wd<?= $colspan ?>">
-                                <label class="hzm_label hzm_label_<?= $key ?>"><?= $attr_label ?></label>
-                                <div class="hzm_data hzm_data_<?= $key ?>"><?= $attr_html ?></div>
+                            <div class="hzm_attribute hzm_wd<?php echo  $colspan ?>">
+                                <label class="hzm_label hzm_label_<?php echo  $key ?>"><?php echo  $attr_label ?></label>
+                                <div class="hzm_data hzm_data_<?php echo  $key ?>"><?php echo  $attr_html ?></div>
                             </div>
                         <?php
 
@@ -444,8 +444,8 @@ if (!$file_box_css_class) $file_box_css_class = "filebox";
                         if ($obj->editByStep and ($obj->currentStep < $obj->editNbSteps) and $can_go) {
 
                     ?>
-                            <center><a href="main.php?Main_Page=afw_mode_display.php<?= $all_params ?>&currstep=<?= $next_step ?>">
-                                    <span class="graybtn dnextbtn"><?= $obj->getNextTabButtonLabel($next_step, $lang) ?></span><br><br>
+                            <center><a href="main.php?Main_Page=afw_mode_display.php<?php echo  $all_params ?>&currstep=<?php echo  $next_step ?>">
+                                    <span class="graybtn dnextbtn"><?php echo  $obj->getNextTabButtonLabel($next_step, $lang) ?></span><br><br>
                                 </a></center>
                     <?php
                         }
@@ -506,12 +506,12 @@ if (!$file_box_css_class) $file_box_css_class = "filebox";
                             }
                             ?>
                         </div>
-                <?
+                <?php
                     }
                 }
                 ?>
             </div>
-            <?
+            <?php
             include("hzm_tabs_bloc_footer.php");
 
             $other_links = $obj->getOtherLinksForUser("display", $objme);
@@ -560,7 +560,7 @@ if (!$file_box_css_class) $file_box_css_class = "filebox";
             ?>
                     <table class="table_obj">
                         <tr class="table_obj">
-                            <?
+                            <?php
 
                             $col_num = 0;
                             foreach ($auth_links as $k => $other_link) {
@@ -569,22 +569,22 @@ if (!$file_box_css_class) $file_box_css_class = "filebox";
                             ?>
                         </tr>
                         <tr class="table_obj">
-                        <?
+                        <?php
                                     $col_num = 0;
                                 }
                         ?>
                         <td>
-                            <a href="<?= $other_link["URL"] ?>">
-                                <span class="<?= $other_link["COLOR"] ?>btn submit-btn fright"><?= $other_link["TITLE"] ?></span>
+                            <a href="<?php echo  $other_link["URL"] ?>">
+                                <span class="<?php echo  $other_link["COLOR"] ?>btn submit-btn fright"><?php echo  $other_link["TITLE"] ?></span>
                             </a>
                         </td>
-                    <?
+                    <?php
                                 $col_num++;
                             }
                     ?>
                         </tr>
                     </table>
-                <?
+                <?php
                 }
             }
 
@@ -593,7 +593,7 @@ if (!$file_box_css_class) $file_box_css_class = "filebox";
                 ?>
                 <div style="float: left;">
                     <p>
-                        <?
+                        <?php
 
                         foreach ($pbm_arr as $pbm_code => $pbm_item) {
                             echo showPublicMethodButton($obj, $pbm_code, $pbm_item, $lang);
@@ -601,7 +601,7 @@ if (!$file_box_css_class) $file_box_css_class = "filebox";
                         ?>
                     </p>
                 </div>
-            <?
+            <?php
             }
 
 

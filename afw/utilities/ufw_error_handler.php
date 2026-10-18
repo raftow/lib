@@ -147,17 +147,17 @@ if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHan
             <link href="pic/logo.png" rel="shortcut icon">
 
             <title>Momken Library</title>
-            <link href="<?php echo $relative_path; ?>../lib/css/def_<?= $lang ?>_<?= $my_font ?>.css" rel="stylesheet" type="text/css">
-            <link href="<?php echo $relative_path; ?>../lib/css/<?= $my_theme ?>/style_common.css" rel="stylesheet" type="text/css">
-            <link href="<?php echo $relative_path; ?>../lib/css/<?= $my_theme ?>/style_<?= $lang ?>.css" rel="stylesheet" type="text/css">
+            <link href="<?php echo $relative_path; ?>../lib/css/def_<?php echo  $lang ?>_<?php echo  $my_font ?>.css" rel="stylesheet" type="text/css">
+            <link href="<?php echo $relative_path; ?>../lib/css/<?php echo  $my_theme ?>/style_common.css" rel="stylesheet" type="text/css">
+            <link href="<?php echo $relative_path; ?>../lib/css/<?php echo  $my_theme ?>/style_<?php echo  $lang ?>.css" rel="stylesheet" type="text/css">
         </head>
 
         <body>
             <div class='afwerr'>
-                <h1>Uncaught <?= get_class($ex); ?></h1>
-                <h3><?= $ex->getMessage(); ?></h3>
+                <h1>Uncaught <?php echo  get_class($ex); ?></h1>
+                <h3><?php echo  $ex->getMessage(); ?></h3>
                 <p>
-                    An uncaught <?= get_class($ex); ?> was thrown on line <?= $line; ?> of file <?= basename($file); ?> that prevented further execution of this request.
+                    An uncaught <?php echo  get_class($ex); ?> was thrown on line <?php echo  $line; ?> of file <?php echo  basename($file); ?> that prevented further execution of this request.
                 </p>
                 <h2>Where it happened:</h2>
 
@@ -177,28 +177,28 @@ if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHan
                         <tbody>
                             <?php foreach ($ex->getTrace() as $i => $trace) : ?>
                                 <?php if ($i < 50) : ?>
-                                    <tr class="bt<?= $i ?> <?= $i % 2 == 0 ? 'even' : 'odd'; ?>">
-                                        <td><?= isset($trace['file']) ? basename($trace['file']) : ''; ?></td>
-                                        <td><?= isset($trace['line']) ? $trace['line'] : ''; ?></td>
-                                        <td><?= isset($trace['class']) ? $trace['class'] : ''; ?></td>
-                                        <td><?= isset($trace['function']) ? $trace['function'] : ''; ?></td>
+                                    <tr class="bt<?php echo  $i ?> <?php echo  $i % 2 == 0 ? 'even' : 'odd'; ?>">
+                                        <td><?php echo  isset($trace['file']) ? basename($trace['file']) : ''; ?></td>
+                                        <td><?php echo  isset($trace['line']) ? $trace['line'] : ''; ?></td>
+                                        <td><?php echo  isset($trace['class']) ? $trace['class'] : ''; ?></td>
+                                        <td><?php echo  isset($trace['function']) ? $trace['function'] : ''; ?></td>
                                         <td>
                                             <?php if (_SHOW_ARGS) : ?>
                                                 <?php if (isset($trace['args']) and $trace['args']) : ?>
                                                     <?php foreach ($trace['args'] as $a => $arg) : ?>
                                                         <?php if (!is_object($arg) and !is_array($arg)) : ?>
-                                                            <span><?= gettype($arg); ?> : <?= var_export($arg, true); ?></span>
+                                                            <span><?php echo  gettype($arg); ?> : <?php echo  var_export($arg, true); ?></span>
                                                         <?php else : ?>
                                                             <?php if (is_object($arg)) : ?>
-                                                                <span>Object <?= get_class($arg) ?> </span>
+                                                                <span>Object <?php echo  get_class($arg) ?> </span>
                                                             <?php else : ?>
-                                                                <span>Array [<?= count($arg) ?> items]</span>
+                                                                <span>Array [<?php echo  count($arg) ?> items]</span>
                                                             <?php endif; ?>
                                                         <?php endif; ?>
                                                         <?php echo ($a < count($trace['args']) - 1) ? ',' : ''; ?>
                                                     <?php endforeach; ?>
                                                 <?php else : ?>
-                                                    NULL <span><?= gettype($arg); ?> : <?= var_export($arg, true); ?></span>
+                                                    NULL <span><?php echo  gettype($arg); ?> : <?php echo  var_export($arg, true); ?></span>
                                                 <?php endif; ?>
                                             <?php else : ?>
                                                 DISABLED-0
@@ -206,13 +206,13 @@ if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHan
                                         </td>
                                     </tr>
                                     <?php if (_SHOW_ALL_ARGS and $trace['args']) { ?>
-                                        <tr class="<?= $i % 2 == 0 ? 'even' : 'odd'; ?>">
+                                        <tr class="<?php echo  $i % 2 == 0 ? 'even' : 'odd'; ?>">
                                             <td class="args" colspan="5">
                                                 <?php echo var_export($trace['args'], true) ?>
                                             </td>
                                         </tr>
                                     <?php } ?>
-                                    <tr class="<?= $i % 2 == 0 ? 'even' : 'odd'; ?>">
+                                    <tr class="<?php echo  $i % 2 == 0 ? 'even' : 'odd'; ?>">
                                         <td colspan="5">
                                             <div class='php code zone'> <?php showCodeLines($trace['file'], $trace['line']);   ?></div>
                                         </td>
@@ -223,7 +223,7 @@ if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHan
                         </tbody>
                     </table>
                 <?php else : ?>
-                    <pre><?= $ex->getTraceAsString(); ?></pre>
+                    <pre><?php echo  $ex->getTraceAsString(); ?></pre>
                 <?php endif; ?>
                 <?php
                 if (class_exists("AfwSession")) echo AfwSession::getLog();
@@ -348,7 +348,7 @@ if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHan
                 <h1>Component :<?php echo $component; ?></h1>
                 <h2>Version : <?php echo $version; ?></h2>
                 <h2>Context : <?php echo $context; ?></h2>
-                <!-- <?= $ex->getMessage(); ?> -->
+                <!-- <?php echo  $ex->getMessage(); ?> -->
                 <h3>Please contact your administrator by sending copy-past of the text of this screen in a new ticket in customer service plateform : <?php echo $crm_site ?></h3>
                 <h1>Other Related Librairies : </h1>
                 <h2><?php echo $relc; ?></h2>

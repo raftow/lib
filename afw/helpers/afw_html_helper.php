@@ -806,8 +806,8 @@ class AfwHtmlHelper extends AFWRoot
                                 if($btnclass) 
                                 {
                 ?>
-                                        <td><a class="btn-micro <?=$btnclass?>" <?=$target_action?> href="<?="main.php"."?".$link ?>"><?=$frameworkAction_tr?></a></td>
-                <?
+                                        <td><a class="btn-micro <?php echo $btnclass?>" <?php echo $target_action?> href="<?php echo "main.php"."?".$link ?>"><?php echo $frameworkAction_tr?></a></td>
+                <?php
                                 }
                                 elseif($img) 
                                 {
@@ -818,8 +818,8 @@ class AfwHtmlHelper extends AFWRoot
                                         if($ajax_class)
                                         {
                 ?>
-                                        <td><a href="#" id="<?=$id?>" cl="<?=$cl?>" md="<?=$currmod?>" lb l="<?=$lbl?>" class="<?=$ajax_class?>">
-                                                <img src="<?=$img?>" width="24" heigth="24" <?=$tooltip?>> 
+                                        <td><a href="#" id="<?php echo $id?>" cl="<?php echo $cl?>" md="<?php echo $currmod?>" lb l="<?php echo $lbl?>" class="<?php echo $ajax_class?>">
+                                                <img src="<?php echo $img?>" width="24" heigth="24" <?php echo $tooltip?>> 
                                         </a>
                                         </td>
                 <?php                      
@@ -827,11 +827,11 @@ class AfwHtmlHelper extends AFWRoot
                                         else
                                         {
                 ?>
-                                        <td><a <?=$target_action?> href="<?="main.php"."?".$link ?>"  >
-                                                <img src="<?=$img?>" width="24" heigth="24" <?=$tooltip?>> 
+                                        <td><a <?php echo $target_action?> href="<?php echo "main.php"."?".$link ?>"  >
+                                                <img src="<?php echo $img?>" width="24" heigth="24" <?php echo $tooltip?>> 
                                         </a>
                                         </td>
-                <?
+                <?php 
                                         
                                         }
                                 }
@@ -845,8 +845,8 @@ class AfwHtmlHelper extends AFWRoot
                                         $tooltip = "data-toggle='tooltip' data-placement='bottom' title='$tooltip_text' data-original-title=' - Tooltip on bottom' class='red-tooltip'";
                                 } 
                                 ?>
-                                <td><img src="<?=$images['locked_him_self']?>" width="24" heigth="24" <?=$tooltip?>></td>
-                                <?
+                                <td><img src="<?php echo $images['locked_him_self']?>" width="24" heigth="24" <?php echo $tooltip?>></td>
+                                <?php
                                 }      
                         
                         }
@@ -854,15 +854,15 @@ class AfwHtmlHelper extends AFWRoot
                         {
                                 if($objme and $objme->isAdmin()) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='You have not authorization to do $frameworkAction on object record : [$action_item -> $cant_do_action_log]' data-original-title=' - Tooltip on bottom' class='red-tooltip'";
         ?>
-                                <td><img src="<?=$images['locked_on_me']?>" width="24" heigth="24" <?=$tooltip?>></td>
-        <?
+                                <td><img src="<?php echo $images['locked_on_me']?>" width="24" heigth="24" <?php echo $tooltip?>></td>
+        <?php
                         }
                         else
                         {
                                 if($objme and $objme->isAdmin()) $tooltip = "data-toggle='tooltip' data-placement='bottom' title='You have not authorization to do $frameworkAction on object entity : [$action_item -> $cant_do_action_log]' data-original-title=' - Tooltip on bottom' class='red-tooltip'";
         ?>
-                                <td><img src="<?=$images['locked']?>" width="24" heigth="24" <?=$tooltip?> alt="<?=""?>"></td>
-        <?
+                                <td><img src="<?php echo $images['locked']?>" width="24" heigth="24" <?php echo $tooltip?> alt="<?php echo ""?>"></td>
+        <?php
                         }                                           
                 }
         }

@@ -1,9 +1,6 @@
 obsolete hzm_register.php
 <!--
-<link rel="stylesheet" type="text/css" href="afw_style.css">
-<?php
-if(!$file_hzm_dir_name) $file_hzm_dir_name = dirname(__FILE__); 
-?>
+<link rel="stylesheet" type="text/css" href="afw_ style.css">
 <form method="post" action="hzm_h_r.php">                                                                
         <div class="filebox editcard">                
                 <div>                        

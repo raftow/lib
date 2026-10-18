@@ -70,13 +70,13 @@ include("$file_hzm_dir_name/../lib/hzm/web/hzm_html_head.php");
 
       if (AfwSession::getVar("information")) {
       ?>
-        <div class="alert messages messages--status  alert-dismissable <?= AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><?php echo AfwSession::getVar("information"); ?></div><br>
+        <div class="alert messages messages--status  alert-dismissable <?php echo  AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><?php echo AfwSession::getVar("information"); ?></div><br>
       <?php
       }
 
       if (AfwSession::getVar("success")) {
       ?>
-        <div class="alert messages messages--success alert-dismissable  <?= AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><?php echo AfwSession::getVar("success"); ?></div>
+        <div class="alert messages messages--success alert-dismissable  <?php echo  AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><?php echo AfwSession::getVar("success"); ?></div>
       <?php
       }
 

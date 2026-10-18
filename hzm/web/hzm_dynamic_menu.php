@@ -164,7 +164,7 @@ if($objme)
    if(!$DISABLE_PROJECT_ITEMS_MENU)
    {
 ?>
-   <li class="project-item"><a href="index.php"><i class="fa fa-flag" aria-hidden="true"></i><?=$NOM_SYSTEM?></a>
+   <li class="project-item"><a href="index.php"><i class="fa fa-flag" aria-hidden="true"></i><?php echo $NOM_SYSTEM?></a>
      <ul>
 
 <?
@@ -183,7 +183,7 @@ if($objme)
                            {
 ?>                 
 
-      <li><a href="../<?=$mcode?>/"><i class="fa fa-flag" aria-hidden="true"></i><?=$mtitle?></a></li>
+      <li><a href="../<?php echo $mcode?>/"><i class="fa fa-flag" aria-hidden="true"></i><?php echo $mtitle?></a></li>
 <?
                            }
                    }
@@ -207,7 +207,7 @@ if($objme)
    {
    
 ?>      
-  <li class="menu-small-item <?=$menu_color?>-item"><a href="#"><i class="fa fa-globe" aria-hidden="true"></i><?=AfwLanguageHelper::translateKeyword("LANGUE", $lang)?></a>
+  <li class="menu-small-item <?php echo $menu_color?>-item"><a href="#"><i class="fa fa-globe" aria-hidden="true"></i><?php echo AfwLanguageHelper::translateKeyword("LANGUE", $lang)?></a>
      <ul>
      <?php   
             foreach($uri_arr as $lang_code => $uri_item)
@@ -283,7 +283,7 @@ if($objme)
         {
              
   ?>
-  <li class="context-item"><a href="#"><i class="fa fa-bookmark" aria-hidden="true"></i><?=$contextMenuName?></a>
+  <li class="context-item"><a href="#"><i class="fa fa-bookmark" aria-hidden="true"></i><?php echo $contextMenuName?></a>
      <ul>
 <?
      
@@ -304,7 +304,7 @@ if($objme)
                        }
                        
 ?>     
-              <li><a href="<?=$href?>"><i class="fa fa-<?=$classContext?>" aria-hidden="true"></i><?=$contextShortLabel[$lang]." ".$con_obj->getContextDisplay($lang,$MODULE)?></a></li>
+              <li><a href="<?php echo $href?>"><i class="fa fa-<?php echo $classContext?>" aria-hidden="true"></i><?php echo $contextShortLabel[$lang]." ".$con_obj->getContextDisplay($lang,$MODULE)?></a></li>
 <?
                   }
              }
@@ -315,10 +315,10 @@ if($objme)
 <?
         }
 ?>  
-  <li class="menu-small-item <?=$menu_color?>-item"><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i><?=AfwLanguageHelper::translateKeyword("CONTROL", $lang)?></a>
+  <li class="menu-small-item <?php echo $menu_color?>-item"><a href="#"><i class="fa fa-cogs" aria-hidden="true"></i><?php echo AfwLanguageHelper::translateKeyword("CONTROL", $lang)?></a>
      <ul>
           <li id="li_options">
-          <a href="#"><i class="fa fa-cog info" aria-hidden="true"></i><?=AfwLanguageHelper::translateKeyword("OPTIONS", $lang)?><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-cog info" aria-hidden="true"></i><?php echo AfwLanguageHelper::translateKeyword("OPTIONS", $lang)?><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
                 <ul><!--ul-options-->
                 <?
                    foreach($options_arr as $option_code => $option_props) 
@@ -336,8 +336,8 @@ if($objme)
                        }
                        
                 ?>                    
-                        <li id="li_options-<?=$option_code?>"><a href="main.php?Main_Page=toggle_option.php&option=<?=$option_code?>&My_Module=ums">
-                             <i class="fa fa-<?=$classContext?>" aria-hidden="true"></i><?=$option_props[$lang]?></a>
+                        <li id="li_options-<?php echo $option_code?>"><a href="main.php?Main_Page=toggle_option.php&option=<?php echo $option_code?>&My_Module=ums">
+                             <i class="fa fa-<?php echo $classContext?>" aria-hidden="true"></i><?php echo $option_props[$lang]?></a>
                         </li>
                 <?
                      }
@@ -363,7 +363,7 @@ if($objme)
   <li class="search-bar-item">
                     <form class="navbar-form navbar-left">
                               <div class="search fleft">
-                                        <input type="button" class="searchbtn fleft"><input type="text" class="searchtxt fleft" placeholder="<?=AfwLanguageHelper::translateKeyword("SEARCH_HERE", $lang)?>...">
+                                        <input type="button" class="searchbtn fleft"><input type="text" class="searchtxt fleft" placeholder="<?php echo AfwLanguageHelper::translateKeyword("SEARCH_HERE", $lang)?>...">
                               </div>
                     </form>​
   </li>

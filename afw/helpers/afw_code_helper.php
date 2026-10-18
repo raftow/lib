@@ -86,7 +86,7 @@ class AfwCodeHelper
         $dir_sep = AfwSession::config("dir_sep", "/");
         $root_www_path = AfwSession::config("root_www_path", AfwSession::config("parent_project_path", "C:/dev-folder"));
         if ($genFolder == "cache") {
-            $php_generation_folder = $root_www_path . $dir_sep . "cache" . $dir_sep . $module_code . $dir_sep . $subFolder;
+            $php_generation_folder = $root_www_path . $dir_sep . "..". $dir_sep ."cache" . $dir_sep . $module_code . $dir_sep . $subFolder;
         } else {
             $php_generation_folder = AfwSession::config("php_generation_folder", "C:/gen/php");
         }

@@ -128,7 +128,7 @@ foreach($class_db_structure as $nom_col => $desc)
                         }
                         
                 ?>
-        		<div class="col-md-<?=$qsize." col-filter-".$col ?>">
+        		<div class="col-md-<?php echo $qsize." col-filter-".$col ?>">
                                 <div class="form-group">
                                         <label><?php echo $info["trad"]; ?></label>
                                         <?php echo "<!-- start input -->".$info["input"]."<!-- end input start oper-->".$info["oper"]."<!-- end oper-->";?>
@@ -142,7 +142,7 @@ foreach($class_db_structure as $nom_col => $desc)
                             $totqsize = 0;
                             $need_to_close_div = true;
                 ?>
-</div>
+</div> 
 <div class="row-sfilter row row-buttons">                
                 <?php                           
                         }
@@ -172,7 +172,7 @@ foreach($class_db_structure as $nom_col => $desc)
    if (file_exists($file_js_path)) 
    {
 ?>                
-<script src="./js/<?=$file_js?>"></script>
+<script src="./js/<?php echo $file_js?>"></script>
 <?php
    }
 ?>

@@ -4512,10 +4512,10 @@ class AFWObject extends AFWRoot
         return $structure['CATEGORY'];
     }
 
-    public function getStyle($table = '')
+    /*public function getStyle($table = '')
     {
-        return 'afw_style.css';
-    }
+        return 'afw_ style.css';
+    }*/
 
     public function getMyPrefixedTable()
     {

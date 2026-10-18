@@ -48,6 +48,6 @@
 	<link href="../lib/css/simple/style.less" rel="stylesheet" type="text/css">
 	<link href="../lib/css/simple/style.css" rel="stylesheet" type="text/css">
         <link href="../lib/css/simple/front_menu.css" rel="stylesheet" type="text/css">
-        <link href="../lib/afw/afw_style.css" rel="stylesheet" type="text/css">  
+        
 
 <body dir='rtl'>

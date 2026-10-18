@@ -57,17 +57,17 @@ foreach ($class_db_structure as $nom_col => $desc) {
 
 ?>
 
-<?
+<?php
 $obj->filtreVertical = true;
 ?>
 <table width="100%">
    <tr>
       <td>
-         <?
+         <?php
          if (!$obj->filtreVertical) $class_table = "filtreH";
          ?>
 
-         <?
+         <?php
          $tr_obj = $class_tr1;
          $qsearch_by_text = $_POST["qsearch_by_text"];
          $desc_qsearch_by_text = array('TYPE' => 'TEXT', 'SIZE' => 64, 'UTF8' => true);
@@ -83,10 +83,9 @@ $obj->filtreVertical = true;
          $translated_text_searchable_cols_txt = $trad_qsearch_by_help . " : " . implode("? ", $translated_text_searchable_cols_arr);
 
          ?>
+         <table class="<?php echo  $class_table ?>" cellspacing="3" cellpadding="4" style="min-width: 66% !important;">
 
-         <table class="<?= $class_table ?>" cellspacing="3" cellpadding="4" style="min-width: 66% !important;">
-
-            <?
+            <?php
             $numFiltre = 0;
             $xFiltre = 0;
             $colFiltre = 0;
@@ -106,13 +105,13 @@ $obj->filtreVertical = true;
 
                   if ($obj->filtreVertical) {
             ?>
-                     <tr class="<?= $tr_obj ?>" align="right">
+                     <tr class="<?php echo  $tr_obj ?>" align="right">
                         <td width="15px"></td>
                         <td><?php echo $info["trad"]; ?></td>
                         <td><?php echo $info["oper"]; ?></td>
                         <td><?php echo $info["input"]; ?></td>
                      </tr>
-            <?
+            <?php
                   } else {
 
 
@@ -141,13 +140,13 @@ $obj->filtreVertical = true;
             }
 
             ?>
-            <tr class="<?= $tr_obj ?>" align="right">
+            <tr class="<?php echo  $tr_obj ?>" align="right">
                <td width="15px"></td>
                <td><?php echo $trad_qsearch_by_text; ?></td>
-               <td><img src='../lib/images/tooltip.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='<?= $translated_text_searchable_cols_txt ?>' width='20' heigth='20'></td>
+               <td><img src='../lib/images/tooltip.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='<?php echo  $translated_text_searchable_cols_txt ?>' width='20' heigth='20'></td>
                <td><?php echo $trad_qsearch_by_text_input; ?></td>
             </tr>
-            <?
+            <?php
             if (!$obj->filtreVertical) {
                foreach ($data_4col_ordered as $xFiltre => $info_4col_row) {
                   for ($col = 0; $col < 4; $col++) {
@@ -162,48 +161,48 @@ $obj->filtreVertical = true;
 
             ?>
                   <tr align="right">
-                     <?php if ($info_4col_row[0]["trad"]) { ?> <th class="<?= $th_cls_0 ?>">
+                     <?php if ($info_4col_row[0]["trad"]) { ?> <th class="<?php echo  $th_cls_0 ?>">
                            <center><?php echo $info_4col_row[0]["trad"]; ?></center>
                         </th> <?php } ?>
-                     <?php if ($info_4col_row[1]["trad"]) { ?> <th class="<?= $th_cls_1 ?>">
+                     <?php if ($info_4col_row[1]["trad"]) { ?> <th class="<?php echo  $th_cls_1 ?>">
                            <center><?php echo $info_4col_row[1]["trad"]; ?></center>
                         </th> <?php } ?>
-                     <?php if ($info_4col_row[2]["trad"]) { ?> <th class="<?= $th_cls_2 ?>">
+                     <?php if ($info_4col_row[2]["trad"]) { ?> <th class="<?php echo  $th_cls_2 ?>">
                            <center><?php echo $info_4col_row[2]["trad"]; ?></center>
                         </th> <?php } ?>
-                     <?php if ($info_4col_row[3]["trad"]) { ?> <th class="<?= $th_cls_3 ?>">
+                     <?php if ($info_4col_row[3]["trad"]) { ?> <th class="<?php echo  $th_cls_3 ?>">
                            <center><?php echo $info_4col_row[3]["trad"]; ?></center>
                         </th> <?php } ?>
                   </tr>
-                  <tr class="<?= $tr_obj ?>" align="right">
-                     <?php if ($info_4col_row[0]["trad"]) { ?> <td class="<?= $td_cls_0 ?>">
+                  <tr class="<?php echo  $tr_obj ?>" align="right">
+                     <?php if ($info_4col_row[0]["trad"]) { ?> <td class="<?php echo  $td_cls_0 ?>">
                            <center><?php echo $info_4col_row[0]["oper"]; ?></center>
                         </td> <?php } ?>
-                     <?php if ($info_4col_row[1]["trad"]) { ?> <td class="<?= $td_cls_1 ?>">
+                     <?php if ($info_4col_row[1]["trad"]) { ?> <td class="<?php echo  $td_cls_1 ?>">
                            <center><?php echo $info_4col_row[1]["oper"]; ?></center>
                         </td> <?php } ?>
-                     <?php if ($info_4col_row[2]["trad"]) { ?> <td class="<?= $td_cls_2 ?>">
+                     <?php if ($info_4col_row[2]["trad"]) { ?> <td class="<?php echo  $td_cls_2 ?>">
                            <center><?php echo $info_4col_row[2]["oper"]; ?></center>
                         </td> <?php } ?>
-                     <?php if ($info_4col_row[3]["trad"]) { ?> <td class="<?= $td_cls_3 ?>">
+                     <?php if ($info_4col_row[3]["trad"]) { ?> <td class="<?php echo  $td_cls_3 ?>">
                            <center><?php echo $info_4col_row[3]["oper"]; ?></center>
                         </td> <?php } ?>
                   </tr>
-                  <tr class="<?= $tr_obj ?>" align="right">
-                     <?php if ($info_4col_row[0]["trad"]) { ?> <td class="<?= $td_cls_0 ?>">
+                  <tr class="<?php echo  $tr_obj ?>" align="right">
+                     <?php if ($info_4col_row[0]["trad"]) { ?> <td class="<?php echo  $td_cls_0 ?>">
                            <center><?php echo $info_4col_row[0]["input"]; ?></center>
                         </td> <?php } ?>
-                     <?php if ($info_4col_row[1]["trad"]) { ?> <td class="<?= $td_cls_1 ?>">
+                     <?php if ($info_4col_row[1]["trad"]) { ?> <td class="<?php echo  $td_cls_1 ?>">
                            <center><?php echo $info_4col_row[1]["input"]; ?></center>
                         </td> <?php } ?>
-                     <?php if ($info_4col_row[2]["trad"]) { ?> <td class="<?= $td_cls_2 ?>">
+                     <?php if ($info_4col_row[2]["trad"]) { ?> <td class="<?php echo  $td_cls_2 ?>">
                            <center><?php echo $info_4col_row[2]["input"]; ?></center>
                         </td> <?php } ?>
-                     <?php if ($info_4col_row[3]["trad"]) { ?> <td class="<?= $td_cls_3 ?>">
+                     <?php if ($info_4col_row[3]["trad"]) { ?> <td class="<?php echo  $td_cls_3 ?>">
                            <center><?php echo $info_4col_row[3]["input"]; ?></center>
                         </td> <?php } ?>
                   </tr>
-            <?
+            <?php
                }
             }
             ?>

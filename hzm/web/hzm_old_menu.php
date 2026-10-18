@@ -1,11 +1,11 @@
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header topcontrols">
-                    <p class="navbar-brand" href="#"><?= $NOM_SYSTEM ?></p><br>
+                    <p class="navbar-brand" href="#"><?php echo  $NOM_SYSTEM ?></p><br>
                 </div>
 
                 <ul class="nav navbar-nav topcontrols">
-                    <? if ($objme) {
+                    <?php if ($objme) {
                         //die(var_export($_SERVER,true));
                         include "dynamic_menu.php";
                     }
@@ -13,7 +13,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right topcontrols">
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?= AfwLanguageHelper::translateKeyword("LANGUE", $lang) ?>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo  AfwLanguageHelper::translateKeyword("LANGUE", $lang) ?>
                             <span class="caret" style="padding: 0px 0px 0px 0px !important;"></span></a>
                         <ul class='dropdown-menu'>
                             <?php
@@ -28,7 +28,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right topcontrols">
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?= AfwLanguageHelper::translateKeyword("OPTIONS", $lang) ?>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo  AfwLanguageHelper::translateKeyword("OPTIONS", $lang) ?>
                             <span class="caret" style="padding: 0px 0px 0px 0px !important;"></span></a>
                         <ul class='dropdown-menu'>
                             <?php
@@ -44,7 +44,7 @@
                 </ul>
                 <form class="navbar-form navbar-left">
                     <div class="search fleft">
-                        <input type="button" class="searchbtn fleft"><input type="text" class="searchtxt fleft" placeholder="<?= AfwLanguageHelper::translateKeyword("SEARCH_HERE", $lang) ?>...">
+                        <input type="button" class="searchbtn fleft"><input type="text" class="searchtxt fleft" placeholder="<?php echo  AfwLanguageHelper::translateKeyword("SEARCH_HERE", $lang) ?>...">
                     </div>
                 </form>
             </div>

@@ -13,7 +13,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $options = []
     ) {
         $login_template = AfwSession::currentLoginTemplate();
-        $xmodule = AfwSession::getCurrentlyExecutedModule();
+        $xmodule = AfwSession::currentCompanyOrDepartmentCode();
         $module = UfwUrlManager::currentURIModule();
         $company = AfwSession::currentCompany();
         // if($company!="nauss") die("debugg rafik main_company=[$company] should be nauss : _SESSION = ".var_export($_SES SION,true));

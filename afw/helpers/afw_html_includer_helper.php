@@ -15,7 +15,7 @@ class AfwHtmlIncluderHelper
       else
           $site_name = AfwSession::getCurrentSiteName($lang);
       $main_module = $cmodule = UfwUrlManager::currentURIModule();
-      $xmodule = AfwSession::getCurrentlyExecutedModule();
+      $xmodule = AfwSession::currentCompanyOrDepartmentCode();
       $xtemplate = AfwSession::getCurrentModuleTemplate();
       list($pagecode, $log_explain) = UfwUrlManager::currentPageCode();
       $company = AfwSession::currentCompany();

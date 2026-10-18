@@ -20,10 +20,10 @@
 				اضغط على   [رفع الملفات] لاختيار الملف أو اسحب الملف مباشرة إلى هذه المنطقة الزرقاء لتحميله
                                 <br>
 				<a>رفع الملفات</a>
-                                <input type="hidden" name="module" value="<?=$MODULE?>" />
+                                <input type="hidden" name="module" value="<?php echo $MODULE?>" />
 				<input type="file" name="upl" multiple />     <br><br>
-                                يسمح فقط بالملفات من الأنواع التالية <?=$ext_list?>
-                                لأجل أنواع المستندات التالية <?=$ft_list?>
+                                يسمح فقط بالملفات من الأنواع التالية <?php echo $ext_list?>
+                                لأجل أنواع المستندات التالية <?php echo $ft_list?>
 			</div>
 
 			<ul>
@@ -50,9 +50,9 @@ $codeme = substr(md5("code".$me),0,8);
 ?>
 
 <td style="padding:10px !important">   
-        <form name="qedit_updateForm" id="qedit_updateForm" method="post" action="afw_edit_my_files.php" <?=$target?>>
-                <input type="hidden" name="x" value="<?=$me?>">
-                <input type="hidden" name="y" value="<?=$codeme?>">
+        <form name="qedit_updateForm" id="qedit_updateForm" method="post" action="afw_edit_my_files.php" <?php echo $target?>>
+                <input type="hidden" name="x" value="<?php echo $me?>">
+                <input type="hidden" name="y" value="<?php echo $codeme?>">
                 <table cellspacing="3" cellpadding="1"  style="width:100%">
                 <tbody>
                   <tr>

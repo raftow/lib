@@ -23,14 +23,14 @@
 <link rel="stylesheet" href="../../css/front-application-<?php echo $lang?>.css?crst=<?php echo $crst ?>">
 <link rel="stylesheet" href="../../css/hzm-v001.css?crst=<?php echo $crst ?>">
 
-<link rel="stylesheet" href="../../css/front_app.css">
+
 <link rel="stylesheet" href="../../bootstrap/bootstrap-v5.3.3.min.css">
 <link rel="stylesheet" href="../../bsel/css/bootstrap-select.css">
 <link href="./css/logo-app-icon.png" rel="shortcut icon">
 <title>Momken Framework</title>
 
 <link href="../../css/simple/style_common.css" rel="stylesheet" type="text/css">
-<link href="../../css/simple/style_<?=$lang?>.css" rel="stylesheet" type="text/css">
+<link href="../../css/simple/style_<?php echo $lang?>.css" rel="stylesheet" type="text/css">
 
 <link href="../../css/def_ar_front.css" rel="stylesheet" type="text/css">
 <link href="../../css/simple/style_common.css" rel="stylesheet" type="text/css">
@@ -39,11 +39,11 @@
 <link href="../../css/header_thin.css" rel="stylesheet">
 </head>
 
-<body dir="<?=$dir?>" >
+<body dir="<?php echo $dir?>" >
 <?php
    if(!$body_css_class) $body_css_class = "hzm_body";
 ?> 
 <div class="container">
-<div class='<?=$body_css_class?>'>
+<div class='<?php echo $body_css_class?>'>
 
 <!-- #END OF Header -->

@@ -72,8 +72,8 @@ $(document).ready(function(){
             }
             $(".alert.messages").fadeOut().remove();
             swal({
-                  title: "<?=$are_you_sure?> : "+lbl,
-                  text: "<?=$once_deleted?>", // +div_to_del+" / "+$ele.id,
+                  title: "<?php echo $are_you_sure?> : "+lbl,
+                  text: "<?php echo $once_deleted?>", // +div_to_del+" / "+$ele.id,
                   icon: "warning",
                   buttons: true,
                   dangerMode: true,
@@ -112,7 +112,7 @@ $(document).ready(function(){
                   } 
                   else 
                   {
-                    swal("<?=$safely_cancelled?>");
+                    swal("<?php echo $safely_cancelled?>");
                   }
                 });
        }

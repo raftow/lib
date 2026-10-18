@@ -12,6 +12,7 @@
  * @var array $NOM_SITE
  * @var array $custom_scripts
  * @var array $Main_Page
+ * @var string $my_font
  */
 
 
@@ -49,7 +50,6 @@ $crst = md5("crst".date("YmdHis"));
   <?php
   if ($front_application) {
   ?>
-    <link rel="stylesheet" href="../lib/css/front_app.css">
     <link rel="stylesheet" href="../lib/css/material-design-iconic-font.min.css">
   <?php
   }
@@ -110,8 +110,10 @@ $crst = md5("crst".date("YmdHis"));
     <script src="../lib/js/localization/messages_<?php echo  $lang ?>.js"></script>
   <?php
   }
-  $cmodule = UfwUrlManager::currentURIModule();
-  $xmodule = AfwSession::getCurrentlyExecutedModule();
+  $company = AfwSession::currentCompany();
+  $currentURIModule = UfwUrlManager::currentURIModule();
+  $currentCompanyOrDepartmentCode = AfwSession::currentCompanyOrDepartmentCode(); // current company hrm code or current deprtment code for authenticated user
+                                                       // useful for logo or some special css to consider
   list($pagecode, $log_explain) = UfwUrlManager::currentPageCode();
   
   ?>
@@ -197,29 +199,25 @@ $crst = md5("crst".date("YmdHis"));
   <?php
   }
   
-  if ($main_module and ($xmodule != $main_module)) {
+  if ($main_module and ($currentCompanyOrDepartmentCode != $main_module)) {
   ?>
     <link href="../<?php echo  $main_module ?>/css/module.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
 
   <?php
   }
-
-  if (!$no_common_css) {
-  ?>
-    <link href="../exte-rnal/css/common.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
-  <?php
-  }
   ?>
   <link href="./css/module.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
-  if ($cmodule and $xmodule and ($cmodule != $xmodule)) {
+  if ($currentURIModule and $currentCompanyOrDepartmentCode and ($currentURIModule != $currentCompanyOrDepartmentCode)) {
   ?>
-    <link href="./css/module_<?php echo  $xmodule ?>.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css">
+    <link href="/client-<?php echo $company ?>/css/common-<?php echo $currentCompanyOrDepartmentCode ?>.css" rel="stylesheet" type="text/css" type="text/css">
+    <link href="/client-<?php echo $company ?>/css/common-<?php echo $currentCompanyOrDepartmentCode ?>-<?php echo $lang ?>.css" rel="stylesheet" type="text/css" type="text/css">
+
   <?php
   }
-  if ($main_module and $cmodule and ($cmodule != $main_module)) {
+  if ($main_module and $currentURIModule and ($currentURIModule != $main_module)) {
   ?>
-    <link href="../<?php echo  $main_module ?>/css/module_<?php echo  $cmodule ?>.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
+    <link href="../<?php echo  $main_module ?>/css/module_<?php echo  $currentURIModule ?>.css?crst=<?php echo $crst?>" rel="stylesheet" type="text/css" type="text/css">
   <?php
   }
 
@@ -248,9 +246,26 @@ $crst = md5("crst".date("YmdHis"));
   ?>
 
   <script src="./js/module.js"></script>
-  <script src="./js/<?php echo $pagecode; ?>.js"></script>
-  
+ 
   <?php
+          $pagecode_js_file = "$pagecode.js";
+          $file_dir_name = dirname(__FILE__);
+          $pagecode_js_file_full_path = $file_dir_name ."/../../../$currentURIModule/js/$pagecode_js_file";
+          if(file_exists($pagecode_js_file_full_path))
+          {
+            echo "
+          <script src='./js/$pagecode_js_file'></script>  
+          <!-- auto-js file construction for current page -->
+          ";  
+          }
+          else
+          {
+            echo "
+          <!-- auto-js file construction gived '[module]/js/$pagecode_js_file' not found so ignored : $log_explain --> 
+          "; 
+          }
+  
+  
   include("my_javascripts.php");
   ?>
 
@@ -276,5 +291,4 @@ $crst = md5("crst".date("YmdHis"));
   <?php
   include_once("gpie_header.php");
   ?>
-  <link rel="stylesheet" type="text/css" href="../lib/afw/afw_style.css" />
 </head>

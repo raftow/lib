@@ -67,7 +67,7 @@ foreach($required_modules as $required_module)
 
 
 $uri_module = UfwUrlManager::currentURIModule();
-$xmodule = AfwSession::getCurrentlyExecutedModule();
+$xmodule = AfwSession::currentCompanyOrDepartmentCode();
 $company = AfwSession::currentCompany();
 $site_name = AfwSession::getCurrentSiteName($lang);
 

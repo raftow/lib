@@ -42,7 +42,7 @@ div.hzm-user-account>a>i.hzm-container-center.hzm-vertical-align-middle.hzm-icon
 .user-account {
     font-size: 12px;
     color: #fff;
-    /* font-weight: bold;*/
+    font-weight: normal;
     padding-top: 4px;
 }
 

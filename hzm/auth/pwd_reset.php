@@ -143,7 +143,7 @@ if ($desc_site) {
                         <div class="modal-header">
                                 <div>
                                         <a href="index.php" title="الرئيسسة">
-                                                <img src="../<?= $MODULE ?>/pic/logo<?= $XMODULE ?>.png" alt="<?= $login_by_sentence ?>" title="<?= $login_by_sentence ?>"></a>
+                                                <img src="../<?php echo  $MODULE ?>/pic/logo<?php echo  $XMODULE ?>.png" alt="<?php echo  $login_by_sentence ?>" title="<?php echo  $login_by_sentence ?>"></a>
 
                                         <h2 class='title_login'>تصفير كلمة المرور</h2>
                                 </div>
@@ -154,7 +154,7 @@ if ($desc_site) {
                                 <div class="quote">
                                         <div class="quoteinn">
                                                 <p>
-                                                        <font color='red'><?= $result_message ?></font>
+                                                        <font color='red'><?php echo  $result_message ?></font>
                                                 </p>
                                         </div>
                                 </div>
@@ -163,7 +163,7 @@ if ($desc_site) {
 
                         ?>
                         <div class="modal-body">
-                                <h1><?= $user_prefix ?>قم بادخال البيانات التالية</h1>
+                                <h1><?php echo  $user_prefix ?>قم بادخال البيانات التالية</h1>
                                 <form id="formlogin0" name="formlogin0" method="post" action="<?php echo $action_page ?>" onSubmit="return checkForm();" dir="ltr" enctype="multipart/form-data">
                                         <?php
                                         if (AfwSession::config("sms-captcha-register", true)) {

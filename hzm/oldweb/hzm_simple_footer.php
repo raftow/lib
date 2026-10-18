@@ -31,7 +31,7 @@
 
 
 <div class="section simple_footer footer_bg" id="footer_div">
-        <div class="rowfooter expanded rowfooter<?=$MODULE?>">
+        <div class="rowfooter expanded rowfooter<?php echo $MODULE?>">
                 <div class="large-12 columns">
                         <img src="../lib/images/sm-01.png" alt="" class="footer_img effectscale sm-icon">
                         <img src="../lib/images/sm-02.png" alt="" class="footer_img effectscale sm-icon">

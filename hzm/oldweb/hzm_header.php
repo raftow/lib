@@ -96,7 +96,7 @@ include($html_hedear);
 if (!$body_css_class) $body_css_class = "hzm_body $f7c $pagecode_splitted";
 ?>
 
-<body class="<?= $body_css_class ?>" dir="<?= $dir ?>">
+<body class="<?php echo  $body_css_class ?>" dir="<?php echo  $dir ?>">
         <!-- #Header -->
         <?php
         if (!$header_bg_color) $header_bg_color = "#393f50";
@@ -157,7 +157,7 @@ $user_full
                 if (!$config["img-company-path"]) $config["img-company-path"] = $config["img-path"];
                 $data_tokens["img-path"] = $config["img-path"];
                 $data_tokens["img-company-path"] = $config["img-company-path"];
-                $xmodule = AfwSession::getCurrentlyExecutedModule();
+                $xmodule = AfwSession::currentCompanyOrDepartmentCode();
                 if ($xmodule) $data_tokens["xmodule"] = "-" . $xmodule;
                 else $data_tokens["xmodule"] = "";
 
@@ -325,7 +325,7 @@ $user_full
 
                                 if ($h_information) {
                                 ?>
-                                        <div class="alert messages xx messages--status  alert-dismissable <?= AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <div class="alert messages xx messages--status  alert-dismissable <?php echo  AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                                 <?php echo AfwSession::getVar("information"); ?>
                                         </div><br>
                                 <?php
@@ -333,7 +333,7 @@ $user_full
 
                                 if ($h_success) {
                                 ?>
-                                        <div class="alert messages messages--success alert-dismissable  <?= AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <div class="alert messages messages--success alert-dismissable  <?php echo  AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                                                 <?php echo AfwSession::getVar("success"); ?>
                                         </div><br>
                                 <?php
@@ -351,7 +351,7 @@ $user_full
                 <?php
                 }
                 ?>
-                <div class='<?= $body_css_class ?> no_spaces'>
+                <div class='<?php echo  $body_css_class ?> no_spaces'>
 
                         <?php
                         include_once("gpie_body.php");

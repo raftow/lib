@@ -113,7 +113,7 @@ class AfwRunHelper
 
                 $mode_dev = AfwSession::config("MODE_DEVELOPMENT", false);
                 $mode_batch = AfwSession::config("MODE_BATCH", false);
-                $xmodule = AfwSession::getCurrentlyExecutedModule();
+                $xmodule = AfwSession::currentCompanyOrDepartmentCode();
                 $company = AfwSession::currentCompany();
                 $open_mode = ($force_mode_dev or $mode_dev or $mode_batch);
 

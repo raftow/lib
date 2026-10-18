@@ -766,7 +766,14 @@ class AfwSession extends AFWRoot
                 return self::config("main_company", "");
         }
 
-        public static function getCurrentlyExecutedModule()
+
+        /**
+         * currentCompanyOrDepartmentCode()
+         * @return string
+         * returns current company hrm code or current deprtment code for authenticated user. 
+         * It is useful for logo or some special css to consider
+         */
+        public static function currentCompanyOrDepartmentCode()
         {
                 $exec_module = self::currentCompany();
                 if ((!$exec_module) and self::config("x_module_means_company", false)) {

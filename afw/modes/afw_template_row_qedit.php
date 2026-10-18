@@ -413,7 +413,7 @@ if(!$obj->qedit_minibox)
                         if(false)
                         {
                         ?>
-                        <tr class="qe-header qerow<?=$qerow_num?> <?=$obj_odd_even?> <?=$obj->getHLClass()?>">
+                        <tr class="qe-header qerow<?php echo $qerow_num?> <?php echo $obj_odd_even?> <?php echo $obj->getHLClass()?>">
                         <?php	
                         }
                                 $total_sahm = 0;
@@ -434,9 +434,9 @@ if(!$obj->qedit_minibox)
                                                 if(false)
                                                 {
                         ?>
-                                     <td <?=$input_html_colspan_html?> <?=$class_xqe_prop?> >
-                                        <?=$col_translated?>
-                                        <!-- input type="hidden" name="<?=$orig_nom_col?>_on" value="1" -->
+                                     <td <?php echo $input_html_colspan_html?> <?php echo $class_xqe_prop?> >
+                                        <?php echo $col_translated?>
+                                        <!-- input type="hidden" name="<?php echo $orig_nom_col?>_on" value="1" -->
                                      </td>
                         <?php  
                                                 }
@@ -455,7 +455,7 @@ if(!$obj->qedit_minibox)
                                 $header_imbedded_title = is_array($header_imbedded) ? $header_imbedded[0] : $header_imbedded_default_title;
                                                         
                         ?>
-                        <tr class="qe-header-head <?=get_class($obj)?>">
+                        <tr class="qe-header-head <?php echo get_class($obj)?>">
                                 <td colspan='<?php echo $total_sahm ?>'>
                                         <?php echo $header_imbedded_title ?>                                        
                                 </td>
@@ -465,7 +465,7 @@ if(!$obj->qedit_minibox)
 
                 }
 ?>
-<tr class="qerow<?=$qerow_num?> <?php echo $obj_odd_even?> <?php echo $obj->getHLClass()?> <?php echo get_class($obj)?>">
+<tr class="qerow<?php echo $qerow_num?> <?php echo $obj_odd_even?> <?php echo $obj->getHLClass()?> <?php echo get_class($obj)?>">
 <?php	
 
 
@@ -619,7 +619,7 @@ if(!$obj->qedit_minibox)
         $footer_imbedded_title = is_array($header_imbedded) ? $header_imbedded[1] : $footer_imbedded_default_title;
                                 
 ?>
-<tr class="qe-footer-head <?=get_class($obj)?>">
+<tr class="qe-footer-head <?php echo get_class($obj)?>">
         <td colspan='<?php echo $total_sahm ?>'>
                 <?php echo $footer_imbedded_title ?>
                 <?php echo $btn_submit_imbedded ?>

@@ -17,24 +17,24 @@ if (!$MODULE) $MODULE = "ums";
 <html>
 
 <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=<?= $page_charset ?>">
+   <meta http-equiv="Content-Type" content="text/html; charset=<?php echo  $page_charset ?>">
    <!-- <link type="text/css" rel="stylesheet" href="../lib/css/simple/pag_checkboxes.css"> -->
    <!-- plugins -->
    <link type="text/css" rel="stylesheet" href="../lib/bmulti/css/bootstrap-multiselect.css" />
    <!-- end plugins -->
    <link rel="stylesheet" href="../lib/css/jquery-ui-1.14.0.css">
    <link rel="stylesheet" href="../lib/css/font-awesome.min.css">
-   <link rel="stylesheet" href="../lib/css/menu_<?= $lang ?>.css">
+   <link rel="stylesheet" href="../lib/css/menu_<?php echo  $lang ?>.css">
    <link rel="stylesheet" href="../lib/bootstrap/bootstrap-v5.3.3.min.css">
    <link rel="stylesheet" href="../lib/bsel/css/bootstrap-select.css">
    <link href="./css/logo-app-icon.png" rel="shortcut icon">
    <title>Momken Framework</title>
 
    <link href="../lib/css/simple/style_common.css" rel="stylesheet" type="text/css">
-   <link href="../lib/css/simple/style_<?= $lang ?>.css" rel="stylesheet" type="text/css">
+   <link href="../lib/css/simple/style_<?php echo  $lang ?>.css" rel="stylesheet" type="text/css">
 </head>
 
-<body dir="<?= $dir ?>">
+<body dir="<?php echo  $dir ?>">
    <div class="notification_message_container">
 
       <?php
@@ -73,13 +73,13 @@ if (!$MODULE) $MODULE = "ums";
 
       if (AfwSession::getVar("information")) {
       ?>
-         <div class="alert messages messages--status  alert-dismissable <?= AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><?php echo AfwSession::getVar("information"); ?></div><br>
+         <div class="alert messages messages--status  alert-dismissable <?php echo  AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><?php echo AfwSession::getVar("information"); ?></div><br>
       <?php
       }
 
       if (AfwSession::getVar("success")) {
       ?>
-         <div class="alert messages messages--success alert-dismissable  <?= AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><?php echo AfwSession::getVar("success"); ?></div>
+         <div class="alert messages messages--success alert-dismissable  <?php echo  AfwSession::getVar("information-class") ?>" role="alert"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><?php echo AfwSession::getVar("success"); ?></div>
       <?php
       }
 
@@ -97,6 +97,6 @@ if (!$MODULE) $MODULE = "ums";
    if (!$body_css_class) $body_css_class = "hzm_body";
    ?>
    <div class="container">
-      <div class='<?= $body_css_class ?>'>
+      <div class='<?php echo  $body_css_class ?>'>
 
          <!-- #END OF Header -->

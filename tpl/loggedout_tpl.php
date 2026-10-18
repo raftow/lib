@@ -7,7 +7,7 @@
                 $show_technical_details = "hide";
         }
         $lang = AfwLanguageHelper::getGlobalLanguage();
-        $xmodule = AfwSession::getCurrentlyExecutedModule();
+        $xmodule = AfwSession::currentCompanyOrDepartmentCode();
         $company = AfwSession::currentCompany();
 ?>
 <link href="/client-<?php echo $company ?>/css/common-<?php echo $xmodule ?>.css" rel="stylesheet" type="text/css" type="text/css">
