@@ -144,8 +144,6 @@ throw new AfwRuntimeException("fixm_input = ".var_export($fixm_input,true)."
      ||   fixm_trad = ".var_export($fixm_trad,true)."
      ||   mode_field_qedit_arr = ".var_export($mode_field_qedit_arr,true));*/
 // die(var_export($fixm_input,true));
-$css       = $obj->getStyle();
-//die("css = $css");
 //$str_label = ($mode_edit)? $obj->translate('EDIT',$lang,true) : $obj->translate('INSERT',$lang,true);
 //$str_titre = $obj->__toString();
 //$str_new = $obj->translate(strtolower("$cl.new"),$lang);

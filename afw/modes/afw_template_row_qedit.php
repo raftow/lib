@@ -382,8 +382,6 @@ if(!$obj->HIDE_DISPLAY_MODE)
         }
 /*}*/
 
-
-$css       = $obj->getStyle();
 if($obj->odd_even_enable) 
 {
         $obj_odd_even = $obj->odd_even;

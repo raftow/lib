@@ -315,8 +315,6 @@ foreach ($class_db_structure as $nom_col => $desc) {
         // if($data["ppp"]) die(var_export($data,true));
 }
 
-$css       = $obj->getStyle();
-//die("css = $css");
 $str_label = ($mode_edit_id) ? $obj->translate('EDIT.CARD', $lang) : $obj->translate('INSERT', $lang, true);
 //$str_titre = $obj->getShortDisplay($lang);
 $str_new = $obj->translate(strtolower("$cl.new"), $lang);
