@@ -51,7 +51,7 @@ class AfwController extends AFWRoot
 
                 if (!$onObject->isOk(true)) {
                         $data["all_error"] = implode(",\n", AfwDataQualityHelper::getDataErrors($onObject, ));
-                        die($data["all_error"]);
+                        // die($data["all_error"]);
                 } else {
                         /*
                         if($onObject->getVal("survey_token")=="72696ce122b0c29")

@@ -1330,6 +1330,11 @@ h1.modal-title {
     border: 1px solid #c0c0c070 !important;
 }
 
+.ui-accordion .ui-accordion-header.ui-state-active {
+    background-color: #e1edf638 !important;
+    border: 1px solid #0670bb85 !important;
+}
+
 .ui-accordion .qfilter.ui-accordion-header {
     background-color: transparent !important;
 }
@@ -1343,16 +1348,38 @@ div.dataTables_filter {
     width: 450px;
 }
 
+div.expand.collapsed>h5
+{
+    text-align: right !important;
+}
+
+div.expand>h5
+{
+    text-align: right !important;
+}
+
+div.expand.collapsed>h5>i::before{
+    content: '+' !important;
+}
+
+div.expand>h5>i::before{
+    content: '-';
+}
+
 .greentitle i {
     background: #d0f2ff;
-    border-color: #4dc6ff;
-    display: inline-block;
-    width: 9px;
-    height: 9px;
+    border-color: #145472;
+    display: inline;
+    height: 12px;
     margin-right: 2px;
     margin-left: 12px;
     border-width: 2px;
     border-style: solid;
+    font-weight: normal;
+    font-size: 14px;
+    font-style: normal;
+    padding: 0px 5px !important;
+    /* margin-top: 10px; */
 }
 
 .greentitle {
@@ -1586,4 +1613,36 @@ tr.audit:hover {
 table.dataTable tbody tr.audit:hover>td,
 table.grid tbody tr.audit:hover>td {
     opacity: 100% !important;
+}
+
+.header-group.expand {
+    /* border: 1px solid; */
+    border-top: 1px solid #145472a8;
+    border-bottom: 1px solid #1454721f;
+    border-left: 1px solid #145472a8;
+    border-right: 1px solid #145472a8;
+    /* margin-bottom: 10px; */
+    margin-top: 10px;
+    float: right;
+    width: 100%;
+}
+
+.fgroup.fgroup-body {
+    background-color: transparent !important;
+    padding: 0 !important;
+}
+
+.collapse.in {
+    display: block;
+    float: right;
+    width: 100%;
+    border-bottom: 1px solid #145472a8;
+    border-left: 1px solid #145472a8;
+    border-right: 1px solid #145472a8;
+    border-top: 1px solid #1454721f;
+}
+
+.fgbody.collapse {
+    background-color: white !important;
+    padding-top: 10px;
 }

@@ -1119,11 +1119,11 @@ class AfwEditMotor
             if ($noheader_fgroup) {
                 $header_of_fgroup = '';
             } else {
-                $header_of_fgroup = "<div id='header_group_$fgroup' class='$collapsed_status' $fgroup_toggle_html><h5 class='greentitle $new_fgroup'><i></i>$new_fgroup_tr</h5></div>";
+                $header_of_fgroup = "<div id='header_group_$fgroup' class='header-group $collapsed_status' $fgroup_toggle_html><h5 class='greentitle $new_fgroup'><i></i>$new_fgroup_tr</h5></div>";
             }
 
-            $htmlDiv .= "$header_of_fgroup\n<div id='body_group_$fgroup' class='fgroup in-group-$new_fgroup cssgroup_$fgroupcss' > \n";
-            $internal_new_group_div_open = "<div id='group_$fgroup' class='$collapse_status' aria-expanded='true' style=''>\n";
+            $htmlDiv .= "$header_of_fgroup\n<div id='body_group_$fgroup' class='fgroup fgroup-body in-group-$new_fgroup cssgroup_$fgroupcss' > \n";
+            $internal_new_group_div_open = "<div id='group_$fgroup' class='fgbody $collapse_status' aria-expanded='true' style=''>\n";
             $openedInGroupDiv = true;
         } else {
             $internal_new_group_div_open = '';

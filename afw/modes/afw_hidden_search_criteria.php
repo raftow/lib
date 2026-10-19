@@ -19,7 +19,13 @@ foreach($class_db_structure as $nom_col => $desc)
                      ob_start();
                      AfwQsearchMotor::hidden_input($nom_col."_2", $desc, $_POST[$nom_col."_2"], $obj);
 		     $hidden_inputs_arr[$nom_col."_2"] = ob_get_clean();
+
+                     
                 }
+
+                ob_start();
+                AfwQsearchMotor::hidden_input("oper_" . $nom_col, null, $_POST["oper_" . $nom_col], null);
+                $hidden_inputs_arr["oper_" . $nom_col] = ob_get_clean();
 	}
 }
 ob_start();
