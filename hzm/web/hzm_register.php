@@ -156,7 +156,7 @@ obsolete hzm_register.php
                                                                                                 <input type="text" tabindex="0" class="inputtext data_notloaded inputlong" name="captcha" id="captcha" value="" size="32" maxlength="255">
                                                                                         </th>
                                                                                         <th align="right" colspan='2'>
-                                                                                        <?php
+                                                                                        < ?php
                                                                                                                 AfwSession::startSession();
                                                                                                                 include("$file_hzm_dir_name/../lib/lib/hzm/web/hzm_cap/simple-php-captcha.php");
                                                                                                                 $simple_php_captcha = AfwSession::setSessionVar('captcha', simple_php_captcha());

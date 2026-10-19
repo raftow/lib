@@ -1996,17 +1996,21 @@ class AfwDateHelper
         return [$hdate, $gtime];
     }
 
-    public static function timeDiffInHours($gdate2, $gdate1, $round = true, $limit_to_halt = 200000)
+    /**
+     * @param string $gregDateTime2, 
+     * @param string $gregDateTime1
+     */
+    public static function timeDiffInHours($gregDateTime2, $gregDateTime1, $round = true, $limit_to_halt = 200000)
     {
-        $result_diff_s = self::timeDiffInSeconds($gdate2, $gdate1);
+        $result_diff_s = self::timeDiffInSeconds($gregDateTime2, $gregDateTime1);
         $result_diff_h = $result_diff_s / 3600;
         if ($round) {
             $result_diff_h = round($result_diff_h);
         }
 
         if ($result_diff_h > $limit_to_halt) {
-            $result_diff_s_report = self::timeDiffInSecondsReport($gdate2, $gdate1);
-            throw new AfwRuntimeException("timeDiffInSecondsReport($gdate2, $gdate1) => $result_diff_s <br>\n
+            $result_diff_s_report = self::timeDiffInSecondsReport($gregDateTime2, $gregDateTime1);
+            throw new AfwRuntimeException("timeDiffInSecondsReport($gregDateTime2, $gregDateTime1) => $result_diff_s <br>\n
                result_diff_s_report => $result_diff_s_report <br>\n
                => result_diff_h = $result_diff_h");
         }
@@ -2014,25 +2018,83 @@ class AfwDateHelper
         return $result_diff_h;
     }
 
-    public static function timeDiffInSecondsReport($gdate2, $gdate1)
+     /**
+     * @param string $gregDateTime2, 
+     * @param string $gregDateTime1
+     */
+    public static function timeDiffInSecondsReport($gregDateTime2, $gregDateTime1)
     {
-        $stmp2 = self::gregToTimestamp($gdate2);
-        $stmp1 = self::gregToTimestamp($gdate1);
+        $stmp2 = self::gregToTimestamp($gregDateTime2);
+        $stmp1 = self::gregToTimestamp($gregDateTime1);
 
-        return "stmp2($gdate2) = $stmp2 <br>\n stmp1($gdate1) = $stmp1 <br>\n stmp2 - stmp1 = " . ($stmp2 - $stmp1);
+        return "stmp2($gregDateTime2) = $stmp2 <br>\n stmp1($gregDateTime1) = $stmp1 <br>\n stmp2 - stmp1 = " . ($stmp2 - $stmp1);
     }
 
-    public static function timeDiffInSeconds($gdate2, $gdate1)
+     /**
+     * @param string $gregDateTime2, 
+     * @param string $gregDateTime1
+     */
+    public static function timeDiffInSeconds($gregDateTime2, $gregDateTime1)
     {
-        $stmp2 = self::gregToTimestamp($gdate2);
-        $stmp1 = self::gregToTimestamp($gdate1);
+        $stmp2 = self::gregToTimestamp($gregDateTime2);
+        $stmp1 = self::gregToTimestamp($gregDateTime1);
 
         return ($stmp2 - $stmp1);
     }
 
-    public static function gregDateDiff($gdate2, $gdate1, $round = true)
+    /**
+     * @param int $timeInSeconds
+     */
+    public static function formatTime($timeInSeconds, $Format='')
     {
-        $result_diff = self::timeDiffInSeconds($gdate2, $gdate1);
+            //combien d'heures ?
+            $hours = floor($timeInSeconds / 3600);
+            
+            //combien de minutes ?
+            $min = floor(($timeInSeconds - ($hours * 3600)) / 60);
+
+            //combien de secondes
+            $sec = round($timeInSeconds - ($hours * 3600) - ($min * 60));
+            
+            if(($Format=='h:m') or ($Format=='h:i')) 
+            {
+                if ($sec>29) $min += 1;
+                if ($min==60) 
+                {
+                    $hours += 1;
+                    $min = 0;
+                } 
+            }
+            
+            if ($min < 10) $min = "0".$min;
+            
+            if ($sec < 10) $sec = "0".$sec;
+                    
+            if($Format=='h:m')      
+                return $hours.":".$min;
+            else
+                return $hours.":".$min.":".$sec;
+        
+    }
+
+    /**
+     * @param string $gregDateTime2, 
+     * @param string $gregDateTime1
+     */
+
+    public static function formatDatetimeDiff($gregDateTime2, $gregDateTime1, $Format="h:i")
+    {
+        $diff = self::timeDiffInSeconds($gregDateTime2, $gregDateTime1);
+        return self::formatTime($diff, $Format);       
+    }
+
+     /**
+     * @param string $gregDateTime2, 
+     * @param string $gregDateTime1
+     */
+    public static function gregDateDiff($gregDateTime2, $gregDateTime1, $round = true)
+    {
+        $result_diff = self::timeDiffInSeconds($gregDateTime2, $gregDateTime1);
         $result_diff = $result_diff / (24 * 3600);
         if ($round) {
             $result_diff = round($result_diff);
@@ -2074,6 +2136,9 @@ class AfwDateHelper
 
     /*****************    time functions    *************************/
 
+    /**
+     * @param mixed $time_to_add
+     */
     public static function getSplittedTime($time_to_add)
     {
         if (is_array($time_to_add)) {
@@ -2100,9 +2165,13 @@ class AfwDateHelper
     }
 
     /**
-     *
      * add time to time
-     *
+     * @param int $day
+     * @param string $time  HH:NN:SS or HH:NN
+     * @param string $time_to_add  HH:NN:SS or HH:NN
+     * @param bool $seconds consider or not seconds in result
+     * @param int $sign +1 (default) to add -1 to remove
+     * 
      */
 
     public static function addTimeToDayTime(
@@ -2112,18 +2181,16 @@ class AfwDateHelper
         $seconds = false,
         $sign = 1
     ) {
-        list($hh_to_add, $ii_to_add, $ss_to_add) = self::getSplittedTime(
-            $time_to_add
-        );
+        list($hh_to_add, $ii_to_add, $ss_to_add) = self::getSplittedTime($time_to_add);
 
         if (strlen($time) == 5) {
             $time .= ':00';
         }
-        $to_day = date('Y-m-d');
-        $date_time_day = $to_day . ' ' . $time;
+        $today_date = date('Y-m-d');
+        $today_date_time = $today_date . ' ' . $time;
 
         $new_date_time = self::addDatetimeToGregDatetime(
-            $date_time_day,
+            $today_date_time,
             $years = 0,
             $months = 0,
             $days = 0,
@@ -2138,7 +2205,7 @@ class AfwDateHelper
             $new_time = substr($new_time, 0, 5);
         }
 
-        $new_day = $day + self::diff_date($new_date, $to_day);
+        $new_day = $day + self::diff_date($new_date, $today_date);
 
         return [$new_day, $new_time];
     }

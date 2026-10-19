@@ -4952,6 +4952,7 @@ class AFWObject extends AFWRoot
                 $value = $this->calc($key);
             else
                 $value = $this->getVal($key);
+            if("")
             // if($key == "adm_orgunit_id") die("$value = this->getVal($key)");
             list(
                 $formatted,

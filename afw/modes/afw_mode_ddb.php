@@ -121,6 +121,17 @@ if(!$nb_objs)
     $datatable_on = true;
     $mode_hijri_edit = true;       	
 }
+elseif($nb_objs==1)
+{
+    $ddb_action = $ddb_action_0;
+    if($ddb_action)
+        CmsMainPage::addOutput("اكتملت عملية حذف المكررات");
+    else
+        CmsMainPage::addOutput("لا يوجد سجلات كافية");
+        
+    $datatable_on = true;
+    $mode_hijri_edit = true;       	
+}
 else
 {
         $objects_ids_arr = array();

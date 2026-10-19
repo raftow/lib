@@ -5314,6 +5314,7 @@ li.hzm-tab>a {
     padding-right: 8px !important;
     white-space: nowrap;
     overflow: hidden;
+    max-height: 32px;
 }
 
 .hzm_front_label {
