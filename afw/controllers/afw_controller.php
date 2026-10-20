@@ -168,25 +168,25 @@ class AfwController extends AFWRoot
                 if ($die) die();
         }
 
-        public function renderErrorAndLogOut($error_message, $suggested_login_page = "", $suggested_login_phrase = "login", $click_here_phrase = "click here")
+        public function renderErrorAndLogOut($error_message, $suggested_login_page = "", $suggested_login_phrase = "login", $click_here_phrase = "click here", $module = "", $parent_module = "")
         {
                 AfwSession::logout();
                 $lang = AfwLanguageHelper::getGlobalLanguage();
-                $error_message = AfwLanguageHelper::tt($error_message, $lang);
-                $suggested_login_phrase = AfwLanguageHelper::tt($suggested_login_phrase, $lang);
-                $click_here_phrase = AfwLanguageHelper::tt($click_here_phrase, $lang);
+                $error_message = AfwLanguageHelper::tt($error_message, $lang, $module, $parent_module);
+                $suggested_login_phrase = AfwLanguageHelper::tt($suggested_login_phrase, $lang, $module, $parent_module);
+                $click_here_phrase = AfwLanguageHelper::tt($click_here_phrase, $lang, $module, $parent_module);
 
                 if ($suggested_login_page) $error_message .= " $suggested_login_phrase,<br> <a class='error link' href='$suggested_login_page'>$click_here_phrase</a>";
                 $this->renderError($error_message);
         }
 
-        public function renderLogOutMessage($logout_message, $suggested_login_page = "", $suggested_login_phrase = "login", $click_here_phrase = "click here")
+        public function renderLogOutMessage($logout_message, $suggested_login_page = "", $suggested_login_phrase = "login", $click_here_phrase = "click here", $module = "", $parent_module = "")
         {
                 AfwSession::logout();
                 $lang = AfwLanguageHelper::getGlobalLanguage();
-                $error_message = AfwLanguageHelper::tt($logout_message, $lang);
-                $suggested_login_phrase = AfwLanguageHelper::tt($suggested_login_phrase, $lang);
-                $click_here_phrase = AfwLanguageHelper::tt($click_here_phrase, $lang);
+                $error_message = AfwLanguageHelper::tt($logout_message, $lang, $module, $parent_module);
+                $suggested_login_phrase = AfwLanguageHelper::tt($suggested_login_phrase, $lang, $module, $parent_module);
+                $click_here_phrase = AfwLanguageHelper::tt($click_here_phrase, $lang, $module, $parent_module);
 
                 if ($suggested_login_page) $error_message .= " $suggested_login_phrase : <br><br> <a class='error link' href='$suggested_login_page'>$click_here_phrase</a>";
                 $this->renderError($error_message, array(), "lib", "loggedout", true);

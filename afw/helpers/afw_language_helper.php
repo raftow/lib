@@ -110,7 +110,7 @@ class AfwLanguageHelper
         foreach ($paths as $path) {
             include $path . "/messages_$lang.php";
             if ($messages[$text]) return $messages[$text];
-            elseif ($text == "save responses") return $text . " we take $path/messages_$lang.php but not found => " . var_export($messages, true);
+            // elseif ($text == "save responses") return $text . " we take $path/messages_$lang.php but not found => " . var_export($messages, true);
         }
 
         if ($module) $text = UfwReplacement::trans_replace($text, $module, $lang);
