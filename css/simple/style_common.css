@@ -4488,9 +4488,9 @@ button[disabled],
 input[disabled],
 textarea[disabled],
 select[disabled] {
-    background-color: #e4e4e4 !important;
-    color: #a19d9d;
-    border-color: #a19d9d !important;
+    background-color: #d4d4d414 !important;
+    color: #756f6f;
+    border: 1px silver dashed !important;
 }
 
 .nice_link {

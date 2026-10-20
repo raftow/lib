@@ -1632,6 +1632,8 @@ table.grid tbody tr.audit:hover>td {
     padding: 0 !important;
 }
 
+
+
 .collapse.in {
     display: block;
     float: right;
