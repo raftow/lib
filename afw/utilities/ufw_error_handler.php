@@ -137,7 +137,7 @@ if ((!function_exists("ufwErrorHandler")) and (!function_exists("ufwExceptionHan
             <script src="<?php echo $relative_path; ?>../lib/msdropdown/js/msdropdown/jquery.dd.js"></script>
             <!-- </msdropdown> -->
 
-            <script src="<?php echo $relative_path; ?>js/schedule-viewmodel.js"></script>
+            <!-- script src="<p echo relative_path >js/schedule-viewmodel.js" script -->
             <script src="<?php echo $relative_path; ?>js/module.js"></script>
 
             <link href="<?php echo $relative_path; ?>../lib/css/autocomplete.css" rel="stylesheet" type="text/css">
