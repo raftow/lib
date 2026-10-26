@@ -1051,4 +1051,101 @@ class AfwInputHelper extends AFWRoot
                 $html .= "</div> <!-- hzm-popup-edit-$attribute -->";
                 return $html;
         }
+
+        /**
+         * @param int $nb_files, 
+         * @param int $max_files_nb
+         */
+        public static function multipleFileUploader($nb_files, $canAddRemoveFiles=true, $max_files_nb=5, $file_labels=[], $file_required_arr=[], $lang="ar")
+        {
+                if(!$canAddRemoveFiles) $max_files_nb = $nb_files;
+                if($lang=="ar") {
+                        $file_title_0 = "الملف رقم";
+                        $file_order_labels = [1 => 'الملف الأول', 2 => 'الملف الثاني', 3 => 'الملف الثالث', 4 => 'الملف الرابع', 5 => 'الملف الخامس', ];
+                } 
+                else {
+                        $file_title_0 = "File Number ";
+                        $file_order_labels = [1 => 'First file', 2 => 'Second file', 3 => 'Third file', 4 => 'Fourth file', 5 => 'Fifth file', ];
+                }
+                ob_start();
+                if($canAddRemoveFiles) {
+        ?>
+                <div class="btn-container"> 
+                    <button id='add-file' class='btn-green btn-very-small'>+</button>  
+                    <button id='remove-file' class='btn-red btn-very-small'>-</button>                       
+                    <input type="hidden" value="1" id="nb_files" name="nb_files">
+                    <input type="hidden" value="<?php echo $max_files_nb ?>" id="max_files_nb" name="max_files_nb">
+                </div>
+
+        <?php
+                }
+                // echo var_export($files_list, true);
+                for($file_order=1; $file_order<=$max_files_nb;$file_order++)
+                {
+                        if($file_order <= $nb_files) $input_file_hide = "";
+                        else $input_file_hide = "notvisible";
+                        $file_title = $file_labels[$file_order];
+                        if(!$file_title) $file_title = $file_order_labels[$file_order];
+                        if(!$file_title) $file_title = $file_title_0 . $file_order;
+                        $file_input_name = "file_".$file_order;
+
+                        $file_required = $file_required_arr[$file_order] ? "required" : "";
+        ?>
+                <div class='<?php echo $input_file_hide ?> upl-file' id='upl-file-<?php echo $file_order ?>'>
+                        <label class="hzm_label <?php echo "for_file $file_input_name" ?>"><?php echo $file_title ?></label>
+                        <p class="for_file"><input name="<?php echo $file_input_name ?>" id="<?php echo $file_input_name ?>" type="file" class="nicefileinput nice" <?php echo $file_required?>/></p>
+</div>
+        <?php
+                }
+
+                if($canAddRemoveFiles) {
+        ?>
+                
+                <script type="text/javascript">
+                        $("#remove-file").click(function() {
+                                                nb_files = $("#nb_files").val();
+                                                if(nb_files>0) {
+                                                        old_nb_files = nb_files;
+                                                        nb_files--;
+                                                        $("#upl-file-"+old_nb_files).addClass("notvisible");
+                                                } 
+                                                $("#nb_files").val(nb_files);
+                                                console.log("remove-file clicked, nb_files become : "+$("#nb_files").val());
+                                        });
+
+                        $('#add-file').click(function() {
+                                                nb_files = $("#nb_files").val();
+                                                max_files_nb = $("#max_files_nb").val();
+                                                if(nb_files<max_files_nb) {
+                                                        nb_files++;
+                                                        
+                                                        $("#upl-file-"+nb_files).removeClass("notvisible");
+                                                } 
+                                                $("#nb_files").val(nb_files);
+                                                console.log("add-file clicked, nb_files become : "+$("#nb_files").val());
+                                        });
+        <?php
+                }
+                
+        ?>
+                        $(document).ready(function(){
+                                nb_files = $("#nb_files").val();
+                                console.log("document is ready called, nb_files is "+nb_files);
+                        <?php
+                                // echo var_export($files_list, true);
+                                for($file_order=1; $file_order<=$max_files_nb;$file_order++)
+                                {
+                                        $file_input_name = "file_".$file_order;
+                        ?>                                        
+                                $("#<?php echo $file_input_name ?>").nicefileinput({ label : 'إختيار الملف' });
+                        <?php
+                                }
+                        ?>
+                        });
+                </script>        
+        <?php
+                
+                return ob_get_clean();
+        }
+
 }

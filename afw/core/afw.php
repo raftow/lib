@@ -4231,6 +4231,24 @@ class AFWObject extends AFWRoot
     }
 
     /**
+     * @param string $operator
+     */
+
+    public static function translateKeyword($operator, $lang = 'ar', $AI_Translation = false)
+    {
+        return self::t($operator, $lang, true, $AI_Translation);
+    }
+
+    /**
+     * @param string $attribute
+     */
+
+    public static function translateAttribute($attribute, $lang = 'ar', $AI_Translation = false)
+    {
+        return self::t($attribute, $lang, false, $AI_Translation);
+    }
+
+    /**
      * @param string $column_name
      */
 

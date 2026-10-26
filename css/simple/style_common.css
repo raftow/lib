@@ -8229,3 +8229,35 @@ input#otp_verify_code {
 	border: 1px #68a5e8 solid;
 	
 }
+
+.btn-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+button.btn-green {
+    background-color: green;
+    border: none;
+    font-size: 28px !important;
+    color: white;
+    width:50px;
+    max-width:50px;
+    padding: 0px 15px;
+    font-weight: normal;
+    margin-left: 8px;
+    margin-right: calc(49% - 58px);
+}
+
+
+button.btn-red {
+    background-color: red;
+    border: none;
+    font-size: 28px !important;
+    color: white;
+    width:50px;
+    max-width:50px;
+    padding: 0px 15px;
+    font-weight: normal;
+    margin-right: 8px;
+    margin-left: calc(49% - 58px);
+}

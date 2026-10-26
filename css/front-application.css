@@ -4035,6 +4035,9 @@ screen and (max-width: 1450px) {
     display: none !important;
 }
 
+.notvisible {
+    visibility: hidden;
+}
 
 .menuBar {
     position: sticky;
