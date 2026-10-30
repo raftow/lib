@@ -92,14 +92,14 @@ if ($id) {
     foreach ($_REQUEST as $item => $item_value) {
         if ($myObj->id and AfwStringHelper::stringStartsWith($item, "force_")) // we can only use force_ mode if object is new and empty
         {
-            $item_trimmed = substr($item, 6);
-            if ($item_trimmed) {
-                if (AfwStructureHelper::fieldExists($myObj, $item_trimmed)) {
-                    if (AfwStructureHelper::canBeForced($myObj, $item_trimmed)) {
-                        $myObj->setForce($item_trimmed, $item_value, is_numeric($item_value));
+            $item_attribute = substr($item, 6);
+            if ($item_attribute) {
+                if (AfwStructureHelper::fieldExists($myObj, $item_attribute)) {
+                    if (AfwStructureHelper::canBeForced($myObj, $item_attribute)) {
+                        $myObj->setForce($item_attribute, $item_value, is_numeric($item_value));
                         $need_commit = true;
-                        // AfwSession::pushSuccess("$item_trimmed has been forced to [$item_value] value");
-                    } else AfwSession::pushWarning("$item_trimmed can't be forced");
+                        // AfwSession::pushSuccess("$item_attribute has been forced to [$item_value] value");
+                    } else AfwSession::pushWarning("$item_attribute can't be forced");
                 } else AfwSession::pushWarning("unknown param $item !");
             }
         }
@@ -112,13 +112,13 @@ if ($id) {
 
         if ((!$myObj->id) and AfwStringHelper::stringStartsWith($item, "sel_"))  // we can only use sel_ mode if object is new and empty
         {
-            $item_trimmed = substr($item, 4);
-            if ($item_trimmed) {
-                if (AfwStructureHelper::fieldExists($myObj, $item_trimmed)) {
-                    if ($item_value or (!AfwStructureHelper::editIfEmpty($myObj, $item_trimmed))) {
-                        $inited_cols[$item_trimmed] = true;
-                        $myObj->fixModeSet($item_trimmed, $item_value, true, true);
-                    } else AfwSession::pushWarning("$item_trimmed is not usable in fix-mode as it is not `edit if empty` attribute");
+            $item_attribute = substr($item, 4);
+            if ($item_attribute) {
+                if (AfwStructureHelper::fieldExists($myObj, $item_attribute)) {
+                    if ($item_value or (!AfwStructureHelper::editIfEmpty($myObj, $item_attribute))) {
+                        $inited_cols[$item_attribute] = true;
+                        $myObj->fixModeSet($item_attribute, $item_value);
+                    } else AfwSession::pushWarning("$item_attribute is not usable in fix-mode as it is not `edit if empty` attribute");
                 } else AfwSession::pushWarning("unknown param $item !");
             }
         }

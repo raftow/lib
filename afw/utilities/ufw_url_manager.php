@@ -199,10 +199,25 @@ class UfwUrlManager extends AFWRoot
     }
 
 
+    public static function currentCompanyBranch()
+    {
+        $sname = self::currentServerName();
+        if ($sname == "localhost") return "";
+        if ($sname == "127.0.0.1") return "";
+
+        return $sname;
+    }
+
+    public static function currentServerName()
+    {
+        return $_SERVER['SERVER_NAME'];
+    }
 
     public static function currentURIModule()
     {
         $uri_items = explode('/', $_SERVER['REQUEST_URI']);
+        // die("_SERVER = " . var_export($_SERVER, true));
+        // die("uri_items = " . var_export($uri_items, true));
         if ($uri_items[CONST_URI_ORDER]) {
             $uri_module = $uri_items[CONST_URI_ORDER];
         } else {

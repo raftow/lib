@@ -586,13 +586,28 @@ class AfwStructureHelper extends AFWRoot
         return $desc['CAN-BE-FORCED'];
     }
 
-    public static final function editIfEmpty(&$object, $attribute, $desc = null)
+
+
+    public static final function editIfNew(&$object, $attribute, $desc = null)
     {
         $desc = AfwStructureHelper::fixStructureOf($object, $attribute, $desc);
 
         return $desc['READONLY'] and $desc['EDIT_IF_EMPTY'];
     }
 
+    public static final function editIfEmpty(&$object, $attribute, $desc = null)
+    {
+        $desc = AfwStructureHelper::fixStructureOf($object, $attribute, $desc);
+
+        return $desc['READONLY'] and $desc['EDIT_IF_ATTRIBUTE_EMPTY'];
+    }
+
+    /**
+     * @param AFWObject $object
+     * @param string $attribute
+     * @param Auser $user
+     * @param array $desc
+     */
     // attribute can be modified by user in standard HZM-UMS model
     public static function itemsEditableBy(&$object, $attribute, $user = null, $desc = null)
     {
@@ -605,6 +620,12 @@ class AfwStructureHelper extends AFWRoot
         }
     }
 
+    /**
+     * @param AFWObject $object
+     * @param string $attribute
+     * @param Auser $user
+     * @param array $desc
+     */
     // attribute can be modified by user in standard HZM-UMS model
     public static final function attributeCanBeModifiedBy(&$object, $attribute, $user, $desc)
     {
@@ -615,7 +636,9 @@ class AfwStructureHelper extends AFWRoot
 
         // if($attribute == "orgunit_id") die("desc of $attribute ". var_export($desc,true));
 
-        if (AfwStructureHelper::editIfEmpty($object, $attribute, $desc) and $object->isEmpty()) {
+        if ((AfwStructureHelper::editIfEmpty($object, $attribute, $desc) and $object->attributeIsEmpty($attribute)) or
+            (AfwStructureHelper::editIfNew($object, $attribute, $desc) and $object->isConsideredEmpty())
+        ) {
             // die("desc of $attribute ". var_export($desc,true));
             $desc['EDIT'] = true;
             $desc['READONLY'] = false;

@@ -1,9 +1,9 @@
 <?php
 ini_set("upload_max_filesize", "40M");
-
+ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR);
 
 try {
-        $afw_dir = dirname(__FILE__)."/..";
+        $afw_dir = dirname(__FILE__) . "/..";
         $module = $_POST["module"];
         $doc_type_id = $_POST["doc_type_id"];
         if (!$doc_type_id) $doc_type_id = 1;
@@ -182,7 +182,7 @@ try {
                                         $error = "file $mv_from_file not found";
                                 }
 
-                                
+
                                 $_FILES['move_error'] = $error;
                         }
                 } else {

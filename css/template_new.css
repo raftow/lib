@@ -823,7 +823,7 @@ table.grid tbody tr:hover>td {
     opacity: 100%;
 }
 
-.tooltip.in{
+.tooltip.in {
     filter: none !important;
     opacity: 100% !important;
 }
@@ -1348,21 +1348,19 @@ div.dataTables_filter {
     width: 450px;
 }
 
-div.expand.collapsed>h5
-{
+div.expand.collapsed>h5 {
     text-align: right !important;
 }
 
-div.expand>h5
-{
+div.expand>h5 {
     text-align: right !important;
 }
 
-div.expand.collapsed>h5>i::before{
+div.expand.collapsed>h5>i::before {
     content: '+' !important;
 }
 
-div.expand>h5>i::before{
+div.expand>h5>i::before {
     content: '-';
 }
 
@@ -1380,6 +1378,15 @@ div.expand>h5>i::before{
     font-style: normal;
     padding: 0px 5px !important;
     /* margin-top: 10px; */
+}
+
+.filebox h5.greentitle>i {
+    font-size: 8px;
+    padding: 0px 4px !important;
+    background-color: #00a2e8;
+    border: none;
+    border-radius: 37%;
+    box-shadow: #191919 2px 2px;
 }
 
 .greentitle {

@@ -151,7 +151,7 @@ class AFWObject extends AFWRoot
 
     public static $all_data;
 
-    // private $force_mode = false;
+    private $force_mode = false;
 
     private $maj_trig_count = 0;
 
@@ -914,12 +914,18 @@ class AFWObject extends AFWRoot
         return [$fields1, $fields0];
     }
 
+    public function copyAttributesFrom($obj, $attributes)
+    {
+        return $this->copyDataFrom($obj, $attributes, [], false, false, true);
+    }
+
     public function copyDataFrom(
         $obj,
         $exception_fields = null,
         $avoid_if_filled_fields = [],
         $avoid_unique_index = true,
-        $logHistory = false
+        $logHistory = false,
+        $copy_only_exception_fields = false
     ) {
         $this_class = get_class($this);
         if ($this_class == 'Student') {
@@ -929,7 +935,10 @@ class AFWObject extends AFWRoot
         }
 
         $fields_updated = [];
-        $all_real_fields = AfwStructureHelper::getAllRealFields($this);
+        if ($copy_only_exception_fields) {
+            $all_real_fields = $exception_fields;
+            $exception_fields = [];
+        } else $all_real_fields = AfwStructureHelper::getAllRealFields($this);
         foreach ($all_real_fields as $field_name) {
             list($is_category_field, $is_settable) = AfwStructureHelper::isSettable(
                 $this,
@@ -1154,17 +1163,17 @@ class AFWObject extends AFWRoot
             return null;
     }
 
-    public static function loadOrCreateWithUniqueKey($ukey_array)
+    public static function loadOrCreateWithUniqueKey($ukey_array, $create_if_not_found = true)
     {
         $obj = new static();
         if ($obj->loadWithUniqueKey($ukey_array))
             return $obj;
-        else {
+        elseif ($create_if_not_found) {
             foreach ($ukey_array as $ukey => $ukey_value) {
                 $obj->set($ukey, $ukey_value);
             }
             return $obj;
-        }
+        } else return null;
     }
 
     public function loadWithUniqueKey($ukey_array)
@@ -1329,6 +1338,14 @@ class AFWObject extends AFWRoot
     public function isConsideredEmpty()
     {
         return $this->isEmpty() or $this->considerEmpty();
+    }
+
+    /**
+     * @param string $attribute
+     */
+    public function attributeIsEmpty($attribute)
+    {
+        return !$this->getVal($attribute);
     }
 
     public function isEmpty()
@@ -1849,7 +1866,8 @@ class AFWObject extends AFWRoot
     /**
      * @param string $listAttribute
      */
-    public function loadMyList($listAttribute) {
+    public function loadMyList($listAttribute)
+    {
         return $this->loadMyAttribute($listAttribute, true);
     }
 
@@ -1857,18 +1875,18 @@ class AFWObject extends AFWRoot
      * @param string $attribute
      */
 
-    public function loadMyAttribute($attribute, $isListAttribute = true) {
+    public function loadMyAttribute($attribute, $isListAttribute = true)
+    {
         $className = get_class($this);
 
-        if(!self::$myListCache[$className][$this->id][$attribute]) {
+        if (!self::$myListCache[$className][$this->id][$attribute]) {
             self::$myListCache[$className][$this->id][$attribute] = $this->het($attribute);
-            if(!self::$myListCache[$className][$this->id][$attribute]) self::$myListCache[$className][$this->id][$attribute] = 'not-found';
+            if (!self::$myListCache[$className][$this->id][$attribute]) self::$myListCache[$className][$this->id][$attribute] = 'not-found';
         }
 
-        if(self::$myListCache[$className][$this->id][$attribute] === 'not-found') return $isListAttribute ? [] : null;
+        if (self::$myListCache[$className][$this->id][$attribute] === 'not-found') return $isListAttribute ? [] : null;
 
         return self::$myListCache[$className][$this->id][$attribute];
-
     }
 
 
@@ -2149,9 +2167,9 @@ class AFWObject extends AFWRoot
 
         if (!$struct)
             $struct = AfwStructureHelper::getStructureOf($this, $attribute);
-        if ($struct['TYPE'] != 'MFK') {
+        if (($struct['TYPE'] != 'MFK') and ($struct['TYPE'] != 'MENUM')) {
             throw new AfwRuntimeException(
-                get_class($this) . " : Only MFK Fields can use this method, $attribute is not MFK but look strcuture " . var_export($struct, true)
+                get_class($this) . " : Only MFK/MENUM Fields can use this method, $attribute is not MFK/MENUM but look strcuture " . var_export($struct, true)
             );
         }
 
@@ -3570,7 +3588,7 @@ class AFWObject extends AFWRoot
         return $this->moveConfig($col, $sens, $auser);
     }
 
-    public function getMyIndexArray()
+    public function getMyIndexArray($throwExceptionIfNoIndex = true)
     {
         if (is_array($this->UNIQUE_KEY) and count($this->UNIQUE_KEY) > 0) {
             $uk_arr = [];
@@ -3578,8 +3596,10 @@ class AFWObject extends AFWRoot
                 $uk_arr[$key] = $this->getVal($key);
             }
             return $uk_arr;
-        } else
-            throw new AfwRuntimeException('No UNIQUE_KEY index defined for ' . get_class($this));
+        } else {
+            if ($throwExceptionIfNoIndex) throw new AfwRuntimeException('No UNIQUE_KEY index defined for ' . get_class($this));
+            else return [];
+        }
     }
 
     public function moveColumn()
@@ -4579,12 +4599,10 @@ class AFWObject extends AFWRoot
             }
         }
 
-        
-        if(static::$TABLE == "crm_employeeXXX")
-        {
-             die("rafik debugg 20260929 : ".$this->SEARCH);
+
+        if (static::$TABLE == "crm_employeeXXX") {
+            die("rafik debugg 20260929 : " . $this->SEARCH);
         }
-        
     }
 
     public function get_visibilite_horizontale($dropdown = false)
@@ -4785,7 +4803,7 @@ class AFWObject extends AFWRoot
                 return $this->adminCanEditMe();
             if ($auser->isSupervisor()) {
                 list($canEdit, $reason) = $this->supervisorCanEditMe();
-                if($canEdit) return [true, ''];
+                if ($canEdit) return [true, ''];
             }
         }
 
@@ -4960,7 +4978,7 @@ class AFWObject extends AFWRoot
             if ($intelligent_category == 'FORMULA') {
                 $data_to_display = $this->calc($key, false, 'decodeme');
                 $formatted = true;
-            }            
+            }
         } else {
             // in case of we use shortname
             // ?? be more clear in your comments please, what means above (RB 21/02/2025)
@@ -4970,13 +4988,13 @@ class AFWObject extends AFWRoot
                 $value = $this->calc($key);
             else
                 $value = $this->getVal($key);
-            if("")
-            // if($key == "adm_orgunit_id") die("$value = this->getVal($key)");
-            list(
-                $formatted,
-                $data_to_display,
-                $link_to_display,
-            ) = AfwFormatHelper::formatValue($value, $key, $structure, $getFormatLink, $this);
+            if ("")
+                // if($key == "adm_orgunit_id") die("$value = this->getVal($key)");
+                list(
+                    $formatted,
+                    $data_to_display,
+                    $link_to_display,
+                ) = AfwFormatHelper::formatValue($value, $key, $structure, $getFormatLink, $this);
             // if($key == "adm_orgunit_id") die("dbg 55477 rafik : list($formatted, $data_to_display, $link_to_display,) = AfwFormatHelper::formatValue($value, $key, ..)");
         }
 
@@ -6251,7 +6269,7 @@ class AFWObject extends AFWRoot
             return null;
     }
 
-    public function quickRetrieveMethod($attribute="all")
+    public function quickRetrieveMethod($attribute = "all")
     {
         return 'qshow';
     }
@@ -6843,9 +6861,9 @@ class AFWObject extends AFWRoot
         return 1;
     }
 
-    public function forceMode()
+    public function forceMode($bool = true)
     {
-        $this->force_mode = true;
+        $this->force_mode = $bool;
     }
 
     public function getFloatVal($attribute)
@@ -7031,7 +7049,7 @@ class AFWObject extends AFWRoot
             return self::boolean()['code'];
     }
 
-    
+
 
     public function debuggExport()
     {
