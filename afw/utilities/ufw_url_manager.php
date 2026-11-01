@@ -203,6 +203,8 @@ class UfwUrlManager extends AFWRoot
     {
         $sname = self::currentServerName();
         if ($sname == "localhost") return "";
+        $nname = str_replace(".", "",$sname);
+        if(is_numeric($nname)) return "";
         if ($sname == "127.0.0.1") return "";
 
         return $sname;
