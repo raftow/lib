@@ -100,6 +100,9 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
         $data_tokens["user_picture"] = $user_picture;
         $data_tokens["user_admin"] = $user_admin;
         $enable_search_box = AfwSession::config("enable_search_box", false);
+        $server_bg_class = "prod";
+        $server_bg_class = AfwSession::config("MODE_TEST", false) ? "test" : $server_bg_class;
+        $server_bg_class = AfwSession::config("MODE_DEVELOPMENT", false) ? "dev" : $server_bg_class;
         if ($enable_search_box) {
             $data_tokens["enable_search_box_s"] = "";
             $data_tokens["enable_search_box_e"] = "";
@@ -110,6 +113,8 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
 
 
         $data_tokens["user_bg_class"] = $user_bg_class;
+        $data_tokens["server_bg_class"] = $server_bg_class;
+        
         $data_tokens["user_account_page"] = $user_account_page;
         $data_tokens["search_here"] = AfwLanguageHelper::translateKeyword("Search here", $lang);;
         $data_tokens["logo-width"] = AfwSession::config("logo-width", 42, "display", "force-client", $company);
