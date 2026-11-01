@@ -4036,7 +4036,9 @@ screen and (max-width: 1450px) {
 }
 
 .notvisible {
-    visibility: hidden;
+    visibility: hidden !important;
+    height: 0 !important;
+    width: 0 !important;
 }
 
 .menuBar {
