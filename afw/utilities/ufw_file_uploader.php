@@ -184,7 +184,7 @@ class UfwFileUploader extends AFWRoot
                         else
                         {
                                 $error = "can't insert afile error occured when inserting record in DB";                                
-                                if($objme->isAdmin() and $af->sql_error) $error .= " : ".$af->sql_error;
+                                if($objme and $objme->isAdmin() and $af->sql_error) $error .= " : ".$af->sql_error;
 
                                 return array("status" => "error", 
                                                      "message" => $error,
