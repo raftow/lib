@@ -5018,11 +5018,12 @@ div.my_link.nice>a {
 }
 
 div.hzm_xgreen {
-    background-color: #5ccf5f;
-    margin-top: 15px !important;
-    border-color: green;
-    width: 60%;
-    margin: auto;
+  background-color: #2d8fd6;
+  margin-top: 15px !important;
+  border-color: transparent;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 div.hzm_xgreen>a {
