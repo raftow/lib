@@ -619,6 +619,7 @@ a.longbtn.greenbtn.excel:hover {
     min-width: 120px;
     text-align: center !important;
     line-height: 2;
+    float: right;
 }
 
 input.fa.previous.wizardbtn.en {
@@ -1186,7 +1187,8 @@ div.body_nav_hzm>p {
     border-top: none;
     margin: 5px;
     padding: 12px 0px 0px;
-    width: auto !important;
+    /* width: auto !important; not good for buttons next previous finish in mode edit form */
+    width: 96% !important;
     max-width: 440px !important;
     min-width: 160px !important;
 }

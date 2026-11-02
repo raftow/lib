@@ -26,7 +26,7 @@ ul.nav-links>li.active>a>i:before {
     width: 32px;
     height: 32px;
     text-align: center;
-    padding-top: 3px;
+    padding-top: 6px;
     margin-left: 3%;
 }
 
@@ -457,6 +457,7 @@ nav span.orgunit {
 
 .hzm-user-account.admin.hzm-container-center.test {
     border: 4px #e7f851 double;
+    padding-top: 3px;
 }
 
 .hzm-user-account.admin>a>div {
