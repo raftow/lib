@@ -1052,13 +1052,8 @@ class AfwInputHelper extends AFWRoot
                 return $html;
         }
 
-        /**
-         * @param int $nb_files, 
-         * @param int $max_files_nb
-         */
-        public static function multipleFileUploader($nb_files, $canAddRemoveFiles=true, $max_files_nb=5, $file_labels=[], $file_required_arr=[], $lang="ar")
-        {
-                if(!$canAddRemoveFiles) $max_files_nb = $nb_files;
+
+        public static function multipleFileUploaderLabels($lang="ar") {
                 if($lang=="ar") {
                         $file_title_0 = "الملف رقم";
                         $file_order_labels = [1 => 'الملف الأول', 2 => 'الملف الثاني', 3 => 'الملف الثالث', 4 => 'الملف الرابع', 5 => 'الملف الخامس', ];
@@ -1067,6 +1062,18 @@ class AfwInputHelper extends AFWRoot
                         $file_title_0 = "File Number ";
                         $file_order_labels = [1 => 'First file', 2 => 'Second file', 3 => 'Third file', 4 => 'Fourth file', 5 => 'Fifth file', ];
                 }
+
+                return [$file_title_0, $file_order_labels];
+        }
+
+        /**
+         * @param int $nb_files, 
+         * @param int $max_files_nb
+         */
+        public static function multipleFileUploader($nb_files, $canAddRemoveFiles=true, $max_files_nb=5, $file_labels=[], $file_required_arr=[], $lang="ar")
+        {
+                if(!$canAddRemoveFiles) $max_files_nb = $nb_files;
+                list($file_title_0, $file_order_labels) = AfwInputHelper::multipleFileUploaderLabels($lang);
                 ob_start();
                 if($canAddRemoveFiles) {
         ?>

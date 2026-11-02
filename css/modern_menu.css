@@ -6,7 +6,7 @@ ul.nav-links>li.active>a>i:before {
 
 .dashboard .dash-content {
     padding-top: 60px;
-    min-height: 800px;
+    min-height: 1600px;
     height: min-content;
     /* display: flex; */
 }

@@ -29,7 +29,14 @@ class UfwFileUploader extends AFWRoot
                 }
         }
 
-        public static function completeUpload($file_title, $file_code, $file_arr, $afileManager=null, $allowed_exentions = null, $doc_type_id = 7, $default_user_id=0, $default_orgunit_id=0)
+
+    /**
+     * @param AFWObject $afileManager
+     * @param string $file_title
+     * @param string $file_code
+     * @param array $file_arr
+     */
+        public static function completeUpload($file_title, $file_code, $file_arr, $afileManager=null, $allowed_exentions = null, $doc_type_id = 7, $default_user_id=0, $default_orgunit_id=0, $classeAfile="Afile", $owner_type="customer")
         {
                 $allowed_exentions_policy = "حسب سياسة شاشة رفع الوثائق";
                 $objme = AfwSession::getUserConnected();
@@ -84,7 +91,16 @@ class UfwFileUploader extends AFWRoot
                         if(in_array($extension, self::$picture_types_arr)) $afile_pic = "Y";
                         else  $afile_pic = "N";
                 
-                        $af = Afile::loadByMainIndex($afile_original_name, $afile_size, $me, $orgunit_id, true);
+                        if($classeAfile=="Afile") {
+                                $af = Afile::loadByMainIndex($afile_original_name, $afile_size, $me, $orgunit_id, true);
+                        }
+                        elseif($classeAfile=="WorkflowFile") {
+                                $af = WorkflowFile::loadByMainIndex($afile_original_name, $owner_type, $me, $afile_size, true);
+                        }
+                        else {
+                                $af = $classeAfile::loadByMainIndex($afile_original_name, $owner_type, $me, $afile_size, true);
+                        }
+                        
                         
                         $af->set("afile_name",$afile_name);                        
                         $af->set("afile_type",$afile_type);
@@ -147,6 +163,9 @@ class UfwFileUploader extends AFWRoot
                                         }
                                         else
                                         {
+                                             $fsize = 0;
+                                             $finfo = "";
+                                             $mime = "";
                                              $move_error = "file $mv_from_file not found";
                                         }
                                         
