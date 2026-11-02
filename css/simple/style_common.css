@@ -4489,7 +4489,7 @@ input[disabled],
 textarea[disabled],
 select[disabled] {
     background-color: #d4d4d414 !important;
-    color: #756f6f;
+    color: #c5c5c5 !important;
     border: 1px silver dashed !important;
 }
 
