@@ -1503,7 +1503,7 @@ class AfwEditMotor
     {
         ob_start();
         self::type_input($col_name, $desc, $val, null, ':', false, '', 0, 'matrix', $myClass);
-        $return = ob_clean();
+        $return = ob_get_clean();
 
         // die("$return = generalInput($col_name, desc=" . var_export($desc, true) . ", $val, $myClass)");
 
