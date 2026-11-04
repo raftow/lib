@@ -1659,12 +1659,25 @@ class AFWObject extends AFWRoot
     }
 
     /**
+     * vhLoad
+     * Load into object a specified row considering VH
+     * @param string $value : Optional, specify the value of primary key
+     */
+    public function vhLoad($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '')
+    {
+        return $this->load($value, $result_row, $order_by_sentence, $optim_lookup, $force_sep, $vh=true);
+    }
+
+    /**
      * load
      * Load into object a specified row
      * @param string $value : Optional, specify the value of primary key
      */
-    public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '')
+    public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '', $vh=false)
     {
+        if($vh) {
+            $this->select_visibilite_horizontale();
+        }
         return AfwLoadHelper::loadAfwObject($this, $value, $result_row, $order_by_sentence, $optim_lookup, $force_sep);
     }
 
