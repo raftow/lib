@@ -15,7 +15,7 @@ $messages["Are you sure you want to move up this item ?"] = "هل أنت متأ�
 $messages["Are you sure you want to move down this item ?"] = "هل أنت متأكد أنك تريد نقل هذا العنصر إلى أسفل ؟";
 
 
-$messages["Object can not be loaded, seems has been deleted !"] = "هذا السجل مفقود، يبدوا أنه تم حذفه";
+$messages["Object can not be loaded, seems you don't have previleges to see it or has been deleted !"] = "هذا السجل مفقود، يبدوا أنه ليس لديك الصلاحية الكافية لمشاهدته أو أنه تم حذفه";
 
 
 $messages["MULTI CHOICE ALLOWED"] = "يسمح بالاختيار المتعدد";

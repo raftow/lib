@@ -168,7 +168,7 @@ if ($id) {
     } else {
         $return_message = $myObj->tm("Return back", $lang);
         $return_page = "main.php?Main_Page=afw_mode_qsearch.php&cl=$myObjClass&currmod=$currmod";
-        $die_message = $myObj->tm("Object can not be loaded, seems has been deleted !", $lang);
+        $die_message = $myObj->tm("Object can not be loaded, seems you don't have previleges to see it or has been deleted !", $lang);
         $technical = "mode edit load by id failed : >> $cl load by [id=$id]";
         throw new AfwBusinessException($die_message, $lang, "be-record-not-found.png", $return_message, $return_page, $technical);
     }
