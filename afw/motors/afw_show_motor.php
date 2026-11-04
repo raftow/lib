@@ -46,7 +46,7 @@ class AfwShowMotor
                 // $input_html .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
             } else {
                 // if($nom_col=="response_templates") $input_html .= "obj->showAttribute($nom_col) = ";
-                $input_html .= $obj->showAttribute($nom_col, $desc, true, $lang);
+                $input_html .= "<span class='shinf'>".$obj->showAttribute($nom_col, $desc, true, $lang)."</span>";
                 // $input_html .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
             }
 
