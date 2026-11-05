@@ -1701,15 +1701,16 @@ class AfwFormatHelper
                  *          }
                  */
 
-                $logical_deleted_items_also = $structure['LOGICAL_DELETED_ITEMS_ALSO'] or
+                $logical_deleted_items_also = ($structure['LOGICAL_DELETED_ITEMS_ALSO'] or
                  ($structure['LOGICAL_DELETED_ITEMS_FOR_ADMIN'] and $objme and $objme->isAdmin()) or
-                 ($structure['LOGICAL_DELETED_ITEMS_FOR_SUPER_ADMIN'] and $objme and $objme->isSuperAdmin());
-                ;
+                 ($structure['LOGICAL_DELETED_ITEMS_FOR_SUPER_ADMIN'] and $objme and $objme->isSuperAdmin()));
+                
 
                 if (!$logical_deleted_items_also) {
+                    /*
                     if($className=="CrmEmployee" and $attribute=="disabledEmployeeList") {
                         die("Degugg rafik 261105 For formatITEMS $className/$attribute : structure = ".var_export($structure, true));
-                    }
+                    }*/
                     $objectITEM->select($objectITEM->fld_ACTIVE(), 'Y');
                 }
                 $objectITEM->debugg_tech_notes = "before load Many for Items of attribute : $attribute";
