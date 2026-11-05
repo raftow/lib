@@ -27,7 +27,7 @@ div.my_link.nice {
     color: #09378e !important;
     text-decoration: none;
     font-weight: normal;
-    font-size: 18px;
+    /* font-size: 18px; it broke the page look for accordian responses in crm */
     background-image: url(../../lib/images/collapsed-ar.png) !important;
     background-attachment: scroll !important;
     background-repeat: no-repeat !important;
@@ -38,7 +38,7 @@ div.my_link.nice {
     color: #8e0928 !important;
     text-decoration: none;
     font-weight: normal;
-    font-size: 22px;
+    /* font-size: 22px; it broke the page look for accordian responses in crm */
     background-image: url(../../lib/images/expanded-ar.png) !important;
     background-attachment: scroll !important;
     background-repeat: no-repeat !important;
