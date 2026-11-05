@@ -1707,7 +1707,7 @@ class AfwFormatHelper
                 ;
 
                 if (!$logical_deleted_items_also) {
-                    $objectITEM->select($objectITEM->fld_ACTIVE(), 'Y');
+                    // $objectITEM->select($objectITEM->fld_ACTIVE(), 'Y');
                 }
                 $objectITEM->debugg_tech_notes = "before load Many for Items of attribute : $attribute";
                 if ($max_items) {
