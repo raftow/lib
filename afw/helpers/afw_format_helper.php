@@ -1707,9 +1707,9 @@ class AfwFormatHelper
                 ;
 
                 if (!$logical_deleted_items_also) {
-                    // if($className=="CrmEmployee" and $attribute=="disabledEmployeeList") {
+                    if($className=="CrmEmployee" and $attribute=="disabledEmployeeList") {
                         die("Degugg rafik 261105 For formatITEMS $className/$attribute : structure = ".var_export($structure, true));
-                    //}
+                    }
                     $objectITEM->select($objectITEM->fld_ACTIVE(), 'Y');
                 }
                 $objectITEM->debugg_tech_notes = "before load Many for Items of attribute : $attribute";
