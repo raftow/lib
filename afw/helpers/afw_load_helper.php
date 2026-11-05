@@ -1654,6 +1654,10 @@ class AfwLoadHelper extends AFWRoot
         list($ansTab, $ansMod) = $object::answerTableAndModuleFor($attribute);
         if ($ansTab and $ansMod) {
             $structure = AfwStructureHelper::getStructureOf($object, $attribute);
+            $objme = null;
+            if($structure['LOGICAL_DELETED_ITEMS_FOR_ADMIN'] or $structure['LOGICAL_DELETED_ITEMS_FOR_SUPER_ADMIN']) {
+                $objme = AfwSession::getUserConnected();
+            }
 
             list($fileName, $className) = AfwStringHelper::getHisFactory($ansTab, $ansMod);
 
@@ -1676,7 +1680,12 @@ class AfwLoadHelper extends AFWRoot
                 $object->where($sql_where);
             }
 
-            if (!$structure['LOGICAL_DELETED_ITEMS_ALSO']) {
+            $logical_deleted_items_also = $structure['LOGICAL_DELETED_ITEMS_ALSO'] or
+                 ($structure['LOGICAL_DELETED_ITEMS_FOR_ADMIN'] and $objme and $objme->isAdmin()) or
+                 ($structure['LOGICAL_DELETED_ITEMS_FOR_SUPER_ADMIN'] and $objme and $objme->isSuperAdmin());
+                ;
+
+            if (!$logical_deleted_items_also) {            
                 $object->select($object->fld_ACTIVE(), 'Y');
             }
             $object->debugg_tech_notes = "before load ids for Items of attribute : $attribute";
