@@ -233,7 +233,7 @@ class AfwDataQualityHelper
                 $desc
             );
 
-            $attr_sup_categ = $desc['SUPER_CATEGORY'];
+            $attr_sup_categ = $desc['SUPER-CATEGORY'];
             $attr_categ = $desc['CATEGORY'];
             $attr_scateg = $desc['SUB-CATEGORY'];
 

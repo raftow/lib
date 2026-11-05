@@ -28,7 +28,7 @@ class AfwLoadHelper extends AFWRoot
      * getLookupData
      * @param string $nom_module_fk
      * @param string $nom_table_fk
-     * @param string $where : if omitted we take all active records (ie. where = "--"), if you want all records even non active you can put "1" as where, if you want all records after HV you can put "++" as where
+     * @param string $where : if omitted we take all activ-e records (ie. where = "--"), if you want all records even non active you can put "1" as where, if you want all records after HV you can put "++" as where
      * @param string $order_by
      * @param string $lang
      * @param bool $oneId : if we want to load only one id and not all data of the lookup table, in this case we will not load all data of the lookup table but only the one with this id, it is used to optimize performance when we want to decode only one value of the lookup table without loading all data of the lookup table in cache, but if we want to decode more than one value of the lookup table we have to load all data of the lookup table in cache because we need to use "where in (val1, val2, ...)" for decoding values and in this case we can't decode values without loading all data of the lookup table in cache
@@ -36,7 +36,7 @@ class AfwLoadHelper extends AFWRoot
     public static function getLookupData($nom_module_fk, $nom_table_fk, $where, $order_by, $oneId, $lang)
     {
         if (!$nom_module_fk) throw new AfwRuntimeException("nom_module_fk is mandatory attribute for AfwLoadHelper::getLookupData");
-        if (!$where) $where = "--"; // `1` means all, `--` means all active and `++` means all after HV
+        if (!$where) $where = "--"; // `1` means all, `--` means all activ-e and `++` means all after HV
 
         if ($oneId and self::$lookupMatrix["$nom_module_fk.$nom_table_fk.$lang"][$oneId]) {
             $case = "cache-oneId-$oneId";
