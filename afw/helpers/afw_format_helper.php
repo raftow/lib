@@ -1657,7 +1657,7 @@ class AfwFormatHelper
      * @param bool $eager
 
      */
-    final public static function formatITEMS(&$object, $attribute, $structure, $table_name, $call_method, $max_items, $eager = false)
+    final public static function formatITEMS(&$object, $attribute, $structure, $table_name, $call_method, $max_items, $eager = false, $objme = null)
     {
         /*
          * if((!$structure["NO-CACHE"]) and $object->gotItems Cache[$attribute])
@@ -1701,7 +1701,16 @@ class AfwFormatHelper
                  *          }
                  */
 
-                if (!$structure['LOGICAL_DELETED_ITEMS_ALSO']) {
+                $logical_deleted_items_also = ($structure['LOGICAL_DELETED_ITEMS_ALSO'] or
+                 ($structure['LOGICAL_DELETED_ITEMS_FOR_ADMIN'] and $objme and $objme->isAdmin()) or
+                 ($structure['LOGICAL_DELETED_ITEMS_FOR_SUPER_ADMIN'] and $objme and $objme->isSuperAdmin()));
+                
+
+                if (!$logical_deleted_items_also) {
+                    /*
+                    if($className=="CrmEmployee" and $attribute=="disabledEmployeeList") {
+                        die("Degugg rafik 261105 For formatITEMS $className/$attribute : structure = ".var_export($structure, true));
+                    }*/
                     $objectITEM->select($objectITEM->fld_ACTIVE(), 'Y');
                 }
                 $objectITEM->debugg_tech_notes = "before load Many for Items of attribute : $attribute";
@@ -1951,7 +1960,7 @@ class AfwFormatHelper
     final public static function formatReturnedValue(&$object, $attribute, $lang, $structure, $return, $what, $format, $attribute_type, $integrity, $this_debugg)
     {
         // if($attribute=="customer_id") throw new AfwRuntimeException("formatting Returned Value $return");
-        $attr_sup_categ = $structure['SUPER_CATEGORY'];
+        $attr_sup_categ = $structure['SUPER-CATEGORY'];
         $attr_categ = $structure['CATEGORY'];
         $attr_scateg = $structure['SUB-CATEGORY'];
         $case = '';
@@ -2216,7 +2225,7 @@ class AfwFormatHelper
      * @param string $call_method
      * @return mixed
      */
-    public static function getCategorizedAttribute(&$object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = '')
+    public static function getCategorizedAttribute(&$object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = '', $objme=null)
     {
         /*
          * if(($attribute=="customer_id"))
@@ -2243,7 +2252,7 @@ class AfwFormatHelper
 
             switch ($attribute_category) {
                 case 'ITEMS':
-                    $return = AfwFormatHelper::formatITEMS($object, $attribute, $structure, $object->getMyTable(), $call_method, $max_items, $structure['EAGER']);
+                    $return = AfwFormatHelper::formatITEMS($object, $attribute, $structure, $object->getMyTable(), $call_method, $max_items, $structure['EAGER'], $objme);
                     break;
 
                 case 'FORMULA':

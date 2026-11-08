@@ -2563,7 +2563,8 @@ not logic to put specific css into common css file
 .ui-widget-header .ui-state-default {
 	border: 1px solid #E7E7E7 !important;
 	background-color: transparent !important;
-	text-align: center;
+	/* text-align: center; cela change le contenu de tous les sous-elenemts : labels, divs, spans, il faut limiter l impact 
+	                       a uniquement les choses demandes */
 	color: #666 !important;
 }
 

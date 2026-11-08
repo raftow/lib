@@ -7530,10 +7530,11 @@ input.inputqe.xqe_data_notloaded {
 
 
 .ppa {
-    width: 100%;
-    margin: auto;
-    margin-top: 15px;
-    margin-bottom: 19px;
+  width: 90%;
+  margin-right: 5%;
+  margin-top: 15px;
+  margin-bottom: 19px;
+  margin-left: 5%;
 }
 
 p.special-link.hide {
@@ -7579,7 +7580,7 @@ p.special-link.ppa.todo>a {
 
 p.ppa-acceptance {
     font-size: 16px;
-    width: 70%;
+    width: 94%;
     float: left;
 }
 

@@ -1078,8 +1078,8 @@ class AfwInputHelper extends AFWRoot
                 if($canAddRemoveFiles) {
         ?>
                 <div class="btn-container"> 
-                    <button id='add-file' class='btn-green btn-very-small'>+</button>  
-                    <button id='remove-file' class='btn-red btn-very-small'>-</button>                       
+                    <button type='button' id='add-file' class='btn-green btn-very-small'>+</button>  
+                    <button type='button' id='remove-file' class='btn-red btn-very-small'>-</button>                       
                     <input type="hidden" value="1" id="nb_files" name="nb_files">
                     <input type="hidden" value="<?php echo $max_files_nb ?>" id="max_files_nb" name="max_files_nb">
                 </div>

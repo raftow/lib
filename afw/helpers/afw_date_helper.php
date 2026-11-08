@@ -1000,19 +1000,25 @@ class AfwDateHelper
     }
 
 
-    public static function diff_date($madate2, $madate1, $round = true)
+    /**
+     * @param string $mydate2 : gregorian date 
+     * @param string $mydate1 : gregorian date 
+     * 
+     * @return string gregorian date of difference : mydate2 - mydate1 rounded in days 
+     */
+    public static function diff_date($mydate2, $mydate1, $round = true)
     {
-        if (strpos($madate2, '-') === false) {
-            $madate2 = self::add_dashes($madate2);
+        if (strpos($mydate2, '-') === false) {
+            $mydate2 = self::add_dashes($mydate2);
         }
 
-        if (strpos($madate1, '-') === false) {
-            $madate1 = self::add_dashes($madate1);
+        if (strpos($mydate1, '-') === false) {
+            $mydate1 = self::add_dashes($mydate1);
         }
 
 
-        $stmp2 =   self::dateToTimestamp($madate2);
-        $stmp1 =   self::dateToTimestamp($madate1);
+        $stmp2 =   self::dateToTimestamp($mydate2);
+        $stmp1 =   self::dateToTimestamp($mydate1);
 
 
         $result_diff = ($stmp2 - $stmp1) / (24 * 3600);

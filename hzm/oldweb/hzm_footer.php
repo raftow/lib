@@ -306,7 +306,7 @@ if($_GET["tipofday"]==1)
         <div class="HzmModal-bg" style="display: block;">&nbsp;</div>
         <div class="HzmModal" style="display: block;">
                 <div class="HzmModal-content">
-                        <button class="HzmModal-close-icon HzmModal-close" aria-label="Close">&nbsp;
+                        <button type='button' class="HzmModal-close-icon HzmModal-close" aria-label="Close">&nbsp;
                         </button>
                         <div id="arvlbdata" style="overflow:visible;width:400px;height:250px;" class="HzmModal-inner">      
                                 <div allowtransparency="true" style="overflow:hidden;width:400px;height:250px;" class="fb-page fb_iframe_widget" data-href="https://www.facebook.com/dubaijobz" data-width="400" data-height="250" data-small-header="false" data-adapt-container-width="false" data-hide-cover="true" data-show-facepile="true" data-show-posts="false" fb-xfbml-state="rendered" fb-iframe-plugin-query="adapt_container_width=false&amp;app_id=520401164798256&amp;container_width=400&amp;height=250&amp;hide_cover=true&amp;href=https%3A%2F%2Fwww.facebook.com%2Fdubaijobz&amp;locale=en_US&amp;sdk=joey&amp;show_facepile=true&amp;show_posts=false&amp;small_header=false&amp;width=400">

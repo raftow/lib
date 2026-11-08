@@ -269,7 +269,7 @@ class AFWObject extends AFWRoot
                 $def_val_force = true;
             }
         } else {
-            // if(($field_name=="active") and static::$TABLE == "bus_seat") die("struct = ".var_export($struct,true));
+            // if(($field_name=="act ive") and static::$TABLE == "bus_seat") die("struct = ".var_export($struct,true));
             $def_val = $struct['DEFAUT'];
             $def_val_force = $struct['DEFAULT_FORCE'];
         }
@@ -290,7 +290,7 @@ class AFWObject extends AFWRoot
             if ($def_val || $def_val_force) {
                 $this->setAfieldValue($field_name, $def_val);
                 $this->setAfieldDefaultValue($field_name, $def_val);
-                // if(($field_name=="active") and static::$TABLE == "bus_seat") die("this->FIELDS_INITED after setAfieldDefaultValue($field_name, $def_val) = ".var_export($this->FIELDS_INITED,true));
+                // if(($field_name=="act ive") and static::$TABLE == "bus_seat") die("this->FIELDS_INITED after setAfieldDefaultValue($field_name, $def_val) = ".var_export($this->FIELDS_INITED,true));
             }
         }
 
@@ -1659,12 +1659,25 @@ class AFWObject extends AFWRoot
     }
 
     /**
+     * vhLoad
+     * Load into object a specified row considering VH
+     * @param string $value : Optional, specify the value of primary key
+     */
+    public function vhLoad($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '')
+    {
+        return $this->load($value, $result_row, $order_by_sentence, $optim_lookup, $force_sep, $vh=true);
+    }
+
+    /**
      * load
      * Load into object a specified row
      * @param string $value : Optional, specify the value of primary key
      */
-    public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '')
+    public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '', $vh=false)
     {
+        if($vh) {
+            $this->select_visibilite_horizontale();
+        }
         return AfwLoadHelper::loadAfwObject($this, $value, $result_row, $order_by_sentence, $optim_lookup, $force_sep);
     }
 
@@ -2362,7 +2375,7 @@ class AFWObject extends AFWRoot
         /*
          * if(static::$TABLE == "academic_term")
          * {
-         *     if(($field_name == "active") and ($value=="N")) throw new AfwRuntimeException("case Medali found for debugg");
+         *     if(($field_name == "ac tive") and ($value=="N")) throw new AfwRuntimeException("case Medali found for debugg");
          * }
          */
         $this->AFIELD_VALUE[$field_name] = $value;
@@ -4961,9 +4974,12 @@ class AFWObject extends AFWRoot
         $key = $attribute;
         // if(($structure["TYPE"] == "ENUM") and ($structure["HZM-CSS"])) die("key=$key, TYPE=".$structure["TYPE"].", HZM-CSS=".$structure["HZM-CSS"]);
 
-        $intelligent_category = $structure['SUPER_CATEGORY'];
+        $intelligent_category = $structure['SUPER-CATEGORY'];
         if (!$intelligent_category) {
             $intelligent_category = $structure['SUB-CATEGORY'];
+        }
+        if (!$intelligent_category) {
+            $intelligent_category = $structure['FORMULA-CATEGORY'];
         }
         if (!$intelligent_category) {
             $intelligent_category = $structure['CATEGORY'];
@@ -6976,7 +6992,8 @@ class AFWObject extends AFWRoot
 
     public function getCategorizedAttribute($attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = '')
     {
-        return AfwFormatHelper::getCategorizedAttribute($this, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method);
+        $objme = AfwSession::getUserConnected();
+        return AfwFormatHelper::getCategorizedAttribute($this, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method, $objme);
     }
 
     public function getNonExistingAttribute($attribute, $what)

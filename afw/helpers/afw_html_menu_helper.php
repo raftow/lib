@@ -177,7 +177,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $data_tokens["no_banner_s"] = "<!-- no banner for current module";
             $data_tokens["no_banner_e"] = "-->";
         } else {
-            $data_tokens["no_banner_s"] = "<!-- banner active for current module -->";
+            $data_tokens["no_banner_s"] = "<!-- banner enabled for current module -->";
             $data_tokens["no_banner_e"] = "";
         }
 
@@ -185,7 +185,7 @@ class AfwHtmlMenuHelper extends AfwHtmlHelper
             $data_tokens["no_scroll_banner_s"] = "<!-- no scroll banner for current module";
             $data_tokens["no_scroll_banner_e"] = "-->";
         } else {
-            $data_tokens["no_scroll_banner_s"] = "<!-- scroll banner active for current module -->";
+            $data_tokens["no_scroll_banner_s"] = "<!-- scroll banner enabled for current module -->";
             $data_tokens["no_scroll_banner_e"] = "";
         }
         $no_menu = (AfwSession::config("disable-menu", false) and (!$options["no-menu"]));

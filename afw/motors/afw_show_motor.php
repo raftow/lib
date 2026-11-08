@@ -49,7 +49,13 @@ class AfwShowMotor
                 $input_html .= $obj->$showAttributeMethod($nom_col, $desc, $lang);
             } else {
                 // if($nom_col=="response_templates") $input_html .= "obj->showAttribute($nom_col) = ";
-                $input_html .= $obj->showAttribute($nom_col, $desc, true, $lang);
+                $shinf_html = $obj->showAttribute($nom_col, $desc, true, $lang);
+                if ($desc["NO-SPAN-ADD"] or ($desc["CATEGORY"]=="ITEMS") or ($desc["FORMAT"]=="HTML")) {
+                    $input_html .= $shinf_html;
+                }
+                else {
+                    $input_html .= "<span class='shinf'>$shinf_html</span>";
+                }
                 // $input_html .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
             }
 
