@@ -10,7 +10,7 @@ class AfwShowMotor
         $tuple = [];
         // if($nom_col=="response_templates") die("case mode_field_read_only nom_col = $nom_col");
         $obj->showAsDataTable = $desc['DATA_TABLE'];
-        
+
         $style_div_form_control = "";
 
         if ($desc['FORM_HEIGHT']) {
@@ -44,6 +44,9 @@ class AfwShowMotor
                     $input_html .= "<img src='../lib/images/hidden-16.png' class='tooltip-icon' data-toggle='tooltip' data-placement='top' title='hidden value for this privilege' width='20' heigth='20'><!-- hidden because desc[DISPLAY] == false -->";
                 }
                 // $input_html .= "[$nom_col val=$col_val " . $obj->showAttribute($nom_col, $desc, true, $lang) . "]";
+            } elseif ($desc["DISPLAY-METHOD"]) {
+                $showAttributeMethod = $desc["DISPLAY-METHOD"];
+                $input_html .= $obj->$showAttributeMethod($nom_col, $desc, $lang);
             } else {
                 // if($nom_col=="response_templates") $input_html .= "obj->showAttribute($nom_col) = ";
                 $shinf_html = $obj->showAttribute($nom_col, $desc, true, $lang);
@@ -66,7 +69,7 @@ class AfwShowMotor
         if (($desc['TYPE'] == 'YN') or ($desc['TYPE'] == 'INT') or ($desc['TYPE'] == 'ENUM') or ($desc['TYPE'] == 'FK')) {
             if ($desc['CATEGORY']) $col_val_0 = $obj->calc($nom_col);
             else $col_val_0 = $obj->getVal($nom_col);
-            
+
             if (strlen($col_val_0) > 30) $col_val_0 = "";
             else {
                 $col_val_0 = str_replace(",", "_", $col_val_0);
@@ -101,7 +104,7 @@ class AfwShowMotor
             // if($nom_col=="response_templates") die("case CATEGORY and no FORCE-INPUT");
         }
 
-        
+
         $tuple["input"] .= $input_html;
         $tuple["input"] .= "</div>";
         // if this column is to show with accordion run the js of accordion

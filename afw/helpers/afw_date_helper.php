@@ -530,7 +530,7 @@ class AfwDateHelper
      * @param string $hdate  hijri date 
      * format hijri dates with separator ex 1447-09-29
      */
-    public static function inputFormatHijriDate($hdate, $separator='-')
+    public static function inputFormatHijriDate($hdate, $separator = '-')
     {
         return implode($separator, self::splitHijriDate(self::repareHijriDate($hdate)));
     }
@@ -1069,7 +1069,7 @@ class AfwDateHelper
 
         return self::to_hijri($gdate);
     }*/
-    
+
 
 
     /**
@@ -1309,9 +1309,9 @@ class AfwDateHelper
 
     public static function formatGDate($gdate, $format)
     {
-        if(!$gdate) $gdate = date("Y-m-d");
+        if (!$gdate) $gdate = date("Y-m-d");
         $d = DateTime::createFromFormat("Y-m-d", $gdate);
-        if($d) return $d->format($format);
+        if ($d) return $d->format($format);
         else throw new AfwRuntimeException("Bad format for Gregorian Date '$gdate '");
     }
 
@@ -1378,7 +1378,7 @@ class AfwDateHelper
             }
         }
 
-        if($oneLineString) {
+        if ($oneLineString) {
             $return = str_replace("<br>", " > ", $return);
             $return = str_replace("\n", " > ", $return);
             $return = str_replace("\r", " > ", $return);
@@ -1717,7 +1717,8 @@ class AfwDateHelper
     {
         // try to use cache hijri_to_greg files
         if (!$hijri_year) $hijri_year = substr($original_hdate, 0, 4);
-        $hijri_to_greg_file = dirname(__FILE__) . "/../../../lib/chsys/dates/hijri_" . $hijri_year . "_to_greg.php";
+        $hijri_to_greg_file_name = "lib/chsys/dates/hijri_" . $hijri_year . "_to_greg";
+        $hijri_to_greg_file = dirname(__FILE__) . "/../../../$hijri_to_greg_file_name.php";
         $hijri_to_greg_arr = include($hijri_to_greg_file);
         /*
         if(($original_hdate=="14350101") and (!$hijri_to_greg_arr[$original_hdate]))
@@ -1750,7 +1751,7 @@ class AfwDateHelper
         }
 
         if (!$hijri_to_greg_arr[$hdate]) {
-            $err_message = "Failed to convert hijri date ($original_hdate) to gregorian date, seems that the file $hijri_to_greg_file_name is not available or is incomplete";
+            $err_message = "Failed to convert hijri date ($original_hdate) to gregorian date, seems that the file $hijri_to_greg_file is not available or is incomplete";
             AfwSession::hzmLog($err_message, "fail");
             throw new AfwBusinessException($err_message);
         }
@@ -1872,7 +1873,7 @@ class AfwDateHelper
         return self::gregToHijri($gdate);
     }
 
-    
+
 
     /**
      *  @param string $gdate if omitted we take current greg date
@@ -1998,28 +1999,25 @@ class AfwDateHelper
             $time1 = date('H:i:s');
         }
 
-        if($unit=='hours') {
+        if ($unit == 'hours') {
             $return = self::timeDiffInHours(
                 $gdate2 . ' ' . $time2,
                 $gdate1 . ' ' . $time1,
                 $round
             );
-            
-        }
-        elseif($unit=='seconds') {
+        } elseif ($unit == 'seconds') {
             $return = self::timeDiffInSeconds(
                 $gdate2 . ' ' . $time2,
                 $gdate1 . ' ' . $time1
             );
-        }
-        else {
+        } else {
             $return = self::gregDateDiff(
-                        $gdate2 . ' ' . $time2,
-                        $gdate1 . ' ' . $time1,
-                        $round
-                    );
+                $gdate2 . ' ' . $time2,
+                $gdate1 . ' ' . $time1,
+                $round
+            );
         }
-        
+
 
         // $return = "[$hdate2 => $gdate2] - [$hdate1 => $gdate1] => $gdate2 $time2 - $gdate1 $time1 = $return";
 
@@ -2081,7 +2079,7 @@ class AfwDateHelper
         return $result_diff_h;
     }
 
-     /**
+    /**
      * @param string $gregDateTime2, 
      * @param string $gregDateTime1
      */
@@ -2093,7 +2091,7 @@ class AfwDateHelper
         return "stmp2($gregDateTime2) = $stmp2 <br>\n stmp1($gregDateTime1) = $stmp1 <br>\n stmp2 - stmp1 = " . ($stmp2 - $stmp1);
     }
 
-     /**
+    /**
      * @param string $gregDateTime2, 
      * @param string $gregDateTime1
      */
@@ -2108,36 +2106,33 @@ class AfwDateHelper
     /**
      * @param int $timeInSeconds
      */
-    public static function formatTime($timeInSeconds, $Format='')
+    public static function formatTime($timeInSeconds, $Format = '')
     {
-            //combien d'heures ?
-            $hours = floor($timeInSeconds / 3600);
-            
-            //combien de minutes ?
-            $min = floor(($timeInSeconds - ($hours * 3600)) / 60);
+        //combien d'heures ?
+        $hours = floor($timeInSeconds / 3600);
 
-            //combien de secondes
-            $sec = round($timeInSeconds - ($hours * 3600) - ($min * 60));
-            
-            if(($Format=='h:m') or ($Format=='h:i')) 
-            {
-                if ($sec>29) $min += 1;
-                if ($min==60) 
-                {
-                    $hours += 1;
-                    $min = 0;
-                } 
+        //combien de minutes ?
+        $min = floor(($timeInSeconds - ($hours * 3600)) / 60);
+
+        //combien de secondes
+        $sec = round($timeInSeconds - ($hours * 3600) - ($min * 60));
+
+        if (($Format == 'h:m') or ($Format == 'h:i')) {
+            if ($sec > 29) $min += 1;
+            if ($min == 60) {
+                $hours += 1;
+                $min = 0;
             }
-            
-            if ($min < 10) $min = "0".$min;
-            
-            if ($sec < 10) $sec = "0".$sec;
-                    
-            if($Format=='h:m')      
-                return $hours.":".$min;
-            else
-                return $hours.":".$min.":".$sec;
-        
+        }
+
+        if ($min < 10) $min = "0" . $min;
+
+        if ($sec < 10) $sec = "0" . $sec;
+
+        if ($Format == 'h:m')
+            return $hours . ":" . $min;
+        else
+            return $hours . ":" . $min . ":" . $sec;
     }
 
     /**
@@ -2145,13 +2140,13 @@ class AfwDateHelper
      * @param string $gregDateTime1
      */
 
-    public static function formatDatetimeDiff($gregDateTime2, $gregDateTime1, $Format="h:i")
+    public static function formatDatetimeDiff($gregDateTime2, $gregDateTime1, $Format = "h:i")
     {
         $diff = self::timeDiffInSeconds($gregDateTime2, $gregDateTime1);
-        return self::formatTime($diff, $Format);       
+        return self::formatTime($diff, $Format);
     }
 
-     /**
+    /**
      * @param string $gregDateTime2, 
      * @param string $gregDateTime1
      */
