@@ -951,7 +951,7 @@ class AFWObject extends AFWRoot
             ) {
                 $ex_u_i = false;
                 if ($avoid_unique_index) {
-                    if (in_array($field_name, $this->UNIQUE_KEY)) {
+                    if (in_array($field_name, $this->UNIQUE_KEY) or in_array($field_name, $this->UNIQUE_KEY2)) {
                         $ex_u_i = true;
                     }
                 }
