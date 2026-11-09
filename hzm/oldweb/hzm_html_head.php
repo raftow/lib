@@ -251,6 +251,7 @@ $crst = md5("crst".date("YmdHis"));
           $pagecode_js_file = "$pagecode.js";
           $file_dir_name = dirname(__FILE__);
           $pagecode_js_file_full_path = $file_dir_name ."/../../../$currentURIModule/js/$pagecode_js_file";
+          $objme = AfwSession::getUserConnected();
           if(file_exists($pagecode_js_file_full_path))
           {
             echo "
@@ -258,11 +259,9 @@ $crst = md5("crst".date("YmdHis"));
           <!-- auto-js file construction for current page -->
           ";  
           }
-          else
+          elseif($objme and $objme->isAdmin())
           {
-            echo "
-          <!-- auto-js file construction gived '[module]/js/$pagecode_js_file' not found so ignored : $log_explain --> 
-          "; 
+            echo "\n<!-- auto-js file construction gived '[module]/js/$pagecode_js_file' not found so ignored : $log_explain -->\n"; 
           }
   
   

@@ -1923,6 +1923,63 @@ class AfwDateHelper
         return $gdate_shifted;
     }
 
+
+    public static function hijriDateMiddle($hdate2 = '',
+        $time2 = '',
+        $hdate1 = '',
+        $time1 = '', 
+        $rounded_unit = 'hours') 
+        {
+            $midD = 0;
+            $midH = 0;
+            $midN = 0;
+            $midS = 0;
+            if($rounded_unit == 'days') {
+                    $diffD = self::hijriDateTimeDiff(
+                                    $hdate2,
+                                    $time2,
+                                    $hdate1,
+                                    $time1,
+                                    $round = true,
+                                    $rounded_unit
+                                ); 
+                    $midD = floor($diffD/2);
+                    $midH = ($diffD - 2*$midD)*12;
+            }
+            elseif($rounded_unit == 'hours') {
+                    $diffH = self::hijriDateTimeDiff(
+                                    $hdate2,
+                                    $time2,
+                                    $hdate1,
+                                    $time1,
+                                    $round = true,
+                                    $rounded_unit
+                                ); 
+
+                    $midH = floor($diffH/2);
+                    $midN = ($diffH - 2*$midH)*30;
+            }
+            elseif($rounded_unit == 'minutes') {
+                    $diffN = self::hijriDateTimeDiff(
+                                    $hdate2,
+                                    $time2,
+                                    $hdate1,
+                                    $time1,
+                                    $round = true,
+                                    $rounded_unit
+                                ); 
+
+                    $midN = floor($diffN/2);
+                    $midS = ($diffN - 2*$midN)*30;
+            }
+            else {
+                throw new AfwRuntimeException("hijriDateMiddle does'nt support rounded_unit = $rounded_unit");
+            }
+             
+
+            return self::addDatetimeToHijriDatetime($hdate1,$time1,0,0,$midD,$midH,$midN,$midS);
+        }
+
     /**
      * @param string $hdate2 if omitted we take current hijri date
      * @param string $time2 if omitted we take current time
@@ -2150,6 +2207,35 @@ class AfwDateHelper
         );
 
         return date('Y-m-d H:i:s', $tmstmp);
+    }
+
+
+    public static function addDatetimeToHijriDatetime(
+        $hdate,
+        $htime,
+        $years = 0,
+        $months = 0,
+        $days = 0,
+        $hours = 0,
+        $minutes = 0,
+        $seconds = 0
+    ) {
+
+        $gdate = self::hijriToGreg($hdate);
+        $gdate_time = $gdate . " " . $htime;
+        $new_gdate_time = self::addDatetimeToGregDatetime($gdate_time,
+                $years,
+                $months,
+                $days,
+                $hours,
+                $minutes,
+                $seconds);
+
+        list($new_gdate, $new_time) = explode(" ", $new_gdate_time);
+        $newhdate =  self::gregToHijri($new_gdate);
+
+        return [$newhdate, $new_time];
+
     }
 
     /*****************    time functions    *************************/
