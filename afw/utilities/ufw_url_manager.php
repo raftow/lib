@@ -289,7 +289,7 @@ class UfwUrlManager extends AFWRoot
             $previous_item = $uri_item;
         }
 
-        $log_explain = "with uri items but explain disabled";
+        // $log_explain = "with uri items but explain disabled";
         $log_explain = implode("\n<br>", $acceptedCodeArr) . "\n<br>" . implode("\n<br>", $rejectedCodeArr) . "\n ignored_vars=$ignored_vars \n_POST = " . var_export($_POST, true) . " \nserv_uri=$serv_uri \noriginal_serv_uri=$original_serv_uri\nuri_items = " . var_export($uri_items, true);
 
         $pageCode = implode("_", $currentPageCodeArr);

@@ -381,18 +381,17 @@ class AfwHtmlIncluderHelper
           $pagecode_js_file_full_path = $file_dir_name ."/../../../$cmodule/js/$pagecode_js_file";
           if(file_exists($pagecode_js_file_full_path))
           {
-            $header .= "
-          <script src='./js/$pagecode_js_file'></script>  
-          <!-- auto-js file construction $log_explain -->
-          ";  
+            $header .= "\n<script src='./js/$pagecode_js_file'></script>\n";  
+            $log_explain_html = "\n<!-- auto-js file construction log_explain=$log_explain -->\n";
           }
           else
           {
-            $header .= "
-          <!-- auto-js file construction gived '[module]/js/$pagecode_js_file' not found so skipped : $log_explain --> 
-          "; 
+             $log_explain_html = "\n<!-- auto-js file construction gived '[module]/js/$pagecode_js_file' not found so skipped : log_explain2=$log_explain -->\n"; 
           }
-
+          $objme = AfwSession::getUserConnected();
+          if($objme and $objme->isAdmin()) {
+            $header .= $log_explain_html;
+          }
 
           $header .= "</head>";
 
