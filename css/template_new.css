@@ -1448,6 +1448,7 @@ div.expand>h5>i::before {
     width: 100%;
     margin-bottom: 10px;
     background-color: white;
+    border: 1px #c0c0c04a solid !important;
 }
 
 input.submit-btn:disabled {

@@ -2087,7 +2087,9 @@ div.class_input_width_90>div.form-control {
     font-size: 13px;
     height: 32px;
     background-color: white;
+    min-height: fit-content;
 }
+
 /*  !!!!   Important  !!!!!! */
 
 .form-control-div.errors {
@@ -5018,12 +5020,12 @@ div.my_link.nice>a {
 }
 
 div.hzm_xgreen {
-  background-color: #2d8fd6;
-  margin-top: 15px !important;
-  border-color: transparent;
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
+    background-color: #2d8fd6;
+    margin-top: 15px !important;
+    border-color: transparent;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 div.hzm_xgreen>a {

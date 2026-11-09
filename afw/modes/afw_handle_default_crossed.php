@@ -12,7 +12,7 @@ foreach ($themeArr as $theme => $themeValue) {
 $fixm_array = array();
 
 // @todo : class name reversible encryption
-$class = AfwStringHelper::hzmDecrypt($_POST["class_obj"]);
+$class = AfwStringHelper::momkenDecrypt($_POST["class_obj"]);
 $currmod = $_POST["currmod"];
 
 $list_objs_ids = "";
@@ -172,7 +172,7 @@ if ($updated_nb_objs > 0) AfwSession::pushSuccess(AfwLanguageHelper::translateKe
 else AfwSession::pushInformation(AfwLanguageHelper::translateKeyword("no_update_found", $lang));
 if ($submit_return) {
         $id = $_POST["id_origin"];
-        $cl = AfwStringHelper::hzmDecrypt($_POST["class_origin"]);
+        $cl = AfwStringHelper::momkenDecrypt($_POST["class_origin"]);
         $currmod = $_POST["module_origin"];
         $currstep = $_POST["step_origin"];
         if ($updated_nb_objs > 0) {

@@ -270,11 +270,11 @@ class AfwDateHelper
 
 
     /***************************************************************************** */
-    private static $MIN_GREG_YEAR = 1000;
+    private static $MIN_GREG_YEAR = 1900;
     private static $MAX_GREG_YEAR = 2999;
 
     private static $MIN_HIJRI_YEAR = 1000;
-    private static $MAX_HIJRI_YEAR = 1999;
+    private static $MAX_HIJRI_YEAR = 1899;
 
     private static $englishToArabicGregMonths =
     [
@@ -616,6 +616,20 @@ class AfwDateHelper
         }
 
         return [$hdate_YYYY, $hdate_MM, $hdate_DD];
+    }
+
+    public static function isHijri($hdate)
+    {
+        try {
+            list($hdate_YYYY, $hdate_MM, $hdate_DD) = self::splitHijriDate($hdate, $convertToInt = true);
+
+            return ($hdate_YYYY >= self::$MIN_HIJRI_YEAR and $hdate_YYYY <= self::$MAX_HIJRI_YEAR and
+                $hdate_MM >= 1 and $hdate_MM <= 12 and
+                $hdate_DD >= 1 and $hdate_DD <= 30
+            );
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     public static function splitGregDate($gdate, $convertToInt = false)
@@ -968,14 +982,17 @@ class AfwDateHelper
         return $tmstmp;
     }
 
-    public static function weekDayOfHijriDate($hdate = '')
+    public static function weekDayOfHijriDate($hdate = '', $translate_lang = '')
     {
         if (!$hdate) {
             $hdate = self::currentHijriDate();
         }
 
         $gdate = self::hijriToGreg($hdate);
-        return self::weekDayOf($gdate);
+        $weekDay = self::weekDayOf($gdate);
+        if (!$translate_lang) return $weekDay + 1;
+        $weekDay_translated = self::dayNameOfDayNum($weekDay, $translate_lang);
+        return [$weekDay + 1, $weekDay_translated];
     }
 
     public static function weekDayOf($gdate = '')

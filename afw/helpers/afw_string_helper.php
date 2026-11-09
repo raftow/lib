@@ -82,8 +82,8 @@ class AfwStringHelper
          * @param bool $removeBalises if true, remove < and > and -- from the string
          * @param bool $removeReturns if true, remove \n and \r from the string
          */
-        
-        public static function removeCotesAndBalises($string, $removeBalises = false, $removeReturns=false)
+
+        public static function removeCotesAndBalises($string, $removeBalises = false, $removeReturns = false)
         {
 
                 $string = str_replace('"', '', $string);
@@ -1164,17 +1164,27 @@ class AfwStringHelper
         /**
          * @param string $string
          */
-        public static final function isMfk($string, $emptyAccepted=true) 
+        public static final function isMfk($string, $emptyAccepted = true)
         {
                 $string = trim($string);
-                if(!$string) return $emptyAccepted;
-                $arr = explode(",", $string); 
-                foreach($arr as $tmp) {
+                if (!$string) return $emptyAccepted;
+                $arr = explode(",", $string);
+                foreach ($arr as $tmp) {
                         $tmp = trim($tmp);
-                        if(!is_integer($tmp)) return false;   
+                        if (!is_integer($tmp)) return false;
                 }
 
-                return true;        
+                return true;
+        }
+
+        public static final function momkenEncrypt($string)
+        {
+                return $string;
+        }
+
+        public static final function momkenDecrypt($string)
+        {
+                return $string;
         }
 
         public static final function hzmEncrypt($string)
