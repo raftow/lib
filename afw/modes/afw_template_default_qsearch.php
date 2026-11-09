@@ -133,7 +133,7 @@ foreach ($formColumns as $nom_col) {
                 } else {
                         $my_log .= "<!--  $nom_col is not in qsearch mode because max capacity of form ($max_total_qsize) is reached, so no space to put this input -->\n";
                 }
-                if($nom_col=="hours_investigator_work")  throw new AfwRuntimeException("data[$nom_col] = ".var_export($data[$nom_col],true));
+                // if($nom_col=="hours_investigator_work")  throw new AfwRuntimeException("data[$nom_col] = ".var_export($data[$nom_col],true));
 
         } else {
 
