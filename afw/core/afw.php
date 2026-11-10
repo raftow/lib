@@ -6409,6 +6409,14 @@ class AFWObject extends AFWRoot
         return true;
     }
 
+    /**
+     * @param string $icon
+     * @param string $context
+     */
+    public function approveContextIcon($icon, $context) {
+        return $icon;
+    }
+
     public function takeDeleteAction($mode = 'search')
     {
         return true;

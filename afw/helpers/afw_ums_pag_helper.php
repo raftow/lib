@@ -968,6 +968,9 @@ class AfwUmsPagHelper extends AFWRoot
         $images = AfwThemeHelper::loadTheme();
         // $objme = AfwSession::getUserConnected();
 
+        $edit_icon = $images['modifier'];
+        $edit_icon = $object->approveContextIcon($edit_icon, "edit");
+
         $cl = $object->getMyClass();
         $currmod = $object->getMyModule();
 
@@ -1016,7 +1019,7 @@ class AfwUmsPagHelper extends AFWRoot
         if ($takeEditAction and $editAction) {
             $actions_tpl_arr['edit'] = [
                 'link' => "Main_Page=$editFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
-                'img' => $images['modifier'],
+                'img' => $edit_icon,
                 'framework_action' => $editAction,
             ];
         }
