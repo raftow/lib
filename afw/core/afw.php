@@ -5530,8 +5530,9 @@ class AFWObject extends AFWRoot
     /**
      * @param Auser $auser
      */
-    final public function retrieveModePublicMethodsForUser($auser)
+    final public function retrieveModePublicMethodsForUser($auser, $current_page="")
     {
+        list($current_page_code, $current_page_lanaguage) = explode(".", strtoupper($current_page));
         $allowed_pbm_arr = [];
         $message = "";
         try {
@@ -5548,7 +5549,7 @@ class AFWObject extends AFWRoot
 
         $final_pbm_arr = [];
         foreach ($allowed_pbm_arr as $pbm_code => $pbm_item) {
-            if ($pbm_item['EXECUTE-IN-RETRIEVE-MODE']) {
+            if ($pbm_item['EXECUTE-IN-RETRIEVE-MODE'] and !$pbm_item["DISABLE-FOR-$current_page_code"]) {
                 $final_pbm_arr[$pbm_code] = $pbm_item;
             }
         }
