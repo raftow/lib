@@ -1217,13 +1217,13 @@ textarea {
 
 
 .bluetitle {
-    font-size: 118%;
-    color: #2d48ba;
-    margin-bottom: 10px;
-    text-align: right;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-right: 10px;
+	font-size: 118%;
+	color: #2d48ba;
+	margin-bottom: 10px;
+	text-align: right;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-right: 10px;
 }
 
 
@@ -5291,7 +5291,7 @@ span.cms-title {
 	margin: 0.5%;
 	width: 49%;
 	float: right;
-	min-height: 520px;
+	min-height: 220px;
 	min-width: 220px;
 }
 
