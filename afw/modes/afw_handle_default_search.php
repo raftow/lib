@@ -47,7 +47,11 @@ if ($qsearchview and ($qsearchview != "all") and ($action == "retrieve")) $mode_
 
 
 $obj  = new $cl();
-
+if($force_sets) {
+        foreach($force_sets as $attribute => $attribute_value_forced) {
+            $obj->set($attribute, $attribute_value_forced);
+        }
+}
 $tentative = "first";
 $header_retrieve = AfwUmsPagHelper::getRetrieveHeader($obj, $mode_ret, $lang, false, $forced_retrieve_cols, $hide_retrieve_cols);
 

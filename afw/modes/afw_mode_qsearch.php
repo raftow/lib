@@ -113,7 +113,7 @@ if ($objme) {
         }
 }
 
-$rpbm_list = $myClassInstance->retrieveModePublicMethodsForUser($objme); // []; //
+$rpbm_list = $myClassInstance->retrieveModePublicMethodsForUser($objme, $current_page); // []; //
 $rpbm = $show_checkboxes = (count($rpbm_list) > 0);
 
 if ($resetcrit) {
