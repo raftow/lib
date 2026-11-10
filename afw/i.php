@@ -1,7 +1,17 @@
 <?php
+$request_entry_file = dirname(__FILE__)."/request_entry.php";
+require_once($request_entry_file);
 
-include_once(dirname(__FILE__)."/request_entry.php");
+/**
+ * @var string $controllerName
+ * @var string $methodName
+ * @var array $request
+ */
 
+$controllerObj = null;
+$controllerObjError = "";
+$prepareMethodName = "";
+if(!$request) $request = [];
 // throw new AfwRuntimeException("test eh03");
 $devMode = AfwSession::config('MODE_DEVELOPMENT', false);
 if(!$controllerName) $controllerName = AfwSession::config("default_controller_name", "");
@@ -22,7 +32,8 @@ if($controllerName)
                 }        
                 $prepareMethodName = "prepare".ucfirst($methodName);
                 $initiateMethodName = "initiate".ucfirst($methodName);
-                
+                $request["controllerObj"] = $controllerObj;
+                $request["methodName"] = $methodName;
                 
 
                 if($controllerObj->alwaysNeedPrepare($request) or method_exists($controllerObj, $prepareMethodName)) $custom_scripts = $controllerObj->$prepareMethodName($request);
@@ -33,7 +44,13 @@ if($controllerName)
                         // if dev mode
                         if($devMode)
                         {
-                                throw new AfwRuntimeException($controllerName."Controller->$initiateMethodName doen't return a correct request array");
+                                if(method_exists($controllerObj, $initiateMethodName)) {
+                                        $error_message = $controllerName."Controller->$initiateMethodName doen't return a correct request array";
+                                }
+                                else {
+                                        $error_message = "Check your fie : $request_entry_file and check why he doesn't initiate the request array";
+                                }
+                                throw new AfwRuntimeException($error_message);
                         }
                         else
                         {
