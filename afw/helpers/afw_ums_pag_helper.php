@@ -969,7 +969,7 @@ class AfwUmsPagHelper extends AFWRoot
         // $objme = AfwSession::getUserConnected();
 
         $edit_icon = $images['modifier'];
-        $edit_icon = $object->approveContextIcon($edit_icon, "edit");
+        list($edit_icon, $iw, $ih) = $object->approveContextIcon($edit_icon, "edit");
 
         $cl = $object->getMyClass();
         $currmod = $object->getMyModule();
@@ -1008,9 +1008,11 @@ class AfwUmsPagHelper extends AFWRoot
             }
         }
         if ($takeViewIcon and $displayAction) {
-            $actions_tpl_arr['view'] = [
+            $actions_tpl_arr['view'] = [                
                 'link' => "Main_Page=$displayFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
                 'img' => "../lib/images/$viewIcon.png",
+                'iw' => $iw, 
+                'ih' => $ih,
                 'framework_action' => $displayAction,
                 'help' => htmlentities($data_errors),
             ];
@@ -1020,6 +1022,9 @@ class AfwUmsPagHelper extends AFWRoot
             $actions_tpl_arr['edit'] = [
                 'link' => "Main_Page=$editFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
                 'img' => $edit_icon,
+                'iw' => $iw, 
+                'ih' => $ih,
+                
                 'framework_action' => $editAction,
             ];
         }
@@ -1029,6 +1034,8 @@ class AfwUmsPagHelper extends AFWRoot
                 $actions_tpl_arr['delete'] = [
                     'link' => '#todo',
                     'img' => $images['delete'],
+                    'iw' => $iw, 
+                    'ih' => $ih,
                     'framework_action' => $deleteAction,
                     'ajax_class' => 'trash',
                 ];
@@ -1036,6 +1043,8 @@ class AfwUmsPagHelper extends AFWRoot
                 $actions_tpl_arr['delete'] = [
                     'link' => '',
                     'img' => $images['locked'],
+                    'iw' => $iw, 
+                    'ih' => $ih,
                     'framework_action' => '',
                     'ajax_class' => '',
                 ];
@@ -1047,6 +1056,8 @@ class AfwUmsPagHelper extends AFWRoot
             $actions_tpl_arr['audit'] = [
                 'link' => "Main_Page=$auditFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
                 'img' => $images['audit'],
+                'iw' => $iw, 
+                'ih' => $ih,
                 'framework_action' => $auditAction,
             ];
         }

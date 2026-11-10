@@ -219,6 +219,8 @@ class AfwRetrieveHelper
                     else $target_action = $target;
 
                     $img = $action_item_props["img"];
+                    $iw = $action_item_props["iw"] ?? 24;
+                    $ih = $action_item_props["ih"] ?? 24;
 
                     $ajax_class = $action_item_props["ajax_class"];
 
@@ -292,7 +294,7 @@ class AfwRetrieveHelper
                                     $html .= "
                                     <td class='ajax col-importance-$importance $frameworkAction'>
                                          <a href=\"#\" id=\"$id\" cl=\"$cl\" md=\"$currmod\" lbl=\"$lbl\" class=\"$ajax_class\">
-                                            <img lbl='ajax' src=\"$img\" width=\"24\" heigth=\"24\" $tooltip >
+                                            <img lbl='ajax' src=\"$img\" width=\"$iw\" heigth=\"$ih\" $tooltip >
                                         </a>
                                     </td>";
                                 } else {
@@ -300,7 +302,7 @@ class AfwRetrieveHelper
                                     else $the_action_link = "#";
                                     $html .= "
                                     <td class='action-link col-importance-$importance $frameworkAction'><a $target_action href=\"$the_action_link\">
-                                            <img lbl='no-ajax' src=\"$img\" width=\"24\" heigth=\"24\" $tooltip >
+                                            <img lbl='no-ajax' src=\"$img\" width=\"$iw\" heigth=\"$ih\" $tooltip >
                                         </a>
                                     </td>";
                                 }
@@ -322,7 +324,7 @@ class AfwRetrieveHelper
 
                             $locked_him_self = $images["locked_him_self"];
                             $html .= "
-                            <td class='col-importance-$importance locked-him-self'><img src=\"$locked_him_self\" width=\"24\" heigth=\"24\" $tooltip ></td>
+                            <td class='col-importance-$importance locked-him-self'><img src=\"$locked_him_self\" width=\"$iw\" heigth=\"$ih\" $tooltip ></td>
                         ";
                         }
                     } elseif ($can and (!$canOnMe)) {
@@ -336,7 +338,7 @@ class AfwRetrieveHelper
                         }
                         $canImage = $images[$canCss];
                         $html .= "
-                        <td class='col-importance-$importance $canCss'><img src=\"$canImage\" width=\"24\" heigth=\"24\" $tooltip ></td>
+                        <td class='col-importance-$importance $canCss'><img src=\"$canImage\" width=\"$iw\" heigth=\"$ih\" $tooltip ></td>
                     ";
                     } else { // means can't ($can is false)
                         if (($objme and $objme->isSupervisor()) or AfwSession::config("MODE_DEVELOPMENT", false)) $tooltip = "data-toggle='tooltip' 
@@ -346,7 +348,7 @@ class AfwRetrieveHelper
                                 class='red-tooltip'";
                         else $tooltip = "";
                         $image_locked = $images["locked"];
-                        $html .= "<td class='col-importance-$importance can-t-case for-$frameworkAction'><img src=\"$image_locked\" width=\"24\" heigth=\"24\" $tooltip ></td>";
+                        $html .= "<td class='col-importance-$importance can-t-case for-$frameworkAction'><img src=\"$image_locked\" width=\"$iw\" heigth=\"$ih\" $tooltip ></td>";
                     }
                 }
             }

@@ -6414,7 +6414,7 @@ class AFWObject extends AFWRoot
      * @param string $context
      */
     public function approveContextIcon($icon, $context) {
-        return $icon;
+        return [$icon, 24, 24];
     }
 
     public function takeDeleteAction($mode = 'search')
