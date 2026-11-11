@@ -56,6 +56,10 @@ class AfwStringHelper
                 return [$new_name, $new_name2, $new_name3];
         }
 
+         /**
+         * @param string $string_start
+         * @param string $stringbody
+         */
 
         public static function stringStartsWith($stringbody, $string_start)
         {
@@ -66,6 +70,20 @@ class AfwStringHelper
                 return (strpos($stringbody, $string_start) === 0);
         }
 
+        /**
+         * @param string $word
+         * @param string $string
+         */
+        public static function removeWordFromBeggining($word, $string)
+        {
+                $prefix = trim($word)." ";
+                return self::removePrefix($string, $prefix);
+        }
+
+         /**
+         * @param string $prefix
+         * @param string $string
+         */
         public static function removePrefix($string, $prefix)
         {
                 $prefix_len = strlen($prefix);
