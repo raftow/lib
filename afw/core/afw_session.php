@@ -47,6 +47,21 @@ class AfwSession extends AFWRoot
                 $this->studentConnected = null;
         }
 
+        public static function logoutUser()
+        {
+                self::getSingleton()->unsetUser();
+        }
+
+        public static function logoutCustomer()
+        {
+                self::getSingleton()->unsetCustomer();
+        }
+
+        public static function logoutStudent()
+        {
+                self::getSingleton()->unsetStudent();
+        }
+
 
         public static function setMyLogTime($time)
         {
