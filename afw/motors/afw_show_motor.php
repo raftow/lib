@@ -66,17 +66,24 @@ class AfwShowMotor
         }
 
         $col_val_class = "";
-        if (($desc['TYPE'] == 'YN') or ($desc['TYPE'] == 'INT') or ($desc['TYPE'] == 'ENUM') or ($desc['TYPE'] == 'FK')) {
-            if ($desc['CATEGORY']) $col_val_0 = $obj->calc($nom_col);
+        if (($desc['TYPE'] == 'YN') or ($desc['TYPE'] == 'INT') or ($desc['TYPE'] == 'ENUM') or (($desc['TYPE'] == 'FK') and ($desc['CATEGORY'] != 'ITEMS'))) {
+            if ($desc['CATEGORY']=="FORMULA") $col_val_0 = $obj->calc($nom_col);
             else $col_val_0 = $obj->getVal($nom_col);
 
-            if (strlen($col_val_0) > 30) $col_val_0 = "";
+            if(is_array($col_val_0) or is_object($col_val_0)) throw new AfwRuntimeException("Strange non simple value for attribute  $nom_col : val=".var_export($col_val_0, true)." desc=".var_export($desc, true));
+            $col_val_0 = AfwStringHelper::clean_input($col_val_0 . "", false); 
+            if (is_string($col_val_0)) {
+                if (strlen($col_val_0) > 30) $col_val_0 = "";
+                else {
+                    $col_val_0 = str_replace(",", "_", $col_val_0);
+                    $col_val_0 = str_replace("/", "_", $col_val_0);
+                    $col_val_0 = str_replace(" ", "_", $col_val_0);
+                    $col_val_0 = str_replace(":", "_", $col_val_0);
+                    $col_val_0 = str_replace("-", "_", $col_val_0);
+                }
+            }
             else {
-                $col_val_0 = str_replace(",", "_", $col_val_0);
-                $col_val_0 = str_replace("/", "_", $col_val_0);
-                $col_val_0 = str_replace(" ", "_", $col_val_0);
-                $col_val_0 = str_replace(":", "_", $col_val_0);
-                $col_val_0 = str_replace("-", "_", $col_val_0);
+                $col_val_0 = "complex";
             }
 
             $col_val_class = "hzm_value_" . $nom_col . "_" . $col_val_0;
