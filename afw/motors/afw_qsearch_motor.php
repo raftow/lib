@@ -397,7 +397,8 @@ class AfwQsearchMotor
 	}
 	public static function type_oper($col_name, $desc, $obj, $selected = false)
 	{
-		global $lang, $class_inputOper, $class_inputSelected;
+		$lang = AfwLanguageHelper::getGlobalLanguage();
+		global $class_inputOper, $class_inputSelected;
 
 
 		if ($selected)

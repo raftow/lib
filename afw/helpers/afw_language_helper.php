@@ -21,7 +21,7 @@ class AfwLanguageHelper
                 // if($langue) echo ("getGlobalLanguage() case 2 : $langue <br>");
             }
             else {
-                global $lang;
+                $lang = AfwLanguageHelper::getGlobalLanguage();
                 $langue = $lang;
                 if($langue) AfwLanguageHelper::setGlobalLanguage($langue);
                 // if($langue) echo ("getGlobalLanguage() case 3 : $langue <br>");

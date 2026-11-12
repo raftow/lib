@@ -12,7 +12,7 @@ public static function hidden_input($col_name, $desc, $val, $obj = null)
 
 public static function type_input($col_name, $desc, $obj, $selected = false)
 {
-    global $lang, $class_inputSelect_multi_big, $class_inputInt, $class_inputText, $class_inputSelected;
+    global $class_inputSelect_multi_big, $class_inputInt, $class_inputText, $class_inputSelected;
     $objme = AfwSession::getUserConnected();
     // global $TMP_ROOT;
     // $images = AfwThemeHelper::loadTheme();
@@ -297,7 +297,7 @@ public static function type_input($col_name, $desc, $obj, $selected = false)
 }
 public static function type_oper($col_name, $desc, $obj, $selected = false)
 {
-    global $lang, $class_inputOper, $class_inputSelected;
+    global $class_inputOper, $class_inputSelected;
 
 
     if ($selected)

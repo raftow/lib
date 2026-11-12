@@ -197,7 +197,7 @@ class AfwUmsPagHelper extends AFWRoot
      */
     public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false, $restrictToField = '', $create_answer_tables_if_not_exists=false)
     {
-        global $lang, $the_last_sql;
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         $file_dir_name = dirname(__FILE__);
         $mcode = strtolower($module);
         $table_name = strtolower($table);

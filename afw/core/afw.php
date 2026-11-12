@@ -4126,15 +4126,7 @@ class AFWObject extends AFWRoot
 
     public function calcMinibox()
     {
-        global $lang, $loop_counter;
-        if (!$loop_counter) {
-            $loop_counter = 0;
-        } else {
-            $loop_counter++;
-        }
-        if ($loop_counter > 10) {
-            throw new AfwRuntimeException('seems infinite loop');
-        }
+        $lang = AfwLanguageHelper::getGlobalLanguage();        
         return AfwShowHelper::showMinibox($this, '', $lang);
     }
 

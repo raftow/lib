@@ -1062,7 +1062,7 @@ class AfwSqlHelper extends AFWRoot
      */
     public static function insertObject(&$object, $pk = '', $check_if_exists_by_uk = true, $disableAfterCommitDBEvent = false)
     {
-        global $lang, $print_debugg, $print_sql;
+        global $print_debugg, $print_sql;
 
         // if($object::$TABLE == "afield") d ie("object->insert on : ".var_export($object,true));
         if ($object->IS_VIRTUAL) {
