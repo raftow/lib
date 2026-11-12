@@ -66,7 +66,8 @@ class AfwShowMotor
         }
 
         $col_val_class = "";
-        if (($desc['TYPE'] == 'YN') or ($desc['TYPE'] == 'INT') or ($desc['TYPE'] == 'ENUM') or (($desc['TYPE'] == 'FK') and ($desc['CATEGORY'] != 'ITEMS'))) {
+        if (($desc['TYPE'] == 'YN') or ($desc['TYPE'] == 'INT') or ($desc['TYPE'] == 'ENUM') or 
+            (($desc['TYPE'] == 'FK') and ($desc['CATEGORY'] != 'ITEMS') and ($desc['FORMULA-CATEGORY'] != 'ITEMS'))) {
             if ($desc['CATEGORY']=="FORMULA") $col_val_0 = $obj->calc($nom_col);
             else $col_val_0 = $obj->getVal($nom_col);
 
