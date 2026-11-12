@@ -112,10 +112,11 @@ class AfwRunHelper
 
 
                 $mode_dev = AfwSession::config("MODE_DEVELOPMENT", false);
+                $mode_test = AfwSession::config("MODE_TEST", false);
                 $mode_batch = AfwSession::config("MODE_BATCH", false);
                 $xmodule = AfwSession::currentCompanyOrDepartmentCode();
                 $company = AfwSession::currentCompany();
-                $open_mode = ($force_mode_dev or $mode_dev or $mode_batch);
+                $open_mode = ($force_mode_dev or $mode_dev or $mode_test or $mode_batch);
 
                 if (!$message) {
                         $crst = md5("crst" . date("YmdHis"));

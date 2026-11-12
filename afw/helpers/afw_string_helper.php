@@ -76,8 +76,12 @@ class AfwStringHelper
          */
         public static function removeWordFromBeggining($word, $string)
         {
+                $string = trim($string);
                 $prefix = trim($word)." ";
-                return self::removePrefix($string, $prefix);
+                $return = self::removePrefix($string, $prefix);
+
+                if($return == trim($word)) return "";
+                return $return;
         }
 
          /**
