@@ -1482,6 +1482,18 @@ class AfwDateHelper
         return self::hijri_to_greg($hdate, $throwError);
     }
 
+    /**
+     * @param string $hdate  hijri date 
+     */
+    public static function displayConvertionOfHijriToGreg($hdate, $throwError = true, $prefix = ' هـ<br>الموافق  ', $suffix = ' م')
+    {
+        $hdate = self::remove_dashes($hdate);
+        if (self::isHijri($hdate))
+            $display = $prefix . self::hijriToGreg($hdate, $throwError) . $suffix;
+        else $display = '[invalid]';
+        return $display;
+    }
+
     private static function gregdate_of_first_hijri_day(
         $hijri_year,
         $hijri_month,
@@ -1579,6 +1591,9 @@ class AfwDateHelper
         return $hdate_YYYY . $sep . $hdate_MM . $sep . $hdate_DD;
     }
 
+    /**
+     * @param string $gdate
+     */
     public static function to_hijri(
         $gdate,
         $mode = 'hdate',
@@ -1730,6 +1745,9 @@ class AfwDateHelper
         }
     }
 
+    /**
+     * @param string $original_hdate
+     */
     private static function hijri_to_greg_from_files($original_hdate, $hijri_year = "")
     {
         // try to use cache hijri_to_greg files
@@ -1768,9 +1786,12 @@ class AfwDateHelper
         }
 
         if (!$hijri_to_greg_arr[$hdate]) {
-            $err_message = "Failed to convert hijri date ($original_hdate) to gregorian date, seems that the file $hijri_to_greg_file is not available or is incomplete";
+            $err_message = "Failed to convert hijri date ($original_hdate) to gregorian date, seems it is no a valid hijri date or the file $hijri_to_greg_file is not available or is incomplete";
             AfwSession::hzmLog($err_message, "fail");
-            throw new AfwBusinessException($err_message);
+            $devMode = AfwSession::config('MODE_DEVELOPMENT', false);
+            $testMode = AfwSession::config('MODE_TEST', false);
+            if ($devMode or $testMode) throw new AfwRuntimeException($err_message);
+            return "[invalid-hdate:$original_hdate]";
         }
         return $hijri_to_greg_arr[$hdate];
     }
@@ -1924,61 +1945,59 @@ class AfwDateHelper
     }
 
 
-    public static function hijriDateMiddle($hdate2 = '',
+    public static function hijriDateMiddle(
+        $hdate2 = '',
         $time2 = '',
         $hdate1 = '',
-        $time1 = '', 
-        $rounded_unit = 'hours') 
-        {
-            $midD = 0;
-            $midH = 0;
-            $midN = 0;
-            $midS = 0;
-            if($rounded_unit == 'days') {
-                    $diffD = self::hijriDateTimeDiff(
-                                    $hdate2,
-                                    $time2,
-                                    $hdate1,
-                                    $time1,
-                                    $round = true,
-                                    $rounded_unit
-                                ); 
-                    $midD = floor($diffD/2);
-                    $midH = ($diffD - 2*$midD)*12;
-            }
-            elseif($rounded_unit == 'hours') {
-                    $diffH = self::hijriDateTimeDiff(
-                                    $hdate2,
-                                    $time2,
-                                    $hdate1,
-                                    $time1,
-                                    $round = true,
-                                    $rounded_unit
-                                ); 
+        $time1 = '',
+        $rounded_unit = 'hours'
+    ) {
+        $midD = 0;
+        $midH = 0;
+        $midN = 0;
+        $midS = 0;
+        if ($rounded_unit == 'days') {
+            $diffD = self::hijriDateTimeDiff(
+                $hdate2,
+                $time2,
+                $hdate1,
+                $time1,
+                $round = true,
+                $rounded_unit
+            );
+            $midD = floor($diffD / 2);
+            $midH = ($diffD - 2 * $midD) * 12;
+        } elseif ($rounded_unit == 'hours') {
+            $diffH = self::hijriDateTimeDiff(
+                $hdate2,
+                $time2,
+                $hdate1,
+                $time1,
+                $round = true,
+                $rounded_unit
+            );
 
-                    $midH = floor($diffH/2);
-                    $midN = ($diffH - 2*$midH)*30;
-            }
-            elseif($rounded_unit == 'minutes') {
-                    $diffN = self::hijriDateTimeDiff(
-                                    $hdate2,
-                                    $time2,
-                                    $hdate1,
-                                    $time1,
-                                    $round = true,
-                                    $rounded_unit
-                                ); 
+            $midH = floor($diffH / 2);
+            $midN = ($diffH - 2 * $midH) * 30;
+        } elseif ($rounded_unit == 'minutes') {
+            $diffN = self::hijriDateTimeDiff(
+                $hdate2,
+                $time2,
+                $hdate1,
+                $time1,
+                $round = true,
+                $rounded_unit
+            );
 
-                    $midN = floor($diffN/2);
-                    $midS = ($diffN - 2*$midN)*30;
-            }
-            else {
-                throw new AfwRuntimeException("hijriDateMiddle does'nt support rounded_unit = $rounded_unit");
-            }
-             
-
-            return self::addDatetimeToHijriDatetime($hdate1,$time1,0,0,$midD,$midH,$midN,$midS);
+            $midN = floor($diffN / 2);
+            $midS = ($diffN - 2 * $midN) * 30;
+        } else {
+            throw new AfwRuntimeException("hijriDateMiddle does'nt support rounded_unit = $rounded_unit");
         }
+
+
+        return self::addDatetimeToHijriDatetime($hdate1, $time1, 0, 0, $midD, $midH, $midN, $midS);
+    }
 
     /**
      * @param string $hdate2 if omitted we take current hijri date
@@ -2223,19 +2242,20 @@ class AfwDateHelper
 
         $gdate = self::hijriToGreg($hdate);
         $gdate_time = $gdate . " " . $htime;
-        $new_gdate_time = self::addDatetimeToGregDatetime($gdate_time,
-                $years,
-                $months,
-                $days,
-                $hours,
-                $minutes,
-                $seconds);
+        $new_gdate_time = self::addDatetimeToGregDatetime(
+            $gdate_time,
+            $years,
+            $months,
+            $days,
+            $hours,
+            $minutes,
+            $seconds
+        );
 
         list($new_gdate, $new_time) = explode(" ", $new_gdate_time);
         $newhdate =  self::gregToHijri($new_gdate);
 
         return [$newhdate, $new_time];
-
     }
 
     /*****************    time functions    *************************/

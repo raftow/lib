@@ -15,22 +15,21 @@ class AfwLanguageHelper
         $langue = AfwSession::getSessionVar("current_lang");
         // if($langue) echo ("getGlobalLanguage() case 1 : $langue <br>");
         if (!$langue) {
-            if(isset($_REQUEST["lang"])) {
-                $langue = $_REQUEST["lang"];            
-                if($langue) AfwLanguageHelper::setGlobalLanguage($langue);
+            if (isset($_REQUEST["lang"])) {
+                $langue = $_REQUEST["lang"];
+                if ($langue) AfwLanguageHelper::setGlobalLanguage($langue);
                 // if($langue) echo ("getGlobalLanguage() case 2 : $langue <br>");
-            }
-            else {
-                $lang = AfwLanguageHelper::getGlobalLanguage();
+            } else {
+                global $lang;
                 $langue = $lang;
-                if($langue) AfwLanguageHelper::setGlobalLanguage($langue);
+                if ($langue) AfwLanguageHelper::setGlobalLanguage($langue);
                 // if($langue) echo ("getGlobalLanguage() case 3 : $langue <br>");
             }
-            
+
             if (!$langue) {
                 $langue = 'ar';
                 // echo ("getGlobalLanguage() case 4 : $langue <br>");
-            } 
+            }
         }
         return $langue;
     }
@@ -79,7 +78,7 @@ class AfwLanguageHelper
             $return = $object->translate($attribute, $lang, null, $AIT);
             // if($return == "The placeholder-settings template") die("here case 2 from obj->translate($attribute, $lang, null, AIT=$AIT)");
         }
-        
+
         return $return;
     }
 
@@ -137,8 +136,8 @@ class AfwLanguageHelper
         $langue = 'ar',
         $operator = null,
         $nom_table = '',
-        $module = '', 
-        $AI_Translation=false
+        $module = '',
+        $AI_Translation = false
     ) {
         //if(($module=="crm") and ($nom_table=="request") and ($nom_col=="archive")) die("debugg $nom_table trad of $nom_col is here 1 ");
         $company = AfwSession::currentCompany();
@@ -358,8 +357,8 @@ class AfwLanguageHelper
             $lang,
             ''
         );
-        
-    if ($attribute_property_trans == $attribute_property_code) {
+
+        if ($attribute_property_trans == $attribute_property_code) {
             $attribute_property_trans = '';
         }
 

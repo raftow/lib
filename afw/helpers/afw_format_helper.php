@@ -495,10 +495,7 @@ class AfwFormatHelper
             }
 
             if ($structure['FORMAT'] == 'TOOLTIP_NASRANI') {
-                $help_nasrani = htmlentities(
-                    'الموافق  '
-                        . AfwDateHelper::hijriToGreg($old_data_to_display)
-                );
+                $help_nasrani = htmlentities(AfwDateHelper::displayConvertionOfHijriToGreg($old_data_to_display, false));
                 if ($data_to_display) {
                     $data_to_display =
                         $data_to_display
@@ -509,7 +506,7 @@ class AfwFormatHelper
             } elseif ($structure['FORMAT'] == 'CONVERT_NASRANI') {
                 if ($data_to_display) {
                     $hijri_date = $data_to_display;
-                    $date_to_display = AfwDateHelper::hijriToGreg($old_data_to_display, false);
+                    $date_to_display = AfwDateHelper::displayConvertionOfHijriToGreg($old_data_to_display, false);
                     $data_to_display = "<div class='dates_ar_en'>"
                         . "<div class='hzmdate date_en'><div class='dval'>$date_to_display</div><div class='dunit'>م</div></div>"
                         . "<div class='hzmdate date_ar'><div class='dval'>$hijri_date</div><div class='dunit'>هـ</div></div>"
@@ -519,13 +516,7 @@ class AfwFormatHelper
                 }
             } elseif ($structure['FORMAT'] == 'CONVERT_NASRANI_SIMPLE') {
                 if ($data_to_display) {
-                    $data_to_display =
-                        $data_to_display
-                        . ' &nbsp;&nbsp;&nbsp; الموافق  '
-                        . AfwDateHelper::hijriToGreg($old_data_to_display);
-                    if ($structure['NASRANI_UNIT'] or $structure['SHOW_UNIT']) {
-                        $data_to_display .= ' م';
-                    }
+                    $data_to_display .= AfwDateHelper::displayConvertionOfHijriToGreg($old_data_to_display, false);
                 } else {
                     $data_to_display = '';
                 }
@@ -533,10 +524,9 @@ class AfwFormatHelper
                 if ($data_to_display) {
                     $data_to_display =
                         "<div class='date2lines'>"
-                        . $data_to_display
-                        . ' هـ<br>الموافق  '
-                        . AfwDateHelper::hijriToGreg($old_data_to_display)
-                        . ' م </div>';
+                        . $data_to_display;
+                    $data_to_display .= AfwDateHelper::displayConvertionOfHijriToGreg($old_data_to_display, false);
+                    $data_to_display .= '</div>';
                 } else {
                     $data_to_display = '';
                 }
@@ -544,7 +534,7 @@ class AfwFormatHelper
                 $currSDF = strtolower(AfwSession::currentSystemDateFormat());
                 if ($data_to_display) {
                     if ($currSDF == 'greg') {
-                        $data_to_display = AfwDateHelper::hijriToGreg($old_data_to_display) . ' م';
+                        $data_to_display = AfwDateHelper::displayConvertionOfHijriToGreg($old_data_to_display, false, '');
                     }
                 } else {
                     $data_to_display = '';
@@ -553,7 +543,7 @@ class AfwFormatHelper
                 if ($data_to_display) {
                     if (AfwSession::hasOption('HIJRI_TO_GREG') or true) {  // dont understand why this option HIJRI_TO_GREG is needed
                         $data_to_display =
-                            AfwDateHelper::hijriToGreg($old_data_to_display);
+                            AfwDateHelper::displayConvertionOfHijriToGreg($old_data_to_display, false, '');
                     }
                 } else {
                     $data_to_display = '';
@@ -1702,9 +1692,9 @@ class AfwFormatHelper
                  */
 
                 $logical_deleted_items_also = ($structure['LOGICAL_DELETED_ITEMS_ALSO'] or
-                 ($structure['LOGICAL_DELETED_ITEMS_FOR_ADMIN'] and $objme and $objme->isAdmin()) or
-                 ($structure['LOGICAL_DELETED_ITEMS_FOR_SUPER_ADMIN'] and $objme and $objme->isSuperAdmin()));
-                
+                    ($structure['LOGICAL_DELETED_ITEMS_FOR_ADMIN'] and $objme and $objme->isAdmin()) or
+                    ($structure['LOGICAL_DELETED_ITEMS_FOR_SUPER_ADMIN'] and $objme and $objme->isSuperAdmin()));
+
 
                 if (!$logical_deleted_items_also) {
                     /*
@@ -2225,7 +2215,7 @@ class AfwFormatHelper
      * @param string $call_method
      * @return mixed
      */
-    public static function getCategorizedAttribute(&$object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = '', $objme=null)
+    public static function getCategorizedAttribute(&$object, $attribute, $attribute_category, $attribute_type, $structure, $what, $format, $integrity, $max_items, $lang, $call_method = '', $objme = null)
     {
         /*
          * if(($attribute=="customer_id"))

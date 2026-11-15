@@ -851,7 +851,7 @@ class AfwSession extends AFWRoot
          * @param string $text, 
          * @param string $string_to_push
          */
-        private static function pushString($text, $string_to_push, $once = false, $separator = "<br>", $separatorToRemove = "<br>")
+        private static function pushString($text, $string_to_push, $once = false, $separator = "<br>", $separatorToRemove = "")
         {
                 $string_to_push = trim($string_to_push);
                 $new_string_to_push = str_replace($separatorToRemove, "", $string_to_push);

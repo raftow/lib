@@ -1665,7 +1665,7 @@ class AFWObject extends AFWRoot
      */
     public function vhLoad($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '')
     {
-        return $this->load($value, $result_row, $order_by_sentence, $optim_lookup, $force_sep, $vh=true);
+        return $this->load($value, $result_row, $order_by_sentence, $optim_lookup, $force_sep, $vh = true);
     }
 
     /**
@@ -1673,9 +1673,9 @@ class AFWObject extends AFWRoot
      * Load into object a specified row
      * @param string $value : Optional, specify the value of primary key
      */
-    public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '', $vh=false)
+    public function load($value = '', $result_row = '', $order_by_sentence = '', $optim_lookup = true, $force_sep = '', $vh = false)
     {
-        if($vh) {
+        if ($vh) {
             $this->select_visibilite_horizontale();
         }
         return AfwLoadHelper::loadAfwObject($this, $value, $result_row, $order_by_sentence, $optim_lookup, $force_sep);
@@ -4126,7 +4126,7 @@ class AFWObject extends AFWRoot
 
     public function calcMinibox()
     {
-        $lang = AfwLanguageHelper::getGlobalLanguage();        
+        $lang = AfwLanguageHelper::getGlobalLanguage();
         return AfwShowHelper::showMinibox($this, '', $lang);
     }
 
@@ -4980,7 +4980,7 @@ class AFWObject extends AFWRoot
         $link_to_display = "";
         $data_to_display = "";
 
-        if (($intelligent_category == 'ITEMS') or ($intelligent_category == 'FORMULA')) {
+        if (($intelligent_category == 'ITEMS') or (($intelligent_category == 'FORMULA') and !$structure['NEED-FORMAT'])) {
             $value = '';
             $formatted = false;
             if ($intelligent_category == 'FORMULA') {
@@ -4996,13 +4996,13 @@ class AFWObject extends AFWRoot
                 $value = $this->calc($key);
             else
                 $value = $this->getVal($key);
-            if ("")
-                // if($key == "adm_orgunit_id") die("$value = this->getVal($key)");
-                list(
-                    $formatted,
-                    $data_to_display,
-                    $link_to_display,
-                ) = AfwFormatHelper::formatValue($value, $key, $structure, $getFormatLink, $this);
+
+            // if($key == "adm_orgunit_id") die("$value = this->getVal($key)");
+            list(
+                $formatted,
+                $data_to_display,
+                $link_to_display,
+            ) = AfwFormatHelper::formatValue($value, $key, $structure, $getFormatLink, $this);
             // if($key == "adm_orgunit_id") die("dbg 55477 rafik : list($formatted, $data_to_display, $link_to_display,) = AfwFormatHelper::formatValue($value, $key, ..)");
         }
 
@@ -5522,7 +5522,7 @@ class AFWObject extends AFWRoot
     /**
      * @param Auser $auser
      */
-    final public function retrieveModePublicMethodsForUser($auser, $current_page="")
+    final public function retrieveModePublicMethodsForUser($auser, $current_page = "")
     {
         list($current_page_code, $current_page_lanaguage) = explode(".", strtoupper($current_page));
         $allowed_pbm_arr = [];
@@ -6405,7 +6405,8 @@ class AFWObject extends AFWRoot
      * @param string $icon
      * @param string $context
      */
-    public function approveContextIcon($icon, $context) {
+    public function approveContextIcon($icon, $context)
+    {
         return [$icon, 24, 24];
     }
 
