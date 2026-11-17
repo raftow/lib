@@ -99,10 +99,18 @@ class AfwSettingsHelper
         $throwError = false
     ) {
         $settings = $object->getVal($settings_attribute_name);
-        $settings_array = json_decode($settings);
-        // format JSON
-        if (!is_array($settings)) {
-            $settings_array = json_decode($settings, true);
+        /*
+        if(!is_string($settings)) {
+            throw new AfwRuntimeException("object of class ".get_class($object)." called getVal($settings_attribute_name) and returned strange non string settings value : ".var_export($settings,true));
+        }*/
+        if (is_array($settings)) $settings_array = $settings;
+        else {
+            $settings_array = json_decode($settings);
+            // format JSON
+            if (!is_array($settings)) {
+                $settings_array = json_decode($settings, true);
+            }
+            
         }
         if (!is_array($settings_array) and $throwError) throw new AfwBusinessException("$settings_attribute_name can't be decoded as json, please check syntax");
         $settings_array = is_array($settings_array) ? $settings_array : [];

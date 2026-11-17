@@ -4,6 +4,7 @@
 
 class AfwSession extends AFWRoot
 {
+        private static $notifcationStopped = null;
         private static $singleton = null;
 
         private static $oddEven = "odd";
@@ -866,12 +867,18 @@ class AfwSession extends AFWRoot
         }
 
 
+        public static function stopNotifications() {
+                self::$notifcationStopped = true;
+        }
+        
+
         /**
          * @param string $alert
          */
 
         public static function pushAlert($alert, $css_class = "")
         {
+                if(self::$notifcationStopped) return;
                 self::setVar("alert", self::pushString(self::getVar("alert"), $alert, true, "\n"));
                 if ($css_class) self::setVar("alert-class", $css_class);
         }
@@ -882,6 +889,7 @@ class AfwSession extends AFWRoot
 
         public static function pushSuccess($success, $css_class = "")
         {
+                if(self::$notifcationStopped) return;
                 self::setVar("success", self::pushString(self::getVar("success"), $success));
                 if ($css_class) self::setVar("success-class", $css_class);
         }
@@ -892,6 +900,7 @@ class AfwSession extends AFWRoot
          */
         public static function pushLog($slog, $css_class = "")
         {
+                if(self::$notifcationStopped) return;
                 self::setVar("slog", self::pushString(self::getVar("slog"), $slog));
                 if ($css_class) self::setVar("slog-class", $css_class);
         }
@@ -902,6 +911,7 @@ class AfwSession extends AFWRoot
 
         public static function pushInformation($information, $css_class = "")
         {
+                if(self::$notifcationStopped) return;
                 self::setVar("information", self::pushString(self::getVar("information"), $information));
                 if ($css_class) self::setVar("information-class", $css_class);
         }
@@ -912,6 +922,7 @@ class AfwSession extends AFWRoot
 
         public static function pushWarning($warning, $css_class = "")
         {
+                if(self::$notifcationStopped) return;
                 // throw new AfwRuntimeException("who sent this warning");
                 self::setVar("warning", self::pushString(self::getVar("warning"), $warning));
                 if ($css_class) self::setVar("warning-class", $css_class);
@@ -923,6 +934,7 @@ class AfwSession extends AFWRoot
 
         public static function pushError($error, $css_class = "")
         {
+                if(self::$notifcationStopped) return;
                 self::setVar("error", self::pushString(self::getVar("error"), $error));
                 if ($css_class) self::setVar("error-class", $css_class);
         }
