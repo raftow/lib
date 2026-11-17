@@ -99,6 +99,9 @@ class AfwSettingsHelper
         $throwError = false
     ) {
         $settings = $object->getVal($settings_attribute_name);
+        if(!is_string($settings)) {
+            throw new AfwRuntimeException("object of class ".get_class($object)." called getVal($settings_attribute_name) and returned strange non string settings value : ".var_export($settings,true));
+        }
         $settings_array = json_decode($settings);
         // format JSON
         if (!is_array($settings)) {
