@@ -857,6 +857,13 @@ class AfwFormatHelper
         $translate_if_needed = true,
         $class_name = ""
     ) {
+        if (!$structure) {
+            if (!$obj) {
+                throw new AfwRuntimeException('structure and obj should not be both null if we decode an attribute');
+            }
+
+            $structure = AfwStructureHelper::getStructureOf($obj, $attribute);
+        }
         switch ($typattr) {
             case 'INT':
                 switch ($decode_format) {
@@ -968,13 +975,6 @@ class AfwFormatHelper
 
                 break;
             case 'TIME':
-                if (!$structure) {
-                    if (!$obj) {
-                        throw new AfwRuntimeException('structure and obj should not be both null if we decode a TIME field');
-                    }
-
-                    $structure = AfwStructureHelper::getStructureOf($obj, $attribute);
-                }
                 $return = AfwDateHelper::displayTime($attribute_value, $structure, $decode_format, $obj);
                 break;
             case 'GDAT':
@@ -989,13 +989,6 @@ class AfwFormatHelper
                 );
                 break;
             case 'DATE':
-                if (!$structure) {
-                    if (!$obj) {
-                        throw new AfwRuntimeException('structure and obj should not be both null if we decode a DATE field');
-                    }
-
-                    $structure = AfwStructureHelper::getStructureOf($obj, $attribute);
-                }
                 if ($decode_format) {
                     $structure['FORMAT'] = $decode_format;
                 }
@@ -1008,9 +1001,7 @@ class AfwFormatHelper
                 // $return = $object->showAttribute($attribute);
                 break;
             case 'FK':
-                if ((!$obj) or (!$structure)) {
-                    throw new AfwRuntimeException('both structure and obj should not be null if we decode an FK field');
-                }
+
 
                 // as we do only decode consider the answer class as lookup
                 if (!$attribute_value) {
@@ -1050,7 +1041,7 @@ class AfwFormatHelper
                         $structure['SMALL-LOOKUP'] = ($lkp and $issmall);
                     }
                     $small_lookup = $structure['SMALL-LOOKUP'];
-
+                    // if ($attribute == "bus_id") throw new AfwRuntimeException("for $attribute will  AfwLoadHelper::decodeLookupValue(mod=$ans_module, tab=$ans_table, val=$attribute_value, sep=$items_separator, empty_message=$items_empty_message, pk=$pk, lang=$lang, small_lookup=$small_lookup) based on structure " . var_export($structure, true));
                     $return = AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message, $pk, $lang, $small_lookup);
                     // if($attribute=="customer_id") throw new AfwRuntimeException("AfwFormatHelper::decode($attribute) : case ABC02 return=AfwLoadHelper::decodeLookupValue($ans_module, $ans_table, $attribute_value, $items_separator, $items_empty_message, $pk, $small_lookup)=$return");
                 }

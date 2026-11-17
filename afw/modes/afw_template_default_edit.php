@@ -326,7 +326,9 @@ if ($subType)
 else
         $str_name = $titre_display = $obj->translate("FILE", $lang, true) . " " . AfwStringHelper::arrow($lang) . " " .
                 $obj->singleTranslation($lang) . " " . AfwStringHelper::arrow($lang) . " " . $obj->getShortDisplay($lang);
-
+if (AfwStringHelper::containsHtml($str_name)) {
+        throw new AfwRuntimeException("getShortDisplay and singleTranslation methods of class " . get_class($obj) . " are not allowed to conatin html code, but getDisplay can");
+}
 if (!$file_box_css_class) $file_box_css_class = "filebox";
 $wizard_class = $wizObj->getWizardClass();
 if ($obj->elevatezoom) {

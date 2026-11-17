@@ -1023,12 +1023,13 @@ class AfwShowHelper
                 }
 
                 if ($img_width) {
-                    $the_header .= "   <tr>\n";
+                    $the_header .= "   <tr >\n";
                     $the_header .= "        <td class='col-importance-high' colspan='$count_header'><img src='../lib/images/barre.png' style='width:$img_width' ></td>\n";
                     $the_header .= "   </tr>\n";
                 }
             }
             $the_header .= "   <tr>\n";
+            $nbcols_header = count($header_trad) + 3;
             foreach ($header_trad as $nom_col => $trad_col) {
                 $importance = ($dataImportance and is_array($dataImportance)) ? $dataImportance[$nom_col] : '';
                 if ($width_th_arr[$nom_col]) {
@@ -1037,7 +1038,7 @@ class AfwShowHelper
                     $width_th = '';
                 }
 
-                $the_header .= "      <th class='col-importance-$importance th-$nom_col' $width_th align='center'>$trad_col</th>\n";
+                $the_header .= "      <th class='col-importance-$importance th-$nom_col wd$nbcols_header' $width_th align='center'>$trad_col</th>\n";
             }
             $the_header .= "   </tr>\n";
             $the_header .= "   </thead>\n<tbody $id_prop_body>";
@@ -2368,7 +2369,7 @@ class AfwShowHelper
                 }
                 $link_to_display = '';
             } elseif ((strtoupper($structure['DISPLAY']) === 'DISPLAY') or
-                (strtoupper($structure['DISPLAY']) === true)
+                ($structure['DISPLAY'] === true)
             ) {
                 $valObj = $object->get($attribute);
                 if ($valObj) {

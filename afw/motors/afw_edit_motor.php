@@ -90,16 +90,16 @@ class AfwEditMotor
 
         if ($obj) {
             $placeholder = $obj->getAttributeLabel($placeholder_code, $lang, false, false);
-            if($placeholder == $placeholder_code) {
-                $placeholder = "";
-            }
-            
-            if(!$placeholder) $placeholder = $obj->translateMessage($placeholder_code, $lang);
-            if($placeholder == $placeholder_code) {
+            if ($placeholder == $placeholder_code) {
                 $placeholder = "";
             }
 
-            if(AfwStringHelper::stringStartsWith($placeholder, "placeholder-")) {
+            if (!$placeholder) $placeholder = $obj->translateMessage($placeholder_code, $lang);
+            if ($placeholder == $placeholder_code) {
+                $placeholder = "";
+            }
+
+            if (AfwStringHelper::stringStartsWith($placeholder, "placeholder-")) {
                 $placeholder = "";
             }
         } else {
