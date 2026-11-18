@@ -218,8 +218,8 @@ class AfwWizardHelper extends AFWRoot
                                 "&currstep=$parent_step"
                             );
                             $displ2 = trim($displ2);
-                            if (!$displ2 and ($object->getVal($attribute)>0)) {
-                                $displ2 = "?? <!-- case 1 : val = ".$object->getVal($attribute) . " => " . get_class($object) . "->displayAttribute($attribute,false, $lang, &currstep=$parent_step) is empty -->";
+                            if (!$displ2 and ($object->getVal($attribute) > 0)) {
+                                $displ2 = "?? <!-- case 1 : val = " . $object->getVal($attribute) . " => " . get_class($object) . "->displayAttribute($attribute,false, $lang, &currstep=$parent_step) is empty -->";
                             } else {
                                 $displ2 .= "<!-- case 1: " . get_class($object) . "->displayAttribute($attribute,false, $lang, &currstep=$parent_step) -->";
                             }
@@ -229,7 +229,7 @@ class AfwWizardHelper extends AFWRoot
                             }
                         } else {
                             $log = "$attribute attribute has no parent step ";
-                            if($object->getVal($attribute)>0) {
+                            if ($object->getVal($attribute) > 0) {
                                 if ($genereLog) {
                                     $object_otherLinkLog[] = $log;
                                 }
@@ -240,19 +240,17 @@ class AfwWizardHelper extends AFWRoot
                                 );
                                 $displ2 = trim($displ2);
                                 if (!$displ2) {
-                                    $displ2 = "?? <!-- case 2 : val = ".$object->getVal($attribute) . " => " . get_class($object) . "->displayAttribute($attribute,false, $lang) is empty -->";
+                                    $displ2 = "?? <!-- case 2 : val = " . $object->getVal($attribute) . " => " . get_class($object) . "->displayAttribute($attribute,false, $lang) is empty -->";
                                 } else {
                                     $displ2 .= "<!-- case 2 : " . get_class($object) . "->displayAttribute($attribute,false, $lang) -->";
                                 }
-                            }
-                            else {
+                            } else {
                                 $displ2 = null;
                                 $log = "$attribute attribute has no parent step and no value, so no display and no link";
                                 if ($genereLog) {
                                     $object_otherLinkLog[] = $log;
                                 }
                             }
-                            
                         }
 
                         if (!isset($struct['OTM-TITLE'])) {
@@ -349,7 +347,8 @@ class AfwWizardHelper extends AFWRoot
                         $otherLinksArray[] = $link;
                         // if($attribute=="mainwork_start_paragraph_num") die("otherLinksArray = ".var_export($otherLinksArray,true));
                     } else {
-                        $log = "for $attribute attribute display-title or link is missed ($displ2,$link_url2)";
+                        if (!$displ2) $log = "for $attribute attribute display-title is missed";
+                        if (!$link_url2) $log = "for $attribute attribute link is missed";
                         // if($attribute=="mainwork_start_paragraph_num") die($log);
                         if ($genereLog) {
                             $object_otherLinkLog[] = $log;
@@ -409,12 +408,12 @@ class AfwWizardHelper extends AFWRoot
                 AfwSession::contextLog($object_otherLinkLogItem, 'otherLink');
             }
             */
-            /*
-            if(($mode == 'display' or $mode == 'edit') and ($object->getMyClass()=="TrainingUnit"))
-            {
-                die("otherLinksArray = ".var_export($otherLinksArray,true)." this_otherLinkLog : ".implode("<br>",$object_otherLinkLog));
+
+            if (($mode == 'display' or $mode == 'edit')
+                // and ($object->getMyClass() == "TravelBus")
+            ) {
+                // die("getMyClass=" . $object->getMyClass() . " otherLinksArray = " . var_export($otherLinksArray, true) . " this_otherLinkLog : " . implode("<br>", $object_otherLinkLog));
             }
-            */
         }
 
         return $otherLinksArray;
