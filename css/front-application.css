@@ -1709,7 +1709,49 @@ button.bf.hzm-specialmethod {
     margin-left: auto;
 }
 
+th.wd3 {
+    width: 33.3% !important;
+}
 
+th.wd4 {
+    width: 25% !important;
+}
+
+th.wd5 {
+    width: 20% !important;
+}
+
+th.wd6 {
+    width: 16.6% !important;
+}
+
+th.wd7 {
+    width: 14.2% !important;
+}
+
+th.wd8 {
+    width: 12.5% !important;
+}
+
+th.wd9 {
+    width: 11.1% !important;
+}
+
+th.wd10 {
+    width: 10% !important;
+}
+
+th.wd11 {
+    width: 9% !important;
+}
+
+th.wd11 {
+    width: 9% !important;
+}
+
+th.wd12 {
+    width: 8.3% !important;
+}
 
 button.bf.hzm-simplemethod {
     border: 1px #c2b647 solid;
@@ -3312,6 +3354,13 @@ div.qfilter>form>div.btn-group {
 input[type=number].form-control.hzm_numeric {
     font-family: Courrier, Arial !important;
 }*/
+
+input.form-control[type=number].hzm_numeric {
+    width: 70px;
+    max-width: 96px !important;
+    margin: 0 !important;
+    padding: 3px !important;
+}
 
 input[type=number].form-control.hzm_numeric::-webkit-inner-spin-button,
 input[type=number].form-control.hzm_numeric::-webkit-outer-spin-button {

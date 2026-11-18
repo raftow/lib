@@ -56,7 +56,7 @@ class AfwStringHelper
                 return [$new_name, $new_name2, $new_name3];
         }
 
-         /**
+        /**
          * @param string $string_start
          * @param string $stringbody
          */
@@ -77,14 +77,14 @@ class AfwStringHelper
         public static function removeWordFromBeggining($word, $string)
         {
                 $string = trim($string);
-                $prefix = trim($word)." ";
+                $prefix = trim($word) . " ";
                 $return = self::removePrefix($string, $prefix);
 
-                if($return == trim($word)) return "";
+                if ($return == trim($word)) return "";
                 return $return;
         }
 
-         /**
+        /**
          * @param string $prefix
          * @param string $string
          */
@@ -1361,6 +1361,12 @@ class AfwStringHelper
         public static function hardSecureCleanString($string, $urldecode = false)
         {
                 return AfwStringHelper::clean_input($string, $soft = false, $string_is_secure = false, $urldecode);
+        }
+
+        public static function containsHtml($string)
+        {
+                $string2 = strip_tags($string);
+                return ($string2 != $string);
         }
 
 

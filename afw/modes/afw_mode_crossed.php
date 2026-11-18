@@ -222,12 +222,12 @@ if ($nb_objs > 0) {
     }
 
 
-    list($html,) = AfwShowHelper::tableToHtml($data, $header_trad);
+    list($html,) = AfwShowHelper::tableToHtml($data, $header_trad, false, null, null, 'grid crossed');
 
 
 
     CmsMainPage::addOutput($header_bloc_crossed);
-    CmsMainPage::addOutput("<div class='hzm_table_container'>$html</div>");
+    CmsMainPage::addOutput("<div class='hzm_table_container cross-table'>$html</div>");
     CmsMainPage::addOutput("<div class='hzm_table_container'>");
     if ($myMainObject->return_mode) {
         $submit_qedit_title_code = 'UPDATE_AND_RETURN';

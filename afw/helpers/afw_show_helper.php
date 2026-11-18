@@ -1023,12 +1023,13 @@ class AfwShowHelper
                 }
 
                 if ($img_width) {
-                    $the_header .= "   <tr>\n";
+                    $the_header .= "   <tr >\n";
                     $the_header .= "        <td class='col-importance-high' colspan='$count_header'><img src='../lib/images/barre.png' style='width:$img_width' ></td>\n";
                     $the_header .= "   </tr>\n";
                 }
             }
             $the_header .= "   <tr>\n";
+            $nbcols_header = count($header_trad) + 3;
             foreach ($header_trad as $nom_col => $trad_col) {
                 $importance = ($dataImportance and is_array($dataImportance)) ? $dataImportance[$nom_col] : '';
                 if ($width_th_arr[$nom_col]) {
@@ -1037,7 +1038,7 @@ class AfwShowHelper
                     $width_th = '';
                 }
 
-                $the_header .= "      <th class='col-importance-$importance th-$nom_col' $width_th align='center'>$trad_col</th>\n";
+                $the_header .= "      <th class='col-importance-$importance th-$nom_col wd$nbcols_header' $width_th align='center'>$trad_col</th>\n";
             }
             $the_header .= "   </tr>\n";
             $the_header .= "   </thead>\n<tbody $id_prop_body>";
@@ -2330,7 +2331,7 @@ class AfwShowHelper
      */
     public static function showFK($object, $attribute, $value, $lang = 'ar', $structure = null, $getlink = false, $debugg = false)
     {
-        if ($attribute == "college_id") $debugg = true;
+        // if ($attribute == "college_id") $debugg = true;
         // $val_class = $object->getMyClass();
         $link_to_display = '';
         $data_to_display = '';
@@ -2367,9 +2368,7 @@ class AfwShowHelper
                     $data_to_display = '';
                 }
                 $link_to_display = '';
-            } elseif ((strtoupper($structure['DISPLAY']) === 'DISPLAY') or
-                (strtoupper($structure['DISPLAY']) === true)
-            ) {
+            } elseif (strtoupper($structure['DISPLAY']) === 'ONLY-DISPLAY') {
                 $valObj = $object->get($attribute);
                 if ($valObj) {
                     $data_to_display = $valObj->getDisplay($lang);
@@ -2396,14 +2395,26 @@ class AfwShowHelper
                 // if(($attribute == "cher_id") and (!contient(trim(strtolower($data_to_display)),"<img"))) die($object->getDisplay("ar")."rafik::data_to_display=$data_to_display");
                 // if(($attribute == "cher_id") and (!trim($data_to_display))) die($object->getDisplay("ar")."->decode($attribute) empty ->getVal($attribute) = ".$object->getVal($attribute));
                 if ($getlink) {
+                    $the_ans_tab = $structure['ANSWER'];
+                    $the_ans_module = $structure['ANSMODULE'];
                     $link_to_display = $object->getLinkForAttribute(
-                        $structure['ANSWER'],
+                        $the_ans_tab,
                         $value,
                         'display',
-                        $structure['ANSMODULE'],
+                        $the_ans_module,
                         false,
                         $getlink
                     );
+                    /*
+                    $object_class = get_class($object);
+                    die("rafik debugging 17/nov/26 : $link_to_display = $object_class => getLinkForAttribute(
+                        $the_ans_tab,
+                        $value,
+                        'display',
+                        $the_ans_module,
+                        false,
+                        $getlink
+                    );");*/
                 }
             }
         } else {

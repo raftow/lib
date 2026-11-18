@@ -4855,6 +4855,9 @@ class AFWObject extends AFWRoot
             . $this->showAttribute($mode, ['TYPE' => strtoupper($mode)]);
     }*/
 
+    /**
+     * @param string $attribute,
+     */
     public function displayAttribute(
         $attribute,
         $merge = false,
@@ -5283,7 +5286,10 @@ class AFWObject extends AFWRoot
         if (!$auser)
             return $final_other_links_arr;
         $other_links_arr = $this->getOtherLinksArray($mode, $genereLog, $step);
-        // if($mode=="mode_responseList") die("Maintenance is ongoing : this->getOtherLinksArray($mode, $genereLog, $step) => other_links_arr = ".var_export($other_links_arr,true));
+        /*
+        if ($mode == "edit")  die("rafik 2026-11-17 Maintenance is ongoing : 
+              this->getOtherLinksArray($mode, $genereLog, $step) => other_links_arr = " . var_export($other_links_arr, true));
+              */
         $count_other_links_arr = count($other_links_arr);
 
         if ($genereLog) {

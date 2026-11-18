@@ -161,6 +161,9 @@ foreach ($class_db_structure as $key => $structure) {
 $idobj = $obj->getId();
 
 $titre_display = $obj->translate("FILE", $lang, true) . " > " . $obj->singleTranslation($lang) . " > " . $obj->getShortDisplay($lang);
+if (AfwStringHelper::containsHtml($titre_display)) {
+    throw new AfwRuntimeException("getShortDisplay and singleTranslation methods of class " . get_class($obj) . " are not allowed to conatin html code, but getDisplay can");
+}
 
 if ($lang == "ar") $titre_display = AfwStringHelper::truncateArabicJomla($titre_display, 115, $etc = "...");
 
