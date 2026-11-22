@@ -2086,6 +2086,7 @@ table.dataTable td {
 table.display.dataTable.display_ltr {
     direction: ltr;
     float: left;
+    text-align: left;
 }
 
 table.display.dataTable.display_ltr.back_trace {

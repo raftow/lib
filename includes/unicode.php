@@ -1,9 +1,9 @@
 <?php
 
 /**
-* @file
-* Provides Unicode-related conversions and operations.
-*/
+ * @file
+ * Provides Unicode-related conversions and operations.
+ */
 
 /**
  * Indicates an error during check for PHP unicode support.
@@ -45,47 +45,50 @@ define('UNICODE_MULTIBYTE', 1);
  *
  * @see http://unicode.org/glossary
  */
-define('PREG_CLASS_UNICODE_WORD_BOUNDARY',
+define(
+  'PREG_CLASS_UNICODE_WORD_BOUNDARY',
   '\x{0}-\x{2F}\x{3A}-\x{40}\x{5B}-\x{60}\x{7B}-\x{A9}\x{AB}-\x{B1}\x{B4}' .
-  '\x{B6}-\x{B8}\x{BB}\x{BF}\x{D7}\x{F7}\x{2C2}-\x{2C5}\x{2D2}-\x{2DF}' .
-  '\x{2E5}-\x{2EB}\x{2ED}\x{2EF}-\x{2FF}\x{375}\x{37E}-\x{385}\x{387}\x{3F6}' .
-  '\x{482}\x{55A}-\x{55F}\x{589}-\x{58A}\x{5BE}\x{5C0}\x{5C3}\x{5C6}' .
-  '\x{5F3}-\x{60F}\x{61B}-\x{61F}\x{66A}-\x{66D}\x{6D4}\x{6DD}\x{6E9}' .
-  '\x{6FD}-\x{6FE}\x{700}-\x{70F}\x{7F6}-\x{7F9}\x{830}-\x{83E}' .
-  '\x{964}-\x{965}\x{970}\x{9F2}-\x{9F3}\x{9FA}-\x{9FB}\x{AF1}\x{B70}' .
-  '\x{BF3}-\x{BFA}\x{C7F}\x{CF1}-\x{CF2}\x{D79}\x{DF4}\x{E3F}\x{E4F}' .
-  '\x{E5A}-\x{E5B}\x{F01}-\x{F17}\x{F1A}-\x{F1F}\x{F34}\x{F36}\x{F38}' .
-  '\x{F3A}-\x{F3D}\x{F85}\x{FBE}-\x{FC5}\x{FC7}-\x{FD8}\x{104A}-\x{104F}' .
-  '\x{109E}-\x{109F}\x{10FB}\x{1360}-\x{1368}\x{1390}-\x{1399}\x{1400}' .
-  '\x{166D}-\x{166E}\x{1680}\x{169B}-\x{169C}\x{16EB}-\x{16ED}' .
-  '\x{1735}-\x{1736}\x{17B4}-\x{17B5}\x{17D4}-\x{17D6}\x{17D8}-\x{17DB}' .
-  '\x{1800}-\x{180A}\x{180E}\x{1940}-\x{1945}\x{19DE}-\x{19FF}' .
-  '\x{1A1E}-\x{1A1F}\x{1AA0}-\x{1AA6}\x{1AA8}-\x{1AAD}\x{1B5A}-\x{1B6A}' .
-  '\x{1B74}-\x{1B7C}\x{1C3B}-\x{1C3F}\x{1C7E}-\x{1C7F}\x{1CD3}\x{1FBD}' .
-  '\x{1FBF}-\x{1FC1}\x{1FCD}-\x{1FCF}\x{1FDD}-\x{1FDF}\x{1FED}-\x{1FEF}' .
-  '\x{1FFD}-\x{206F}\x{207A}-\x{207E}\x{208A}-\x{208E}\x{20A0}-\x{20B8}' .
-  '\x{2100}-\x{2101}\x{2103}-\x{2106}\x{2108}-\x{2109}\x{2114}' .
-  '\x{2116}-\x{2118}\x{211E}-\x{2123}\x{2125}\x{2127}\x{2129}\x{212E}' .
-  '\x{213A}-\x{213B}\x{2140}-\x{2144}\x{214A}-\x{214D}\x{214F}' .
-  '\x{2190}-\x{244A}\x{249C}-\x{24E9}\x{2500}-\x{2775}\x{2794}-\x{2B59}' .
-  '\x{2CE5}-\x{2CEA}\x{2CF9}-\x{2CFC}\x{2CFE}-\x{2CFF}\x{2E00}-\x{2E2E}' .
-  '\x{2E30}-\x{3004}\x{3008}-\x{3020}\x{3030}\x{3036}-\x{3037}' .
-  '\x{303D}-\x{303F}\x{309B}-\x{309C}\x{30A0}\x{30FB}\x{3190}-\x{3191}' .
-  '\x{3196}-\x{319F}\x{31C0}-\x{31E3}\x{3200}-\x{321E}\x{322A}-\x{3250}' .
-  '\x{3260}-\x{327F}\x{328A}-\x{32B0}\x{32C0}-\x{33FF}\x{4DC0}-\x{4DFF}' .
-  '\x{A490}-\x{A4C6}\x{A4FE}-\x{A4FF}\x{A60D}-\x{A60F}\x{A673}\x{A67E}' .
-  '\x{A6F2}-\x{A716}\x{A720}-\x{A721}\x{A789}-\x{A78A}\x{A828}-\x{A82B}' .
-  '\x{A836}-\x{A839}\x{A874}-\x{A877}\x{A8CE}-\x{A8CF}\x{A8F8}-\x{A8FA}' .
-  '\x{A92E}-\x{A92F}\x{A95F}\x{A9C1}-\x{A9CD}\x{A9DE}-\x{A9DF}' .
-  '\x{AA5C}-\x{AA5F}\x{AA77}-\x{AA79}\x{AADE}-\x{AADF}\x{ABEB}' .
-  '\x{E000}-\x{F8FF}\x{FB29}\x{FD3E}-\x{FD3F}\x{FDFC}-\x{FDFD}' .
-  '\x{FE10}-\x{FE19}\x{FE30}-\x{FE6B}\x{FEFF}-\x{FF0F}\x{FF1A}-\x{FF20}' .
-  '\x{FF3B}-\x{FF40}\x{FF5B}-\x{FF65}\x{FFE0}-\x{FFFD}');
+    '\x{B6}-\x{B8}\x{BB}\x{BF}\x{D7}\x{F7}\x{2C2}-\x{2C5}\x{2D2}-\x{2DF}' .
+    '\x{2E5}-\x{2EB}\x{2ED}\x{2EF}-\x{2FF}\x{375}\x{37E}-\x{385}\x{387}\x{3F6}' .
+    '\x{482}\x{55A}-\x{55F}\x{589}-\x{58A}\x{5BE}\x{5C0}\x{5C3}\x{5C6}' .
+    '\x{5F3}-\x{60F}\x{61B}-\x{61F}\x{66A}-\x{66D}\x{6D4}\x{6DD}\x{6E9}' .
+    '\x{6FD}-\x{6FE}\x{700}-\x{70F}\x{7F6}-\x{7F9}\x{830}-\x{83E}' .
+    '\x{964}-\x{965}\x{970}\x{9F2}-\x{9F3}\x{9FA}-\x{9FB}\x{AF1}\x{B70}' .
+    '\x{BF3}-\x{BFA}\x{C7F}\x{CF1}-\x{CF2}\x{D79}\x{DF4}\x{E3F}\x{E4F}' .
+    '\x{E5A}-\x{E5B}\x{F01}-\x{F17}\x{F1A}-\x{F1F}\x{F34}\x{F36}\x{F38}' .
+    '\x{F3A}-\x{F3D}\x{F85}\x{FBE}-\x{FC5}\x{FC7}-\x{FD8}\x{104A}-\x{104F}' .
+    '\x{109E}-\x{109F}\x{10FB}\x{1360}-\x{1368}\x{1390}-\x{1399}\x{1400}' .
+    '\x{166D}-\x{166E}\x{1680}\x{169B}-\x{169C}\x{16EB}-\x{16ED}' .
+    '\x{1735}-\x{1736}\x{17B4}-\x{17B5}\x{17D4}-\x{17D6}\x{17D8}-\x{17DB}' .
+    '\x{1800}-\x{180A}\x{180E}\x{1940}-\x{1945}\x{19DE}-\x{19FF}' .
+    '\x{1A1E}-\x{1A1F}\x{1AA0}-\x{1AA6}\x{1AA8}-\x{1AAD}\x{1B5A}-\x{1B6A}' .
+    '\x{1B74}-\x{1B7C}\x{1C3B}-\x{1C3F}\x{1C7E}-\x{1C7F}\x{1CD3}\x{1FBD}' .
+    '\x{1FBF}-\x{1FC1}\x{1FCD}-\x{1FCF}\x{1FDD}-\x{1FDF}\x{1FED}-\x{1FEF}' .
+    '\x{1FFD}-\x{206F}\x{207A}-\x{207E}\x{208A}-\x{208E}\x{20A0}-\x{20B8}' .
+    '\x{2100}-\x{2101}\x{2103}-\x{2106}\x{2108}-\x{2109}\x{2114}' .
+    '\x{2116}-\x{2118}\x{211E}-\x{2123}\x{2125}\x{2127}\x{2129}\x{212E}' .
+    '\x{213A}-\x{213B}\x{2140}-\x{2144}\x{214A}-\x{214D}\x{214F}' .
+    '\x{2190}-\x{244A}\x{249C}-\x{24E9}\x{2500}-\x{2775}\x{2794}-\x{2B59}' .
+    '\x{2CE5}-\x{2CEA}\x{2CF9}-\x{2CFC}\x{2CFE}-\x{2CFF}\x{2E00}-\x{2E2E}' .
+    '\x{2E30}-\x{3004}\x{3008}-\x{3020}\x{3030}\x{3036}-\x{3037}' .
+    '\x{303D}-\x{303F}\x{309B}-\x{309C}\x{30A0}\x{30FB}\x{3190}-\x{3191}' .
+    '\x{3196}-\x{319F}\x{31C0}-\x{31E3}\x{3200}-\x{321E}\x{322A}-\x{3250}' .
+    '\x{3260}-\x{327F}\x{328A}-\x{32B0}\x{32C0}-\x{33FF}\x{4DC0}-\x{4DFF}' .
+    '\x{A490}-\x{A4C6}\x{A4FE}-\x{A4FF}\x{A60D}-\x{A60F}\x{A673}\x{A67E}' .
+    '\x{A6F2}-\x{A716}\x{A720}-\x{A721}\x{A789}-\x{A78A}\x{A828}-\x{A82B}' .
+    '\x{A836}-\x{A839}\x{A874}-\x{A877}\x{A8CE}-\x{A8CF}\x{A8F8}-\x{A8FA}' .
+    '\x{A92E}-\x{A92F}\x{A95F}\x{A9C1}-\x{A9CD}\x{A9DE}-\x{A9DF}' .
+    '\x{AA5C}-\x{AA5F}\x{AA77}-\x{AA79}\x{AADE}-\x{AADF}\x{ABEB}' .
+    '\x{E000}-\x{F8FF}\x{FB29}\x{FD3E}-\x{FD3F}\x{FDFC}-\x{FDFD}' .
+    '\x{FE10}-\x{FE19}\x{FE30}-\x{FE6B}\x{FEFF}-\x{FF0F}\x{FF1A}-\x{FF20}' .
+    '\x{FF3B}-\x{FF40}\x{FF5B}-\x{FF65}\x{FFE0}-\x{FFFD}'
+);
 
 /**
  * Wrapper around _unicode_check().
  */
-function unicode_check() {
+function unicode_check()
+{
   list($GLOBALS['multibyte']) = _unicode_check();
 }
 
@@ -100,7 +103,8 @@ function unicode_check() {
  * @param $errors
  *   Whether to report any fatal errors with form_set_error().
  */
-function _unicode_check() {
+function _unicode_check()
+{
   // Ensure translations don't break during installation.
 
 
@@ -136,7 +140,8 @@ function _unicode_check() {
 /**
  * Returns Unicode library status and errors.
  */
-function unicode_requirements() {
+function unicode_requirements()
+{
   // Ensure translations don't break during installation.
 
 
@@ -186,7 +191,8 @@ function unicode_requirements() {
  *
  * @ingroup php_wrappers
  */
-function hzm_xml_parser_create(&$data) {
+function hzm_xml_parser_create(&$data)
+{
   // Default XML encoding is UTF-8
   $encoding = 'utf-8';
   $bom = FALSE;
@@ -209,8 +215,7 @@ function hzm_xml_parser_create(&$data) {
     if ($out !== FALSE) {
       $encoding = 'utf-8';
       $data = preg_replace('/^(<\?xml[^>]+encoding)="(.+?)"/', '\\1="utf-8"', $out);
-    }
-    else {
+    } else {
       // AfwRunHelper::afw_guard('php', 'Could not convert XML encoding %s to UTF-8.', array('%s' => $encoding), WATCHDOG_WARNING);
       return FALSE;
     }
@@ -234,18 +239,17 @@ function hzm_xml_parser_create(&$data) {
  * @return mixed
  *   Converted data or FALSE.
  */
-function hzm_convert_to_utf8($data, $encoding) {
+function hzm_convert_to_utf8($data, $encoding)
+{
   if (function_exists('iconv')) {
     $out = @iconv($encoding, 'utf-8', $data);
-  }
-  elseif (function_exists('mb_convert_encoding')) {
+  } elseif (function_exists('mb_convert_encoding')) {
     $out = @mb_convert_encoding($data, 'utf-8', $encoding);
   }
   /*
   elseif (function_exists('recode_string')) {
     $out = @recode_string($encoding . '..utf-8', $data);
-  }*/
-  else {
+  }*/ else {
     // AfwRunHelper::afw_guard('php', 'Unsupported encoding %s. Please install iconv, GNU recode or mbstring for PHP.', array('%s' => $encoding), WATCHDOG_ERROR);
     return FALSE;
   }
@@ -269,10 +273,11 @@ function hzm_convert_to_utf8($data, $encoding) {
  * @param $len
  *   An upper limit on the returned string length.
  *
- * @return
+ * @return string
  *   The truncated string.
  */
-function hzm_truncate_bytes($string, $len) {
+function hzm_truncate_bytes($string, $len)
+{
   if (strlen($string) <= $len) {
     return $string;
   }
@@ -319,7 +324,8 @@ function hzm_truncate_bytes($string, $len) {
  * @return string
  *   The truncated string.
  */
-function truncate_utf8($string, $max_length, $wordsafe = FALSE, $add_ellipsis = FALSE, $min_wordsafe_length = 1) {
+function truncate_utf8($string, $max_length, $wordsafe = FALSE, $add_ellipsis = FALSE, $min_wordsafe_length = 1)
+{
   $ellipsis = '';
   $max_length = max($max_length, 0);
   $min_wordsafe_length = max($min_wordsafe_length, 0);
@@ -349,12 +355,10 @@ function truncate_utf8($string, $max_length, $wordsafe = FALSE, $add_ellipsis = 
     $found = preg_match('/^(.{' . $min_wordsafe_length . ',' . $max_length . '})[' . PREG_CLASS_UNICODE_WORD_BOUNDARY . ']/u', $string, $matches);
     if ($found) {
       $string = $matches[1];
-    }
-    else {
+    } else {
       $string = hzm_substr($string, 0, $max_length);
     }
-  }
-  else {
+  } else {
     $string = hzm_substr($string, 0, $max_length);
   }
 
@@ -379,7 +383,7 @@ function truncate_utf8($string, $max_length, $wordsafe = FALSE, $add_ellipsis = 
  * - Using \n as the chunk separator may cause problems on some systems and may
  *   have to be changed to \r\n or \r.
  *
- * @param $string
+ * @param string $string
  *   The header to encode.
  *
  * @return string
@@ -387,7 +391,8 @@ function truncate_utf8($string, $max_length, $wordsafe = FALSE, $add_ellipsis = 
  *
  * @see mime_header_decode()
  */
-function mime_header_encode($string) {
+function mime_header_encode($string)
+{
   if (preg_match('/[^\x20-\x7E]/', $string)) {
     $chunk_size = 47; // floor((75 - strlen("=?UTF-8?B??=")) * 0.75);
     $len = strlen($string);
@@ -415,7 +420,8 @@ function mime_header_encode($string) {
  *
  * @see mime_header_encode()
  */
-function mime_header_decode($header) {
+function mime_header_decode($header)
+{
   // First step: encoded chunks followed by other encoded chunks (need to collapse whitespace)
   $header = preg_replace_callback('/=\?([^?]+)\?(Q|B)\?([^?]+|\?(?!=))\?=\s+(?==\?)/', '_mime_header_decode', $header);
   // Second step: remaining chunks (do not collapse whitespace)
@@ -435,7 +441,8 @@ function mime_header_decode($header) {
  *
  * @see mime_header_decode()
  */
-function _mime_header_decode($matches) {
+function _mime_header_decode($matches)
+{
   // Regexp groups:
   // 1: Character set name
   // 2: Escaping method (Q or B)
@@ -460,7 +467,8 @@ function _mime_header_decode($matches) {
  * @return string
  *   The input $text, with all HTML entities decoded once.
  */
-function decode_entities($text) {
+function decode_entities($text)
+{
   return html_entity_decode($text, ENT_QUOTES, 'UTF-8');
 }
 
@@ -477,12 +485,12 @@ function decode_entities($text) {
  *
  * @ingroup php_wrappers
  */
-function hzm_strlen($text) {
+function hzm_strlen($text)
+{
   global $multibyte;
   if ($multibyte == UNICODE_MULTIBYTE) {
     return mb_strlen($text);
-  }
-  else {
+  } else {
     // Do not count UTF-8 continuation bytes.
     return strlen(preg_replace("/[\x80-\xBF]/", '', $text));
   }
@@ -499,12 +507,12 @@ function hzm_strlen($text) {
  *
  * @ingroup php_wrappers
  */
-function hzm_strtoupper($text) {
+function hzm_strtoupper($text)
+{
   global $multibyte;
   if ($multibyte == UNICODE_MULTIBYTE) {
     return mb_strtoupper($text);
-  }
-  else {
+  } else {
     // Use C-locale for ASCII-only uppercase
     $text = strtoupper($text);
     // Case flip Latin-1 accented letters
@@ -524,12 +532,12 @@ function hzm_strtoupper($text) {
  *
  * @ingroup php_wrappers
  */
-function hzm_strtolower($text) {
+function hzm_strtolower($text)
+{
   global $multibyte;
   if ($multibyte == UNICODE_MULTIBYTE) {
     return mb_strtolower($text);
-  }
-  else {
+  } else {
     // Use C-locale for ASCII-only lowercase
     $text = strtolower($text);
     // Case flip Latin-1 accented letters
@@ -549,14 +557,15 @@ function hzm_strtolower($text) {
  *
  * @see hzm_strtolower()
  */
-function _unicode_caseflip($matches) {
+function _unicode_caseflip($matches)
+{
   return $matches[0][0] . chr(ord($matches[0][1]) ^ 32);
 }
 
 /**
  * Capitalizes the first letter of a UTF-8 string.
  *
- * @param $text
+ * @param string $text
  *   The string to convert.
  *
  * @return
@@ -564,7 +573,8 @@ function _unicode_caseflip($matches) {
  *
  * @ingroup php_wrappers
  */
-function hzm_ucfirst($text) {
+function hzm_ucfirst($text)
+{
   // Note: no mbstring equivalent!
   return hzm_strtoupper(hzm_substr($text, 0, 1)) . hzm_substr($text, 1);
 }
@@ -576,31 +586,32 @@ function hzm_ucfirst($text) {
  * cutting off a string at a known character/substring location, the usage of
  * PHP's normal strpos/substr is safe and much faster.
  *
- * @param $text
+ * @param string $text
  *   The input string.
- * @param $start
+ * @param int $start
  *   The position at which to start reading.
- * @param $length
+ * @param int $length
  *   The number of characters to read.
  *
- * @return
+ * @return string
  *   The shortened string.
  *
  * @ingroup php_wrappers
  */
-function hzm_substr($text, $start, $length = NULL) {
+function hzm_substr($text, $start, $length = NULL)
+{
   global $multibyte;
   if ($multibyte == UNICODE_MULTIBYTE) {
     return $length === NULL ? mb_substr($text, $start) : mb_substr($text, $start, $length);
-  }
-  else {
+  } else {
     $strlen = strlen($text);
     // Find the starting byte offset.
     $bytes = 0;
     if ($start > 0) {
       // Count all the continuation bytes from the start until we have found
       // $start characters or the end of the string.
-      $bytes = -1; $chars = -1;
+      $bytes = -1;
+      $chars = -1;
       while ($bytes < $strlen - 1 && $chars < $start) {
         $bytes++;
         $c = ord($text[$bytes]);
@@ -608,12 +619,12 @@ function hzm_substr($text, $start, $length = NULL) {
           $chars++;
         }
       }
-    }
-    elseif ($start < 0) {
+    } elseif ($start < 0) {
       // Count all the continuation bytes from the end until we have found
       // abs($start) characters.
       $start = abs($start);
-      $bytes = $strlen; $chars = 0;
+      $bytes = $strlen;
+      $chars = 0;
       while ($bytes > 0 && $chars < $start) {
         $bytes--;
         $c = ord($text[$bytes]);
@@ -627,8 +638,7 @@ function hzm_substr($text, $start, $length = NULL) {
     // Find the ending byte offset.
     if ($length === NULL) {
       $iend = $strlen;
-    }
-    elseif ($length > 0) {
+    } elseif ($length > 0) {
       // Count all the continuation bytes from the starting index until we have
       // found $length characters or reached the end of the string, then
       // backtrace one byte.
@@ -649,12 +659,12 @@ function hzm_substr($text, $start, $length = NULL) {
       if ($last_real && $chars >= $length) {
         $iend--;
       }
-    }
-    elseif ($length < 0) {
+    } elseif ($length < 0) {
       // Count all the continuation bytes from the end until we have found
       // abs($start) characters, then backtrace one byte.
       $length = abs($length);
-      $iend = $strlen; $chars = 0;
+      $iend = $strlen;
+      $chars = 0;
       while ($iend > 0 && $chars < $length) {
         $iend--;
         $c = ord($text[$iend]);
@@ -666,8 +676,7 @@ function hzm_substr($text, $start, $length = NULL) {
       if ($iend > 0) {
         $iend--;
       }
-    }
-    else {
+    } else {
       // $length == 0, return an empty string.
       return '';
     }

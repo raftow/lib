@@ -5123,3 +5123,8 @@ hr.separator {
 .footer-ad {
     font-size: 17px;
 }
+
+table.dataTable.display_ltr tbody th,
+table.dataTable.display_ltr tbody td {
+    text-align: left !important;
+}

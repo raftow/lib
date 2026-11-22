@@ -1,6 +1,3 @@
 <?php
 
-class AfwModeException extends AfwRuntimeException
-{
-    
-}
+class AfwModeException extends AfwRuntimeException {}
