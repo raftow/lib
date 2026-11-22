@@ -5129,3 +5129,8 @@ hr.separator {
     height: 100px;
     flex-basis: 100px;
 }
+
+table.dataTable.display_ltr tbody th,
+table.dataTable.display_ltr tbody td {
+    text-align: left !important;
+}

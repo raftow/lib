@@ -2325,6 +2325,16 @@ class AFWObject extends AFWRoot
     }
 
     /**
+     * printAttribute (same but more simple than decode)
+     * Decode an attribute switch his type and display it through a specified format
+     * @param string $attribute
+     */
+    public function printAttribute($attribute, $lang = 'ar')
+    {
+        return $this->decode($attribute, $format = '', $integrity = false, $lang);
+    }
+
+    /**
      * decode
      * Decode an attribute switch his type and display it through a specified format
      * @param string $attribute

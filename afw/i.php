@@ -1,99 +1,95 @@
 <?php
-$request_entry_file = dirname(__FILE__)."/request_entry.php";
+$request_entry_file = dirname(__FILE__) . "/request_entry.php";
 require_once($request_entry_file);
 
 /**
  * @var string $controllerName
  * @var string $methodName
  * @var array $request
+ * 
  */
 
 $controllerObj = null;
 $controllerObjError = "";
 $prepareMethodName = "";
-if(!$request) $request = [];
+if (!$request) $request = [];
 // throw new AfwRuntimeException("test eh03");
 $devMode = AfwSession::config('MODE_DEVELOPMENT', false);
-if(!$controllerName) $controllerName = AfwSession::config("default_controller_name", "");
-if($controllerName)
-{
-        $ControllerClass = ucfirst($controllerName)."Controller";                        
+if (!$controllerName) $controllerName = AfwSession::config("default_controller_name", "");
+if ($controllerName) {
+        $ControllerClass = ucfirst($controllerName) . "Controller";
         //$module = "unknown-module";
         $iexception = null;
-        try{
-                $controllerObj = new $ControllerClass ($request);
+        try {
+                /**
+                 * @var AfwController $controllerObj
+                 */
+                $controllerObj = new $ControllerClass($request);
                 $viewType = $controllerObj->viewType();
                 $old_request = $request;
-                
-                $defaultMethod = $controllerObj->defaultMethod($request);                
-                if(!$methodName)                         
-                {                        
+
+                $defaultMethod = $controllerObj->defaultMethod($request);
+                if (!$methodName) {
                         $methodName = $defaultMethod;
-                }        
-                $prepareMethodName = "prepare".ucfirst($methodName);
-                $initiateMethodName = "initiate".ucfirst($methodName);
+                }
+                $prepareMethodName = "prepare" . ucfirst($methodName);
+                $initiateMethodName = "initiate" . ucfirst($methodName);
                 $request["controllerObj"] = $controllerObj;
                 $request["methodName"] = $methodName;
-                
 
-                if($controllerObj->alwaysNeedPrepare($request) or method_exists($controllerObj, $prepareMethodName)) $custom_scripts = $controllerObj->$prepareMethodName($request);
-                if(method_exists($controllerObj, $initiateMethodName)) $request = $controllerObj->$initiateMethodName($request);
+
+                if ($controllerObj->alwaysNeedPrepare($request) or method_exists($controllerObj, $prepareMethodName)) $custom_scripts = $controllerObj->$prepareMethodName($request);
+                if (method_exists($controllerObj, $initiateMethodName)) $request = $controllerObj->$initiateMethodName($request);
                 // if method can't be initialized
-                if(!$request) 
-                {
+                if (!$request) {
                         // if dev mode
-                        if($devMode)
-                        {
-                                if(method_exists($controllerObj, $initiateMethodName)) {
-                                        $error_message = $controllerName."Controller->$initiateMethodName doen't return a correct request array";
-                                }
-                                else {
+                        if ($devMode) {
+                                if (method_exists($controllerObj, $initiateMethodName)) {
+                                        $error_message = $controllerName . "Controller->$initiateMethodName doen't return a correct request array";
+                                } else {
                                         $error_message = "Check your fie : $request_entry_file and check why he doesn't initiate the request array";
                                 }
                                 throw new AfwRuntimeException($error_message);
-                        }
-                        else
-                        {
+                        } else {
                                 // we return back to default method
-                                $methodName = $defaultMethod;  
+                                $methodName = $defaultMethod;
                                 $request = $old_request;
                         }
-                        
                 }
-        }
-        catch(Exception $e) 
-        {
+        } catch (AfwAuthenticationException $ae) {
+                if ($controllerObj) {
+                        $controllerObj->checkLoggedIn();
+                } else {
+                        $conObj = new AfwController([]);
+                        $conObj->renderErrorAndLogOut("Session expired", "index.php");
+                }
+        } catch (Exception $e) {
                 $iexception = $e;
-                $controllerObjError = $e->getMessage()." ".$e->getTraceAsString();
+                $controllerObjError = $e->getMessage() . " " . $e->getTraceAsString();
                 // throw new AfwRuntimeException("test eh04");
                 //$controllerObj = null;
-                
+
                 /*
                 
                 else $controllerObjError = "Disabled because of non dev mode";*/
         }
 
-        
-        if(!$controllerObj)
-        {
+
+        if (!$controllerObj) {
                 $iexception = new AfwRuntimeException("failed to instanciate controller $controllerName : $controllerObjError");
-        }
-        elseif($controllerObjError)
-        {
-                if(!AfwSession::config("MODE_DEVELOPMENT", false) or !$iexception) 
-                        $iexception = new AfwRuntimeException("Controller $controllerName (".get_class($controllerObj).") prepare/initiate failed : $controllerObjError");
-        }
-        elseif(!method_exists($controllerObj,$methodName))
-        {
-                $iexception = new AfwRuntimeException("Controller $controllerName (".get_class($controllerObj).") does'nt contain method (".$methodName.")");
+        } elseif ($controllerObjError) {
+                if (!AfwSession::config("MODE_DEVELOPMENT", false) or !$iexception)
+                        $iexception = new AfwRuntimeException("Controller $controllerName (" . get_class($controllerObj) . ") prepare/initiate failed : $controllerObjError");
+        } elseif (!method_exists($controllerObj, $methodName)) {
+                $iexception = new AfwRuntimeException("Controller $controllerName (" . get_class($controllerObj) . ") does'nt contain method (" . $methodName . ")");
         }
 
-        if($iexception) throw $iexception;
-        
+        if ($iexception) throw $iexception;
+
 
         $request["controllerObj"] = $controllerObj;
         $request["methodName"] = $methodName;
-        
+
         $options = $controllerObj->prepareOptions($methodName);
         $options["other-js-arr"] = [];
         $options["other-css-arr"] = [];
@@ -102,37 +98,22 @@ if($controllerName)
                         $options["other-css-arr"][] = $custom_script["path"];
                 } elseif ($custom_script["type"] == "js") {
                         $options["other-js-arr"][] = $custom_script["path"];
-                } else throw new AfwRuntimeException("Custom script ".$custom_script["path"] . " has unknown type, review your controller prepare method : $prepareMethodName ");
+                } else throw new AfwRuntimeException("Custom script " . $custom_script["path"] . " has unknown type, review your controller prepare method : $prepareMethodName ");
         }
         $options["controllerObj"] = $controllerObj;
-        if($viewType=="standard")
-        {
-                list($html_hedear, $page_header_file, $page_footer_file) = $controllerObj->myViewSettings($methodName);                        
+        if ($viewType == "standard") {
+                list($html_hedear, $page_header_file, $page_footer_file) = $controllerObj->myViewSettings($methodName);
                 //die("custom_scripts=".var_export($custom_scripts,true));
                 // die("rafik see : will include once ".dirname(__FILE__)."/../../$page_header_file with \$html_hedear =".var_export($html_hedear,true));
-                include_once (dirname(__FILE__)."/../../$page_header_file");
+                include_once(dirname(__FILE__) . "/../../$page_header_file");
                 echo AfwControllerHelper::showControllerPage($controllerObj, $controllerName, $methodName, $request, true, $options);
-                include_once (dirname(__FILE__)."/../../$page_footer_file");
-        }
-        elseif($viewType=="empty")
-        {
+                include_once(dirname(__FILE__) . "/../../$page_footer_file");
+        } elseif ($viewType == "empty") {
                 //
-        }                
-        else
-        {
+        } else {
                 // this code below is not clear for me @toreview
                 // list($module, $is_direct, $page, $page_path, $options) = $controllerObj->myNewViewSettings($methodName);                        
                 // if($methodName=="survey_request") die("AfwControllerHelper::showControllerPage($ControllerClass controllerObj, $controllerName, methodName=$methodName, request=".var_export($request,true).", false, options=".var_export($options,true).")");
                 echo AfwControllerHelper::showControllerPage($controllerObj, $controllerName, $methodName, $request, false, $options);
         }
-        
-        
-
-        
-
-        
-
-}
-else die("controller name not defined, please define it or define default controller");
-
-?>
+} else die("controller name not defined, please define it or define default controller");
