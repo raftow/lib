@@ -12,6 +12,7 @@ require_once($request_entry_file);
 $controllerObj = null;
 $controllerObjError = "";
 $prepareMethodName = "";
+$viewType = "standard";
 if (!$request) $request = [];
 // throw new AfwRuntimeException("test eh03");
 $devMode = AfwSession::config('MODE_DEVELOPMENT', false);

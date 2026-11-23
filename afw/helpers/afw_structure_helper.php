@@ -629,8 +629,8 @@ class AfwStructureHelper extends AFWRoot
     // attribute can be modified by user in standard HZM-UMS model
     public static final function attributeCanBeModifiedBy(&$object, $attribute, $user, $desc)
     {
-        // self::lookIfInfiniteLoop(30000, "attribute-CanBeModifiedBy-$attribute");
-        global $display_in_edit_mode;
+        self::lookIfInfiniteLoop(30000, "attribute-CanBeModifiedBy-$attribute");
+        $display_in_edit_mode = true;
         // $objme = AfwSession::getUserConnected();
         $desc = AfwStructureHelper::fixStructureOf($object, $attribute, $desc);
 
@@ -642,7 +642,7 @@ class AfwStructureHelper extends AFWRoot
             // die("desc of $attribute ". var_export($desc,true));
             $desc['EDIT'] = true;
             $desc['READONLY'] = false;
-        } elseif ($display_in_edit_mode['*'] and $desc['SHOW']) {
+        } elseif ($display_in_edit_mode and $desc['SHOW']) {
             if (!$desc['EDIT']) {
                 $desc['EDIT'] = true;
                 $desc['READONLY'] = 'because EDIT is false when SHOW is true';

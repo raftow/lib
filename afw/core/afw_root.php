@@ -53,14 +53,43 @@ class AFWRoot
                 return "PM-NOT-OVERRIDDEN";
         }
 
-        public static function lookIfInfiniteLoop($maxAuthorized = 20000, $case = "all")
+        public static function lookIfInfiniteLoop($maxAuthorized = 20000, $case = "all", $tracePickerModulo=77, $debugg_loop=true)
         {
                 global $onces;
                 if (!$onces) $onces = array();
                 if (!$onces[$case]) $onces[$case] = 1;
                 else $onces[$case]++;
+
+                $debugg = false;
+
+                $maxBeforePick = round(0.7*$maxAuthorized);
+                if ($onces[$case] > $maxBeforePick) {
+                        $debugg = $debugg_loop;
+                }
                 if ($onces[$case] > $maxAuthorized) {
-                        AfwRunHelper::safeDie("called $maxAuthorized times seems like infinite loop for case '$case'");
+                        throw new AfwRuntimeException("called $maxAuthorized times seems like infinite loop for case '$case'");
+                }
+
+                if($debugg_loop) {
+                        if($tracePickerModulo) $pick_modulo = $onces[$case] % $tracePickerModulo;
+                        else $pick_modulo = 1;                        
+                        $debugg = ($pick_modulo==1);
+                }
+
+                if($debugg) {
+
+                        if($onces[$case]==1) {
+                                AFWDebugg::initialiser('', "case-$case.log");
+                                AFWDebugg::setEnabled(true);
+                        }
+
+                        $log = "case : " . $onces[$case];
+                        AFWDebugg::log($log, false, true, true);
+
+                        $trace_arr = AfwRunHelper::show_trace_as_string($max_trace = 50, $returnArray = true);
+                        foreach($trace_arr as $trace_log) {
+                              AFWDebugg::log($trace_log, false, true, false);
+                        }
                 }
         }
 }

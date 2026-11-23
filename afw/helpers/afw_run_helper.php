@@ -1,12 +1,29 @@
 <?php
 class AfwRunHelper
 {
-        public static function show_back_trace($light = false)
+        public static function show_trace_as_string($max_trace = 50, $returnArray = false)
         {
-                $lang = AfwLanguageHelper::getGlobalLanguage();
+                $backtrace = debug_backtrace(1, $max_trace);
+
+                $result = "";
+
+                foreach ($backtrace as $entry) {
+                        $result .= AfwStringHelper::right_complete_len($entry['function'], 30, " ", true);
+                        $result .= AfwStringHelper::right_complete_len($entry['file'], 96, " ", true);
+                        $result .= AfwStringHelper::right_complete_len($entry['line'], 6, " ", true);
+                        $result .= "\n";
+                }
+
+                if($returnArray) return explode("\n",  $result);
+
+                return $result;
+        }
+
+        public static function show_back_trace($light = false, $max_trace = 50)
+        {
+                // $lang = AfwLanguageHelper::getGlobalLanguage();
                 // $light=true; // otherwise sometime loop infite
                 if ($light) $max_trace = 20;
-                else $max_trace = 50;
                 $backtrace = debug_backtrace(1, $max_trace);
                 $html = "<table dir='ltr' style='width:100%' class='display dataTable display_ltr back_trace'>
                         <tr>

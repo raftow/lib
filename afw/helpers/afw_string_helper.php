@@ -430,10 +430,24 @@ class AfwStringHelper
                 return false;
         }
 
-        public static function left_complete_len($str, $new_len, $complete_with_char = "0")
+        public static function left_complete_len(string $str, int $new_len, $complete_with_char = "0", $truncateIfMore=false)
         {
+                if($truncateIfMore and (strlen($str) > $new_len)) {
+                        $str = substr($str,0,$new_len);
+                }
                 while (strlen($str) < $new_len) {
                         $str = $complete_with_char . $str;
+                }
+                return $str;
+        }
+
+        public static function right_complete_len(string $str, int $new_len, $complete_with_char = " ", $truncateIfMore=false)
+        {
+                if($truncateIfMore and (strlen($str) > $new_len)) {
+                        $str = substr($str,0,$new_len);
+                }
+                while (strlen($str) < $new_len) {
+                        $str = $str . $complete_with_char;
                 }
                 return $str;
         }

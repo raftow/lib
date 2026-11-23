@@ -3,19 +3,19 @@
 class AFWDebugg {
 
     private static $debugg = array();
-    private static $fileName;
-    private static $pathName;   
-    private static $modeBatch; 
+    private static string $fileName;
+    private static string $pathName;   
+    private static string $modeBatch; 
     private static $enabled = true;
     private static $nl = "\n";
     private static $sl = "";
     private static $el = "";
     private static $sep = "/";
 
-    public static function initialiser($pathName,$fileName) {
+    public static function initialiser(string $pathName, string $fileName) {
         if(!$pathName) self::defaultLogPath();
         self::$pathName = ($pathName) ? $pathName : '';
-        self::$fileName = ($fileName) ? $fileName : 'debugg.txt';
+        self::$fileName = ($fileName) ? $fileName : 'debugg.log';
         self::$modeBatch = false;
         self::log(" --------------- Debut session : ".date("Y-m-d H:i:s")." --------------- ");
     }    
@@ -27,12 +27,13 @@ class AFWDebugg {
          return $logfile;
     } 
     
-    public static function log($var, $varexport=false) 
+    public static function log(mixed $varToLog, $varexport=false, $throw_error = true, $addTimePrefix=true) 
     {       
        
         if(!self::$enabled) return;
 
-        if($varexport) $var = var_export($var,true);
+        if($varexport) $var = var_export($varToLog,true);
+        else $var = $varToLog;
         
         if(self::$modeBatch) 
         {
@@ -51,9 +52,14 @@ class AFWDebugg {
                 
                 if($logfile and ($logfile != "/"))
                 {
-                    $wrt = UfwFileSystem::write($logfile, $var."\n", 'append');
-                    if(AfwSession::config("MODE_DEVELOPMENT", false) and ($var and !$wrt)) die("failed to write [$var] to [$logfile]<br>");
+                    if($addTimePrefix) $prefix = date('d/m/Y H:i:s')." ";
+                    else $prefix = "";
+                    $wrt = UfwFileSystem::write($logfile, $prefix.$var."\n", 'append');
+                    if($throw_error and ($var and !$wrt)) throw new AfwRuntimeException("AFWDebugg::log has failed to write [$var] to [$logfile]");
                 }
+                else {
+                    if($throw_error) throw new AfwRuntimeException("AFWDebugg::log has failed because no log-file name defined");                    
+                } 
                 
                 
                 //@todourgent if($var and !$wrt) die("failed to write [$var] to [$logfile]<br>");
