@@ -193,16 +193,18 @@ class AfwHtmlHelper extends AFWRoot
                         $tab_id = $attribute . $itab;
                         $tab_retieve_label = $tab_label_arr[$tab_retieve];
                         if ($itab == 0) {
-                                $tab_active =
-                                " class='hzm-tab active'";
+                                $active_or_not = "active";
                         } else {
-                                $tab_active = " class='hzm-tab'";
+                                $active_or_not = "";
                         }
+                        $tab_active = " class='hzm-tab $attribute tab$tab_id $active_or_not'";
                         if ($itab == 0) {
                                 $div_tab_active = ' in active';
                         } else {
                                 $div_tab_active = '';
                         }
+
+                        
 
                         $data_to_display .= "   <li $tab_active><a data-toggle='tab' href='#tab$tab_id' class='hzm-tab-link'>$tab_retieve_label</a></li>\n";
                         $div_tabs .= "<div id='tab$tab_id' class='tab-pane fade $div_tab_active'>\n";
