@@ -197,7 +197,7 @@ class AfwHtmlHelper extends AFWRoot
                         } else {
                                 $active_or_not = "";
                         }
-                        $tab_active = " class='hzm-tab $attribute tab$tab_id $active_or_not'";
+                        $tab_active = " class='hzm-tab $attribute $tab_retieve $active_or_not'";
                         if ($itab == 0) {
                                 $div_tab_active = ' in active';
                         } else {
@@ -207,7 +207,7 @@ class AfwHtmlHelper extends AFWRoot
                         
 
                         $data_to_display .= "   <li $tab_active><a data-toggle='tab' href='#tab$tab_id' class='hzm-tab-link'>$tab_retieve_label</a></li>\n";
-                        $div_tabs .= "<div id='tab$tab_id' class='tab-pane fade $div_tab_active'>\n";
+                        $div_tabs .= "<div id='tab$tab_id' class='tab-pane fade $div_tab_active $tab_retieve'>\n";
                         $div_tabs .=
                                 $html_tab_retrieve . "\n";
                         $div_tabs .= "</div>\n";
