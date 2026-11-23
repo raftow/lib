@@ -144,13 +144,17 @@ class AfwStepsController extends AfwRichController
 
         private function saveData($request, $step_inc = 1)
         {
-                if ($this->checkLoggedIn()) {
-                        $request = $this->saveMyData($request, $request["current_step"]);
-                        $request["current_step"] = intval($request["current_step"]) + $step_inc;
-                        if ($request["current_step"] < 1) $request["current_step"] = 1;
-                        if ($request["current_step"] > $this->maxSteps()) $request["current_step"] = $this->maxSteps();
-                        return $request;
-                }
+                //if ($this->checkLoggedIn()) {
+                $log = "";
+                $request = $this->saveMyData($request, $request["current_step"]);
+                $log .= "current_step was " . $request["current_step"] . "\n";
+                $request["current_step"] = intval($request["current_step"]) + $step_inc;
+                $log .= "current_step become " . $request["current_step"] . "\n";
+                //die("log rafik 261123 : $log");
+                if ($request["current_step"] < 1) $request["current_step"] = 1;
+                if ($request["current_step"] > $this->maxSteps()) $request["current_step"] = $this->maxSteps();
+                return $request;
+                //}
         }
 
         public function save_and_next($request)
