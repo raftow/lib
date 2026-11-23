@@ -1,4 +1,5 @@
 <?php
+try {
 
 $afw_dir_name = dirname(__FILE__) . "/../afw";
 set_time_limit(8400);
@@ -37,6 +38,7 @@ $lang = AfwLanguageHelper::getGlobalLanguage();
 AfwSession::startSession();
 require_once("$afw_dir_name/../../config/global_config.php");
 
+$devMode = AfwSession::config('MODE_DEVELOPMENT', false);
 // die(var_export($attr_arr,true));
 
 
@@ -153,3 +155,15 @@ foreach ($liste_rep as $iditem => $item) {
 //echo AfwSession::getLog();
 
 echo json_encode($response_arr);
+}
+catch(Exception $e) {        
+        if($devMode) {
+                throw $e;
+        }
+        else {
+                $cd = $e->getCode();
+                $ln = $e->getLine();
+                $fle = AfwStringHelper::hzmEncode($e->getFile());
+                echo "An error REF-ANSTAB-CD$cd-LN$ln-FL$fle occured please contact your Admin";
+        }
+}

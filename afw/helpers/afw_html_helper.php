@@ -177,6 +177,48 @@ class AfwHtmlHelper extends AFWRoot
                 } else return ["", $picture_help_html];
         }
 
+        /**
+         * @param string $attribute
+         * @param array $html_tab_arr
+         * @param array $tab_label_arr
+         */
+
+        public static function genereHtmlTabs($attribute, $html_tab_arr, $tab_label_arr)
+        {
+                $data_to_display = "<ul class='nav nav-tabs'>\n";
+                $div_tabs = "<div class='tab-content'>\n";
+
+                $itab = 0;
+                foreach ($html_tab_arr as $tab_retieve => $html_tab_retrieve) {
+                        $tab_id = $attribute . $itab;
+                        $tab_retieve_label = $tab_label_arr[$tab_retieve];
+                        if ($itab == 0) {
+                                $tab_active =
+                                " class='hzm-tab active'";
+                        } else {
+                                $tab_active = " class='hzm-tab'";
+                        }
+                        if ($itab == 0) {
+                                $div_tab_active = ' in active';
+                        } else {
+                                $div_tab_active = '';
+                        }
+
+                        $data_to_display .= "   <li $tab_active><a data-toggle='tab' href='#tab$tab_id' class='hzm-tab-link'>$tab_retieve_label</a></li>\n";
+                        $div_tabs .= "<div id='tab$tab_id' class='tab-pane fade $div_tab_active'>\n";
+                        $div_tabs .=
+                                $html_tab_retrieve . "\n";
+                        $div_tabs .= "</div>\n";
+                        $itab++;
+                }
+                $data_to_display .= "</ul>\n";
+                $div_tabs .= "</div>\n";
+                $data_to_display .= $div_tabs;
+
+                return $data_to_display;
+
+        }
+
 
         public static function genereBulles($arr_bulles)
         {

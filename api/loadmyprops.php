@@ -1,4 +1,6 @@
 <?php
+try {
+
 
 $afw_dir_name = dirname(__FILE__)."../afw";
 require_once($afw_dir_name.'/core/afw_autoloader.php');
@@ -10,6 +12,7 @@ ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERRO
 $lang = AfwLanguageHelper::getGlobalLanguage();
 // old include of afw.php
 
+$devMode = AfwSession::config('MODE_DEVELOPMENT', false);
 
 $attr_arr = array();
 $relative_path = "../";
@@ -204,5 +207,16 @@ foreach ($liste_rep as $iditem => $item)
 
 
 echo json_encode($response_arr);
-
+}
+catch(Exception $e) {        
+        if($devMode) {
+                throw $e;
+        }
+        else {
+                $cd = $e->getCode();
+                $ln = $e->getLine();
+                $fle = AfwStringHelper::hzmEncode($e->getFile());
+                echo "An error REF-PROPS-CD$cd-LN$ln-FL$fle occured please contact your Admin";
+        }
+}
 ?>

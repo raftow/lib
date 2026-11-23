@@ -2018,39 +2018,16 @@ class AfwShowHelper
                         if ($no_tabs) {
                             $data_to_display = $html_display['display'];
                         } else {
-                            $data_to_display =
-                                "<ul class='nav nav-tabs'>\n";
-                            $div_tabs = "<div class='tab-content'>\n";
-
-                            $itab = 0;
+                            $group_label_arr = [];
                             foreach ($html_display as $group_retieve => $html_group_retrieve) {
                                 if ($first_item) {
-                                    $group_retieve_label = $first_item->translate($group_retieve, $lang);
+                                    $group_label_arr[$group_retieve] = $first_item->translate($group_retieve, $lang);
                                 } else {
-                                    $group_retieve_label = $object->translate($group_retieve, $lang);
+                                    $group_label_arr[$group_retieve] = $object->translate($group_retieve, $lang);
                                 }
-                                if ($itab == 0) {
-                                    $tab_active =
-                                        " class='hzm-tab active'";
-                                } else {
-                                    $tab_active = " class='hzm-tab'";
-                                }
-                                if ($itab == 0) {
-                                    $div_tab_active = ' in active';
-                                } else {
-                                    $div_tab_active = '';
-                                }
-
-                                $data_to_display .= "   <li $tab_active><a data-toggle='tab' href='#tab${attribute}$itab' class='hzm-tab-link'>$group_retieve_label</a></li>\n";
-                                $div_tabs .= "<div id='tab${attribute}$itab' class='tab-pane fade $div_tab_active'>\n";
-                                $div_tabs .=
-                                    $html_group_retrieve . "\n";
-                                $div_tabs .= "</div>\n";
-                                $itab++;
                             }
-                            $data_to_display .= "</ul>\n";
-                            $div_tabs .= "</div>\n";
-                            $data_to_display .= $div_tabs;
+                            $data_to_display = AfwHtmlHelper::genereHtmlTabs($attribute, $html_display, $group_label_arr);
+                            
                         }
                         // if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("data_to_display : <br> ".var_export($data_to_display,true));
                     }

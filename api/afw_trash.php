@@ -1,4 +1,6 @@
 <?php
+try {
+
 
 $afw_dir_name = dirname(__FILE__) . "/../afw";
 require_once($afw_dir_name . '/core/afw_autoloader.php');
@@ -10,6 +12,7 @@ $lang = $_REQUEST['lang'];
 
 AfwSession::startSession();
 $objme = AfwSession::getUserConnected();
+$devMode = AfwSession::config('MODE_DEVELOPMENT', false);
 $update_context = "delete with afw trash network service";
 // echo "here5"; 
 require_once("$afw_dir_name/../../config/global_config.php");
@@ -89,3 +92,15 @@ if ($myObj_loaded) {
 }
 
 echo $deleted_message;
+}
+catch(Exception $e) {        
+        if($devMode) {
+                throw $e;
+        }
+        else {
+                $cd = $e->getCode();
+                $ln = $e->getLine();
+                $fle = AfwStringHelper::hzmEncode($e->getFile());
+                echo "An error REF-TRASH-CD$cd-LN$ln-FL$fle occured please contact your Admin";
+        }
+}

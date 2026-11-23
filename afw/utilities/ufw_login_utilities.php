@@ -66,24 +66,24 @@ class UfwLoginUtilities extends AFWRoot
                         $ldaprdn = $ldaprdn_prefix . $username;
 
                         $ldap = ldap_connect($ldap_server);
-                        $ldap_dbg .= "<br>\n ldap_connect($ldap_server) = $ldap";
+                        $ldap_dbg .= "<br>\n trying ldap_connect($ldap_server) ....";
                         ldap_set_option($ldap, LDAP_OPT_PROTOCOL_VERSION, 3);
                         ldap_set_option($ldap, LDAP_OPT_REFERRALS, 0);
                         ldap_set_option($ldap, LDAP_OPT_DEBUG_LEVEL, 7);
 
-                        $ldap_dbg .= "<br>\nafter ldap_set_options = $ldap";
+                        $ldap_dbg .= "<br>\nafter ldap_set_options ...";
 
                         $bind = @ldap_bind($ldap, $ldaprdn, $user_password);
-                        $ldap_dbg .= "<br>\nldap_bind($ldap, $ldaprdn, ******) = [$bind] : " . var_export($bind, true);
+                        $ldap_dbg .= "<br>\nldap_bind(ldap, $ldaprdn, ******) = [$bind] : " . var_export($bind, true);
                         if ($bind) {
                                 $ldap_filter = "($ldap_username_var=$username)";
                                 //die("before ldap_search($ldap, $ldap_base_dn, $ldap_filter);");
                                 $result = ldap_search($ldap, $ldap_base_dn, $ldap_filter);
-                                $ldap_dbg .= "<br>\nldap_search($ldap,$ldap_base_dn,$ldap_filter) = $result : " . var_export($result, true);
+                                $ldap_dbg .= "<br>\nldap_search(ldap,$ldap_base_dn,$ldap_filter) = $result : " . var_export($result, true);
                                 // ldap_sort($ldap,$result,$ldap_sort_filter);
-                                $ldap_dbg .= "<br>\nldap_sort($ldap,$result,$ldap_sort_filter) => result=$result : " . var_export($result, true);
+                                // $ldap_dbg .= "<br>\nldap_sort(ldap,$result,$ldap_sort_filter) => result=$result : " . var_export($result, true);
                                 $info = ldap_get_entries($ldap, $result);
-                                $ldap_dbg .= "<br>\nldap_get_entries($ldap, $result) => " . var_export($info, true);
+                                $ldap_dbg .= "<br>\nldap_get_entries(ldap, $result) => " . var_export($info, true);
                                 /*
                                 for ($i=0; $i<$info["count"]; $i++)
                                 {

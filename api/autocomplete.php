@@ -1,5 +1,5 @@
 <?php
-
+try {
 $afw_dir_name = dirname(__FILE__) . "/../afw";
 require_once($afw_dir_name . '/core/afw_autoloader.php');
 include_once($afw_dir_name . "/utilities/ufw_error_handler.php");
@@ -11,6 +11,7 @@ ini_set('error_reporting', E_ERROR | E_PARSE | E_RECOVERABLE_ERROR | E_CORE_ERRO
 
 AfwSession::startSession();
 $objme = AfwSession::getUserConnected();
+$devMode = AfwSession::config('MODE_DEVELOPMENT', false);
 
 require_once("$afw_dir_name/../../config/global_config.php");
 // old include of afw.php
@@ -116,3 +117,15 @@ foreach ($listObj as $idObj => $iObj) {
 
 $json = json_encode($a_json);
 print $json;
+}
+catch(Exception $e) {        
+        if($devMode) {
+                throw $e;
+        }
+        else {
+                $cd = $e->getCode();
+                $ln = $e->getLine();
+                $fle = AfwStringHelper::hzmEncode($e->getFile());
+                echo "An error REF-ATCMPL-CD$cd-LN$ln-FL$fle occured please contact your Admin";
+        }
+}
