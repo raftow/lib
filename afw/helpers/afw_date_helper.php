@@ -2197,7 +2197,18 @@ class AfwDateHelper
         return $result_diff;
     }
 
-    /*****************     date and time functions    *************************/
+    /**
+     * @param string $gregDate, 
+     * @param int $ageMin, 
+     * @param int $ageMax, 
+     * @param string $gregDateRef
+     */
+    public static function isCorrectGDate($gregDate, $ageMin = 5, $ageMax = 150, $gregDateRef = "", $round = true)
+    {
+        if (!$gregDateRef) $gregDateRef = date("Y-m-d");
+        $diff = self::gregDateDiff($gregDate, $gregDateRef, $round);
+        return (($diff <= $ageMax) and ($diff >= $ageMin));
+    }
 
     public static function addDatetimeToGregDatetime(
         $gdate_time = '',

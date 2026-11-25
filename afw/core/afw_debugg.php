@@ -1,165 +1,162 @@
 <?php
 
-class AFWDebugg {
+class AFWDebugg
+{
 
     private static $debugg = array();
     private static string $fileName;
-    private static string $pathName;   
-    private static string $modeBatch; 
+    private static string $pathName;
+    private static bool $modeBatch = false;
     private static $enabled = true;
     private static $nl = "\n";
     private static $sl = "";
     private static $el = "";
     private static $sep = "/";
 
-    public static function initialiser(string $pathName, string $fileName) {
-        if(!$pathName) self::defaultLogPath();
+    public static function initialiser(string $pathName, string $fileName)
+    {
+        if (!$pathName) self::defaultLogPath();
         self::$pathName = ($pathName) ? $pathName : '';
         self::$fileName = ($fileName) ? $fileName : 'debugg.log';
         self::$modeBatch = false;
-        self::log(" --------------- Debut session : ".date("Y-m-d H:i:s")." --------------- ");
-    }    
-    
+        self::log(" --------------- Debut session : " . date("Y-m-d H:i:s") . " --------------- ");
+    }
+
     public static function log_file_name()
     {
-         $logfile = self::$pathName.self::$sep.self::$fileName;
-         
-         return $logfile;
-    } 
-    
-    public static function log(mixed $varToLog, $varexport=false, $throw_error = true, $addTimePrefix=true) 
-    {       
-       
-        if(!self::$enabled) return;
+        $logfile = self::$pathName . self::$sep . self::$fileName;
 
-        if($varexport) $var = var_export($varToLog,true);
+        return $logfile;
+    }
+
+    public static function log(mixed $varToLog, $varexport = false, $throw_error = true, $addTimePrefix = true)
+    {
+
+        if (!self::$enabled) return;
+
+        if ($varexport) $var = var_export($varToLog, true);
         else $var = $varToLog;
-        
-        if(self::$modeBatch) 
-        {
-                echo self::$sl.$var.self::$el.self::$nl;
-        } 
-        else 
-        {
-                /*
+
+        if (self::$modeBatch) {
+            echo self::$sl . $var . self::$el . self::$nl;
+        } else {
+            /*
                 echo "log: modeBatch = ".$modeBatch."<br> \n";
                 echo "log: var = ".$var."<br> \n";
                 echo "log: pathName = ".self::$pathName."<br> \n";
                 echo "log: fileName = ".self::$fileName."<br> \n";
                 */
-                self::createHeaderIfFirstTime();
-                $logfile = self::logFilePath();
-                
-                if($logfile and ($logfile != "/"))
-                {
-                    if($addTimePrefix) $prefix = date('d/m/Y H:i:s')." ";
-                    else $prefix = "";
-                    $wrt = UfwFileSystem::write($logfile, $prefix.$var."\n", 'append');
-                    if($throw_error and ($var and !$wrt)) throw new AfwRuntimeException("AFWDebugg::log has failed to write [$var] to [$logfile]");
-                }
-                else {
-                    if($throw_error) throw new AfwRuntimeException("AFWDebugg::log has failed because no log-file name defined");                    
-                } 
-                
-                
-                //@todourgent if($var and !$wrt) die("failed to write [$var] to [$logfile]<br>");
-                // else die("success to write [$var] to [$logfile]<br>");
+            self::createHeaderIfFirstTime();
+            $logfile = self::logFilePath();
+
+            if ($logfile and ($logfile != "/")) {
+                if ($addTimePrefix) $prefix = date('d/m/Y H:i:s') . " ";
+                else $prefix = "";
+                $wrt = UfwFileSystem::write($logfile, $prefix . $var . "\n", 'append');
+                if ($throw_error and ($var and !$wrt)) throw new AfwRuntimeException("AFWDebugg::log has failed to write [$var] to [$logfile]");
+            } else {
+                if ($throw_error) throw new AfwRuntimeException("AFWDebugg::log has failed because no log-file name defined");
+            }
+
+
+            //@todourgent if($var and !$wrt) die("failed to write [$var] to [$logfile]<br>");
+            // else die("success to write [$var] to [$logfile]<br>");
         }
     }
-    
+
     /**
-         * print_str
-         * Print string switch color
-         * @param string $str
-         * @param string $color
-         */
-    public static function print_str($str, $color = "") 
+     * print_str
+     * Print string switch color
+     * @param string $str
+     * @param string $color
+     */
+    public static function print_str($str, $color = "")
     {
-	if(self::$modeBatch) {
-                switch ($color) {
-        		case "deb" :
-        			echo "\033[0;34m";
-        			break;
-        
-        		case "err" :
-        			echo "\033[0;31m";
-        			break;
-        
-        		case "inf" :
-        			echo "\033[0;36m";
-        			break;
-        
-        		case "obl" :
-        			echo "\033[0;32m";
-        			break;
-        
-        		case "std" :
-        		default:
-        			echo "\033[0;39m";
-        			break;
-        
-        		case "war" :
-        			echo "\033[0;33m";
-        			break;
-        				
-        		case "xxx" :
-        			echo "\033[0;35m";
-        			break;
-        	}
-        	echo $str;
-        	echo "\033[0;39m";
+        if (self::$modeBatch) {
+            switch ($color) {
+                case "deb":
+                    echo "\033[0;34m";
+                    break;
+
+                case "err":
+                    echo "\033[0;31m";
+                    break;
+
+                case "inf":
+                    echo "\033[0;36m";
+                    break;
+
+                case "obl":
+                    echo "\033[0;32m";
+                    break;
+
+                case "std":
+                default:
+                    echo "\033[0;39m";
+                    break;
+
+                case "war":
+                    echo "\033[0;33m";
+                    break;
+
+                case "xxx":
+                    echo "\033[0;35m";
+                    break;
+            }
+            echo $str;
+            echo "\033[0;39m";
         } else {
-                self::log($str);
+            self::log($str);
         }
     }
-    
-            
-
-    public static function setModeHtml() {
-        self::$modeBatch=true;
-        self::$sl="<!-- ";
-        self::$el=" -->";
-        self::$nl="\n---------------------------------------------<br>\n";
-    }    
-
-
-    public static function setModeBatch() {
-        self::$modeBatch=true;
-        self::$sl="";
-        self::$el="";
-        self::$nl="\n";
-    }    
-
-    public static function setEnabled($enable) {
-        self::$enabled=$enable;
-    }    
 
 
 
+    public static function setModeHtml()
+    {
+        self::$modeBatch = true;
+        self::$sl = "<!-- ";
+        self::$el = " -->";
+        self::$nl = "\n---------------------------------------------<br>\n";
+    }
 
-    public static function get() 
+
+    public static function setModeBatch()
+    {
+        self::$modeBatch = true;
+        self::$sl = "";
+        self::$el = "";
+        self::$nl = "\n";
+    }
+
+    public static function setEnabled($enable)
+    {
+        self::$enabled = $enable;
+    }
+
+
+
+
+    public static function get()
     {
         $content = "";
-        foreach(self::$debugg as $id=>$log) 
-        {
-            $content.="$log\n"; 
+        foreach (self::$debugg as $id => $log) {
+            $content .= "$log\n";
         }
         return $content;
     }
-    
+
     public static function logFilePath()
     {
-        if(trim(self::$fileName) and trim(self::$pathName)) 
-        {
-            return trim(self::$pathName."/".self::$fileName);
-        }
-        else return "";
+        if (trim(self::$fileName) and trim(self::$pathName)) {
+            return trim(self::$pathName . "/" . self::$fileName);
+        } else return "";
     }
 
     public static function pathExistsButFileToCreate()
     {
         $fileFullPathName = self::logFilePath();
-        if(!$fileFullPathName) return null;
+        if (!$fileFullPathName) return null;
         return ((UfwFileSystem::isDir(self::$pathName)) and (!UfwFileSystem::exists($fileFullPathName)));
     }
 
@@ -167,37 +164,34 @@ class AFWDebugg {
     {
         return "/**
         *
-        *  Creation date : ".date('d/m/Y H:i:s')."
-        *  Filename      : ".$fileFullPathName."
+        *  Creation date : " . date('d/m/Y H:i:s') . "
+        *  Filename      : " . $fileFullPathName . "
         *
         **/\n\n";
     }
 
-    public static function createHeaderIfFirstTime() 
+    public static function createHeaderIfFirstTime()
     {
-            
-            if((!self::$modeBatch) and self::pathExistsButFileToCreate())
-            {
-                $fileFullPathName = self::logFilePath();                
-                UfwFileSystem::write($fileFullPathName, self::genereHeader($fileFullPathName)."\n", 'append');
-            }     
-    }    
 
-    public static function defaultLogPath() 
-    {
-            $DEBUGG_SQL_DIR = AfwSession::config("DEBUGG_SQL_DIR","");
-            return AfwSession::config("LOG_PATH",$DEBUGG_SQL_DIR);
+        if ((!self::$modeBatch) and self::pathExistsButFileToCreate()) {
+            $fileFullPathName = self::logFilePath();
+            UfwFileSystem::write($fileFullPathName, self::genereHeader($fileFullPathName) . "\n", 'append');
+        }
     }
 
-    public static function startDebuggPage() 
-    {        
+    public static function defaultLogPath()
+    {
+        $DEBUGG_SQL_DIR = AfwSession::config("DEBUGG_SQL_DIR", "");
+        return AfwSession::config("LOG_PATH", $DEBUGG_SQL_DIR);
+    }
+
+    public static function startDebuggPage()
+    {
         $dtm = date("YmdHis");
-        $logbl = substr(md5($_SERVER["HTTP_USER_AGENT"] . "-" . date("Y-m-d")),0,10);
-        $my_debug_file = "debugg_before_login_$logbl"."_$dtm.log";
+        $logbl = substr(md5($_SERVER["HTTP_USER_AGENT"] . "-" . date("Y-m-d")), 0, 10);
+        $my_debug_file = "debugg_before_login_$logbl" . "_$dtm.log";
         //die("AFWDebugg::initialiser(".$DEBUGG_SQL_DIR.$my_debug_file.")");
         AFWDebugg::initialiser("", $my_debug_file);
         AFWDebugg::setEnabled(true);
     }
-
 }
-

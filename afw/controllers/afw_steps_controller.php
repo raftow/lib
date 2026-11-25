@@ -5,7 +5,15 @@ class AfwStepsController extends AfwRichController
 
         private $steps_arr = array(0 => "technical");
         private $steps_name_arr = array("technical" => 0);
+        private $steps_title_arr = array("technical" => 'Technical step');
+        private $steps_place_holder_arr = array("technical" => 'Technical step');
+        private $next_btn_title_arr = array("technical" => 'Next');
+        // The object shoud exists when entering step ?
+        private $object_mandatory_arr = array("technical" => false);
 
+        /**
+         * @var AFWObject
+         */
         private $myObject = null;
 
         public function defaultMethod($request)
@@ -15,9 +23,13 @@ class AfwStepsController extends AfwRichController
                 return "index";
         }
 
+        /**
+         * @param AFWObject $object
+         * @return void
+         */
         protected function setObject($object)
         {
-                $this->myObject = $object;
+                $this->myObject = &$object;
         }
 
         /**
@@ -37,17 +49,33 @@ class AfwStepsController extends AfwRichController
                 ];
         }
 
-        public function getDataFromRequest($request)
+        /**
+         * @return array
+         */
+        protected function getSpecialDataFromRequest(array $request, string $step_name)
         {
-                $data = $request;
-                $obj = $this->getObject($request, $mandatory = false);
+                return $request;
+        }
+
+
+        public final function getDataFromRequest(array $request, string $step_name)
+        {
+                $data = $this->getSpecialDataFromRequest($request, $step_name);
+                $data["current_step"] = $this->getStepNumByName($step_name);
+                $data["max_steps"] = $this->maxSteps();
+                $data["step_name"] = $step_name;
+                $data["save_next_title"] = $this->getStepNextBtnTitle($step_name);
+                $data["step_placeholder"] = $this->getStepPlaceholder($step_name);
+                $data["obj"] = $obj = $this->getObject($request, $this->stepEnteringRequireObject($step_name));
 
 
                 if ($obj) {
                         $arrPermFields = $this->getPermanentFields();
                         foreach ($arrPermFields as $data_field => $rowPermField) {
                                 $object_field = $rowPermField["object_field"];
-                                if ((!$data[$data_field]) and ($obj->getVal($object_field))) $data[$data_field] = $obj->getVal($object_field);
+                                if ((!$data[$data_field]) and ($obj->getVal($object_field))) {
+                                        $data[$data_field] = $obj->getVal($object_field);
+                                }
                         }
                 }
 
@@ -66,6 +94,10 @@ class AfwStepsController extends AfwRichController
                 if ($mandatory) $this->renderError("initObjectFromRequest not overridden in this controller class");
         }
 
+        /**
+         * @param array $request
+         * @return void
+         */
         public function initAllSteps($request)
         {
                 // $this->addStep("step1");
@@ -78,23 +110,60 @@ class AfwStepsController extends AfwRichController
                 $this->initAllSteps($request);
         }
 
-        protected function addStep($step_method)
-        {
-                $this->steps_arr[] = $step_method;
-                $this->steps_name_arr[$step_method] = count($this->steps_arr) - 1;
+        protected function addStep(
+                string $step_name,
+                string $step_title,
+                string $next_btn_title,
+                string $place_holder,
+                bool $object_mandatory,
+        ) {
+                $this->steps_arr[] = $step_name;
+                $this->steps_name_arr[$step_name] = count($this->steps_arr) - 1;
+                $this->steps_title_arr[$step_name] = $step_title;
+                $this->next_btn_title_arr[$step_name] = $next_btn_title;
+                $this->steps_place_holder_arr[$step_name] = $place_holder;
+                $this->object_mandatory_arr[$step_name] = $object_mandatory;
         }
 
-        public function getStepByNum($step_num)
+
+        public function getStepByNum(string $step_num)
         {
                 $return = $this->steps_arr[$step_num];
                 if ($return) return $return;
                 return "step$step_num";
         }
 
-        public function getStepNumByName($step_name)
+        public function getStepNumByName(string $step_name)
         {
                 $return = $this->steps_name_arr[$step_name];
                 if (!$return) $this->renderError("step $step_name not found");
+                return $return;
+        }
+
+        public function getStepTitle(string $step_name)
+        {
+                $return = $this->steps_name_arr[$step_name];
+                if (!$return) $return = $step_name;
+                return $return;
+        }
+
+        public function getStepPlaceholder(string $step_name)
+        {
+                $return = $this->steps_place_holder_arr[$step_name];
+                return $return;
+        }
+
+        public function getStepNextBtnTitle(string $step_name)
+        {
+                $return = $this->next_btn_title_arr[$step_name];
+                if (!$return) $return = "Next";
+                return $return;
+        }
+
+
+        public function stepEnteringRequireObject(string $step_name)
+        {
+                $return = $this->object_mandatory_arr[$step_name];
                 return $return;
         }
 
