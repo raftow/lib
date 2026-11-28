@@ -816,14 +816,15 @@ class AfwShowHelper
         $liste_obj_count = count($liste_obj);
         $small_liste = ($liste_obj_count < 30);
         $mode_show_all_records =
-            ($small_liste or  // عدد قليل من الكينات للعرض
+            ($small_liste or  // عدد قليل من الكيانات للعرض
                 !AfwSession::hasOption('BIG_DATA_SHOW_ONLY_ERRORS') or  // خيار اظهار الأخطاء فقط في حال بيانات كثيرة غير مفعل
                 !$obj->showRetrieveErrors);
         $j = 0;
 
         foreach ($liste_obj as $id => $objListItem) {
             $j++;
-            if (is_object($objListItem) and ($objListItem instanceof AFWObject) and AfwUmsPagHelper::userCanDoOperationOnObject($objListItem, $objme, 'display')) {
+            $userCanDisplayItem = AfwUmsPagHelper::userCanDoOperationOnObject($objListItem, $objme, 'display');
+            if (is_object($objListItem) and ($objListItem instanceof AFWObject) and $userCanDisplayItem) {
                 // we force errors test only if we are not in mode mode_show_all_records
                 $check_errors_needed_in_object = $objListItem->canCheckErrors($small_liste, AfwSession::hasOption('CHECK_ERRORS'));
                 $force_test_errors =
@@ -849,11 +850,19 @@ class AfwShowHelper
                     }
 
                     $data[$id] = self::objectItemToTuple($objListItem, $header, $lang, $viewIcon);
+                    // die("rafik dbg self::objectItemToTuple(objListItem, header, $lang, $viewIcon) = " . AfwExportHelper::afwExport($data[$id]));
                     // ----****************
                     $recordArr[$id] = $objListItem->getShortDisplay($lang);
                     $isAvail[$id] = $objIsActive;
                     // $count_liste_obj++;
+                } else {
+                    $message = "record hidden by show many objects method : small_liste=$small_liste mode_show_all_records=[$mode_show_all_records] and val_isOk=[$val_isOk]";
+                    $data[$id] = ['description' => "<!-- $message -->"];
+                    // die($message);
                 }
+            } else {
+                $message = "userCanDisplayItem=$userCanDisplayItem";
+                $data[$id] = ['description' => "<!-- $message -->"];
             }
         }
 
@@ -919,6 +928,40 @@ class AfwShowHelper
             $dataDirection
 
         );
+
+        /*$data_exp = AfwExportHelper::afwExport($data);
+
+        
+        die("rafik dbg show many obj : self::tableToHtml(
+            data=$data_exp,
+            $header_trad,
+            $obj->showAsDataTable,
+            $isAvail,
+            $nowrap_cols,
+            $class_table,
+            $class_tr1,
+            $class_tr2,
+            $dataImportance,
+            $lang,
+            $dir,
+            $bigtitle,
+            $bigtitle_tr_class,
+            $width_th_arr,
+            $img_width,
+            $rows_by_table,
+            $obj->detailModeWidthedTable,
+            $categoryAttribute,
+            $obj->getCssClassName(),
+            'off',
+            $order_key,
+            null,
+            $popupEditSettings,
+            10,
+            null,
+            null,
+            $dataDirection
+
+        )");*/
 
         if (!$mode_show_all_records) {
             $message = $obj->translateMessage(
@@ -2027,7 +2070,6 @@ class AfwShowHelper
                                 }
                             }
                             $data_to_display = AfwHtmlHelper::genereHtmlTabs($attribute, $html_display, $group_label_arr);
-                            
                         }
                         // if(isset($structure["ICONS"]) and (!$structure["ICONS"])) die("data_to_display : <br> ".var_export($data_to_display,true));
                     }

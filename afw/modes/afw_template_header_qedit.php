@@ -54,10 +54,10 @@ foreach ($class_db_structure as $nom_col => $desc) {
         }
 
         $mode_show_field_read_only = AfwStructureHelper::isReadOnlyAttribute($obj, $nom_col, $desc, $submode);
-        $mode_field_qedit_reason = AfwStructureHelper::reasonWhyAttributeNotQuickEditable($obj, $nom_col, $desc, $submode);
+        $mode_field_qedit_reason = $mode_field_qedit ? "" : AfwStructureHelper::reasonWhyAttributeNotQuickEditable($obj, $nom_col, $desc, $submode);
 
         $mode_field_qedit_arr[$nom_col] = array("qed" => $mode_field_qedit, "reason" => $mode_field_qedit_reason);
-
+        // if ($nom_col == "id") die("mode_field_qedit=$mode_field_qedit / mode_field_qedit_reason=$mode_field_qedit_reason");
         /*
         if(($obj->valAtable_name=="medical_visit") and ($nom_col == "jobrole_id")) die("$nom_col : attr_IsApplicable $attr_IsApplicable scis = ".var_export($obj->getScis(),true));
         if(($nom_col == "answer_module_id") and (!$mode_field_qedit)) die("why nom_col=$nom_col is not quick editable: <br> mode_field_qedit=$mode_field_qedit, <br>mode_field_qedit_reason=$mode_field_qedit_reason, <br>attr_IsApplicable=$attr_IsApplicable");
@@ -71,7 +71,7 @@ foreach ($class_db_structure as $nom_col => $desc) {
         $nom_col_short = "$nom_col.short";
         $trad_col_short  = $obj->translate($nom_col_short, $lang);
 
-        if (($column_order == 1) and $obj->PK_MULTIPLE) {
+        if (($column_order == 1) and !$obj->PK_MULTIPLE) {
                 $qedit_trad["id"] = $obj->translate("id", $lang);
         }
 
@@ -212,7 +212,9 @@ if (!$obj->qedit_minibox) {
                 <table class="<?php echo $display_grid ?>" style="width: 100%;" cellspacing="3" cellpadding="4">
                         <thead>
                                 <tr>
-                                        <?php foreach ($qedit_trad as $col => $info) {
+                                        <?php
+                                        // die("rafik dbg $qedit_trad = " . var_export($qedit_trad, true));
+                                        foreach ($qedit_trad as $col => $info) {
                                                 $old_class_xqe_col = $class_xqe_col;
                                                 if ($col == "show") $class_xqe_col = "z";
                                                 else $class_xqe_col = $class_db_structure[$col]["XQE_COL_STYLE"];

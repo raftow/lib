@@ -2206,8 +2206,10 @@ class AfwDateHelper
     public static function isCorrectGDate($gregDate, $ageMin = 5, $ageMax = 150, $gregDateRef = "", $round = true)
     {
         if (!$gregDateRef) $gregDateRef = date("Y-m-d");
-        $diff = self::gregDateDiff($gregDate, $gregDateRef, $round);
-        return (($diff <= $ageMax) and ($diff >= $ageMin));
+        $diff = round(self::gregDateDiff($gregDateRef, $gregDate, $round) / 365);
+        $return = (($diff <= $ageMax) and ($diff >= $ageMin));
+        // die("rafik dbg isCorrectGDate($gregDate) returned : $return <= (($diff <= $ageMax) and ($diff >= $ageMin))");
+        return $return;
     }
 
     public static function addDatetimeToGregDatetime(

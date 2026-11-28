@@ -1273,7 +1273,7 @@ class AfwFormatHelper
         return implode("\n", $new_p_text_arr);
     }
 
-    public static function toHtml($p_text, $target_window = 'my_urls', $css_class = 'my_url', $click_here = 'انقر هنا')
+    public static function toHtml(string $p_text, $target_window = 'my_urls', $css_class = 'my_url', $click_here = 'انقر هنا')
     {
         global $table_name, $img_field_names, $id;
 

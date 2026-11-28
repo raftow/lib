@@ -16,7 +16,10 @@ $viewType = "standard";
 if (!$request) $request = [];
 // throw new AfwRuntimeException("test eh03");
 $devMode = AfwSession::config('MODE_DEVELOPMENT', false);
-if (!$controllerName) $controllerName = AfwSession::config("default_controller_name", "");
+if (!$controllerName) {
+        $controllerName = AfwSession::config("default_controller_name", "");
+        // if($controllerName) die("used default_controller_name = $controllerName");
+}
 if ($controllerName) {
         $ControllerClass = ucfirst($controllerName) . "Controller";
         //$module = "unknown-module";
@@ -102,8 +105,10 @@ if ($controllerName) {
                 } else throw new AfwRuntimeException("Custom script " . $custom_script["path"] . " has unknown type, review your controller prepare method : $prepareMethodName ");
         }
         $options["controllerObj"] = $controllerObj;
+        //  die("rafik viewType = $viewType");
         if ($viewType == "standard") {
                 list($html_hedear, $page_header_file, $page_footer_file) = $controllerObj->myViewSettings($methodName);
+                // die("list($html_hedear, $page_header_file, $page_footer_file) = controllerObj->myViewSettings($methodName);");
                 //die("custom_scripts=".var_export($custom_scripts,true));
                 // die("rafik see : will include once ".dirname(__FILE__)."/../../$page_header_file with \$html_hedear =".var_export($html_hedear,true));
                 include_once(dirname(__FILE__) . "/../../$page_header_file");
@@ -114,7 +119,14 @@ if ($controllerName) {
         } else {
                 // this code below is not clear for me @toreview
                 // list($module, $is_direct, $page, $page_path, $options) = $controllerObj->myNewViewSettings($methodName);                        
-                // if($methodName=="survey_request") die("AfwControllerHelper::showControllerPage($ControllerClass controllerObj, $controllerName, methodName=$methodName, request=".var_export($request,true).", false, options=".var_export($options,true).")");
+                // if($methodName=="survey_request") 
+                // die("AfwControllerHelper::showControllerPage($ControllerClass controllerObj, $controllerName, methodName=$methodName, request=" . AfwExportHelper::afwExport($request, true) . ", false, options=" . AfwExportHelper::afwExport($options, true) . ")");
                 echo AfwControllerHelper::showControllerPage($controllerObj, $controllerName, $methodName, $request, false, $options);
+                // die("done AfwControllerHelper::showControllerPage($ControllerClass controllerObj, $controllerName, methodName=$methodName, request=" . AfwExportHelper::afwExport($request, true) . ", false, options=" . AfwExportHelper::afwExport($options, true) . ")");
         }
-} else die("controller name not defined, please define it or define default controller");
+} else {
+        list($html_hedear, $page_header_file, $page_footer_file) = AfwController::myDefaultViewSettings($methodName);
+        // include_once(dirname(__FILE__) . "/../../$page_header_file");
+        echo ("Bad request <!-- No controller name defined, please define it, or define default controller : (default_controller_name entry in config file) -->");
+        // include_once(dirname(__FILE__) . "/../../$page_footer_file");
+}

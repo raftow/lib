@@ -503,7 +503,7 @@ class AfwStructureHelper extends AFWRoot
         return $struct;
     }
 
-    public static final function repareQEditAttributeStructure($col_name, $desc)
+    public static final function repareQEditAttributeStructure(string $col_name, array $desc)
     {
         $cell_size = 11;
 

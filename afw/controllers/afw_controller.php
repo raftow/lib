@@ -26,17 +26,16 @@ class AfwController extends AFWRoot
 
         public static function coolDie($message, $vars)
         {
-                die(self::class." stopped to say : $message <br>".var_export($vars, true));
+                die(self::class . " stopped to say : $message <br>" . var_export($vars, true));
         }
 
         public function standardSubmit($request, $onObject)
-        {                
-                $data = $request;                
-                
+        {
+                $data = $request;
+
                 $all_real_fields = AfwStructureHelper::getAllRealFields($onObject);
-                foreach ($all_real_fields as $field_name) 
-                {
-                    if($request[$field_name]) $onObject->set($field_name, $request[$field_name]);
+                foreach ($all_real_fields as $field_name) {
+                        if ($request[$field_name]) $onObject->set($field_name, $request[$field_name]);
                 }
 
                 // if controller submit standard has not saved your form
@@ -46,11 +45,11 @@ class AfwController extends AFWRoot
                 {
                        self::coolDie("rafik debuggs survey_token controller", ["request"=>$request, "all_real_fields"=>$all_real_fields, "onObject"=>$onObject, ]);
                 }*/
-                
-                
+
+
 
                 if (!$onObject->isOk(true)) {
-                        $data["all_error"] = implode(",\n", AfwDataQualityHelper::getDataErrors($onObject, ));
+                        $data["all_error"] = implode(",\n", AfwDataQualityHelper::getDataErrors($onObject,));
                         // die($data["all_error"]);
                 } else {
                         /*
@@ -60,8 +59,8 @@ class AfwController extends AFWRoot
                                 die($sql);
                         }
                         else */
-                        $onObject->commit();                        
-                        
+                        $onObject->commit();
+
                         $data["id"] = $onObject->id;
                         $data["mainObject"] = $onObject;
                 }
@@ -69,7 +68,7 @@ class AfwController extends AFWRoot
                 return $data;
         }
 
-        public function defaultMethod($request)
+        public function defaultMethod(array $request)
         {
                 return "index";
         }
@@ -81,10 +80,15 @@ class AfwController extends AFWRoot
 
         public function myViewSettings($methodName)
         {
+                return self::myDefaultViewSettings($methodName);
+        }
+
+        public static function myDefaultViewSettings($methodName)
+        {
                 return array("lib/hzm/web/hzm_html_head.php", "lib/hzm/web/hzm_header.php", "lib/hzm/web/hzm_footer.php");
         }
 
-        public function index($request)
+        public function index(array $request)
         {
                 return "body of controller-index method not implemented";
         }
@@ -110,11 +114,11 @@ class AfwController extends AFWRoot
                 $lang = AfwLanguageHelper::getGlobalLanguage();
                 foreach ($data as $key => $value) $$key = $value;
                 $view_name_tpl = $view_name . "_tpl";
-                $view_template_path = dirname(__FILE__)."/../../../$view_module/tpl/$view_name_tpl.php";
+                $view_template_path = dirname(__FILE__) . "/../../../$view_module/tpl/$view_name_tpl.php";
                 if (!file_exists($view_template_path)) {
                         throw new AfwRuntimeException("view template not found : $view_template_path");
                 } else {
-                        //if($mt=="survey_request") die("view_template_path is : ".$view_template_path);
+                        // die("view_template_path will be entered : " . $view_template_path);
                         include_once($view_template_path);
                 }
         }
@@ -128,12 +132,12 @@ class AfwController extends AFWRoot
         {
                 $lang = AfwLanguageHelper::getGlobalLanguage();
                 foreach ($data as $key => $value) $$key = $value;
-                
+
                 if ($error) AfwSession::pushError($error);
                 if ($warning) AfwSession::pushWarning($warning);
                 if ($info) AfwSession::pushInformation($info);
                 if ($success) AfwSession::pushSuccess($success);
-                $view_page_full_path = dirname(__FILE__)."/../../../$view_module/$view_page.php";
+                $view_page_full_path = dirname(__FILE__) . "/../../../$view_module/$view_page.php";
                 if (!file_exists($view_page_full_path)) {
                         $this->renderError("view page not found : $view_page_full_path");
                 } else include_once($view_page_full_path);

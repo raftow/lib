@@ -16,7 +16,7 @@ class AfwStepsController extends AfwRichController
          */
         private $myObject = null;
 
-        public function defaultMethod($request)
+        public function defaultMethod(array $request)
         {
                 if ($request["save_next"]) return "save_and_next";
                 if ($request["save_previous"]) return "save_and_previous";
@@ -57,16 +57,29 @@ class AfwStepsController extends AfwRichController
                 return $request;
         }
 
+        /**
+         * @return array
+         */
+        protected function finalizeDataFromRequest(array $data, string $step_name)
+        {
+                return $data;
+        }
+
 
         public final function getDataFromRequest(array $request, string $step_name)
         {
+                $request["obj"] = $obj = $this->getObject($request, $this->stepEnteringRequireObject($step_name));
                 $data = $this->getSpecialDataFromRequest($request, $step_name);
                 $data["current_step"] = $this->getStepNumByName($step_name);
                 $data["max_steps"] = $this->maxSteps();
+                if (!$data["max_steps"]) {
+                        throw new AfwRuntimeException("No step defined !! " . var_export($this->steps_arr, true));
+                }
+                $step_title = $this->getStepTitle($step_name);
                 $data["step_name"] = $step_name;
+                $data["step_title"] = $step_title;
                 $data["save_next_title"] = $this->getStepNextBtnTitle($step_name);
                 $data["step_placeholder"] = $this->getStepPlaceholder($step_name);
-                $data["obj"] = $obj = $this->getObject($request, $this->stepEnteringRequireObject($step_name));
 
 
                 if ($obj) {
@@ -78,6 +91,8 @@ class AfwStepsController extends AfwRichController
                                 }
                         }
                 }
+
+                $data = $this->finalizeDataFromRequest($data, $step_name);
 
 
                 return $data;
@@ -104,7 +119,7 @@ class AfwStepsController extends AfwRichController
                 // $this->addStep("step2");
         }
 
-        public function __construct($request)
+        public function __construct(array $request)
         {
                 //$this->initObjectFromRequest($request);  
                 $this->initAllSteps($request);
@@ -142,7 +157,7 @@ class AfwStepsController extends AfwRichController
 
         public function getStepTitle(string $step_name)
         {
-                $return = $this->steps_name_arr[$step_name];
+                $return = $this->steps_title_arr[$step_name];
                 if (!$return) $return = $step_name;
                 return $return;
         }
@@ -167,7 +182,7 @@ class AfwStepsController extends AfwRichController
                 return $return;
         }
 
-        public function index($request)
+        public function index(array $request)
         {
                 if ($request["current_step"]) $step_num = $request["current_step"];
                 else {
@@ -184,7 +199,7 @@ class AfwStepsController extends AfwRichController
                 else $this->renderError("no step $step_num defined for this 'steps' controller");
         }
 
-        public function showStep($request)
+        public function showStep(array $request)
         {
                 $step_num = $request["current_step"];
                 if (!$step_num) $step_num = 1;
@@ -194,14 +209,16 @@ class AfwStepsController extends AfwRichController
                 else $this->renderError("no step $step_num defined for this 'steps' controller");
         }
 
-        private function saveMyData($request, $current_step)
+        private function saveMyData(array $request, int $current_step)
         {
                 $methodSave = "save" . ucfirst($this->getStepByNum($current_step));
                 return $this->$methodSave($request);
         }
 
-        protected function validateData($request, $current_step)
+        protected function validateData(array $request, int $current_step)
         {
+                $step_name = $this->getStepByNum($current_step);
+                $request = $this->getSpecialDataFromRequest($request, $step_name);
                 $methodValidate = "validate" . ucfirst($this->getStepByNum($current_step));
                 return $this->$methodValidate($request);
         }
@@ -211,7 +228,7 @@ class AfwStepsController extends AfwRichController
                 return count($this->steps_arr) - 1;
         }
 
-        private function saveData($request, $step_inc = 1)
+        private function saveData(array $request, $step_inc = 1)
         {
                 //if ($this->checkLoggedIn()) {
                 $log = "";

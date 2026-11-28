@@ -2,7 +2,8 @@
 
 // @todo merge with mobuilder
 
-class UfwFileSystem {
+class UfwFileSystem
+{
 
     public static $rewrite = array(
         'Gb' => 1073741824,
@@ -11,7 +12,8 @@ class UfwFileSystem {
         'bytes' => 1
     );
 
-    public static function read($file) {
+    public static function read($file)
+    {
         $file = self::path($file);
 
         if (self::exists($file)) {
@@ -22,25 +24,22 @@ class UfwFileSystem {
     }
 
     // @todo rewrite from scratch
-    public static function write($file_target, $content = '', $append = 'erase', $create_folder=false, $encoding="UTF-8") 
+    public static function write(string $file_target, $content = '', $append = 'erase', $create_folder = false, $encoding = "UTF-8")
     {
         $file = self::path($file_target);
-        $folder = self::folderOf($file_target); 
-        if(!self::folderExists($folder) and $create_folder)
-        {
+        $folder = self::folderOf($file_target);
+        if (!self::folderExists($folder) and $create_folder) {
             self::createDir($folder, "0777");
         }
-        if((!self::exists($file)) and (!self::hasPermission($folder, $permission = array('read', 'write'))))
-        {
-            throw new AfwRuntimeException("the file $file doesn't exist and we haven't permission to create it in folder : $folder");
+        if ((!self::exists($file)) and (!self::hasPermission($folder, $permission = array('read', 'write')))) {
+            throw new AfwRuntimeException("the file $file doesn't exist and we haven't permission to create it in folder : $folder = self::folderOf($file_target)");
         }
 
-        if(self::exists($file) and (!self::hasPermission($file, $permission = array('read', 'write'))))
-        {
+        if (self::exists($file) and (!self::hasPermission($file, $permission = array('read', 'write')))) {
             throw new AfwRuntimeException("the file $file exists but no permission read/write on it : $file = self :: path($file_target)");
         }
 
-        if($encoding) $content = mb_convert_encoding($content, $encoding);
+        if ($encoding) $content = mb_convert_encoding($content, $encoding);
 
         switch ($append) {
             case 'append':
@@ -51,19 +50,21 @@ class UfwFileSystem {
                 $return = file_put_contents($file, $content);
         }
 
-        if(!$return) {
+        if (!$return) {
             throw new AfwRuntimeException("unable to write file (mode $append), cleaned path : $file , original path : $file_target");
         }
 
         return $return;
     }
 
-    public static function getFiles($path) {
+    public static function getFiles($path)
+    {
         $path = self::path($path);
         return array_slice(scandir($path), 2);
     }
 
-    public static function size($file, $rewrite = true) {
+    public static function size($file, $rewrite = true)
+    {
         if (!self::exists($file)) {
             return false;
         }
@@ -81,7 +82,8 @@ class UfwFileSystem {
         }
     }
 
-    public static function copy($file, $destination) {
+    public static function copy($file, $destination)
+    {
         if (self::exists($file)) {
             $destination = self::path($destination) . '/' . basename($file);
             return copy(self::path($file), $destination);
@@ -90,15 +92,18 @@ class UfwFileSystem {
         return false;
     }
 
-    public static function isDir($path) {
+    public static function isDir($path)
+    {
         return is_dir(self::path($path));
     }
 
-    public static function isUploaded($file) {
+    public static function isUploaded($file)
+    {
         return is_uploaded_file(self::path($file));
     }
 
-    public static function delete($file, $deleteIfNotEmpty = true) {
+    public static function delete($file, $deleteIfNotEmpty = true)
+    {
         if (!self::exists($file)) {
             return false;
         }
@@ -127,15 +132,17 @@ class UfwFileSystem {
         }
     }
 
-    public static function createDir($dir, $mode = 0644) {
+    public static function createDir($dir, $mode = 0644)
+    {
         $dir = self::path($dir);
-        
+
         if (!self::exists($dir)) {
             return mkdir($dir, $mode, true);
         }
     }
 
-    public static function rename($file, $newName) {
+    public static function rename($file, $newName)
+    {
         $file = self::path($file);
 
         if (self::exists($file)) {
@@ -145,19 +152,22 @@ class UfwFileSystem {
         return false;
     }
 
-    public static function exists($file) {
+    public static function exists($file)
+    {
         $file_cleaned = self::path($file);
         $return = file_exists($file_cleaned);
         // if(!$return and AfwStringHelper::stringContain($file_cleaned,"tvtc_user_")) die("rafik stopped this at 2 Mars 2026 $file_cleaned doesn't exists");
         return $return;
     }
 
-    public static function folderExists($folder) {
+    public static function folderExists($folder)
+    {
         $folder = self::path($folder);
         return (file_exists($folder) and is_dir($folder));
     }
 
-    public static function hasPermission($file, $permission = array('execute', 'read', 'write')) {
+    public static function hasPermission($file, $permission = array('execute', 'read', 'write'))
+    {
         $file = self::path($file);
 
         $functions = array(
@@ -175,27 +185,31 @@ class UfwFileSystem {
         return true;
     }
 
-    public static function filename($file) {
+    public static function filename($file)
+    {
         return pathinfo(strtolower($file), PATHINFO_FILENAME);
     }
 
-    public static function extension($file) {
+    public static function extension($file)
+    {
         $extension = pathinfo(strtolower($file), PATHINFO_EXTENSION);
         if ($extension) {
             return $extension;
         }
     }
 
-    public static function complete_filename($file) {
+    public static function complete_filename($file)
+    {
         $ext = self::extension($file);
         $fln = self::filename($file);
 
-        if($ext) $fln = $fln . "." . $ext;
+        if ($ext) $fln = $fln . "." . $ext;
 
         return $fln;
     }
 
-    public static function path($path) { // , $absolute = true obsolete
+    public static function path(string $path)
+    { // , $absolute = true obsolete
         /*if (strpos($path, DOC_ROOT) === false && !preg_match('(^[a-z]+:)i', $path, $out)) {
             if ($absolute) {
                 $path = DOC_ROOT . '/' . $path;
@@ -212,19 +226,22 @@ class UfwFileSystem {
     }
 
 
-    public static function folderOf($file) 
+    public static function folderOf(string $file)
     {
-        $file = self::path($file);
-        $fname = self::complete_filename($file);
-        return str_replace($fname, '', $file);
+        $file = strtolower($file);
+        $file2 = self::path($file);
+        $fname = self::complete_filename($file2);
+        $return = str_replace($fname, '', $file2);
+
+        // die("rafik 27112026 debugg folderOf : $file2 = self::path($file) , $fname = self::complete_filename($file2), $return = str_replace($fname, '', $file2)");
+        return $return;
     }
 
-    public static function parentFolderOf($folder, $sep="/") 
+    public static function parentFolderOf($folder, $sep = "/")
     {
-        $folder = trim($folder,$sep);
+        $folder = trim($folder, $sep);
         $folder_arr = explode($sep, $folder);
-        unset($folder_arr[count($folder_arr)-1]);
+        unset($folder_arr[count($folder_arr) - 1]);
         return implode($sep, $folder_arr);
     }
-
 }

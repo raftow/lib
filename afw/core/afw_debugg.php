@@ -15,7 +15,7 @@ class AFWDebugg
 
     public static function initialiser(string $pathName, string $fileName)
     {
-        if (!$pathName) self::defaultLogPath();
+        if (!$pathName) $pathName = self::defaultLogPath();
         self::$pathName = ($pathName) ? $pathName : '';
         self::$fileName = ($fileName) ? $fileName : 'debugg.log';
         self::$modeBatch = false;

@@ -117,7 +117,7 @@ class AfwUmsPagHelper extends AFWRoot
             $mdl_new = false;
         }
 
-        if(!$mdl) return [null, null,null, null,null, null];
+        if (!$mdl) return [null, null, null, null, null, null];
         return self::getMyAtable($mdl, $mdl_new, $table_name, $cremod, $cretbl);
     }
 
@@ -195,7 +195,7 @@ class AfwUmsPagHelper extends AFWRoot
     /**
      * @param AFWObject $obj
      */
-    public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false, $restrictToField = '', $create_answer_tables_if_not_exists=false)
+    public static function pagObject($obj, $this_db_structure, $module, $table, $id_main_sh, $updateIfExists = false, $restrictToField = '', $create_answer_tables_if_not_exists = false)
     {
         $lang = AfwLanguageHelper::getGlobalLanguage();
         $file_dir_name = dirname(__FILE__);
@@ -902,7 +902,7 @@ class AfwUmsPagHelper extends AFWRoot
         }
         elseif
         (
-            $object->showRetrieveErrors and
+            $object->show RetrieveErrors and
             (AfwSession::hasOption('CHECK_ERRORS') or $object->forceCheckErrors)
         ) {
             if (!$object->isOk()) {
@@ -920,7 +920,7 @@ class AfwUmsPagHelper extends AFWRoot
         } else {
             $viewIcon = 'detail64';
             $data_errors = 'لم يتم تفعيل التثبت من الأخطاء';
-            if (!$object->showRetrieveErrors) {
+            if (!$object->show RetrieveErrors) {
                 $data_errors .= ' في العرض الاستردادي (retrieve mode)';
             }
         }
@@ -1004,14 +1004,14 @@ class AfwUmsPagHelper extends AFWRoot
             $viewIcon = 'detail64';
             $data_errors = 'لم يتم تفعيل التثبت من الأخطاء';
             if (!$object->showRetrieveErrors) {
-                $data_errors .= ' في العرض الاستردادي (retrieve mode)';
+                $data_errors .= ' في العرض الاققي (retrieve mode)';
             }
         }
         if ($takeViewIcon and $displayAction) {
-            $actions_tpl_arr['view'] = [                
+            $actions_tpl_arr['view'] = [
                 'link' => "Main_Page=$displayFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
                 'img' => "../lib/images/$viewIcon.png",
-                'iw' => $iw, 
+                'iw' => $iw,
                 'ih' => $ih,
                 'framework_action' => $displayAction,
                 'help' => htmlentities($data_errors),
@@ -1022,9 +1022,9 @@ class AfwUmsPagHelper extends AFWRoot
             $actions_tpl_arr['edit'] = [
                 'link' => "Main_Page=$editFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
                 'img' => $edit_icon,
-                'iw' => $iw, 
+                'iw' => $iw,
                 'ih' => $ih,
-                
+
                 'framework_action' => $editAction,
             ];
         }
@@ -1034,7 +1034,7 @@ class AfwUmsPagHelper extends AFWRoot
                 $actions_tpl_arr['delete'] = [
                     'link' => '#todo',
                     'img' => $images['delete'],
-                    'iw' => $iw, 
+                    'iw' => $iw,
                     'ih' => $ih,
                     'framework_action' => $deleteAction,
                     'ajax_class' => 'trash',
@@ -1043,7 +1043,7 @@ class AfwUmsPagHelper extends AFWRoot
                 $actions_tpl_arr['delete'] = [
                     'link' => '',
                     'img' => $images['locked'],
-                    'iw' => $iw, 
+                    'iw' => $iw,
                     'ih' => $ih,
                     'framework_action' => '',
                     'ajax_class' => '',
@@ -1056,7 +1056,7 @@ class AfwUmsPagHelper extends AFWRoot
             $actions_tpl_arr['audit'] = [
                 'link' => "Main_Page=$auditFilename&cl=$cl&currmod=$currmod&id=[id]&popup=[popup_t]",
                 'img' => $images['audit'],
-                'iw' => $iw, 
+                'iw' => $iw,
                 'ih' => $ih,
                 'framework_action' => $auditAction,
             ];

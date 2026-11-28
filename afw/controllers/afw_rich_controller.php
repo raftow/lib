@@ -7,7 +7,7 @@ class AfwRichController extends AfwController
         return true;
     }
 
-    public function prepareStandard($method)
+    public function prepareStandard(string $method)
     {
         $custom_scripts = array();
         /*

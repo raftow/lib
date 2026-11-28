@@ -430,10 +430,10 @@ class AfwStringHelper
                 return false;
         }
 
-        public static function left_complete_len(string $str, int $new_len, $complete_with_char = "0", $truncateIfMore=false)
+        public static function left_complete_len(string $str, int $new_len, $complete_with_char = "0", $truncateIfMore = false)
         {
-                if($truncateIfMore and (strlen($str) > $new_len)) {
-                        $str = substr($str,0,$new_len);
+                if ($truncateIfMore and (strlen($str) > $new_len)) {
+                        $str = substr($str, 0, $new_len);
                 }
                 while (strlen($str) < $new_len) {
                         $str = $complete_with_char . $str;
@@ -441,10 +441,10 @@ class AfwStringHelper
                 return $str;
         }
 
-        public static function right_complete_len(string $str, int $new_len, $complete_with_char = " ", $truncateIfMore=false)
+        public static function right_complete_len(string $str, int $new_len, $complete_with_char = " ", $truncateIfMore = false)
         {
-                if($truncateIfMore and (strlen($str) > $new_len)) {
-                        $str = substr($str,0,$new_len);
+                if ($truncateIfMore and (strlen($str) > $new_len)) {
+                        $str = substr($str, 0, $new_len);
                 }
                 while (strlen($str) < $new_len) {
                         $str = $str . $complete_with_char;
@@ -1023,8 +1023,13 @@ class AfwStringHelper
                 return AfwStringHelper::firstCharLower($str);
         }
 
-        public static function initialsOfName($text)
+        public static function initialsOfName(string $text, string $text2 = "", string $text3 = "")
         {
+                // if (!$text2) throw new AfwRuntimeException("initialsOfName(string $text, string $text2, string $text3)");
+                $text = self::toEnglishText(trim($text));
+                if (!$text) $text = self::toEnglishText(trim($text2));
+                if (!$text) $text = self::toEnglishText(trim($text3));
+                if (!$text) $text = "??? ???";
                 $text = strtoupper($text);
                 list($str,) = explode('@', $text);
                 $str = str_replace('_', ' ', $str);

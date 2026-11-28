@@ -1053,7 +1053,7 @@ class AfwSession extends AFWRoot
         public static function loadContextConfig($configContext, $loadClientConfig = false, $reload = false, $force_main_company = "")
         {
                 $contextAlreadyLoaded = self::config("$configContext-config-already-loaded", false, $configContext);
-                if ($reload or !$contextAlreadyLoaded) {
+                if ($reload or !$contextAlreadyLoaded or $loadClientConfig) {
                         $this_dir_name = dirname(__FILE__) . "/..";
                         $context_config_file = "$this_dir_name/../../config/" . $configContext . "_config.php";
                         $cache_config_loaded = "";

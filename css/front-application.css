@@ -4709,10 +4709,12 @@ a.afw:hover {
     color: #16892a !important;
 }
 
+/*
 th.col-qe-id,
 td.col-qe-id {
+    id sometime useful to see in mode qedit
     display: none !important;
-}
+}*/
 
 th.col-qe {
     text-align: center !important;
